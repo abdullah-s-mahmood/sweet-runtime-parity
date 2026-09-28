@@ -1,0 +1,108 @@
+name: Phase 2 Lexical Continuity Diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/LEXICAL_CONTINUITY_DIAGNOSTIC_PROTOCOL.md"
+      - "phase2/generalization/LEXICAL_CONTINUITY_RESEARCH_START.md"
+      - "phase2/generalization/LEXICAL_CONTINUITY_BRAINSTORM_START.md"
+      - "phase2/generalization/run_lexical_continuity_diagnostic.py"
+      - "phase2/generalization/evaluate_lexical_continuity_diagnostic.py"
+      - ".github/workflows/phase2-lexical-continuity-diagnostic.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  lexical-continuity:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Checkout project branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+          fetch-depth: 0
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Download and verify frozen agreement artifact
+        run: |
+          mkdir -p artifacts/agreement
+          gh run download 36484171517 \
+            --repo "$GITHUB_REPOSITORY" \
+            --name phase2-cross-model-agreement-internal \
+            --dir artifacts/agreement
+          test -f artifacts/agreement/artifacts/CROSS_MODEL_AGREEMENT_FEATURES.jsonl
+          test "$(sha256sum artifacts/agreement/artifacts/CROSS_MODEL_AGREEMENT_FEATURES.jsonl | awk '{print $1}')" = "d66a5ab3c6b9e1527b7a1a59ddce0f843a864281e70106cacd58d00315741c4c"
+
+      - name: Install morphology-only runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "numpy<2"
+          mkdir -p "$CAMELTOOLS_DATA" artifacts
+          camel_data -i morphology-db-msa-r13
+
+      - name: Materialize gold-blind lexical continuity features
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/run_lexical_continuity_diagnostic.py 2>&1 | tee artifacts/LEXICAL_CONTINUITY_RUNTIME_CONSOLE.txt
+          test -f artifacts/LEXICAL_CONTINUITY_FEATURES.jsonl
+          test -f artifacts/LEXICAL_CONTINUITY_RUNTIME.json
+          sha256sum artifacts/LEXICAL_CONTINUITY_FEATURES.jsonl artifacts/LEXICAL_CONTINUITY_RUNTIME.json | tee artifacts/LEXICAL_CONTINUITY_FROZEN_SHA256.txt
+
+      - name: Evaluate frozen lexical flags
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/evaluate_lexical_continuity_diagnostic.py 2>&1 | tee artifacts/LEXICAL_CONTINUITY_EVAL_CONSOLE.txt
+          test -f PHASE2_LEXICAL_CONTINUITY_DIAGNOSTIC_RESULTS.json
+
+      - name: Audit diagnostic contract
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("PHASE2_LEXICAL_CONTINUITY_DIAGNOSTIC_RESULTS.json",encoding="utf-8"))
+          assert x["diagnostic_only"] is True
+          assert x["same_consumed_cross_corpus_slice"] is True
+          assert x["runtime_features_materialized_before_manual_labels_loaded"] is True
+          assert x["qalb15_test_read"] is False
+          assert x["rows"] == 159
+          print("Lexical diagnostic contract PASS")
+          PY
+
+      - name: Persist compact result safely
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_LEXICAL_CONTINUITY_DIAGNOSTIC_RESULTS.json
+          if git diff --cached --quiet; then
+            echo "Lexical continuity result unchanged."
+          else
+            git commit -m "Record lexical continuity diagnostic evidence [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - name: Upload safe lexical diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-lexical-continuity-diagnostic
+          path: |
+            artifacts/LEXICAL_CONTINUITY_FEATURES.jsonl
+            artifacts/LEXICAL_CONTINUITY_RUNTIME.json
+            artifacts/LEXICAL_CONTINUITY_FROZEN_SHA256.txt
+            PHASE2_LEXICAL_CONTINUITY_DIAGNOSTIC_RESULTS.json
+          if-no-files-found: warn
+          retention-days: 7
