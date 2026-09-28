@@ -1,0 +1,30 @@
+{
+  "status": "PHASE2_ARABART_REVERSE_ACCEPTANCE_RUNTIME_COMPLETE",
+  "development_only": true,
+  "rows": 67,
+  "gold_or_human_labels_read": false,
+  "nahw_target_fields_read": false,
+  "decision_counts": {
+    "HARD_VETO_ONLY:REJECT": 28,
+    "STRUCTURAL_TYPED:REJECT": 28,
+    "STRUCTURAL_TYPED_PLUS_GED50:REJECT": 28,
+    "HARD_VETO_ONLY:REVIEW": 39,
+    "STRUCTURAL_TYPED:REVIEW": 33,
+    "STRUCTURAL_TYPED_PLUS_GED50:REVIEW": 36,
+    "STRUCTURAL_TYPED:ACCEPT": 6,
+    "STRUCTURAL_TYPED_PLUS_GED50:ACCEPT": 3
+  },
+  "hard_veto_rows": 28,
+  "complex_member_rows": 11,
+  "structural_positive_rows": 9,
+  "policy_definitions": {
+    "HARD_VETO_ONLY": "Reject only explicit destructive orthographic patterns; otherwise review.",
+    "STRUCTURAL_TYPED": "Accept only narrow N-restoration/removal or simple accusative-alif addition with safe local alignment; hard veto rejects; complex-event members review.",
+    "STRUCTURAL_TYPED_PLUS_GED50": "Same structural policy, but ACCEPT additionally requires GED error_probability >= 0.50."
+  },
+  "limitations": [
+    "Rules were motivated by repeatedly inspected development evidence and are not an independent production estimate.",
+    "Initial hamza changes are deliberately not hard-vetoed because hamzat-al-wasl corrections can be valid.",
+    "Complex-event members are never auto-applied as isolated one-word edits."
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "status": "PHASE2_ARABART_REVERSE_ACCEPTANCE_DEVELOPMENT_EVALUATED",
+  "runtime_decisions_materialized_before_labels": true,
+  "rows": 67,
+  "supported_rows": 29,
+  "wrong_rows": 33,
+  "policy_results": {
+    "HARD_VETO_ONLY": {
+      "policy": "HARD_VETO_ONLY",
+      "accepted": 0,
+      "review": 39,
+      "rejected": 28,
+      "accepted_classes": {},
+      "accepted_supported": 0,
+      "accepted_wrong": 0,
+      "accepted_partial": 0,
+      "accepted_high_or_critical_wrong": 0,
+      "supported_precision": null,
+      "supported_coverage_within_arabart_only": 0.0,
+      "wrong_rejection_recall": 0.7575757575757576,
+      "accepted_ids": []
+    },
+    "STRUCTURAL_TYPED": {
+      "policy": "STRUCTURAL_TYPED",
+      "accepted": 6,
+      "review": 33,
+      "rejected": 28,
+      "accepted_classes": {
+        "SUPPORTED_CORRECTION": 6
+      },
+      "accepted_supported": 6,
+      "accepted_wrong": 0,
+      "accepted_partial": 0,
+      "accepted_high_or_critical_wrong": 0,
+      "supported_precision": 1.0,
+      "supported_coverage_within_arabart_only": 0.20689655172413793,
+      "wrong_rejection_recall": 0.7575757575757576,
+      "accepted_ids": [
+        "AB-5-14",
+        "AB-17-31",
+        "AB-25-48",
+        "AB-28-10",
+        "AB-92-15",
+        "AB-94-32"
+      ]
+    },
+    "STRUCTURAL_TYPED_PLUS_GED50": {
+      "policy": "STRUCTURAL_TYPED_PLUS_GED50",
+      "accepted": 3,
+      "review": 36,
+      "rejected": 28,
+      "accepted_classes": {
+        "SUPPORTED_CORRECTION": 3
+      },
+      "accepted_supported": 3,
+      "accepted_wrong": 0,
+      "accepted_partial": 0,
+      "accepted_high_or_critical_wrong": 0,
+      "supported_precision": 1.0,
+      "supported_coverage_within_arabart_only": 0.10344827586206896,
+      "wrong_rejection_recall": 0.7575757575757576,
+      "accepted_ids": [
+        "AB-5-14",
+        "AB-28-10",
+        "AB-92-15"
+      ]
+    }
+  },
+  "feature_diagnostics": {
+    "hard_veto_rows": 28,
+    "hard_veto_wrong": 25,
+    "hard_veto_supported": 2,
+    "structural_eligible_rows": 6,
+    "structural_eligible_supported": 6,
+    "structural_eligible_wrong": 0
+  },
+  "cross_stream_development_comparator": {
+    "existing_exact_local_agreement_accepts_supported": 23,
+    "existing_exact_local_agreement_accepted_wrong": 0,
+    "arabart_only_structural_typed_accepts_supported": 6,
+    "arabart_only_structural_typed_accepted_wrong": 0,
+    "note": "The 67 AraBART-only rows were defined as new local locations outside the existing 79-candidate population, so accepted supported rows here are incremental at the recorded local locations. This is still repeatedly inspected development evidence."
+  },
+  "limitations": [
+    "All quality labels are same-agent development adjudication, not sealed or independent-human evidence.",
+    "The typed rules were motivated by this development population and therefore require disjoint validation before freezing.",
+    "Candidate rows are clustered by passage; candidate-level precision must not be interpreted as independent Bernoulli trials.",
+    "This gate covers the 67 new one-to-one AraBART substitutions; complete multiword events remain governed by the full-event audit."
+  ]
+}
