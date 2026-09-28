@@ -6,7 +6,8 @@ on:
     branches:
       - phase2-arabic-eval
     paths:
-      - "phase2/generalization/**"
+      - "phase2/generalization/run_zaebuc_generalization.py"
+      - "phase2/generalization/evaluate_zaebuc_generalization.py"
       - ".github/workflows/phase2-zaebuc-generalization.yml"
 
 permissions:
