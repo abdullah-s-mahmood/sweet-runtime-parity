@@ -101,6 +101,11 @@ jobs:
           set -o pipefail
           python phase2/arabic_eval/prototype_protected_span_sweet.py 2>&1 | tee artifacts/PROTECTED_SPAN_PROTOTYPE_CONSOLE.txt
 
+      - name: Run source-preserving surgical renderer prototype
+        run: |
+          set -o pipefail
+          python phase2/arabic_eval/prototype_surgical_renderer.py 2>&1 | tee artifacts/SURGICAL_RENDERER_CONSOLE.txt
+
       - name: Build passage-clustered adjudication queue
         run: |
           set -o pipefail
