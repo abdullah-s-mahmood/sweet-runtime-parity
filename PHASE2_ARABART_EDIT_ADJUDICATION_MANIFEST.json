@@ -1,0 +1,25 @@
+{
+  "repository": "abdullah-s-mahmood/sweet-runtime-parity",
+  "branch": "phase2-arabic-eval",
+  "phase": "Phase 2 — AraBART-only substitution adjudication",
+  "source_queue": "PHASE2_ARABART_EDIT_ADJUDICATION_QUEUE.jsonl",
+  "source_queue_blob_sha": "3e96411b732def397ff88bfcec0d7f108aea0814",
+  "rows": 67,
+  "passages": 32,
+  "pass1_before_architecture_change": true,
+  "pass2_same_agent": true,
+  "independent_human_validation": false,
+  "source_modified": false,
+  "frozen_safety_stack_modified": false,
+  "sealed": false,
+  "phase3": false,
+  "files": [
+    "PHASE2_ARABART_EDIT_ADJUDICATION.jsonl",
+    "PHASE2_ARABART_EDIT_ADJUDICATION_RESULTS.json",
+    "PHASE2_ARABART_EDIT_FAILURE_TAXONOMY.md",
+    "ARABART_EDIT_RESEARCH_UPDATE.md",
+    "ARABART_EDIT_BRAINSTORM.md",
+    "PHASE2_ARABART_EDIT_ADJUDICATION_MANIFEST.json"
+  ],
+  "note": "Development adjudication labels are evaluation evidence only and must not be used as runtime features."
+}
