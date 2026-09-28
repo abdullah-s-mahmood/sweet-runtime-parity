@@ -1,0 +1,30 @@
+{
+  "status": "READY_FOR_NORMALIZED_CANDIDATE_ADJUDICATION",
+  "development_only": true,
+  "not_sealed": true,
+  "source_is_immutable": true,
+  "tokenizer_unk_hazards": 98,
+  "unique_hazard_word_locations": 98,
+  "hazard_word_locations_without_candidates": 79,
+  "published_targets_overlapping_hazard_words": 32,
+  "hazard_word_locations_with_candidates": 19,
+  "normalized_candidates": 19,
+  "source_spans_identified": 19,
+  "automated_target_word_matches": 12,
+  "automated_matches_on_previously_preserved_errors": 12,
+  "candidate_queue_rows": 19,
+  "candidate_passages": 14,
+  "scientific_stress": {
+    "cases": 12,
+    "original_source_unchanged_by_policy": 12,
+    "protected_source_spans_intact_by_policy": 12,
+    "normalized_view_candidates": 2
+  },
+  "normalization": "remove Unicode Mn combining marks and Arabic tatweel in internal model view only",
+  "important_limitations": [
+    "Automated target-word matching is diagnostic, not linguistic adjudication.",
+    "Nahw references are localized corrections, not exhaustive passage gold.",
+    "Normalized candidates are never auto-applied to original source.",
+    "Removing diacritics can remove grammatically meaningful information; every normalized candidate requires adjudication."
+  ]
+}

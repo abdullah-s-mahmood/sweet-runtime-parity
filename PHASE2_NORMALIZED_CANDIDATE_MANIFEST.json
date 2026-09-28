@@ -1,0 +1,16 @@
+{
+  "repository": "abdullah-s-mahmood/sweet-runtime-parity",
+  "branch": "phase2-arabic-eval",
+  "phase": "Phase 2 — Reversible Normalized Candidate View",
+  "source_targets": 150,
+  "source_passages": 41,
+  "normalization": "Mn combining marks + tatweel removed in internal model view only",
+  "nopnx_sha256": "584ccc089d143b1d7c72ea5b296652050359d163e57e4374b920fbac7925e8d6",
+  "upstream_commit": "4d552ca3ae98029550f27fc52aa1b22883e16e61",
+  "candidate_rows": 19,
+  "queue_file": "PHASE2_NORMALIZED_CANDIDATE_QUEUE.jsonl",
+  "summary_file": "PHASE2_NORMALIZED_CANDIDATE_QUEUE_SUMMARY.json",
+  "raw_artifact": "artifacts/NORMALIZED_CANDIDATE_VIEW_RAW.json",
+  "auto_apply": false,
+  "sealed": false
+}
