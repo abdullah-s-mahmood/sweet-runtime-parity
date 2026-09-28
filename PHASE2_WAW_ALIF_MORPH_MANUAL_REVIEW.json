@@ -1,0 +1,29 @@
+{
+  "status": "PHASE2_WAW_ALIF_MORPH_MANUAL_REVIEW_COMPLETE",
+  "date": "2026-09-28",
+  "external_corpus": "ZAEBUC-v1.0 Arabic TRAIN fresh raw-selected slice",
+  "external_license": "CC BY-NC-SA 4.0",
+  "reviewed_nonexact_recovery_events": 1,
+  "independent_human_validation": false,
+  "same_agent_contextual_review": true,
+  "items": [
+    {
+      "event_id": "ZWAW-077-029",
+      "source_excerpt": "نشر شي خطأ و كل الناس شافو في هذه الحاله",
+      "candidate_local_edit": "شافو → شافوا",
+      "gold_local_edit": "شافو → شافوه",
+      "class": "WRONG_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_type": "OBJECT_CLITIC_OMISSION_AMBIGUITY",
+      "rationale": "The candidate assumes terminal waw is group-waw needing differentiating alif. In context the correction requires the attached object pronoun -ه, yielding شافوه; when the group waw is not terminal, no differentiating alif is written. The candidate therefore selects the wrong morphosyntactic completion and weakens the object reference."
+    }
+  ],
+  "policy_implication": {
+    "WAW_ALIF_MORPH_STRICT": "UNPROVEN_LOW_COVERAGE",
+    "WAW_ALIF_MORPH_RECOVERY": "FAIL_FOR_AUTO_ACCEPT",
+    "nun_family_auto_accept": false,
+    "generic_accusative_alif_auto_accept": false
+  },
+  "zaebuc_dev_read": false,
+  "zaebuc_test_read": false
+}
