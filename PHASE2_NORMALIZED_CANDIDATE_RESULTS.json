@@ -1,0 +1,135 @@
+{
+  "status": "DEVELOPMENT_CANDIDATE_ADJUDICATION_COMPLETE",
+  "candidate_count": 19,
+  "unique_passages": 14,
+  "classes": {
+    "UNNECESSARY_EDIT": 1,
+    "PARTIAL_CORRECTION": 4,
+    "SUPPORTED_CORRECTION": 12,
+    "WRONG_CORRECTION": 1,
+    "SUPPORTED_ALTERNATIVE": 1
+  },
+  "target_impact": {
+    "PARTIAL_RECOVERY": 3,
+    "EXACT_SUPPORTED_RECOVERY": 9,
+    "WRONG_CORRECTION": 1
+  },
+  "automated_matches_confirmed": 9,
+  "automated_matches_total": 12,
+  "new_supported_target_recoveries": 9,
+  "new_supported_target_recoveries_definition": "unique previously ERROR_PRESERVED Nahw targets with an independently supported normalized base-word correction; exact original diacritized realization and application NOT proven",
+  "safe_surface_realization_candidates": 2,
+  "ambiguous_surface_realization_candidates": 15,
+  "collateral": {
+    "UNNECESSARY_EDIT": 1,
+    "REVIEW_REQUIRED": 1,
+    "VALID_COLLATERAL_CORRECTION": 3,
+    "ACCEPTABLE_ALTERNATIVE": 1
+  },
+  "operation_families": {
+    "INSERT": {
+      "candidate_count": 7,
+      "supported": 6,
+      "partial": 0,
+      "wrong": 1,
+      "unnecessary": 0,
+      "review_required": 0,
+      "candidate_ids": [
+        "NORM-23-7-0",
+        "NORM-38-24-0",
+        "NORM-54-34-0",
+        "NORM-63-34-0",
+        "NORM-73-22-0",
+        "NORM-92-23-0",
+        "NORM-100-8-0"
+      ]
+    },
+    "REPLACE": {
+      "candidate_count": 8,
+      "supported": 7,
+      "partial": 0,
+      "wrong": 0,
+      "unnecessary": 1,
+      "review_required": 0,
+      "candidate_ids": [
+        "NORM-17-21-0",
+        "NORM-45-17-0",
+        "NORM-63-11-0",
+        "NORM-76-31-0",
+        "NORM-81-9-0",
+        "NORM-81-18-0",
+        "NORM-81-37-0",
+        "NORM-85-21-0"
+      ]
+    },
+    "DELETE": {
+      "candidate_count": 4,
+      "supported": 0,
+      "partial": 4,
+      "wrong": 0,
+      "unnecessary": 0,
+      "review_required": 0,
+      "candidate_ids": [
+        "NORM-21-9-0",
+        "NORM-61-27-0",
+        "NORM-63-24-0",
+        "NORM-73-58-0"
+      ]
+    },
+    "OTHER": {
+      "candidate_count": 0,
+      "supported": 0,
+      "partial": 0,
+      "wrong": 0,
+      "unnecessary": 0,
+      "review_required": 0,
+      "candidate_ids": []
+    }
+  },
+  "scientific_stress_candidate_types": [
+    {
+      "case_id": "SCI-DEV-03",
+      "source": "كان فاصل الثقة 95% بين 0.42 و0.61.",
+      "protected": [
+        "95%",
+        "0.42",
+        "0.61"
+      ],
+      "source_word": "فاصل",
+      "label": "K*DK",
+      "proposed_replacement": "فال",
+      "confidence": 0.2242138534784317,
+      "potential_harm": "Corrupts the technical term فاصل الثقة to فال الثقة",
+      "auto_applied": false
+    },
+    {
+      "case_id": "SCI-DEV-12",
+      "source": "تتفق النتيجة مع دراسة Ahmed et al. [12].",
+      "protected": [
+        "Ahmed et al. [12]"
+      ],
+      "source_word": "al.",
+      "label": "D*",
+      "proposed_replacement": "",
+      "confidence": 0.863775372505188,
+      "potential_harm": "Deletes period in al. before citation; citation formatting/integrity risk",
+      "auto_applied": false
+    }
+  ],
+  "scientific_source_unchanged": 12,
+  "scientific_protected_spans_intact": 12,
+  "strict_scientific_policy": "REVIEW_ONLY; do not apply normalized candidates",
+  "confidence_policy": "diagnostic only; no threshold",
+  "two_pass_quality_control": {
+    "pass1": "same-agent all 19 in complete passage context and published explanations",
+    "pass2": "same-agent rechecked alternatives, partial, wrong, review, and all 12 automated matches",
+    "pass2_rows": 15,
+    "independent_human": false
+  },
+  "limitations": [
+    "41 passages and 150 target rows remain clustered; this candidate population has 14 passages, no naive independent confidence interval",
+    "Nahw reference corrects one location; no-target candidates are independently judged",
+    "candidate-level linguistic support is not implemented source patch or production auto-acceptance",
+    "scientific stress cases are project-authored NON_HUMAN_GOLD"
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "safe_candidates": 2,
+  "ambiguous_candidates": 15,
+  "wrong_or_noop_excluded": 2,
+  "taxonomy_counts": {
+    "CASE_ENDING_OR_TANWEEN_REQUIRED": 10,
+    "BASE_LETTER_PLUS_PRESERVE_EXISTING_DIACRITICS": 2,
+    "INFLECTIONAL_RECONSTRUCTION_REQUIRED": 1,
+    "BASE_LETTER_PLUS_DIACRITIC_CHANGE_REQUIRED": 4
+  },
+  "candidates": [
+    {
+      "candidate_id": "NORM-17-21-0",
+      "source_word": "فتأنَّ",
+      "normalized_candidate": "فتأن",
+      "class": "UNNECESSARY_EDIT",
+      "surface_class": null,
+      "safe_candidate": false,
+      "required_handling": "No surface patch; discard no-op."
+    },
+    {
+      "candidate_id": "NORM-21-9-0",
+      "source_word": "كريمًا؛",
+      "normalized_candidate": "كريم؛",
+      "class": "PARTIAL_CORRECTION",
+      "surface_class": "CASE_ENDING_OR_TANWEEN_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Delete accusative alif/tanween and supply nominative dammatan only after syntactic validation."
+    },
+    {
+      "candidate_id": "NORM-23-7-0",
+      "source_word": "مالٌ",
+      "normalized_candidate": "مالا",
+      "class": "SUPPORTED_CORRECTION",
+      "surface_class": "CASE_ENDING_OR_TANWEEN_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Replace source ٌ with ً and insert ا in the correct Arabic tanween order; validate second-object case."
+    },
+    {
+      "candidate_id": "NORM-38-24-0",
+      "source_word": "وساعٍ",
+      "normalized_candidate": "وساعا",
+      "class": "WRONG_CORRECTION",
+      "surface_class": null,
+      "safe_candidate": false,
+      "required_handling": "Reject; a separate inflectional reconstruction would have to insert ي and tanween, which is not this candidate."
+    },
+    {
+      "candidate_id": "NORM-45-17-0",
+      "source_word": "إشتدادًا،",
+      "normalized_candidate": "اشتدادا،",
+      "class": "SUPPORTED_CORRECTION",
+      "surface_class": "BASE_LETTER_PLUS_PRESERVE_EXISTING_DIACRITICS",
+      "safe_candidate": true,
+      "required_handling": "Patch only initial إ to ا; preserve existing final fathatan and comma byte-for-byte."
+    },
+    {
+      "candidate_id": "NORM-54-34-0",
+      "source_word": "نَفْس",
+      "normalized_candidate": "نفسا",
+      "class": "SUPPORTED_CORRECTION",
+      "surface_class": "CASE_ENDING_OR_TANWEEN_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Keep or verify internal fatha/sukun, add fathatan before the inserted alif; do not lose source vocalization."
+    },
+    {
+      "candidate_id": "NORM-61-27-0",
+      "source_word": "متقنًا",
+      "normalized_candidate": "متقن",
+      "class": "PARTIAL_CORRECTION",
+      "surface_class": "CASE_ENDING_OR_TANWEEN_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Delete accusative mark/alif; nominative restoration needs syntactic review. No extracted target at this location."
+    },
+    {
+      "candidate_id": "NORM-63-11-0",
+      "source_word": "إستشعِر",
+      "normalized_candidate": "استشعر",
+      "class": "SUPPORTED_CORRECTION",
+      "surface_class": "BASE_LETTER_PLUS_PRESERVE_EXISTING_DIACRITICS",
+      "safe_candidate": true,
+      "required_handling": "Patch إ to ا, retaining kasra and all untouched source bytes."
+    },
+    {
+      "candidate_id": "NORM-63-24-0",
+      "source_word": "باسمًا",
+      "normalized_candidate": "باسم",
+      "class": "PARTIAL_CORRECTION",
+      "surface_class": "CASE_ENDING_OR_TANWEEN_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Remove accusative alif/tanween and restore nominative dammatan after grammatical validation."
+    },
+    {
+      "candidate_id": "NORM-63-34-0",
+      "source_word": "عابِس،",
+      "normalized_candidate": "عابسا،",
+      "class": "SUPPORTED_CORRECTION",
+      "surface_class": "CASE_ENDING_OR_TANWEEN_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Preserve or validate kasra, attach fathatan before ا, and do not claim human-gold target recovery for the selected 150."
+    },
+    {
+      "candidate_id": "NORM-73-22-0",
+      "source_word": "خَطر",
+      "normalized_candidate": "خطرا",
+      "class": "SUPPORTED_CORRECTION",
+      "surface_class": "CASE_ENDING_OR_TANWEEN_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Preserve خَ and add fathatan before the inserted ا after case validation."
+    },
+    {
+      "candidate_id": "NORM-73-58-0",
+      "source_word": "واقعًا",
+      "normalized_candidate": "واقع",
+      "class": "PARTIAL_CORRECTION",
+      "surface_class": "CASE_ENDING_OR_TANWEEN_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Delete accusative ending and add dammatan only with nominative syntactic evidence."
+    },
+    {
+      "candidate_id": "NORM-76-31-0",
+      "source_word": "يقدِّموا",
+      "normalized_candidate": "يقدمون",
+      "class": "SUPPORTED_CORRECTION",
+      "surface_class": "INFLECTIONAL_RECONSTRUCTION_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Reconstruct يقدِّمون, retaining shadda/kasra on دِّ and checking indicative mood."
+    },
+    {
+      "candidate_id": "NORM-81-9-0",
+      "source_word": "المصريِّين",
+      "normalized_candidate": "المصريون",
+      "class": "SUPPORTED_CORRECTION",
+      "surface_class": "BASE_LETTER_PLUS_DIACRITIC_CHANGE_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Change ي→و in suffix and kasra→damma on the stem, preserve shadda under checked alignment."
+    },
+    {
+      "candidate_id": "NORM-81-18-0",
+      "source_word": "الإرهابيُّون",
+      "normalized_candidate": "الإرهابيين",
+      "class": "SUPPORTED_CORRECTION",
+      "surface_class": "BASE_LETTER_PLUS_DIACRITIC_CHANGE_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Change و→ي in suffix and damma→kasra, keeping shadda after morphology/case review."
+    },
+    {
+      "candidate_id": "NORM-81-37-0",
+      "source_word": "واجبًا",
+      "normalized_candidate": "واجبة",
+      "class": "SUPPORTED_ALTERNATIVE",
+      "surface_class": "CASE_ENDING_OR_TANWEEN_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Remove accusative tanween/alif, use feminine ة, optionally supply nominative damma; present as alternative requiring editorial review."
+    },
+    {
+      "candidate_id": "NORM-85-21-0",
+      "source_word": "الباسلِين",
+      "normalized_candidate": "الباسلون",
+      "class": "SUPPORTED_CORRECTION",
+      "surface_class": "BASE_LETTER_PLUS_DIACRITIC_CHANGE_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Change ـين to ـون and correct/omit kasra on ل; verify adjective agreement."
+    },
+    {
+      "candidate_id": "NORM-92-23-0",
+      "source_word": "حبًّ",
+      "normalized_candidate": "حبا",
+      "class": "SUPPORTED_CORRECTION",
+      "surface_class": "CASE_ENDING_OR_TANWEEN_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Keep shadda on ب and restore fathatan before the appended ا; avoid undiacritized source overwrite."
+    },
+    {
+      "candidate_id": "NORM-100-8-0",
+      "source_word": "يرضَ",
+      "normalized_candidate": "يرضى",
+      "class": "SUPPORTED_CORRECTION",
+      "surface_class": "BASE_LETTER_PLUS_DIACRITIC_CHANGE_REQUIRED",
+      "safe_candidate": false,
+      "required_handling": "Insert ى; explicitly validate whether to remove or reposition source fatha, avoiding blind retention."
+    }
+  ],
+  "interpretation": "Identified source span is not proof of safe vocalized round-trip; no candidate was applied."
+}
