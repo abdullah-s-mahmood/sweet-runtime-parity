@@ -1,0 +1,128 @@
+name: Phase 2 Reversible Normalized Candidate View
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/normalization/**"
+      - ".github/workflows/phase2-reversible-normalized-candidates.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  normalized-candidate-view:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout Phase 2 branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+
+      - name: Install pinned CPU PyTorch
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+
+      - name: Install pinned dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip check
+
+      - name: Validate Phase 2 inputs
+        run: |
+          python phase2/arabic_eval/validate_transfer.py
+          test -f PHASE2_SURGICAL_ADJUDICATION_QUEUE.jsonl
+          test -f PHASE2_SURGICAL_TARGET_ADJUDICATION.jsonl
+
+      - name: Clone and pin official CAMeL-Lab text-editing
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git -C upstream/text-editing rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Download official NoPnx model
+        env:
+          HF_HUB_DISABLE_TELEMETRY: "1"
+        run: |
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          snapshot_download(
+              repo_id="CAMeL-Lab/text-editing-zaebuc-nopnx",
+              local_dir="models/nopnx",
+              allow_patterns=[
+                  "config.json","pytorch_model.bin","model.safetensors",
+                  "special_tokens_map.json","tokenizer_config.json",
+                  "tokenizer.json","vocab.txt"
+              ],
+          )
+          PY
+
+      - name: Verify NoPnx SHA-256
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          p=Path("models/nopnx/pytorch_model.bin")
+          h=hashlib.sha256()
+          with p.open("rb") as f:
+              for b in iter(lambda:f.read(8*1024*1024),b""):
+                  h.update(b)
+          actual=h.hexdigest()
+          expected="584ccc089d143b1d7c72ea5b296652050359d163e57e4374b920fbac7925e8d6"
+          print("NoPnx SHA256",actual)
+          if actual != expected:
+              raise SystemExit("NoPnx hash mismatch")
+          PY
+
+      - name: Run reversible normalized candidate view
+        run: |
+          set -o pipefail
+          mkdir -p artifacts
+          python phase2/normalization/run_reversible_normalized_candidates.py 2>&1 | tee artifacts/NORMALIZED_CANDIDATE_VIEW_CONSOLE.txt
+          cp PHASE2_NORMALIZED_CANDIDATE_QUEUE.jsonl artifacts/
+          cp PHASE2_NORMALIZED_CANDIDATE_QUEUE_SUMMARY.json artifacts/
+          cp PHASE2_NORMALIZED_CANDIDATE_MANIFEST.json artifacts/
+
+      - name: Persist compact normalized candidate queue
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_NORMALIZED_CANDIDATE_QUEUE.jsonl PHASE2_NORMALIZED_CANDIDATE_QUEUE_SUMMARY.json PHASE2_NORMALIZED_CANDIDATE_MANIFEST.json
+          if git diff --cached --quiet; then
+            echo "Normalized candidate queue unchanged."
+          else
+            git commit -m "Update normalized candidate queue [skip ci]"
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - name: Record provenance
+        if: always()
+        run: |
+          {
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "branch=${GITHUB_REF_NAME}"
+            echo "commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+          } > artifacts/NORMALIZED_CANDIDATE_GITHUB_PROVENANCE.txt
+
+      - name: Upload normalized candidate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-reversible-normalized-candidate-evidence
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 30
