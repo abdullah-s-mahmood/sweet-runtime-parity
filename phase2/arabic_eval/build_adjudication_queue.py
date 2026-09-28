@@ -26,6 +26,22 @@ def opcodes(a,b):
 def non_keep(stage):
     return sum(1 for x in stage.get("raw_labels",[]) if x!="K*")
 
+def non_keep_details(stage):
+    subs=stage.get("subwords",[])
+    labels=stage.get("raw_labels",[])
+    conf=stage.get("top1_confidence",[])
+    out=[]
+    for i,(sub,label) in enumerate(zip(subs,labels)):
+        if label=="K*":
+            continue
+        out.append({
+            "subword_index":i,
+            "subword":sub,
+            "label":label,
+            "top1_confidence":conf[i] if i < len(conf) else None,
+        })
+    return out
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--raw",type=Path,default=ROOT/"artifacts/OFFICIAL_DEVELOPMENT_RAW.jsonl")
@@ -82,6 +98,12 @@ def main():
                 "nopnx_iteration_2_incremental":non_keep(first["nopnx_iteration_2"]),
                 "pnx_only":non_keep(first["pnx_only"]),
                 "full_pnx_incremental":non_keep(first["full_pnx_iteration_1"]),
+            },
+            "model_non_keep_edits":{
+                "nopnx_iteration_1":non_keep_details(first["nopnx_iteration_1"]),
+                "nopnx_iteration_2_incremental":non_keep_details(first["nopnx_iteration_2"]),
+                "pnx_only":non_keep_details(first["pnx_only"]),
+                "full_pnx_incremental":non_keep_details(first["full_pnx_iteration_1"]),
             },
             "targets":targets,
             "review_flags":{
