@@ -1,0 +1,191 @@
+{
+  "status": "DEVELOPMENT_ONLY_POST_ADJUDICATION_POLICY_SWEEP",
+  "source_commit": "5eaa0c9bd86d9a71c818b57ae7050bd2f02c02c9",
+  "manifest_commit": "b621cad48b89af8dc0ae37977a8170e2571607d4",
+  "denominator": {
+    "applied_edits": 60,
+    "passage_clusters": 41
+  },
+  "warning": "This sweep is retrospective on the same development adjudication. It is for choosing the next bounded experiment, not for freezing thresholds or claiming production precision.",
+  "policies": [
+    {
+      "name": "all_applied",
+      "n": 60,
+      "passages": 33,
+      "supported": 49,
+      "wrong": 7,
+      "partial": 2,
+      "unnecessary": 2,
+      "supported_precision": 0.8166666667,
+      "passage_cluster_bootstrap_95": [
+        0.7230769231,
+        0.8965517241
+      ]
+    },
+    {
+      "name": "confidence_ge_0_8",
+      "n": 42,
+      "passages": 27,
+      "supported": 38,
+      "wrong": 1,
+      "partial": 2,
+      "unnecessary": 1,
+      "supported_precision": 0.9047619048,
+      "passage_cluster_bootstrap_95": [
+        0.8048780488,
+        0.9782608696
+      ]
+    },
+    {
+      "name": "confidence_ge_0_9",
+      "n": 38,
+      "passages": 26,
+      "supported": 35,
+      "wrong": 1,
+      "partial": 2,
+      "unnecessary": 0,
+      "supported_precision": 0.9210526316,
+      "passage_cluster_bootstrap_95": [
+        0.825,
+        1
+      ]
+    },
+    {
+      "name": "confidence_ge_0_98",
+      "n": 28,
+      "passages": 21,
+      "supported": 26,
+      "wrong": 0,
+      "partial": 2,
+      "unnecessary": 0,
+      "supported_precision": 0.9285714286,
+      "passage_cluster_bootstrap_95": [
+        0.8214285714,
+        1
+      ]
+    },
+    {
+      "name": "insert_any",
+      "n": 19,
+      "passages": 15,
+      "supported": 18,
+      "wrong": 0,
+      "partial": 0,
+      "unnecessary": 1,
+      "supported_precision": 0.9473684211,
+      "passage_cluster_bootstrap_95": [
+        0.8421052632,
+        1
+      ]
+    },
+    {
+      "name": "insert_nonspace",
+      "n": 18,
+      "passages": 15,
+      "supported": 18,
+      "wrong": 0,
+      "partial": 0,
+      "unnecessary": 0,
+      "supported_precision": 1,
+      "passage_cluster_bootstrap_95": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "replace_ge_0_8",
+      "n": 20,
+      "passages": 17,
+      "supported": 19,
+      "wrong": 0,
+      "partial": 1,
+      "unnecessary": 0,
+      "supported_precision": 0.95,
+      "passage_cluster_bootstrap_95": [
+        0.8235294118,
+        1
+      ]
+    },
+    {
+      "name": "delete_any",
+      "n": 9,
+      "passages": 8,
+      "supported": 5,
+      "wrong": 2,
+      "partial": 1,
+      "unnecessary": 1,
+      "supported_precision": 0.5555555556,
+      "passage_cluster_bootstrap_95": [
+        0.2222222222,
+        0.875
+      ]
+    },
+    {
+      "name": "runtime_conservative_candidate",
+      "definition": "non-space INSERT edits OR REPLACE edits with top-1 confidence >=0.8; DELETE edits abstain",
+      "n": 38,
+      "passages": 26,
+      "supported": 37,
+      "wrong": 0,
+      "partial": 1,
+      "unnecessary": 0,
+      "supported_precision": 0.9736842105,
+      "passage_cluster_bootstrap_95": [
+        0.9117647059,
+        1
+      ]
+    }
+  ],
+  "diagnostic_only": {
+    "target_overlap_edits": {
+      "n": 41,
+      "supported": 37,
+      "wrong": 2,
+      "partial": 2,
+      "unnecessary": 0,
+      "supported_precision": 0.9024390244
+    },
+    "collateral_edits": {
+      "n": 19,
+      "supported": 12,
+      "wrong": 5,
+      "partial": 0,
+      "unnecessary": 2,
+      "supported_precision": 0.6315789474
+    },
+    "note": "Nahw target overlap uses benchmark truth and MUST NOT be used as a runtime feature. It motivates testing a separate Arabic GED/error-localization gate."
+  },
+  "operation_families": {
+    "insert": {
+      "n": 19,
+      "supported": 18,
+      "wrong": 0,
+      "partial": 0,
+      "unnecessary": 1,
+      "supported_precision": 0.9473684211
+    },
+    "replace": {
+      "n": 32,
+      "supported": 26,
+      "wrong": 5,
+      "partial": 1,
+      "unnecessary": 0,
+      "supported_precision": 0.8125
+    },
+    "delete": {
+      "n": 9,
+      "supported": 5,
+      "wrong": 2,
+      "partial": 1,
+      "unnecessary": 1,
+      "supported_precision": 0.5555555556
+    }
+  },
+  "key_observations": [
+    "A single global confidence threshold is not sufficient: a wrong parenthesis deletion had confidence 0.9703, while a supported correction had confidence 0.3467.",
+    "Delete edits are the riskiest operation family in this development slice and should not be auto-applied in the next prototype.",
+    "Non-space INSERT edits were 18/18 supported in this development slice, but this is not sealed evidence.",
+    "REPLACE edits at confidence >=0.8 were 19 supported and 1 partial with no wrong edits in this development slice.",
+    "The retrospective conservative candidate retained 38/60 edits, 37 supported, 0 wrong, 1 partial. This must be prospectively tested without using adjudication labels."
+  ]
+}
