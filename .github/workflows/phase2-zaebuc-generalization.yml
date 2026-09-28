@@ -74,14 +74,14 @@ jobs:
       - name: Run raw-only generator and frozen runtime decisions
         run: |
           set -o pipefail
-          python phase2/generalization/run_zaebuc_generalization.py 2>&1 | tee artifacts/ZAEBUC_RUNTIME_CONSOLE.txt
+          PYTHONPATH=. python phase2/generalization/run_zaebuc_generalization.py 2>&1 | tee artifacts/ZAEBUC_RUNTIME_CONSOLE.txt
           test -f artifacts/ZAEBUC_DEV_RUNTIME_EVENTS.jsonl
           test -f artifacts/ZAEBUC_DEV_RUNTIME_SUMMARY.json
 
       - name: Gold evaluation after runtime decisions are frozen
         run: |
           set -o pipefail
-          python phase2/generalization/evaluate_zaebuc_generalization.py 2>&1 | tee artifacts/ZAEBUC_EVALUATION_CONSOLE.txt
+          PYTHONPATH=. python phase2/generalization/evaluate_zaebuc_generalization.py 2>&1 | tee artifacts/ZAEBUC_EVALUATION_CONSOLE.txt
           cp PHASE2_ZAEBUC_GENERALIZATION_RESULTS.json artifacts/
 
       - name: Persist compact generalization result only
