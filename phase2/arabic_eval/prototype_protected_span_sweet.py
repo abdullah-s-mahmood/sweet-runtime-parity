@@ -147,6 +147,10 @@ def main():
 
  rows=[json.loads(x) for x in args.input.read_text(encoding="utf-8").splitlines() if x.strip()]
  assert len(rows)==12 and all(x["human_gold_status"]=="NON_HUMAN_GOLD" for x in rows)
+ correction_path=HERE/"SCIENTIFIC_STRESS_SPAN_CORRECTIONS.json"
+ corrections=json.loads(correction_path.read_text(encoding="utf-8"))["corrections"] if correction_path.exists() else {}
+ def effective_protected(row):
+  return corrections.get(row["case_id"],{}).get("effective_protected",row["protected"])
  variants=("nopnx1","nopnx2","full")
  cases=[]
  for row in rows:
@@ -154,17 +158,20 @@ def main():
    "case_id":row["case_id"],
    "category":row["category"],
    "source":row["source"],
-   "protected":row["protected"],
+   "protected_original":row["protected"],
+   "protected_effective":effective_protected(row),
    "human_gold_status":"NON_HUMAN_GOLD",
    "variants":{},
   }
   for v in variants:
-   out,trace=run_variant(row["source"],row["protected"],v)
+   protected=effective_protected(row)
+   out,trace=run_variant(row["source"],protected,v)
    item["variants"][v]={
     "output":out,
     "trace":trace,
-    "protected_exact":all(p in out for p in row["protected"]),
+    "protected_exact":all(p in out for p in protected),
     "source_exact_unchanged":out==row["source"],
+    "source_whitespace_insensitive_unchanged":re.sub(r"\\s+","",out)==re.sub(r"\\s+","",row["source"]),
     "contains_UNK":"[UNK]" in out,
    }
   cases.append(item)
@@ -174,6 +181,7 @@ def main():
   exact=sum(x["variants"][v]["protected_exact"] for x in cases)
   unchanged=sum(x["variants"][v]["source_exact_unchanged"] for x in cases)
   unk=sum(x["variants"][v]["contains_UNK"] for x in cases)
+  compact_unchanged=sum(x["variants"][v]["source_whitespace_insensitive_unchanged"] for x in cases)
   preflight_fallbacks=0
   postflight_fallbacks=0
   applied_segments=0
@@ -190,6 +198,8 @@ def main():
    "source_exact_unchanged_cases":unchanged,
    "source_exact_unchanged_rate":unchanged/12,
    "outputs_with_UNK":unk,
+   "source_whitespace_insensitive_unchanged_cases":compact_unchanged,
+   "source_whitespace_insensitive_unchanged_rate":compact_unchanged/12,
    "preflight_UNK_fallback_segments":preflight_fallbacks,
    "postflight_UNK_fallback_segments":postflight_fallbacks,
    "applied_editable_segments":applied_segments,
