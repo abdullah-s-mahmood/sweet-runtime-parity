@@ -1,0 +1,51 @@
+name: Phase 2 AraBART Full Edit Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/arabart_audit/**"
+      - ".github/workflows/phase2-arabart-edit-audit.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build-full-arabart-edit-queue:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Phase 2 branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Validate persisted AraBART evidence
+        run: |
+          test -f PHASE2_ARABART_SECOND_GENERATOR.json
+          test -f phase2/arabic_eval/DEVELOPMENT_TARGETS.jsonl
+
+      - name: Build complete AraBART edit-event queue
+        run: |
+          python phase2/arabart_audit/build_full_arabart_edit_queue.py
+          test -f PHASE2_ARABART_FULL_EDIT_ADJUDICATION_QUEUE.jsonl
+          test -f PHASE2_ARABART_FULL_EDIT_ADJUDICATION_QUEUE_SUMMARY.json
+
+      - name: Persist queue
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_ARABART_FULL_EDIT_ADJUDICATION_QUEUE.jsonl PHASE2_ARABART_FULL_EDIT_ADJUDICATION_QUEUE_SUMMARY.json
+          if git diff --cached --quiet; then
+            echo "Queue unchanged."
+          else
+            git commit -m "Update full AraBART edit adjudication queue [skip ci]"
+            git push origin HEAD:phase2-arabic-eval
+          fi
