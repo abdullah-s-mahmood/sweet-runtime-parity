@@ -10,7 +10,7 @@ on:
       - ".github/workflows/phase2-selective-surgical-gate.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   selective-surgical-gate:
@@ -120,6 +120,26 @@ jobs:
         run: |
           set -o pipefail
           python phase2/selectivity/probe_reversible_normalization.py 2>&1 | tee artifacts/REVERSIBLE_NORMALIZATION_CONSOLE.txt
+
+      - name: Build selective adjudication queue
+        run: |
+          set -o pipefail
+          python phase2/selectivity/build_selective_adjudication_queue.py 2>&1 | tee artifacts/SELECTIVE_QUEUE_CONSOLE.txt
+          cp PHASE2_SELECTIVE_ADJUDICATION_QUEUE.jsonl artifacts/
+          cp PHASE2_SELECTIVE_ADJUDICATION_QUEUE_SUMMARY.json artifacts/
+
+      - name: Persist selective adjudication queue
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_SELECTIVE_ADJUDICATION_QUEUE.jsonl PHASE2_SELECTIVE_ADJUDICATION_QUEUE_SUMMARY.json
+          if git diff --cached --quiet; then
+            echo "Selective adjudication queue unchanged."
+          else
+            git commit -m "Update Phase 2 selective adjudication queue [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
 
       - name: Record provenance
         if: always()
