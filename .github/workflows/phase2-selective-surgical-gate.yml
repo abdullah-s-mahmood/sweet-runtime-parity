@@ -9,6 +9,10 @@ on:
       - "phase2/selectivity/**"
       - ".github/workflows/phase2-selective-surgical-gate.yml"
 
+concurrency:
+  group: phase2-selective-surgical-gate-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
