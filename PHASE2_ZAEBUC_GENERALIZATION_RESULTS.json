@@ -1,0 +1,338 @@
+{
+  "status": "PHASE2_ZAEBUC_DISJOINT_GENERALIZATION_GOLD_COMPARED",
+  "external_corpus": "ZAEBUC-v1.0 Arabic DEV",
+  "external_license": "CC BY-NC-SA 4.0",
+  "runtime_decisions_materialized_before_gold": true,
+  "rules_frozen_before_gold": true,
+  "raw_lines": 33,
+  "runtime_events": 695,
+  "gold_edit_events": 780,
+  "policy_results": {
+    "EVENT_STRUCTURAL_TYPED": {
+      "accepted": 6,
+      "automatic_gold_classification_counts": {
+        "SAME_GOLD_SPAN_DIFFERENT_OUTPUT": 1,
+        "EXACT_GOLD_SUPPORTED": 5
+      },
+      "exact_gold_supported": 5,
+      "needs_manual_adjudication": 1,
+      "accepted_details": [
+        {
+          "event_id": "ZDEV-007-006",
+          "line_id": 7,
+          "event_type": "SUB",
+          "source_text": "ينشرون",
+          "candidate_output": "ينشروا",
+          "source_lexical_span": [
+            88,
+            89
+          ],
+          "classification": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+          "gold_event": {
+            "source_lexical_span": [
+              88,
+              89
+            ],
+            "source_bases": [
+              "ينشرون"
+            ],
+            "gold_bases": [
+              "ينشر"
+            ],
+            "gold_words": [
+              "ينشر"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.3333333333333333
+          },
+          "event_cost": 0.16666666666666666
+        },
+        {
+          "event_id": "ZDEV-012-026",
+          "line_id": 12,
+          "event_type": "SUB",
+          "source_text": "سنن",
+          "candidate_output": "سنا",
+          "source_lexical_span": [
+            104,
+            105
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              104,
+              105
+            ],
+            "source_bases": [
+              "سنن"
+            ],
+            "gold_bases": [
+              "سنا"
+            ],
+            "gold_words": [
+              "سنا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.3333333333333333
+          },
+          "event_cost": 0.3333333333333333
+        },
+        {
+          "event_id": "ZDEV-015-007",
+          "line_id": 15,
+          "event_type": "COMPLEX",
+          "source_text": "تطور كبير وعميق",
+          "candidate_output": "تطورا كبيرا وعميقا",
+          "source_lexical_span": [
+            41,
+            44
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              41,
+              44
+            ],
+            "source_bases": [
+              "تطور",
+              "كبير",
+              "وعميق"
+            ],
+            "gold_bases": [
+              "تطورا",
+              "كبيرا",
+              "وعميقا"
+            ],
+            "gold_words": [
+              "تطورا",
+              "كبيرا",
+              "وعميقا"
+            ],
+            "primitive_ops": [
+              "SUB",
+              "SUB",
+              "SUB"
+            ],
+            "cost": 0.5666666666666667
+          },
+          "event_cost": 0.5666666666666667
+        },
+        {
+          "event_id": "ZDEV-020-012",
+          "line_id": 20,
+          "event_type": "SUB",
+          "source_text": "عرب",
+          "candidate_output": "عربا",
+          "source_lexical_span": [
+            108,
+            109
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              108,
+              109
+            ],
+            "source_bases": [
+              "عرب"
+            ],
+            "gold_bases": [
+              "عربا"
+            ],
+            "gold_words": [
+              "عربا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.25
+          },
+          "event_cost": 0.25
+        },
+        {
+          "event_id": "ZDEV-021-008",
+          "line_id": 21,
+          "event_type": "SUB",
+          "source_text": "نفسي",
+          "candidate_output": "نفسيا",
+          "source_lexical_span": [
+            81,
+            82
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              81,
+              82
+            ],
+            "source_bases": [
+              "نفسي"
+            ],
+            "gold_bases": [
+              "نفسيا"
+            ],
+            "gold_words": [
+              "نفسيا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.2
+          },
+          "event_cost": 0.2
+        },
+        {
+          "event_id": "ZDEV-031-003",
+          "line_id": 31,
+          "event_type": "SUB",
+          "source_text": "ع",
+          "candidate_output": "عن",
+          "source_lexical_span": [
+            35,
+            36
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              35,
+              36
+            ],
+            "source_bases": [
+              "ع"
+            ],
+            "gold_bases": [
+              "عن"
+            ],
+            "gold_words": [
+              "عن"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.5
+          },
+          "event_cost": 0.5
+        }
+      ]
+    },
+    "EVENT_STRUCTURAL_STRICT": {
+      "accepted": 3,
+      "automatic_gold_classification_counts": {
+        "SAME_GOLD_SPAN_DIFFERENT_OUTPUT": 1,
+        "EXACT_GOLD_SUPPORTED": 2
+      },
+      "exact_gold_supported": 2,
+      "needs_manual_adjudication": 1,
+      "accepted_details": [
+        {
+          "event_id": "ZDEV-007-006",
+          "line_id": 7,
+          "event_type": "SUB",
+          "source_text": "ينشرون",
+          "candidate_output": "ينشروا",
+          "source_lexical_span": [
+            88,
+            89
+          ],
+          "classification": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+          "gold_event": {
+            "source_lexical_span": [
+              88,
+              89
+            ],
+            "source_bases": [
+              "ينشرون"
+            ],
+            "gold_bases": [
+              "ينشر"
+            ],
+            "gold_words": [
+              "ينشر"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.3333333333333333
+          },
+          "event_cost": 0.16666666666666666
+        },
+        {
+          "event_id": "ZDEV-020-012",
+          "line_id": 20,
+          "event_type": "SUB",
+          "source_text": "عرب",
+          "candidate_output": "عربا",
+          "source_lexical_span": [
+            108,
+            109
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              108,
+              109
+            ],
+            "source_bases": [
+              "عرب"
+            ],
+            "gold_bases": [
+              "عربا"
+            ],
+            "gold_words": [
+              "عربا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.25
+          },
+          "event_cost": 0.25
+        },
+        {
+          "event_id": "ZDEV-021-008",
+          "line_id": 21,
+          "event_type": "SUB",
+          "source_text": "نفسي",
+          "candidate_output": "نفسيا",
+          "source_lexical_span": [
+            81,
+            82
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              81,
+              82
+            ],
+            "source_bases": [
+              "نفسي"
+            ],
+            "gold_bases": [
+              "نفسيا"
+            ],
+            "gold_words": [
+              "نفسيا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.2
+          },
+          "event_cost": 0.2
+        }
+      ]
+    }
+  },
+  "interpretation_contract": {
+    "EXACT_GOLD_SUPPORTED": "May be counted as automatic support.",
+    "SAME_GOLD_SPAN_DIFFERENT_OUTPUT": "Requires contextual adjudication; may be valid alternative, partial, or wrong.",
+    "GOLD_OVERLAP_NONEXACT_SPAN": "Requires contextual/alignment adjudication.",
+    "NO_GOLD_EDIT_OVERLAP": "Requires contextual adjudication; do not automatically call wrong because alternative corrections are possible."
+  },
+  "license_note": "No full ZAEBUC corpus text is committed. accepted_details contain only bounded excerpts needed for scientific audit and remain subject to ZAEBUC CC BY-NC-SA 4.0.",
+  "test_split_read": false
+}
