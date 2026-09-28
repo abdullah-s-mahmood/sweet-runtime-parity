@@ -1,0 +1,127 @@
+name: Phase 2 QALB15 Context-Aware Structural Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/QALB15_CONTEXT_GATE_PROTOCOL.md"
+      - "phase2/generalization/run_qalb15_context_gate.py"
+      - "phase2/generalization/evaluate_qalb15_context_gate.py"
+      - ".github/workflows/phase2-qalb15-context-gate.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  qalb15-context-gate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      HF_HUB_DISABLE_TELEMETRY: "1"
+
+    steps:
+      - name: Checkout project branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Clone and pin CAMeL-Lab Arabic GEC
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+          test -f upstream/arabic-gec/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/dev/QALB-2015-L2-Dev.sent.no_ids
+          test -f upstream/arabic-gec/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/LICENSE.txt
+
+      - name: Install frozen Arabic GEC runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "sentencepiece==0.1.99" "protobuf==3.20.3" "numpy<2"
+          python -m pip uninstall -y transformers || true
+          python -m pip install -e upstream/arabic-gec/transformers
+          python -m pip install "huggingface_hub>=0.9,<1.0"
+
+      - name: Install CAMeL morphology resources
+        run: |
+          mkdir -p "$CAMELTOOLS_DATA"
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+
+      - name: Record model revisions
+        run: |
+          mkdir -p artifacts
+          python - <<'PY'
+          import json
+          from huggingface_hub import HfApi
+          api=HfApi()
+          repos=[
+              "CAMeL-Lab/camelbert-msa-qalb14-ged-13",
+              "CAMeL-Lab/arabart-qalb14-gec-ged-13",
+          ]
+          out={r:api.model_info(r).sha for r in repos}
+          open("artifacts/QALB15_CONTEXT_MODEL_REVISIONS.json","w").write(json.dumps(out,indent=2))
+          print(json.dumps(out,indent=2))
+          PY
+
+      - name: Raw-only generation and frozen runtime decisions
+        run: |
+          set -o pipefail
+          python phase2/generalization/run_qalb15_context_gate.py 2>&1 | tee artifacts/QALB15_CONTEXT_RUNTIME_CONSOLE.txt
+          test -f artifacts/QALB15_CONTEXT_RUNTIME_EVENTS.jsonl
+          test -f artifacts/QALB15_CONTEXT_RUNTIME_SUMMARY.json
+
+      - name: Gold evaluation after runtime freeze
+        run: |
+          set -o pipefail
+          python phase2/generalization/evaluate_qalb15_context_gate.py 2>&1 | tee artifacts/QALB15_CONTEXT_EVAL_CONSOLE.txt
+          test -f PHASE2_QALB15_CONTEXT_GENERALIZATION_RESULTS.json
+
+      - name: Audit committed result for QALB text leakage
+        run: |
+          python - <<'PY'
+          import json
+          p="PHASE2_QALB15_CONTEXT_GENERALIZATION_RESULTS.json"
+          x=json.load(open(p,encoding="utf-8"))
+          dumped=json.dumps(x,ensure_ascii=False)
+          forbidden=["source_text","candidate_output","gold_words","source_bases","candidate_bases"]
+          for key in forbidden:
+              assert '"'+key+'"' not in dumped, key
+          assert x["qalb_text_persisted"] is False
+          assert x["qalb15_test_read"] is False
+          print("QALB text leakage audit PASS")
+          PY
+
+      - name: Persist aggregate/hash-only evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_QALB15_CONTEXT_GENERALIZATION_RESULTS.json
+          if git diff --cached --quiet; then
+            echo "QALB15 context result unchanged."
+          else
+            git commit -m "Record QALB15 context-aware generalization evidence [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - name: Upload safe summaries only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-qalb15-context-safe-evidence
+          path: |
+            artifacts/QALB15_CONTEXT_RUNTIME_SUMMARY.json
+            artifacts/QALB15_CONTEXT_MODEL_REVISIONS.json
+            PHASE2_QALB15_CONTEXT_GENERALIZATION_RESULTS.json
+          if-no-files-found: warn
+          retention-days: 30
