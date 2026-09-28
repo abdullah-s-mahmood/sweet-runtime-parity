@@ -1,0 +1,105 @@
+{
+  "status": "PHASE2_FULL_ARABART_EDIT_EVENT_ADJUDICATION_COMPLETE",
+  "development_only": true,
+  "event_rows": 106,
+  "passages": 36,
+  "reused_prior_substitution_judgments": 56,
+  "new_full_event_judgments": 50,
+  "pass2_same_agent": true,
+  "independent_human_validation": false,
+  "source_modified": false,
+  "event_type_results": {
+    "SUB": {
+      "rows": 96,
+      "classes": {
+        "WRONG_CORRECTION": 31,
+        "SUPPORTED_CORRECTION": 52,
+        "SUPPORTED_ALTERNATIVE": 4,
+        "UNNECESSARY_EDIT": 2,
+        "PARTIAL_CORRECTION": 7
+      }
+    },
+    "COMPLEX": {
+      "rows": 10,
+      "classes": {
+        "WRONG_CORRECTION": 4,
+        "SUPPORTED_CORRECTION": 5,
+        "SUPPORTED_ALTERNATIVE": 1
+      }
+    }
+  },
+  "class_counts": {
+    "WRONG_CORRECTION": 35,
+    "SUPPORTED_CORRECTION": 57,
+    "SUPPORTED_ALTERNATIVE": 5,
+    "UNNECESSARY_EDIT": 2,
+    "PARTIAL_CORRECTION": 7
+  },
+  "severity_counts": {
+    "MEDIUM": 48,
+    "LOW": 47,
+    "HIGH": 11
+  },
+  "supported_total": 62,
+  "supported_rate": 0.5849056603773585,
+  "target_overlap": {
+    "rows": 56,
+    "classes": {
+      "SUPPORTED_CORRECTION": 42,
+      "WRONG_CORRECTION": 4,
+      "SUPPORTED_ALTERNATIVE": 4,
+      "PARTIAL_CORRECTION": 6
+    },
+    "supported": 46,
+    "supported_rate": 0.8214285714285714,
+    "wrong": 4,
+    "wrong_rate": 0.07142857142857142,
+    "partial": 6
+  },
+  "non_target": {
+    "rows": 50,
+    "classes": {
+      "WRONG_CORRECTION": 31,
+      "SUPPORTED_CORRECTION": 15,
+      "UNNECESSARY_EDIT": 2,
+      "PARTIAL_CORRECTION": 1,
+      "SUPPORTED_ALTERNATIVE": 1
+    },
+    "supported": 16,
+    "supported_rate": 0.32,
+    "wrong": 31,
+    "wrong_rate": 0.62,
+    "partial": 1
+  },
+  "top_failure_types": {
+    "CASE_ENDING": 12,
+    "HAMZA_DELETION": 10,
+    "HAMZA_CORRECTION": 10,
+    "ORTHOGRAPHY_TA_MARBUTA_TO_HA": 9,
+    "CASE_AGREEMENT": 7,
+    "FIVE_VERBS_NUN": 5,
+    "HAMZAT_WASL": 5,
+    "COMPLEX_CASE_AGREEMENT": 4,
+    "ALIF_MAQSURA_YA_CONFUSION": 3,
+    "WEAK_VERB": 3,
+    "NONMINIMAL_LEXICAL_ALTERNATIVE": 3,
+    "ORTHOGRAPHY_WAW_ALIF": 3,
+    "LEXICAL_MEANING_CHANGE": 2,
+    "DUAL_CASE": 2,
+    "SOURCE_MARK_LOSS": 2,
+    "COMPLEX_SPEECH_ACT_AND_HAMZA_CORRUPTION": 1,
+    "COMPLEX_CASE_MOOD_CORRECTION": 1,
+    "CASE_HAMZA": 1,
+    "MOOD_TENSE_CHANGE": 1,
+    "LEXICAL_ORTHOGRAPHIC_CORRUPTION": 1
+  },
+  "key_findings": [
+    "Full edit-event quality is materially better than the new-only substitution stream because many events overlap real grammatical errors, but one-third of all full events are still wrong.",
+    "Target-overlap is strongly enriched for supported events, but target location cannot be a runtime feature.",
+    "Non-target events remain high-risk: wrong corrections dominate.",
+    "Complex-event representation is essential; wordwise decomposition can mischaracterize validity.",
+    "The complex event داعي المسلمون -> دعا المسلمين is a valid but non-minimal alternative even though the isolated داعي -> دعا substitution is unsafe when applied alone.",
+    "Strict-fidelity architecture must score alignment/event boundaries before candidate acceptance."
+  ],
+  "next_action": "Prototype target-agnostic typed veto/evidence features and a reverse acceptance gate for AraBART-only events; do not freeze policy or create sealed benchmark yet."
+}
