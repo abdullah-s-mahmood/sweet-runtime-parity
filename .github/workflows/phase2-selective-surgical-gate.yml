@@ -1,0 +1,142 @@
+name: Phase 2 Selective Surgical Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/selectivity/**"
+      - ".github/workflows/phase2-selective-surgical-gate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  selective-surgical-gate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout Phase 2 branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+
+      - name: Install pinned CPU PyTorch
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+
+      - name: Install pinned runtime dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip check
+
+      - name: Validate fixed development inputs
+        run: |
+          python phase2/arabic_eval/validate_transfer.py
+
+      - name: Clone and pin official CAMeL-Lab text-editing
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git -C upstream/text-editing rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Resolve and download NoPnx plus Arabic GED models
+        env:
+          HF_HUB_DISABLE_TELEMETRY: "1"
+        run: |
+          mkdir -p artifacts
+          python - <<'PY'
+          import json
+          from huggingface_hub import HfApi, snapshot_download
+
+          api=HfApi()
+          specs={
+            "nopnx":{"repo":"CAMeL-Lab/text-editing-zaebuc-nopnx","dir":"models/nopnx"},
+            "zaebuc_ged13":{"repo":"CAMeL-Lab/camelbert-msa-zaebuc-ged-13","dir":"models/ged_zaebuc"},
+            "qalb14_ged13":{"repo":"CAMeL-Lab/camelbert-msa-qalb14-ged-13","dir":"models/ged_qalb14"},
+          }
+          revisions={}
+          for name,s in specs.items():
+            info=api.model_info(s["repo"])
+            sha=info.sha
+            revisions[name]={"repo":s["repo"],"revision":sha}
+            print(f"{name}: {s['repo']} @ {sha}")
+            if name=="nopnx":
+              snapshot_download(
+                repo_id=s["repo"], revision=sha, local_dir=s["dir"],
+                allow_patterns=["config.json","pytorch_model.bin","model.safetensors",
+                                "special_tokens_map.json","tokenizer_config.json",
+                                "tokenizer.json","vocab.txt"]
+              )
+            else:
+              snapshot_download(repo_id=s["repo"], revision=sha, local_dir=s["dir"])
+          with open("artifacts/GED_MODEL_REVISIONS.json","w",encoding="utf-8") as f:
+            json.dump(revisions,f,ensure_ascii=False,indent=2)
+          PY
+
+      - name: Verify official NoPnx weight pin
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          p=Path("models/nopnx/pytorch_model.bin")
+          h=hashlib.sha256()
+          with p.open("rb") as f:
+            for b in iter(lambda:f.read(8*1024*1024),b""):
+              h.update(b)
+          actual=h.hexdigest()
+          expected="584ccc089d143b1d7c72ea5b296652050359d163e57e4374b920fbac7925e8d6"
+          print("NoPnx SHA256",actual)
+          if actual!=expected:
+            raise SystemExit("NoPnx hash mismatch")
+          PY
+
+      - name: Run two-model Arabic GED localization probe
+        run: |
+          set -o pipefail
+          python phase2/selectivity/run_ged_localization.py 2>&1 | tee artifacts/GED_LOCALIZATION_CONSOLE.txt
+
+      - name: Run selective surgical gate
+        run: |
+          set -o pipefail
+          python phase2/selectivity/run_selective_surgical_gate.py 2>&1 | tee artifacts/SELECTIVE_SURGICAL_GATE_CONSOLE.txt
+
+      - name: Analyze selective gate against existing development adjudication
+        run: |
+          set -o pipefail
+          python phase2/selectivity/analyze_selective_gate.py 2>&1 | tee artifacts/SELECTIVE_GATE_ANALYSIS_CONSOLE.txt
+
+      - name: Probe reversible normalization safely
+        run: |
+          set -o pipefail
+          python phase2/selectivity/probe_reversible_normalization.py 2>&1 | tee artifacts/REVERSIBLE_NORMALIZATION_CONSOLE.txt
+
+      - name: Record provenance
+        if: always()
+        run: |
+          {
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "branch=${GITHUB_REF_NAME}"
+            echo "commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+          } > artifacts/SELECTIVE_GATE_GITHUB_PROVENANCE.txt
+
+      - name: Upload selective gate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-selective-surgical-gate-evidence
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 30
