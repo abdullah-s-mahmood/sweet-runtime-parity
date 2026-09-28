@@ -5,16 +5,16 @@
   "gold_or_human_labels_read": false,
   "nahw_target_fields_read": false,
   "decision_counts": {
-    "HARD_VETO_ONLY:REJECT": 28,
-    "STRUCTURAL_TYPED:REJECT": 28,
-    "STRUCTURAL_TYPED_PLUS_GED50:REJECT": 28,
-    "HARD_VETO_ONLY:REVIEW": 39,
-    "STRUCTURAL_TYPED:REVIEW": 33,
-    "STRUCTURAL_TYPED_PLUS_GED50:REVIEW": 36,
+    "HARD_VETO_ONLY:REJECT": 25,
+    "STRUCTURAL_TYPED:REJECT": 25,
+    "STRUCTURAL_TYPED_PLUS_GED50:REJECT": 25,
+    "HARD_VETO_ONLY:REVIEW": 42,
+    "STRUCTURAL_TYPED:REVIEW": 36,
+    "STRUCTURAL_TYPED_PLUS_GED50:REVIEW": 39,
     "STRUCTURAL_TYPED:ACCEPT": 6,
     "STRUCTURAL_TYPED_PLUS_GED50:ACCEPT": 3
   },
-  "hard_veto_rows": 28,
+  "hard_veto_rows": 25,
   "complex_member_rows": 11,
   "structural_positive_rows": 9,
   "policy_definitions": {
