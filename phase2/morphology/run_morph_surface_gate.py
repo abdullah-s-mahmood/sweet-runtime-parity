@@ -25,6 +25,8 @@ from pathlib import Path
 
 import camel_tools
 from camel_tools.disambig.mle import MLEDisambiguator
+from camel_tools.disambig.bert import BERTUnfactoredDisambiguator
+from camel_tools.tokenizers.word import simple_word_tokenize
 from camel_tools.morphology.analyzer import Analyzer
 from camel_tools.morphology.database import MorphologyDB
 
@@ -187,6 +189,8 @@ def direct_patch(queue_row):
     # cross a combining-mark boundary immediately after the span.
     if len(clusters(seg))!=len(clusters(repl)):
         return None
+    if a>0 and unicodedata.category(src[a-1])=="Mn":
+        return None
     if b<len(src) and unicodedata.category(src[b])=="Mn":
         return None
     return src[:a]+repl+src[b:]
@@ -195,6 +199,55 @@ def direct_patch(queue_row):
 def compact_analysis(a):
     keys=["diac","lex","pos","cas","mod","stt","gen","num","per","asp","vox","form_gen","form_num"]
     return {k:a.get(k) for k in keys if k in a}
+
+
+
+def contextual_tokens_with_candidate(passage, word_index, candidate_word, candidate_base):
+    ws=passage.split()
+    if not (0 <= int(word_index) < len(ws)):
+        return None,None
+    all_tokens=[]
+    cand_index=None
+    for wi,w in enumerate(ws):
+        use=candidate_word if wi==int(word_index) else w
+        toks=simple_word_tokenize(use)
+        start=len(all_tokens)
+        all_tokens.extend(toks)
+        if wi==int(word_index):
+            for ti,t in enumerate(toks):
+                if dediac_narrow(t)==candidate_base:
+                    cand_index=start+ti
+                    break
+            if cand_index is None:
+                # Fallback to the first letter-bearing token in this whitespace word.
+                for ti,t in enumerate(toks):
+                    if any(unicodedata.category(ch).startswith("L") for ch in t):
+                        cand_index=start+ti
+                        break
+    return all_tokens,cand_index
+
+
+def scored_to_surface(scored,source_core,candidate_base,source_suffix):
+    ana=scored.analysis
+    diac=ana.get("diac",scored.diac)
+    if dediac_narrow(diac)!=candidate_base:
+        return None
+    minsurf=analysis_to_minimal_surface(source_core,candidate_base,diac)
+    if minsurf is None:
+        return None
+    return {
+        "score":float(scored.score),
+        "analysis":compact_analysis(ana),
+        "full_diac_surface":diac,
+        "minimal_source_preserving_surface":minsurf+source_suffix,
+    }
+
+
+def bert_consensus_surface(items,k=2):
+    vals=[x["minimal_source_preserving_surface"] for x in items[:k] if x and "minimal_source_preserving_surface" in x]
+    if not vals:
+        return None
+    return vals[0] if len(set(vals))==1 else None
 
 
 def main():
@@ -208,6 +261,12 @@ def main():
     db=MorphologyDB.builtin_db("calima-msa-r13",flags="a")
     analyzer=Analyzer(db,backoff="ADD_PROP",cache_size=10000)
     mle=MLEDisambiguator.pretrained("calima-msa-r13",analyzer=analyzer,top=10,cache_size=10000)
+    # Contextual morphology model. Its output is a ranking signal over CAMeL
+    # analyses; it never edits source text directly.
+    bert=BERTUnfactoredDisambiguator.pretrained(
+        model_name="msa",top=10,use_gpu=False,batch_size=8,
+        cache_size=10000,pretrained_cache=False,ranking_cache_size=10000
+    )
 
     rows=[]
     runtime_auto=[]
@@ -265,35 +324,58 @@ def main():
         unique_mle=sorted({x["minimal_source_preserving_surface"] for x in mle_analyses if "minimal_source_preserving_surface" in x})
         top1=(mle_analyses[0]["minimal_source_preserving_surface"] if mle_analyses and "minimal_source_preserving_surface" in mle_analyses[0] else None)
 
+        # Contextual BERT morphology: replace only the candidate whitespace word
+        # in a tokenized copy of the passage. Gold targets are not consulted.
+        bert_analyses=[]
+        bert_error=None
+        try:
+            toks,cidx=contextual_tokens_with_candidate(
+                arow["source_passage"],arow.get("word_index",q.get("word_index")),
+                arow["normalized_result_word"],candidate_base
+            )
+            if toks is None or cidx is None:
+                raise RuntimeError("candidate token could not be mapped into contextual tokenization")
+            dw=bert.disambiguate(toks)[cidx]
+            for scored in dw.analyses[:10]:
+                item=scored_to_surface(scored,source_core,candidate_base,source_suffix)
+                if item is not None:
+                    bert_analyses.append(item)
+        except Exception as exc:
+            bert_error=f"{type(exc).__name__}: {exc}"
+
+        unique_bert=sorted({x["minimal_source_preserving_surface"] for x in bert_analyses})
+        bert_top1=bert_analyses[0]["minimal_source_preserving_surface"] if bert_analyses else None
+        bert_top2_consensus=bert_consensus_surface(bert_analyses,2)
+
         direct=direct_patch(q)
         runtime_decision="ABSTAIN"
         runtime_surface=None
         runtime_reason="AMBIGUOUS_OR_NO_MORPHOLOGY_CONSENSUS"
-        # Direct byte-local patch is safest and does not depend on morphology
-        # ranking; morphology still records whether the corrected base exists.
-        if direct is not None and arow["candidate_class"] not in {"WRONG_CORRECTION","UNNECESSARY_EDIT"}:
-            runtime_decision="AUTO_CANDIDATE_DIRECT_PATCH"
+
+        # This gate isolates SURFACE REALIZATION. Candidate linguistic support
+        # was established in the previous adjudication and is used only to bound
+        # this development experiment. Production needs an independent verifier.
+        supported_class=arow["candidate_class"] in {"SUPPORTED_CORRECTION","SUPPORTED_ALTERNATIVE"}
+
+        if supported_class and direct is not None and arow.get("surface_realization_class")=="BASE_LETTER_PLUS_PRESERVE_EXISTING_DIACRITICS":
+            runtime_decision="DEVELOPMENT_AUTO_DIRECT_PATCH"
             runtime_surface=direct
-            runtime_reason="LOCAL_BASE_REPLACEMENT_WITH_NO_DIACRITIC_BOUNDARY_CROSSING"
-        elif arow["candidate_class"] in {"SUPPORTED_CORRECTION","SUPPORTED_ALTERNATIVE"}:
-            # Morphology consensus: require multiple evidence sources to
-            # collapse to exactly one minimally source-preserving surface.
-            # MLE is out-of-context, so consensus is conservative.
-            mle_top_surfaces=[
-                x["minimal_source_preserving_surface"] for x in mle_analyses[:5]
-                if "minimal_source_preserving_surface" in x
-            ]
-            if len(unique_all)==1 and len(set(mle_top_surfaces))==1 and unique_all[0]==mle_top_surfaces[0]:
-                runtime_decision="AUTO_CANDIDATE_MORPH_CONSENSUS"
-                runtime_surface=unique_all[0]
-                runtime_reason="ALL_MORPH_ANALYSES_AND_MLE_TOP5_COLLAPSE_TO_ONE_MINIMAL_SURFACE"
-            elif len(set(mle_top_surfaces))==1 and mle_top_surfaces:
-                runtime_decision="REVIEW_MORPH_MLE_CONSENSUS"
-                runtime_surface=mle_top_surfaces[0]
-                runtime_reason="MLE_TOP5_CONSENSUS_BUT_FULL_MORPH_LATTICE_AMBIGUOUS"
-            else:
-                runtime_decision="REVIEW_OR_ABSTAIN"
-                runtime_reason="MORPHOLOGICAL_SURFACE_AMBIGUITY"
+            runtime_reason="PRIOR_SAFE_SURFACE_CLASS_AND_LOCAL_PATCH_NO_DIACRITIC_BOUNDARY_CROSSING"
+        elif supported_class and bert_top2_consensus is not None and bert_top2_consensus in unique_all:
+            runtime_decision="DEVELOPMENT_CONTEXTUAL_MORPH_CONSENSUS"
+            runtime_surface=bert_top2_consensus
+            runtime_reason="BERT_TOP2_CONTEXTUAL_ANALYSES_AGREE_AND_SURFACE_EXISTS_IN_MORPH_LATTICE"
+        elif supported_class and bert_top1 is not None:
+            runtime_decision="REVIEW_CONTEXTUAL_MORPH_TOP1"
+            runtime_surface=bert_top1
+            runtime_reason="BERT_CONTEXTUAL_TOP1_AVAILABLE_BUT_NO_TOP2_SURFACE_CONSENSUS"
+        elif supported_class and top1 is not None:
+            runtime_decision="REVIEW_MLE_TOP1"
+            runtime_surface=top1
+            runtime_reason="ONLY_OUT_OF_CONTEXT_MLE_SURFACE_AVAILABLE"
+        else:
+            runtime_decision="REVIEW_OR_ABSTAIN"
+            runtime_reason="MORPHOLOGICAL_SURFACE_AMBIGUITY_OR_UNSUPPORTED_CANDIDATE"
 
         target=tmap.get(cid)
         target_eval=None
@@ -304,6 +386,8 @@ def main():
                 "published_correction":published,
                 "runtime_surface_compatible":bool(runtime_surface and explicit_target_compatible(runtime_surface,published+source_suffix if source_suffix and not published.endswith(source_suffix) else published)),
                 "mle_top1_compatible":bool(top1 and explicit_target_compatible(top1,published+source_suffix if source_suffix and not published.endswith(source_suffix) else published)),
+                "bert_top1_compatible":bool(bert_top1 and explicit_target_compatible(bert_top1,published+source_suffix if source_suffix and not published.endswith(source_suffix) else published)),
+                "bert_top2_consensus_compatible":bool(bert_top2_consensus and explicit_target_compatible(bert_top2_consensus,published+source_suffix if source_suffix and not published.endswith(source_suffix) else published)),
                 "any_morph_surface_compatible":any(
                     explicit_target_compatible(s,published+source_suffix if source_suffix and not published.endswith(source_suffix) else published)
                     for s in unique_all
@@ -316,7 +400,7 @@ def main():
             }
             target_impacts.append({"candidate_id":cid,**target_eval})
 
-        if runtime_decision.startswith("AUTO_CANDIDATE"):
+        if runtime_decision.startswith("DEVELOPMENT_AUTO") or runtime_decision=="DEVELOPMENT_CONTEXTUAL_MORPH_CONSENSUS":
             runtime_auto.append({
                 "candidate_id":cid,
                 "source_word":source_word,
@@ -335,6 +419,8 @@ def main():
             stats["targets_touched"]+=1
             stats["target_any_morph_compatible"]+=int(target_eval["any_morph_surface_compatible"])
             stats["target_mle_top1_compatible"]+=int(target_eval["mle_top1_compatible"])
+            stats["target_bert_top1_compatible"]+=int(target_eval["bert_top1_compatible"])
+            stats["target_bert_top2_consensus_compatible"]+=int(target_eval["bert_top2_consensus_compatible"])
             stats["target_runtime_surface_compatible"]+=int(target_eval["runtime_surface_compatible"])
 
         rows.append({
@@ -354,6 +440,11 @@ def main():
             "unique_minimal_surfaces":unique_all,
             "mle_top_analyses":mle_analyses,
             "mle_unique_minimal_surfaces":unique_mle,
+            "bert_context_analyses":bert_analyses,
+            "bert_context_error":bert_error,
+            "bert_unique_minimal_surfaces":unique_bert,
+            "bert_top1_surface":bert_top1,
+            "bert_top2_surface_consensus":bert_top2_consensus,
             "runtime_decision":runtime_decision,
             "runtime_surface_proposal":runtime_surface,
             "runtime_reason":runtime_reason,
@@ -369,15 +460,17 @@ def main():
     auto_target_correct=sum(bool(x["target_eval"] and x["target_eval"]["runtime_surface_compatible"]) for x in runtime_auto)
 
     result={
-        "status":"PHASE2_MORPH_SURFACE_GATE_DEVELOPMENT",
+        "status":"PHASE2_MORPH_SURFACE_GATE_V2_DEVELOPMENT",
+        "gate_version":2,
         "not_sealed":True,
         "no_source_corpus_modified":True,
         "runtime_policy_uses_nahw_gold":False,
         "camel_tools_version":getattr(camel_tools,"__version__","unknown"),
         "morphology_database":"calima-msa-r13",
         "ranking_prior":{
-            "name":"CAMeL MLE MSA",
-            "important_limit":"word-based/out-of-context; not contextual syntactic proof",
+            "mle":"CAMeL MLE MSA (word-based/out-of-context)",
+            "contextual":"CAMeL BERTUnfactoredDisambiguator MSA",
+            "important_limit":"Contextual morphology ranks analyses; it is not a grammatical-correction verifier and never edits source directly.",
         },
         "source_preservation_policy":{
             "broad_normalization":False,
@@ -397,7 +490,8 @@ def main():
         },
         "rows":rows,
         "limitations":[
-            "The MLE disambiguator is out-of-context.",
+            "The MLE disambiguator is out-of-context; contextual BERT is evaluated separately.",
+            "BERT top analysis is a morphosyntactic ranking signal, not proof that a correction candidate is linguistically correct.",
             "Human candidate class is used only to bound development realization and evaluate safety, not to claim a deployable verifier.",
             "Nahw target corrections are joined only after runtime proposals for evaluation.",
             "CAMeL Analyzer default normalization is countered by exact narrow-base filtering, but morphology analyses are not syntactic proof.",
@@ -411,6 +505,8 @@ def main():
         "targets_touched":len(target_impacts),
         "any_morph_surface_compatible":sum(x["any_morph_surface_compatible"] for x in target_impacts),
         "mle_top1_compatible":sum(x["mle_top1_compatible"] for x in target_impacts),
+        "bert_top1_compatible":sum(x["bert_top1_compatible"] for x in target_impacts),
+        "bert_top2_consensus_compatible":sum(x["bert_top2_consensus_compatible"] for x in target_impacts),
         "runtime_surface_compatible":sum(x["runtime_surface_compatible"] for x in target_impacts),
         "targets":target_impacts,
     }
