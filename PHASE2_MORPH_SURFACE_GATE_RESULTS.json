@@ -1,9 +1,10 @@
 {
-  "status": "PHASE2_MORPH_SURFACE_GATE_V2_DEVELOPMENT",
-  "gate_version": 2,
+  "status": "PHASE2_MORPH_SURFACE_GATE_V3_DEVELOPMENT",
+  "gate_version": 3,
   "not_sealed": true,
   "no_source_corpus_modified": true,
-  "runtime_policy_uses_nahw_gold": false,
+  "morphology_inference_uses_nahw_gold": false,
+  "surface_gate_uses_prior_candidate_adjudication": true,
   "camel_tools_version": "1.5.2",
   "morphology_database": "calima-msa-r13",
   "ranking_prior": {
@@ -13,6 +14,8 @@
   },
   "source_preservation_policy": {
     "broad_normalization": false,
+    "evaluation_only_fathatan_alif_equivalence": true,
+    "evaluation_ignores_surrounding_punctuation": true,
     "unaffected_source_marks_preserved": true,
     "edit_neighborhood_marks_from_morphology": true,
     "ambiguity": "abstain or review"
@@ -22,30 +25,29 @@
     "class_UNNECESSARY_EDIT": 1,
     "decision_REVIEW_OR_ABSTAIN": 7,
     "morph_analyzable": 18,
-    "morph_ambiguous_multiple_surfaces": 14,
-    "morph_unique_surface": 4,
+    "morph_ambiguous_multiple_surfaces": 17,
+    "morph_unique_surface": 1,
     "class_PARTIAL_CORRECTION": 4,
     "targets_touched": 13,
-    "target_any_morph_compatible": 6,
-    "target_mle_top1_compatible": 4,
-    "target_bert_top1_compatible": 5,
-    "target_bert_top2_consensus_compatible": 5,
-    "target_runtime_surface_compatible": 5,
+    "target_any_morph_compatible": 11,
+    "target_mle_top1_compatible": 7,
+    "target_bert_top1_compatible": 10,
+    "target_bert_top2_consensus_compatible": 7,
+    "target_runtime_surface_compatible": 9,
     "class_SUPPORTED_CORRECTION": 12,
-    "decision_REVIEW_CONTEXTUAL_MORPH_TOP1": 2,
+    "decision_REVIEW_CONTEXTUAL_MORPH_TOP1": 3,
     "class_WRONG_CORRECTION": 1,
     "decision_DEVELOPMENT_AUTO_DIRECT_PATCH": 2,
     "decision_DEVELOPMENT_CONTEXTUAL_MORPH_CONSENSUS": 7,
-    "decision_REVIEW_MLE_TOP1": 1,
     "class_SUPPORTED_ALTERNATIVE": 1
   },
-  "runtime_auto_candidates": {
+  "development_surface_proposals": {
     "count": 9,
     "supported_or_alternative": 9,
     "partial": 0,
     "wrong": 0,
     "unnecessary": 0,
-    "target_compatible": 5,
+    "target_compatible": 8,
     "rows": [
       {
         "candidate_id": "NORM-45-17-0",
@@ -55,12 +57,12 @@
         "target_eval": {
           "target_id": "NAHW-ITEM-230",
           "published_correction": "اشتدادًا",
-          "runtime_surface_compatible": false,
+          "runtime_surface_compatible": true,
           "mle_top1_compatible": false,
-          "bert_top1_compatible": false,
+          "bert_top1_compatible": true,
           "bert_top2_consensus_compatible": false,
-          "any_morph_surface_compatible": false,
-          "compatible_morph_surface_count": 0,
+          "any_morph_surface_compatible": true,
+          "compatible_morph_surface_count": 1,
           "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
         }
       },
@@ -72,12 +74,12 @@
         "target_eval": {
           "target_id": "NAHW-ITEM-277",
           "published_correction": "نفسًا",
-          "runtime_surface_compatible": false,
-          "mle_top1_compatible": false,
-          "bert_top1_compatible": false,
-          "bert_top2_consensus_compatible": false,
-          "any_morph_surface_compatible": false,
-          "compatible_morph_surface_count": 0,
+          "runtime_surface_compatible": true,
+          "mle_top1_compatible": true,
+          "bert_top1_compatible": true,
+          "bert_top2_consensus_compatible": true,
+          "any_morph_surface_compatible": true,
+          "compatible_morph_surface_count": 1,
           "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
         }
       },
@@ -106,12 +108,12 @@
         "target_eval": {
           "target_id": "NAHW-ITEM-371",
           "published_correction": "خَطرًا",
-          "runtime_surface_compatible": false,
-          "mle_top1_compatible": false,
-          "bert_top1_compatible": false,
-          "bert_top2_consensus_compatible": false,
-          "any_morph_surface_compatible": false,
-          "compatible_morph_surface_count": 0,
+          "runtime_surface_compatible": true,
+          "mle_top1_compatible": true,
+          "bert_top1_compatible": true,
+          "bert_top2_consensus_compatible": true,
+          "any_morph_surface_compatible": true,
+          "compatible_morph_surface_count": 1,
           "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
         }
       },
@@ -203,6 +205,7 @@
       "normalized_result_word": "فتأن",
       "candidate_base": "فتأن",
       "source_base": "فتأن",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 4,
@@ -523,64 +526,439 @@
       "candidate_class": "PARTIAL_CORRECTION",
       "surface_realization_class": "CASE_ENDING_OR_TANWEEN_REQUIRED",
       "normalized_result_word": "كريم؛",
-      "candidate_base": "كريم؛",
-      "source_base": "كريما؛",
-      "source_suffix": "",
+      "candidate_base": "كريم",
+      "source_base": "كريما",
+      "source_prefix": "",
+      "source_suffix": "؛",
       "direct_patch": null,
-      "morph_analysis_count": 2,
-      "unique_minimal_surface_count": 1,
+      "morph_analysis_count": 22,
+      "unique_minimal_surface_count": 6,
       "unique_minimal_surfaces": [
-        "كريم؛"
+        "كريم؛",
+        "كريمٌ؛",
+        "كريمٍ؛",
+        "كريمَ؛",
+        "كريمُ؛",
+        "كريمِ؛"
       ],
       "mle_top_analyses": [
         {
           "score": 1.0,
           "analysis": {
-            "diac": "كريم؛",
-            "lex": "كريم؛",
+            "diac": "كَرِيم",
+            "lex": "كَرِيم",
             "pos": "noun_prop",
             "cas": "u",
             "mod": "na",
             "stt": "i",
-            "gen": "-",
-            "num": "-",
+            "gen": "m",
+            "num": "s",
             "per": "na",
             "asp": "na",
             "vox": "na",
-            "form_gen": "-",
-            "form_num": "-"
+            "form_gen": "m",
+            "form_num": "s"
           },
-          "full_diac_surface": "كريم؛",
+          "full_diac_surface": "كَرِيم",
           "minimal_source_preserving_surface": "كريم؛"
         },
         {
-          "score": 1.0,
+          "score": 0.9255952380952381,
           "analysis": {
-            "diac": "كَريم؛",
-            "lex": "ريم؛",
+            "diac": "كَرِيم",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "score": 0.9186507936507935,
+          "analysis": {
+            "diac": "كرِيم",
+            "lex": "كرِيم",
+            "pos": "noun",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كرِيم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "score": 0.871031746031746,
+          "analysis": {
+            "diac": "كَرِيم",
+            "lex": "رِيم",
             "pos": "noun_prop",
             "cas": "u",
             "mod": "na",
             "stt": "i",
-            "gen": "-",
-            "num": "-",
+            "gen": "f",
+            "num": "s",
             "per": "na",
             "asp": "na",
             "vox": "na",
-            "form_gen": "-",
-            "form_num": "-"
+            "form_gen": "m",
+            "form_num": "s"
           },
-          "full_diac_surface": "كَريم؛",
+          "full_diac_surface": "كَرِيم",
           "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "score": 0.8561507936507937,
+          "analysis": {
+            "diac": "كَرِيم",
+            "lex": "رِيم",
+            "pos": "noun",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "score": 0.8492063492063492,
+          "analysis": {
+            "diac": "كَرِيمٌ",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "n",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمٌ",
+          "minimal_source_preserving_surface": "كريمٌ؛"
+        },
+        {
+          "score": 0.8492063492063492,
+          "analysis": {
+            "diac": "كَرِيمٍ",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمٍ",
+          "minimal_source_preserving_surface": "كريمٍ؛"
+        },
+        {
+          "score": 0.8402777777777777,
+          "analysis": {
+            "diac": "كَرِيم",
+            "lex": "رِئْم",
+            "pos": "noun",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "score": 0.8333333333333334,
+          "analysis": {
+            "diac": "كرِيمٌ",
+            "lex": "كرِيم",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كرِيمٌ",
+          "minimal_source_preserving_surface": "كريمٌ؛"
+        },
+        {
+          "score": 0.8333333333333334,
+          "analysis": {
+            "diac": "كرِيمٍ",
+            "lex": "كرِيم",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كرِيمٍ",
+          "minimal_source_preserving_surface": "كريمٍ؛"
         }
       ],
       "mle_unique_minimal_surfaces": [
-        "كريم؛"
+        "كريم؛",
+        "كريمٌ؛",
+        "كريمٍ؛"
       ],
-      "bert_context_analyses": [],
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "كَرِيمٌ",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "n",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمٌ",
+          "minimal_source_preserving_surface": "كريمٌ؛"
+        },
+        {
+          "score": 0.9286835293869656,
+          "analysis": {
+            "diac": "كَرِيمٍ",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمٍ",
+          "minimal_source_preserving_surface": "كريمٍ؛"
+        },
+        {
+          "score": 0.9286360331839665,
+          "analysis": {
+            "diac": "كرِيمٌ",
+            "lex": "كرِيم",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كرِيمٌ",
+          "minimal_source_preserving_surface": "كريمٌ؛"
+        },
+        {
+          "score": 0.9285211617734078,
+          "analysis": {
+            "diac": "كَرِيم",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "score": 0.9284963316903595,
+          "analysis": {
+            "diac": "كَرِيمُ",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمُ",
+          "minimal_source_preserving_surface": "كريمُ؛"
+        },
+        {
+          "score": 0.8591061037876349,
+          "analysis": {
+            "diac": "كَرِيم",
+            "lex": "كَرِيم",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "score": 0.8576823438764163,
+          "analysis": {
+            "diac": "كرِيمٍ",
+            "lex": "كرِيم",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كرِيمٍ",
+          "minimal_source_preserving_surface": "كريمٍ؛"
+        },
+        {
+          "score": 0.8574056790061779,
+          "analysis": {
+            "diac": "كرِيمُ",
+            "lex": "كرِيم",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كرِيمُ",
+          "minimal_source_preserving_surface": "كريمُ؛"
+        },
+        {
+          "score": 0.8572609181832803,
+          "analysis": {
+            "diac": "كرِيم",
+            "lex": "كرِيم",
+            "pos": "noun",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كرِيم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "score": 0.8570839868427861,
+          "analysis": {
+            "diac": "كَرِيمِ",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "g",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمِ",
+          "minimal_source_preserving_surface": "كريمِ؛"
+        }
+      ],
       "bert_context_error": null,
-      "bert_unique_minimal_surfaces": [],
-      "bert_top1_surface": null,
+      "bert_unique_minimal_surfaces": [
+        "كريم؛",
+        "كريمٌ؛",
+        "كريمٍ؛",
+        "كريمُ؛",
+        "كريمِ؛"
+      ],
+      "bert_top1_surface": "كريمٌ؛",
       "bert_top2_surface_consensus": null,
       "runtime_decision": "REVIEW_OR_ABSTAIN",
       "runtime_surface_proposal": null,
@@ -590,36 +968,397 @@
         "published_correction": "كريمٌ",
         "runtime_surface_compatible": false,
         "mle_top1_compatible": false,
-        "bert_top1_compatible": false,
+        "bert_top1_compatible": true,
         "bert_top2_consensus_compatible": false,
-        "any_morph_surface_compatible": false,
-        "compatible_morph_surface_count": 0,
+        "any_morph_surface_compatible": true,
+        "compatible_morph_surface_count": 1,
         "previous_target_impact": "PARTIAL_RECOVERY"
       },
       "all_morph_analyses": [
         {
           "analysis": {
-            "diac": "كريم؛",
-            "lex": "كريم؛",
-            "pos": "noun_prop",
+            "diac": "كرِيم",
+            "lex": "كرِيم",
+            "pos": "noun",
             "cas": "u",
             "mod": "na",
             "stt": "i",
-            "gen": "-",
-            "num": "-",
+            "gen": "m",
+            "num": "s",
             "per": "na",
             "asp": "na",
             "vox": "na",
-            "form_gen": "-",
-            "form_num": "-"
+            "form_gen": "m",
+            "form_num": "s"
           },
-          "full_diac_surface": "كريم؛",
+          "full_diac_surface": "كرِيم",
           "minimal_source_preserving_surface": "كريم؛"
         },
         {
           "analysis": {
-            "diac": "كَريم؛",
-            "lex": "ريم؛",
+            "diac": "كرِيمَ",
+            "lex": "كرِيم",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كرِيمَ",
+          "minimal_source_preserving_surface": "كريمَ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كرِيمٌ",
+            "lex": "كرِيم",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كرِيمٌ",
+          "minimal_source_preserving_surface": "كريمٌ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كرِيمِ",
+            "lex": "كرِيم",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كرِيمِ",
+          "minimal_source_preserving_surface": "كريمِ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كرِيمٍ",
+            "lex": "كرِيم",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كرِيمٍ",
+          "minimal_source_preserving_surface": "كريمٍ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كرِيمُ",
+            "lex": "كرِيم",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كرِيمُ",
+          "minimal_source_preserving_surface": "كريمُ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيم",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيمَ",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "a",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمَ",
+          "minimal_source_preserving_surface": "كريمَ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيمٌ",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "n",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمٌ",
+          "minimal_source_preserving_surface": "كريمٌ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيمِ",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "g",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمِ",
+          "minimal_source_preserving_surface": "كريمِ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيمٍ",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمٍ",
+          "minimal_source_preserving_surface": "كريمٍ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيمُ",
+            "lex": "كَرِيم",
+            "pos": "adj",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمُ",
+          "minimal_source_preserving_surface": "كريمُ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيم",
+            "lex": "كَرِيم",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيم",
+            "lex": "رِيم",
+            "pos": "noun",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيمِ",
+            "lex": "رِيم",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمِ",
+          "minimal_source_preserving_surface": "كريمِ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيمٍ",
+            "lex": "رِيم",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمٍ",
+          "minimal_source_preserving_surface": "كريمٍ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيم",
+            "lex": "رِئْم",
+            "pos": "noun",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيمِ",
+            "lex": "رِئْم",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمِ",
+          "minimal_source_preserving_surface": "كريمِ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيمٍ",
+            "lex": "رِئْم",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيمٍ",
+          "minimal_source_preserving_surface": "كريمٍ؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَرِيم",
+            "lex": "رِيم",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "f",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "كَرِيم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "analysis": {
+            "diac": "كريم",
+            "lex": "كريم",
             "pos": "noun_prop",
             "cas": "u",
             "mod": "na",
@@ -632,7 +1371,26 @@
             "form_gen": "-",
             "form_num": "-"
           },
-          "full_diac_surface": "كَريم؛",
+          "full_diac_surface": "كريم",
+          "minimal_source_preserving_surface": "كريم؛"
+        },
+        {
+          "analysis": {
+            "diac": "كَريم",
+            "lex": "ريم",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "كَريم",
           "minimal_source_preserving_surface": "كريم؛"
         }
       ]
@@ -647,6 +1405,7 @@
       "normalized_result_word": "مالا",
       "candidate_base": "مالا",
       "source_base": "مال",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 3,
@@ -796,12 +1555,12 @@
       "target_evaluation": {
         "target_id": "NAHW-ITEM-115",
         "published_correction": "مالًا",
-        "runtime_surface_compatible": false,
-        "mle_top1_compatible": false,
-        "bert_top1_compatible": false,
+        "runtime_surface_compatible": true,
+        "mle_top1_compatible": true,
+        "bert_top1_compatible": true,
         "bert_top2_consensus_compatible": false,
-        "any_morph_surface_compatible": false,
-        "compatible_morph_surface_count": 0,
+        "any_morph_surface_compatible": true,
+        "compatible_morph_surface_count": 1,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
       },
       "all_morph_analyses": [
@@ -874,6 +1633,7 @@
       "normalized_result_word": "وساعا",
       "candidate_base": "وساعا",
       "source_base": "وساع",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 2,
@@ -1117,21 +1877,24 @@
       "candidate_class": "SUPPORTED_CORRECTION",
       "surface_realization_class": "BASE_LETTER_PLUS_PRESERVE_EXISTING_DIACRITICS",
       "normalized_result_word": "اشتدادا،",
-      "candidate_base": "اشتدادا،",
-      "source_base": "إشتدادا،",
-      "source_suffix": "",
+      "candidate_base": "اشتدادا",
+      "source_base": "إشتدادا",
+      "source_prefix": "",
+      "source_suffix": "،",
       "direct_patch": "اشتدادًا،",
-      "morph_analysis_count": 1,
-      "unique_minimal_surface_count": 1,
+      "morph_analysis_count": 3,
+      "unique_minimal_surface_count": 3,
       "unique_minimal_surfaces": [
-        "اشتدادًا،"
+        "اشتدادا،",
+        "اِشْتدادا،",
+        "اِشْتداداً،"
       ],
       "mle_top_analyses": [
         {
           "score": 1.0,
           "analysis": {
-            "diac": "اشتدادا،",
-            "lex": "اشتدادا،",
+            "diac": "اشتدادا",
+            "lex": "اشتدادا",
             "pos": "noun_prop",
             "cas": "u",
             "mod": "na",
@@ -1144,17 +1907,124 @@
             "form_gen": "-",
             "form_num": "-"
           },
-          "full_diac_surface": "اشتدادا،",
-          "minimal_source_preserving_surface": "اشتدادًا،"
+          "full_diac_surface": "اشتدادا",
+          "minimal_source_preserving_surface": "اشتدادا،"
+        },
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "اِشْتِدادا",
+            "lex": "ٱِشْتِداد",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "d",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "اِشْتِدادا",
+          "minimal_source_preserving_surface": "اِشْتدادا،"
+        },
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "اِشْتِداداً",
+            "lex": "ٱِشْتِداد",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "اِشْتِداداً",
+          "minimal_source_preserving_surface": "اِشْتداداً،"
         }
       ],
       "mle_unique_minimal_surfaces": [
-        "اشتدادًا،"
+        "اشتدادا،",
+        "اِشْتدادا،",
+        "اِشْتداداً،"
       ],
-      "bert_context_analyses": [],
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "اِشْتِداداً",
+            "lex": "ٱِشْتِداد",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "اِشْتِداداً",
+          "minimal_source_preserving_surface": "اِشْتداداً،"
+        },
+        {
+          "score": 0.7853781407207409,
+          "analysis": {
+            "diac": "اِشْتِدادا",
+            "lex": "ٱِشْتِداد",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "d",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "اِشْتِدادا",
+          "minimal_source_preserving_surface": "اِشْتدادا،"
+        },
+        {
+          "score": 0.7139769341952392,
+          "analysis": {
+            "diac": "اشتدادا",
+            "lex": "اشتدادا",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "اشتدادا",
+          "minimal_source_preserving_surface": "اشتدادا،"
+        }
+      ],
       "bert_context_error": null,
-      "bert_unique_minimal_surfaces": [],
-      "bert_top1_surface": null,
+      "bert_unique_minimal_surfaces": [
+        "اشتدادا،",
+        "اِشْتدادا،",
+        "اِشْتداداً،"
+      ],
+      "bert_top1_surface": "اِشْتداداً،",
       "bert_top2_surface_consensus": null,
       "runtime_decision": "DEVELOPMENT_AUTO_DIRECT_PATCH",
       "runtime_surface_proposal": "اشتدادًا،",
@@ -1162,19 +2032,57 @@
       "target_evaluation": {
         "target_id": "NAHW-ITEM-230",
         "published_correction": "اشتدادًا",
-        "runtime_surface_compatible": false,
+        "runtime_surface_compatible": true,
         "mle_top1_compatible": false,
-        "bert_top1_compatible": false,
+        "bert_top1_compatible": true,
         "bert_top2_consensus_compatible": false,
-        "any_morph_surface_compatible": false,
-        "compatible_morph_surface_count": 0,
+        "any_morph_surface_compatible": true,
+        "compatible_morph_surface_count": 1,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
       },
       "all_morph_analyses": [
         {
           "analysis": {
-            "diac": "اشتدادا،",
-            "lex": "اشتدادا،",
+            "diac": "اِشْتِداداً",
+            "lex": "ٱِشْتِداد",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "اِشْتِداداً",
+          "minimal_source_preserving_surface": "اِشْتداداً،"
+        },
+        {
+          "analysis": {
+            "diac": "اِشْتِدادا",
+            "lex": "ٱِشْتِداد",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "d",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "اِشْتِدادا",
+          "minimal_source_preserving_surface": "اِشْتدادا،"
+        },
+        {
+          "analysis": {
+            "diac": "اشتدادا",
+            "lex": "اشتدادا",
             "pos": "noun_prop",
             "cas": "u",
             "mod": "na",
@@ -1187,8 +2095,8 @@
             "form_gen": "-",
             "form_num": "-"
           },
-          "full_diac_surface": "اشتدادا،",
-          "minimal_source_preserving_surface": "اشتدادًا،"
+          "full_diac_surface": "اشتدادا",
+          "minimal_source_preserving_surface": "اشتدادا،"
         }
       ]
     },
@@ -1202,6 +2110,7 @@
       "normalized_result_word": "نفسا",
       "candidate_base": "نفسا",
       "source_base": "نفس",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 6,
@@ -1511,12 +2420,12 @@
       "target_evaluation": {
         "target_id": "NAHW-ITEM-277",
         "published_correction": "نفسًا",
-        "runtime_surface_compatible": false,
-        "mle_top1_compatible": false,
-        "bert_top1_compatible": false,
-        "bert_top2_consensus_compatible": false,
-        "any_morph_surface_compatible": false,
-        "compatible_morph_surface_count": 0,
+        "runtime_surface_compatible": true,
+        "mle_top1_compatible": true,
+        "bert_top1_compatible": true,
+        "bert_top2_consensus_compatible": true,
+        "any_morph_surface_compatible": true,
+        "compatible_morph_surface_count": 1,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
       },
       "all_morph_analyses": [
@@ -1646,6 +2555,7 @@
       "normalized_result_word": "متقن",
       "candidate_base": "متقن",
       "source_base": "متقنا",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 13,
@@ -2360,6 +3270,7 @@
       "normalized_result_word": "استشعر",
       "candidate_base": "استشعر",
       "source_base": "إستشعر",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": "استشعِر",
       "morph_analysis_count": 2,
@@ -2528,6 +3439,7 @@
       "normalized_result_word": "باسم",
       "candidate_base": "باسم",
       "source_base": "باسما",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 12,
@@ -3226,21 +4138,23 @@
       "candidate_class": "SUPPORTED_CORRECTION",
       "surface_realization_class": "CASE_ENDING_OR_TANWEEN_REQUIRED",
       "normalized_result_word": "عابسا،",
-      "candidate_base": "عابسا،",
-      "source_base": "عابس،",
-      "source_suffix": "",
+      "candidate_base": "عابسا",
+      "source_base": "عابس",
+      "source_prefix": "",
+      "source_suffix": "،",
       "direct_patch": null,
-      "morph_analysis_count": 1,
-      "unique_minimal_surface_count": 1,
+      "morph_analysis_count": 3,
+      "unique_minimal_surface_count": 2,
       "unique_minimal_surfaces": [
-        "عابِسا،"
+        "عابِسا،",
+        "عابِساً،"
       ],
       "mle_top_analyses": [
         {
           "score": 1.0,
           "analysis": {
-            "diac": "عابسا،",
-            "lex": "عابسا،",
+            "diac": "عابسا",
+            "lex": "عابسا",
             "pos": "noun_prop",
             "cas": "u",
             "mod": "na",
@@ -3253,27 +4167,170 @@
             "form_gen": "-",
             "form_num": "-"
           },
-          "full_diac_surface": "عابسا،",
+          "full_diac_surface": "عابسا",
           "minimal_source_preserving_surface": "عابِسا،"
+        },
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "عابِسا",
+            "lex": "عابِس",
+            "pos": "adj",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "d",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "عابِسا",
+          "minimal_source_preserving_surface": "عابِسا،"
+        },
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "عابِساً",
+            "lex": "عابِس",
+            "pos": "adj",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "عابِساً",
+          "minimal_source_preserving_surface": "عابِساً،"
         }
       ],
       "mle_unique_minimal_surfaces": [
-        "عابِسا،"
+        "عابِسا،",
+        "عابِساً،"
       ],
-      "bert_context_analyses": [],
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "عابِساً",
+            "lex": "عابِس",
+            "pos": "adj",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "عابِساً",
+          "minimal_source_preserving_surface": "عابِساً،"
+        },
+        {
+          "score": 0.7855117084042302,
+          "analysis": {
+            "diac": "عابِسا",
+            "lex": "عابِس",
+            "pos": "adj",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "d",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "عابِسا",
+          "minimal_source_preserving_surface": "عابِسا،"
+        },
+        {
+          "score": 0.7141005825287738,
+          "analysis": {
+            "diac": "عابسا",
+            "lex": "عابسا",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "عابسا",
+          "minimal_source_preserving_surface": "عابِسا،"
+        }
+      ],
       "bert_context_error": null,
-      "bert_unique_minimal_surfaces": [],
-      "bert_top1_surface": null,
+      "bert_unique_minimal_surfaces": [
+        "عابِسا،",
+        "عابِساً،"
+      ],
+      "bert_top1_surface": "عابِساً،",
       "bert_top2_surface_consensus": null,
-      "runtime_decision": "REVIEW_MLE_TOP1",
-      "runtime_surface_proposal": "عابِسا،",
-      "runtime_reason": "ONLY_OUT_OF_CONTEXT_MLE_SURFACE_AVAILABLE",
+      "runtime_decision": "REVIEW_CONTEXTUAL_MORPH_TOP1",
+      "runtime_surface_proposal": "عابِساً،",
+      "runtime_reason": "BERT_CONTEXTUAL_TOP1_AVAILABLE_BUT_NO_TOP2_SURFACE_CONSENSUS",
       "target_evaluation": null,
       "all_morph_analyses": [
         {
           "analysis": {
-            "diac": "عابسا،",
-            "lex": "عابسا،",
+            "diac": "عابِساً",
+            "lex": "عابِس",
+            "pos": "adj",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "عابِساً",
+          "minimal_source_preserving_surface": "عابِساً،"
+        },
+        {
+          "analysis": {
+            "diac": "عابِسا",
+            "lex": "عابِس",
+            "pos": "adj",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "d",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "عابِسا",
+          "minimal_source_preserving_surface": "عابِسا،"
+        },
+        {
+          "analysis": {
+            "diac": "عابسا",
+            "lex": "عابسا",
             "pos": "noun_prop",
             "cas": "u",
             "mod": "na",
@@ -3286,7 +4343,7 @@
             "form_gen": "-",
             "form_num": "-"
           },
-          "full_diac_surface": "عابسا،",
+          "full_diac_surface": "عابسا",
           "minimal_source_preserving_surface": "عابِسا،"
         }
       ]
@@ -3301,6 +4358,7 @@
       "normalized_result_word": "خطرا",
       "candidate_base": "خطرا",
       "source_base": "خطر",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 7,
@@ -3650,12 +4708,12 @@
       "target_evaluation": {
         "target_id": "NAHW-ITEM-371",
         "published_correction": "خَطرًا",
-        "runtime_surface_compatible": false,
-        "mle_top1_compatible": false,
-        "bert_top1_compatible": false,
-        "bert_top2_consensus_compatible": false,
-        "any_morph_surface_compatible": false,
-        "compatible_morph_surface_count": 0,
+        "runtime_surface_compatible": true,
+        "mle_top1_compatible": true,
+        "bert_top1_compatible": true,
+        "bert_top2_consensus_compatible": true,
+        "any_morph_surface_compatible": true,
+        "compatible_morph_surface_count": 1,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
       },
       "all_morph_analyses": [
@@ -3804,6 +4862,7 @@
       "normalized_result_word": "واقع",
       "candidate_base": "واقع",
       "source_base": "واقعا",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 8,
@@ -4415,6 +5474,7 @@
       "normalized_result_word": "يقدمون",
       "candidate_base": "يقدمون",
       "source_base": "يقدموا",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 6,
@@ -4819,6 +5879,7 @@
       "normalized_result_word": "المصريون",
       "candidate_base": "المصريون",
       "source_base": "المصريين",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 4,
@@ -5105,6 +6166,7 @@
       "normalized_result_word": "الإرهابيين",
       "candidate_base": "الإرهابيين",
       "source_base": "الإرهابيون",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 8,
@@ -5627,6 +6689,7 @@
       "normalized_result_word": "واجبة",
       "candidate_base": "واجبة",
       "source_base": "واجبا",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 0,
@@ -5655,6 +6718,7 @@
       "normalized_result_word": "الباسلون",
       "candidate_base": "الباسلون",
       "source_base": "الباسلين",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 3,
@@ -5872,6 +6936,7 @@
       "normalized_result_word": "حبا",
       "candidate_base": "حبا",
       "source_base": "حب",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 6,
@@ -6269,6 +7334,7 @@
       "normalized_result_word": "يرضى",
       "candidate_base": "يرضى",
       "source_base": "يرض",
+      "source_prefix": "",
       "source_suffix": "",
       "direct_patch": null,
       "morph_analysis_count": 3,
@@ -6491,7 +7557,8 @@
     "The MLE disambiguator is out-of-context; contextual BERT is evaluated separately.",
     "BERT top analysis is a morphosyntactic ranking signal, not proof that a correction candidate is linguistically correct.",
     "Human candidate class is used only to bound development realization and evaluate safety, not to claim a deployable verifier.",
-    "Nahw target corrections are joined only after runtime proposals for evaluation.",
+    "Nahw target corrections are joined only after morphology/surface proposals for evaluation.",
+    "Prior candidate adjudication bounds this development realization gate; it is not a deployable runtime verifier.",
     "CAMeL Analyzer default normalization is countered by exact narrow-base filtering, but morphology analyses are not syntactic proof."
   ]
 }
