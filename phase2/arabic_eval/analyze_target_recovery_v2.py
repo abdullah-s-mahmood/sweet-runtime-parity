@@ -4,7 +4,7 @@ This intentionally does NOT treat Nahw one-target references as fully corrected 
 It relaxes the first-pass alignment rule: the published target itself may be recovered even
 when adjacent context is also edited.
 """
-import argparse, json, difflib, collections
+import argparse, json, difflib, collections, random
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -142,6 +142,23 @@ def main():
             "by_category_hint": by_cat,
         }
 
+    # Passage-clustered bootstrap intervals. Targets within a passage are dependent.
+    groups=collections.defaultdict(list)
+    for x in cases:
+        groups[x["passage_id"]].append(x)
+    passage_ids=sorted(groups)
+    rng=random.Random(20260928)
+    clustered_bootstrap_95pct={}
+    for stage_name in STAGES:
+        vals=[]
+        for _ in range(2000):
+            sampled_ids=rng.choices(passage_ids,k=len(passage_ids))
+            sample=[x for pid in sampled_ids for x in groups[pid]]
+            rec=sum(x["stages"][stage_name]["state"].startswith("RECOVERED_") for x in sample)
+            vals.append(rec/len(sample) if sample else 0.0)
+        vals.sort()
+        clustered_bootstrap_95pct[stage_name]=[vals[49],vals[1949]]
+
     # Stage contribution comparisons.
     gains = {
         "iteration2_gained_targets_over_iteration1": [],
@@ -166,6 +183,7 @@ def main():
         "important_limit": "One-target Nahw references are not fully corrected passages; exact-reference match is diagnostic only.",
         "summaries": summaries,
         "stage_contribution": gains,
+        "passage_cluster_bootstrap_95pct": clustered_bootstrap_95pct,
         "cases": cases,
     }
     args.output.write_text(json.dumps(output, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
@@ -228,7 +246,7 @@ def main():
             "by_category": {k: {"n":v["n"],"recovered":v["recovered"],"rate":round(v["recovery_rate"],6)} for k,v in s["by_category_hint"].items()},
         } for name,s in summaries.items()
     }
-    print(json.dumps({"summary_v2": compact, "stage_contribution": gains, "passage_edit_activity":activity}, ensure_ascii=False))
+    print(json.dumps({"summary_v2": compact, "stage_contribution": gains, "passage_cluster_bootstrap_95pct":clustered_bootstrap_95pct, "passage_edit_activity":activity}, ensure_ascii=False))
 
 if __name__ == "__main__":
     main()
