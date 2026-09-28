@@ -45,7 +45,7 @@ jobs:
       - name: Recreate raw-only runtime events
         run: |
           mkdir -p artifacts
-          python phase2/generalization/run_qalb15_context_gate.py
+          PYTHONPATH=. python phase2/generalization/run_qalb15_context_gate.py
       - name: Aggregate WAW-ALIF diagnostic
         run: |
           python phase2/generalization/diagnose_qalb15_waw_alif.py
