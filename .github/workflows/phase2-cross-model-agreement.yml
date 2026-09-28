@@ -1,0 +1,225 @@
+name: Phase 2 Cross-Corpus Independent Edit Agreement
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/CROSS_MODEL_AGREEMENT_PROTOCOL.md"
+      - "phase2/generalization/cross_model_common.py"
+      - "phase2/generalization/run_cross_sweet.py"
+      - "phase2/generalization/run_cross_arabart.py"
+      - "phase2/generalization/materialize_cross_model_agreement.py"
+      - "phase2/generalization/evaluate_cross_model_agreement.py"
+      - ".github/workflows/phase2-cross-model-agreement.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  sweet-raw:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - name: Checkout project branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+
+      - name: Install official SWEET runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+          python -m pip install -r requirements.txt
+          python -m pip check
+
+      - name: Clone and pin raw-corpus and SWEET upstreams
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+          test "$(git -C upstream/text-editing rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Download and verify SWEET NoPnx model
+        run: |
+          mkdir -p models/cross_sweet_nopnx artifacts
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          snapshot_download(
+              repo_id="CAMeL-Lab/text-editing-zaebuc-nopnx",
+              local_dir="models/cross_sweet_nopnx",
+              allow_patterns=["config.json","pytorch_model.bin","special_tokens_map.json","tokenizer_config.json","vocab.txt"],
+          )
+          PY
+
+      - name: Run raw-only SWEET NoPnx1 inference
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/run_cross_sweet.py 2>&1 | tee artifacts/CROSS_SWEET_CONSOLE.txt
+          test -f artifacts/CROSS_SWEET_EVENTS.jsonl
+          test -f artifacts/CROSS_SWEET_SUMMARY.json
+
+      - name: Upload ephemeral SWEET event evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-sweet-raw-events
+          path: |
+            artifacts/CROSS_SWEET_EVENTS.jsonl
+            artifacts/CROSS_SWEET_SUMMARY.json
+          if-no-files-found: error
+          retention-days: 1
+
+  arabart-raw:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - name: Checkout project branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Clone and pin Arabic-GEC upstream
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+
+      - name: Install frozen AraBART runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "sentencepiece==0.1.99" "protobuf==3.20.3" "numpy<2"
+          python -m pip uninstall -y transformers || true
+          python -m pip install -e upstream/arabic-gec/transformers
+          python -m pip install "huggingface_hub>=0.9,<1.0"
+          mkdir -p "$CAMELTOOLS_DATA" artifacts
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+
+      - name: Run raw-only AraBART inference
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/run_cross_arabart.py 2>&1 | tee artifacts/CROSS_ARABART_CONSOLE.txt
+          test -f artifacts/CROSS_ARABART_EVENTS.jsonl
+          test -f artifacts/CROSS_ARABART_SUMMARY.json
+
+      - name: Upload ephemeral AraBART event evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-arabart-raw-events
+          path: |
+            artifacts/CROSS_ARABART_EVENTS.jsonl
+            artifacts/CROSS_ARABART_SUMMARY.json
+          if-no-files-found: error
+          retention-days: 1
+
+  agreement-and-eval:
+    needs: [sweet-raw, arabart-raw]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout project branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Download SWEET raw event artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: cross-sweet-raw-events
+          path: artifacts/sweet
+
+      - name: Download AraBART raw event artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: cross-arabart-raw-events
+          path: artifacts/arabart
+
+      - name: Materialize and freeze gold-blind agreement decisions
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/materialize_cross_model_agreement.py 2>&1 | tee artifacts/CROSS_AGREEMENT_RUNTIME_CONSOLE.txt
+          test -f artifacts/CROSS_MODEL_AGREEMENT_FEATURES.jsonl
+          test -f artifacts/CROSS_MODEL_AGREEMENT_RUNTIME.json
+          sha256sum artifacts/CROSS_MODEL_AGREEMENT_RUNTIME.json artifacts/CROSS_MODEL_AGREEMENT_FEATURES.jsonl | tee artifacts/CROSS_AGREEMENT_FROZEN_SHA256.txt
+
+      - name: Clone QALB upstream only after decisions are frozen
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+
+      - name: Evaluate frozen agreement against TRAIN gold
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/evaluate_cross_model_agreement.py 2>&1 | tee artifacts/CROSS_AGREEMENT_EVAL_CONSOLE.txt
+          test -f PHASE2_CROSS_MODEL_AGREEMENT_RESULTS.json
+
+      - name: Audit committed result for QALB text leakage
+        run: |
+          python - <<'PY'
+          import json,re
+          p="PHASE2_CROSS_MODEL_AGREEMENT_RESULTS.json"
+          raw=open(p,encoding="utf-8").read()
+          x=json.loads(raw)
+          assert x["qalb15_test_read"] is False
+          assert x["qalb_text_persisted"] is False
+          assert not re.search(r"[\u0600-\u06ff]",raw), "Arabic/QALB text leaked"
+          forbidden=["source_text","candidate_output","gold_words","source_bases","output_bases"]
+          for key in forbidden:
+              assert '"'+key+'"' not in raw,key
+          print("QALB committed-result leakage audit PASS")
+          PY
+
+      - name: Persist compact hash-only result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_CROSS_MODEL_AGREEMENT_RESULTS.json
+          if git diff --cached --quiet; then
+            echo "Cross-model agreement result unchanged."
+          else
+            git commit -m "Record cross-model agreement generalization evidence [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - name: Upload short-lived internal agreement evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-cross-model-agreement-internal
+          path: |
+            artifacts/CROSS_MODEL_AGREEMENT_FEATURES.jsonl
+            artifacts/CROSS_MODEL_AGREEMENT_RUNTIME.json
+            artifacts/CROSS_AGREEMENT_FROZEN_SHA256.txt
+            PHASE2_CROSS_MODEL_AGREEMENT_RESULTS.json
+          if-no-files-found: warn
+          retention-days: 1
