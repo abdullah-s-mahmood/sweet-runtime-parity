@@ -1,0 +1,2169 @@
+{
+  "status": "PHASE2_QALB15_CONTEXT_GENERALIZATION_GOLD_COMPARED",
+  "development_generalization_only": true,
+  "runtime_decisions_materialized_before_gold": true,
+  "policy_frozen_before_gold": true,
+  "corpus": "QALB-2015 L2 DEV deterministic 100-line raw-hash slice",
+  "license_policy": "internal research/evaluation; no QALB text persisted",
+  "selection_seed": "phase2-qalb15-l2-context-v1",
+  "selected_line_ids": [
+    112,
+    149,
+    69,
+    33,
+    35,
+    116,
+    65,
+    125,
+    139,
+    41,
+    78,
+    61,
+    91,
+    140,
+    56,
+    126,
+    110,
+    141,
+    50,
+    115,
+    30,
+    79,
+    39,
+    137,
+    2,
+    6,
+    5,
+    27,
+    81,
+    11,
+    18,
+    43,
+    3,
+    13,
+    95,
+    23,
+    101,
+    152,
+    45,
+    82,
+    70,
+    37,
+    16,
+    131,
+    103,
+    90,
+    154,
+    15,
+    8,
+    145,
+    54,
+    67,
+    133,
+    148,
+    129,
+    150,
+    17,
+    124,
+    42,
+    119,
+    123,
+    77,
+    136,
+    53,
+    132,
+    147,
+    153,
+    62,
+    34,
+    58,
+    128,
+    97,
+    134,
+    106,
+    138,
+    21,
+    68,
+    85,
+    127,
+    98,
+    28,
+    47,
+    59,
+    93,
+    46,
+    86,
+    66,
+    120,
+    4,
+    114,
+    19,
+    146,
+    26,
+    75,
+    135,
+    29,
+    48,
+    74,
+    83,
+    96
+  ],
+  "selected_line_hashes": [
+    "00b7e8357f13150948408ee6697d60cdac2e7adcfe0e5aef713e4c0b67493dce",
+    "01562d8c8a89964b380f7bd9859ff521d2e637202253292a8310c943e0eea34d",
+    "025b16246f2bb4742f95e88ba93132685af75e29d00c700e1332c86398e100e4",
+    "057be62f1d1013ed5786562d81f8dc04048d58aa7e838c4855f5533c49198dfe",
+    "08c56eb0b1d685db506d65c6a8be6ca1b00033aa4b2f379c37c874f8968f2050",
+    "0b59d8c34566f11faadfff70364038c618b535e525600f1913151445d330fbe9",
+    "0b5cfd57fff9ef676ac64399482434137543e7be01a8e73264f01316cdf6d3e6",
+    "0edc2f26a7e18acbf54d096d0c9399fab2e33a3a6e901b8272973169e70b158c",
+    "11a4799bd9aed291b2fabca105ebdbbdb2c974610301e98caac708195c9f0fee",
+    "130f68c02a5046850935d36c7b0464d45873ca6ab83d84fdc1b3b45a810a55ad",
+    "1636f5bd0b078b1346b4e0cba122f1333f608606ba9d53c92d07b995f3f71aa8",
+    "1831fb38547bb419475737ed0a91f7f74a9fa4fa97c0915f9087ff73aecaa467",
+    "1bb884a4fb46db7eb9e753d1a46977546ca0bf331de6a464b41ca366bf720283",
+    "1d581ea3353bd9828c86a878d0e3604e9abc7cc05d3ae86ea4d39110949d2a5d",
+    "1da37f327b696a49f8ca7194daad698951ab7eb7fe8d4816a227ecd0f85a7396",
+    "221b0d52c6de2232ec759c37c6e28153b2c5a6dd62831b5989b02f616a4963c6",
+    "25d1b6822c6cb9bc597e5bfbf4f4d707997c9445b40baa7140ec298ddc37c2d1",
+    "25e01d424a4d26a16672b4e1fb46daadc8c59388c63c9553abf6e60f8609d429",
+    "266e95fbfdc25fb15384ccf0778fb62d87504ee39a26e61be4fb4c886cd823a2",
+    "28f517859ee560966dd529e3b3b3599edea19c2d7ea4fdd5a7fb5650a494dabd",
+    "29f88ad5ec4c2a2c40019544df63dcd1eb9a9703094b4f276dc36501c55c21b2",
+    "2a060ce317ae92f6c311560326e07398965f510e40c57a5e6ecec55efb0dfd04",
+    "2a71ae93e93b2b1fedaaad34b7c046896a4865d2aa97437228e5b58395dea952",
+    "2bca74a3f84969e7a0f3aceca19bc773e310278311d027f81fe87f18d349f687",
+    "2c0b7551c1175a5bafed525807983ca69510ba3ef0d8710c52b8ae7048b623fe",
+    "2cf185b6fdf6bd8e24977673d966381f3103a5352ab2a0e8082e0905cb6be150",
+    "2f18f5298c44fe15dc9dedb0b3ec9949b43cc088b808de7fa57383584ae41e56",
+    "308e6557948b8b50dc5aba724c88b67cc8658841579aed8bdb9176e84beb8f6e",
+    "3480d2838150192ba6fd1ec123efa4d85460fc4930362956411363a5b90e5bd8",
+    "3641b7b48118d26e0311782809e3142ad86de55421e2fbaa99d030aeedd74257",
+    "3d1a68aea3e3b81d0aae14a07fb4a9abe534a853df03e0658cdfce3a104ba408",
+    "3d89060afc399712ed4ffb60ad17cc68c110b59ee4486bb9a05864dfd5aa24c8",
+    "3df7335e23208e8eef5b25d57107af043dd1820699853edda7c1504309c56c6c",
+    "3e4e34869d7a737ed0c64421eb05a159670324919acefd8856f88471e5fc2f01",
+    "3f4d256576fd415467e56be6128506cf9f75fc141ad6086f11f9ac23a2e8a57e",
+    "41fdfa5404a5028604e0b132716642e2aecd0a271c5e9fa12468631793409f1a",
+    "4200e9a883b3129ac282294d8eec5c42e4723d5065f03f51b7d19e281f0286da",
+    "4323743ebacc1f116cf115a3aa75a31c89b45b7e905180ca0b86cae46fddac44",
+    "4433997baf9d13b84c913724460a6d564b5cfadecd18629bf15e9e1e126c6a49",
+    "466408ef49acf6276f006dd05ea1d73344734b73ac4124425c6bcb65306ffd27",
+    "4694154e21e2667a03932654cb99706657b03673fdac32a5343945a92fe1176c",
+    "472e3a495a3087a79086844609477d6571aebb722d8be8991286c731109747b4",
+    "4db990633eaa0bb27e9e1c89408a8f60ccd86a8338722ac6c8dd1f1d03cf7f04",
+    "4df28e2636336beffe0dd5c18eba800c1ab8a3aacec7e1ff6f5e2a354bb17152",
+    "5064399824bd3405c33996d1294f25d824425c428465143d05e957cd5e05138a",
+    "50ad348ab0f85fe1f873b0a6c618172e4ba16471f21890668f0d1bf6f105aaf2",
+    "51a9df0547649642776d94759147a4f8786a62c591b9023967950865797b7192",
+    "523d0750a89cfa4dc2ff813108f083958c9dd84a02d484ad420ee7540c9857d0",
+    "541063129c7e251b8624408b26d71d7e5035d715ab2d2be0701bc843052dd66a",
+    "5665e9405dc07750d6a1cc6100cb52135ed2cbe835e4aedbb85301d11f2baa1a",
+    "56687f134ba9fee6d44299ac2ba1765dcb18c3f5f3fb1bbb910e2302a074b276",
+    "5891e4c63c6532bc8e73f73ae8b3de282048178bc88c406ea5b1660fcb4bc9d3",
+    "59c302b49b2fa8876ce665972b481ff96bdd34e63a1e4ecdeed8f206dd140514",
+    "5ab1785acffd657102bb6bdd9ccaa4fbea47c2c24c6e2f086dd8e4962626c09b",
+    "5b7503ba31f182b1be8ab79bb28e52789ac74a3d2b25953467dbf188fb74fbd0",
+    "5b81224485aabf8e46ca75b526d70f3d02d0bfc1d1cd65fdf5c08c80c56c2577",
+    "5de0612a2a6696fe646db6b1d6f2febedbf1e76a8c05cb0d72d81ea5d900afd0",
+    "606359cd8bc08d67dcee05f7ffaca4854a85a487dd32dd605c28e96581591d22",
+    "6145743814d819dbecffd04011de66633491b19c55b981a69205dcb2432d8875",
+    "61a3e7dbc796f52aa00b563bb0c99f241a91f7d23e6934187278e54ef4002a0f",
+    "634c714dfe01fee835f6146905afdaa692e20c6e07e9e6011f32aaed5b1af362",
+    "6bc4a90b7c1c8e508a2486023838c588c7770a803a80a482f36b15fefbbe2185",
+    "6f862d52a925daa22528ea75fa6150662285542335045cdb394fae5a3a5803d8",
+    "7152476270da37aae8555aee58e495e7050cc89a0e42e529360accf47f80018b",
+    "7189219da7fcb07a259b7fef4fd1122d2d707d5f1c3cd1df03626b824c3d727a",
+    "73182696e44eead8c87094eccdcc9fc07fc81a657a526b5fff7e6903b8ea8ff4",
+    "738356d4ea397d872fb160ca9c13629de1d49809681b77014a28cb3a66223b35",
+    "742aa7dd9f50ca107235e2ae6ca6778f14f027fcbb45d5b82cd319be78731c62",
+    "7623bfffe002b20312ffd7a405230e996cabaa598727c0141602d17a47b2dc68",
+    "77f69f44de98ccbb692a2570f1bd824e87d33d1d5cd4f2dcdb568768cb943eae",
+    "7801b3dc5981dc0061a654ba7707c2dcce409d85008bdaa63308a14326712b4d",
+    "79e3983be5209cf9a84613721e40d7bcc6227ab8a9487066d5c96a3936183132",
+    "7c39bde39eda98ceb9e5cca02a066ac773121bf16f17c52869341085a11ef9a7",
+    "8007afe2d9159b2b5ad469cda0dece75e287b1d4cd8d53fde08ba3dbbfc8defa",
+    "807b2c177af2d5c269d398a492b818e60375cc90c72a1a0d6513b1032ed63ea7",
+    "81f520aee759ef1f646fa2583d016c4ddebbca3681da3f20e36f022a9b82ddfc",
+    "870d944a02a46845798015bba5afbffa3ac741cdddf235cca28666df74565e82",
+    "8af049eaeea0c8bbedd3d99eba24df092525716c37465551facf2e006894c22f",
+    "8bb21385eba4314b182dbb5ad6b7dd8c8e5f61780e26af9de16df9766b9a890c",
+    "8c839b45f9a680173a139c9317a027dfcf36ae1e7c3bea1d7d5fdf51596f0fc8",
+    "8d150ded9fbc30c05fec9f769ea9fe49289a63b9fcdf92146fea6196ae79aaf6",
+    "8d2286011a59f15ad904af015a67be28a8f0027bd0ea101ac19f447622613f0d",
+    "8d3a9f9f7f39e04c27275c6ff899d22b161e6c98d45aebcb9ea0f9762452f796",
+    "8f22cc84def5d3cd2c73a7434fcbc47370aa67f3073e260ec67ba13578b3550b",
+    "92d9004d9f8247fad6f136058aa8a51cc8aac5bd5c3798a93c7944ddf01186b0",
+    "92f911aa9b7d96f2f2cc40b00acb79e61e2517f2ff027e532c1480041001f42f",
+    "9639bae74b1534d40e0bb9f25094d8f7eaeb836af06cde9a146e92fa285c237c",
+    "96818b543d25f14fba23e8ba4c9b1c296dca4dbe771567c4fc5c90918a08da4a",
+    "973f19ca288668ba8407170d9f7420f759aedddb87a3c43c7e54deabd45dfe6d",
+    "97cf829a4f8a9caf633bb01f12ab4ab894abc39c903aa3ed532a73e62f3a88ef",
+    "99ef073a728df107950b740874b6ba8078a97bc333b1a60b096ef842a83e4b82",
+    "9cfb7c8c1cc531746d8f330c815008401399153cf2e90f5e473e6460705cee61",
+    "a145415e6263f6dd2b77234b76fc19994198c12f74beaeb17c8d0681e2a1d753",
+    "a358e1e34096fcd745aa3460c99fea7f09045d0f1bd12ec7b8fc9a165aeac256",
+    "a365e02d37bdb8b7bf084bcb25851f55a6b2ba4e605e9d467aee5f9ce83e7fad",
+    "a894bf54edb33e84f20ae314a62feae2c638b7b1d77246e6df42b52e912fbdb1",
+    "a9133c7e1bfedc9f84bb418a2787bc35c3a8dcbd29d810294bef67924f1f5ab9",
+    "a9422b227e37d5bdf23c275b9a9d9b7af110038cfcb98d37282e86c68a079096",
+    "aa30c3e5ae63a4a6eef3993ee9a3b32e5e5be798c39a212ba2a92d1c4b89dd17",
+    "aae831751f2e4435b9b783d949c1dbafcf423c66cd6723c6b4312d6cbec140e7"
+  ],
+  "runtime_events": 1254,
+  "policy_results": {
+    "WAW_ALIF_VERB_ONLY": {
+      "candidate_events": 0,
+      "classification_counts": {},
+      "exact_gold_supported": 0,
+      "needs_contextual_review": 0,
+      "event_audit_hashes": []
+    },
+    "ACCUSATIVE_ALIF_SINGLE": {
+      "candidate_events": 28,
+      "classification_counts": {
+        "EXACT_GOLD_SUPPORTED": 14,
+        "GOLD_OVERLAP_NONEXACT_SPAN": 10,
+        "NO_GOLD_EDIT_OVERLAP": 3,
+        "SAME_GOLD_SPAN_DIFFERENT_OUTPUT": 1
+      },
+      "exact_gold_supported": 14,
+      "needs_contextual_review": 14,
+      "event_audit_hashes": [
+        {
+          "event_id": "Q15D-00112-009",
+          "line_id": 112,
+          "line_hash": "00b7e8357f13150948408ee6697d60cdac2e7adcfe0e5aef713e4c0b67493dce",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            241,
+            242
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "3bc9b7054ba47bc820e013f6d75dcb67a610588c114f1a9aa67c13d666515bab",
+          "candidate_bases_sha256": "bbcec8b557e86729464cac0ef16cefabdf16d91488dd88b959f0bd9f2caf3aec",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "3bc9b7054ba47bc820e013f6d75dcb67a610588c114f1a9aa67c13d666515bab",
+          "gold_output_sha256": "bbcec8b557e86729464cac0ef16cefabdf16d91488dd88b959f0bd9f2caf3aec"
+        },
+        {
+          "event_id": "Q15D-00035-002",
+          "line_id": 35,
+          "line_hash": "08c56eb0b1d685db506d65c6a8be6ca1b00033aa4b2f379c37c874f8968f2050",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            10,
+            11
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "c349b59c70a812349db8dbd5aeb9e5ff3a01eb793760be9037b2e35e0f70627d",
+          "candidate_bases_sha256": "37d4d391a04b7373691541631a4124ba474b930dab1ae5251a884770a2c59e79",
+          "source_morph": [
+            {
+              "pos": "adj",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "g",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "c349b59c70a812349db8dbd5aeb9e5ff3a01eb793760be9037b2e35e0f70627d",
+          "gold_output_sha256": "37d4d391a04b7373691541631a4124ba474b930dab1ae5251a884770a2c59e79"
+        },
+        {
+          "event_id": "Q15D-00035-010",
+          "line_id": 35,
+          "line_hash": "08c56eb0b1d685db506d65c6a8be6ca1b00033aa4b2f379c37c874f8968f2050",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            83,
+            84
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "88dcf246350e34cbe9c7f591b92d358c617c6e9e090fd3ad158bb53d903b5135",
+          "candidate_bases_sha256": "dd48d6a357f06513cf08bb7883ffb1350557e0771897f784086765fac4688cfa",
+          "source_morph": [
+            {
+              "pos": "adj",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "4cef073a16970317c7b8ea07e1032af5e671262efeae270615366ff728692592",
+          "gold_output_sha256": "4fbca722222d9cfd1366e08a4ee4480a14c1ce18cb96ad1ed19ff70dff9b9408"
+        },
+        {
+          "event_id": "Q15D-00035-013",
+          "line_id": 35,
+          "line_hash": "08c56eb0b1d685db506d65c6a8be6ca1b00033aa4b2f379c37c874f8968f2050",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            114,
+            115
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "candidate_bases_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "gold_output_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f"
+        },
+        {
+          "event_id": "Q15D-00039-004",
+          "line_id": 39,
+          "line_hash": "2a71ae93e93b2b1fedaaad34b7c046896a4865d2aa97437228e5b58395dea952",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            46,
+            47
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "candidate_bases_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "d8a18f2bfd4eedd9912cc3591c3e0f2998f5d04fb36230dd245365ca6d3f4cdf",
+          "gold_output_sha256": "4e710494ab8b577eca3794f45ee884d97f8465327a68888c75cb782f93478a08"
+        },
+        {
+          "event_id": "Q15D-00018-008",
+          "line_id": 18,
+          "line_hash": "3d1a68aea3e3b81d0aae14a07fb4a9abe534a853df03e0658cdfce3a104ba408",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            225,
+            226
+          ],
+          "event_cost": 0.14285714285714285,
+          "source_bases_sha256": "6ba02e2c11ad65039c9eb86df072cb094e4c3fb92c4a939bf88433a4982feaf8",
+          "candidate_bases_sha256": "55dcc87ea8c86f07a7100f60f813acdb099d7cc5e705bfe5cf2ecf5ca5f85ad3",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "g",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "NO_GOLD_EDIT_OVERLAP",
+          "gold_source_sha256": null,
+          "gold_output_sha256": null
+        },
+        {
+          "event_id": "Q15D-00023-005",
+          "line_id": 23,
+          "line_hash": "41fdfa5404a5028604e0b132716642e2aecd0a271c5e9fa12468631793409f1a",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            99,
+            100
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "b5cebc68b6be419e8e17ae3a9a1ce113bb505b82aa7902784c6c8b79e822b8b2",
+          "candidate_bases_sha256": "fedc6e7f1bd707c1b1c6ed8518f1cc1fde83802a51f29a8812650186911defb8",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "b5cebc68b6be419e8e17ae3a9a1ce113bb505b82aa7902784c6c8b79e822b8b2",
+          "gold_output_sha256": "fedc6e7f1bd707c1b1c6ed8518f1cc1fde83802a51f29a8812650186911defb8"
+        },
+        {
+          "event_id": "Q15D-00101-011",
+          "line_id": 101,
+          "line_hash": "4200e9a883b3129ac282294d8eec5c42e4723d5065f03f51b7d19e281f0286da",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            123,
+            124
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "80bc7f050cc9804d4f829492d328b3b6f800f6350631904ce40ce1c52dbd9e34",
+          "candidate_bases_sha256": "b0c23376a2148f77081f1a15b08f66cd28c2a532d7634c63af7f749c91b371b2",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "NO_GOLD_EDIT_OVERLAP",
+          "gold_source_sha256": null,
+          "gold_output_sha256": null
+        },
+        {
+          "event_id": "Q15D-00082-001",
+          "line_id": 82,
+          "line_hash": "466408ef49acf6276f006dd05ea1d73344734b73ac4124425c6bcb65306ffd27",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            11,
+            12
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "1d6041af9e9da010954349cdd0434c2a9407b4cb2d070dc0f1cacade6e91e117",
+          "candidate_bases_sha256": "3c2b5349dea00c13af0dd8c451fe38ea1a0e40f9bd70e10f72198db328dafaf7",
+          "source_morph": [
+            {
+              "pos": "adj",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "g",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "6e15ea9c6a2fc6791db519084d515b03ba0a8c4fc55f4b499f488fe8b7383b67",
+          "gold_output_sha256": "1a79b5969053374fad65c9ff1e69f3e4b1650457fb23cb20e59a0a6a9ccab298"
+        },
+        {
+          "event_id": "Q15D-00070-003",
+          "line_id": 70,
+          "line_hash": "4694154e21e2667a03932654cb99706657b03673fdac32a5343945a92fe1176c",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            60,
+            61
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "d989693769ce40c42f34f354af7a595844af716845854366316644cd4c81994c",
+          "candidate_bases_sha256": "a926abb31619a906c664101c5249c23fbc600495861a45939c0bc03b1ec75a3f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "NO_GOLD_EDIT_OVERLAP",
+          "gold_source_sha256": null,
+          "gold_output_sha256": null
+        },
+        {
+          "event_id": "Q15D-00070-005",
+          "line_id": 70,
+          "line_hash": "4694154e21e2667a03932654cb99706657b03673fdac32a5343945a92fe1176c",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            150,
+            151
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "d989693769ce40c42f34f354af7a595844af716845854366316644cd4c81994c",
+          "candidate_bases_sha256": "a926abb31619a906c664101c5249c23fbc600495861a45939c0bc03b1ec75a3f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "d989693769ce40c42f34f354af7a595844af716845854366316644cd4c81994c",
+          "gold_output_sha256": "a926abb31619a906c664101c5249c23fbc600495861a45939c0bc03b1ec75a3f"
+        },
+        {
+          "event_id": "Q15D-00103-002",
+          "line_id": 103,
+          "line_hash": "5064399824bd3405c33996d1294f25d824425c428465143d05e957cd5e05138a",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            5,
+            6
+          ],
+          "event_cost": 0.16666666666666666,
+          "source_bases_sha256": "7f2fcbe278669428ee0574c28519752c1fa26b4667c9f380610369d46c2a80a7",
+          "candidate_bases_sha256": "f74a7072f7eeb0463876f5f6dc02b2ebe81afb0496c6c717fc767313568cc593",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "8322df2657d7fc8b4b4bd538335907d367887c405b89d9536da0561bd466e5e4",
+          "gold_output_sha256": "d740ed9b5d4c1848580e5efdb42d5adf3c4f5eb43c01e0ebc06582f0dc247e79"
+        },
+        {
+          "event_id": "Q15D-00015-013",
+          "line_id": 15,
+          "line_hash": "523d0750a89cfa4dc2ff813108f083958c9dd84a02d484ad420ee7540c9857d0",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            139,
+            140
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "a67b6409c22e049d569ad0935e3b9cd817b30cdb1b04b6ad6638601e61468567",
+          "candidate_bases_sha256": "dd19151c4c975f5955d5411dd1b9d60b12f4aebe23e0876d02c23d114638efee",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "a67b6409c22e049d569ad0935e3b9cd817b30cdb1b04b6ad6638601e61468567",
+          "gold_output_sha256": "dd19151c4c975f5955d5411dd1b9d60b12f4aebe23e0876d02c23d114638efee"
+        },
+        {
+          "event_id": "Q15D-00145-021",
+          "line_id": 145,
+          "line_hash": "5665e9405dc07750d6a1cc6100cb52135ed2cbe835e4aedbb85301d11f2baa1a",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            86,
+            87
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "ceac7a455be89f74a33cbdfe389014674c79508f2db494bd45ed6a58d4d09e4b",
+          "candidate_bases_sha256": "4ac59357ecfb62de1526a9a10e82f761f9d7b0570b0611c8f0d40e1680c8a343",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "ceac7a455be89f74a33cbdfe389014674c79508f2db494bd45ed6a58d4d09e4b",
+          "gold_output_sha256": "4ac59357ecfb62de1526a9a10e82f761f9d7b0570b0611c8f0d40e1680c8a343"
+        },
+        {
+          "event_id": "Q15D-00054-003",
+          "line_id": 54,
+          "line_hash": "56687f134ba9fee6d44299ac2ba1765dcb18c3f5f3fb1bbb910e2302a074b276",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            125,
+            126
+          ],
+          "event_cost": 0.16666666666666666,
+          "source_bases_sha256": "a317378e4d9ffae56312f3a10cb43229ffb49a86fe69e5e59c1fd07ad554e287",
+          "candidate_bases_sha256": "672911d0a2495b4faeaacf16b402829c35a1e875d5da96049eeb6606e9f8f0cf",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "p",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "a317378e4d9ffae56312f3a10cb43229ffb49a86fe69e5e59c1fd07ad554e287",
+          "gold_output_sha256": "672911d0a2495b4faeaacf16b402829c35a1e875d5da96049eeb6606e9f8f0cf"
+        },
+        {
+          "event_id": "Q15D-00148-006",
+          "line_id": 148,
+          "line_hash": "5ab1785acffd657102bb6bdd9ccaa4fbea47c2c24c6e2f086dd8e4962626c09b",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            41,
+            42
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "eb07f635d8831be8113e9c609462cf09681365fdeb7f9ea3a24625beea1f9eb2",
+          "candidate_bases_sha256": "306216a9fd1ddb8ef301b1a7f0ff5814955c4329416a09639d25d79e4b6eb44b",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "cf48a80e4016f5c5516163cb71a530201ac5665a5122f62039ad9ee375cdf147",
+          "gold_output_sha256": "6ed5738f71cb1caafd54e14c14742a7747b01f8e9309a07359149c94607ef060"
+        },
+        {
+          "event_id": "Q15D-00136-010",
+          "line_id": 136,
+          "line_hash": "6f862d52a925daa22528ea75fa6150662285542335045cdb394fae5a3a5803d8",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            83,
+            84
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "f64aabbec099723b724459585efcc9a545ca6300c8872a0c17349062142f3dc8",
+          "candidate_bases_sha256": "18f05b49df365026a1a4a1ba8df621d2feeada5455a1ffe12b96d338ee55ab99",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "a319483ec62769dafd3a5d38d653c93c0bb4df3292727dde9cdf81d506786d6f",
+          "gold_output_sha256": "dbea64c2516b61d3440ab5ffb70df2f8417b403d9e5746eb25c2af762573ca90"
+        },
+        {
+          "event_id": "Q15D-00053-002",
+          "line_id": 53,
+          "line_hash": "7152476270da37aae8555aee58e495e7050cc89a0e42e529360accf47f80018b",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            23,
+            24
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "2bde6fbb4678b77a88510c9fa498fdae9cb8cbfa047071452a1489b971acb84b",
+          "candidate_bases_sha256": "3bf6b7bb236ee10a7ac69dec7e68a84df42a7e0be73a9e5de005fa4aa93bb44b",
+          "source_morph": [
+            {
+              "pos": "adj",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "19b1984aef05d248dc73cd259f8855503188b532f5002718b1740becdb20e8db",
+          "gold_output_sha256": "ed8621541b1a1d8beff1af152698a421b9a3a1e6e8b96a3901f974e35c68ae53"
+        },
+        {
+          "event_id": "Q15D-00097-004",
+          "line_id": 97,
+          "line_hash": "79e3983be5209cf9a84613721e40d7bcc6227ab8a9487066d5c96a3936183132",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            76,
+            77
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "e16ab87a2b246e09e98f673c59ca2ac22287a098eb16b77e3d2b60e0f5ccd60c",
+          "candidate_bases_sha256": "5cb5fd91e4b339ed3b7d0408487dd3b42f337cf1d53bcf82dd8c938b554a4e6c",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "e16ab87a2b246e09e98f673c59ca2ac22287a098eb16b77e3d2b60e0f5ccd60c",
+          "gold_output_sha256": "5cb5fd91e4b339ed3b7d0408487dd3b42f337cf1d53bcf82dd8c938b554a4e6c"
+        },
+        {
+          "event_id": "Q15D-00106-008",
+          "line_id": 106,
+          "line_hash": "8007afe2d9159b2b5ad469cda0dece75e287b1d4cd8d53fde08ba3dbbfc8defa",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            190,
+            191
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "9515528190c2eda55388a9cb356484ec5c3f7a623b929a202e7f896badfc9b16",
+          "candidate_bases_sha256": "ce4956ea5e5105886a51d75a70a70afccf58b0683535a09bfb7c8cc4f7f82aaf",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "3c43e5322a8f146c4b54649f506bb462c01dfe242e1504fb26bf3b67a516f772",
+          "gold_output_sha256": "1adf86903e7c59183776e1a4c69d5cc465aa5fd6e02832bd6b646ae2856ba765"
+        },
+        {
+          "event_id": "Q15D-00068-004",
+          "line_id": 68,
+          "line_hash": "870d944a02a46845798015bba5afbffa3ac741cdddf235cca28666df74565e82",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            47,
+            48
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "aab72f02398935ae5419afe0523e5bfcf21d013fe74651bf3d9ab808d318372e",
+          "candidate_bases_sha256": "7026a9531fec26daa8ade477394e8cb5e54a020a0fcd4d9e2cbff975377d520c",
+          "source_morph": [
+            {
+              "pos": "noun_prop",
+              "num": "-",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "u",
+              "stt": "i",
+              "gen": "-",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "aab72f02398935ae5419afe0523e5bfcf21d013fe74651bf3d9ab808d318372e",
+          "gold_output_sha256": "7026a9531fec26daa8ade477394e8cb5e54a020a0fcd4d9e2cbff975377d520c"
+        },
+        {
+          "event_id": "Q15D-00127-014",
+          "line_id": 127,
+          "line_hash": "8bb21385eba4314b182dbb5ad6b7dd8c8e5f61780e26af9de16df9766b9a890c",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            63,
+            64
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "candidate_bases_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "g",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "a403b6f4588c43209fa31272953bf79ccdc469a6a09f62c96a5cc11e743da918",
+          "gold_output_sha256": "9c19d3bca14312474bf924f21fa30c9e5a4655cd33a065374f67c5a927c269e9"
+        },
+        {
+          "event_id": "Q15D-00127-017",
+          "line_id": 127,
+          "line_hash": "8bb21385eba4314b182dbb5ad6b7dd8c8e5f61780e26af9de16df9766b9a890c",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            74,
+            75
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "0159cdb6a9e3be5fac216b69c65feafd51237469ea9b0fb6aec3379c729f3779",
+          "candidate_bases_sha256": "8d89c0ceaf74a4c82f451ef807bb2d06ba04bee9ed8be73b74887c1d28bcabae",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "ccd57dbb355c1fab11e75fc490b1bc5c2f52b68f69e0e699520f3a92288b63c9",
+          "gold_output_sha256": "2b53ef05544794a3b479cd9c62e9bff5a2921567c21b1d5ef66c5a5cd2ff2f5b"
+        },
+        {
+          "event_id": "Q15D-00127-021",
+          "line_id": 127,
+          "line_hash": "8bb21385eba4314b182dbb5ad6b7dd8c8e5f61780e26af9de16df9766b9a890c",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            88,
+            89
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "e4cc8e16eea304cf6b9c16bd99e29f1445d420413174d0879eba37aff5ad5326",
+          "candidate_bases_sha256": "1ba62435a55730fab198634541b093d45d5916fd80f5b7c24f0594ef72a59dd0",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "e4cc8e16eea304cf6b9c16bd99e29f1445d420413174d0879eba37aff5ad5326",
+          "gold_output_sha256": "1ba62435a55730fab198634541b093d45d5916fd80f5b7c24f0594ef72a59dd0"
+        },
+        {
+          "event_id": "Q15D-00004-007",
+          "line_id": 4,
+          "line_hash": "973f19ca288668ba8407170d9f7420f759aedddb87a3c43c7e54deabd45dfe6d",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            88,
+            89
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "d989693769ce40c42f34f354af7a595844af716845854366316644cd4c81994c",
+          "candidate_bases_sha256": "a926abb31619a906c664101c5249c23fbc600495861a45939c0bc03b1ec75a3f",
+          "source_morph": [
+            {
+              "pos": "noun_prop",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "u",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "d989693769ce40c42f34f354af7a595844af716845854366316644cd4c81994c",
+          "gold_output_sha256": "a926abb31619a906c664101c5249c23fbc600495861a45939c0bc03b1ec75a3f"
+        },
+        {
+          "event_id": "Q15D-00026-012",
+          "line_id": 26,
+          "line_hash": "a145415e6263f6dd2b77234b76fc19994198c12f74beaeb17c8d0681e2a1d753",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            68,
+            69
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "candidate_bases_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "gold_output_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f"
+        },
+        {
+          "event_id": "Q15D-00029-004",
+          "line_id": 29,
+          "line_hash": "a894bf54edb33e84f20ae314a62feae2c638b7b1d77246e6df42b52e912fbdb1",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            45,
+            46
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "candidate_bases_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+          "gold_source_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "gold_output_sha256": "90fdcb7b74c2adca9f837b0b1883f3252167518bf0f9c2f110b2e4585f1d884d"
+        },
+        {
+          "event_id": "Q15D-00029-007",
+          "line_id": 29,
+          "line_hash": "a894bf54edb33e84f20ae314a62feae2c638b7b1d77246e6df42b52e912fbdb1",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            83,
+            84
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "80bc7f050cc9804d4f829492d328b3b6f800f6350631904ce40ce1c52dbd9e34",
+          "candidate_bases_sha256": "b0c23376a2148f77081f1a15b08f66cd28c2a532d7634c63af7f749c91b371b2",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "80bc7f050cc9804d4f829492d328b3b6f800f6350631904ce40ce1c52dbd9e34",
+          "gold_output_sha256": "b0c23376a2148f77081f1a15b08f66cd28c2a532d7634c63af7f749c91b371b2"
+        }
+      ]
+    },
+    "FINAL_ALIF_GENERIC": {
+      "candidate_events": 36,
+      "classification_counts": {
+        "EXACT_GOLD_SUPPORTED": 18,
+        "GOLD_OVERLAP_NONEXACT_SPAN": 12,
+        "NO_GOLD_EDIT_OVERLAP": 4,
+        "SAME_GOLD_SPAN_DIFFERENT_OUTPUT": 2
+      },
+      "exact_gold_supported": 18,
+      "needs_contextual_review": 18,
+      "event_audit_hashes": [
+        {
+          "event_id": "Q15D-00112-009",
+          "line_id": 112,
+          "line_hash": "00b7e8357f13150948408ee6697d60cdac2e7adcfe0e5aef713e4c0b67493dce",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            241,
+            242
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "3bc9b7054ba47bc820e013f6d75dcb67a610588c114f1a9aa67c13d666515bab",
+          "candidate_bases_sha256": "bbcec8b557e86729464cac0ef16cefabdf16d91488dd88b959f0bd9f2caf3aec",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "3bc9b7054ba47bc820e013f6d75dcb67a610588c114f1a9aa67c13d666515bab",
+          "gold_output_sha256": "bbcec8b557e86729464cac0ef16cefabdf16d91488dd88b959f0bd9f2caf3aec"
+        },
+        {
+          "event_id": "Q15D-00035-002",
+          "line_id": 35,
+          "line_hash": "08c56eb0b1d685db506d65c6a8be6ca1b00033aa4b2f379c37c874f8968f2050",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            10,
+            11
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "c349b59c70a812349db8dbd5aeb9e5ff3a01eb793760be9037b2e35e0f70627d",
+          "candidate_bases_sha256": "37d4d391a04b7373691541631a4124ba474b930dab1ae5251a884770a2c59e79",
+          "source_morph": [
+            {
+              "pos": "adj",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "g",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "c349b59c70a812349db8dbd5aeb9e5ff3a01eb793760be9037b2e35e0f70627d",
+          "gold_output_sha256": "37d4d391a04b7373691541631a4124ba474b930dab1ae5251a884770a2c59e79"
+        },
+        {
+          "event_id": "Q15D-00035-010",
+          "line_id": 35,
+          "line_hash": "08c56eb0b1d685db506d65c6a8be6ca1b00033aa4b2f379c37c874f8968f2050",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            83,
+            84
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "88dcf246350e34cbe9c7f591b92d358c617c6e9e090fd3ad158bb53d903b5135",
+          "candidate_bases_sha256": "dd48d6a357f06513cf08bb7883ffb1350557e0771897f784086765fac4688cfa",
+          "source_morph": [
+            {
+              "pos": "adj",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "4cef073a16970317c7b8ea07e1032af5e671262efeae270615366ff728692592",
+          "gold_output_sha256": "4fbca722222d9cfd1366e08a4ee4480a14c1ce18cb96ad1ed19ff70dff9b9408"
+        },
+        {
+          "event_id": "Q15D-00035-013",
+          "line_id": 35,
+          "line_hash": "08c56eb0b1d685db506d65c6a8be6ca1b00033aa4b2f379c37c874f8968f2050",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            114,
+            115
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "candidate_bases_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "gold_output_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f"
+        },
+        {
+          "event_id": "Q15D-00039-004",
+          "line_id": 39,
+          "line_hash": "2a71ae93e93b2b1fedaaad34b7c046896a4865d2aa97437228e5b58395dea952",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            46,
+            47
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "candidate_bases_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "d8a18f2bfd4eedd9912cc3591c3e0f2998f5d04fb36230dd245365ca6d3f4cdf",
+          "gold_output_sha256": "4e710494ab8b577eca3794f45ee884d97f8465327a68888c75cb782f93478a08"
+        },
+        {
+          "event_id": "Q15D-00018-008",
+          "line_id": 18,
+          "line_hash": "3d1a68aea3e3b81d0aae14a07fb4a9abe534a853df03e0658cdfce3a104ba408",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            225,
+            226
+          ],
+          "event_cost": 0.14285714285714285,
+          "source_bases_sha256": "6ba02e2c11ad65039c9eb86df072cb094e4c3fb92c4a939bf88433a4982feaf8",
+          "candidate_bases_sha256": "55dcc87ea8c86f07a7100f60f813acdb099d7cc5e705bfe5cf2ecf5ca5f85ad3",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "g",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "NO_GOLD_EDIT_OVERLAP",
+          "gold_source_sha256": null,
+          "gold_output_sha256": null
+        },
+        {
+          "event_id": "Q15D-00013-004",
+          "line_id": 13,
+          "line_hash": "3e4e34869d7a737ed0c64421eb05a159670324919acefd8856f88471e5fc2f01",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            118,
+            119
+          ],
+          "event_cost": 0.3333333333333333,
+          "source_bases_sha256": "e7f1f4344dbb80838c413ae942d5a05a275c1486d35712d7df9a91d6e0c31ebf",
+          "candidate_bases_sha256": "2d323c34022e819500efb48fe7035cfcaba2032a875c93c00b196ea7198670bc",
+          "source_morph": [
+            {
+              "pos": "noun_prop",
+              "num": "-",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "u",
+              "stt": "i",
+              "gen": "-",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "e7f1f4344dbb80838c413ae942d5a05a275c1486d35712d7df9a91d6e0c31ebf",
+          "gold_output_sha256": "2d323c34022e819500efb48fe7035cfcaba2032a875c93c00b196ea7198670bc"
+        },
+        {
+          "event_id": "Q15D-00095-009",
+          "line_id": 95,
+          "line_hash": "3f4d256576fd415467e56be6128506cf9f75fc141ad6086f11f9ac23a2e8a57e",
+          "event_type": "COMPLEX",
+          "source_lexical_span": [
+            91,
+            93
+          ],
+          "event_cost": 0.4,
+          "source_bases_sha256": "90fe966395509a9cac013fd986ecbbc33f059795c48ffd219c988b58169f333e",
+          "candidate_bases_sha256": "06a29f54d0665a4d383f4a1296ea7682e373d20a1e55b9843d577bdab43b2188",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            },
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "NO_GOLD_EDIT_OVERLAP",
+          "gold_source_sha256": null,
+          "gold_output_sha256": null
+        },
+        {
+          "event_id": "Q15D-00023-005",
+          "line_id": 23,
+          "line_hash": "41fdfa5404a5028604e0b132716642e2aecd0a271c5e9fa12468631793409f1a",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            99,
+            100
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "b5cebc68b6be419e8e17ae3a9a1ce113bb505b82aa7902784c6c8b79e822b8b2",
+          "candidate_bases_sha256": "fedc6e7f1bd707c1b1c6ed8518f1cc1fde83802a51f29a8812650186911defb8",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "b5cebc68b6be419e8e17ae3a9a1ce113bb505b82aa7902784c6c8b79e822b8b2",
+          "gold_output_sha256": "fedc6e7f1bd707c1b1c6ed8518f1cc1fde83802a51f29a8812650186911defb8"
+        },
+        {
+          "event_id": "Q15D-00101-011",
+          "line_id": 101,
+          "line_hash": "4200e9a883b3129ac282294d8eec5c42e4723d5065f03f51b7d19e281f0286da",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            123,
+            124
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "80bc7f050cc9804d4f829492d328b3b6f800f6350631904ce40ce1c52dbd9e34",
+          "candidate_bases_sha256": "b0c23376a2148f77081f1a15b08f66cd28c2a532d7634c63af7f749c91b371b2",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "NO_GOLD_EDIT_OVERLAP",
+          "gold_source_sha256": null,
+          "gold_output_sha256": null
+        },
+        {
+          "event_id": "Q15D-00082-001",
+          "line_id": 82,
+          "line_hash": "466408ef49acf6276f006dd05ea1d73344734b73ac4124425c6bcb65306ffd27",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            11,
+            12
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "1d6041af9e9da010954349cdd0434c2a9407b4cb2d070dc0f1cacade6e91e117",
+          "candidate_bases_sha256": "3c2b5349dea00c13af0dd8c451fe38ea1a0e40f9bd70e10f72198db328dafaf7",
+          "source_morph": [
+            {
+              "pos": "adj",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "g",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "6e15ea9c6a2fc6791db519084d515b03ba0a8c4fc55f4b499f488fe8b7383b67",
+          "gold_output_sha256": "1a79b5969053374fad65c9ff1e69f3e4b1650457fb23cb20e59a0a6a9ccab298"
+        },
+        {
+          "event_id": "Q15D-00070-003",
+          "line_id": 70,
+          "line_hash": "4694154e21e2667a03932654cb99706657b03673fdac32a5343945a92fe1176c",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            60,
+            61
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "d989693769ce40c42f34f354af7a595844af716845854366316644cd4c81994c",
+          "candidate_bases_sha256": "a926abb31619a906c664101c5249c23fbc600495861a45939c0bc03b1ec75a3f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "NO_GOLD_EDIT_OVERLAP",
+          "gold_source_sha256": null,
+          "gold_output_sha256": null
+        },
+        {
+          "event_id": "Q15D-00070-005",
+          "line_id": 70,
+          "line_hash": "4694154e21e2667a03932654cb99706657b03673fdac32a5343945a92fe1176c",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            150,
+            151
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "d989693769ce40c42f34f354af7a595844af716845854366316644cd4c81994c",
+          "candidate_bases_sha256": "a926abb31619a906c664101c5249c23fbc600495861a45939c0bc03b1ec75a3f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "d989693769ce40c42f34f354af7a595844af716845854366316644cd4c81994c",
+          "gold_output_sha256": "a926abb31619a906c664101c5249c23fbc600495861a45939c0bc03b1ec75a3f"
+        },
+        {
+          "event_id": "Q15D-00103-002",
+          "line_id": 103,
+          "line_hash": "5064399824bd3405c33996d1294f25d824425c428465143d05e957cd5e05138a",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            5,
+            6
+          ],
+          "event_cost": 0.16666666666666666,
+          "source_bases_sha256": "7f2fcbe278669428ee0574c28519752c1fa26b4667c9f380610369d46c2a80a7",
+          "candidate_bases_sha256": "f74a7072f7eeb0463876f5f6dc02b2ebe81afb0496c6c717fc767313568cc593",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "8322df2657d7fc8b4b4bd538335907d367887c405b89d9536da0561bd466e5e4",
+          "gold_output_sha256": "d740ed9b5d4c1848580e5efdb42d5adf3c4f5eb43c01e0ebc06582f0dc247e79"
+        },
+        {
+          "event_id": "Q15D-00015-013",
+          "line_id": 15,
+          "line_hash": "523d0750a89cfa4dc2ff813108f083958c9dd84a02d484ad420ee7540c9857d0",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            139,
+            140
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "a67b6409c22e049d569ad0935e3b9cd817b30cdb1b04b6ad6638601e61468567",
+          "candidate_bases_sha256": "dd19151c4c975f5955d5411dd1b9d60b12f4aebe23e0876d02c23d114638efee",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "a67b6409c22e049d569ad0935e3b9cd817b30cdb1b04b6ad6638601e61468567",
+          "gold_output_sha256": "dd19151c4c975f5955d5411dd1b9d60b12f4aebe23e0876d02c23d114638efee"
+        },
+        {
+          "event_id": "Q15D-00145-021",
+          "line_id": 145,
+          "line_hash": "5665e9405dc07750d6a1cc6100cb52135ed2cbe835e4aedbb85301d11f2baa1a",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            86,
+            87
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "ceac7a455be89f74a33cbdfe389014674c79508f2db494bd45ed6a58d4d09e4b",
+          "candidate_bases_sha256": "4ac59357ecfb62de1526a9a10e82f761f9d7b0570b0611c8f0d40e1680c8a343",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "ceac7a455be89f74a33cbdfe389014674c79508f2db494bd45ed6a58d4d09e4b",
+          "gold_output_sha256": "4ac59357ecfb62de1526a9a10e82f761f9d7b0570b0611c8f0d40e1680c8a343"
+        },
+        {
+          "event_id": "Q15D-00054-003",
+          "line_id": 54,
+          "line_hash": "56687f134ba9fee6d44299ac2ba1765dcb18c3f5f3fb1bbb910e2302a074b276",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            125,
+            126
+          ],
+          "event_cost": 0.16666666666666666,
+          "source_bases_sha256": "a317378e4d9ffae56312f3a10cb43229ffb49a86fe69e5e59c1fd07ad554e287",
+          "candidate_bases_sha256": "672911d0a2495b4faeaacf16b402829c35a1e875d5da96049eeb6606e9f8f0cf",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "p",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "a317378e4d9ffae56312f3a10cb43229ffb49a86fe69e5e59c1fd07ad554e287",
+          "gold_output_sha256": "672911d0a2495b4faeaacf16b402829c35a1e875d5da96049eeb6606e9f8f0cf"
+        },
+        {
+          "event_id": "Q15D-00148-006",
+          "line_id": 148,
+          "line_hash": "5ab1785acffd657102bb6bdd9ccaa4fbea47c2c24c6e2f086dd8e4962626c09b",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            41,
+            42
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "eb07f635d8831be8113e9c609462cf09681365fdeb7f9ea3a24625beea1f9eb2",
+          "candidate_bases_sha256": "306216a9fd1ddb8ef301b1a7f0ff5814955c4329416a09639d25d79e4b6eb44b",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "cf48a80e4016f5c5516163cb71a530201ac5665a5122f62039ad9ee375cdf147",
+          "gold_output_sha256": "6ed5738f71cb1caafd54e14c14742a7747b01f8e9309a07359149c94607ef060"
+        },
+        {
+          "event_id": "Q15D-00148-008",
+          "line_id": 148,
+          "line_hash": "5ab1785acffd657102bb6bdd9ccaa4fbea47c2c24c6e2f086dd8e4962626c09b",
+          "event_type": "COMPLEX",
+          "source_lexical_span": [
+            46,
+            48
+          ],
+          "event_cost": 0.45,
+          "source_bases_sha256": "60f401e54af3b5cf3f6a42de5e0ec099935d92976b9083070adf16f561198ce0",
+          "candidate_bases_sha256": "bf83d214183b6b8478bf2c63ebdbff585676255e970aa12e0e579f74e37f4525",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            },
+            {
+              "pos": "adj",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "d913e02deed51c9e7da8c2b0f82237d62c22bcb09d5e4f5aa56ce3fe9e9c8363",
+          "gold_output_sha256": "b6ea6c433ac9a4c93f0c30e72fc15a8d2fb304274688f60b091182c4be4e066a"
+        },
+        {
+          "event_id": "Q15D-00136-010",
+          "line_id": 136,
+          "line_hash": "6f862d52a925daa22528ea75fa6150662285542335045cdb394fae5a3a5803d8",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            83,
+            84
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "f64aabbec099723b724459585efcc9a545ca6300c8872a0c17349062142f3dc8",
+          "candidate_bases_sha256": "18f05b49df365026a1a4a1ba8df621d2feeada5455a1ffe12b96d338ee55ab99",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "a319483ec62769dafd3a5d38d653c93c0bb4df3292727dde9cdf81d506786d6f",
+          "gold_output_sha256": "dbea64c2516b61d3440ab5ffb70df2f8417b403d9e5746eb25c2af762573ca90"
+        },
+        {
+          "event_id": "Q15D-00053-002",
+          "line_id": 53,
+          "line_hash": "7152476270da37aae8555aee58e495e7050cc89a0e42e529360accf47f80018b",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            23,
+            24
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "2bde6fbb4678b77a88510c9fa498fdae9cb8cbfa047071452a1489b971acb84b",
+          "candidate_bases_sha256": "3bf6b7bb236ee10a7ac69dec7e68a84df42a7e0be73a9e5de005fa4aa93bb44b",
+          "source_morph": [
+            {
+              "pos": "adj",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "19b1984aef05d248dc73cd259f8855503188b532f5002718b1740becdb20e8db",
+          "gold_output_sha256": "ed8621541b1a1d8beff1af152698a421b9a3a1e6e8b96a3901f974e35c68ae53"
+        },
+        {
+          "event_id": "Q15D-00153-010",
+          "line_id": 153,
+          "line_hash": "738356d4ea397d872fb160ca9c13629de1d49809681b77014a28cb3a66223b35",
+          "event_type": "COMPLEX",
+          "source_lexical_span": [
+            65,
+            67
+          ],
+          "event_cost": 0.45,
+          "source_bases_sha256": "0e63483025a488cb0cd69ab6ad0c0d36239e98f89f47afc714a17931423b5c0a",
+          "candidate_bases_sha256": "1a7aac964a4f1f4901c75245e2f1f318b62b6ac31123438ddcd13ef0dbbc2d15",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "g",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            },
+            {
+              "pos": "adj",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "0e63483025a488cb0cd69ab6ad0c0d36239e98f89f47afc714a17931423b5c0a",
+          "gold_output_sha256": "1a7aac964a4f1f4901c75245e2f1f318b62b6ac31123438ddcd13ef0dbbc2d15"
+        },
+        {
+          "event_id": "Q15D-00153-018",
+          "line_id": 153,
+          "line_hash": "738356d4ea397d872fb160ca9c13629de1d49809681b77014a28cb3a66223b35",
+          "event_type": "COMPLEX",
+          "source_lexical_span": [
+            122,
+            124
+          ],
+          "event_cost": 0.39285714285714285,
+          "source_bases_sha256": "239a2a10f68ba8edf5850b600ba44909e88f2473f0b77b27e0eb1001b8f0943f",
+          "candidate_bases_sha256": "15d15aa059ababe9fd9ddb2ba2de8abeec4d031fa71d3106c3f3d52b0c7d6b9e",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            },
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "g",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "2e27a06687f1f160dfc88c986a852f3b502534f12fa7c88859480f22b9bda84e",
+          "gold_output_sha256": "3d4e479d074b52cb1eac2a41973c4296738572f84390c79d730d0ff71c28d7f8"
+        },
+        {
+          "event_id": "Q15D-00097-004",
+          "line_id": 97,
+          "line_hash": "79e3983be5209cf9a84613721e40d7bcc6227ab8a9487066d5c96a3936183132",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            76,
+            77
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "e16ab87a2b246e09e98f673c59ca2ac22287a098eb16b77e3d2b60e0f5ccd60c",
+          "candidate_bases_sha256": "5cb5fd91e4b339ed3b7d0408487dd3b42f337cf1d53bcf82dd8c938b554a4e6c",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "e16ab87a2b246e09e98f673c59ca2ac22287a098eb16b77e3d2b60e0f5ccd60c",
+          "gold_output_sha256": "5cb5fd91e4b339ed3b7d0408487dd3b42f337cf1d53bcf82dd8c938b554a4e6c"
+        },
+        {
+          "event_id": "Q15D-00106-008",
+          "line_id": 106,
+          "line_hash": "8007afe2d9159b2b5ad469cda0dece75e287b1d4cd8d53fde08ba3dbbfc8defa",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            190,
+            191
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "9515528190c2eda55388a9cb356484ec5c3f7a623b929a202e7f896badfc9b16",
+          "candidate_bases_sha256": "ce4956ea5e5105886a51d75a70a70afccf58b0683535a09bfb7c8cc4f7f82aaf",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "3c43e5322a8f146c4b54649f506bb462c01dfe242e1504fb26bf3b67a516f772",
+          "gold_output_sha256": "1adf86903e7c59183776e1a4c69d5cc465aa5fd6e02832bd6b646ae2856ba765"
+        },
+        {
+          "event_id": "Q15D-00068-004",
+          "line_id": 68,
+          "line_hash": "870d944a02a46845798015bba5afbffa3ac741cdddf235cca28666df74565e82",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            47,
+            48
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "aab72f02398935ae5419afe0523e5bfcf21d013fe74651bf3d9ab808d318372e",
+          "candidate_bases_sha256": "7026a9531fec26daa8ade477394e8cb5e54a020a0fcd4d9e2cbff975377d520c",
+          "source_morph": [
+            {
+              "pos": "noun_prop",
+              "num": "-",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "u",
+              "stt": "i",
+              "gen": "-",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "aab72f02398935ae5419afe0523e5bfcf21d013fe74651bf3d9ab808d318372e",
+          "gold_output_sha256": "7026a9531fec26daa8ade477394e8cb5e54a020a0fcd4d9e2cbff975377d520c"
+        },
+        {
+          "event_id": "Q15D-00127-014",
+          "line_id": 127,
+          "line_hash": "8bb21385eba4314b182dbb5ad6b7dd8c8e5f61780e26af9de16df9766b9a890c",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            63,
+            64
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "candidate_bases_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "g",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "a403b6f4588c43209fa31272953bf79ccdc469a6a09f62c96a5cc11e743da918",
+          "gold_output_sha256": "9c19d3bca14312474bf924f21fa30c9e5a4655cd33a065374f67c5a927c269e9"
+        },
+        {
+          "event_id": "Q15D-00127-017",
+          "line_id": 127,
+          "line_hash": "8bb21385eba4314b182dbb5ad6b7dd8c8e5f61780e26af9de16df9766b9a890c",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            74,
+            75
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "0159cdb6a9e3be5fac216b69c65feafd51237469ea9b0fb6aec3379c729f3779",
+          "candidate_bases_sha256": "8d89c0ceaf74a4c82f451ef807bb2d06ba04bee9ed8be73b74887c1d28bcabae",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_source_sha256": "ccd57dbb355c1fab11e75fc490b1bc5c2f52b68f69e0e699520f3a92288b63c9",
+          "gold_output_sha256": "2b53ef05544794a3b479cd9c62e9bff5a2921567c21b1d5ef66c5a5cd2ff2f5b"
+        },
+        {
+          "event_id": "Q15D-00127-021",
+          "line_id": 127,
+          "line_hash": "8bb21385eba4314b182dbb5ad6b7dd8c8e5f61780e26af9de16df9766b9a890c",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            88,
+            89
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "e4cc8e16eea304cf6b9c16bd99e29f1445d420413174d0879eba37aff5ad5326",
+          "candidate_bases_sha256": "1ba62435a55730fab198634541b093d45d5916fd80f5b7c24f0594ef72a59dd0",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "e4cc8e16eea304cf6b9c16bd99e29f1445d420413174d0879eba37aff5ad5326",
+          "gold_output_sha256": "1ba62435a55730fab198634541b093d45d5916fd80f5b7c24f0594ef72a59dd0"
+        },
+        {
+          "event_id": "Q15D-00066-002",
+          "line_id": 66,
+          "line_hash": "9639bae74b1534d40e0bb9f25094d8f7eaeb836af06cde9a146e92fa285c237c",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            63,
+            64
+          ],
+          "event_cost": 0.16666666666666666,
+          "source_bases_sha256": "0eb19a1245748e078c7a0a81bb632cec14449744332477f0fb902fdce8af980b",
+          "candidate_bases_sha256": "a0382f5444dff6ae613fc407ff64540a729b7741b5b0a791f3d87a9d41c18dbb",
+          "source_morph": [
+            {
+              "pos": "noun_prop",
+              "num": "-",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "u",
+              "stt": "i",
+              "gen": "-",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "0eb19a1245748e078c7a0a81bb632cec14449744332477f0fb902fdce8af980b",
+          "gold_output_sha256": "a0382f5444dff6ae613fc407ff64540a729b7741b5b0a791f3d87a9d41c18dbb"
+        },
+        {
+          "event_id": "Q15D-00004-007",
+          "line_id": 4,
+          "line_hash": "973f19ca288668ba8407170d9f7420f759aedddb87a3c43c7e54deabd45dfe6d",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            88,
+            89
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "d989693769ce40c42f34f354af7a595844af716845854366316644cd4c81994c",
+          "candidate_bases_sha256": "a926abb31619a906c664101c5249c23fbc600495861a45939c0bc03b1ec75a3f",
+          "source_morph": [
+            {
+              "pos": "noun_prop",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "u",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "d989693769ce40c42f34f354af7a595844af716845854366316644cd4c81994c",
+          "gold_output_sha256": "a926abb31619a906c664101c5249c23fbc600495861a45939c0bc03b1ec75a3f"
+        },
+        {
+          "event_id": "Q15D-00019-010",
+          "line_id": 19,
+          "line_hash": "99ef073a728df107950b740874b6ba8078a97bc333b1a60b096ef842a83e4b82",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            163,
+            164
+          ],
+          "event_cost": 0.3333333333333333,
+          "source_bases_sha256": "5d580a04f7859b594b2a9676479ed0d30b4dd652847e45faee32008437270c0e",
+          "candidate_bases_sha256": "998867be6c9081d69ab3fb19b6335e960d1b05f805e850890579bdc738116c2d",
+          "source_morph": [
+            {
+              "pos": "noun_prop",
+              "num": "-",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "u",
+              "stt": "i",
+              "gen": "-",
+              "vox": "na"
+            }
+          ],
+          "classification": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+          "gold_source_sha256": "5d580a04f7859b594b2a9676479ed0d30b4dd652847e45faee32008437270c0e",
+          "gold_output_sha256": "ee4a1aa6767a845073d7fdb21eb5dfb90437f53cea1f143c7153fc00dfe2be08"
+        },
+        {
+          "event_id": "Q15D-00026-012",
+          "line_id": 26,
+          "line_hash": "a145415e6263f6dd2b77234b76fc19994198c12f74beaeb17c8d0681e2a1d753",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            68,
+            69
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "candidate_bases_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "gold_output_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f"
+        },
+        {
+          "event_id": "Q15D-00029-004",
+          "line_id": 29,
+          "line_hash": "a894bf54edb33e84f20ae314a62feae2c638b7b1d77246e6df42b52e912fbdb1",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            45,
+            46
+          ],
+          "event_cost": 0.2,
+          "source_bases_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "candidate_bases_sha256": "5e90d76daed8a7238526d22c742ac9569a9e5c8fd2664d0ffaa773211397332f",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+          "gold_source_sha256": "7bae2cf89daee44c390b4cf35661bdbde155f66821e1903c20ef856d62274d58",
+          "gold_output_sha256": "90fdcb7b74c2adca9f837b0b1883f3252167518bf0f9c2f110b2e4585f1d884d"
+        },
+        {
+          "event_id": "Q15D-00029-007",
+          "line_id": 29,
+          "line_hash": "a894bf54edb33e84f20ae314a62feae2c638b7b1d77246e6df42b52e912fbdb1",
+          "event_type": "SUB",
+          "source_lexical_span": [
+            83,
+            84
+          ],
+          "event_cost": 0.25,
+          "source_bases_sha256": "80bc7f050cc9804d4f829492d328b3b6f800f6350631904ce40ce1c52dbd9e34",
+          "candidate_bases_sha256": "b0c23376a2148f77081f1a15b08f66cd28c2a532d7634c63af7f749c91b371b2",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "80bc7f050cc9804d4f829492d328b3b6f800f6350631904ce40ce1c52dbd9e34",
+          "gold_output_sha256": "b0c23376a2148f77081f1a15b08f66cd28c2a532d7634c63af7f749c91b371b2"
+        },
+        {
+          "event_id": "Q15D-00074-001",
+          "line_id": 74,
+          "line_hash": "a9422b227e37d5bdf23c275b9a9d9b7af110038cfcb98d37282e86c68a079096",
+          "event_type": "COMPLEX",
+          "source_lexical_span": [
+            5,
+            7
+          ],
+          "event_cost": 0.3666666666666667,
+          "source_bases_sha256": "4dc97de4deae1f493be00b8aebf71f5f9575d7baed712f3593f4b1e5dccea83b",
+          "candidate_bases_sha256": "21d6f149d4c710583f00b28821dc32d75f94de5306672126a74b3b61c2844855",
+          "source_morph": [
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "a",
+              "stt": "c",
+              "gen": "m",
+              "vox": "na"
+            },
+            {
+              "pos": "noun",
+              "num": "s",
+              "per": "na",
+              "asp": "na",
+              "mod": "na",
+              "cas": "n",
+              "stt": "i",
+              "gen": "m",
+              "vox": "na"
+            }
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_sha256": "4dc97de4deae1f493be00b8aebf71f5f9575d7baed712f3593f4b1e5dccea83b",
+          "gold_output_sha256": "21d6f149d4c710583f00b28821dc32d75f94de5306672126a74b3b61c2844855"
+        }
+      ]
+    }
+  },
+  "nun_family_auto_accept": false,
+  "qalb15_test_read": false,
+  "qalb_text_persisted": false,
+  "interpretation_contract": {
+    "EXACT_GOLD_SUPPORTED": "automatic support",
+    "SAME_GOLD_SPAN_DIFFERENT_OUTPUT": "contextual review required",
+    "GOLD_OVERLAP_NONEXACT_SPAN": "contextual/alignment review required",
+    "NO_GOLD_EDIT_OVERLAP": "contextual review required; not automatically wrong"
+  }
+}
