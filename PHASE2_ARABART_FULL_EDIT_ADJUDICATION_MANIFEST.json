@@ -1,0 +1,27 @@
+{
+  "repository": "abdullah-s-mahmood/sweet-runtime-parity",
+  "branch": "phase2-arabic-eval",
+  "phase": "Phase 2 — Full AraBART Edit Event Adjudication",
+  "source_queue": "PHASE2_ARABART_FULL_EDIT_ADJUDICATION_QUEUE.jsonl",
+  "source_queue_blob_sha": "bb4893235e3eaad79ceed51df0ddcfb70951f978",
+  "event_rows": 106,
+  "passages": 36,
+  "event_types": {
+    "SUB": 96,
+    "COMPLEX": 10
+  },
+  "reused_prior_substitution_judgments": 56,
+  "new_full_event_judgments": 50,
+  "pass2_same_agent": true,
+  "independent_human_validation": false,
+  "source_modified": false,
+  "safety_stack_modified": false,
+  "sealed": false,
+  "phase3": false,
+  "files": [
+    "PHASE2_ARABART_FULL_EDIT_ADJUDICATION.jsonl",
+    "PHASE2_ARABART_FULL_EDIT_ADJUDICATION_RESULTS.json",
+    "PHASE2_ARABART_FULL_EDIT_ADJUDICATION_REVIEW.md",
+    "PHASE2_ARABART_FULL_EDIT_ADJUDICATION_MANIFEST.json"
+  ]
+}
