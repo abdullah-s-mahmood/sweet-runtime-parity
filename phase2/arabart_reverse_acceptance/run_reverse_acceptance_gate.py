@@ -69,7 +69,18 @@ def runtime_features(r,complex_by_passage):
     # changes as a hard veto.
     src_internal=sum(ch in HAMZA for ch in src[1:])
     out_internal=sum(ch in HAMZA for ch in out[1:])
-    internal_hamza_loss=src_internal>out_internal
+
+    def dehamza_seats(text):
+        table={"أ":"ا","إ":"ا","آ":"ا","ؤ":"و","ئ":"ي","ء":""}
+        return "".join(table.get(ch,ch) for ch in text)
+
+    # Hard-veto hamza loss only when the candidate is otherwise the same lexical
+    # form after normalizing hamza seats. Broad lexical rewrites must go to
+    # REVIEW rather than being mislabeled as destructive hamza deletion.
+    internal_hamza_loss=(
+        src_internal>out_internal
+        and dehamza_seats(src)==dehamza_seats(out)
+    )
 
     one_n_insert=(dist==1 and out_n==src_n+1)
     one_n_delete=(dist==1 and src_n==out_n+1)
