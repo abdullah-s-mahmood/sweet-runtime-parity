@@ -70,3 +70,26 @@ Do not:
 - use gold/QALB corrected text in runtime;
 - use QALB TEST;
 - start Phase 3.
+
+
+## Pre-registered diagnostic interpretation thresholds
+
+These thresholds are fixed before the diagnostic result is inspected:
+
+- **STRONG_SIGNAL**:
+  - wrong-correction capture >= 75% (at least 6 of the 8 known wrong events), and
+  - supported-event retention >= 90% (at least 130 of 144 supported events).
+
+- **PROMISING_SIGNAL**:
+  - wrong-correction capture >= 50% (at least 4 of 8), and
+  - supported-event retention >= 90%.
+
+- **WEAK_OR_UNHELPFUL**:
+  - wrong-correction capture < 50%, or
+  - supported-event retention < 90%.
+
+Secondary reporting:
+- unsafe capture across WRONG + PARTIAL + UNNECESSARY;
+- precision of the residual KEEP_ACCEPT stream.
+
+Even STRONG_SIGNAL does not authorize auto-accept because this is the already consumed 50-line cross-corpus slice. A promising/strong veto must be frozen and retested unchanged on a fresh disjoint population.
