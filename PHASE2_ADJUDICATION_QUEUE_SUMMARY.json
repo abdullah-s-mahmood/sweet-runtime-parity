@@ -1,0 +1,15 @@
+{
+  "status": "READY_FOR_QUALITY_ADJUDICATION",
+  "passage_clusters": 41,
+  "target_rows": 150,
+  "full_target_states": {
+    "ERROR_PRESERVED_LOCAL": 65,
+    "TARGET_CHANGED_OTHER": 56,
+    "RECOVERED_EXACT_ALIGNED": 29
+  },
+  "passages_with_target_changed_other": 33,
+  "passages_with_recovered_target": 25,
+  "passages_with_preserved_error": 35,
+  "all_full_outputs_differ_from_source": true,
+  "primary_review_unit": "passage_id"
+}
