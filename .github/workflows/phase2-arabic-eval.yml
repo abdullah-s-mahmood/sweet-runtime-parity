@@ -106,6 +106,13 @@ jobs:
           set -o pipefail
           python phase2/arabic_eval/prototype_surgical_renderer.py 2>&1 | tee artifacts/SURGICAL_RENDERER_CONSOLE.txt
 
+      - name: Build surgical renderer adjudication queue
+        run: |
+          set -o pipefail
+          python phase2/arabic_eval/build_surgical_adjudication_queue.py 2>&1 | tee artifacts/SURGICAL_ADJUDICATION_QUEUE_CONSOLE.txt
+          cp PHASE2_SURGICAL_ADJUDICATION_QUEUE.jsonl artifacts/
+          cp PHASE2_SURGICAL_ADJUDICATION_QUEUE_SUMMARY.json artifacts/
+
       - name: Build passage-clustered adjudication queue
         run: |
           set -o pipefail
@@ -117,7 +124,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add PHASE2_ADJUDICATION_QUEUE.jsonl PHASE2_ADJUDICATION_QUEUE_SUMMARY.json
+          git add PHASE2_ADJUDICATION_QUEUE.jsonl PHASE2_ADJUDICATION_QUEUE_SUMMARY.json PHASE2_SURGICAL_ADJUDICATION_QUEUE.jsonl PHASE2_SURGICAL_ADJUDICATION_QUEUE_SUMMARY.json
           if git diff --cached --quiet; then
             echo "Adjudication queue unchanged."
           else
