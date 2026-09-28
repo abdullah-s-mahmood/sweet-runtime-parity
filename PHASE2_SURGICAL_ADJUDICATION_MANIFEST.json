@@ -1,0 +1,106 @@
+{
+  "repository": "abdullah-s-mahmood/sweet-runtime-parity",
+  "branch": "phase2-arabic-eval",
+  "commit_sha": "5eaa0c9bd86d9a71c818b57ae7050bd2f02c02c9",
+  "commit_sha_semantics": "The commit containing the ten evidence files; the manifest is added in the next commit to avoid a self-referential hash.",
+  "canonical_queue_commit": "dc5c776b94d9e287c7a393c6c5f2e4fc01920c9a",
+  "passage_count": 41,
+  "target_count": 150,
+  "applied_edits_adjudicated": 60,
+  "suppressed_hazards_audited": 100,
+  "review_required": {
+    "applied_edits": 0,
+    "targets": 1,
+    "hazards": 0,
+    "passages": 4
+  },
+  "useful_corrections_lost_confirmed": 0,
+  "possibly_useful_but_unsafe": 2,
+  "files_created": [
+    {
+      "path": "PHASE2_SURGICAL_APPLIED_EDIT_ADJUDICATION.jsonl",
+      "git_blob_sha": "ca8b301aadcb36b1a28e2618bf9824c79c908730"
+    },
+    {
+      "path": "PHASE2_SURGICAL_TARGET_ADJUDICATION.jsonl",
+      "git_blob_sha": "097db19e654fce24cab50c7bb571e059e98cf80f"
+    },
+    {
+      "path": "PHASE2_SURGICAL_SUPPRESSED_HAZARD_AUDIT.jsonl",
+      "git_blob_sha": "97a7b3b2bea7402887eb284c91da1025d941b9b2"
+    },
+    {
+      "path": "PHASE2_SURGICAL_ADJUDICATION_RESULTS.json",
+      "git_blob_sha": "682bccc456a298498ef159bc92396ef83aa88ddd"
+    },
+    {
+      "path": "PHASE2_SURGICAL_RAW_COMPARISON.json",
+      "git_blob_sha": "285adae75c4f99472125365ad60cdc12c26d3300"
+    },
+    {
+      "path": "PHASE2_SURGICAL_REVIEW_BURDEN.json",
+      "git_blob_sha": "a3d79100b33d1ff74de42b71f203891bdc58981a"
+    },
+    {
+      "path": "PHASE2_SURGICAL_NOPNX2_PNX_ABLATION.json",
+      "git_blob_sha": "cb81e4ae899a2d44ee900cc671a172fd6a4fd936"
+    },
+    {
+      "path": "PHASE2_SURGICAL_FAILURE_TAXONOMY.md",
+      "git_blob_sha": "049c9b108897ebcef12d5b63b38f67a059b5e29c"
+    },
+    {
+      "path": "SURGICAL_ADJUDICATION_RESEARCH_UPDATE.md",
+      "git_blob_sha": "160fa35d1c600103fbe052bc7bccb2145d46c6c3"
+    },
+    {
+      "path": "SURGICAL_ADJUDICATION_BRAINSTORM.md",
+      "git_blob_sha": "1f3bf5fa9d7ad7c23fe16cdfe05eb238120c8adb"
+    }
+  ],
+  "source_research_references_used": [
+    {
+      "path": "PHASE2_SURGICAL_ADJUDICATION_QUEUE.jsonl",
+      "git_blob_sha": "2f8721a38189fda54b1c9039188419ac4d270ff0"
+    },
+    {
+      "path": "PHASE2_SURGICAL_ADJUDICATION_QUEUE_SUMMARY.json",
+      "git_blob_sha": "d9a0483eef0f94f0d426761a7b40b70cf60eadec"
+    },
+    {
+      "path": "PHASE2_ADJUDICATION_RESULTS.json",
+      "git_blob_sha": "9f77cedcdec565f92f86fca8c703720ba8f1a643"
+    },
+    {
+      "path": "phase1/iteration4/source/Nahw-Passage.json",
+      "use": "published local corrections and explanations"
+    },
+    {
+      "url": "https://aclanthology.org/2025.acl-long.875/"
+    },
+    {
+      "url": "https://aclanthology.org/2026.eacl-long.296/"
+    },
+    {
+      "url": "https://aclanthology.org/2021.acl-long.84/"
+    },
+    {
+      "url": "https://aclanthology.org/2025.acl-long.10/"
+    },
+    {
+      "url": "https://aclanthology.org/2026.bea-1.60/"
+    },
+    {
+      "url": "https://aclanthology.org/2024.lrec-main.240/"
+    },
+    {
+      "url": "https://aclanthology.org/2023.emnlp-main.396/"
+    },
+    {
+      "url": "https://aclanthology.org/2026.findings-eacl.22/"
+    }
+  ],
+  "quality_control": "Two same-agent passes. This is not independent human validation.",
+  "denominator_note": "60 applied model edits and 100 suppressed hazards within 41 passage clusters; 150 correlated target rows.",
+  "immutable_inputs_untouched": true
+}
