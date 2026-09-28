@@ -170,15 +170,65 @@ def main():
     }
     args.output.write_text(json.dumps(output, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
 
+    # Passage-level edit activity so repeated target rows do not inflate aggressiveness counts.
+    by_passage = {}
+    for row in rows:
+        by_passage.setdefault(row["passage_id"], row)
+
+    def non_keep(stage_obj):
+        return sum(1 for x in stage_obj["raw_labels"] if x != "K*")
+
+    activity = {}
+    activity_specs = {
+        "nopnx_iteration_1": (
+            lambda r:r["source"],
+            lambda r:r["nopnx_iteration_1"]["output"],
+            lambda r:r["nopnx_iteration_1"],
+        ),
+        "nopnx_iteration_2_incremental": (
+            lambda r:r["nopnx_iteration_1"]["output"],
+            lambda r:r["nopnx_iteration_2"]["output"],
+            lambda r:r["nopnx_iteration_2"],
+        ),
+        "pnx_only": (
+            lambda r:r["source"],
+            lambda r:r["pnx_only"]["output"],
+            lambda r:r["pnx_only"],
+        ),
+        "full_pnx_incremental": (
+            lambda r:r["nopnx_iteration_2"]["output"],
+            lambda r:r["full_pnx_iteration_1"]["output"],
+            lambda r:r["full_pnx_iteration_1"],
+        ),
+    }
+    for name,(get_in,get_out,get_obj) in activity_specs.items():
+        passage_rows=list(by_passage.values())
+        changed=[r["passage_id"] for r in passage_rows if get_out(r)!=get_in(r)]
+        edit_counts=[non_keep(get_obj(r)) for r in passage_rows]
+        changed_with_zero_labels=[
+            r["passage_id"] for r in passage_rows
+            if get_out(r)!=get_in(r) and non_keep(get_obj(r))==0
+        ]
+        activity[name]={
+            "unique_passages":41,
+            "changed_passages":len(changed),
+            "unchanged_passages":41-len(changed),
+            "total_non_keep_raw_labels":sum(edit_counts),
+            "mean_non_keep_labels_per_passage":sum(edit_counts)/41,
+            "passages_changed_with_zero_non_keep_labels":changed_with_zero_labels,
+        }
+
     compact = {
         name: {
             "recovered": s["recovered"],
             "rate": round(s["targeted_recovery_rate"], 6),
             "states": s["states"],
+            "changed_target_rows": s["output_changed_from_source_targets"],
+            "exact_single_target_reference_matches": s["exact_single_target_reference_matches"],
             "by_category": {k: {"n":v["n"],"recovered":v["recovered"],"rate":round(v["recovery_rate"],6)} for k,v in s["by_category_hint"].items()},
         } for name,s in summaries.items()
     }
-    print(json.dumps({"summary_v2": compact, "stage_contribution": gains}, ensure_ascii=False))
+    print(json.dumps({"summary_v2": compact, "stage_contribution": gains, "passage_edit_activity":activity}, ensure_ascii=False))
 
 if __name__ == "__main__":
     main()
