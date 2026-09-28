@@ -63,13 +63,16 @@ def dediac_narrow(text):
 
 
 def split_affixes(word):
-    # Keep Arabic/Latin punctuation outside morphology core. Most data use only
-    # trailing Arabic punctuation, but preserve both sides generically.
+    # Unicode-category based: Arabic comma/semicolon/full stop live inside the
+    # Arabic block but are punctuation, so block-range tests are unsafe.
+    def core_char(ch):
+        cat=unicodedata.category(ch)
+        return ch=="\u0640" or cat.startswith("L") or cat.startswith("N") or cat=="Mn"
     start=0
-    while start<len(word) and not (word[start].isalnum() or "\u0600"<=word[start]<="\u06FF"):
+    while start<len(word) and not core_char(word[start]):
         start+=1
     end=len(word)
-    while end>start and not (word[end-1].isalnum() or "\u0600"<=word[end-1]<="\u06FF" or is_mark(word[end-1])):
+    while end>start and not core_char(word[end-1]):
         end-=1
     return word[:start],word[start:end],word[end:]
 
@@ -157,18 +160,59 @@ def analysis_to_minimal_surface(source_core,candidate_core,analysis_diac):
     return "".join(out)
 
 
+FATHATAN="\u064b"
+
+
+def lexical_core_for_eval(text):
+    # Evaluation only: strip surrounding punctuation but never alter source
+    # output. Unicode NFC is safe here; Arabic combining marks remain explicit.
+    _pre,core,_suf=split_affixes(unicodedata.normalize("NFC",text))
+    return core
+
+
+def ending_fathatan_present(cs):
+    """Treat ...<base>+ً+ا and ...<base>+ا+ً as equivalent tanween-alif spellings."""
+    if not cs:
+        return False
+    bases=[c for c,m in cs]
+    if not bases or bases[-1]!="ا":
+        return False
+    last_marks=cs[-1][1]
+    prev_marks=cs[-2][1] if len(cs)>=2 else ""
+    return FATHATAN in last_marks or FATHATAN in prev_marks
+
+
 def explicit_target_compatible(surface,target):
-    """Allow source-preserved extra marks but require every target mark."""
-    sp=[(c,m) for c,m in clusters(surface)]
-    tp=[(c,m) for c,m in clusters(target)]
+    """Evaluation-only compatibility.
+
+    - surrounding punctuation is ignored;
+    - target-explicit marks must be present;
+    - extra source-preserved marks are allowed;
+    - Arabic fathatan+terminal-alif ordering (ًا vs اً) is treated as an
+      orthographic serialization equivalence, not as a source rewrite.
+    """
+    sp=clusters(lexical_core_for_eval(surface))
+    tp=clusters(lexical_core_for_eval(target))
     if "".join(c for c,m in sp)!="".join(c for c,m in tp):
         return False
-    if len(sp)!=len(tp): return False
-    for (sc,sm),(tc,tm) in zip(sp,tp):
-        if sc!=tc: return False
+    if len(sp)!=len(tp):
+        return False
+    sfath=ending_fathatan_present(sp)
+    tfath=ending_fathatan_present(tp)
+    for i,((sc,sm),(tc,tm)) in enumerate(zip(sp,tp)):
+        if sc!=tc:
+            return False
         for mark in tm:
-            if mark not in sm:
+            if mark==FATHATAN and i in {len(tp)-1,len(tp)-2} and tp[-1][0]=="ا":
+                if not sfath:
+                    return False
+            elif mark not in sm:
                 return False
+    # If target explicitly has terminal fathatan, require it somewhere in the
+    # equivalent terminal-alif pair. Extra surface fathatan remains allowed only
+    # when target lacks an explicit mark because the source may be more vocalized.
+    if tfath and not sfath:
+        return False
     return True
 
 
@@ -433,6 +477,7 @@ def main():
             "normalized_result_word":arow["normalized_result_word"],
             "candidate_base":candidate_base,
             "source_base":source_base,
+            "source_prefix":split_affixes(source_word)[0],
             "source_suffix":source_suffix,
             "direct_patch":direct,
             "morph_analysis_count":len(analyses),
@@ -460,11 +505,12 @@ def main():
     auto_target_correct=sum(bool(x["target_eval"] and x["target_eval"]["runtime_surface_compatible"]) for x in runtime_auto)
 
     result={
-        "status":"PHASE2_MORPH_SURFACE_GATE_V2_DEVELOPMENT",
-        "gate_version":2,
+        "status":"PHASE2_MORPH_SURFACE_GATE_V3_DEVELOPMENT",
+        "gate_version":3,
         "not_sealed":True,
         "no_source_corpus_modified":True,
-        "runtime_policy_uses_nahw_gold":False,
+        "morphology_inference_uses_nahw_gold":False,
+        "surface_gate_uses_prior_candidate_adjudication":True,
         "camel_tools_version":getattr(camel_tools,"__version__","unknown"),
         "morphology_database":"calima-msa-r13",
         "ranking_prior":{
@@ -474,12 +520,14 @@ def main():
         },
         "source_preservation_policy":{
             "broad_normalization":False,
+            "evaluation_only_fathatan_alif_equivalence":True,
+            "evaluation_ignores_surrounding_punctuation":True,
             "unaffected_source_marks_preserved":True,
             "edit_neighborhood_marks_from_morphology":True,
             "ambiguity":"abstain or review",
         },
         "summary":dict(stats),
-        "runtime_auto_candidates":{
+        "development_surface_proposals":{
             "count":len(runtime_auto),
             "supported_or_alternative":auto_supported,
             "partial":auto_partial,
@@ -493,7 +541,8 @@ def main():
             "The MLE disambiguator is out-of-context; contextual BERT is evaluated separately.",
             "BERT top analysis is a morphosyntactic ranking signal, not proof that a correction candidate is linguistically correct.",
             "Human candidate class is used only to bound development realization and evaluate safety, not to claim a deployable verifier.",
-            "Nahw target corrections are joined only after runtime proposals for evaluation.",
+            "Nahw target corrections are joined only after morphology/surface proposals for evaluation.",
+            "Prior candidate adjudication bounds this development realization gate; it is not a deployable runtime verifier.",
             "CAMeL Analyzer default normalization is countered by exact narrow-base filtering, but morphology analyses are not syntactic proof.",
         ],
     }
@@ -531,7 +580,7 @@ def main():
     compact={
         "status":result["status"],
         "summary":result["summary"],
-        "runtime_auto_candidates":result["runtime_auto_candidates"],
+        "development_surface_proposals":result["development_surface_proposals"],
         "target_evaluation":{k:v for k,v in target_out.items() if k!="targets"},
     }
     print(json.dumps(compact,ensure_ascii=False))
