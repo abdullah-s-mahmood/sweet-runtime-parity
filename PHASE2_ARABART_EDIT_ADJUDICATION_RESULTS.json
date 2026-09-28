@@ -1,0 +1,89 @@
+{
+  "status": "PHASE2_ARABART_ONLY_SUBSTITUTION_ADJUDICATION_COMPLETE",
+  "development_only": true,
+  "rows": 67,
+  "passages": 32,
+  "pass1_completed": true,
+  "pass2_same_agent": true,
+  "independent_human_validation": false,
+  "source_text_modified": false,
+  "class_counts": {
+    "WRONG_CORRECTION": 33,
+    "SUPPORTED_CORRECTION": 27,
+    "SUPPORTED_ALTERNATIVE": 2,
+    "UNNECESSARY_EDIT": 2,
+    "PARTIAL_CORRECTION": 2,
+    "ALIGNMENT_UNCERTAIN": 1
+  },
+  "severity_counts": {
+    "MEDIUM": 33,
+    "LOW": 26,
+    "HIGH": 8
+  },
+  "supported_total": 29,
+  "supported_rate": 0.43283582089552236,
+  "target_overlap": {
+    "rows": 23,
+    "classes": {
+      "SUPPORTED_CORRECTION": 17,
+      "WRONG_CORRECTION": 3,
+      "SUPPORTED_ALTERNATIVE": 2,
+      "PARTIAL_CORRECTION": 1
+    },
+    "supported": 19,
+    "supported_rate": 0.8260869565217391,
+    "wrong": 3,
+    "wrong_rate": 0.13043478260869565
+  },
+  "non_target": {
+    "rows": 44,
+    "classes": {
+      "WRONG_CORRECTION": 30,
+      "SUPPORTED_CORRECTION": 10,
+      "UNNECESSARY_EDIT": 2,
+      "PARTIAL_CORRECTION": 1,
+      "ALIGNMENT_UNCERTAIN": 1
+    },
+    "supported": 10,
+    "supported_rate": 0.22727272727272727,
+    "wrong": 30,
+    "wrong_rate": 0.6818181818181818
+  },
+  "failure_type_counts": {
+    "ORTHOGRAPHY_TA_MARBUTA_TO_HA": 10,
+    "HAMZA_DELETION": 12,
+    "ALIF_MAQSURA_YA_CONFUSION": 3,
+    "HAMZA_CORRECTION": 3,
+    "SPEECH_ACT_MEANING_CHANGE": 1,
+    "FIVE_VERBS_NUN": 6,
+    "CASE_HAMZA": 2,
+    "WEAK_VERB": 3,
+    "NONMINIMAL_LEXICAL_ALTERNATIVE": 2,
+    "LEXICAL_MEANING_CHANGE": 2,
+    "UNNECESSARY_NUMBER_CHANGE": 1,
+    "CASE_AGREEMENT": 5,
+    "UNNECESSARY_LEXICAL_SUBSTITUTION": 1,
+    "CASE_ENDING": 4,
+    "PERSON_MOOD_CHANGE": 1,
+    "DUAL_AGREEMENT": 1,
+    "SOURCE_MARK_LOSS": 1,
+    "NUMBER_CASE": 1,
+    "DUAL_CASE": 1,
+    "AGREEMENT_PARTIAL": 1,
+    "GENDER_MOOD_CHANGE": 1,
+    "ORTHOGRAPHIC_LEXICAL_CORRUPTION": 1,
+    "MULTIWORD_ALIGNMENT_MERGE": 1,
+    "DIPTOTE_TANWEEN": 1,
+    "SYNTACTIC_COMPLEMENTIZER_CHANGE": 1,
+    "TENSE_LEXICAL_CHANGE": 1
+  },
+  "key_findings": [
+    "AraBART-only substitutions are mixed: useful new correction coverage coexists with substantial over-correction.",
+    "Target-overlap rows are strongly enriched for supported edits, while non-target rows are dominated by wrong orthographic/lexical changes.",
+    "Ta-marbuta-to-ha and hamza deletion are recurrent deterministic veto opportunities.",
+    "Lexical/speech-act substitutions can be grammatically fluent but unsafe for strict-fidelity auto-application.",
+    "One-to-one alignment can be false when the true event is multiword; ولا بد -> ولابد is a concrete example.",
+    "Human development support labels do not authorize runtime acceptance and must never become runtime features."
+  ],
+  "next_gate": "Build target-agnostic typed veto/evidence features and evaluate them retrospectively; then adjudicate the full 106-event AraBART audit including complex events before any freeze."
+}
