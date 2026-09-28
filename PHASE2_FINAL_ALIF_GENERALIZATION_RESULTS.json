@@ -1,0 +1,660 @@
+{
+  "status": "PHASE2_FINAL_ALIF_DISJOINT_VALIDATION_GOLD_COMPARED",
+  "external_corpus": "ZAEBUC-v1.0 Arabic TRAIN deterministic 30-line raw-hash slice",
+  "external_license": "CC BY-NC-SA 4.0",
+  "selection_seed": "phase2-final-alif-v1",
+  "selected_line_ids": [
+    75,
+    105,
+    74,
+    114,
+    52,
+    134,
+    129,
+    108,
+    9,
+    104,
+    24,
+    109,
+    2,
+    15,
+    3,
+    142,
+    16,
+    85,
+    145,
+    124,
+    32,
+    37,
+    133,
+    20,
+    6,
+    11,
+    91,
+    41,
+    118,
+    93
+  ],
+  "runtime_decisions_materialized_before_gold": true,
+  "policy_frozen_before_gold": true,
+  "nun_family_auto_accept": false,
+  "runtime_events": 728,
+  "policy_results": {
+    "FINAL_ALIF_EVENT_ONLY": {
+      "accepted": 10,
+      "classification_counts": {
+        "EXACT_GOLD_SUPPORTED": 8,
+        "GOLD_OVERLAP_NONEXACT_SPAN": 1,
+        "NO_GOLD_EDIT_OVERLAP": 1
+      },
+      "exact_gold_supported": 8,
+      "needs_manual_adjudication": 2,
+      "accepted_details": [
+        {
+          "event_id": "ZTR-105-006",
+          "original_line_id": 105,
+          "event_type": "SUB",
+          "source_text": "مثال",
+          "candidate_output": "مثالا",
+          "source_lexical_span": [
+            55,
+            56
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              55,
+              56
+            ],
+            "source_bases": [
+              "مثال"
+            ],
+            "gold_bases": [
+              "مثالا"
+            ],
+            "gold_words": [
+              "مثالا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.2
+          },
+          "event_cost": 0.2
+        },
+        {
+          "event_id": "ZTR-114-006",
+          "original_line_id": 114,
+          "event_type": "SUB",
+          "source_text": "سلبي",
+          "candidate_output": "سلبيا",
+          "source_lexical_span": [
+            71,
+            72
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_event": {
+            "source_lexical_span": [
+              70,
+              72
+            ],
+            "source_bases": [
+              "تكون",
+              "سلبي"
+            ],
+            "gold_bases": [
+              "يكون",
+              "سلبيا"
+            ],
+            "gold_words": [
+              "يكون",
+              "سلبيا"
+            ],
+            "primitive_ops": [
+              "SUB",
+              "SUB"
+            ],
+            "cost": 0.45
+          },
+          "event_cost": 0.2
+        },
+        {
+          "event_id": "ZTR-052-012",
+          "original_line_id": 52,
+          "event_type": "SUB",
+          "source_text": "ضرر",
+          "candidate_output": "ضررا",
+          "source_lexical_span": [
+            78,
+            79
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              78,
+              79
+            ],
+            "source_bases": [
+              "ضرر"
+            ],
+            "gold_bases": [
+              "ضررا"
+            ],
+            "gold_words": [
+              "ضررا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.25
+          },
+          "event_cost": 0.25
+        },
+        {
+          "event_id": "ZTR-104-004",
+          "original_line_id": 104,
+          "event_type": "SUB",
+          "source_text": "شخص",
+          "candidate_output": "شخصا",
+          "source_lexical_span": [
+            20,
+            21
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              20,
+              21
+            ],
+            "source_bases": [
+              "شخص"
+            ],
+            "gold_bases": [
+              "شخصا"
+            ],
+            "gold_words": [
+              "شخصا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.25
+          },
+          "event_cost": 0.25
+        },
+        {
+          "event_id": "ZTR-015-007",
+          "original_line_id": 15,
+          "event_type": "SUB",
+          "source_text": "ليطلعو",
+          "candidate_output": "ليطلعوا",
+          "source_lexical_span": [
+            34,
+            35
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              34,
+              35
+            ],
+            "source_bases": [
+              "ليطلعو"
+            ],
+            "gold_bases": [
+              "ليطلعوا"
+            ],
+            "gold_words": [
+              "ليطلعوا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.14285714285714285
+          },
+          "event_cost": 0.14285714285714285
+        },
+        {
+          "event_id": "ZTR-015-025",
+          "original_line_id": 15,
+          "event_type": "SUB",
+          "source_text": "انشغال",
+          "candidate_output": "انشغالا",
+          "source_lexical_span": [
+            138,
+            139
+          ],
+          "classification": "NO_GOLD_EDIT_OVERLAP",
+          "gold_event": null,
+          "event_cost": 0.14285714285714285
+        },
+        {
+          "event_id": "ZTR-003-036",
+          "original_line_id": 3,
+          "event_type": "COMPLEX",
+          "source_text": "مجتمع كامل",
+          "candidate_output": "مجتمعا كاملا",
+          "source_lexical_span": [
+            196,
+            198
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              196,
+              198
+            ],
+            "source_bases": [
+              "مجتمع",
+              "كامل"
+            ],
+            "gold_bases": [
+              "مجتمعا",
+              "كاملا"
+            ],
+            "gold_words": [
+              "مجتمعا",
+              "كاملا"
+            ],
+            "primitive_ops": [
+              "SUB",
+              "SUB"
+            ],
+            "cost": 0.3666666666666667
+          },
+          "event_cost": 0.3666666666666667
+        },
+        {
+          "event_id": "ZTR-145-004",
+          "original_line_id": 145,
+          "event_type": "SUB",
+          "source_text": "مسيطر",
+          "candidate_output": "مسيطرا",
+          "source_lexical_span": [
+            22,
+            23
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              22,
+              23
+            ],
+            "source_bases": [
+              "مسيطر"
+            ],
+            "gold_bases": [
+              "مسيطرا"
+            ],
+            "gold_words": [
+              "مسيطرا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.16666666666666666
+          },
+          "event_cost": 0.16666666666666666
+        },
+        {
+          "event_id": "ZTR-145-034",
+          "original_line_id": 145,
+          "event_type": "SUB",
+          "source_text": "إيجابي",
+          "candidate_output": "إيجابيا",
+          "source_lexical_span": [
+            207,
+            208
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              207,
+              208
+            ],
+            "source_bases": [
+              "إيجابي"
+            ],
+            "gold_bases": [
+              "إيجابيا"
+            ],
+            "gold_words": [
+              "إيجابيا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.14285714285714285
+          },
+          "event_cost": 0.14285714285714285
+        },
+        {
+          "event_id": "ZTR-011-002",
+          "original_line_id": 11,
+          "event_type": "SUB",
+          "source_text": "أتو",
+          "candidate_output": "أتوا",
+          "source_lexical_span": [
+            12,
+            13
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              12,
+              13
+            ],
+            "source_bases": [
+              "أتو"
+            ],
+            "gold_bases": [
+              "أتوا"
+            ],
+            "gold_words": [
+              "أتوا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.25
+          },
+          "event_cost": 0.25
+        }
+      ]
+    },
+    "FINAL_ALIF_SINGLE_ONLY": {
+      "accepted": 9,
+      "classification_counts": {
+        "EXACT_GOLD_SUPPORTED": 7,
+        "GOLD_OVERLAP_NONEXACT_SPAN": 1,
+        "NO_GOLD_EDIT_OVERLAP": 1
+      },
+      "exact_gold_supported": 7,
+      "needs_manual_adjudication": 2,
+      "accepted_details": [
+        {
+          "event_id": "ZTR-105-006",
+          "original_line_id": 105,
+          "event_type": "SUB",
+          "source_text": "مثال",
+          "candidate_output": "مثالا",
+          "source_lexical_span": [
+            55,
+            56
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              55,
+              56
+            ],
+            "source_bases": [
+              "مثال"
+            ],
+            "gold_bases": [
+              "مثالا"
+            ],
+            "gold_words": [
+              "مثالا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.2
+          },
+          "event_cost": 0.2
+        },
+        {
+          "event_id": "ZTR-114-006",
+          "original_line_id": 114,
+          "event_type": "SUB",
+          "source_text": "سلبي",
+          "candidate_output": "سلبيا",
+          "source_lexical_span": [
+            71,
+            72
+          ],
+          "classification": "GOLD_OVERLAP_NONEXACT_SPAN",
+          "gold_event": {
+            "source_lexical_span": [
+              70,
+              72
+            ],
+            "source_bases": [
+              "تكون",
+              "سلبي"
+            ],
+            "gold_bases": [
+              "يكون",
+              "سلبيا"
+            ],
+            "gold_words": [
+              "يكون",
+              "سلبيا"
+            ],
+            "primitive_ops": [
+              "SUB",
+              "SUB"
+            ],
+            "cost": 0.45
+          },
+          "event_cost": 0.2
+        },
+        {
+          "event_id": "ZTR-052-012",
+          "original_line_id": 52,
+          "event_type": "SUB",
+          "source_text": "ضرر",
+          "candidate_output": "ضررا",
+          "source_lexical_span": [
+            78,
+            79
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              78,
+              79
+            ],
+            "source_bases": [
+              "ضرر"
+            ],
+            "gold_bases": [
+              "ضررا"
+            ],
+            "gold_words": [
+              "ضررا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.25
+          },
+          "event_cost": 0.25
+        },
+        {
+          "event_id": "ZTR-104-004",
+          "original_line_id": 104,
+          "event_type": "SUB",
+          "source_text": "شخص",
+          "candidate_output": "شخصا",
+          "source_lexical_span": [
+            20,
+            21
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              20,
+              21
+            ],
+            "source_bases": [
+              "شخص"
+            ],
+            "gold_bases": [
+              "شخصا"
+            ],
+            "gold_words": [
+              "شخصا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.25
+          },
+          "event_cost": 0.25
+        },
+        {
+          "event_id": "ZTR-015-007",
+          "original_line_id": 15,
+          "event_type": "SUB",
+          "source_text": "ليطلعو",
+          "candidate_output": "ليطلعوا",
+          "source_lexical_span": [
+            34,
+            35
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              34,
+              35
+            ],
+            "source_bases": [
+              "ليطلعو"
+            ],
+            "gold_bases": [
+              "ليطلعوا"
+            ],
+            "gold_words": [
+              "ليطلعوا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.14285714285714285
+          },
+          "event_cost": 0.14285714285714285
+        },
+        {
+          "event_id": "ZTR-015-025",
+          "original_line_id": 15,
+          "event_type": "SUB",
+          "source_text": "انشغال",
+          "candidate_output": "انشغالا",
+          "source_lexical_span": [
+            138,
+            139
+          ],
+          "classification": "NO_GOLD_EDIT_OVERLAP",
+          "gold_event": null,
+          "event_cost": 0.14285714285714285
+        },
+        {
+          "event_id": "ZTR-145-004",
+          "original_line_id": 145,
+          "event_type": "SUB",
+          "source_text": "مسيطر",
+          "candidate_output": "مسيطرا",
+          "source_lexical_span": [
+            22,
+            23
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              22,
+              23
+            ],
+            "source_bases": [
+              "مسيطر"
+            ],
+            "gold_bases": [
+              "مسيطرا"
+            ],
+            "gold_words": [
+              "مسيطرا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.16666666666666666
+          },
+          "event_cost": 0.16666666666666666
+        },
+        {
+          "event_id": "ZTR-145-034",
+          "original_line_id": 145,
+          "event_type": "SUB",
+          "source_text": "إيجابي",
+          "candidate_output": "إيجابيا",
+          "source_lexical_span": [
+            207,
+            208
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              207,
+              208
+            ],
+            "source_bases": [
+              "إيجابي"
+            ],
+            "gold_bases": [
+              "إيجابيا"
+            ],
+            "gold_words": [
+              "إيجابيا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.14285714285714285
+          },
+          "event_cost": 0.14285714285714285
+        },
+        {
+          "event_id": "ZTR-011-002",
+          "original_line_id": 11,
+          "event_type": "SUB",
+          "source_text": "أتو",
+          "candidate_output": "أتوا",
+          "source_lexical_span": [
+            12,
+            13
+          ],
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_event": {
+            "source_lexical_span": [
+              12,
+              13
+            ],
+            "source_bases": [
+              "أتو"
+            ],
+            "gold_bases": [
+              "أتوا"
+            ],
+            "gold_words": [
+              "أتوا"
+            ],
+            "primitive_ops": [
+              "SUB"
+            ],
+            "cost": 0.25
+          },
+          "event_cost": 0.25
+        }
+      ]
+    }
+  },
+  "interpretation_contract": {
+    "EXACT_GOLD_SUPPORTED": "automatic support",
+    "SAME_GOLD_SPAN_DIFFERENT_OUTPUT": "manual contextual adjudication required",
+    "GOLD_OVERLAP_NONEXACT_SPAN": "manual contextual/alignment adjudication required",
+    "NO_GOLD_EDIT_OVERLAP": "manual contextual adjudication required"
+  },
+  "zaebuc_test_read": false,
+  "license_note": "Only bounded accepted-event excerpts persisted; full external corpus is not committed."
+}
