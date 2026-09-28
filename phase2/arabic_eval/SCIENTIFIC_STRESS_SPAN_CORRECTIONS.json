@@ -1,0 +1,16 @@
+{
+  "status": "DEVELOPMENT_METADATA_CORRECTION",
+  "source_file_unchanged": "SCIENTIFIC_STRESS_CASES.jsonl",
+  "rationale": "Correct a project-authored protected-span annotation that was not an exact substring of its source. This does not change source text or any human-gold data.",
+  "corrections": {
+    "SCI-DEV-11": {
+      "original_protected": [
+        "المعادلة (3)"
+      ],
+      "effective_protected": [
+        "للمعادلة (3)"
+      ],
+      "reason": "The source contains the attached Arabic preposition in 'للمعادلة (3)'; the original protected string was not source-exact."
+    }
+  }
+}
