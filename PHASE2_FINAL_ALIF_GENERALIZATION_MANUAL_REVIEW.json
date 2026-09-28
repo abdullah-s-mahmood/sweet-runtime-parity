@@ -1,0 +1,37 @@
+{
+  "status": "PHASE2_FINAL_ALIF_CONTEXTUAL_REVIEW_COMPLETE",
+  "date": "2026-09-28",
+  "external_corpus": "ZAEBUC-v1.0 Arabic TRAIN deterministic 30-line raw-hash slice",
+  "independent_human_validation": false,
+  "same_agent_contextual_review": true,
+  "items": [
+    {
+      "event_id": "ZTR-114-006",
+      "source_excerpt": "تأثيرها على المجتمع قد تكون إيجابي أم سلبي",
+      "candidate_local_edit": "سلبي → سلبيا",
+      "gold_context": "تأثيره على المجتمع قد يكون إيجابيا أم سلبيا",
+      "class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "rationale": "The adjective/predicate requires accusative realization under يكون/تكون. Gold alignment grouped the neighboring verb correction with the adjective, but the local case correction itself is supported."
+    },
+    {
+      "event_id": "ZTR-015-025",
+      "source_excerpt": "سواء انشغال في شيئ جيد ام سئ",
+      "candidate_local_edit": "انشغال → انشغالا",
+      "gold_local_edit": "no edit at this token",
+      "class": "REVIEW_REQUIRED",
+      "severity": "MEDIUM",
+      "failure_type": "CONTEXT_SENSITIVE_ACCUSATIVE_ALIF",
+      "rationale": "A final-alif append is not self-justifying here. The construction after سواء is syntactically malformed/ambiguous and the full corrected reference does not license this local change. It must not be auto-accepted without syntactic evidence."
+    }
+  ],
+  "derived_policy_implication": {
+    "do_not_promote_generic_final_alif_add": true,
+    "split_surface_family": [
+      "ACCUSATIVE_OR_TANWIN_ALIF_CONTEXT_SENSITIVE",
+      "PLURAL_WAW_DIFFERENTIATING_ALIF_ORTHOGRAPHIC"
+    ],
+    "nun_family_auto_accept": false
+  },
+  "zaebuc_test_read": false
+}
