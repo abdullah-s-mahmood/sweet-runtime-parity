@@ -1,0 +1,70 @@
+{
+  "status": "PHASE2_CONTEXTUAL_CONTRADICTION_DIAGNOSTIC_EVALUATED",
+  "diagnostic_only": true,
+  "same_consumed_cross_corpus_slice": true,
+  "runtime_features_materialized_before_manual_labels_loaded": true,
+  "rows": 159,
+  "policy_results": {
+    "GED_CONTRADICTION": {
+      "review": 9,
+      "keep_accept": 150,
+      "supported_retained": 136,
+      "supported_total": 144,
+      "supported_retention": 0.9444444444444444,
+      "wrong_captured": 1,
+      "wrong_total": 8,
+      "wrong_capture_recall": 0.125,
+      "unsafe_captured": 1,
+      "unsafe_total": 15,
+      "unsafe_capture_recall": 0.06666666666666667,
+      "wrong_remaining_in_keep": 7,
+      "partial_remaining_in_keep": 6,
+      "unnecessary_remaining_in_keep": 1,
+      "keep_accept_supported_precision": 0.9066666666666666,
+      "review_ids": [
+        "XAGR-503bca5abde1e04baa63",
+        "XAGR-58f817748ec431bf99da",
+        "XAGR-b51b012eecc7d16247f8",
+        "XAGR-6e78d299277e08fe1d48",
+        "XAGR-ea8601328a1b2981b608",
+        "XAGR-a25447152159c17dd698",
+        "XAGR-24b1ee2089a4ae9f1aa6",
+        "XAGR-6771095c1d68f4f3c6c8",
+        "XAGR-7e139de080e78c29ee7f"
+      ]
+    },
+    "GED_OR_NO_MORPH": {
+      "review": 9,
+      "keep_accept": 150,
+      "supported_retained": 136,
+      "supported_total": 144,
+      "supported_retention": 0.9444444444444444,
+      "wrong_captured": 1,
+      "wrong_total": 8,
+      "wrong_capture_recall": 0.125,
+      "unsafe_captured": 1,
+      "unsafe_total": 15,
+      "unsafe_capture_recall": 0.06666666666666667,
+      "wrong_remaining_in_keep": 7,
+      "partial_remaining_in_keep": 6,
+      "unnecessary_remaining_in_keep": 1,
+      "keep_accept_supported_precision": 0.9066666666666666,
+      "review_ids": [
+        "XAGR-503bca5abde1e04baa63",
+        "XAGR-58f817748ec431bf99da",
+        "XAGR-b51b012eecc7d16247f8",
+        "XAGR-6e78d299277e08fe1d48",
+        "XAGR-ea8601328a1b2981b608",
+        "XAGR-a25447152159c17dd698",
+        "XAGR-24b1ee2089a4ae9f1aa6",
+        "XAGR-6771095c1d68f4f3c6c8",
+        "XAGR-7e139de080e78c29ee7f"
+      ]
+    }
+  },
+  "backoff_diagnostic": {
+    "rows": 2
+  },
+  "promotion_rule": "No policy can be promoted from this diagnostic; any promising veto must be frozen and tested on a fresh disjoint slice.",
+  "qalb15_test_read": false
+}
