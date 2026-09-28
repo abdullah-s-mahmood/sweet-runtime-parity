@@ -1,0 +1,73 @@
+name: Phase 2 Agreement Risk-Family Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/RISK_FAMILY_AUDIT_PROTOCOL.md"
+      - "phase2/generalization/RISK_FAMILY_RESEARCH_START.md"
+      - "phase2/generalization/RISK_FAMILY_BRAINSTORM_START.md"
+      - "phase2/generalization/run_risk_family_audit.py"
+      - "phase2/generalization/evaluate_risk_family_audit.py"
+      - ".github/workflows/phase2-risk-family-audit.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  risk-family-audit:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Download and verify frozen agreement artifact
+        run: |
+          mkdir -p artifacts/agreement
+          gh run download 36484171517 --repo "$GITHUB_REPOSITORY" --name phase2-cross-model-agreement-internal --dir artifacts/agreement
+          test -f artifacts/agreement/artifacts/CROSS_MODEL_AGREEMENT_FEATURES.jsonl
+          test "$(sha256sum artifacts/agreement/artifacts/CROSS_MODEL_AGREEMENT_FEATURES.jsonl | awk '{print $1}')" = "d66a5ab3c6b9e1527b7a1a59ddce0f843a864281e70106cacd58d00315741c4c"
+      - name: Freeze gold-blind risk families
+        run: |
+          PYTHONPATH=. python phase2/generalization/run_risk_family_audit.py
+          test -f artifacts/RISK_FAMILY_FEATURES.jsonl
+          test -f artifacts/RISK_FAMILY_RUNTIME.json
+          sha256sum artifacts/RISK_FAMILY_FEATURES.jsonl artifacts/RISK_FAMILY_RUNTIME.json > artifacts/RISK_FAMILY_FROZEN_SHA256.txt
+      - name: Evaluate frozen family assignments
+        run: |
+          PYTHONPATH=. python phase2/generalization/evaluate_risk_family_audit.py
+          test -f PHASE2_RISK_FAMILY_AUDIT_RESULTS.json
+      - name: Persist result safely
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_RISK_FAMILY_AUDIT_RESULTS.json
+          if git diff --cached --quiet; then
+            echo unchanged
+          else
+            git commit -m "Record agreement risk-family audit [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+      - name: Upload safe audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-risk-family-audit
+          path: |
+            artifacts/RISK_FAMILY_FEATURES.jsonl
+            artifacts/RISK_FAMILY_RUNTIME.json
+            artifacts/RISK_FAMILY_FROZEN_SHA256.txt
+            PHASE2_RISK_FAMILY_AUDIT_RESULTS.json
+          if-no-files-found: warn
+          retention-days: 7
