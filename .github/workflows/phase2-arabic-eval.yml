@@ -1,0 +1,105 @@
+name: Phase 2 Arabic SWEET Development Evaluation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/arabic_eval/**"
+      - ".github/workflows/phase2-arabic-eval.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  arabic-development-eval:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout Phase 2 evaluation branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+
+      - name: Install pinned CPU PyTorch
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+
+      - name: Install pinned runtime dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip check
+
+      - name: Validate transferred Phase 2 inputs
+        run: |
+          python phase2/arabic_eval/validate_transfer.py
+
+      - name: Clone and pin official CAMeL-Lab text-editing code
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git -C upstream/text-editing rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Download official SWEET model files
+        env:
+          HF_HUB_DISABLE_TELEMETRY: "1"
+        run: |
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          specs = {
+              "models/nopnx": "CAMeL-Lab/text-editing-zaebuc-nopnx",
+              "models/pnx": "CAMeL-Lab/text-editing-zaebuc-pnx",
+          }
+          allow = [
+              "config.json",
+              "pytorch_model.bin",
+              "special_tokens_map.json",
+              "tokenizer_config.json",
+              "vocab.txt",
+          ]
+          for target, repo_id in specs.items():
+              print(f"Downloading {repo_id} -> {target}")
+              snapshot_download(repo_id=repo_id, local_dir=target, allow_patterns=allow)
+          PY
+
+      - name: Run official SWEET development inference
+        env:
+          PYTHONUNBUFFERED: "1"
+          HF_HUB_DISABLE_TELEMETRY: "1"
+        run: |
+          mkdir -p artifacts
+          python phase2/arabic_eval/run_official_sweet_development.py 2>&1 | tee artifacts/OFFICIAL_DEVELOPMENT_CONSOLE.txt
+
+      - name: Analyze targeted recovery and collateral edits
+        run: |
+          python phase2/arabic_eval/analyze_official_development.py --bootstrap 2>&1 | tee artifacts/TARGETED_ANALYSIS_CONSOLE.txt
+
+      - name: Record workflow provenance
+        if: always()
+        run: |
+          {
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "branch=${GITHUB_REF_NAME}"
+            echo "commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+          } > artifacts/GITHUB_ACTIONS_PROVENANCE.txt
+
+      - name: Upload Phase 2 development evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-arabic-development-evidence
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 30
