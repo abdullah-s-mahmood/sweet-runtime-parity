@@ -40,7 +40,7 @@ DEV = ARABIC_EVAL / "DEVELOPMENT_TARGETS.jsonl"
 SCI = ARABIC_EVAL / "SCIENTIFIC_STRESS_CASES.jsonl"
 SCI_CORR = ARABIC_EVAL / "SCIENTIFIC_STRESS_SPAN_CORRECTIONS.json"
 
-GED_DIR = ROOT / "models" / "ged"
+GED_DIR = ROOT / "models" / "ged_zaebuc"
 
 
 def read_jsonl(path: Path):
@@ -418,63 +418,3 @@ def main():
         variants_out = {}
         for name, selector in sels.items():
             out, selected, abstained = apply_selected_edits(source, candidates, selector)
-            variants_out[name] = {
-                "output": out,
-                "selected_edits": selected,
-                "abstained_edits": abstained,
-                "protected_exact": all(p in out for p in protected),
-                "source_exact_unchanged": out == source,
-                "contains_UNK": "[UNK]" in out,
-            }
-            z = sci_summary[name]
-            z["cases"] += 1
-            z["protected_exact"] += int(variants_out[name]["protected_exact"])
-            z["source_exact_unchanged"] += int(variants_out[name]["source_exact_unchanged"])
-            z["unk_outputs"] += int(variants_out[name]["contains_UNK"])
-        sci_results.append({
-            "case_id": row["case_id"],
-            "category": row["category"],
-            "protected": protected,
-            "variants": variants_out,
-        })
-
-    result = {
-        "status": "PHASE2_SELECTIVE_SURGICAL_GATE_DEVELOPMENT",
-        "not_sealed": True,
-        "policy_origin": "Retrospective development policy from prior adjudication; this run implements it prospectively with runtime-observable features only.",
-        "runtime": {
-            "python": platform.python_version(),
-            "torch": torch.__version__,
-            "transformers": transformers.__version__,
-            "upstream_commit": upstream_commit,
-        },
-        "operation_policy": {
-            "INSERT": "allow only non-whitespace insertion",
-            "REPLACE": "allow when top1 confidence >= 0.80",
-            "DELETE": "abstain",
-            "OTHER": "abstain",
-        },
-        "variant_summaries": summaries,
-        "ged_published_target_localization": {
-            "warning": "Recall against published target locations only; non-target GED predictions are not counted as false positives.",
-            "summary": ged_recall,
-            "targets": target_ged,
-        },
-        "scientific_stress_summary": dict(sci_summary),
-        "scientific_cases": sci_results,
-        "passages": raw_passages,
-        "candidate_edits": edit_records,
-    }
-    out = ART / "SELECTIVE_SURGICAL_GATE_RAW.json"
-    out.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({
-        "status": result["status"],
-        "variant_summaries": summaries,
-        "ged_target_recall": ged_recall,
-        "scientific_stress_summary": dict(sci_summary),
-        "output": str(out),
-    }, ensure_ascii=False))
-
-
-if __name__ == "__main__":
-    main()
