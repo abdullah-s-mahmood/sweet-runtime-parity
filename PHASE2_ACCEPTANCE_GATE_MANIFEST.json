@@ -1,0 +1,23 @@
+{
+  "repository": "abdullah-s-mahmood/sweet-runtime-parity",
+  "branch": "phase2-arabic-eval",
+  "workflow_source_commit": "2b032bb6aaeb9a6e7bb5953746791302684fa6fd",
+  "run_id": "36459266906",
+  "phase": "Phase 2 — Independent Candidate Acceptance Gate",
+  "arabic_gec_upstream_commit": "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf",
+  "runtime_candidates": 79,
+  "surgical_candidates": 60,
+  "normalized_candidates": 19,
+  "arabart_new_unadjudicated_edits": 67,
+  "runtime_decisions_materialized_before_human_labels": true,
+  "sealed": false,
+  "phase3": false,
+  "files": [
+    "PHASE2_ARABART_SECOND_GENERATOR.json",
+    "PHASE2_ARABART_MODEL_REVISIONS.json",
+    "PHASE2_ACCEPTANCE_RUNTIME_FEATURES.jsonl",
+    "PHASE2_ACCEPTANCE_POLICY_RESULTS.json",
+    "PHASE2_ACCEPTANCE_GATE_SUMMARY.json",
+    "PHASE2_ARABART_NEW_EDIT_QUEUE.jsonl"
+  ]
+}

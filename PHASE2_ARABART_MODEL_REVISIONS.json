@@ -1,0 +1,10 @@
+{
+  "ged_qalb14": {
+    "repo": "CAMeL-Lab/camelbert-msa-qalb14-ged-13",
+    "revision": "447179dc63d186e4bff09a993e90e73ad622d571"
+  },
+  "gec_qalb14_morph_ged13": {
+    "repo": "CAMeL-Lab/arabart-qalb14-gec-ged-13",
+    "revision": "410588a318d988cdcfdbf64cf5745ed4adea0f6a"
+  }
+}
