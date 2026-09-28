@@ -3,7 +3,9 @@
   "targets_touched": 13,
   "any_morph_surface_compatible": 6,
   "mle_top1_compatible": 4,
-  "runtime_surface_compatible": 2,
+  "bert_top1_compatible": 5,
+  "bert_top2_consensus_compatible": 5,
+  "runtime_surface_compatible": 5,
   "targets": [
     {
       "candidate_id": "NORM-21-9-0",
@@ -11,6 +13,8 @@
       "published_correction": "كريمٌ",
       "runtime_surface_compatible": false,
       "mle_top1_compatible": false,
+      "bert_top1_compatible": false,
+      "bert_top2_consensus_compatible": false,
       "any_morph_surface_compatible": false,
       "compatible_morph_surface_count": 0,
       "previous_target_impact": "PARTIAL_RECOVERY"
@@ -21,6 +25,8 @@
       "published_correction": "مالًا",
       "runtime_surface_compatible": false,
       "mle_top1_compatible": false,
+      "bert_top1_compatible": false,
+      "bert_top2_consensus_compatible": false,
       "any_morph_surface_compatible": false,
       "compatible_morph_surface_count": 0,
       "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -31,6 +37,8 @@
       "published_correction": "وساعيًا",
       "runtime_surface_compatible": false,
       "mle_top1_compatible": false,
+      "bert_top1_compatible": false,
+      "bert_top2_consensus_compatible": false,
       "any_morph_surface_compatible": false,
       "compatible_morph_surface_count": 0,
       "previous_target_impact": "WRONG_CORRECTION"
@@ -41,6 +49,8 @@
       "published_correction": "اشتدادًا",
       "runtime_surface_compatible": false,
       "mle_top1_compatible": false,
+      "bert_top1_compatible": false,
+      "bert_top2_consensus_compatible": false,
       "any_morph_surface_compatible": false,
       "compatible_morph_surface_count": 0,
       "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -51,6 +61,8 @@
       "published_correction": "نفسًا",
       "runtime_surface_compatible": false,
       "mle_top1_compatible": false,
+      "bert_top1_compatible": false,
+      "bert_top2_consensus_compatible": false,
       "any_morph_surface_compatible": false,
       "compatible_morph_surface_count": 0,
       "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -61,6 +73,8 @@
       "published_correction": "استشعِر",
       "runtime_surface_compatible": true,
       "mle_top1_compatible": false,
+      "bert_top1_compatible": false,
+      "bert_top2_consensus_compatible": false,
       "any_morph_surface_compatible": false,
       "compatible_morph_surface_count": 0,
       "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -71,6 +85,8 @@
       "published_correction": "باسمٌ",
       "runtime_surface_compatible": false,
       "mle_top1_compatible": false,
+      "bert_top1_compatible": false,
+      "bert_top2_consensus_compatible": false,
       "any_morph_surface_compatible": true,
       "compatible_morph_surface_count": 1,
       "previous_target_impact": "PARTIAL_RECOVERY"
@@ -81,6 +97,8 @@
       "published_correction": "خَطرًا",
       "runtime_surface_compatible": false,
       "mle_top1_compatible": false,
+      "bert_top1_compatible": false,
+      "bert_top2_consensus_compatible": false,
       "any_morph_surface_compatible": false,
       "compatible_morph_surface_count": 0,
       "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -91,6 +109,8 @@
       "published_correction": "واقعٌ",
       "runtime_surface_compatible": false,
       "mle_top1_compatible": false,
+      "bert_top1_compatible": true,
+      "bert_top2_consensus_compatible": true,
       "any_morph_surface_compatible": true,
       "compatible_morph_surface_count": 1,
       "previous_target_impact": "PARTIAL_RECOVERY"
@@ -101,6 +121,8 @@
       "published_correction": "يقدِّمون",
       "runtime_surface_compatible": true,
       "mle_top1_compatible": true,
+      "bert_top1_compatible": true,
+      "bert_top2_consensus_compatible": true,
       "any_morph_surface_compatible": true,
       "compatible_morph_surface_count": 2,
       "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -109,8 +131,10 @@
       "candidate_id": "NORM-81-9-0",
       "target_id": "NAHW-ITEM-412",
       "published_correction": "المصريُّون",
-      "runtime_surface_compatible": false,
+      "runtime_surface_compatible": true,
       "mle_top1_compatible": true,
+      "bert_top1_compatible": true,
+      "bert_top2_consensus_compatible": true,
       "any_morph_surface_compatible": true,
       "compatible_morph_surface_count": 1,
       "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -119,8 +143,10 @@
       "candidate_id": "NORM-81-18-0",
       "target_id": "NAHW-ITEM-413",
       "published_correction": "الإرهابيِّين",
-      "runtime_surface_compatible": false,
+      "runtime_surface_compatible": true,
       "mle_top1_compatible": true,
+      "bert_top1_compatible": true,
+      "bert_top2_consensus_compatible": true,
       "any_morph_surface_compatible": true,
       "compatible_morph_surface_count": 1,
       "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -129,8 +155,10 @@
       "candidate_id": "NORM-100-8-0",
       "target_id": "NAHW-ITEM-506",
       "published_correction": "يرضى",
-      "runtime_surface_compatible": false,
+      "runtime_surface_compatible": true,
       "mle_top1_compatible": true,
+      "bert_top1_compatible": true,
+      "bert_top2_consensus_compatible": true,
       "any_morph_surface_compatible": true,
       "compatible_morph_surface_count": 2,
       "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"

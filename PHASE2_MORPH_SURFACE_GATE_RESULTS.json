@@ -1,13 +1,15 @@
 {
-  "status": "PHASE2_MORPH_SURFACE_GATE_DEVELOPMENT",
+  "status": "PHASE2_MORPH_SURFACE_GATE_V2_DEVELOPMENT",
+  "gate_version": 2,
   "not_sealed": true,
   "no_source_corpus_modified": true,
   "runtime_policy_uses_nahw_gold": false,
   "camel_tools_version": "1.5.2",
   "morphology_database": "calima-msa-r13",
   "ranking_prior": {
-    "name": "CAMeL MLE MSA",
-    "important_limit": "word-based/out-of-context; not contextual syntactic proof"
+    "mle": "CAMeL MLE MSA (word-based/out-of-context)",
+    "contextual": "CAMeL BERTUnfactoredDisambiguator MSA",
+    "important_limit": "Contextual morphology ranks analyses; it is not a grammatical-correction verifier and never edits source directly."
   },
   "source_preservation_policy": {
     "broad_normalization": false,
@@ -18,7 +20,7 @@
   "summary": {
     "candidates": 19,
     "class_UNNECESSARY_EDIT": 1,
-    "decision_ABSTAIN": 6,
+    "decision_REVIEW_OR_ABSTAIN": 7,
     "morph_analyzable": 18,
     "morph_ambiguous_multiple_surfaces": 14,
     "morph_unique_surface": 4,
@@ -26,22 +28,24 @@
     "targets_touched": 13,
     "target_any_morph_compatible": 6,
     "target_mle_top1_compatible": 4,
-    "target_runtime_surface_compatible": 2,
+    "target_bert_top1_compatible": 5,
+    "target_bert_top2_consensus_compatible": 5,
+    "target_runtime_surface_compatible": 5,
     "class_SUPPORTED_CORRECTION": 12,
-    "decision_REVIEW_OR_ABSTAIN": 8,
+    "decision_REVIEW_CONTEXTUAL_MORPH_TOP1": 2,
     "class_WRONG_CORRECTION": 1,
-    "decision_AUTO_CANDIDATE_DIRECT_PATCH": 3,
-    "decision_AUTO_CANDIDATE_MORPH_CONSENSUS": 1,
-    "decision_REVIEW_MORPH_MLE_CONSENSUS": 1,
+    "decision_DEVELOPMENT_AUTO_DIRECT_PATCH": 2,
+    "decision_DEVELOPMENT_CONTEXTUAL_MORPH_CONSENSUS": 7,
+    "decision_REVIEW_MLE_TOP1": 1,
     "class_SUPPORTED_ALTERNATIVE": 1
   },
   "runtime_auto_candidates": {
-    "count": 4,
-    "supported_or_alternative": 4,
+    "count": 9,
+    "supported_or_alternative": 9,
     "partial": 0,
     "wrong": 0,
     "unnecessary": 0,
-    "target_compatible": 1,
+    "target_compatible": 5,
     "rows": [
       {
         "candidate_id": "NORM-45-17-0",
@@ -53,6 +57,25 @@
           "published_correction": "اشتدادًا",
           "runtime_surface_compatible": false,
           "mle_top1_compatible": false,
+          "bert_top1_compatible": false,
+          "bert_top2_consensus_compatible": false,
+          "any_morph_surface_compatible": false,
+          "compatible_morph_surface_count": 0,
+          "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
+        }
+      },
+      {
+        "candidate_id": "NORM-54-34-0",
+        "source_word": "نَفْس",
+        "surface": "نَفْساً",
+        "candidate_class": "SUPPORTED_CORRECTION",
+        "target_eval": {
+          "target_id": "NAHW-ITEM-277",
+          "published_correction": "نفسًا",
+          "runtime_surface_compatible": false,
+          "mle_top1_compatible": false,
+          "bert_top1_compatible": false,
+          "bert_top2_consensus_compatible": false,
           "any_morph_surface_compatible": false,
           "compatible_morph_surface_count": 0,
           "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -68,24 +91,104 @@
           "published_correction": "استشعِر",
           "runtime_surface_compatible": true,
           "mle_top1_compatible": false,
+          "bert_top1_compatible": false,
+          "bert_top2_consensus_compatible": false,
           "any_morph_surface_compatible": false,
           "compatible_morph_surface_count": 0,
           "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
         }
       },
       {
-        "candidate_id": "NORM-63-34-0",
-        "source_word": "عابِس،",
-        "surface": "عابِسا،",
+        "candidate_id": "NORM-73-22-0",
+        "source_word": "خَطر",
+        "surface": "خَطراً",
+        "candidate_class": "SUPPORTED_CORRECTION",
+        "target_eval": {
+          "target_id": "NAHW-ITEM-371",
+          "published_correction": "خَطرًا",
+          "runtime_surface_compatible": false,
+          "mle_top1_compatible": false,
+          "bert_top1_compatible": false,
+          "bert_top2_consensus_compatible": false,
+          "any_morph_surface_compatible": false,
+          "compatible_morph_surface_count": 0,
+          "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
+        }
+      },
+      {
+        "candidate_id": "NORM-76-31-0",
+        "source_word": "يقدِّموا",
+        "surface": "يقدِّمونَ",
+        "candidate_class": "SUPPORTED_CORRECTION",
+        "target_eval": {
+          "target_id": "NAHW-ITEM-388",
+          "published_correction": "يقدِّمون",
+          "runtime_surface_compatible": true,
+          "mle_top1_compatible": true,
+          "bert_top1_compatible": true,
+          "bert_top2_consensus_compatible": true,
+          "any_morph_surface_compatible": true,
+          "compatible_morph_surface_count": 2,
+          "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
+        }
+      },
+      {
+        "candidate_id": "NORM-81-9-0",
+        "source_word": "المصريِّين",
+        "surface": "المصريُّونَ",
+        "candidate_class": "SUPPORTED_CORRECTION",
+        "target_eval": {
+          "target_id": "NAHW-ITEM-412",
+          "published_correction": "المصريُّون",
+          "runtime_surface_compatible": true,
+          "mle_top1_compatible": true,
+          "bert_top1_compatible": true,
+          "bert_top2_consensus_compatible": true,
+          "any_morph_surface_compatible": true,
+          "compatible_morph_surface_count": 1,
+          "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
+        }
+      },
+      {
+        "candidate_id": "NORM-81-18-0",
+        "source_word": "الإرهابيُّون",
+        "surface": "الإرهابيِّينَ",
+        "candidate_class": "SUPPORTED_CORRECTION",
+        "target_eval": {
+          "target_id": "NAHW-ITEM-413",
+          "published_correction": "الإرهابيِّين",
+          "runtime_surface_compatible": true,
+          "mle_top1_compatible": true,
+          "bert_top1_compatible": true,
+          "bert_top2_consensus_compatible": true,
+          "any_morph_surface_compatible": true,
+          "compatible_morph_surface_count": 1,
+          "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
+        }
+      },
+      {
+        "candidate_id": "NORM-92-23-0",
+        "source_word": "حبًّ",
+        "surface": "حبّاً",
         "candidate_class": "SUPPORTED_CORRECTION",
         "target_eval": null
       },
       {
-        "candidate_id": "NORM-85-21-0",
-        "source_word": "الباسلِين",
-        "surface": "الباسلِون",
+        "candidate_id": "NORM-100-8-0",
+        "source_word": "يرضَ",
+        "surface": "يرضَى",
         "candidate_class": "SUPPORTED_CORRECTION",
-        "target_eval": null
+        "target_eval": {
+          "target_id": "NAHW-ITEM-506",
+          "published_correction": "يرضى",
+          "runtime_surface_compatible": true,
+          "mle_top1_compatible": true,
+          "bert_top1_compatible": true,
+          "bert_top2_consensus_compatible": true,
+          "any_morph_surface_compatible": true,
+          "compatible_morph_surface_count": 2,
+          "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
+        }
       }
     ]
   },
@@ -218,9 +321,120 @@
         "فتأْن",
         "فتأْنَ"
       ],
-      "runtime_decision": "ABSTAIN",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "فَتَأْن",
+            "lex": "أَنَى",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "u",
+            "stt": "na",
+            "gen": "f",
+            "num": "s",
+            "per": "3",
+            "asp": "i",
+            "vox": "a",
+            "form_gen": "f",
+            "form_num": "s"
+          },
+          "full_diac_surface": "فَتَأْن",
+          "minimal_source_preserving_surface": "فتأْن"
+        },
+        {
+          "score": 0.846155134926121,
+          "analysis": {
+            "diac": "فَتَأْنَ",
+            "lex": "فَتَأ",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "f",
+            "num": "p",
+            "per": "3",
+            "asp": "p",
+            "vox": "a",
+            "form_gen": "f",
+            "form_num": "p"
+          },
+          "full_diac_surface": "فَتَأْنَ",
+          "minimal_source_preserving_surface": "فتأْنَ"
+        },
+        {
+          "score": 0.8461538461538363,
+          "analysis": {
+            "diac": "فَتَأْن",
+            "lex": "أَنَى",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "u",
+            "stt": "na",
+            "gen": "m",
+            "num": "s",
+            "per": "2",
+            "asp": "i",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "فَتَأْن",
+          "minimal_source_preserving_surface": "فتأْن"
+        },
+        {
+          "score": 0.46153906342032236,
+          "analysis": {
+            "diac": "فَتَأَنٍّ",
+            "lex": "تَأَنِّي",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "فَتَأَنٍّ",
+          "minimal_source_preserving_surface": "فتأَنٍّ"
+        },
+        {
+          "score": 0.4615386684690305,
+          "analysis": {
+            "diac": "فَتَأَنّ",
+            "lex": "تَأَنِّي",
+            "pos": "noun",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "فَتَأَنّ",
+          "minimal_source_preserving_surface": "فتأَنّ"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "فتأَنّ",
+        "فتأَنٍّ",
+        "فتأْن",
+        "فتأْنَ"
+      ],
+      "bert_top1_surface": "فتأْن",
+      "bert_top2_surface_consensus": null,
+      "runtime_decision": "REVIEW_OR_ABSTAIN",
       "runtime_surface_proposal": null,
-      "runtime_reason": "AMBIGUOUS_OR_NO_MORPHOLOGY_CONSENSUS",
+      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY_OR_UNSUPPORTED_CANDIDATE",
       "target_evaluation": null,
       "all_morph_analyses": [
         {
@@ -363,14 +577,21 @@
       "mle_unique_minimal_surfaces": [
         "كريم؛"
       ],
-      "runtime_decision": "ABSTAIN",
+      "bert_context_analyses": [],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [],
+      "bert_top1_surface": null,
+      "bert_top2_surface_consensus": null,
+      "runtime_decision": "REVIEW_OR_ABSTAIN",
       "runtime_surface_proposal": null,
-      "runtime_reason": "AMBIGUOUS_OR_NO_MORPHOLOGY_CONSENSUS",
+      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY_OR_UNSUPPORTED_CANDIDATE",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-105",
         "published_correction": "كريمٌ",
         "runtime_surface_compatible": false,
         "mle_top1_compatible": false,
+        "bert_top1_compatible": false,
+        "bert_top2_consensus_compatible": false,
         "any_morph_surface_compatible": false,
         "compatible_morph_surface_count": 0,
         "previous_target_impact": "PARTIAL_RECOVERY"
@@ -500,14 +721,85 @@
         "مالا",
         "مالاً"
       ],
-      "runtime_decision": "REVIEW_OR_ABSTAIN",
-      "runtime_surface_proposal": null,
-      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "مالاً",
+            "lex": "مال",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "مالاً",
+          "minimal_source_preserving_surface": "مالاً"
+        },
+        {
+          "score": 0.7139769341952392,
+          "analysis": {
+            "diac": "مالا",
+            "lex": "مالا",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "مالا",
+          "minimal_source_preserving_surface": "مالا"
+        },
+        {
+          "score": 0.42839886974680297,
+          "analysis": {
+            "diac": "مالا",
+            "lex": "مال",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "d",
+            "per": "3",
+            "asp": "p",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "مالا",
+          "minimal_source_preserving_surface": "مالا"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "مالا",
+        "مالاً"
+      ],
+      "bert_top1_surface": "مالاً",
+      "bert_top2_surface_consensus": null,
+      "runtime_decision": "REVIEW_CONTEXTUAL_MORPH_TOP1",
+      "runtime_surface_proposal": "مالاً",
+      "runtime_reason": "BERT_CONTEXTUAL_TOP1_AVAILABLE_BUT_NO_TOP2_SURFACE_CONSENSUS",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-115",
         "published_correction": "مالًا",
         "runtime_surface_compatible": false,
         "mle_top1_compatible": false,
+        "bert_top1_compatible": false,
+        "bert_top2_consensus_compatible": false,
         "any_morph_surface_compatible": false,
         "compatible_morph_surface_count": 0,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -674,14 +966,104 @@
       "mle_unique_minimal_surfaces": [
         "وساعا"
       ],
-      "runtime_decision": "ABSTAIN",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "وَساعا",
+            "lex": "ساعا",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "وَساعا",
+          "minimal_source_preserving_surface": "وساعا"
+        },
+        {
+          "score": 0.9,
+          "analysis": {
+            "diac": "وساعا",
+            "lex": "وساعا",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "وساعا",
+          "minimal_source_preserving_surface": "وساعا"
+        },
+        {
+          "score": 0.9,
+          "analysis": {
+            "diac": "وَساعا",
+            "lex": "ساعا",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "وَساعا",
+          "minimal_source_preserving_surface": "وساعا"
+        },
+        {
+          "score": 0.9,
+          "analysis": {
+            "diac": "وَساعا",
+            "lex": "ساعا",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "وَساعا",
+          "minimal_source_preserving_surface": "وساعا"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "وساعا"
+      ],
+      "bert_top1_surface": "وساعا",
+      "bert_top2_surface_consensus": "وساعا",
+      "runtime_decision": "REVIEW_OR_ABSTAIN",
       "runtime_surface_proposal": null,
-      "runtime_reason": "AMBIGUOUS_OR_NO_MORPHOLOGY_CONSENSUS",
+      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY_OR_UNSUPPORTED_CANDIDATE",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-194",
         "published_correction": "وساعيًا",
         "runtime_surface_compatible": false,
         "mle_top1_compatible": false,
+        "bert_top1_compatible": false,
+        "bert_top2_consensus_compatible": false,
         "any_morph_surface_compatible": false,
         "compatible_morph_surface_count": 0,
         "previous_target_impact": "WRONG_CORRECTION"
@@ -769,14 +1151,21 @@
       "mle_unique_minimal_surfaces": [
         "اشتدادًا،"
       ],
-      "runtime_decision": "AUTO_CANDIDATE_DIRECT_PATCH",
+      "bert_context_analyses": [],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [],
+      "bert_top1_surface": null,
+      "bert_top2_surface_consensus": null,
+      "runtime_decision": "DEVELOPMENT_AUTO_DIRECT_PATCH",
       "runtime_surface_proposal": "اشتدادًا،",
-      "runtime_reason": "LOCAL_BASE_REPLACEMENT_WITH_NO_DIACRITIC_BOUNDARY_CROSSING",
+      "runtime_reason": "PRIOR_SAFE_SURFACE_CLASS_AND_LOCAL_PATCH_NO_DIACRITIC_BOUNDARY_CROSSING",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-230",
         "published_correction": "اشتدادًا",
         "runtime_surface_compatible": false,
         "mle_top1_compatible": false,
+        "bert_top1_compatible": false,
+        "bert_top2_consensus_compatible": false,
         "any_morph_surface_compatible": false,
         "compatible_morph_surface_count": 0,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -967,14 +1356,165 @@
         "نَفْسا",
         "نَفْساً"
       ],
-      "runtime_decision": "REVIEW_OR_ABSTAIN",
-      "runtime_surface_proposal": null,
-      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "نَفْساً",
+            "lex": "نَفْس",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "نَفْساً",
+          "minimal_source_preserving_surface": "نَفْساً"
+        },
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "نَفْساً",
+            "lex": "نَفْس",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "نَفْساً",
+          "minimal_source_preserving_surface": "نَفْساً"
+        },
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "نَفَساً",
+            "lex": "نَفَس",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "نَفَساً",
+          "minimal_source_preserving_surface": "نَفْساً"
+        },
+        {
+          "score": 0.7139769341952392,
+          "analysis": {
+            "diac": "نفسا",
+            "lex": "نفسا",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "نفسا",
+          "minimal_source_preserving_surface": "نَفْسا"
+        },
+        {
+          "score": 0.42839886974680297,
+          "analysis": {
+            "diac": "نَفُسا",
+            "lex": "نَفُس",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "d",
+            "per": "3",
+            "asp": "p",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "نَفُسا",
+          "minimal_source_preserving_surface": "نَفْسا"
+        },
+        {
+          "score": 0.42839886974680297,
+          "analysis": {
+            "diac": "نَفِسا",
+            "lex": "نَفِس",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "d",
+            "per": "3",
+            "asp": "p",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "نَفِسا",
+          "minimal_source_preserving_surface": "نَفْسا"
+        },
+        {
+          "score": 0.42839886974680297,
+          "analysis": {
+            "diac": "نَفَّسا",
+            "lex": "نَفَّس",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "d",
+            "per": "3",
+            "asp": "p",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "نَفَّسا",
+          "minimal_source_preserving_surface": "نَفْسا"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "نَفْسا",
+        "نَفْساً"
+      ],
+      "bert_top1_surface": "نَفْساً",
+      "bert_top2_surface_consensus": "نَفْساً",
+      "runtime_decision": "DEVELOPMENT_CONTEXTUAL_MORPH_CONSENSUS",
+      "runtime_surface_proposal": "نَفْساً",
+      "runtime_reason": "BERT_TOP2_CONTEXTUAL_ANALYSES_AGREE_AND_SURFACE_EXISTS_IN_MORPH_LATTICE",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-277",
         "published_correction": "نفسًا",
         "runtime_surface_compatible": false,
         "mle_top1_compatible": false,
+        "bert_top1_compatible": false,
+        "bert_top2_consensus_compatible": false,
         "any_morph_surface_compatible": false,
         "compatible_morph_surface_count": 0,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -1339,9 +1879,226 @@
         "متقِنُ",
         "متقِنِ"
       ],
-      "runtime_decision": "ABSTAIN",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "مُتَّقِنُ",
+            "lex": "مُتَّقِن",
+            "pos": "adj",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "مُتَّقِنُ",
+          "minimal_source_preserving_surface": "متقِنُ"
+        },
+        {
+          "score": 0.9289035379877827,
+          "analysis": {
+            "diac": "مُتْقَنُ",
+            "lex": "مُتْقَن",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "مُتْقَنُ",
+          "minimal_source_preserving_surface": "متقَنُ"
+        },
+        {
+          "score": 0.9286539229823707,
+          "analysis": {
+            "diac": "مُتَّقِنٌ",
+            "lex": "مُتَّقِن",
+            "pos": "adj",
+            "cas": "n",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "مُتَّقِنٌ",
+          "minimal_source_preserving_surface": "متقِنٌ"
+        },
+        {
+          "score": 0.9285818195366128,
+          "analysis": {
+            "diac": "مُتَّقِنِ",
+            "lex": "مُتَّقِن",
+            "pos": "adj",
+            "cas": "g",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "مُتَّقِنِ",
+          "minimal_source_preserving_surface": "متقِنِ"
+        },
+        {
+          "score": 0.9285721465996624,
+          "analysis": {
+            "diac": "مُتَّقِنَ",
+            "lex": "مُتَّقِن",
+            "pos": "adj",
+            "cas": "a",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "مُتَّقِنَ",
+          "minimal_source_preserving_surface": "متقِنَ"
+        },
+        {
+          "score": 0.8584855318298396,
+          "analysis": {
+            "diac": "مُتْقَنِ",
+            "lex": "مُتْقَن",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "مُتْقَنِ",
+          "minimal_source_preserving_surface": "متقَنِ"
+        },
+        {
+          "score": 0.8582117846045234,
+          "analysis": {
+            "diac": "مُتْقَنَ",
+            "lex": "مُتْقَن",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "مُتْقَنَ",
+          "minimal_source_preserving_surface": "متقَنَ"
+        },
+        {
+          "score": 0.8573316245880951,
+          "analysis": {
+            "diac": "مُتَّقِنٍ",
+            "lex": "مُتَّقِن",
+            "pos": "adj",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "مُتَّقِنٍ",
+          "minimal_source_preserving_surface": "متقِنٍ"
+        },
+        {
+          "score": 0.85728412450384,
+          "analysis": {
+            "diac": "مُتْقَنٌ",
+            "lex": "مُتْقَن",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "مُتْقَنٌ",
+          "minimal_source_preserving_surface": "متقَنٌ"
+        },
+        {
+          "score": 0.857169243706313,
+          "analysis": {
+            "diac": "مُتَّقِن",
+            "lex": "مُتَّقِن",
+            "pos": "adj",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "مُتَّقِن",
+          "minimal_source_preserving_surface": "متقِن"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "متقَنٌ",
+        "متقَنَ",
+        "متقَنُ",
+        "متقَنِ",
+        "متقِن",
+        "متقِنٌ",
+        "متقِنٍ",
+        "متقِنَ",
+        "متقِنُ",
+        "متقِنِ"
+      ],
+      "bert_top1_surface": "متقِنُ",
+      "bert_top2_surface_consensus": null,
+      "runtime_decision": "REVIEW_OR_ABSTAIN",
       "runtime_surface_proposal": null,
-      "runtime_reason": "AMBIGUOUS_OR_NO_MORPHOLOGY_CONSENSUS",
+      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY_OR_UNSUPPORTED_CANDIDATE",
       "target_evaluation": null,
       "all_morph_analyses": [
         {
@@ -1657,14 +2414,65 @@
         "استشعر",
         "اِسْتشعَرَ"
       ],
-      "runtime_decision": "AUTO_CANDIDATE_DIRECT_PATCH",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "اِسْتَشْعَرَ",
+            "lex": "ٱِسْتَشْعَر",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "s",
+            "per": "3",
+            "asp": "p",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "اِسْتَشْعَرَ",
+          "minimal_source_preserving_surface": "اِسْتشعَرَ"
+        },
+        {
+          "score": 0.41639459936720513,
+          "analysis": {
+            "diac": "استشعر",
+            "lex": "استشعر",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "استشعر",
+          "minimal_source_preserving_surface": "استشعر"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "استشعر",
+        "اِسْتشعَرَ"
+      ],
+      "bert_top1_surface": "اِسْتشعَرَ",
+      "bert_top2_surface_consensus": null,
+      "runtime_decision": "DEVELOPMENT_AUTO_DIRECT_PATCH",
       "runtime_surface_proposal": "استشعِر",
-      "runtime_reason": "LOCAL_BASE_REPLACEMENT_WITH_NO_DIACRITIC_BOUNDARY_CROSSING",
+      "runtime_reason": "PRIOR_SAFE_SURFACE_CLASS_AND_LOCAL_PATCH_NO_DIACRITIC_BOUNDARY_CROSSING",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-318",
         "published_correction": "استشعِر",
         "runtime_surface_compatible": true,
         "mle_top1_compatible": false,
+        "bert_top1_compatible": false,
+        "bert_top2_consensus_compatible": false,
         "any_morph_surface_compatible": false,
         "compatible_morph_surface_count": 0,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -1898,7 +2706,7 @@
           "minimal_source_preserving_surface": "باسِمٌ"
         },
         {
-          "score": 0.7686868686868686,
+          "score": 0.7686868686868688,
           "analysis": {
             "diac": "باسِم",
             "lex": "باسِم",
@@ -1949,14 +2757,232 @@
         "باسْمٍ",
         "باسْمِ"
       ],
-      "runtime_decision": "ABSTAIN",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "بِاِسْمٍ",
+            "lex": "ٱِسْم",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "بِاِسْمٍ",
+          "minimal_source_preserving_surface": "باسْمٍ"
+        },
+        {
+          "score": 0.9291385308411716,
+          "analysis": {
+            "diac": "باسِمٍ",
+            "lex": "باسِم",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "باسِمٍ",
+          "minimal_source_preserving_surface": "باسِمٍ"
+        },
+        {
+          "score": 0.9286994809529872,
+          "analysis": {
+            "diac": "بِاِسْمِ",
+            "lex": "ٱِسْم",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "بِاِسْمِ",
+          "minimal_source_preserving_surface": "باسْمِ"
+        },
+        {
+          "score": 0.9285260015665068,
+          "analysis": {
+            "diac": "بِاِسْم",
+            "lex": "ٱِسْم",
+            "pos": "noun",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "بِاِسْم",
+          "minimal_source_preserving_surface": "باسْم"
+        },
+        {
+          "score": 0.8584470094512492,
+          "analysis": {
+            "diac": "باسِمِ",
+            "lex": "باسِم",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "باسِمِ",
+          "minimal_source_preserving_surface": "باسِمِ"
+        },
+        {
+          "score": 0.8572925005619647,
+          "analysis": {
+            "diac": "باسِم",
+            "lex": "باسِم",
+            "pos": "noun",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "باسِم",
+          "minimal_source_preserving_surface": "باسِم"
+        },
+        {
+          "score": 0.8572456560353812,
+          "analysis": {
+            "diac": "باسِمٌ",
+            "lex": "باسِم",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "باسِمٌ",
+          "minimal_source_preserving_surface": "باسِمٌ"
+        },
+        {
+          "score": 0.7877131650845524,
+          "analysis": {
+            "diac": "باسِم",
+            "lex": "باسِم",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "باسِم",
+          "minimal_source_preserving_surface": "باسِم"
+        },
+        {
+          "score": 0.7867486854493386,
+          "analysis": {
+            "diac": "باسِمَ",
+            "lex": "باسِم",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "باسِمَ",
+          "minimal_source_preserving_surface": "باسِمَ"
+        },
+        {
+          "score": 0.7860126776576882,
+          "analysis": {
+            "diac": "باسِمُ",
+            "lex": "باسِم",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "باسِمُ",
+          "minimal_source_preserving_surface": "باسِمُ"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "باسِم",
+        "باسِمٌ",
+        "باسِمٍ",
+        "باسِمَ",
+        "باسِمُ",
+        "باسِمِ",
+        "باسْم",
+        "باسْمٍ",
+        "باسْمِ"
+      ],
+      "bert_top1_surface": "باسْمٍ",
+      "bert_top2_surface_consensus": null,
+      "runtime_decision": "REVIEW_OR_ABSTAIN",
       "runtime_surface_proposal": null,
-      "runtime_reason": "AMBIGUOUS_OR_NO_MORPHOLOGY_CONSENSUS",
+      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY_OR_UNSUPPORTED_CANDIDATE",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-319",
         "published_correction": "باسمٌ",
         "runtime_surface_compatible": false,
         "mle_top1_compatible": false,
+        "bert_top1_compatible": false,
+        "bert_top2_consensus_compatible": false,
         "any_morph_surface_compatible": true,
         "compatible_morph_surface_count": 1,
         "previous_target_impact": "PARTIAL_RECOVERY"
@@ -2234,9 +3260,14 @@
       "mle_unique_minimal_surfaces": [
         "عابِسا،"
       ],
-      "runtime_decision": "AUTO_CANDIDATE_MORPH_CONSENSUS",
+      "bert_context_analyses": [],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [],
+      "bert_top1_surface": null,
+      "bert_top2_surface_consensus": null,
+      "runtime_decision": "REVIEW_MLE_TOP1",
       "runtime_surface_proposal": "عابِسا،",
-      "runtime_reason": "ALL_MORPH_ANALYSES_AND_MLE_TOP5_COLLAPSE_TO_ONE_MINIMAL_SURFACE",
+      "runtime_reason": "ONLY_OUT_OF_CONTEXT_MLE_SURFACE_AVAILABLE",
       "target_evaluation": null,
       "all_morph_analyses": [
         {
@@ -2320,7 +3351,7 @@
           "minimal_source_preserving_surface": "خَطراً"
         },
         {
-          "score": 0.770408163265306,
+          "score": 0.7704081632653063,
           "analysis": {
             "diac": "خَطَرا",
             "lex": "خَطَر",
@@ -2444,14 +3475,185 @@
         "خَطرا",
         "خَطراً"
       ],
-      "runtime_decision": "REVIEW_OR_ABSTAIN",
-      "runtime_surface_proposal": null,
-      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "خَطَراً",
+            "lex": "خَطَر",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "خَطَراً",
+          "minimal_source_preserving_surface": "خَطراً"
+        },
+        {
+          "score": 0.9284291540350789,
+          "analysis": {
+            "diac": "خَطِراً",
+            "lex": "خَطِر",
+            "pos": "adj",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "خَطِراً",
+          "minimal_source_preserving_surface": "خَطراً"
+        },
+        {
+          "score": 0.7853781407207409,
+          "analysis": {
+            "diac": "خَطَرا",
+            "lex": "خَطَر",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "d",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "خَطَرا",
+          "minimal_source_preserving_surface": "خَطرا"
+        },
+        {
+          "score": 0.7139780016329568,
+          "analysis": {
+            "diac": "خَطِرا",
+            "lex": "خَطِر",
+            "pos": "adj",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "d",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "خَطِرا",
+          "minimal_source_preserving_surface": "خَطرا"
+        },
+        {
+          "score": 0.7139769341952392,
+          "analysis": {
+            "diac": "خطرا",
+            "lex": "خطرا",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "خطرا",
+          "minimal_source_preserving_surface": "خَطرا"
+        },
+        {
+          "score": 0.42839886974680297,
+          "analysis": {
+            "diac": "خَطَرا",
+            "lex": "خَطَر",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "d",
+            "per": "3",
+            "asp": "p",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "خَطَرا",
+          "minimal_source_preserving_surface": "خَطرا"
+        },
+        {
+          "score": 0.42839886974680297,
+          "analysis": {
+            "diac": "خَطَرا",
+            "lex": "خَطَر",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "d",
+            "per": "3",
+            "asp": "p",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "خَطَرا",
+          "minimal_source_preserving_surface": "خَطرا"
+        },
+        {
+          "score": 0.42839886974680297,
+          "analysis": {
+            "diac": "خَطُرا",
+            "lex": "خَطُر",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "d",
+            "per": "3",
+            "asp": "p",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "خَطُرا",
+          "minimal_source_preserving_surface": "خَطرا"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "خَطرا",
+        "خَطراً"
+      ],
+      "bert_top1_surface": "خَطراً",
+      "bert_top2_surface_consensus": "خَطراً",
+      "runtime_decision": "DEVELOPMENT_CONTEXTUAL_MORPH_CONSENSUS",
+      "runtime_surface_proposal": "خَطراً",
+      "runtime_reason": "BERT_TOP2_CONTEXTUAL_ANALYSES_AGREE_AND_SURFACE_EXISTS_IN_MORPH_LATTICE",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-371",
         "published_correction": "خَطرًا",
         "runtime_surface_compatible": false,
         "mle_top1_compatible": false,
+        "bert_top1_compatible": false,
+        "bert_top2_consensus_compatible": false,
         "any_morph_surface_compatible": false,
         "compatible_morph_surface_count": 0,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -2823,14 +4025,227 @@
         "واقِعٍ",
         "واقِعِ"
       ],
-      "runtime_decision": "ABSTAIN",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "واقِعٌ",
+            "lex": "واقِع",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "واقِعٌ",
+          "minimal_source_preserving_surface": "واقِعٌ"
+        },
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "واقِعٌ",
+            "lex": "واقِع",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "واقِعٌ",
+          "minimal_source_preserving_surface": "واقِعٌ"
+        },
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "واقِعٌ",
+            "lex": "واقِع",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "واقِعٌ",
+          "minimal_source_preserving_surface": "واقِعٌ"
+        },
+        {
+          "score": 0.9235936505023663,
+          "analysis": {
+            "diac": "واقِعٍ",
+            "lex": "واقِع",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "واقِعٍ",
+          "minimal_source_preserving_surface": "واقِعٍ"
+        },
+        {
+          "score": 0.9235936505023663,
+          "analysis": {
+            "diac": "واقِعٍ",
+            "lex": "واقِع",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "واقِعٍ",
+          "minimal_source_preserving_surface": "واقِعٍ"
+        },
+        {
+          "score": 0.9235936505023663,
+          "analysis": {
+            "diac": "واقِعٍ",
+            "lex": "واقِع",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "واقِعٍ",
+          "minimal_source_preserving_surface": "واقِعٍ"
+        },
+        {
+          "score": 0.9232957244469991,
+          "analysis": {
+            "diac": "واقِعُ",
+            "lex": "واقِع",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "واقِعُ",
+          "minimal_source_preserving_surface": "واقِعُ"
+        },
+        {
+          "score": 0.9232957244469991,
+          "analysis": {
+            "diac": "واقِعُ",
+            "lex": "واقِع",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "واقِعُ",
+          "minimal_source_preserving_surface": "واقِعُ"
+        },
+        {
+          "score": 0.9232957244469991,
+          "analysis": {
+            "diac": "واقِعُ",
+            "lex": "واقِع",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "c",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "واقِعُ",
+          "minimal_source_preserving_surface": "واقِعُ"
+        },
+        {
+          "score": 0.9231398390217898,
+          "analysis": {
+            "diac": "واقِع",
+            "lex": "واقِع",
+            "pos": "noun",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "واقِع",
+          "minimal_source_preserving_surface": "واقِع"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "واقِع",
+        "واقِعٌ",
+        "واقِعٍ",
+        "واقِعُ"
+      ],
+      "bert_top1_surface": "واقِعٌ",
+      "bert_top2_surface_consensus": "واقِعٌ",
+      "runtime_decision": "REVIEW_OR_ABSTAIN",
       "runtime_surface_proposal": null,
-      "runtime_reason": "AMBIGUOUS_OR_NO_MORPHOLOGY_CONSENSUS",
+      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY_OR_UNSUPPORTED_CANDIDATE",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-374",
         "published_correction": "واقعٌ",
         "runtime_surface_compatible": false,
         "mle_top1_compatible": false,
+        "bert_top1_compatible": true,
+        "bert_top2_consensus_compatible": true,
         "any_morph_surface_compatible": true,
         "compatible_morph_surface_count": 1,
         "previous_target_impact": "PARTIAL_RECOVERY"
@@ -3134,14 +4549,145 @@
         "يقدِّمون",
         "يقدِّمونَ"
       ],
-      "runtime_decision": "REVIEW_MORPH_MLE_CONSENSUS",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "يُقَدِّمُونَ",
+            "lex": "قَدَّم",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "p",
+            "per": "3",
+            "asp": "i",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "p"
+          },
+          "full_diac_surface": "يُقَدِّمُونَ",
+          "minimal_source_preserving_surface": "يقدِّمونَ"
+        },
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "يُقْدِمُونَ",
+            "lex": "أَقْدَم",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "p",
+            "per": "3",
+            "asp": "i",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "p"
+          },
+          "full_diac_surface": "يُقْدِمُونَ",
+          "minimal_source_preserving_surface": "يقدِّمونَ"
+        },
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "يَقْدَمُونَ",
+            "lex": "قَدِم",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "p",
+            "per": "3",
+            "asp": "i",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "p"
+          },
+          "full_diac_surface": "يَقْدَمُونَ",
+          "minimal_source_preserving_surface": "يقدِّمونَ"
+        },
+        {
+          "score": 0.9285207647582868,
+          "analysis": {
+            "diac": "يُقَدَّمُونَ",
+            "lex": "قَدَّم",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "p",
+            "per": "3",
+            "asp": "i",
+            "vox": "p",
+            "form_gen": "m",
+            "form_num": "p"
+          },
+          "full_diac_surface": "يُقَدَّمُونَ",
+          "minimal_source_preserving_surface": "يقدِّمونَ"
+        },
+        {
+          "score": 0.9285207647582868,
+          "analysis": {
+            "diac": "يُقْدَمُونَ",
+            "lex": "أَقْدَم",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "p",
+            "per": "3",
+            "asp": "i",
+            "vox": "p",
+            "form_gen": "m",
+            "form_num": "p"
+          },
+          "full_diac_surface": "يُقْدَمُونَ",
+          "minimal_source_preserving_surface": "يقدِّمونَ"
+        },
+        {
+          "score": 0.3571231984704499,
+          "analysis": {
+            "diac": "يقدمون",
+            "lex": "يقدمون",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "يقدمون",
+          "minimal_source_preserving_surface": "يقدِّمون"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "يقدِّمون",
+        "يقدِّمونَ"
+      ],
+      "bert_top1_surface": "يقدِّمونَ",
+      "bert_top2_surface_consensus": "يقدِّمونَ",
+      "runtime_decision": "DEVELOPMENT_CONTEXTUAL_MORPH_CONSENSUS",
       "runtime_surface_proposal": "يقدِّمونَ",
-      "runtime_reason": "MLE_TOP5_CONSENSUS_BUT_FULL_MORPH_LATTICE_AMBIGUOUS",
+      "runtime_reason": "BERT_TOP2_CONTEXTUAL_ANALYSES_AGREE_AND_SURFACE_EXISTS_IN_MORPH_LATTICE",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-388",
         "published_correction": "يقدِّمون",
         "runtime_surface_compatible": true,
         "mle_top1_compatible": true,
+        "bert_top1_compatible": true,
+        "bert_top2_consensus_compatible": true,
         "any_morph_surface_compatible": true,
         "compatible_morph_surface_count": 2,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -3367,14 +4913,105 @@
         "المصريون",
         "المصريُّونَ"
       ],
-      "runtime_decision": "REVIEW_OR_ABSTAIN",
-      "runtime_surface_proposal": null,
-      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "المِصْرِيُّونَ",
+            "lex": "مِصْرِيّ",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "d",
+            "gen": "m",
+            "num": "p",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "p"
+          },
+          "full_diac_surface": "المِصْرِيُّونَ",
+          "minimal_source_preserving_surface": "المصريُّونَ"
+        },
+        {
+          "score": 0.9285552939983415,
+          "analysis": {
+            "diac": "المِصْرِيُّونَ",
+            "lex": "مِصْرِيّ",
+            "pos": "adj",
+            "cas": "n",
+            "mod": "na",
+            "stt": "d",
+            "gen": "m",
+            "num": "p",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "p"
+          },
+          "full_diac_surface": "المِصْرِيُّونَ",
+          "minimal_source_preserving_surface": "المصريُّونَ"
+        },
+        {
+          "score": 0.7142637768811503,
+          "analysis": {
+            "diac": "المصريون",
+            "lex": "مصريون",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "d",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "المصريون",
+          "minimal_source_preserving_surface": "المصريون"
+        },
+        {
+          "score": 0.5714110215049203,
+          "analysis": {
+            "diac": "المصريون",
+            "lex": "المصريون",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "المصريون",
+          "minimal_source_preserving_surface": "المصريون"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "المصريون",
+        "المصريُّونَ"
+      ],
+      "bert_top1_surface": "المصريُّونَ",
+      "bert_top2_surface_consensus": "المصريُّونَ",
+      "runtime_decision": "DEVELOPMENT_CONTEXTUAL_MORPH_CONSENSUS",
+      "runtime_surface_proposal": "المصريُّونَ",
+      "runtime_reason": "BERT_TOP2_CONTEXTUAL_ANALYSES_AGREE_AND_SURFACE_EXISTS_IN_MORPH_LATTICE",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-412",
         "published_correction": "المصريُّون",
-        "runtime_surface_compatible": false,
+        "runtime_surface_compatible": true,
         "mle_top1_compatible": true,
+        "bert_top1_compatible": true,
+        "bert_top2_consensus_compatible": true,
         "any_morph_surface_compatible": true,
         "compatible_morph_surface_count": 1,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -3642,14 +5279,185 @@
         "الإرهابيَّيْنِ",
         "الإرهابيِّينَ"
       ],
-      "runtime_decision": "REVIEW_OR_ABSTAIN",
-      "runtime_surface_proposal": null,
-      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "الإِرْهابِيِّينَ",
+            "lex": "إِرْهابِيّ",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "d",
+            "gen": "m",
+            "num": "p",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "p"
+          },
+          "full_diac_surface": "الإِرْهابِيِّينَ",
+          "minimal_source_preserving_surface": "الإرهابيِّينَ"
+        },
+        {
+          "score": 0.9285210782685116,
+          "analysis": {
+            "diac": "الإِرْهابِيِّينَ",
+            "lex": "إِرْهابِيّ",
+            "pos": "adj",
+            "cas": "g",
+            "mod": "na",
+            "stt": "d",
+            "gen": "m",
+            "num": "p",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "p"
+          },
+          "full_diac_surface": "الإِرْهابِيِّينَ",
+          "minimal_source_preserving_surface": "الإرهابيِّينَ"
+        },
+        {
+          "score": 0.9285026057626588,
+          "analysis": {
+            "diac": "الإِرْهابِيِّينَ",
+            "lex": "إِرْهابِيّ",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "d",
+            "gen": "m",
+            "num": "p",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "p"
+          },
+          "full_diac_surface": "الإِرْهابِيِّينَ",
+          "minimal_source_preserving_surface": "الإرهابيِّينَ"
+        },
+        {
+          "score": 0.9284921665184717,
+          "analysis": {
+            "diac": "الإِرْهابِيَّيْنِ",
+            "lex": "إِرْهابِيّ",
+            "pos": "noun",
+            "cas": "g",
+            "mod": "na",
+            "stt": "d",
+            "gen": "m",
+            "num": "d",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "الإِرْهابِيَّيْنِ",
+          "minimal_source_preserving_surface": "الإرهابيَّيْنِ"
+        },
+        {
+          "score": 0.8570595718828998,
+          "analysis": {
+            "diac": "الإِرْهابِيِّينَ",
+            "lex": "إِرْهابِيّ",
+            "pos": "adj",
+            "cas": "a",
+            "mod": "na",
+            "stt": "d",
+            "gen": "m",
+            "num": "p",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "p"
+          },
+          "full_diac_surface": "الإِرْهابِيِّينَ",
+          "minimal_source_preserving_surface": "الإرهابيِّينَ"
+        },
+        {
+          "score": 0.857055435431243,
+          "analysis": {
+            "diac": "الإِرْهابِيَّيْنِ",
+            "lex": "إِرْهابِيّ",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "d",
+            "gen": "m",
+            "num": "d",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "الإِرْهابِيَّيْنِ",
+          "minimal_source_preserving_surface": "الإرهابيَّيْنِ"
+        },
+        {
+          "score": 0.8570524996802072,
+          "analysis": {
+            "diac": "الإِرْهابِيَّيْنِ",
+            "lex": "إِرْهابِيّ",
+            "pos": "adj",
+            "cas": "g",
+            "mod": "na",
+            "stt": "d",
+            "gen": "m",
+            "num": "d",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "الإِرْهابِيَّيْنِ",
+          "minimal_source_preserving_surface": "الإرهابيَّيْنِ"
+        },
+        {
+          "score": 0.7856264181671817,
+          "analysis": {
+            "diac": "الإِرْهابِيَّيْنِ",
+            "lex": "إِرْهابِيّ",
+            "pos": "adj",
+            "cas": "a",
+            "mod": "na",
+            "stt": "d",
+            "gen": "m",
+            "num": "d",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "الإِرْهابِيَّيْنِ",
+          "minimal_source_preserving_surface": "الإرهابيَّيْنِ"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "الإرهابيَّيْنِ",
+        "الإرهابيِّينَ"
+      ],
+      "bert_top1_surface": "الإرهابيِّينَ",
+      "bert_top2_surface_consensus": "الإرهابيِّينَ",
+      "runtime_decision": "DEVELOPMENT_CONTEXTUAL_MORPH_CONSENSUS",
+      "runtime_surface_proposal": "الإرهابيِّينَ",
+      "runtime_reason": "BERT_TOP2_CONTEXTUAL_ANALYSES_AGREE_AND_SURFACE_EXISTS_IN_MORPH_LATTICE",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-413",
         "published_correction": "الإرهابيِّين",
-        "runtime_surface_compatible": false,
+        "runtime_surface_compatible": true,
         "mle_top1_compatible": true,
+        "bert_top1_compatible": true,
+        "bert_top2_consensus_compatible": true,
         "any_morph_surface_compatible": true,
         "compatible_morph_surface_count": 1,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -3826,9 +5634,14 @@
       "unique_minimal_surfaces": [],
       "mle_top_analyses": [],
       "mle_unique_minimal_surfaces": [],
+      "bert_context_analyses": [],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [],
+      "bert_top1_surface": null,
+      "bert_top2_surface_consensus": null,
       "runtime_decision": "REVIEW_OR_ABSTAIN",
       "runtime_surface_proposal": null,
-      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY",
+      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY_OR_UNSUPPORTED_CANDIDATE",
       "target_evaluation": null,
       "all_morph_analyses": []
     },
@@ -3843,7 +5656,7 @@
       "candidate_base": "الباسلون",
       "source_base": "الباسلين",
       "source_suffix": "",
-      "direct_patch": "الباسلِون",
+      "direct_patch": null,
       "morph_analysis_count": 3,
       "unique_minimal_surface_count": 2,
       "unique_minimal_surfaces": [
@@ -3916,9 +5729,78 @@
         "الباسلون",
         "الباسلُونَ"
       ],
-      "runtime_decision": "AUTO_CANDIDATE_DIRECT_PATCH",
-      "runtime_surface_proposal": "الباسلِون",
-      "runtime_reason": "LOCAL_BASE_REPLACEMENT_WITH_NO_DIACRITIC_BOUNDARY_CROSSING",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "الباسِلُونَ",
+            "lex": "باسِل",
+            "pos": "noun",
+            "cas": "n",
+            "mod": "na",
+            "stt": "d",
+            "gen": "m",
+            "num": "p",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "p"
+          },
+          "full_diac_surface": "الباسِلُونَ",
+          "minimal_source_preserving_surface": "الباسلُونَ"
+        },
+        {
+          "score": 0.7692053270938669,
+          "analysis": {
+            "diac": "الباسلون",
+            "lex": "باسلون",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "d",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "الباسلون",
+          "minimal_source_preserving_surface": "الباسلون"
+        },
+        {
+          "score": 0.6153642616750935,
+          "analysis": {
+            "diac": "الباسلون",
+            "lex": "الباسلون",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "الباسلون",
+          "minimal_source_preserving_surface": "الباسلون"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "الباسلون",
+        "الباسلُونَ"
+      ],
+      "bert_top1_surface": "الباسلُونَ",
+      "bert_top2_surface_consensus": null,
+      "runtime_decision": "REVIEW_CONTEXTUAL_MORPH_TOP1",
+      "runtime_surface_proposal": "الباسلُونَ",
+      "runtime_reason": "BERT_CONTEXTUAL_TOP1_AVAILABLE_BUT_NO_TOP2_SURFACE_CONSENSUS",
       "target_evaluation": null,
       "all_morph_analyses": [
         {
@@ -4126,9 +6008,139 @@
         "حبّا",
         "حبّاً"
       ],
-      "runtime_decision": "REVIEW_OR_ABSTAIN",
-      "runtime_surface_proposal": null,
-      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "حُبّاً",
+            "lex": "حُبّ",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "حُبّاً",
+          "minimal_source_preserving_surface": "حبّاً"
+        },
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "حَبّاً",
+            "lex": "حَبّ",
+            "pos": "noun",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "حَبّاً",
+          "minimal_source_preserving_surface": "حبّاً"
+        },
+        {
+          "score": 0.9281701250061068,
+          "analysis": {
+            "diac": "حُبّاً",
+            "lex": "حُبّ",
+            "pos": "adv",
+            "cas": "a",
+            "mod": "na",
+            "stt": "i",
+            "gen": "m",
+            "num": "s",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "حُبّاً",
+          "minimal_source_preserving_surface": "حبّاً"
+        },
+        {
+          "score": 0.7139769341952392,
+          "analysis": {
+            "diac": "حبا",
+            "lex": "حبا",
+            "pos": "noun_prop",
+            "cas": "u",
+            "mod": "na",
+            "stt": "i",
+            "gen": "-",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "vox": "na",
+            "form_gen": "-",
+            "form_num": "-"
+          },
+          "full_diac_surface": "حبا",
+          "minimal_source_preserving_surface": "حبا"
+        },
+        {
+          "score": 0.500343658823646,
+          "analysis": {
+            "diac": "حَبا",
+            "lex": "حَبا",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "s",
+            "per": "3",
+            "asp": "p",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "حَبا",
+          "minimal_source_preserving_surface": "حبا"
+        },
+        {
+          "score": 0.42839886974680297,
+          "analysis": {
+            "diac": "حَبّا",
+            "lex": "حَبِّ",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "i",
+            "stt": "na",
+            "gen": "m",
+            "num": "d",
+            "per": "3",
+            "asp": "p",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "d"
+          },
+          "full_diac_surface": "حَبّا",
+          "minimal_source_preserving_surface": "حبّا"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "حبا",
+        "حبّا",
+        "حبّاً"
+      ],
+      "bert_top1_surface": "حبّاً",
+      "bert_top2_surface_consensus": "حبّاً",
+      "runtime_decision": "DEVELOPMENT_CONTEXTUAL_MORPH_CONSENSUS",
+      "runtime_surface_proposal": "حبّاً",
+      "runtime_reason": "BERT_TOP2_CONTEXTUAL_ANALYSES_AGREE_AND_SURFACE_EXISTS_IN_MORPH_LATTICE",
       "target_evaluation": null,
       "all_morph_analyses": [
         {
@@ -4331,14 +6343,85 @@
         "يرضَى",
         "يرضَّى"
       ],
-      "runtime_decision": "REVIEW_OR_ABSTAIN",
-      "runtime_surface_proposal": null,
-      "runtime_reason": "MORPHOLOGICAL_SURFACE_AMBIGUITY",
+      "bert_context_analyses": [
+        {
+          "score": 1.0,
+          "analysis": {
+            "diac": "يَرْضَى",
+            "lex": "رَضِي",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "u",
+            "stt": "na",
+            "gen": "m",
+            "num": "s",
+            "per": "3",
+            "asp": "i",
+            "vox": "a",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "يَرْضَى",
+          "minimal_source_preserving_surface": "يرضَى"
+        },
+        {
+          "score": 0.9230769230682654,
+          "analysis": {
+            "diac": "يُرْضَى",
+            "lex": "أَرْضَى",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "u",
+            "stt": "na",
+            "gen": "m",
+            "num": "s",
+            "per": "3",
+            "asp": "i",
+            "vox": "p",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "يُرْضَى",
+          "minimal_source_preserving_surface": "يرضَى"
+        },
+        {
+          "score": 0.9230769230682654,
+          "analysis": {
+            "diac": "يُرَضَّى",
+            "lex": "رَضَّى",
+            "pos": "verb",
+            "cas": "na",
+            "mod": "u",
+            "stt": "na",
+            "gen": "m",
+            "num": "s",
+            "per": "3",
+            "asp": "i",
+            "vox": "p",
+            "form_gen": "m",
+            "form_num": "s"
+          },
+          "full_diac_surface": "يُرَضَّى",
+          "minimal_source_preserving_surface": "يرضَّى"
+        }
+      ],
+      "bert_context_error": null,
+      "bert_unique_minimal_surfaces": [
+        "يرضَى",
+        "يرضَّى"
+      ],
+      "bert_top1_surface": "يرضَى",
+      "bert_top2_surface_consensus": "يرضَى",
+      "runtime_decision": "DEVELOPMENT_CONTEXTUAL_MORPH_CONSENSUS",
+      "runtime_surface_proposal": "يرضَى",
+      "runtime_reason": "BERT_TOP2_CONTEXTUAL_ANALYSES_AGREE_AND_SURFACE_EXISTS_IN_MORPH_LATTICE",
       "target_evaluation": {
         "target_id": "NAHW-ITEM-506",
         "published_correction": "يرضى",
-        "runtime_surface_compatible": false,
+        "runtime_surface_compatible": true,
         "mle_top1_compatible": true,
+        "bert_top1_compatible": true,
+        "bert_top2_consensus_compatible": true,
         "any_morph_surface_compatible": true,
         "compatible_morph_surface_count": 2,
         "previous_target_impact": "EXACT_SUPPORTED_RECOVERY"
@@ -4405,7 +6488,8 @@
     }
   ],
   "limitations": [
-    "The MLE disambiguator is out-of-context.",
+    "The MLE disambiguator is out-of-context; contextual BERT is evaluated separately.",
+    "BERT top analysis is a morphosyntactic ranking signal, not proof that a correction candidate is linguistically correct.",
     "Human candidate class is used only to bound development realization and evaluate safety, not to claim a deployable verifier.",
     "Nahw target corrections are joined only after runtime proposals for evaluation.",
     "CAMeL Analyzer default normalization is countered by exact narrow-base filtering, but morphology analyses are not syntactic proof."
