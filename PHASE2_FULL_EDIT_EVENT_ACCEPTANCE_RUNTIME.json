@@ -1,0 +1,31 @@
+{
+  "status": "PHASE2_FULL_EDIT_EVENT_ACCEPTANCE_RUNTIME_COMPLETE",
+  "development_only": true,
+  "rows": 106,
+  "gold_or_human_labels_read": false,
+  "nahw_target_fields_used_for_decision": false,
+  "decision_counts": {
+    "NARROW_DESTRUCTIVE:REJECT": 14,
+    "EVENT_STRUCTURAL_TYPED:REJECT": 14,
+    "EVENT_STRUCTURAL_STRICT:REJECT": 14,
+    "NARROW_DESTRUCTIVE:REVIEW": 92,
+    "EVENT_STRUCTURAL_TYPED:REVIEW": 68,
+    "EVENT_STRUCTURAL_STRICT:REVIEW": 69,
+    "EVENT_STRUCTURAL_TYPED:ACCEPT": 24,
+    "EVENT_STRUCTURAL_STRICT:ACCEPT": 23
+  },
+  "typed_eligible_rows": 24,
+  "strict_eligible_rows": 23,
+  "narrow_destructive_rows": 14,
+  "policy_definitions": {
+    "NARROW_DESTRUCTIVE": "Reject only local ta-marbuta->ha or alif-maqsura->ya degradation; otherwise review.",
+    "EVENT_STRUCTURAL_TYPED": "Accept substitution-only complete events where every aligned token is one-N insertion/deletion or final-alif addition, event_cost <= 0.60, and no narrow destructive veto fires.",
+    "EVENT_STRUCTURAL_STRICT": "For one token use the same structural family with event_cost <= 0.25; for <=2-token multiword events accept only all-final-alif additions."
+  },
+  "limitations": [
+    "Rules were motivated by repeatedly inspected development evidence and are not production estimates.",
+    "Hamza corrections, lexical substitutions, speech-act/tense/person changes and word-boundary edits are review-only in this gate.",
+    "Scientific Integrity Guard and semantic fidelity verification still run after linguistic candidate acceptance.",
+    "No sealed benchmark and no Phase 3."
+  ]
+}

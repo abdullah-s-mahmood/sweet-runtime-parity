@@ -1,0 +1,201 @@
+{
+  "status": "PHASE2_FULL_EDIT_EVENT_ACCEPTANCE_DEVELOPMENT_EVALUATED",
+  "runtime_decisions_materialized_before_labels": true,
+  "rows": 106,
+  "supported_or_alternative_rows": 62,
+  "wrong_rows": 35,
+  "policy_results": {
+    "NARROW_DESTRUCTIVE": {
+      "policy": "NARROW_DESTRUCTIVE",
+      "accepted": 0,
+      "review": 92,
+      "rejected": 14,
+      "accepted_classes": {},
+      "accepted_supported": 0,
+      "accepted_wrong": 0,
+      "accepted_partial": 0,
+      "accepted_high_or_critical_wrong": 0,
+      "supported_precision": null,
+      "supported_coverage_within_full_events": 0.0,
+      "accepted_event_ids": []
+    },
+    "EVENT_STRUCTURAL_TYPED": {
+      "policy": "EVENT_STRUCTURAL_TYPED",
+      "accepted": 24,
+      "review": 68,
+      "rejected": 14,
+      "accepted_classes": {
+        "SUPPORTED_CORRECTION": 24
+      },
+      "accepted_supported": 24,
+      "accepted_wrong": 0,
+      "accepted_partial": 0,
+      "accepted_high_or_critical_wrong": 0,
+      "supported_precision": 1.0,
+      "supported_coverage_within_full_events": 0.3870967741935484,
+      "accepted_event_ids": [
+        "ABEV-5-11",
+        "ABEV-8-15",
+        "ABEV-8-16",
+        "ABEV-13-22",
+        "ABEV-15-25",
+        "ABEV-16-27",
+        "ABEV-17-33",
+        "ABEV-25-43",
+        "ABEV-28-45",
+        "ABEV-38-52",
+        "ABEV-39-57",
+        "ABEV-41-58",
+        "ABEV-47-64",
+        "ABEV-56-68",
+        "ABEV-63-75",
+        "ABEV-63-77",
+        "ABEV-65-80",
+        "ABEV-70-85",
+        "ABEV-73-88",
+        "ABEV-85-93",
+        "ABEV-92-95",
+        "ABEV-92-96",
+        "ABEV-94-101",
+        "ABEV-96-102"
+      ]
+    },
+    "EVENT_STRUCTURAL_STRICT": {
+      "policy": "EVENT_STRUCTURAL_STRICT",
+      "accepted": 23,
+      "review": 69,
+      "rejected": 14,
+      "accepted_classes": {
+        "SUPPORTED_CORRECTION": 23
+      },
+      "accepted_supported": 23,
+      "accepted_wrong": 0,
+      "accepted_partial": 0,
+      "accepted_high_or_critical_wrong": 0,
+      "supported_precision": 1.0,
+      "supported_coverage_within_full_events": 0.3709677419354839,
+      "accepted_event_ids": [
+        "ABEV-5-11",
+        "ABEV-8-15",
+        "ABEV-8-16",
+        "ABEV-13-22",
+        "ABEV-15-25",
+        "ABEV-16-27",
+        "ABEV-17-33",
+        "ABEV-25-43",
+        "ABEV-28-45",
+        "ABEV-38-52",
+        "ABEV-39-57",
+        "ABEV-41-58",
+        "ABEV-47-64",
+        "ABEV-56-68",
+        "ABEV-63-75",
+        "ABEV-63-77",
+        "ABEV-65-80",
+        "ABEV-70-85",
+        "ABEV-73-88",
+        "ABEV-85-93",
+        "ABEV-92-95",
+        "ABEV-94-101",
+        "ABEV-96-102"
+      ]
+    }
+  },
+  "feature_diagnostics": {
+    "narrow_destructive_rows": 14,
+    "narrow_destructive_wrong": 14,
+    "narrow_destructive_supported": 0,
+    "typed_eligible_rows": 24,
+    "typed_eligible_supported": 24,
+    "typed_eligible_wrong": 0
+  },
+  "incremental_analysis": {
+    "accepted_supported_events": 24,
+    "duplicated_with_current_local_accept_path": 17,
+    "incremental_event_units": 7,
+    "incremental_events": [
+      {
+        "arabart_event_id": "ABEV-15-25",
+        "passage_id": 15,
+        "source_text": "بيت جميل،",
+        "arabart_words": [
+          "بيتا",
+          "جميلا"
+        ],
+        "event_type": "COMPLEX",
+        "duplicate_sources": []
+      },
+      {
+        "arabart_event_id": "ABEV-16-27",
+        "passage_id": 16,
+        "source_text": "غاضب،",
+        "arabart_words": [
+          "غاضبا"
+        ],
+        "event_type": "SUB",
+        "duplicate_sources": []
+      },
+      {
+        "arabart_event_id": "ABEV-41-58",
+        "passage_id": 41,
+        "source_text": "موعد مناسب.",
+        "arabart_words": [
+          "موعدا",
+          "مناسبا"
+        ],
+        "event_type": "COMPLEX",
+        "duplicate_sources": []
+      },
+      {
+        "arabart_event_id": "ABEV-47-64",
+        "passage_id": 47,
+        "source_text": "رجل نافع",
+        "arabart_words": [
+          "رجلا",
+          "نافعا"
+        ],
+        "event_type": "COMPLEX",
+        "duplicate_sources": []
+      },
+      {
+        "arabart_event_id": "ABEV-56-68",
+        "passage_id": 56,
+        "source_text": "بيت واحد",
+        "arabart_words": [
+          "بيتا",
+          "واحدا"
+        ],
+        "event_type": "COMPLEX",
+        "duplicate_sources": []
+      },
+      {
+        "arabart_event_id": "ABEV-63-75",
+        "passage_id": 63,
+        "source_text": "عابِس،",
+        "arabart_words": [
+          "عابسا"
+        ],
+        "event_type": "SUB",
+        "duplicate_sources": []
+      },
+      {
+        "arabart_event_id": "ABEV-63-77",
+        "passage_id": 63,
+        "source_text": "جميل.",
+        "arabart_words": [
+          "جميلا"
+        ],
+        "event_type": "SUB",
+        "duplicate_sources": []
+      }
+    ],
+    "note": "Incremental event units are not directly identical to local-edit counts; multiword events can contain multiple token corrections."
+  },
+  "limitations": [
+    "This is repeatedly inspected development evidence, not sealed/generalization evidence.",
+    "Rules were motivated by this development stream and must be validated on disjoint data before freeze.",
+    "Event-level units and prior local-edit units are not numerically interchangeable.",
+    "Same-agent adjudication is not independent human validation.",
+    "This gate does not replace scientific/semantic/document safety layers."
+  ]
+}
