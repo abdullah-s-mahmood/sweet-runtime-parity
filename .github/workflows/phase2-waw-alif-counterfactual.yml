@@ -29,11 +29,20 @@ jobs:
         with:
           python-version: "3.9"
 
+      - name: Clone and pin compatible Arabic GEC runtime
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+
       - name: Install CAMeL runtime
         run: |
           python -m pip install --upgrade "pip<25"
           python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
-          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "protobuf==3.20.3" "numpy<2"
+          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "sentencepiece==0.1.99" "protobuf==3.20.3" "numpy<2"
+          python -m pip uninstall -y transformers || true
+          python -m pip install -e upstream/arabic-gec/transformers
+          python -m pip install "huggingface_hub>=0.9,<1.0"
           mkdir -p "$CAMELTOOLS_DATA"
           camel_data -i morphology-db-msa-r13
           camel_data -i disambig-bert-unfactored-msa
