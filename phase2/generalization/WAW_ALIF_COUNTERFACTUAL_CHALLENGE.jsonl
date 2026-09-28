@@ -1,0 +1,15 @@
+{"id":"WCF-P01","source":"الطلاب كتبو الواجب.","candidate":"الطلاب كتبوا الواجب.","expected":"SAFE_POSITIVE_UNAMBIGUOUS","family":"perfective_plural_missing_alif"}
+{"id":"WCF-P02","source":"أنتم اكتبو النتائج.","candidate":"أنتم اكتبوا النتائج.","expected":"SAFE_POSITIVE_UNAMBIGUOUS","family":"command_plural_missing_alif"}
+{"id":"WCF-P03","source":"الطلاب لم يهملو واجباتهم.","candidate":"الطلاب لم يهملوا واجباتهم.","expected":"SAFE_POSITIVE_UNAMBIGUOUS","family":"jussive_plural_missing_alif"}
+{"id":"WCF-P04","source":"الطلاب لن يهملو واجباتهم.","candidate":"الطلاب لن يهملوا واجباتهم.","expected":"SAFE_POSITIVE_UNAMBIGUOUS","family":"subjunctive_plural_missing_alif"}
+{"id":"WCF-P05","source":"هم حافظو على النظام.","candidate":"هم حافظوا على النظام.","expected":"SAFE_POSITIVE_UNAMBIGUOUS","family":"perfective_plural_missing_alif"}
+{"id":"WCF-P06","source":"الباحثون نشرو النتائج.","candidate":"الباحثون نشروا النتائج.","expected":"SAFE_POSITIVE_UNAMBIGUOUS","family":"perfective_plural_missing_alif"}
+{"id":"WCF-P07","source":"الطلاب لم يدعو أحدا.","candidate":"الطلاب لم يدعوا أحدا.","expected":"POSITIVE_BUT_LOCALLY_AMBIGUOUS","family":"root_waw_vs_group_waw_context"}
+{"id":"WCF-P08","source":"هم لن يرجو المساعدة.","candidate":"هم لن يرجوا المساعدة.","expected":"POSITIVE_BUT_LOCALLY_AMBIGUOUS","family":"root_waw_vs_group_waw_context"}
+{"id":"WCF-N01","source":"الطالب يدعو إلى الدقة.","candidate":"الطالب يدعوا إلى الدقة.","expected":"MUST_NOT_ACCEPT","family":"singular_root_waw"}
+{"id":"WCF-N02","source":"الباحث يرجو نتيجة واضحة.","candidate":"الباحث يرجوا نتيجة واضحة.","expected":"MUST_NOT_ACCEPT","family":"singular_root_waw"}
+{"id":"WCF-N03","source":"معلمو المدرسة حاضرون.","candidate":"معلموا المدرسة حاضرون.","expected":"MUST_NOT_ACCEPT","family":"nominal_construct_plural"}
+{"id":"WCF-N04","source":"مهندسو النظام يعملون.","candidate":"مهندسوا النظام يعملون.","expected":"MUST_NOT_ACCEPT","family":"nominal_construct_plural"}
+{"id":"WCF-N05","source":"أنا أدعو إلى التحقق.","candidate":"أنا أدعوا إلى التحقق.","expected":"MUST_NOT_ACCEPT","family":"first_person_root_waw"}
+{"id":"WCF-N06","source":"هو يسمو بأخلاقه.","candidate":"هو يسموا بأخلاقه.","expected":"MUST_NOT_ACCEPT","family":"singular_root_waw"}
+{"id":"WCF-N07","source":"ذوو الخبرة مؤهلون.","candidate":"ذووا الخبرة مؤهلون.","expected":"MUST_NOT_ACCEPT","family":"nominal_waw"}
