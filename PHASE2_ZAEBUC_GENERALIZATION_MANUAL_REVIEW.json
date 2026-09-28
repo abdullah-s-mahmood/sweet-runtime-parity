@@ -1,0 +1,26 @@
+{
+  "status": "PHASE2_ZAEBUC_GENERALIZATION_ACCEPTED_MANUAL_REVIEW_COMPLETE",
+  "external_corpus": "ZAEBUC-v1.0 Arabic DEV",
+  "external_license": "CC BY-NC-SA 4.0",
+  "reviewed_nonexact_accepted_events": 1,
+  "independent_human_validation": false,
+  "same_agent_contextual_review": true,
+  "items": [
+    {
+      "event_id": "ZDEV-007-006",
+      "source_excerpt": "من المهم من المجتمع أن ينشرون الأدلة أو المخاطر بين بعضهم البعض",
+      "candidate_local_edit": "ينشرون → ينشروا",
+      "gold_local_edit": "ينشرون → ينشر",
+      "class": "WRONG_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_type": "SUBJECT_NUMBER_AGREEMENT_CONTEXT_FAILURE",
+      "rationale": "The structural five-verbs-shaped transformation is locally plausible, but the intended subject is singular (المجتمع), so plural ينشروا is not licensed. The event demonstrates that nun-change shape alone cannot establish grammatical correctness.",
+      "runtime_policy_acceptance": [
+        "EVENT_STRUCTURAL_TYPED",
+        "EVENT_STRUCTURAL_STRICT"
+      ]
+    }
+  ],
+  "test_split_read": false,
+  "note": "Bounded excerpt only; ZAEBUC text remains subject to CC BY-NC-SA 4.0."
+}
