@@ -1,0 +1,63 @@
+{
+  "status": "READY_FOR_SELECTIVE_GATE_ADJUDICATION",
+  "passage_clusters": 41,
+  "target_rows": 150,
+  "variants": [
+    "op_aware",
+    "ged_zaebuc",
+    "ged_qalb14",
+    "ged_union",
+    "ged_intersection"
+  ],
+  "primary_variant": "op_aware",
+  "prior_labels_omitted_from_queue": true,
+  "development_only": true,
+  "not_sealed": true,
+  "pre_adjudication_proxy": {
+    "op_aware": {
+      "retained_edits": 38,
+      "supported_from_prior_labels": 37,
+      "wrong_from_prior_labels": 0,
+      "partial_from_prior_labels": 1,
+      "unnecessary_from_prior_labels": 0,
+      "supported_precision_proxy": 0.9736842105263158,
+      "automated_exact_target_recovery": 28
+    },
+    "ged_zaebuc": {
+      "retained_edits": 31,
+      "supported_from_prior_labels": 30,
+      "wrong_from_prior_labels": 0,
+      "partial_from_prior_labels": 1,
+      "unnecessary_from_prior_labels": 0,
+      "supported_precision_proxy": 0.967741935483871,
+      "automated_exact_target_recovery": 24
+    },
+    "ged_qalb14": {
+      "retained_edits": 26,
+      "supported_from_prior_labels": 25,
+      "wrong_from_prior_labels": 0,
+      "partial_from_prior_labels": 1,
+      "unnecessary_from_prior_labels": 0,
+      "supported_precision_proxy": 0.9615384615384616,
+      "automated_exact_target_recovery": 21
+    },
+    "ged_union": {
+      "retained_edits": 32,
+      "supported_from_prior_labels": 31,
+      "wrong_from_prior_labels": 0,
+      "partial_from_prior_labels": 1,
+      "unnecessary_from_prior_labels": 0,
+      "supported_precision_proxy": 0.96875,
+      "automated_exact_target_recovery": 24
+    },
+    "ged_intersection": {
+      "retained_edits": 25,
+      "supported_from_prior_labels": 24,
+      "wrong_from_prior_labels": 0,
+      "partial_from_prior_labels": 1,
+      "unnecessary_from_prior_labels": 0,
+      "supported_precision_proxy": 0.96,
+      "automated_exact_target_recovery": 21
+    }
+  }
+}
