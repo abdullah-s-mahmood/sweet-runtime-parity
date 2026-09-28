@@ -45,10 +45,10 @@ jobs:
       - name: Recreate raw-only runtime events
         run: |
           mkdir -p artifacts
-          PYTHONPATH=. python phase2/generalization/run_qalb15_context_gate.py
+          PYTHONPATH=. python -m phase2.generalization.run_qalb15_context_gate
       - name: Aggregate WAW-ALIF diagnostic
         run: |
-          python phase2/generalization/diagnose_qalb15_waw_alif.py
+          python -m phase2.generalization.diagnose_qalb15_waw_alif
       - name: Persist aggregate/hash-only diagnostic
         run: |
           git config user.name "github-actions[bot]"
