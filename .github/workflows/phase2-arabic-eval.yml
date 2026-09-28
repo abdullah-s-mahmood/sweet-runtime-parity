@@ -10,7 +10,7 @@ on:
       - ".github/workflows/phase2-arabic-eval.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   arabic-development-eval:
@@ -100,6 +100,25 @@ jobs:
         run: |
           set -o pipefail
           python phase2/arabic_eval/prototype_protected_span_sweet.py 2>&1 | tee artifacts/PROTECTED_SPAN_PROTOTYPE_CONSOLE.txt
+
+      - name: Build passage-clustered adjudication queue
+        run: |
+          set -o pipefail
+          python phase2/arabic_eval/build_adjudication_queue.py 2>&1 | tee artifacts/ADJUDICATION_QUEUE_CONSOLE.txt
+          cp PHASE2_ADJUDICATION_QUEUE.jsonl artifacts/
+          cp PHASE2_ADJUDICATION_QUEUE_SUMMARY.json artifacts/
+
+      - name: Persist compact adjudication queue on evaluation branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_ADJUDICATION_QUEUE.jsonl PHASE2_ADJUDICATION_QUEUE_SUMMARY.json
+          if git diff --cached --quiet; then
+            echo "Adjudication queue unchanged."
+          else
+            git commit -m "Update Phase 2 adjudication queue [skip ci]"
+            git push origin HEAD:phase2-arabic-eval
+          fi
 
       - name: Record workflow provenance
         if: always()
