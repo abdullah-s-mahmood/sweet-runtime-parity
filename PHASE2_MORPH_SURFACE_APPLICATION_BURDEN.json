@@ -1,0 +1,92 @@
+{
+  "scope": "Development-only adjudicated application decisions, no actual source edits",
+  "candidates": 19,
+  "unique_passages": 14,
+  "auto_apply_candidate": 3,
+  "auto_candidate_ids": [
+    "NORM-45-17-0",
+    "NORM-63-11-0",
+    "NORM-100-8-0"
+  ],
+  "review_only": 14,
+  "review_candidate_ids": [
+    "NORM-21-9-0",
+    "NORM-23-7-0",
+    "NORM-54-34-0",
+    "NORM-61-27-0",
+    "NORM-63-24-0",
+    "NORM-63-34-0",
+    "NORM-73-22-0",
+    "NORM-73-58-0",
+    "NORM-76-31-0",
+    "NORM-81-9-0",
+    "NORM-81-18-0",
+    "NORM-81-37-0",
+    "NORM-85-21-0",
+    "NORM-92-23-0"
+  ],
+  "abstain_reject": 2,
+  "reject_candidate_ids": [
+    "NORM-17-21-0",
+    "NORM-38-24-0"
+  ],
+  "runtime_generated_surface_coverage": 0.631578947368421,
+  "bounded_gate_surface_coverage": 0.47368421052631576,
+  "safe_auto_candidate_coverage": 0.15789473684210525,
+  "passage_cluster_counts": {
+    "auto_passages": 3,
+    "review_passages": 10,
+    "reject_passages": 2
+  },
+  "seven_runtime_abstentions": {
+    "correct_rejection": 2,
+    "safe_surface_missed": 2,
+    "possibly_safe_but_ambiguous": 3,
+    "details": [
+      {
+        "id": "NORM-17-21-0",
+        "audit": "WRONG_UPSTREAM_CANDIDATE",
+        "source": "فتأنَّ",
+        "bert_top1": "فتأْن"
+      },
+      {
+        "id": "NORM-21-9-0",
+        "audit": "SAFE_SURFACE_WAS_AVAILABLE",
+        "source": "كريمًا؛",
+        "bert_top1": "كريمٌ؛"
+      },
+      {
+        "id": "NORM-38-24-0",
+        "audit": "WRONG_UPSTREAM_CANDIDATE",
+        "source": "وساعٍ",
+        "bert_top1": "وساعا"
+      },
+      {
+        "id": "NORM-61-27-0",
+        "audit": "POSSIBLY_SAFE_BUT_AMBIGUOUS",
+        "source": "متقنًا",
+        "bert_top1": "متقِنُ"
+      },
+      {
+        "id": "NORM-63-24-0",
+        "audit": "POSSIBLY_SAFE_BUT_AMBIGUOUS",
+        "source": "باسمًا",
+        "bert_top1": "باسْمٍ"
+      },
+      {
+        "id": "NORM-73-58-0",
+        "audit": "SAFE_SURFACE_WAS_AVAILABLE",
+        "source": "واقعًا",
+        "bert_top1": "واقِعٌ"
+      },
+      {
+        "id": "NORM-81-37-0",
+        "audit": "POSSIBLY_SAFE_BUT_AMBIGUOUS",
+        "source": "واجبًا",
+        "bert_top1": null
+      }
+    ]
+  },
+  "strict_scientific": "REVIEW_ONLY; no morphology surface bypasses citations, numbers, units, equations, p-values, confidence intervals, named entities, protected spans, or semantic verification; scientific cases are NON_HUMAN_GOLD",
+  "deployment_gate": "The three auto labels are retrospective human development judgments; no independent candidate-quality verifier or source application exists."
+}

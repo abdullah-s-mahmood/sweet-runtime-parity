@@ -1,0 +1,69 @@
+{
+  "status": "DEVELOPMENT_TWO_PASS_SURFACE_ADJUDICATION_COMPLETE",
+  "candidate_rows": 19,
+  "passages": 14,
+  "runtime_surfaces_proposed": 12,
+  "bounded_development_proposals": 9,
+  "contextual_review_proposals": 3,
+  "abstentions": 7,
+  "full_row_classes": {
+    "NO_SURFACE_PROPOSED": 7,
+    "LINGUISTICALLY_CORRECT_ALTERNATIVE_SERIALIZATION": 5,
+    "EXACT_SAFE_REALIZATION": 3,
+    "LINGUISTICALLY_CORRECT_BUT_OVERDIACRITIZED": 4
+  },
+  "runtime_proposal_classes": {
+    "EXACT_SAFE_REALIZATION": 3,
+    "LINGUISTICALLY_CORRECT_ALTERNATIVE_SERIALIZATION": 3,
+    "LINGUISTICALLY_CORRECT_BUT_OVERDIACRITIZED": 3
+  },
+  "review_top1_classes": {
+    "LINGUISTICALLY_CORRECT_ALTERNATIVE_SERIALIZATION": 2,
+    "LINGUISTICALLY_CORRECT_BUT_OVERDIACRITIZED": 1
+  },
+  "nine_development_proposals": {
+    "fully_correct": 3,
+    "correct_but_serialization_variant": 3,
+    "overdiacritized_but_linguistically_correct": 3,
+    "partial": 0,
+    "wrong": 0,
+    "review_required": 0,
+    "source_safe_auto_candidate_only": 3,
+    "observed_wrong": 0,
+    "independent_runtime_precision_estimate": false,
+    "reason": "The gate conditioned selection on prior human candidate labels."
+  },
+  "review_contextual_top1": {
+    "candidate_ids": [
+      "NORM-23-7-0",
+      "NORM-63-34-0",
+      "NORM-85-21-0"
+    ],
+    "linguistically_correct_alternate_serialization": 2,
+    "linguistically_correct_but_overdiacritized": 1,
+    "wrong": 0,
+    "auto_promoted": 0
+  },
+  "seven_abstentions": {
+    "WRONG_UPSTREAM_CANDIDATE": 2,
+    "SAFE_SURFACE_WAS_AVAILABLE": 2,
+    "POSSIBLY_SAFE_BUT_AMBIGUOUS": 3
+  },
+  "development_auto_apply_candidates": 3,
+  "development_review_only": 14,
+  "development_abstain_reject": 2,
+  "exact_target_unicode_count": 2,
+  "linguistically_equivalent_target_surface_count": 7,
+  "target_not_recovered_count": 4,
+  "development_nine_target_exact": 2,
+  "development_nine_target_equivalent": 6,
+  "policy_precision_definition": "Linguistically correct surfaces (including serialization variants and valid extra diacritics) divided by all accepted candidate surfaces, counting review as noncorrect; no target-gold condition in policy selection.",
+  "source_safe_precision_definition": "Exact safe source-preserving realizations divided by accepted candidates; narrower than grammatical correctness.",
+  "clustering": "19 candidates in 14 passages; no independent-candidate confidence interval.",
+  "pass1_temporal_integrity": "All 19 judgments recorded in scratch work_normalized/morph_pass1.json before consulting previous normalized candidate correctness labels; queue target.previous_normalized_target_impact ignored.",
+  "pass2": "Same-agent recheck of all 12 proposals, all 3 auto candidates, all 7 abstentions, and all wrong/partial/review policy surfaces; compared prior candidate labels only after pass1; no reclassification.",
+  "independent_human_adjudication": false,
+  "applied_to_source": false,
+  "scientific_stress_text_modified": false,
+  "conclusion": "Morphology is a useful surface ranker; neither analyzability nor contextual top-2 consensus verifies upstream correction correctness. The current 9/9 development proposals were selected with prior labels; gold-independent consensus accepts the wrong defective-noun candidate."
+}
