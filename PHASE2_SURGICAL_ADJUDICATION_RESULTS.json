@@ -1,0 +1,68 @@
+{
+  "scope": "Phase 2 development-only surgical NoPnx1 quality adjudication",
+  "primary_unit": "41 source passage clusters",
+  "target_rows": 150,
+  "applied_edits": 60,
+  "suppressed_hazards": 100,
+  "applied_edit_classes": {
+    "WRONG_CORRECTION": 7,
+    "SUPPORTED_CORRECTION": 38,
+    "SUPPORTED_ALTERNATIVE": 11,
+    "PARTIAL_CORRECTION": 2,
+    "UNNECESSARY_EDIT": 2
+  },
+  "target_classes": {
+    "ERROR_PRESERVED": 108,
+    "REVIEW_REQUIRED": 1,
+    "EXACT_SUPPORTED_CORRECTION": 27,
+    "SUPPORTED_ALTERNATIVE": 10,
+    "PARTIAL_CORRECTION": 2,
+    "WRONG_CORRECTION": 2
+  },
+  "suppressed_hazard_classes": {
+    "CORRECTLY_SUPPRESSED_HARMFUL": 51,
+    "CORRECTLY_SUPPRESSED_UNSAFE": 47,
+    "POSSIBLY_USEFUL_BUT_UNSAFE": 2
+  },
+  "passage_review_burden": {
+    "UNCHANGED": 8,
+    "REJECT": 7,
+    "AUTO_ACCEPT_CANDIDATE": 22,
+    "REVIEW_REQUIRED": 4
+  },
+  "edit_level_supported_precision": {
+    "numerator": 49,
+    "denominator": 60,
+    "value": 0.8166666666666667,
+    "definition": "SUPPORTED_CORRECTION + SUPPORTED_ALTERNATIVE / all adjudicated applied NoPnx1 edits",
+    "confidence_interval": "NOT_CALCULATED: edits clustered by passage; no naive 60-independent interval"
+  },
+  "confirmed_useful_corrections_lost": 0,
+  "possibly_useful_but_unsafe": 2,
+  "raw_queue_exact_flags": 32,
+  "adjudicated_exact_supported": 27,
+  "false_exact_flags_without_applied_target_edit": [
+    "NAHW-ITEM-143",
+    "NAHW-ITEM-387",
+    "NAHW-ITEM-433",
+    "NAHW-ITEM-435",
+    "NAHW-ITEM-439"
+  ],
+  "scientific_stress_reference": {
+    "protected_exact": "12/12",
+    "source_exact_unchanged": "11/12",
+    "unknown_token_outputs": "0/12",
+    "human_gold_accuracy": false
+  },
+  "quality_control": {
+    "pass_1": "all 41 passage clusters, 60 applied edits, 150 targets, 100 suppressed hazards",
+    "pass_2": "same-agent recheck of all wrong, supported alternatives, useful-loss candidates, high/critical and review-required decisions",
+    "independent_human_validation": false
+  },
+  "limitations": [
+    "An AUTO_ACCEPT_CANDIDATE passage may retain errors at untouched target locations; it means its applied edits are supported under the development rule.",
+    "Suppressed predictions lack a safe mapped replacement and confidence in the queue; no confirmed useful correction can be inferred merely from resemblance of a label.",
+    "The 150 target rows are clustered in 41 passages; the one-location Nahw references do not fully correct each passage.",
+    "No threshold tuning, new inference, sealed benchmark or production acceptance performed."
+  ]
+}

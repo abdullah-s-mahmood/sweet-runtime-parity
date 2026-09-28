@@ -1,0 +1,439 @@
+{
+  "unit": "source passage cluster",
+  "development_only": true,
+  "definition": {
+    "AUTO_ACCEPT_CANDIDATE": "all applied edits supported; no unresolved high/critical risk, protected-span violation or corruption",
+    "REVIEW_REQUIRED": "partial, unnecessary or unresolved edits without confirmed damaging edit",
+    "REJECT": "wrong or destructive applied edit",
+    "UNCHANGED": "no applied edit and source exactly preserved"
+  },
+  "passages": [
+    {
+      "passage_id": 1,
+      "applied_edits": 0,
+      "status": "UNCHANGED",
+      "edit_classes": [],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 2,
+      "applied_edits": 1,
+      "status": "REJECT",
+      "edit_classes": [
+        "WRONG_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 5,
+      "applied_edits": 0,
+      "status": "UNCHANGED",
+      "edit_classes": [],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 8,
+      "applied_edits": 2,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 9,
+      "applied_edits": 1,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 13,
+      "applied_edits": 1,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_ALTERNATIVE"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 15,
+      "applied_edits": 5,
+      "status": "REJECT",
+      "edit_classes": [
+        "SUPPORTED_ALTERNATIVE",
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_CORRECTION",
+        "WRONG_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 16,
+      "applied_edits": 2,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_ALTERNATIVE",
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 17,
+      "applied_edits": 1,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 19,
+      "applied_edits": 1,
+      "status": "REVIEW_REQUIRED",
+      "edit_classes": [
+        "PARTIAL_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 21,
+      "applied_edits": 0,
+      "status": "UNCHANGED",
+      "edit_classes": [],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 23,
+      "applied_edits": 0,
+      "status": "UNCHANGED",
+      "edit_classes": [],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 25,
+      "applied_edits": 3,
+      "status": "REJECT",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_CORRECTION",
+        "WRONG_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 28,
+      "applied_edits": 1,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 32,
+      "applied_edits": 1,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 34,
+      "applied_edits": 2,
+      "status": "REJECT",
+      "edit_classes": [
+        "WRONG_CORRECTION",
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 38,
+      "applied_edits": 2,
+      "status": "REVIEW_REQUIRED",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION",
+        "UNNECESSARY_EDIT"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 39,
+      "applied_edits": 4,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_ALTERNATIVE"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 41,
+      "applied_edits": 1,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 45,
+      "applied_edits": 0,
+      "status": "UNCHANGED",
+      "edit_classes": [],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 47,
+      "applied_edits": 4,
+      "status": "REJECT",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_CORRECTION",
+        "WRONG_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 54,
+      "applied_edits": 0,
+      "status": "UNCHANGED",
+      "edit_classes": [],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 56,
+      "applied_edits": 2,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_ALTERNATIVE",
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 57,
+      "applied_edits": 1,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 61,
+      "applied_edits": 1,
+      "status": "REJECT",
+      "edit_classes": [
+        "WRONG_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 63,
+      "applied_edits": 2,
+      "status": "REVIEW_REQUIRED",
+      "edit_classes": [
+        "UNNECESSARY_EDIT",
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 65,
+      "applied_edits": 4,
+      "status": "REVIEW_REQUIRED",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_ALTERNATIVE",
+        "PARTIAL_CORRECTION",
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 68,
+      "applied_edits": 2,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 70,
+      "applied_edits": 2,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 73,
+      "applied_edits": 1,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 76,
+      "applied_edits": 1,
+      "status": "REJECT",
+      "edit_classes": [
+        "WRONG_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 77,
+      "applied_edits": 0,
+      "status": "UNCHANGED",
+      "edit_classes": [],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 81,
+      "applied_edits": 1,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 85,
+      "applied_edits": 2,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_ALTERNATIVE",
+        "SUPPORTED_ALTERNATIVE"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 86,
+      "applied_edits": 0,
+      "status": "UNCHANGED",
+      "edit_classes": [],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 92,
+      "applied_edits": 1,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 94,
+      "applied_edits": 2,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 96,
+      "applied_edits": 2,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_ALTERNATIVE"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 98,
+      "applied_edits": 1,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_ALTERNATIVE"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 99,
+      "applied_edits": 2,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_CORRECTION",
+        "SUPPORTED_CORRECTION"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    },
+    {
+      "passage_id": 100,
+      "applied_edits": 1,
+      "status": "AUTO_ACCEPT_CANDIDATE",
+      "edit_classes": [
+        "SUPPORTED_ALTERNATIVE"
+      ],
+      "protected_span_violation": false,
+      "source_corruption": false
+    }
+  ],
+  "counts": {
+    "UNCHANGED": 8,
+    "REJECT": 7,
+    "AUTO_ACCEPT_CANDIDATE": 22,
+    "REVIEW_REQUIRED": 4
+  }
+}

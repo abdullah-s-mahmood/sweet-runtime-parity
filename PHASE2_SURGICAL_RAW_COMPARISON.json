@@ -1,0 +1,56 @@
+{
+  "same_source_passages": 41,
+  "same_target_rows": 150,
+  "raw_nopnx1": {
+    "changed_passages": 41,
+    "non_keep_label_predictions": 160,
+    "source_to_output_character_diff_rows": 469,
+    "passages_with_unknown_token_or_fragment": 37,
+    "collateral_diff_classifications": {
+      "SURFACE_RENDERER_CHANGE": 347,
+      "INCORRECT_EDIT": 20,
+      "REVIEW_REQUIRED": 12,
+      "SUPPORTED_CORRECTION": 2
+    },
+    "passage_burden": {
+      "SUPPORTED_AUTO_ACCEPT_CANDIDATE": 0,
+      "REVIEW_REQUIRED": 1,
+      "REJECT": 40
+    },
+    "queue_exact_target_flags": 29
+  },
+  "surgical_nopnx1": {
+    "changed_passages": 33,
+    "applied_model_edits": 60,
+    "suppressed_hazards": 100,
+    "source_to_output_character_diff_rows": 60,
+    "passages_with_unknown_token_or_fragment": 0,
+    "applied_edit_classifications": {
+      "WRONG_CORRECTION": 7,
+      "SUPPORTED_CORRECTION": 38,
+      "SUPPORTED_ALTERNATIVE": 11,
+      "PARTIAL_CORRECTION": 2,
+      "UNNECESSARY_EDIT": 2
+    },
+    "passage_burden": {
+      "UNCHANGED": 8,
+      "REJECT": 7,
+      "AUTO_ACCEPT_CANDIDATE": 22,
+      "REVIEW_REQUIRED": 4
+    },
+    "queue_exact_target_flags": 32,
+    "adjudicated_exact_supported_targets": 27
+  },
+  "comparable_changes": {
+    "passages_with_unknown_token_or_fragment_delta": -37,
+    "changed_passages_delta": -8,
+    "raw_queue_exact_flags_delta": 3,
+    "passage_reject_delta": -33
+  },
+  "denominator_cautions": [
+    "Raw collateral wrong/supported/review numbers are character-diff rows outside targets; surgical applied quality numbers are model edit units. Do not subtract these counts or call the ratio an effect size.",
+    "Raw 29 and surgical 32 target exact flags are automated local alignment flags; five of 32 surgical flags are false positives without an applied edit. A same-rule raw target re-adjudication is needed for quality-comparable target gains.",
+    "Raw 40 rejected passages and surgical 7 rejected passages use development disposition criteria, but raw rejects include renderer corruption. This is an as-run workflow comparison, not GEC accuracy.",
+    "Scientific stress 12/12 protected spans exact, 11/12 whole source unchanged, no [UNK] are project-authored invariants, not human-gold GEC accuracy."
+  ]
+}

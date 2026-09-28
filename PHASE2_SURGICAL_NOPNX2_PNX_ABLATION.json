@@ -1,0 +1,378 @@
+{
+  "development_only": true,
+  "nopnx2": {
+    "incremental_edits": 5,
+    "classifications": {
+      "WRONG_CORRECTION": 1,
+      "SUPPORTED_CORRECTION": 2,
+      "PARTIAL_CORRECTION": 1,
+      "REVIEW_REQUIRED": 1
+    },
+    "edits": [
+      {
+        "passage_id": 15,
+        "incremental_edit_index": 0,
+        "source_word": "وامنح",
+        "source_text": "وامن",
+        "replacement": "وأمن",
+        "label": "KR_[أ]K*",
+        "confidence": 0.9973440766334534,
+        "classification": "WRONG_CORRECTION",
+        "reasoning": "«وامنح» الصحيحة في الدورة الأولى صارت «وأمنح»؛ تراجع في همزة الوصل."
+      },
+      {
+        "passage_id": 15,
+        "incremental_edit_index": 1,
+        "source_word": "وأنشر",
+        "source_text": "وأن",
+        "replacement": "وان",
+        "label": "K*R_[ا]K",
+        "confidence": 0.608582615852356,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "أعاد «وأنشر» الخاطئة في الدورة الأولى إلى «وانشر» الصحيحة."
+      },
+      {
+        "passage_id": 25,
+        "incremental_edit_index": 0,
+        "source_word": "تعالى)",
+        "source_text": ")",
+        "replacement": "",
+        "label": "D*",
+        "confidence": 0.9991710186004639,
+        "classification": "PARTIAL_CORRECTION",
+        "reasoning": "أزال القوس الختامي المعلّق، لكن عوّض تلف الدورة الأولى بإزالة القوسين بدل صون الأصل."
+      },
+      {
+        "passage_id": 34,
+        "incremental_edit_index": 0,
+        "source_word": "أولى",
+        "source_text": "أولى",
+        "replacement": "أولي",
+        "label": "K*R_[ي]",
+        "confidence": 0.7609665989875793,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "أعاد «أولى الأعمار» ذات المعنى المتحوّل إلى «أولي الأعمار»."
+      },
+      {
+        "passage_id": 63,
+        "incremental_edit_index": 0,
+        "source_word": "وشره",
+        "source_text": "ه",
+        "replacement": "ة",
+        "label": "R_[ة]",
+        "confidence": 0.5131375789642334,
+        "classification": "REVIEW_REQUIRED",
+        "reasoning": "«وشره» إلى «وشرة»: الدلالة والضبط متقاربان لكن الحاجة إلى التغيير غير مثبتة من السياق."
+      }
+    ],
+    "raw_exact_target_recoveries": 31,
+    "decision": "TEST_SELECTIVELY",
+    "rationale": "Two repairs, one regression of a published target, one punctuation damage mitigation and one unresolved lexical change; no blanket second iteration."
+  },
+  "pnx": {
+    "incremental_edits": 26,
+    "classifications": {
+      "REVIEW_REQUIRED": 5,
+      "SUPPORTED_CORRECTION": 14,
+      "UNNECESSARY_EDIT": 6,
+      "WRONG_CORRECTION": 1
+    },
+    "edits": [
+      {
+        "passage_id": 1,
+        "incremental_edit_index": 0,
+        "source_word": "تسأموا",
+        "source_text": "وا",
+        "replacement": "وا ،",
+        "label": "K*A_[،]",
+        "confidence": 0.5800094604492188,
+        "classification": "REVIEW_REQUIRED",
+        "reasoning": "فاصلة في جملة «لئلا تسأموا، فتيأسوا»؛ موضع الوقف وعلاقة الفاء يحتاجان تدقيقًا."
+      },
+      {
+        "passage_id": 9,
+        "incremental_edit_index": 0,
+        "source_word": "سؤ",
+        "source_text": "سؤ",
+        "replacement": "سؤ ،",
+        "label": "K*A_[،]",
+        "confidence": 0.6383057236671448,
+        "classification": "REVIEW_REQUIRED",
+        "reasoning": "فاصلة بعد «سؤ» قبل «ونحمي» قد تفصل جملتين؛ ضرورتها غير محسومة."
+      },
+      {
+        "passage_id": 9,
+        "incremental_edit_index": 1,
+        "source_word": "التلوث",
+        "source_text": "التلوث",
+        "replacement": "التلوث ،",
+        "label": "K*A_[،]",
+        "confidence": 0.5199195146560669,
+        "classification": "REVIEW_REQUIRED",
+        "reasoning": "فاصلة بعد «التلوث» قبل «وأبناؤها» قد تفصل العطف؛ غير محسومة."
+      },
+      {
+        "passage_id": 13,
+        "incremental_edit_index": 0,
+        "source_word": "أهلي",
+        "source_text": "أهلي",
+        "replacement": "أهلي ،",
+        "label": "K*A_[،]",
+        "confidence": 0.6295974850654602,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 13,
+        "incremental_edit_index": 1,
+        "source_word": "وأخواتي",
+        "source_text": "واتي",
+        "replacement": "واتي ،",
+        "label": "K*A_[،]",
+        "confidence": 0.7688257694244385,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 13,
+        "incremental_edit_index": 2,
+        "source_word": "وأسرتي",
+        "source_text": "تي",
+        "replacement": "تي ،",
+        "label": "K*A_[،]",
+        "confidence": 0.7028388977050781,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 15,
+        "incremental_edit_index": 0,
+        "source_word": "والشعوب",
+        "source_text": "والشعوب",
+        "replacement": "والشعوب ،",
+        "label": "K*A_[،]",
+        "confidence": 0.6473583579063416,
+        "classification": "UNNECESSARY_EDIT",
+        "reasoning": "الفاصلة بعد «الشعوب» لا تصلح خطأً واضحًا."
+      },
+      {
+        "passage_id": 15,
+        "incremental_edit_index": 1,
+        "source_word": "بالأمن",
+        "source_text": "بالأمن",
+        "replacement": "بالأمن ،",
+        "label": "K*A_[،]",
+        "confidence": 0.6258864402770996,
+        "classification": "UNNECESSARY_EDIT",
+        "reasoning": "فاصلة تعداد اختيارية قبل «والسعادة»."
+      },
+      {
+        "passage_id": 15,
+        "incremental_edit_index": 2,
+        "source_word": "والسعادة",
+        "source_text": "والسعادة",
+        "replacement": "والسعادة ،",
+        "label": "K*A_[،]",
+        "confidence": 0.6670418381690979,
+        "classification": "UNNECESSARY_EDIT",
+        "reasoning": "فاصلة تعداد اختيارية قبل «والرخاء»."
+      },
+      {
+        "passage_id": 19,
+        "incremental_edit_index": 0,
+        "source_word": "سيره",
+        "source_text": "سيره",
+        "replacement": "سيره ،",
+        "label": "K*A_[،]",
+        "confidence": 0.41378554701805115,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 23,
+        "incremental_edit_index": 0,
+        "source_word": "صديق",
+        "source_text": "صديق",
+        "replacement": "صديق ،",
+        "label": "K*A_[،]",
+        "confidence": 0.547362208366394,
+        "classification": "UNNECESSARY_EDIT",
+        "reasoning": "فاصلة اختيارية وسط عطف «أو»."
+      },
+      {
+        "passage_id": 23,
+        "incremental_edit_index": 1,
+        "source_word": "فقير",
+        "source_text": "فقير",
+        "replacement": "فقير ،",
+        "label": "K*A_[،]",
+        "confidence": 0.6135013103485107,
+        "classification": "UNNECESSARY_EDIT",
+        "reasoning": "فاصلة اختيارية وسط عطف «أو»."
+      },
+      {
+        "passage_id": 41,
+        "incremental_edit_index": 0,
+        "source_word": "لزيارته",
+        "source_text": "لزيارته",
+        "replacement": "لزيارته ،",
+        "label": "K*A_[،]",
+        "confidence": 0.5879939198493958,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 41,
+        "incremental_edit_index": 1,
+        "source_word": "الزيارة",
+        "source_text": "الزيارة",
+        "replacement": "الزيارة ،",
+        "label": "K*A_[،]",
+        "confidence": 0.5474327802658081,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 54,
+        "incremental_edit_index": 0,
+        "source_word": "يكذب",
+        "source_text": "يكذب",
+        "replacement": "يكذب ،",
+        "label": "K*A_[،]",
+        "confidence": 0.5606303215026855,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 68,
+        "incremental_edit_index": 0,
+        "source_word": "الله",
+        "source_text": "الله",
+        "replacement": "الله -",
+        "label": "K*A_[-]",
+        "confidence": 0.6318786144256592,
+        "classification": "WRONG_CORRECTION",
+        "reasoning": "شرطة منفردة بين «رسول الله» و«صلى الله عليه وسلم» دون قوس مطابق؛ إخلال بعرض العبارة الدينية."
+      },
+      {
+        "passage_id": 68,
+        "incremental_edit_index": 1,
+        "source_word": "الجهل",
+        "source_text": "الجهل",
+        "replacement": "الجهل ،",
+        "label": "K*A_[،]",
+        "confidence": 0.495960533618927,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 76,
+        "incremental_edit_index": 0,
+        "source_word": "النفوس",
+        "source_text": "النفوس",
+        "replacement": "النفوس ،",
+        "label": "K*A_[،]",
+        "confidence": 0.731106162071228,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 76,
+        "incremental_edit_index": 1,
+        "source_word": "القلوب",
+        "source_text": "القلوب",
+        "replacement": "القلوب ،",
+        "label": "K*A_[،]",
+        "confidence": 0.7938567996025085,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 76,
+        "incremental_edit_index": 2,
+        "source_word": "اتحدوا",
+        "source_text": "وا",
+        "replacement": "وا ،",
+        "label": "K*A_[،]",
+        "confidence": 0.5807557702064514,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 76,
+        "incremental_edit_index": 3,
+        "source_word": "اتحدوا",
+        "source_text": "وا",
+        "replacement": "وا ،",
+        "label": "K*A_[،]",
+        "confidence": 0.7350111603736877,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 76,
+        "incremental_edit_index": 4,
+        "source_word": "فلسطين",
+        "source_text": "فلسطين",
+        "replacement": "فلسطين ،",
+        "label": "K*A_[،]",
+        "confidence": 0.7194831371307373,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      },
+      {
+        "passage_id": 86,
+        "incremental_edit_index": 0,
+        "source_word": "عامة",
+        "source_text": "عامة",
+        "replacement": "عامة ،",
+        "label": "K*A_[،]",
+        "confidence": 0.7471425533294678,
+        "classification": "UNNECESSARY_EDIT",
+        "reasoning": "فاصلة بين «حديقة عامة، ومدرستين» ليست لازمة لتصحيح لغوي."
+      },
+      {
+        "passage_id": 94,
+        "incremental_edit_index": 0,
+        "source_word": "بالرسول",
+        "source_text": "ول",
+        "replacement": "ول -",
+        "label": "K*A_[-]",
+        "confidence": 0.5928502678871155,
+        "classification": "REVIEW_REQUIRED",
+        "reasoning": "شرطة افتتاح دعاء اعتراضي؛ لا يُحكم عليها منفردة دون الشرطة الختامية."
+      },
+      {
+        "passage_id": 94,
+        "incremental_edit_index": 1,
+        "source_word": "وسلم",
+        "source_text": "وسلم",
+        "replacement": "وسلم -",
+        "label": "K*A_[-]",
+        "confidence": 0.7431349158287048,
+        "classification": "REVIEW_REQUIRED",
+        "reasoning": "شرطة إغلاق دعاء اعتراضي؛ الزوج قد يكون مقبولًا لكن أسلوبه ليس محل خطأ منشور."
+      },
+      {
+        "passage_id": 99,
+        "incremental_edit_index": 0,
+        "source_word": "ويساعده",
+        "source_text": "ويساعده",
+        "replacement": "ويساعده ،",
+        "label": "K*A_[،]",
+        "confidence": 0.5699801445007324,
+        "classification": "SUPPORTED_CORRECTION",
+        "reasoning": "فاصلة تفصل عناصر تعداد أو جملًا متتابعة على وجه مقبول."
+      }
+    ],
+    "raw_exact_target_recoveries": 31,
+    "decision": "TEST_SELECTIVELY",
+    "rationale": "Punctuation can help in explicit mode, but 6 unnecessary, 1 wrong and 5 unresolved changes add review burden without target recovery."
+  },
+  "comparison": {
+    "nopnx1_raw_exact_target_flags": 32,
+    "nopnx2_raw_exact_target_flags": 31,
+    "full_raw_exact_target_flags": 31,
+    "warning": "These queue flags include target alignment false positives; use independently adjudicated NoPnx1 target outcomes for quality."
+  }
+}
