@@ -147,6 +147,7 @@ jobs:
             echo "Acceptance evidence unchanged."
           else
             git commit -m "Update independent acceptance evidence [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
             git push origin HEAD:phase2-arabic-eval
           fi
 
