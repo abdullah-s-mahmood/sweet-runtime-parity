@@ -1,0 +1,852 @@
+{
+  "status": "PHASE2_WAW_ALIF_MORPH_GENERALIZATION_GOLD_COMPARED",
+  "runtime_decisions_materialized_before_gold": true,
+  "policy_frozen_before_gold": true,
+  "external_corpus": "ZAEBUC-v1.0 Arabic TRAIN fresh raw-selected slice",
+  "external_license": "CC BY-NC-SA 4.0",
+  "selected_line_ids": [
+    48,
+    63,
+    73,
+    19,
+    119,
+    121,
+    126,
+    113,
+    25,
+    46,
+    65,
+    98,
+    83,
+    140,
+    135,
+    147,
+    141,
+    70,
+    112,
+    123,
+    50,
+    117,
+    69,
+    43,
+    76,
+    128,
+    68,
+    64,
+    84,
+    54,
+    47,
+    8,
+    49,
+    125,
+    90,
+    101,
+    51,
+    97,
+    96,
+    36,
+    23,
+    28,
+    149,
+    122,
+    77,
+    81,
+    106,
+    13,
+    60,
+    27,
+    148,
+    139,
+    55,
+    58,
+    45,
+    1,
+    94,
+    14,
+    132,
+    62
+  ],
+  "selected_line_hashes": [
+    "03887bec218bcd58cfaed0c89e130b0a5ca4542570916259031fb60010f8990d",
+    "064d7661f81b26bcf94556227fe42cd7b0fc46ce0b38b8fa0af9e8628ebdcdf6",
+    "0dc921f36767dab3d0f680d54fe4a531fb886d1ebcbd9c6ae4b0db38973f4555",
+    "0f13ef8a5e4b7aa0a3c72a87377435d70d5506562e8755f8066aeb22825736be",
+    "12ed4b034498794432857bedd76f7e874aaabf401eef396990307c355ed250b0",
+    "14a571e5625ab23cbe7413b384491cc3fd6608d9f261f9c50787867ba847bc01",
+    "159bd57ca0f4bec505153d7681735246bd9ee707976afd825e0cffdf80fd240e",
+    "165fbd380712d9e0a6749d4f7939d21b8cd33e5b77860c7f12dca7d527feb4e2",
+    "199af5d6ca118e3d6c6aff56348236d274ce4e6cbdaf9c24f34db2b245499865",
+    "1a89bcc6dc2653ff24a23191ae6e2786f03e3a18c20cd77b369dc207aeb782db",
+    "1b43f7a64c0384dea17481890cb6bf2f8eaf48e8ac0f6de6a34ef882c039aed5",
+    "1cc0a2b5d65c30d38cbb51115cb42fef35d434ef4eb3740a1f95c1388067866b",
+    "1d7fd8f5160e80fde903945099bbd7a3b1425a684884fe5feefea83c14363893",
+    "24b200e161edbeb52764c0c897b2284a68a6f9aa9849a7a394061746ff951494",
+    "2770c6a0b72beb44e7667e1c0268a2fe35faa2a38a8f2d58bdc267403b1b9c5b",
+    "2cc500e381a73e87d9b7c3c1782aade630fa5a12897884e559d09905466c7bac",
+    "2d549402931493c196dbd683d9cf8a3520f633c03f7ead73bf282df348838327",
+    "2df958e580fd77231a092ebd7d265f89d7ae5335c8701cb8a8bfbd07de22e343",
+    "35156a0906f75ef63fa6e31beb313b6a41f61ccbfd9793910a638d4e4cad036f",
+    "36b3cce398f76b92f01994b3a708669f3e234c1c116d831df16446103a767bb6",
+    "36d0a36cfb57cb7a2a90ddde8dd4f11b970b1a1deb5204ccc2763a3743ed61b0",
+    "3b0234647323972452d0c71085ba34180bc6f3a40c61fbeeb348d53daa9425fe",
+    "3fecece48ec68a68ebaf462da8b7335d8f1f1d749d34523c48f3749bb5e103e5",
+    "420211fb969f47ef0e959bbdfae4e6461b256efb332f8586f8abb617be60040d",
+    "4222d33900bdddb9477f529052c70f51c2d46a1b17e23c6200e330d5151b4cd5",
+    "435925bed9dedf60b5a59008c87def16ed943c22cfae8427639e8b5c105f15dc",
+    "472093c7795064bd2dc6caf2bf0e666b3fbde29dd80ff348d72b0c2db5a78f06",
+    "48d73042ad73623add8c795c06731eec6c70ef7ffbd95d235d38945295260460",
+    "4aaca6eaa8e8bfa2d24d1a9bb386dabb8fca148900cb82fd7f893a97c32c7df3",
+    "4be40b615d6e981301227200ddbeb9c7693357d82e59cd3a1d213975977f24e4",
+    "4c788a488b898a31f94cf27fab0d6e453c8e77979bc9c67e1ae28372eeb7d066",
+    "4dbd7f8d3fcf2c97a6342068128491834dad32bfbe6a699c547d9e5b8cbd8161",
+    "4def7be6c45a092d28681b9d8750c5e596f4e0a8dfaf6dcaf24e13b3313dda86",
+    "4e01655d944bd7a2de9221ca4e7c8db631ed896f7c76530d7669019044554ca2",
+    "511f0e1582c444e964d15c785265003753202efed5e9dba7de9fb8f0b964c79c",
+    "5596895355d5c9c85ec4719ff0653e0e93e31521e260d3e67651801401216b5a",
+    "55aef94abe8218feba55354ae3977630680cef39ca9a7176c96c7e2589ab09c2",
+    "56897c320f94ce62e2510e983a90a9ad8445f15b058760e4854a44b98b08f0bf",
+    "5898e1174cf2fc46efcafd149d2241a433c9f15ac65c0cc52091afcb96181d84",
+    "59f119ce6e31621711c2ee7a7c9ce6716a4285b78ac0644be6d82bc2f6454567",
+    "5d44b148b000d157909c590bb2b1898235202f8336989f5942494203e952aaef",
+    "5f1af74c55cfb3b137f5684629f0d9d11018cf26e77f3606da4e5d192c5afadc",
+    "60bac7ed8fc28d49fd0f7745004c7b5261f5ffabf4c1d2da8307ec49b5ad0be6",
+    "60f0bcc9ff46db63ca32fa92ead61ab7e7417f174367537935883d7d0739c867",
+    "62f08a0d228c65e333290099e8c44dff0bff58a8398bb4b65e43008a3a776d7f",
+    "654db6d76bfa13cbf79d493d80f1f2f5d414ef3181c7b667a24110aec687f8c2",
+    "680aab21e1a5de1e1bf7ea5517b8d19c2415ea634fa54890dc65a4a95afc4321",
+    "6a53857911487d5ad45854d3e96368e86c69c48e5bbda54acad4dd637b471508",
+    "6d6e5902c432ec4c0f019ac46391f34483e27272ffe25ac1a9d5fc4793d27934",
+    "6e2eaa1b0c24e3a760cc3771182ec8d0fe215b7d936d5a37546f8c51b89e02b0",
+    "716d3e42b2914fbe07994d0d8558865ae5ff19595dc1b363e072178091af4b80",
+    "72f3b87a8d00213274265e1ffe03285e0cb2b85f139c866b8f3c6e6467b0ec0d",
+    "730250574f0d43ce8bde99b01177262d9e4ada284e285d21b150c9d3b0d8b46b",
+    "7342eb0ee2f93db565d9d7ee3fec20e5c217c69b623550076f736ebd3a982d0c",
+    "78ddb8c84cb5243541761dfe93020772ca370a76cdb8e61a08d0a493132c1fb0",
+    "7978c63868b47d108d1b877fbe4793851a022af3ac8da4b8292184cdd04305ea",
+    "7b7976823a5ae11dbde49da4b0b8f42ac32adfc90e20ea68be5044f25b8eb6af",
+    "7d76214c680d5402235f8e1da03945c52b9ff75c812bef441edca0f1fad2bd21",
+    "84c30ee79de11a50ee97823cd18ca646be96114f31a8b8a63e4019369be77f90",
+    "85074646588f3882f228fd1f3f4e2a6db790b6c63a87b594d85b091517c0f601"
+  ],
+  "runtime_events": 1423,
+  "policy_results": {
+    "SOURCE_SHAPE_ONLY": {
+      "events": 7,
+      "classification_counts": {
+        "EXACT_GOLD_SUPPORTED": 6,
+        "SAME_GOLD_SPAN_DIFFERENT_OUTPUT": 1
+      },
+      "exact_gold_supported": 6,
+      "needs_contextual_review": 1,
+      "event_audit_hashes": [
+        {
+          "event_id": "ZWAW-019-009",
+          "line_id": 19,
+          "line_hash": "0f13ef8a5e4b7aa0a3c72a87377435d70d5506562e8755f8066aeb22825736be",
+          "source_lexical_span": [
+            52,
+            53
+          ],
+          "event_cost": 0.2,
+          "source_hash": "374bcab22a8792168bf39be0cb8ff2b425e01db1dbc76d889b8c43523536b2b0",
+          "candidate_hash": "b3f28305d9ff530c2e627a8ed31f5d2a23fa930a51d2ea855315adc2389d7d1f",
+          "source_contextual_top": {
+            "pos": "verb",
+            "num": "s",
+            "per": "3",
+            "asp": "i",
+            "mod": "u",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": null,
+            "form_num": null,
+            "form_gen": null
+          },
+          "candidate_contextual_top": {
+            "pos": "verb",
+            "num": "p",
+            "per": "3",
+            "asp": "p",
+            "mod": "i",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": "lex",
+            "form_num": "p",
+            "form_gen": "m"
+          },
+          "source_lexical_flags": {
+            "analysis_count": 2,
+            "has_plural_verb": false,
+            "has_singular_verb": true,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "s"
+            ]
+          },
+          "candidate_lexical_flags": {
+            "analysis_count": 2,
+            "has_plural_verb": true,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "-",
+              "p"
+            ]
+          },
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_hash": "374bcab22a8792168bf39be0cb8ff2b425e01db1dbc76d889b8c43523536b2b0",
+          "gold_output_hash": "b3f28305d9ff530c2e627a8ed31f5d2a23fa930a51d2ea855315adc2389d7d1f"
+        },
+        {
+          "event_id": "ZWAW-019-010",
+          "line_id": 19,
+          "line_hash": "0f13ef8a5e4b7aa0a3c72a87377435d70d5506562e8755f8066aeb22825736be",
+          "source_lexical_span": [
+            55,
+            56
+          ],
+          "event_cost": 0.16666666666666666,
+          "source_hash": "cc605b4d87b06e0d418814ef875839386238d84da9389f912109bc69ca01b949",
+          "candidate_hash": "498bee3cc2673a88049b7ca585b65b44509a3fe5b744ba3689585e6d7c087716",
+          "source_contextual_top": {
+            "pos": "verb",
+            "num": "s",
+            "per": "3",
+            "asp": "i",
+            "mod": "u",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": null,
+            "form_num": null,
+            "form_gen": null
+          },
+          "candidate_contextual_top": {
+            "pos": "verb",
+            "num": "p",
+            "per": "3",
+            "asp": "p",
+            "mod": "i",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": "lex",
+            "form_num": "p",
+            "form_gen": "m"
+          },
+          "source_lexical_flags": {
+            "analysis_count": 6,
+            "has_plural_verb": false,
+            "has_singular_verb": true,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "s"
+            ]
+          },
+          "candidate_lexical_flags": {
+            "analysis_count": 6,
+            "has_plural_verb": true,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "-",
+              "p"
+            ]
+          },
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_hash": "cc605b4d87b06e0d418814ef875839386238d84da9389f912109bc69ca01b949",
+          "gold_output_hash": "498bee3cc2673a88049b7ca585b65b44509a3fe5b744ba3689585e6d7c087716"
+        },
+        {
+          "event_id": "ZWAW-054-013",
+          "line_id": 54,
+          "line_hash": "4be40b615d6e981301227200ddbeb9c7693357d82e59cd3a1d213975977f24e4",
+          "source_lexical_span": [
+            81,
+            82
+          ],
+          "event_cost": 0.125,
+          "source_hash": "108e29de890c611ab044c018e6f70f94a9fb155e5c1cfb7e71b25aca07529ab7",
+          "candidate_hash": "5c7fc453a97f4af9b8a69ce8459588758070eae474eac043f23b50b5419a4490",
+          "source_contextual_top": {
+            "pos": "noun_prop",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "mod": "na",
+            "cas": "u",
+            "gen": "-",
+            "vox": "na",
+            "source": null,
+            "form_num": null,
+            "form_gen": null
+          },
+          "candidate_contextual_top": {
+            "pos": "verb",
+            "num": "p",
+            "per": "3",
+            "asp": "p",
+            "mod": "i",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": "lex",
+            "form_num": "p",
+            "form_gen": "m"
+          },
+          "source_lexical_flags": {
+            "analysis_count": 0,
+            "has_plural_verb": false,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [],
+            "verb_num_set": []
+          },
+          "candidate_lexical_flags": {
+            "analysis_count": 3,
+            "has_plural_verb": true,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "p"
+            ]
+          },
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_hash": "108e29de890c611ab044c018e6f70f94a9fb155e5c1cfb7e71b25aca07529ab7",
+          "gold_output_hash": "5c7fc453a97f4af9b8a69ce8459588758070eae474eac043f23b50b5419a4490"
+        },
+        {
+          "event_id": "ZWAW-054-014",
+          "line_id": 54,
+          "line_hash": "4be40b615d6e981301227200ddbeb9c7693357d82e59cd3a1d213975977f24e4",
+          "source_lexical_span": [
+            83,
+            84
+          ],
+          "event_cost": 0.125,
+          "source_hash": "af4ae8eab3406574e554dc3f8e1694599730c749c3e46ef8f7382a1806fcf4e9",
+          "candidate_hash": "b4526a82897f448696e193f2faba86f7cf11cd9eb608aa574a9dbd951ddc80f0",
+          "source_contextual_top": {
+            "pos": "noun_prop",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "mod": "na",
+            "cas": "u",
+            "gen": "-",
+            "vox": "na",
+            "source": null,
+            "form_num": null,
+            "form_gen": null
+          },
+          "candidate_contextual_top": {
+            "pos": "verb",
+            "num": "p",
+            "per": "3",
+            "asp": "p",
+            "mod": "i",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": "lex",
+            "form_num": "p",
+            "form_gen": "m"
+          },
+          "source_lexical_flags": {
+            "analysis_count": 0,
+            "has_plural_verb": false,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [],
+            "verb_num_set": []
+          },
+          "candidate_lexical_flags": {
+            "analysis_count": 3,
+            "has_plural_verb": true,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "p"
+            ]
+          },
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_hash": "af4ae8eab3406574e554dc3f8e1694599730c749c3e46ef8f7382a1806fcf4e9",
+          "gold_output_hash": "b4526a82897f448696e193f2faba86f7cf11cd9eb608aa574a9dbd951ddc80f0"
+        },
+        {
+          "event_id": "ZWAW-077-021",
+          "line_id": 77,
+          "line_hash": "62f08a0d228c65e333290099e8c44dff0bff58a8398bb4b65e43008a3a776d7f",
+          "source_lexical_span": [
+            89,
+            90
+          ],
+          "event_cost": 0.2,
+          "source_hash": "11f5fa55810fc1f177e82cbdb9577faa7f647ad43ee8f527293520bbd9a06001",
+          "candidate_hash": "a3b0ff4cf636fc505c0d1aed57077ce826849f50f1c9e7189f98b28ed4685e0a",
+          "source_contextual_top": {
+            "pos": "noun_prop",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "mod": "na",
+            "cas": "u",
+            "gen": "-",
+            "vox": "na",
+            "source": null,
+            "form_num": null,
+            "form_gen": null
+          },
+          "candidate_contextual_top": {
+            "pos": "verb",
+            "num": "p",
+            "per": "3",
+            "asp": "p",
+            "mod": "i",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": "lex",
+            "form_num": "p",
+            "form_gen": "m"
+          },
+          "source_lexical_flags": {
+            "analysis_count": 0,
+            "has_plural_verb": false,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [],
+            "verb_num_set": []
+          },
+          "candidate_lexical_flags": {
+            "analysis_count": 2,
+            "has_plural_verb": true,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "p"
+            ]
+          },
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_hash": "11f5fa55810fc1f177e82cbdb9577faa7f647ad43ee8f527293520bbd9a06001",
+          "gold_output_hash": "a3b0ff4cf636fc505c0d1aed57077ce826849f50f1c9e7189f98b28ed4685e0a"
+        },
+        {
+          "event_id": "ZWAW-077-022",
+          "line_id": 77,
+          "line_hash": "62f08a0d228c65e333290099e8c44dff0bff58a8398bb4b65e43008a3a776d7f",
+          "source_lexical_span": [
+            92,
+            93
+          ],
+          "event_cost": 0.14285714285714285,
+          "source_hash": "8c1521ef828b9316c93023af27f2204d0edfb2ea1615cfc4ac1469b051be8b46",
+          "candidate_hash": "093253af70437d73576e992d9ce06b397102df423b4595cd9b8d66f1131d08a6",
+          "source_contextual_top": {
+            "pos": "noun_prop",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "mod": "na",
+            "cas": "u",
+            "gen": "-",
+            "vox": "na",
+            "source": null,
+            "form_num": null,
+            "form_gen": null
+          },
+          "candidate_contextual_top": {
+            "pos": "verb",
+            "num": "p",
+            "per": "3",
+            "asp": "i",
+            "mod": "u",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": "lex",
+            "form_num": "p",
+            "form_gen": "m"
+          },
+          "source_lexical_flags": {
+            "analysis_count": 0,
+            "has_plural_verb": false,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [],
+            "verb_num_set": []
+          },
+          "candidate_lexical_flags": {
+            "analysis_count": 1,
+            "has_plural_verb": true,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "p"
+            ]
+          },
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_hash": "8c1521ef828b9316c93023af27f2204d0edfb2ea1615cfc4ac1469b051be8b46",
+          "gold_output_hash": "093253af70437d73576e992d9ce06b397102df423b4595cd9b8d66f1131d08a6"
+        },
+        {
+          "event_id": "ZWAW-077-029",
+          "line_id": 77,
+          "line_hash": "62f08a0d228c65e333290099e8c44dff0bff58a8398bb4b65e43008a3a776d7f",
+          "source_lexical_span": [
+            118,
+            119
+          ],
+          "event_cost": 0.2,
+          "source_hash": "8a466f180c44b069a2ceb39a2a50ba7c5ec7c1fb19fd939a59e9a2212d1113fa",
+          "candidate_hash": "b952a30c98e5228b8cec49ab8f0d4218bbd45a68bc287de9b1b7436e63b82ca1",
+          "source_contextual_top": {
+            "pos": "noun_prop",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "mod": "na",
+            "cas": "u",
+            "gen": "-",
+            "vox": "na",
+            "source": null,
+            "form_num": null,
+            "form_gen": null
+          },
+          "candidate_contextual_top": {
+            "pos": "verb",
+            "num": "p",
+            "per": "3",
+            "asp": "p",
+            "mod": "i",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": "lex",
+            "form_num": "p",
+            "form_gen": "m"
+          },
+          "source_lexical_flags": {
+            "analysis_count": 0,
+            "has_plural_verb": false,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [],
+            "verb_num_set": []
+          },
+          "candidate_lexical_flags": {
+            "analysis_count": 1,
+            "has_plural_verb": true,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "p"
+            ]
+          },
+          "classification": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+          "gold_source_hash": "8a466f180c44b069a2ceb39a2a50ba7c5ec7c1fb19fd939a59e9a2212d1113fa",
+          "gold_output_hash": "0d40b8fd50568918fc855b48e8c1d816d63c142c55cdf210b0d65cb8097b5941"
+        }
+      ]
+    },
+    "WAW_ALIF_MORPH_RECOVERY": {
+      "events": 4,
+      "classification_counts": {
+        "EXACT_GOLD_SUPPORTED": 3,
+        "SAME_GOLD_SPAN_DIFFERENT_OUTPUT": 1
+      },
+      "exact_gold_supported": 3,
+      "needs_contextual_review": 1,
+      "event_audit_hashes": [
+        {
+          "event_id": "ZWAW-054-013",
+          "line_id": 54,
+          "line_hash": "4be40b615d6e981301227200ddbeb9c7693357d82e59cd3a1d213975977f24e4",
+          "source_lexical_span": [
+            81,
+            82
+          ],
+          "event_cost": 0.125,
+          "source_hash": "108e29de890c611ab044c018e6f70f94a9fb155e5c1cfb7e71b25aca07529ab7",
+          "candidate_hash": "5c7fc453a97f4af9b8a69ce8459588758070eae474eac043f23b50b5419a4490",
+          "source_contextual_top": {
+            "pos": "noun_prop",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "mod": "na",
+            "cas": "u",
+            "gen": "-",
+            "vox": "na",
+            "source": null,
+            "form_num": null,
+            "form_gen": null
+          },
+          "candidate_contextual_top": {
+            "pos": "verb",
+            "num": "p",
+            "per": "3",
+            "asp": "p",
+            "mod": "i",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": "lex",
+            "form_num": "p",
+            "form_gen": "m"
+          },
+          "source_lexical_flags": {
+            "analysis_count": 0,
+            "has_plural_verb": false,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [],
+            "verb_num_set": []
+          },
+          "candidate_lexical_flags": {
+            "analysis_count": 3,
+            "has_plural_verb": true,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "p"
+            ]
+          },
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_hash": "108e29de890c611ab044c018e6f70f94a9fb155e5c1cfb7e71b25aca07529ab7",
+          "gold_output_hash": "5c7fc453a97f4af9b8a69ce8459588758070eae474eac043f23b50b5419a4490"
+        },
+        {
+          "event_id": "ZWAW-054-014",
+          "line_id": 54,
+          "line_hash": "4be40b615d6e981301227200ddbeb9c7693357d82e59cd3a1d213975977f24e4",
+          "source_lexical_span": [
+            83,
+            84
+          ],
+          "event_cost": 0.125,
+          "source_hash": "af4ae8eab3406574e554dc3f8e1694599730c749c3e46ef8f7382a1806fcf4e9",
+          "candidate_hash": "b4526a82897f448696e193f2faba86f7cf11cd9eb608aa574a9dbd951ddc80f0",
+          "source_contextual_top": {
+            "pos": "noun_prop",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "mod": "na",
+            "cas": "u",
+            "gen": "-",
+            "vox": "na",
+            "source": null,
+            "form_num": null,
+            "form_gen": null
+          },
+          "candidate_contextual_top": {
+            "pos": "verb",
+            "num": "p",
+            "per": "3",
+            "asp": "p",
+            "mod": "i",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": "lex",
+            "form_num": "p",
+            "form_gen": "m"
+          },
+          "source_lexical_flags": {
+            "analysis_count": 0,
+            "has_plural_verb": false,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [],
+            "verb_num_set": []
+          },
+          "candidate_lexical_flags": {
+            "analysis_count": 3,
+            "has_plural_verb": true,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "p"
+            ]
+          },
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_hash": "af4ae8eab3406574e554dc3f8e1694599730c749c3e46ef8f7382a1806fcf4e9",
+          "gold_output_hash": "b4526a82897f448696e193f2faba86f7cf11cd9eb608aa574a9dbd951ddc80f0"
+        },
+        {
+          "event_id": "ZWAW-077-021",
+          "line_id": 77,
+          "line_hash": "62f08a0d228c65e333290099e8c44dff0bff58a8398bb4b65e43008a3a776d7f",
+          "source_lexical_span": [
+            89,
+            90
+          ],
+          "event_cost": 0.2,
+          "source_hash": "11f5fa55810fc1f177e82cbdb9577faa7f647ad43ee8f527293520bbd9a06001",
+          "candidate_hash": "a3b0ff4cf636fc505c0d1aed57077ce826849f50f1c9e7189f98b28ed4685e0a",
+          "source_contextual_top": {
+            "pos": "noun_prop",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "mod": "na",
+            "cas": "u",
+            "gen": "-",
+            "vox": "na",
+            "source": null,
+            "form_num": null,
+            "form_gen": null
+          },
+          "candidate_contextual_top": {
+            "pos": "verb",
+            "num": "p",
+            "per": "3",
+            "asp": "p",
+            "mod": "i",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": "lex",
+            "form_num": "p",
+            "form_gen": "m"
+          },
+          "source_lexical_flags": {
+            "analysis_count": 0,
+            "has_plural_verb": false,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [],
+            "verb_num_set": []
+          },
+          "candidate_lexical_flags": {
+            "analysis_count": 2,
+            "has_plural_verb": true,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "p"
+            ]
+          },
+          "classification": "EXACT_GOLD_SUPPORTED",
+          "gold_source_hash": "11f5fa55810fc1f177e82cbdb9577faa7f647ad43ee8f527293520bbd9a06001",
+          "gold_output_hash": "a3b0ff4cf636fc505c0d1aed57077ce826849f50f1c9e7189f98b28ed4685e0a"
+        },
+        {
+          "event_id": "ZWAW-077-029",
+          "line_id": 77,
+          "line_hash": "62f08a0d228c65e333290099e8c44dff0bff58a8398bb4b65e43008a3a776d7f",
+          "source_lexical_span": [
+            118,
+            119
+          ],
+          "event_cost": 0.2,
+          "source_hash": "8a466f180c44b069a2ceb39a2a50ba7c5ec7c1fb19fd939a59e9a2212d1113fa",
+          "candidate_hash": "b952a30c98e5228b8cec49ab8f0d4218bbd45a68bc287de9b1b7436e63b82ca1",
+          "source_contextual_top": {
+            "pos": "noun_prop",
+            "num": "-",
+            "per": "na",
+            "asp": "na",
+            "mod": "na",
+            "cas": "u",
+            "gen": "-",
+            "vox": "na",
+            "source": null,
+            "form_num": null,
+            "form_gen": null
+          },
+          "candidate_contextual_top": {
+            "pos": "verb",
+            "num": "p",
+            "per": "3",
+            "asp": "p",
+            "mod": "i",
+            "cas": "na",
+            "gen": "m",
+            "vox": "a",
+            "source": "lex",
+            "form_num": "p",
+            "form_gen": "m"
+          },
+          "source_lexical_flags": {
+            "analysis_count": 0,
+            "has_plural_verb": false,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [],
+            "verb_num_set": []
+          },
+          "candidate_lexical_flags": {
+            "analysis_count": 1,
+            "has_plural_verb": true,
+            "has_singular_verb": false,
+            "has_nominal": false,
+            "pos_set": [
+              "verb"
+            ],
+            "verb_num_set": [
+              "p"
+            ]
+          },
+          "classification": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+          "gold_source_hash": "8a466f180c44b069a2ceb39a2a50ba7c5ec7c1fb19fd939a59e9a2212d1113fa",
+          "gold_output_hash": "0d40b8fd50568918fc855b48e8c1d816d63c142c55cdf210b0d65cb8097b5941"
+        }
+      ]
+    },
+    "WAW_ALIF_MORPH_STRICT": {
+      "events": 0,
+      "classification_counts": {},
+      "exact_gold_supported": 0,
+      "needs_contextual_review": 0,
+      "event_audit_hashes": []
+    }
+  },
+  "success_contract": {
+    "strict_minimum_preferred_events": 3,
+    "any_demonstrably_wrong_strict_event": "MODIFY",
+    "strict_below_3_events": "UNPROVEN_LOW_COVERAGE"
+  },
+  "zaebuc_dev_read": false,
+  "zaebuc_test_read": false,
+  "full_corpus_text_persisted": false
+}
