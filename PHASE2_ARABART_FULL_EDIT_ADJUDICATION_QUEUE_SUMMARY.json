@@ -1,0 +1,23 @@
+{
+  "status": "READY_FOR_FULL_ARABART_EDIT_EVENT_ADJUDICATION",
+  "event_rows": 106,
+  "passages_with_events": 36,
+  "event_types": {
+    "SUB": 96,
+    "DEL": 0,
+    "INS": 0,
+    "COMPLEX": 10
+  },
+  "events_overlapping_published_target": 56,
+  "unique_published_targets_touched": 59,
+  "scope": "Base-letter word-alignment events from full persisted AraBART output, including substitutions, insertions, deletions, and contiguous complex events.",
+  "alignment_identity": "Arabic combining marks/tatweel/punctuation ignored for word identity; original full surfaces retained for adjudication.",
+  "important_limitations": [
+    "Dynamic-programming word alignment is a development representation, not ground truth.",
+    "Complex events may need human alignment judgment.",
+    "Full AraBART output is evidence only and is never product output.",
+    "Published Nahw references are local corrections, not exhaustive passage gold."
+  ],
+  "development_only": true,
+  "not_sealed": true
+}
