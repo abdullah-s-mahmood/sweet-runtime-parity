@@ -850,5 +850,6 @@
         }
       ]
     }
-  }
+  },
+  "note": "Passage-level conservative as-run output dispositions. Target-boundary insertions were excluded from collateral; 150 targets are clustered in 41 passages."
 }

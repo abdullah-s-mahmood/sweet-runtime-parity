@@ -8,7 +8,7 @@
 
 ## After adjudication: findings relevant to interpretation
 
-- The queue shows four target outputs that plausibly fulfill the Nahw rule without optional diacritics (ITEM-075, 201, 434, 508). They should not be scored as wrong solely for differing from the printed reference. Two others show only partial repair (ITEM-098, 332).
+- Boundary-aware recheck finds six additionally valid unvowelled outputs among queue states marked ERROR_PRESERVED_LOCAL. The queue also shows four TARGET_CHANGED_OTHER outputs that fulfill the Nahw rule without optional diacritics (ITEM-075, 201, 434, 508). They should not be scored as wrong solely for differing from the printed reference. Two other changed targets show only partial repair (ITEM-098, 332).
 - Many other changed targets are lexical loss or bracketed unknown-token fragments; source-to-output text must be separated from the model's non-K edits. The upstream demonstration uses BertTokenizer and gec.tag.rewrite, which explains why the exact input/tokenization/renderer boundary matters; the paper does not validate these corruptions as acceptable. Source: https://github.com/CAMeL-Lab/text-editing
 - The Arabic GEC literature includes sequence-to-sequence models and error-detection auxiliary input across genres, so a different generator or routing is a testable fallback if coverage remains low. Source: https://aclanthology.org/2023.emnlp-main.396/
 - End-to-end alignment and detokenization can change measured edits; keep literal output corruption and formatting effects visible in the review burden, but do not count whitespace as grammatical improvement. Source: https://aclanthology.org/2025.coling-main.52.pdf

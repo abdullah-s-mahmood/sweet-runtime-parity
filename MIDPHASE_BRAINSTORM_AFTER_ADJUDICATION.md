@@ -4,7 +4,7 @@ Decision labels are hypotheses for the next bounded experiments, not architectur
 
 ## NoPnx iteration 1 only — PROTOTYPE
 
-Same 29 exact target states as iteration 2, avoids documented ITEM-077 regression; still faces rendering loss.
+Same 29 raw exact target states as iteration 2, avoids documented ITEM-077 regression; still faces rendering loss.
 
 ## NoPnx ×2 — WATCH
 

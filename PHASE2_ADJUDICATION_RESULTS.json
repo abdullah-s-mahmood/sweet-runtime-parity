@@ -9,23 +9,24 @@
     "TARGET_CHANGED_OTHER": 56
   },
   "adjudicated_target_classes": {
-    "ERROR_PRESERVED_LOCAL": 65,
+    "ERROR_PRESERVED_LOCAL": 58,
     "WRONG_CORRECTION": 50,
+    "REVIEW_REQUIRED": 2,
     "RECOVERED_EXACT_ALIGNED": 28,
-    "SUPPORTED_ALTERNATIVE": 4,
-    "PARTIAL_CORRECTION": 2,
-    "REVIEW_REQUIRED": 1
+    "SUPPORTED_ALTERNATIVE": 10,
+    "PARTIAL_CORRECTION": 2
   },
-  "collateral_edits_by_architecture_total": 1585,
+  "collateral_edits_by_architecture_total": 1541,
   "collateral_classifications": {
     "SURFACE_RENDERER_CHANGE": 1395,
-    "REVIEW_REQUIRED": 130,
+    "REVIEW_REQUIRED": 86,
     "INCORRECT_EDIT": 54,
     "SUPPORTED_CORRECTION": 6
   },
   "severity_counts_across_target_and_collateral_rows": {
     "HIGH": 451,
-    "MEDIUM": 5
+    "LOW": 1,
+    "MEDIUM": 6
   },
   "changed_other_adjudicated": 56,
   "changed_other_classes": {
@@ -87,5 +88,8 @@
     "Unknown-token rendering can precede any non-K tag and can interact with later edit application; origin marked MIXED where attribution is not identifiable.",
     "No passage-cluster confidence interval is calculated on this development-only audit.",
     "The same source passage appears in multiple target rows; do not interpret 150 as independent passages."
-  ]
+  ],
+  "method_correction": "Pass 2 reassigns target-boundary letter insertions from collateral to target edits; six ERROR_PRESERVED_LOCAL queue states are actually supported unvowelled target corrections. The queue's raw states remain unchanged.",
+  "adjudicated_genuinely_preserved": 58,
+  "unvowelled_supported_from_raw_preserved": 6
 }

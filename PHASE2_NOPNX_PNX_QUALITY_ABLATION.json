@@ -17,7 +17,7 @@
       "collateral_classifications": {
         "SURFACE_RENDERER_CHANGE": 347,
         "INCORRECT_EDIT": 20,
-        "REVIEW_REQUIRED": 26,
+        "REVIEW_REQUIRED": 12,
         "SUPPORTED_CORRECTION": 2
       }
     },
@@ -37,7 +37,7 @@
       "collateral_classifications": {
         "SURFACE_RENDERER_CHANGE": 343,
         "INCORRECT_EDIT": 18,
-        "REVIEW_REQUIRED": 29,
+        "REVIEW_REQUIRED": 14,
         "SUPPORTED_CORRECTION": 2
       }
     },
@@ -74,7 +74,7 @@
       },
       "collateral_classifications": {
         "SURFACE_RENDERER_CHANGE": 345,
-        "REVIEW_REQUIRED": 51,
+        "REVIEW_REQUIRED": 36,
         "INCORRECT_EDIT": 16,
         "SUPPORTED_CORRECTION": 2
       }
@@ -92,6 +92,7 @@
     "NoPnx iteration 2 gained one exact target but lost another (NAHW-ITEM-077: وامنح → وأمنح).",
     "Pnx changed 25 passages after NoPnx iteration 2, with no new exact target recoveries in this extraction.",
     "Pnx-only target exact count 3 includes output/renderer effects; do not attribute exact recovery to punctuation labels without matched raw edit.",
-    "Unknown-token reconstruction and lexical loss make the as-run output unsuitable for automatic acceptance; this is a development diagnosis, not product quality on clean scientific prose."
+    "Unknown-token reconstruction and lexical loss make the as-run output unsuitable for automatic acceptance; this is a development diagnosis, not product quality on clean scientific prose.",
+    "Six queue-local preserved states become valid unvowelled alternatives on boundary-aware recheck; do not conflate raw state with adjudicated quality."
   ]
 }
