@@ -92,6 +92,10 @@ jobs:
         run: |
           python phase2/arabic_eval/analyze_scientific_invariants.py 2>&1 | tee artifacts/SCIENTIFIC_INVARIANT_CONSOLE.txt
 
+      - name: Run protected-span strict-fidelity prototype
+        run: |
+          python phase2/arabic_eval/prototype_protected_span_sweet.py 2>&1 | tee artifacts/PROTECTED_SPAN_PROTOTYPE_CONSOLE.txt
+
       - name: Record workflow provenance
         if: always()
         run: |
