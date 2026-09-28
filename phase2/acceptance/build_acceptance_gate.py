@@ -294,7 +294,7 @@ def evaluate(candidates):
         if r["stream"]=="SURGICAL_NOPNX1":
             x=surg[r["candidate_id"]]; cls=x["classification"]; sev=x.get("severity")
         else:
-            x=norm[r["candidate_id"]]; cls=x["classification"]; sev=x.get("severity")
+            x=norm[r["candidate_id"]]; cls=x["candidate_class"]; sev=x.get("severity")
         good=cls in {"SUPPORTED_CORRECTION","SUPPORTED_ALTERNATIVE"}
         return cls,sev,good
 
