@@ -344,6 +344,10 @@ def main():
             "operation_aware_output": op_out,
             "operation_aware_selected_indices": [int(e["candidate_edit_index"]) for e in op_selected],
             "operation_aware_abstained_indices": [int(e["candidate_edit_index"]) for e in op_abstained],
+            "gate_outputs": {
+                name: variants[name][pid]
+                for name in ("op_aware_ged_non_uc","op_aware_ged_p30","op_aware_ged_p50","op_aware_ged_p70")
+            },
             "ged_words": ged,
             "ged_variant_meta": ged_variant_meta,
         }
