@@ -1,0 +1,31 @@
+{
+  "status": "QALB15_WAW_ALIF_RAW_ONLY_DIAGNOSTIC_COMPLETE",
+  "gold_read": false,
+  "candidate_shape": "single SUB; source ends و; candidate == source + ا",
+  "candidate_count": 1,
+  "event_cost_le_025": 1,
+  "pos_counts": {
+    "noun_prop": 1
+  },
+  "morph_feature_counts": {
+    "noun_prop|-|na|na|na|na": 1
+  },
+  "hashed_event_records": [
+    {
+      "event_id": "Q15D-00066-002",
+      "line_id": 66,
+      "line_hash": "9639bae74b1534d40e0bb9f25094d8f7eaeb836af06cde9a146e92fa285c237c",
+      "event_cost": 0.16666666666666666,
+      "source_hash": "0eb19a1245748e078c7a0a81bb632cec14449744332477f0fb902fdce8af980b",
+      "candidate_hash": "a0382f5444dff6ae613fc407ff64540a729b7741b5b0a791f3d87a9d41c18dbb",
+      "pos": "noun_prop",
+      "num": "-",
+      "per": "na",
+      "asp": "na",
+      "mod": "na",
+      "vox": "na"
+    }
+  ],
+  "qalb_text_persisted": false,
+  "interpretation": "Diagnostic only. Must not be used to retune/evaluate a policy on the consumed QALB15 DEV slice."
+}
