@@ -1,0 +1,87 @@
+{
+  "repository": "abdullah-s-mahmood/sweet-runtime-parity",
+  "branch": "phase2-arabic-eval",
+  "commit_sha": "c99425c8add19f18c06b34b89474d342549fff27",
+  "commit_sha_semantics": "Commit containing eight adjudication/research/brainstorm files; manifest is added by a subsequent commit to avoid a self-referential commit hash.",
+  "passage_count": 41,
+  "target_count": 150,
+  "TARGET_CHANGED_OTHER_adjudicated_count": 56,
+  "collateral_edits_adjudicated_count": 1585,
+  "REVIEW_REQUIRED_count": 131,
+  "REVIEW_REQUIRED_breakdown": {
+    "target_rows": 1,
+    "collateral_rows_across_four_architectures": 130
+  },
+  "files_created": [
+    {
+      "path": "PHASE2_TARGET_ADJUDICATION.jsonl",
+      "git_blob_sha": "12d31d7faefdb801e712fca74ca2c5d7d1f04b74"
+    },
+    {
+      "path": "PHASE2_COLLATERAL_ADJUDICATION.jsonl",
+      "git_blob_sha": "e592b89f29c235f0fe5fbebaf588ae2d3c89b864"
+    },
+    {
+      "path": "PHASE2_ADJUDICATION_RESULTS.json",
+      "git_blob_sha": "02fce3ef998f863f397121367be77a661b540756"
+    },
+    {
+      "path": "PHASE2_NOPNX_PNX_QUALITY_ABLATION.json",
+      "git_blob_sha": "fc8006c78043cdba73014fb6fe44c2b0989d0cd4"
+    },
+    {
+      "path": "PHASE2_REVIEW_BURDEN_DEVELOPMENT.json",
+      "git_blob_sha": "103d09427f06f9511499d38e6880060cd27d527e"
+    },
+    {
+      "path": "PHASE2_FAILURE_TAXONOMY_AFTER_ADJUDICATION.md",
+      "git_blob_sha": "603308d888ef622bcfe92b97cf0fd1ba33945146"
+    },
+    {
+      "path": "MIDPHASE_RESEARCH_UPDATE.md",
+      "git_blob_sha": "b77df1a0270e878b808f4cc7f6834a59405901bd"
+    },
+    {
+      "path": "MIDPHASE_BRAINSTORM_AFTER_ADJUDICATION.md",
+      "git_blob_sha": "fec07a41379e8d0ff2c4068b253dfb34a995fbe0"
+    }
+  ],
+  "source_research_references_used": [
+    {
+      "path": "PHASE2_ADJUDICATION_QUEUE.jsonl",
+      "git_blob_sha": "2f207430f6db1a77b9946342779ad813644019a5"
+    },
+    {
+      "path": "phase1/iteration4/source/Nahw-Passage.json",
+      "sha256": "97d4f5e0b75ff5848ffdff113a74676c0de607d0bb877e1f26c1bde1585a2208",
+      "use": "published target correction and explanation"
+    },
+    {
+      "url": "https://aclanthology.org/2026.eacl-long.296/"
+    },
+    {
+      "url": "https://aclanthology.org/2025.acl-long.875/"
+    },
+    {
+      "url": "https://github.com/CAMeL-Lab/text-editing"
+    },
+    {
+      "url": "https://aclanthology.org/2025.bea-1.9/"
+    },
+    {
+      "url": "https://aclanthology.org/2025.findings-acl.1322.pdf"
+    },
+    {
+      "url": "https://aclanthology.org/2023.emnlp-main.396/"
+    },
+    {
+      "url": "https://aclanthology.org/2025.coling-main.52.pdf"
+    }
+  ],
+  "methodological_notes": [
+    "41 source passage clusters, 150 correlated target rows; no naive independent-case interval.",
+    "The 1585 collateral rows are character-diff units across four architectures, not unique errors.",
+    "A second conservative recheck was performed by the same agent; no independent human adjudicator.",
+    "No dataset, model, runtime, raw inference output or safety stack was changed."
+  ]
+}
