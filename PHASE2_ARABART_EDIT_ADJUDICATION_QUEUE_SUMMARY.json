@@ -1,0 +1,23 @@
+{
+  "status": "READY_FOR_ARABART_SECOND_GENERATOR_ADJUDICATION",
+  "rows": 67,
+  "passages": 32,
+  "rows_overlapping_published_target": 23,
+  "unique_published_targets_touched": 23,
+  "ged_non_uc": 31,
+  "ged_uc": 36,
+  "alignment_cost": {
+    "le_0_2": 45,
+    "gt_0_2_le_0_5": 17,
+    "gt_0_5": 5
+  },
+  "source": "PHASE2_ARABART_NEW_EDIT_QUEUE.jsonl",
+  "scope": "AraBART one-to-one aligned substitutions not already represented by the existing 79 SWEET/normalized candidate word locations.",
+  "important_limitations": [
+    "This queue does not by itself enumerate AraBART insertion/deletion/multiword alignment events.",
+    "Published Nahw targets are local corrections and cannot label non-target edits as automatically wrong.",
+    "AraBART full sentence output remains evidence only and is not product output."
+  ],
+  "development_only": true,
+  "not_sealed": true
+}
