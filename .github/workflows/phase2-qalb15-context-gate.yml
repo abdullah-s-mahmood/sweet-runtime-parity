@@ -76,14 +76,14 @@ jobs:
       - name: Raw-only generation and frozen runtime decisions
         run: |
           set -o pipefail
-          python phase2/generalization/run_qalb15_context_gate.py 2>&1 | tee artifacts/QALB15_CONTEXT_RUNTIME_CONSOLE.txt
+          PYTHONPATH=. python phase2/generalization/run_qalb15_context_gate.py 2>&1 | tee artifacts/QALB15_CONTEXT_RUNTIME_CONSOLE.txt
           test -f artifacts/QALB15_CONTEXT_RUNTIME_EVENTS.jsonl
           test -f artifacts/QALB15_CONTEXT_RUNTIME_SUMMARY.json
 
       - name: Gold evaluation after runtime freeze
         run: |
           set -o pipefail
-          python phase2/generalization/evaluate_qalb15_context_gate.py 2>&1 | tee artifacts/QALB15_CONTEXT_EVAL_CONSOLE.txt
+          PYTHONPATH=. python phase2/generalization/evaluate_qalb15_context_gate.py 2>&1 | tee artifacts/QALB15_CONTEXT_EVAL_CONSOLE.txt
           test -f PHASE2_QALB15_CONTEXT_GENERALIZATION_RESULTS.json
 
       - name: Audit committed result for QALB text leakage
