@@ -77,23 +77,28 @@ jobs:
           PYTHONUNBUFFERED: "1"
           HF_HUB_DISABLE_TELEMETRY: "1"
         run: |
+          set -o pipefail
           mkdir -p artifacts
           python phase2/arabic_eval/run_official_sweet_development.py 2>&1 | tee artifacts/OFFICIAL_DEVELOPMENT_CONSOLE.txt
 
       - name: Run conservative first-pass targeted analysis
         run: |
+          set -o pipefail
           python phase2/arabic_eval/analyze_official_development.py --bootstrap 2>&1 | tee artifacts/TARGETED_ANALYSIS_CONSOLE.txt
 
       - name: Run robust target-recovery second pass
         run: |
+          set -o pipefail
           python phase2/arabic_eval/analyze_target_recovery_v2.py 2>&1 | tee artifacts/TARGET_RECOVERY_V2_CONSOLE.txt
 
       - name: Analyze scientific protected-span preservation
         run: |
+          set -o pipefail
           python phase2/arabic_eval/analyze_scientific_invariants.py 2>&1 | tee artifacts/SCIENTIFIC_INVARIANT_CONSOLE.txt
 
       - name: Run protected-span strict-fidelity prototype
         run: |
+          set -o pipefail
           python phase2/arabic_eval/prototype_protected_span_sweet.py 2>&1 | tee artifacts/PROTECTED_SPAN_PROTOTYPE_CONSOLE.txt
 
       - name: Record workflow provenance
