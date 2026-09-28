@@ -1,0 +1,201 @@
+[
+  {
+    "candidate_id": "NORM-38-24-0",
+    "source_word": "وساعٍ",
+    "candidate_result_word": "وساعا",
+    "label": {
+      "class": "WRONG",
+      "raw_class": "WRONG_CORRECTION",
+      "severity": null
+    },
+    "arabart": {
+      "changed_same_region": false,
+      "exact_local_agreement": false,
+      "normalized_local_agreement": false,
+      "regions": []
+    },
+    "ged": {
+      "word_index": 24,
+      "word": "وساع",
+      "label": "UC",
+      "score": 0.5600996017456055
+    },
+    "veto_reasons": [
+      "MORPH_NOUN_PROP_FALLBACK_RISK"
+    ],
+    "runtime_decisions": {
+      "DIRECT_PATCH_SAFE": "REJECT",
+      "INDEPENDENT_AGREEMENT": "REJECT",
+      "AGREEMENT_PLUS_GED": "REJECT",
+      "EXACT_LOCAL_AGREEMENT": "REJECT"
+    },
+    "direct_patch": null,
+    "morph": {
+      "direct_patch": null,
+      "morph_analysis_count": 2,
+      "noun_prop_only": true,
+      "bert_top1_surface": "وساعا",
+      "bert_top2_surface_consensus": "وساعا",
+      "bert_top_pos": [
+        "noun_prop",
+        "noun_prop",
+        "noun_prop"
+      ],
+      "bert_top_lex": [
+        "ساعا",
+        "وساعا",
+        "ساعا"
+      ]
+    }
+  },
+  {
+    "candidate_id": "NORM-21-9-0",
+    "source_word": "كريمًا؛",
+    "candidate_result_word": "كريم؛",
+    "label": {
+      "class": "PARTIAL",
+      "raw_class": "PARTIAL_CORRECTION",
+      "severity": null
+    },
+    "arabart": {
+      "changed_same_region": true,
+      "exact_local_agreement": false,
+      "normalized_local_agreement": false,
+      "regions": [
+        {
+          "tag": "replace",
+          "source_word_span": [
+            9,
+            10
+          ],
+          "output_word_span": [
+            10,
+            12
+          ],
+          "source_words": [
+            "كريمًا؛"
+          ],
+          "output_words": [
+            "كريما",
+            "؛"
+          ],
+          "source_canonical": [
+            "كريما؛"
+          ],
+          "output_canonical": [
+            "كريما",
+            "؛"
+          ]
+        }
+      ]
+    },
+    "ged": {
+      "word_index": 9,
+      "word": "كريما؛",
+      "label": "UC",
+      "score": 0.6246061325073242
+    },
+    "veto_reasons": [
+      "DELETE_OR_DIRECTION_LOSS_RISK"
+    ],
+    "runtime_decisions": {
+      "DIRECT_PATCH_SAFE": "REJECT",
+      "INDEPENDENT_AGREEMENT": "REJECT",
+      "AGREEMENT_PLUS_GED": "REJECT",
+      "EXACT_LOCAL_AGREEMENT": "REJECT"
+    },
+    "direct_patch": null,
+    "morph": {
+      "direct_patch": null,
+      "morph_analysis_count": 22,
+      "noun_prop_only": false,
+      "bert_top1_surface": "كريمٌ؛",
+      "bert_top2_surface_consensus": null,
+      "bert_top_pos": [
+        "adj",
+        "adj",
+        "noun"
+      ],
+      "bert_top_lex": [
+        "كَرِيم",
+        "كَرِيم",
+        "كرِيم"
+      ]
+    }
+  },
+  {
+    "candidate_id": "NORM-63-11-0",
+    "source_word": "إستشعِر",
+    "candidate_result_word": "استشعر",
+    "label": {
+      "class": "SUPPORTED",
+      "raw_class": "SUPPORTED_CORRECTION",
+      "severity": null
+    },
+    "arabart": {
+      "changed_same_region": true,
+      "exact_local_agreement": false,
+      "normalized_local_agreement": true,
+      "regions": [
+        {
+          "tag": "replace",
+          "source_word_span": [
+            10,
+            12
+          ],
+          "output_word_span": [
+            10,
+            13
+          ],
+          "source_words": [
+            "باسمة.",
+            "إستشعِر"
+          ],
+          "output_words": [
+            "باسمه",
+            ".",
+            "استشعر"
+          ],
+          "source_canonical": [
+            "باسمة",
+            "إستشعر"
+          ],
+          "output_canonical": [
+            "باسمه",
+            "",
+            "استشعر"
+          ]
+        }
+      ]
+    },
+    "ged": {
+      "word_index": 11,
+      "word": "استشعر",
+      "label": "UC",
+      "score": 0.9976465106010437
+    },
+    "veto_reasons": [],
+    "runtime_decisions": {
+      "DIRECT_PATCH_SAFE": "ACCEPT",
+      "INDEPENDENT_AGREEMENT": "ACCEPT",
+      "AGREEMENT_PLUS_GED": "ACCEPT",
+      "EXACT_LOCAL_AGREEMENT": "ACCEPT"
+    },
+    "direct_patch": "استشعِر",
+    "morph": {
+      "direct_patch": "استشعِر",
+      "morph_analysis_count": 2,
+      "noun_prop_only": false,
+      "bert_top1_surface": "اِسْتشعَرَ",
+      "bert_top2_surface_consensus": null,
+      "bert_top_pos": [
+        "verb",
+        "noun_prop"
+      ],
+      "bert_top_lex": [
+        "ٱِسْتَشْعَر",
+        "استشعر"
+      ]
+    }
+  }
+]

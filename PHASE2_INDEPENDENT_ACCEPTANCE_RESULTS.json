@@ -1,0 +1,475 @@
+{
+  "status": "PHASE2_INDEPENDENT_ACCEPTANCE_DEVELOPMENT_EVALUATED",
+  "runtime_gate_status": "PHASE2_INDEPENDENT_ACCEPTANCE_RUNTIME_COMPLETE",
+  "candidate_rows": 79,
+  "passages": 37,
+  "labels_loaded_only_after_runtime_decisions": true,
+  "policy_results": {
+    "DIRECT_PATCH_SAFE": {
+      "policy": "DIRECT_PATCH_SAFE",
+      "accepted": 2,
+      "review": 69,
+      "rejected": 8,
+      "accepted_classes": {
+        "SUPPORTED": 2
+      },
+      "supported_precision": 1.0,
+      "supported_coverage": 0.03225806451612903,
+      "accepted_wrong_high_or_critical": 0,
+      "accepted_candidate_ids": [
+        "NORM-45-17-0",
+        "NORM-63-11-0"
+      ],
+      "passages_with_accept": 2,
+      "passage_cluster_bootstrap_95_precision": [
+        1.0,
+        1.0
+      ]
+    },
+    "INDEPENDENT_AGREEMENT": {
+      "policy": "INDEPENDENT_AGREEMENT",
+      "accepted": 37,
+      "review": 34,
+      "rejected": 8,
+      "accepted_classes": {
+        "SUPPORTED": 36,
+        "PARTIAL": 1
+      },
+      "supported_precision": 0.972972972972973,
+      "supported_coverage": 0.5806451612903226,
+      "accepted_wrong_high_or_critical": 0,
+      "accepted_candidate_ids": [
+        "SURG-8-0",
+        "SURG-8-1",
+        "SURG-9-0",
+        "SURG-13-0",
+        "SURG-15-1",
+        "SURG-15-2",
+        "SURG-16-0",
+        "SURG-16-1",
+        "SURG-25-0",
+        "SURG-28-0",
+        "SURG-34-1",
+        "SURG-38-0",
+        "SURG-39-1",
+        "SURG-39-2",
+        "SURG-41-0",
+        "SURG-47-1",
+        "SURG-47-2",
+        "SURG-56-0",
+        "SURG-57-0",
+        "SURG-63-1",
+        "SURG-65-2",
+        "SURG-65-3",
+        "SURG-68-0",
+        "SURG-70-1",
+        "SURG-81-0",
+        "SURG-85-0",
+        "SURG-92-0",
+        "SURG-94-1",
+        "SURG-96-1",
+        "SURG-100-0",
+        "NORM-45-17-0",
+        "NORM-63-11-0",
+        "NORM-63-34-0",
+        "NORM-73-22-0",
+        "NORM-81-9-0",
+        "NORM-81-18-0",
+        "NORM-92-23-0"
+      ],
+      "passages_with_accept": 26,
+      "passage_cluster_bootstrap_95_precision": [
+        0.9117647058823529,
+        1.0
+      ]
+    },
+    "AGREEMENT_PLUS_GED": {
+      "policy": "AGREEMENT_PLUS_GED",
+      "accepted": 22,
+      "review": 49,
+      "rejected": 8,
+      "accepted_classes": {
+        "SUPPORTED": 22
+      },
+      "supported_precision": 1.0,
+      "supported_coverage": 0.3548387096774194,
+      "accepted_wrong_high_or_critical": 0,
+      "accepted_candidate_ids": [
+        "SURG-8-0",
+        "SURG-8-1",
+        "SURG-13-0",
+        "SURG-15-2",
+        "SURG-16-0",
+        "SURG-38-0",
+        "SURG-39-2",
+        "SURG-41-0",
+        "SURG-47-1",
+        "SURG-47-2",
+        "SURG-56-0",
+        "SURG-63-1",
+        "SURG-65-3",
+        "SURG-70-1",
+        "SURG-85-0",
+        "SURG-100-0",
+        "NORM-45-17-0",
+        "NORM-63-11-0",
+        "NORM-63-34-0",
+        "NORM-73-22-0",
+        "NORM-81-18-0",
+        "NORM-92-23-0"
+      ],
+      "passages_with_accept": 18,
+      "passage_cluster_bootstrap_95_precision": [
+        1.0,
+        1.0
+      ]
+    },
+    "EXACT_LOCAL_AGREEMENT": {
+      "policy": "EXACT_LOCAL_AGREEMENT",
+      "accepted": 23,
+      "review": 48,
+      "rejected": 8,
+      "accepted_classes": {
+        "SUPPORTED": 23
+      },
+      "supported_precision": 1.0,
+      "supported_coverage": 0.3709677419354839,
+      "accepted_wrong_high_or_critical": 0,
+      "accepted_candidate_ids": [
+        "SURG-8-0",
+        "SURG-8-1",
+        "SURG-9-0",
+        "SURG-13-0",
+        "SURG-25-0",
+        "SURG-28-0",
+        "SURG-34-1",
+        "SURG-38-0",
+        "SURG-39-1",
+        "SURG-39-2",
+        "SURG-65-3",
+        "SURG-68-0",
+        "SURG-70-1",
+        "SURG-81-0",
+        "SURG-85-0",
+        "SURG-92-0",
+        "SURG-94-1",
+        "SURG-96-1",
+        "NORM-45-17-0",
+        "NORM-63-11-0",
+        "NORM-73-22-0",
+        "NORM-81-18-0",
+        "NORM-92-23-0"
+      ],
+      "passages_with_accept": 19,
+      "passage_cluster_bootstrap_95_precision": [
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "stream_results": {
+    "DIRECT_PATCH_SAFE": {
+      "SURGICAL": {
+        "stream": "SURGICAL",
+        "accepted": 0,
+        "classes": {},
+        "supported_precision": null
+      },
+      "NORMALIZED": {
+        "stream": "NORMALIZED",
+        "accepted": 2,
+        "classes": {
+          "SUPPORTED": 2
+        },
+        "supported_precision": 1.0
+      }
+    },
+    "INDEPENDENT_AGREEMENT": {
+      "SURGICAL": {
+        "stream": "SURGICAL",
+        "accepted": 30,
+        "classes": {
+          "SUPPORTED": 29,
+          "PARTIAL": 1
+        },
+        "supported_precision": 0.9666666666666667
+      },
+      "NORMALIZED": {
+        "stream": "NORMALIZED",
+        "accepted": 7,
+        "classes": {
+          "SUPPORTED": 7
+        },
+        "supported_precision": 1.0
+      }
+    },
+    "AGREEMENT_PLUS_GED": {
+      "SURGICAL": {
+        "stream": "SURGICAL",
+        "accepted": 16,
+        "classes": {
+          "SUPPORTED": 16
+        },
+        "supported_precision": 1.0
+      },
+      "NORMALIZED": {
+        "stream": "NORMALIZED",
+        "accepted": 6,
+        "classes": {
+          "SUPPORTED": 6
+        },
+        "supported_precision": 1.0
+      }
+    },
+    "EXACT_LOCAL_AGREEMENT": {
+      "SURGICAL": {
+        "stream": "SURGICAL",
+        "accepted": 18,
+        "classes": {
+          "SUPPORTED": 18
+        },
+        "supported_precision": 1.0
+      },
+      "NORMALIZED": {
+        "stream": "NORMALIZED",
+        "accepted": 5,
+        "classes": {
+          "SUPPORTED": 5
+        },
+        "supported_precision": 1.0
+      }
+    }
+  },
+  "baselines": {
+    "SURGICAL_OPERATION_AWARE": {
+      "selected": 38,
+      "classes": {
+        "SUPPORTED": 37,
+        "PARTIAL": 1
+      },
+      "supported_precision": 0.9736842105263158
+    },
+    "NORMALIZED_DIRECT_PATCH": {
+      "selected": 2,
+      "classes": {
+        "SUPPORTED": 2
+      },
+      "supported_precision": 1.0
+    }
+  },
+  "known_counterexamples": [
+    {
+      "candidate_id": "NORM-38-24-0",
+      "source_word": "وساعٍ",
+      "candidate_result_word": "وساعا",
+      "label": {
+        "class": "WRONG",
+        "raw_class": "WRONG_CORRECTION",
+        "severity": null
+      },
+      "arabart": {
+        "changed_same_region": false,
+        "exact_local_agreement": false,
+        "normalized_local_agreement": false,
+        "regions": []
+      },
+      "ged": {
+        "word_index": 24,
+        "word": "وساع",
+        "label": "UC",
+        "score": 0.5600996017456055
+      },
+      "veto_reasons": [
+        "MORPH_NOUN_PROP_FALLBACK_RISK"
+      ],
+      "runtime_decisions": {
+        "DIRECT_PATCH_SAFE": "REJECT",
+        "INDEPENDENT_AGREEMENT": "REJECT",
+        "AGREEMENT_PLUS_GED": "REJECT",
+        "EXACT_LOCAL_AGREEMENT": "REJECT"
+      },
+      "direct_patch": null,
+      "morph": {
+        "direct_patch": null,
+        "morph_analysis_count": 2,
+        "noun_prop_only": true,
+        "bert_top1_surface": "وساعا",
+        "bert_top2_surface_consensus": "وساعا",
+        "bert_top_pos": [
+          "noun_prop",
+          "noun_prop",
+          "noun_prop"
+        ],
+        "bert_top_lex": [
+          "ساعا",
+          "وساعا",
+          "ساعا"
+        ]
+      }
+    },
+    {
+      "candidate_id": "NORM-21-9-0",
+      "source_word": "كريمًا؛",
+      "candidate_result_word": "كريم؛",
+      "label": {
+        "class": "PARTIAL",
+        "raw_class": "PARTIAL_CORRECTION",
+        "severity": null
+      },
+      "arabart": {
+        "changed_same_region": true,
+        "exact_local_agreement": false,
+        "normalized_local_agreement": false,
+        "regions": [
+          {
+            "tag": "replace",
+            "source_word_span": [
+              9,
+              10
+            ],
+            "output_word_span": [
+              10,
+              12
+            ],
+            "source_words": [
+              "كريمًا؛"
+            ],
+            "output_words": [
+              "كريما",
+              "؛"
+            ],
+            "source_canonical": [
+              "كريما؛"
+            ],
+            "output_canonical": [
+              "كريما",
+              "؛"
+            ]
+          }
+        ]
+      },
+      "ged": {
+        "word_index": 9,
+        "word": "كريما؛",
+        "label": "UC",
+        "score": 0.6246061325073242
+      },
+      "veto_reasons": [
+        "DELETE_OR_DIRECTION_LOSS_RISK"
+      ],
+      "runtime_decisions": {
+        "DIRECT_PATCH_SAFE": "REJECT",
+        "INDEPENDENT_AGREEMENT": "REJECT",
+        "AGREEMENT_PLUS_GED": "REJECT",
+        "EXACT_LOCAL_AGREEMENT": "REJECT"
+      },
+      "direct_patch": null,
+      "morph": {
+        "direct_patch": null,
+        "morph_analysis_count": 22,
+        "noun_prop_only": false,
+        "bert_top1_surface": "كريمٌ؛",
+        "bert_top2_surface_consensus": null,
+        "bert_top_pos": [
+          "adj",
+          "adj",
+          "noun"
+        ],
+        "bert_top_lex": [
+          "كَرِيم",
+          "كَرِيم",
+          "كرِيم"
+        ]
+      }
+    },
+    {
+      "candidate_id": "NORM-63-11-0",
+      "source_word": "إستشعِر",
+      "candidate_result_word": "استشعر",
+      "label": {
+        "class": "SUPPORTED",
+        "raw_class": "SUPPORTED_CORRECTION",
+        "severity": null
+      },
+      "arabart": {
+        "changed_same_region": true,
+        "exact_local_agreement": false,
+        "normalized_local_agreement": true,
+        "regions": [
+          {
+            "tag": "replace",
+            "source_word_span": [
+              10,
+              12
+            ],
+            "output_word_span": [
+              10,
+              13
+            ],
+            "source_words": [
+              "باسمة.",
+              "إستشعِر"
+            ],
+            "output_words": [
+              "باسمه",
+              ".",
+              "استشعر"
+            ],
+            "source_canonical": [
+              "باسمة",
+              "إستشعر"
+            ],
+            "output_canonical": [
+              "باسمه",
+              "",
+              "استشعر"
+            ]
+          }
+        ]
+      },
+      "ged": {
+        "word_index": 11,
+        "word": "استشعر",
+        "label": "UC",
+        "score": 0.9976465106010437
+      },
+      "veto_reasons": [],
+      "runtime_decisions": {
+        "DIRECT_PATCH_SAFE": "ACCEPT",
+        "INDEPENDENT_AGREEMENT": "ACCEPT",
+        "AGREEMENT_PLUS_GED": "ACCEPT",
+        "EXACT_LOCAL_AGREEMENT": "ACCEPT"
+      },
+      "direct_patch": "استشعِر",
+      "morph": {
+        "direct_patch": "استشعِر",
+        "morph_analysis_count": 2,
+        "noun_prop_only": false,
+        "bert_top1_surface": "اِسْتشعَرَ",
+        "bert_top2_surface_consensus": null,
+        "bert_top_pos": [
+          "verb",
+          "noun_prop"
+        ],
+        "bert_top_lex": [
+          "ٱِسْتَشْعَر",
+          "استشعر"
+        ]
+      }
+    }
+  ],
+  "feature_diagnostics": {
+    "arabart_normalized_agreement_supported": 36,
+    "arabart_normalized_agreement_wrong": 1,
+    "arabart_exact_agreement_supported": 21,
+    "arabart_exact_agreement_wrong": 1,
+    "veto_supported": 0,
+    "veto_wrong": 2
+  },
+  "limitations": [
+    "All precision/coverage figures are retrospective development estimates using existing same-agent adjudication labels.",
+    "The policies themselves were materialized before labels were loaded, but the development population has been repeatedly inspected.",
+    "AraBART source-local alignment is coarse and must be improved before a frozen/sealed evaluation.",
+    "Passage clustering makes candidate-level independence invalid; clustered bootstrap is diagnostic only."
+  ]
+}
