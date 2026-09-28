@@ -1,0 +1,41 @@
+{
+  "status": "READY_FOR_MORPH_SURFACE_ADJUDICATION",
+  "gate_version": 3,
+  "development_only": true,
+  "not_sealed": true,
+  "candidate_rows": 19,
+  "surface_proposals": 12,
+  "development_auto_or_consensus_proposals": 9,
+  "review_surface_proposals": 3,
+  "abstained_without_surface": 7,
+  "target_overlapping_proposals": 9,
+  "v3_evidence": {
+    "morph_analyzable": 18,
+    "morph_ambiguous_multiple_surfaces": 17,
+    "morph_unique_surface": 1,
+    "targets_touched": 13,
+    "any_morph_surface_compatible": 11,
+    "mle_top1_compatible": 7,
+    "bert_top1_compatible": 10,
+    "bert_top2_consensus_compatible": 7,
+    "target_runtime_surface_compatible": 9,
+    "development_surface_proposals": 9,
+    "development_surface_proposals_supported_by_prior_candidate_adjudication": 9,
+    "development_surface_proposals_wrong_by_prior_candidate_adjudication": 0,
+    "target_compatible_within_development_surface_proposals": 8
+  },
+  "queue_file": "PHASE2_MORPH_SURFACE_ADJUDICATION_QUEUE.jsonl",
+  "source_files": [
+    "PHASE2_MORPH_SURFACE_CANDIDATES.jsonl",
+    "PHASE2_MORPH_SURFACE_GATE_RESULTS.json",
+    "PHASE2_MORPH_SURFACE_TARGET_IMPACT.json",
+    "PHASE2_NORMALIZED_CANDIDATE_ADJUDICATION.jsonl"
+  ],
+  "limitations": [
+    "Prior normalized-candidate adjudication is used to bound the development surface gate; this is not a deployable verifier.",
+    "BERT morphology is a contextual morphology ranker, not grammatical correction proof.",
+    "Fathatan+terminal-alif serialization variants are treated as equivalent for evaluation only; source output is not silently rewritten.",
+    "Final surface correctness requires adjudication in full passage context.",
+    "No source corpus was modified."
+  ]
+}
