@@ -1,0 +1,160 @@
+name: Phase 2 Independent Candidate Acceptance Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/acceptance/**"
+      - ".github/workflows/phase2-independent-candidate-acceptance.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  acceptance-gate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      HF_HUB_DISABLE_TELEMETRY: "1"
+
+    steps:
+      - name: Checkout Phase 2 branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Clone and pin CAMeL-Lab Arabic GEC
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+
+      - name: Install official Arabic GEC runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "camel-tools==1.4.1" "sentencepiece==0.1.99" "protobuf==3.20.3" "numpy<2"
+          python -m pip uninstall -y transformers || true
+          python -m pip install -e upstream/arabic-gec/transformers
+          python -m pip install "huggingface_hub>=0.9,<1.0"
+          python - <<'PY'
+          import torch, transformers, camel_tools
+          print("python runtime ready")
+          print("torch",torch.__version__)
+          print("transformers",transformers.__version__)
+          print("camel_tools",camel_tools.__version__)
+          PY
+
+      - name: Install CAMeL morphology/disambiguation resources
+        run: |
+          mkdir -p "$CAMELTOOLS_DATA"
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+
+      - name: Resolve and download acceptance models
+        run: |
+          mkdir -p artifacts models
+          python - <<'PY'
+          import json
+          from huggingface_hub import HfApi, snapshot_download
+
+          api=HfApi()
+          specs={
+            "ged_qalb14":{
+              "repo":"CAMeL-Lab/camelbert-msa-qalb14-ged-13",
+              "dir":"models/acceptance_ged_qalb14"
+            },
+            "arabart_qalb14_gec_ged13":{
+              "repo":"CAMeL-Lab/arabart-qalb14-gec-ged-13",
+              "dir":"models/acceptance_gec_qalb14"
+            }
+          }
+          out={}
+          for name,s in specs.items():
+            info=api.model_info(s["repo"])
+            out[name]={"repo":s["repo"],"revision":info.sha}
+            print(name,s["repo"],info.sha)
+            snapshot_download(repo_id=s["repo"],revision=info.sha,local_dir=s["dir"])
+          with open("artifacts/ACCEPTANCE_MODEL_REVISIONS.json","w",encoding="utf-8") as f:
+            json.dump(out,f,ensure_ascii=False,indent=2)
+          PY
+
+      - name: Validate fixed development evidence
+        run: |
+          test -f phase2/arabic_eval/DEVELOPMENT_TARGETS.jsonl
+          test -f PHASE2_SURGICAL_ADJUDICATION_QUEUE.jsonl
+          test -f PHASE2_NORMALIZED_CANDIDATE_QUEUE.jsonl
+          test -f PHASE2_MORPH_SURFACE_CANDIDATES.jsonl
+          test -f PHASE2_SURGICAL_APPLIED_EDIT_ADJUDICATION.jsonl
+          test -f PHASE2_NORMALIZED_CANDIDATE_ADJUDICATION.jsonl
+          python - <<'PY'
+          import json
+          def jl(p):
+              return [json.loads(x) for x in open(p,encoding="utf-8") if x.strip()]
+          assert len(jl("phase2/arabic_eval/DEVELOPMENT_TARGETS.jsonl"))==150
+          assert len(jl("PHASE2_NORMALIZED_CANDIDATE_QUEUE.jsonl"))==19
+          assert len(jl("PHASE2_SURGICAL_APPLIED_EDIT_ADJUDICATION.jsonl"))==60
+          print("fixed evidence integrity PASS")
+          PY
+
+      - name: Run independent AraBART generator
+        run: |
+          set -o pipefail
+          mkdir -p artifacts
+          python phase2/acceptance/run_arabart_candidate_generator.py 2>&1 | tee artifacts/ARABART_GENERATOR_CONSOLE.txt
+
+      - name: Materialize gold-independent runtime acceptance decisions
+        run: |
+          set -o pipefail
+          python phase2/acceptance/run_independent_acceptance_gate.py 2>&1 | tee artifacts/INDEPENDENT_ACCEPTANCE_RUNTIME_CONSOLE.txt
+          cp PHASE2_INDEPENDENT_ACCEPTANCE_FEATURES.jsonl artifacts/
+
+      - name: Evaluate frozen runtime decisions using development adjudication
+        run: |
+          set -o pipefail
+          python phase2/acceptance/analyze_acceptance_gate.py 2>&1 | tee artifacts/INDEPENDENT_ACCEPTANCE_EVALUATION_CONSOLE.txt
+          cp PHASE2_INDEPENDENT_ACCEPTANCE_RESULTS.json artifacts/
+          cp PHASE2_INDEPENDENT_ACCEPTANCE_COUNTEREXAMPLES.json artifacts/
+
+      - name: Record provenance
+        if: always()
+        run: |
+          {
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "branch=${GITHUB_REF_NAME}"
+            echo "commit=${GITHUB_SHA}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "arabic_gec_commit=$(git -C upstream/arabic-gec rev-parse HEAD 2>/dev/null || true)"
+          } > artifacts/INDEPENDENT_ACCEPTANCE_PROVENANCE.txt
+
+      - name: Persist compact acceptance evidence
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_INDEPENDENT_ACCEPTANCE_FEATURES.jsonl PHASE2_INDEPENDENT_ACCEPTANCE_RESULTS.json PHASE2_INDEPENDENT_ACCEPTANCE_COUNTEREXAMPLES.json
+          if git diff --cached --quiet; then
+            echo "Acceptance evidence unchanged."
+          else
+            git commit -m "Update independent acceptance evidence [skip ci]"
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - name: Upload acceptance gate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-independent-candidate-acceptance-evidence
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 30
