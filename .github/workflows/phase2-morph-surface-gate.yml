@@ -12,6 +12,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: phase2-morph-surface-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   morph-surface-gate:
     runs-on: ubuntu-22.04
@@ -46,6 +50,7 @@ jobs:
         run: |
           mkdir -p "$CAMELTOOLS_DATA"
           camel_data -i light
+          camel_data -i disambig-bert-unfactored-msa
           camel_data -l | tee artifacts_camel_data_list.txt
           camel_morphology --list | tee artifacts_camel_morphology_list.txt
 
