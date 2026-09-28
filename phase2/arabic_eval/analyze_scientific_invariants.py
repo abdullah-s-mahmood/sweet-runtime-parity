@@ -23,6 +23,10 @@ def main():
 
     rows=[json.loads(x) for x in args.raw.read_text(encoding="utf-8").splitlines() if x.strip()]
     assert len(rows)==12
+    correction_path=HERE/"SCIENTIFIC_STRESS_SPAN_CORRECTIONS.json"
+    corrections=json.loads(correction_path.read_text(encoding="utf-8"))["corrections"] if correction_path.exists() else {}
+    def effective_protected(row):
+        return corrections.get(row["case_id"],{}).get("effective_protected",row["protected"])
     stages={
         "nopnx_iteration_1": lambda r:r["nopnx_iteration_1"]["output"],
         "nopnx_iteration_2": lambda r:r["nopnx_iteration_2"]["output"],
@@ -32,12 +36,13 @@ def main():
     cases=[]
     summary={}
     for row in rows:
-        item={"case_id":row["case_id"],"category":row["category"],"source":row["source"],"protected":row["protected"],"stages":{}}
+        protected=effective_protected(row)
+        item={"case_id":row["case_id"],"category":row["category"],"source":row["source"],"protected_original":row["protected"],"protected_effective":protected,"stages":{}}
         for name,getout in stages.items():
             out=getout(row)
-            missing_exact=[p for p in row["protected"] if p not in out]
+            missing_exact=[p for p in protected if p not in out]
             compact_out=compact_ws(out)
-            missing_compact=[p for p in row["protected"] if compact_ws(p) not in compact_out]
+            missing_compact=[p for p in protected if compact_ws(p) not in compact_out]
             item["stages"][name]={
                 "output":out,
                 "output_changed_from_source":out!=row["source"],
@@ -45,6 +50,8 @@ def main():
                 "protected_all_present_whitespace_insensitive":not missing_compact,
                 "missing_exact":missing_exact,
                 "missing_whitespace_insensitive":missing_compact,
+                "whole_source_whitespace_insensitive_unchanged":compact_ws(out)==compact_ws(row["source"]),
+                "contains_UNK":"[UNK]" in out,
             }
         cases.append(item)
 
@@ -54,6 +61,8 @@ def main():
         changed=sum(x["stages"][name]["output_changed_from_source"] for x in cases)
         exact_break=[x["case_id"] for x in cases if not x["stages"][name]["protected_all_present_exact"]]
         compact_break=[x["case_id"] for x in cases if not x["stages"][name]["protected_all_present_whitespace_insensitive"]]
+        whole_compact=sum(x["stages"][name]["whole_source_whitespace_insensitive_unchanged"] for x in cases)
+        unk_cases=[x["case_id"] for x in cases if x["stages"][name]["contains_UNK"]]
         summary[name]={
             "cases":12,
             "exact_preserved_cases":exact,
@@ -63,6 +72,9 @@ def main():
             "outputs_changed_from_source":changed,
             "exact_break_cases":exact_break,
             "content_break_after_ignoring_whitespace_cases":compact_break,
+            "whole_source_whitespace_insensitive_unchanged_cases":whole_compact,
+            "whole_source_whitespace_insensitive_unchanged_rate":whole_compact/12,
+            "UNK_output_cases":unk_cases,
         }
 
     result={
@@ -80,7 +92,7 @@ def main():
             {
                 "case_id":x["case_id"],
                 "category":x["category"],
-                "protected":x["protected"],
+                "protected_original":x["protected_original"],"protected_effective":x["protected_effective"],
                 "output":x["stages"][name]["output"],
                 "missing_exact":x["stages"][name]["missing_exact"],
                 "missing_whitespace_insensitive":x["stages"][name]["missing_whitespace_insensitive"],
