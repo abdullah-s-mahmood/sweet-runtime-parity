@@ -1,0 +1,175 @@
+{
+  "repository": "abdullah-s-mahmood/sweet-runtime-parity",
+  "branch": "phase2-arabic-eval",
+  "commit_sha": "ade34755871571279e8975a944fcee4881ff07a1",
+  "commit_sha_semantics": "Commit containing the 25 transferred evaluation files; this manifest is added in the following commit to avoid a self-referential hash.",
+  "file_inventory": [
+    {
+      "path": "phase2/arabic_eval/ANALYSIS_SCHEMA.json",
+      "bytes": 685,
+      "sha256": "3db0b28b9354b65f361cc163202dcaecb6c8c8e25b6b98e039a8891fbd8a36bc",
+      "git_blob_sha": "983deeb057379f987ee9ffd7b53c5ca0ccf60fe4"
+    },
+    {
+      "path": "phase2/arabic_eval/AVAILABLE_BASELINE_RESULTS.jsonl",
+      "bytes": 173530,
+      "sha256": "15b99fe1dd792180b992d09ff5d09bc2c3da4117b80e3c185147587e50b07b54",
+      "git_blob_sha": "d146a088b7c1e61e358296fc3312229675119faf"
+    },
+    {
+      "path": "phase2/arabic_eval/AVAILABLE_BASELINE_SUMMARY.json",
+      "bytes": 322,
+      "sha256": "f524f3f997850ff9c9def19f9edd59317fd9dc9fa4e7111e397ef602431616bf",
+      "git_blob_sha": "cf22140c64fe1cde556a36ffa5cd719ac39d9f64"
+    },
+    {
+      "path": "phase2/arabic_eval/BRAINSTORM_END.md",
+      "bytes": 194,
+      "sha256": "114eabd8acf069a6f3937e90fc7cd8bc6dbba8cc28b70213cd0d002694c8fd60",
+      "git_blob_sha": "2b43bf0837db8800d77ba4f8ee37fb503e9052bc"
+    },
+    {
+      "path": "phase2/arabic_eval/BRAINSTORM_START.md",
+      "bytes": 1689,
+      "sha256": "e7540d75d424960bba4a60ca09c1e17702bfd8151a0d89c6fc38411b6fba4638",
+      "git_blob_sha": "c52dd734fc57557f08b1b9fce051651d32eef4bd"
+    },
+    {
+      "path": "phase2/arabic_eval/DATASET_MANIFEST.json",
+      "bytes": 3044,
+      "sha256": "53d69cd28b742bcf85417bf3cffa794aac5016e0f83c3606aac286e76ce30092",
+      "git_blob_sha": "11bce98573696b373dea7f900da950e0dde4b009"
+    },
+    {
+      "path": "phase2/arabic_eval/DEVELOPMENT_TARGETS.jsonl",
+      "bytes": 293472,
+      "sha256": "539a22b2a2292407552deee9ce30627b25699a5bfccc7153475e326fa3f1cf5d",
+      "git_blob_sha": "2fa4c29ea39c9c5c08741a48c4a69dcec1e1e8b7"
+    },
+    {
+      "path": "phase2/arabic_eval/FAILURE_TAXONOMY.md",
+      "bytes": 592,
+      "sha256": "155dfce077ff053065901f5ad5df25d95d472d5b7916b3e87fe60db1c03cf7b4",
+      "git_blob_sha": "3c940151a98df7522d13c5d1bc5a27a182975792"
+    },
+    {
+      "path": "phase2/arabic_eval/FRONTIER_RESEARCH_RADAR.md",
+      "bytes": 2153,
+      "sha256": "cbdbe97162ee395608b27569e844f5901167c919e2c2c4951673596cfe608ed5",
+      "git_blob_sha": "89a66bde6be543c5ba85857cff6d8116f1ffa809"
+    },
+    {
+      "path": "phase2/arabic_eval/INPUT_INTEGRITY.json",
+      "bytes": 708,
+      "sha256": "6ea019b9ada1a47e1c8b05af5b888a328f9e9dbb121cab0afe29ca4e24250aca",
+      "git_blob_sha": "79dfa203e17f90c1a34bea2570ea7c56ee780fbb"
+    },
+    {
+      "path": "phase2/arabic_eval/MID_PHASE_BRAINSTORM.md",
+      "bytes": 240,
+      "sha256": "85f3fb4ec022992286770b77132e6b9499c612b605027e5e007dc232108c8126",
+      "git_blob_sha": "f3c583f3e2663e5e6d421255c2dda5551d9d9b3d"
+    },
+    {
+      "path": "phase2/arabic_eval/NEW_OPPORTUNITIES_DISCOVERED.md",
+      "bytes": 975,
+      "sha256": "65fa7f84bf8a0b120cf0b217732dae7e3185f4878341674d3bde0fecca160447",
+      "git_blob_sha": "8aa7c38bb685c87ca168b9b9f1ef63fe93e18a15"
+    },
+    {
+      "path": "phase2/arabic_eval/PASSAGE_TARGET_MAPPING.json",
+      "bytes": 34631,
+      "sha256": "7bf445fb80c22e245aa5ea18ec40b6ecafcee66896106c825b9edbea22781ebe",
+      "git_blob_sha": "105012bfec77d44311d13c9863c37f00aa64693c"
+    },
+    {
+      "path": "phase2/arabic_eval/PHASE_2_ARABIC_CORRECTION_DECISION.md",
+      "bytes": 2281,
+      "sha256": "8d7045769279bb379665664443750b6f0122a31b2d5153a2f362572efee140fe",
+      "git_blob_sha": "62f712cc2dcd9f25dd20053b442503664e0179d7"
+    },
+    {
+      "path": "phase2/arabic_eval/PROVENANCE_LEDGER.jsonl",
+      "bytes": 288972,
+      "sha256": "b26a796d2792b54a1c2ceb12a4e243e0b180f491feecb12bd4acd60532ff6223",
+      "git_blob_sha": "f99e6bab1b1812a04883d198d2196ef0dfa6ef9d"
+    },
+    {
+      "path": "phase2/arabic_eval/README.md",
+      "bytes": 1664,
+      "sha256": "73ec0668483502e008f597f659e5cfd812c16e6606e4db570da13ac41fd70b5d",
+      "git_blob_sha": "427fbdcd53c3c92623b2de4763d1b75465b2cf0f"
+    },
+    {
+      "path": "phase2/arabic_eval/RESEARCH_END.md",
+      "bytes": 252,
+      "sha256": "e0bce4f2517917f4a5ac953e9a16475da20953a26c436d5a0dce8f11faefd160",
+      "git_blob_sha": "314fdf8f998246bd8842625db5b539009b9e492a"
+    },
+    {
+      "path": "phase2/arabic_eval/RESEARCH_START.md",
+      "bytes": 2734,
+      "sha256": "59636c46ddef84c7730f103ee7b0d0dad5c7c8b97e5ae921b99404487b74aabb",
+      "git_blob_sha": "09900ae316c70d815ea852a486c5704537150859"
+    },
+    {
+      "path": "phase2/arabic_eval/SCIENTIFIC_STRESS_CASES.jsonl",
+      "bytes": 3913,
+      "sha256": "21f70f75c61ca0cfa0da4ff7f91d918325e027a14b6bb1dd4944f482ae3b09c5",
+      "git_blob_sha": "c3647c0247480e985916a2af2f5d6489b79fd155"
+    },
+    {
+      "path": "phase2/arabic_eval/SCIENTIFIC_STRESS_DEVELOPMENT.jsonl",
+      "bytes": 3308,
+      "sha256": "a98954fc6c3f3625b1e4f1f313b16535cb8bc46a73ebc50ffbe8b6ba59c7076d",
+      "git_blob_sha": "d4fa68644393ee0b2dd1cbc09cdd5f8a84478e39"
+    },
+    {
+      "path": "phase2/arabic_eval/SEALED_EXCLUSION_AUDIT.json",
+      "bytes": 2270,
+      "sha256": "0d48c8a724ca6361f54056e2680508a187801c078b0ef0c65fdccc36e2a0a56c",
+      "git_blob_sha": "0ed0b56c002f25500f2084300a43f62988160383"
+    },
+    {
+      "path": "phase2/arabic_eval/SOURCE_LICENSE_METADATA.md",
+      "bytes": 935,
+      "sha256": "a306c6bf5cb2cfd3e1f513b80e096add130b2d610305b992c9f0bf80b04c1173",
+      "git_blob_sha": "b15196b5ae2cd6d246d03a192e5877d954f0e668"
+    },
+    {
+      "path": "phase2/arabic_eval/analyze_official_development.py",
+      "bytes": 4199,
+      "sha256": "6a4edb4c040a77d0aaa108697a63264f5edb638920abee9d67080b922e77d91d",
+      "git_blob_sha": "afae991eac87850db73db8a313a1484fa85727ae"
+    },
+    {
+      "path": "phase2/arabic_eval/run_official_sweet_development.py",
+      "bytes": 6736,
+      "sha256": "312d42781e52bf922288e42aff946c8ad91c775e1d2b8ade2c6e8d2283db5af9",
+      "git_blob_sha": "d59c8ecbd9a6bcbbbc7da23836e14778337ad774"
+    },
+    {
+      "path": "phase2/arabic_eval/validate_transfer.py",
+      "bytes": 2279,
+      "sha256": "e4396a01a0bcead417a4813e54c1ef3d2b4cd9ce96de894633cd5376e6f01a19",
+      "git_blob_sha": "2daaac70630039e0813d4fba6d52d8d20ddee34a"
+    }
+  ],
+  "target_count": 150,
+  "unique_passage_count": 41,
+  "scientific_stress_count": 12,
+  "excluded_sealed_id_count": 59,
+  "model_weights_committed": false,
+  "sealed_material_committed": false,
+  "official_runtime_files_modified": false,
+  "main_modified": false,
+  "runner_paths": {
+    "input": "phase2/arabic_eval/DEVELOPMENT_TARGETS.jsonl",
+    "stress_input": "phase2/arabic_eval/SCIENTIFIC_STRESS_CASES.jsonl",
+    "outputs": [
+      "artifacts/OFFICIAL_DEVELOPMENT_RAW.jsonl",
+      "artifacts/OFFICIAL_DEVELOPMENT_RUN_LOG.txt",
+      "artifacts/OFFICIAL_DEVELOPMENT_MANIFEST.json"
+    ]
+  }
+}
