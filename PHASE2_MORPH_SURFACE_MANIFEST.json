@@ -1,0 +1,18 @@
+{
+  "repository": "abdullah-s-mahmood/sweet-runtime-parity",
+  "branch": "phase2-arabic-eval",
+  "phase": "Phase 2 — Morphology-Aware Surface Realization Gate",
+  "input_candidates": 19,
+  "input_adjudication_sha256": "780915e3002d7de416029b3f1e55e768d4968eeb801d5eab1050eb594c9431ac",
+  "input_queue_sha256": "b610e3e7bb6cb10b45b91191065ed36afe5c151b0a2369598fbf7189a51d9a2e",
+  "input_target_impact_sha256": "d72932559ab20059ce46c9894a0fbbe97c131b6194fdb6f1297072a16e7747e7",
+  "camel_tools_version": "1.5.2",
+  "morphology_database": "calima-msa-r13",
+  "outputs": [
+    "PHASE2_MORPH_SURFACE_CANDIDATES.jsonl",
+    "PHASE2_MORPH_SURFACE_GATE_RESULTS.json",
+    "PHASE2_MORPH_SURFACE_TARGET_IMPACT.json"
+  ],
+  "sealed": false,
+  "source_applied": false
+}
