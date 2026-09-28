@@ -105,9 +105,11 @@ def main():
    maxprob,labels=probs.max(-1)
   subwords=tok.convert_ids_to_tokens(ids[1:-1])
   raw=[model.config.id2label[int(v)] for v in labels[1:-1]]
+  non_keep=sum(x!="K*" for x in raw)
+  if non_keep==0:
+   return core,{"applied":False,"reason":"no_model_edits_exact_preserve","non_keep":0,"raw_labels":raw,"top1_confidence":maxprob[1:-1].tolist()}
   result=rewrite(subwords=[subwords],edits=[raw])
   out=result[0][0]
-  non_keep=sum(x!="K*" for x in raw)
   if "[UNK]" in out:
    return core,{"applied":False,"reason":"postflight_UNK","non_keep":non_keep,"raw_labels":raw}
   return out,{
