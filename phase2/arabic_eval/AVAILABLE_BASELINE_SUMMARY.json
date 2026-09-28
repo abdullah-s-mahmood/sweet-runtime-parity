@@ -1,0 +1,8 @@
+{
+  "status": "BASELINES_ONLY_NO_SWEET",
+  "n": 150,
+  "input_exact_reference_match": 0,
+  "deterministic_exact_reference_match": 0,
+  "deterministic_change_count": 0,
+  "warning": "Reference fixes one annotated target; exact passage match is an overly strict indicator and does not assess correctness of other errors."
+}

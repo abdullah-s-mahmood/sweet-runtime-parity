@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "development_unit": "published_target_location",
+  "cluster_unit": "passage_id",
+  "primary_metric": "TARGETED_CORRECTION_RECOVERY",
+  "target_recovery_states": ["RECOVERED_ALIGNED", "NOT_RECOVERED", "REVIEW_REQUIRED_ALIGNMENT"],
+  "collateral_edit_categories": ["SUPPORTED_CORRECTION", "ACCEPTABLE_ALTERNATIVE", "UNNECESSARY_EDIT", "INCORRECT_EDIT", "REVIEW_REQUIRED"],
+  "collateral_default": "REVIEW_REQUIRED",
+  "reference_scope": "exactly one published human correction location; other errors may remain",
+  "scientific_stress_accuracy_inclusion": false,
+  "confidence_intervals": "passage-level clustered bootstrap; never naive target-independent interval"
+}
