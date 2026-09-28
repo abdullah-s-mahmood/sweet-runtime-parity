@@ -1,0 +1,107 @@
+name: Phase 2 ZAEBUC Disjoint Generalization Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/**"
+      - ".github/workflows/phase2-zaebuc-generalization.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  zaebuc-generalization:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      HF_HUB_DISABLE_TELEMETRY: "1"
+
+    steps:
+      - name: Checkout project branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Clone and pin CAMeL-Lab Arabic GEC and ZAEBUC-v1 data
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+          test -f upstream/arabic-gec/data/gec/ZAEBUC-v1.0/data/ar/dev/dev.sent.raw
+          test -f upstream/arabic-gec/data/gec/ZAEBUC-v1.0/LICENCE.txt
+
+      - name: Install frozen Arabic GEC runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "sentencepiece==0.1.99" "protobuf==3.20.3" "numpy<2"
+          python -m pip uninstall -y transformers || true
+          python -m pip install -e upstream/arabic-gec/transformers
+          python -m pip install "huggingface_hub>=0.9,<1.0"
+
+      - name: Install CAMeL morphology resources
+        run: |
+          mkdir -p "$CAMELTOOLS_DATA"
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+
+      - name: Resolve frozen QALB14 models
+        run: |
+          mkdir -p artifacts
+          python - <<'PY'
+          import json
+          from huggingface_hub import HfApi
+          api=HfApi()
+          repos=[
+            "CAMeL-Lab/camelbert-msa-qalb14-ged-13",
+            "CAMeL-Lab/arabart-qalb14-gec-ged-13",
+          ]
+          out={r:api.model_info(r).sha for r in repos}
+          print(json.dumps(out,indent=2))
+          open("artifacts/ZAEBUC_MODEL_REVISIONS.json","w").write(json.dumps(out,indent=2))
+          PY
+
+      - name: Run raw-only generator and frozen runtime decisions
+        run: |
+          set -o pipefail
+          python phase2/generalization/run_zaebuc_generalization.py 2>&1 | tee artifacts/ZAEBUC_RUNTIME_CONSOLE.txt
+          test -f artifacts/ZAEBUC_DEV_RUNTIME_EVENTS.jsonl
+          test -f artifacts/ZAEBUC_DEV_RUNTIME_SUMMARY.json
+
+      - name: Gold evaluation after runtime decisions are frozen
+        run: |
+          set -o pipefail
+          python phase2/generalization/evaluate_zaebuc_generalization.py 2>&1 | tee artifacts/ZAEBUC_EVALUATION_CONSOLE.txt
+          cp PHASE2_ZAEBUC_GENERALIZATION_RESULTS.json artifacts/
+
+      - name: Persist compact generalization result only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_ZAEBUC_GENERALIZATION_RESULTS.json
+          if git diff --cached --quiet; then
+            echo "Generalization result unchanged."
+          else
+            git commit -m "Record ZAEBUC disjoint generalization evidence [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - name: Upload ephemeral licensed runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-zaebuc-generalization-evidence
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 30
