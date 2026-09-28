@@ -126,3 +126,6 @@ Secondary:
 - demonstrate that correct surface forms exist in the CAMeL morphology lattice for a substantial fraction of the 15 ambiguous useful candidates.
 
 If morphology can generate but cannot reliably select the correct contextual form, the next gate should focus on contextual morphosyntactic ranking rather than adding a second GEC generator.
+## Execution trigger
+
+Execution trigger commit added after the workflow file existed, so the morphology gate runs through the branch path filter.
