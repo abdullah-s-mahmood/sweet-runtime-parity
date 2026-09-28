@@ -1,0 +1,91 @@
+{
+  "scope": "development-only Nahw target-location adjudication",
+  "unit": "41 source passages; 150 correlated target locations",
+  "passage_count": 41,
+  "target_count": 150,
+  "full_target_states_from_queue": {
+    "RECOVERED_EXACT_ALIGNED": 29,
+    "ERROR_PRESERVED_LOCAL": 65,
+    "TARGET_CHANGED_OTHER": 56
+  },
+  "adjudicated_target_classes": {
+    "ERROR_PRESERVED_LOCAL": 65,
+    "WRONG_CORRECTION": 50,
+    "RECOVERED_EXACT_ALIGNED": 28,
+    "SUPPORTED_ALTERNATIVE": 4,
+    "PARTIAL_CORRECTION": 2,
+    "REVIEW_REQUIRED": 1
+  },
+  "collateral_edits_by_architecture_total": 1585,
+  "collateral_classifications": {
+    "SURFACE_RENDERER_CHANGE": 1395,
+    "REVIEW_REQUIRED": 130,
+    "INCORRECT_EDIT": 54,
+    "SUPPORTED_CORRECTION": 6
+  },
+  "severity_counts_across_target_and_collateral_rows": {
+    "HIGH": 451,
+    "MEDIUM": 5
+  },
+  "changed_other_adjudicated": 56,
+  "changed_other_classes": {
+    "WRONG_CORRECTION": 50,
+    "SUPPORTED_ALTERNATIVE": 4,
+    "PARTIAL_CORRECTION": 2
+  },
+  "passages_reviewed": [
+    1,
+    2,
+    5,
+    8,
+    9,
+    13,
+    15,
+    16,
+    17,
+    19,
+    21,
+    23,
+    25,
+    28,
+    32,
+    34,
+    38,
+    39,
+    41,
+    45,
+    47,
+    54,
+    56,
+    57,
+    61,
+    63,
+    65,
+    68,
+    70,
+    73,
+    76,
+    77,
+    81,
+    85,
+    86,
+    92,
+    94,
+    96,
+    98,
+    99,
+    100
+  ],
+  "two_passes": {
+    "pass_1": "span-level and context-aware linguistic review using four outputs, tags, diffs, Nahw explanations",
+    "pass_2": "separate conservative recheck of every supported alternative, wrong/partial target, high-severity target and all ambiguous collateral rows; unresolved instances retained REVIEW_REQUIRED",
+    "independent_human_adjudicator": false
+  },
+  "limitations": [
+    "A single published correction location per Nahw row is not a fully corrected passage.",
+    "Diff segmentation is character-based and can split one lexical change into multiple rows.",
+    "Unknown-token rendering can precede any non-K tag and can interact with later edit application; origin marked MIXED where attribution is not identifiable.",
+    "No passage-cluster confidence interval is calculated on this development-only audit.",
+    "The same source passage appears in multiple target rows; do not interpret 150 as independent passages."
+  ]
+}

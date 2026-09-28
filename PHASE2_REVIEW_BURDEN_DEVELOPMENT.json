@@ -1,0 +1,854 @@
+{
+  "unit": "passage cluster",
+  "passages": 41,
+  "candidates": {
+    "nopnx_iteration_1": {
+      "SUPPORTED_AUTO_ACCEPT_CANDIDATE": 0,
+      "REVIEW_REQUIRED": 1,
+      "REJECT": 40,
+      "passage_decisions": [
+        {
+          "passage_id": 1,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 2,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 5,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 8,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 9,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 13,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 15,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 16,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 17,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 19,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 21,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 23,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 25,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 28,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 32,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 34,
+          "state": "REVIEW_REQUIRED",
+          "reason": "unresolved correction or punctuation"
+        },
+        {
+          "passage_id": 38,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 39,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 41,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 45,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 47,
+          "state": "REJECT",
+          "reason": "damaging target change"
+        },
+        {
+          "passage_id": 54,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 56,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 57,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 61,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 63,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 65,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 68,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 70,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 73,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 76,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 77,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 81,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 85,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 86,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 92,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 94,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 96,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 98,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 99,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 100,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        }
+      ]
+    },
+    "nopnx_iteration_2": {
+      "SUPPORTED_AUTO_ACCEPT_CANDIDATE": 0,
+      "REVIEW_REQUIRED": 1,
+      "REJECT": 40,
+      "passage_decisions": [
+        {
+          "passage_id": 1,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 2,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 5,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 8,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 9,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 13,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 15,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 16,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 17,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 19,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 21,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 23,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 25,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 28,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 32,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 34,
+          "state": "REVIEW_REQUIRED",
+          "reason": "unresolved correction or punctuation"
+        },
+        {
+          "passage_id": 38,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 39,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 41,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 45,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 47,
+          "state": "REJECT",
+          "reason": "damaging target change"
+        },
+        {
+          "passage_id": 54,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 56,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 57,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 61,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 63,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 65,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 68,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 70,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 73,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 76,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 77,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 81,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 85,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 86,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 92,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 94,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 96,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 98,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 99,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 100,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        }
+      ]
+    },
+    "pnx_only": {
+      "SUPPORTED_AUTO_ACCEPT_CANDIDATE": 0,
+      "REVIEW_REQUIRED": 3,
+      "REJECT": 38,
+      "passage_decisions": [
+        {
+          "passage_id": 1,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 2,
+          "state": "REVIEW_REQUIRED",
+          "reason": "unresolved correction or punctuation"
+        },
+        {
+          "passage_id": 5,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 8,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 9,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 13,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 15,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 16,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 17,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 19,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 21,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 23,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 25,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 28,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 32,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 34,
+          "state": "REVIEW_REQUIRED",
+          "reason": "unresolved correction or punctuation"
+        },
+        {
+          "passage_id": 38,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 39,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 41,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 45,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 47,
+          "state": "REVIEW_REQUIRED",
+          "reason": "unresolved correction or punctuation"
+        },
+        {
+          "passage_id": 54,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 56,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 57,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 61,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 63,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 65,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 68,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 70,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 73,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 76,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 77,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 81,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 85,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 86,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 92,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 94,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 96,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 98,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 99,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 100,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        }
+      ]
+    },
+    "full": {
+      "SUPPORTED_AUTO_ACCEPT_CANDIDATE": 0,
+      "REVIEW_REQUIRED": 1,
+      "REJECT": 40,
+      "passage_decisions": [
+        {
+          "passage_id": 1,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 2,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 5,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 8,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 9,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 13,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 15,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 16,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 17,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 19,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 21,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 23,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 25,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 28,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 32,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 34,
+          "state": "REVIEW_REQUIRED",
+          "reason": "unresolved correction or punctuation"
+        },
+        {
+          "passage_id": 38,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 39,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 41,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 45,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 47,
+          "state": "REJECT",
+          "reason": "damaging target change"
+        },
+        {
+          "passage_id": 54,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 56,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 57,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 61,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 63,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 65,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 68,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 70,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 73,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 76,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 77,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 81,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 85,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 86,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 92,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 94,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 96,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 98,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 99,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        },
+        {
+          "passage_id": 100,
+          "state": "REJECT",
+          "reason": "destructive unknown-token rendering or collateral deletion"
+        }
+      ]
+    }
+  }
+}

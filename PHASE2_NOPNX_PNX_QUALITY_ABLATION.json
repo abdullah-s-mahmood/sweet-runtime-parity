@@ -1,0 +1,97 @@
+{
+  "unit": "development, 41 clustered passages and 150 target locations",
+  "architectures": {
+    "nopnx_iteration_1": {
+      "target_states": {
+        "ERROR_PRESERVED_LOCAL": 66,
+        "TARGET_CHANGED_OTHER": 55,
+        "RECOVERED_EXACT_ALIGNED": 29
+      },
+      "non_keep_labels": 160,
+      "passages_output_differs_from_source": 41,
+      "review_burden": {
+        "SUPPORTED_AUTO_ACCEPT_CANDIDATE": 0,
+        "REVIEW_REQUIRED": 1,
+        "REJECT": 40
+      },
+      "collateral_classifications": {
+        "SURFACE_RENDERER_CHANGE": 347,
+        "INCORRECT_EDIT": 20,
+        "REVIEW_REQUIRED": 26,
+        "SUPPORTED_CORRECTION": 2
+      }
+    },
+    "nopnx_iteration_2": {
+      "target_states": {
+        "ERROR_PRESERVED_LOCAL": 65,
+        "TARGET_CHANGED_OTHER": 56,
+        "RECOVERED_EXACT_ALIGNED": 29
+      },
+      "non_keep_labels": 94,
+      "passages_output_differs_from_source": 41,
+      "review_burden": {
+        "SUPPORTED_AUTO_ACCEPT_CANDIDATE": 0,
+        "REVIEW_REQUIRED": 1,
+        "REJECT": 40
+      },
+      "collateral_classifications": {
+        "SURFACE_RENDERER_CHANGE": 343,
+        "INCORRECT_EDIT": 18,
+        "REVIEW_REQUIRED": 29,
+        "SUPPORTED_CORRECTION": 2
+      }
+    },
+    "pnx_only": {
+      "target_states": {
+        "ERROR_PRESERVED_LOCAL": 101,
+        "TARGET_CHANGED_OTHER": 46,
+        "RECOVERED_EXACT_ALIGNED": 3
+      },
+      "non_keep_labels": 24,
+      "passages_output_differs_from_source": 41,
+      "review_burden": {
+        "SUPPORTED_AUTO_ACCEPT_CANDIDATE": 0,
+        "REVIEW_REQUIRED": 3,
+        "REJECT": 38
+      },
+      "collateral_classifications": {
+        "SURFACE_RENDERER_CHANGE": 360,
+        "REVIEW_REQUIRED": 24
+      }
+    },
+    "full": {
+      "target_states": {
+        "ERROR_PRESERVED_LOCAL": 65,
+        "TARGET_CHANGED_OTHER": 56,
+        "RECOVERED_EXACT_ALIGNED": 29
+      },
+      "non_keep_labels": 23,
+      "passages_output_differs_from_source": 41,
+      "review_burden": {
+        "SUPPORTED_AUTO_ACCEPT_CANDIDATE": 0,
+        "REVIEW_REQUIRED": 1,
+        "REJECT": 40
+      },
+      "collateral_classifications": {
+        "SURFACE_RENDERER_CHANGE": 345,
+        "REVIEW_REQUIRED": 51,
+        "INCORRECT_EDIT": 16,
+        "SUPPORTED_CORRECTION": 2
+      }
+    }
+  },
+  "incremental": {
+    "iteration2_changed_passages": 28,
+    "iteration2_new_exact_targets": 1,
+    "iteration2_lost_exact_targets": 1,
+    "pnx_incremental_changed_passages": 25,
+    "pnx_incremental_new_exact_targets": 0,
+    "pnx_incremental_lost_exact_targets": 0
+  },
+  "interpretation": [
+    "NoPnx iteration 2 gained one exact target but lost another (NAHW-ITEM-077: وامنح → وأمنح).",
+    "Pnx changed 25 passages after NoPnx iteration 2, with no new exact target recoveries in this extraction.",
+    "Pnx-only target exact count 3 includes output/renderer effects; do not attribute exact recovery to punctuation labels without matched raw edit.",
+    "Unknown-token reconstruction and lexical loss make the as-run output unsuitable for automatic acceptance; this is a development diagnosis, not product quality on clean scientific prose."
+  ]
+}
