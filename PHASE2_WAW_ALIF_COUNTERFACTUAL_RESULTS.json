@@ -1,0 +1,818 @@
+{
+  "status": "WAW_ALIF_COUNTERFACTUAL_VERIFIER_COMPLETE",
+  "authored_challenge_not_generalization_benchmark": true,
+  "cases": 15,
+  "policy_stats": {
+    "WAW_ALIF_MORPH_STRICT": {
+      "negative_false_accepts": 0,
+      "negative_total": 7,
+      "unambiguous_positive_accepts": 0,
+      "unambiguous_positive_total": 6,
+      "ambiguous_positive_accepts": 0,
+      "ambiguous_positive_total": 2
+    },
+    "WAW_ALIF_MORPH_RECOVERY": {
+      "negative_false_accepts": 0,
+      "negative_total": 7,
+      "unambiguous_positive_accepts": 4,
+      "unambiguous_positive_total": 6,
+      "ambiguous_positive_accepts": 0,
+      "ambiguous_positive_total": 2
+    }
+  },
+  "rows": [
+    {
+      "id": "WCF-P01",
+      "expected": "SAFE_POSITIVE_UNAMBIGUOUS",
+      "family": "perfective_plural_missing_alif",
+      "source_token": "كتبو",
+      "candidate_token": "كتبوا",
+      "source_top": {
+        "pos": "noun_prop",
+        "num": "-",
+        "per": "na",
+        "asp": "na",
+        "mod": "na",
+        "source": "backoff",
+        "form_num": "-",
+        "form_gen": "-"
+      },
+      "candidate_top": {
+        "pos": "verb",
+        "num": "p",
+        "per": "3",
+        "asp": "p",
+        "mod": "i",
+        "source": "lex",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "source_flags": {
+        "analysis_count": 0,
+        "has_plural_verb": false,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [],
+        "verb_num_set": []
+      },
+      "candidate_flags": {
+        "analysis_count": 2,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "ACCEPT"
+      }
+    },
+    {
+      "id": "WCF-P02",
+      "expected": "SAFE_POSITIVE_UNAMBIGUOUS",
+      "family": "command_plural_missing_alif",
+      "source_token": "اكتبو",
+      "candidate_token": "اكتبوا",
+      "source_top": {
+        "pos": "noun_prop",
+        "num": "-",
+        "per": "na",
+        "asp": "na",
+        "mod": "na",
+        "source": "backoff",
+        "form_num": "-",
+        "form_gen": "-"
+      },
+      "candidate_top": {
+        "pos": "verb",
+        "num": "p",
+        "per": "3",
+        "asp": "p",
+        "mod": "i",
+        "source": "spvar",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "source_flags": {
+        "analysis_count": 0,
+        "has_plural_verb": false,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [],
+        "verb_num_set": []
+      },
+      "candidate_flags": {
+        "analysis_count": 1,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "ACCEPT"
+      }
+    },
+    {
+      "id": "WCF-P03",
+      "expected": "SAFE_POSITIVE_UNAMBIGUOUS",
+      "family": "jussive_plural_missing_alif",
+      "source_token": "يهملو",
+      "candidate_token": "يهملوا",
+      "source_top": {
+        "pos": "noun_prop",
+        "num": "-",
+        "per": "na",
+        "asp": "na",
+        "mod": "na",
+        "source": "backoff",
+        "form_num": "-",
+        "form_gen": "-"
+      },
+      "candidate_top": {
+        "pos": "verb",
+        "num": "p",
+        "per": "3",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "source_flags": {
+        "analysis_count": 0,
+        "has_plural_verb": false,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [],
+        "verb_num_set": []
+      },
+      "candidate_flags": {
+        "analysis_count": 4,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "REVIEW"
+      }
+    },
+    {
+      "id": "WCF-P04",
+      "expected": "SAFE_POSITIVE_UNAMBIGUOUS",
+      "family": "subjunctive_plural_missing_alif",
+      "source_token": "يهملو",
+      "candidate_token": "يهملوا",
+      "source_top": {
+        "pos": "noun_prop",
+        "num": "-",
+        "per": "na",
+        "asp": "na",
+        "mod": "na",
+        "source": "backoff",
+        "form_num": "-",
+        "form_gen": "-"
+      },
+      "candidate_top": {
+        "pos": "verb",
+        "num": "p",
+        "per": "3",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "source_flags": {
+        "analysis_count": 0,
+        "has_plural_verb": false,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [],
+        "verb_num_set": []
+      },
+      "candidate_flags": {
+        "analysis_count": 4,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "REVIEW"
+      }
+    },
+    {
+      "id": "WCF-P05",
+      "expected": "SAFE_POSITIVE_UNAMBIGUOUS",
+      "family": "perfective_plural_missing_alif",
+      "source_token": "حافظو",
+      "candidate_token": "حافظوا",
+      "source_top": {
+        "pos": "noun_prop",
+        "num": "-",
+        "per": "na",
+        "asp": "na",
+        "mod": "na",
+        "source": "backoff",
+        "form_num": "-",
+        "form_gen": "-"
+      },
+      "candidate_top": {
+        "pos": "verb",
+        "num": "p",
+        "per": "3",
+        "asp": "p",
+        "mod": "i",
+        "source": "lex",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "source_flags": {
+        "analysis_count": 0,
+        "has_plural_verb": false,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [],
+        "verb_num_set": []
+      },
+      "candidate_flags": {
+        "analysis_count": 1,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "ACCEPT"
+      }
+    },
+    {
+      "id": "WCF-P06",
+      "expected": "SAFE_POSITIVE_UNAMBIGUOUS",
+      "family": "perfective_plural_missing_alif",
+      "source_token": "نشرو",
+      "candidate_token": "نشروا",
+      "source_top": {
+        "pos": "noun_prop",
+        "num": "-",
+        "per": "na",
+        "asp": "na",
+        "mod": "na",
+        "source": "backoff",
+        "form_num": "-",
+        "form_gen": "-"
+      },
+      "candidate_top": {
+        "pos": "verb",
+        "num": "p",
+        "per": "3",
+        "asp": "p",
+        "mod": "i",
+        "source": "lex",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "source_flags": {
+        "analysis_count": 0,
+        "has_plural_verb": false,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [],
+        "verb_num_set": []
+      },
+      "candidate_flags": {
+        "analysis_count": 3,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "ACCEPT"
+      }
+    },
+    {
+      "id": "WCF-P07",
+      "expected": "POSITIVE_BUT_LOCALLY_AMBIGUOUS",
+      "family": "root_waw_vs_group_waw_context",
+      "source_token": "يدعو",
+      "candidate_token": "يدعوا",
+      "source_top": {
+        "pos": "verb",
+        "num": "s",
+        "per": "3",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "s",
+        "form_gen": "m"
+      },
+      "candidate_top": {
+        "pos": "verb",
+        "num": "p",
+        "per": "3",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "source_flags": {
+        "analysis_count": 1,
+        "has_plural_verb": false,
+        "has_singular_verb": true,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "s"
+        ]
+      },
+      "candidate_flags": {
+        "analysis_count": 5,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "d",
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "REVIEW"
+      }
+    },
+    {
+      "id": "WCF-P08",
+      "expected": "POSITIVE_BUT_LOCALLY_AMBIGUOUS",
+      "family": "root_waw_vs_group_waw_context",
+      "source_token": "يرجو",
+      "candidate_token": "يرجوا",
+      "source_top": {
+        "pos": "verb",
+        "num": "s",
+        "per": "3",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "s",
+        "form_gen": "m"
+      },
+      "candidate_top": {
+        "pos": "verb",
+        "num": "p",
+        "per": "3",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "source_flags": {
+        "analysis_count": 1,
+        "has_plural_verb": false,
+        "has_singular_verb": true,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "s"
+        ]
+      },
+      "candidate_flags": {
+        "analysis_count": 4,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "d",
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "REVIEW"
+      }
+    },
+    {
+      "id": "WCF-N01",
+      "expected": "MUST_NOT_ACCEPT",
+      "family": "singular_root_waw",
+      "source_token": "يدعو",
+      "candidate_token": "يدعوا",
+      "source_top": {
+        "pos": "verb",
+        "num": "s",
+        "per": "3",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "s",
+        "form_gen": "m"
+      },
+      "candidate_top": {
+        "pos": "verb",
+        "num": "d",
+        "per": "3",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "d",
+        "form_gen": "m"
+      },
+      "source_flags": {
+        "analysis_count": 1,
+        "has_plural_verb": false,
+        "has_singular_verb": true,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "s"
+        ]
+      },
+      "candidate_flags": {
+        "analysis_count": 5,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "d",
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "REVIEW"
+      }
+    },
+    {
+      "id": "WCF-N02",
+      "expected": "MUST_NOT_ACCEPT",
+      "family": "singular_root_waw",
+      "source_token": "يرجو",
+      "candidate_token": "يرجوا",
+      "source_top": {
+        "pos": "verb",
+        "num": "s",
+        "per": "3",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "s",
+        "form_gen": "m"
+      },
+      "candidate_top": {
+        "pos": "verb",
+        "num": "p",
+        "per": "3",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "source_flags": {
+        "analysis_count": 1,
+        "has_plural_verb": false,
+        "has_singular_verb": true,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "s"
+        ]
+      },
+      "candidate_flags": {
+        "analysis_count": 4,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "d",
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "REVIEW"
+      }
+    },
+    {
+      "id": "WCF-N03",
+      "expected": "MUST_NOT_ACCEPT",
+      "family": "nominal_construct_plural",
+      "source_token": "معلمو",
+      "candidate_token": "معلموا",
+      "source_top": {
+        "pos": "noun",
+        "num": "p",
+        "per": "na",
+        "asp": "na",
+        "mod": "na",
+        "source": "lex",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "candidate_top": {
+        "pos": "noun_prop",
+        "num": "-",
+        "per": "na",
+        "asp": "na",
+        "mod": "na",
+        "source": "backoff",
+        "form_num": "-",
+        "form_gen": "-"
+      },
+      "source_flags": {
+        "analysis_count": 1,
+        "has_plural_verb": false,
+        "has_singular_verb": false,
+        "has_nominal": true,
+        "pos_set": [
+          "noun"
+        ],
+        "verb_num_set": []
+      },
+      "candidate_flags": {
+        "analysis_count": 0,
+        "has_plural_verb": false,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [],
+        "verb_num_set": []
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "REVIEW"
+      }
+    },
+    {
+      "id": "WCF-N04",
+      "expected": "MUST_NOT_ACCEPT",
+      "family": "nominal_construct_plural",
+      "source_token": "مهندسو",
+      "candidate_token": "مهندسوا",
+      "source_top": {
+        "pos": "noun",
+        "num": "p",
+        "per": "na",
+        "asp": "na",
+        "mod": "na",
+        "source": "lex",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "candidate_top": {
+        "pos": "noun_prop",
+        "num": "-",
+        "per": "na",
+        "asp": "na",
+        "mod": "na",
+        "source": "backoff",
+        "form_num": "-",
+        "form_gen": "-"
+      },
+      "source_flags": {
+        "analysis_count": 1,
+        "has_plural_verb": false,
+        "has_singular_verb": false,
+        "has_nominal": true,
+        "pos_set": [
+          "noun"
+        ],
+        "verb_num_set": []
+      },
+      "candidate_flags": {
+        "analysis_count": 0,
+        "has_plural_verb": false,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [],
+        "verb_num_set": []
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "REVIEW"
+      }
+    },
+    {
+      "id": "WCF-N05",
+      "expected": "MUST_NOT_ACCEPT",
+      "family": "first_person_root_waw",
+      "source_token": "أدعو",
+      "candidate_token": "أدعوا",
+      "source_top": {
+        "pos": "verb",
+        "num": "s",
+        "per": "1",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "s",
+        "form_gen": "m"
+      },
+      "candidate_top": {
+        "pos": "verb",
+        "num": "p",
+        "per": "3",
+        "asp": "p",
+        "mod": "i",
+        "source": "spvar",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "source_flags": {
+        "analysis_count": 1,
+        "has_plural_verb": false,
+        "has_singular_verb": true,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "s"
+        ]
+      },
+      "candidate_flags": {
+        "analysis_count": 1,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "REVIEW"
+      }
+    },
+    {
+      "id": "WCF-N06",
+      "expected": "MUST_NOT_ACCEPT",
+      "family": "singular_root_waw",
+      "source_token": "يسمو",
+      "candidate_token": "يسموا",
+      "source_top": {
+        "pos": "verb",
+        "num": "s",
+        "per": "3",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "s",
+        "form_gen": "m"
+      },
+      "candidate_top": {
+        "pos": "verb",
+        "num": "p",
+        "per": "3",
+        "asp": "i",
+        "mod": "u",
+        "source": "lex",
+        "form_num": "p",
+        "form_gen": "m"
+      },
+      "source_flags": {
+        "analysis_count": 1,
+        "has_plural_verb": false,
+        "has_singular_verb": true,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "s"
+        ]
+      },
+      "candidate_flags": {
+        "analysis_count": 8,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "d",
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "REVIEW"
+      }
+    },
+    {
+      "id": "WCF-N07",
+      "expected": "MUST_NOT_ACCEPT",
+      "family": "nominal_waw",
+      "source_token": "ذوو",
+      "candidate_token": "ذووا",
+      "source_top": {
+        "pos": "noun",
+        "num": "p",
+        "per": "na",
+        "asp": "na",
+        "mod": "na",
+        "source": "lex",
+        "form_num": "s",
+        "form_gen": "m"
+      },
+      "candidate_top": {
+        "pos": "noun_prop",
+        "num": "-",
+        "per": "na",
+        "asp": "na",
+        "mod": "na",
+        "source": "backoff",
+        "form_num": "-",
+        "form_gen": "-"
+      },
+      "source_flags": {
+        "analysis_count": 1,
+        "has_plural_verb": false,
+        "has_singular_verb": false,
+        "has_nominal": true,
+        "pos_set": [
+          "noun"
+        ],
+        "verb_num_set": []
+      },
+      "candidate_flags": {
+        "analysis_count": 2,
+        "has_plural_verb": true,
+        "has_singular_verb": false,
+        "has_nominal": false,
+        "pos_set": [
+          "verb"
+        ],
+        "verb_num_set": [
+          "p"
+        ]
+      },
+      "decisions": {
+        "WAW_ALIF_MORPH_STRICT": "REVIEW",
+        "WAW_ALIF_MORPH_RECOVERY": "REVIEW"
+      }
+    }
+  ],
+  "interpretation": "Primary safety requirement is zero false accepts on MUST_NOT_ACCEPT cases. Ambiguous positives are allowed to abstain."
+}
