@@ -1,0 +1,102 @@
+name: Phase 2 Residual GED Preprocessed Replication
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/run_residual_ged_preprocessed.py"
+      - "phase2/generalization/evaluate_residual_ged_preprocessed.py"
+      - ".github/workflows/phase2-residual-ged-preprocessed.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  replicate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install frozen GED runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+          python -m pip install "transformers==4.30.0" "huggingface_hub<1.0" "numpy<2"
+      - name: Download frozen candidate and ORTHO artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "ortho-val-arabart-q14"
+          path: artifacts/arabart
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36520233398
+          github-token: ${{ github.token }}
+          merge-multiple: true
+      - name: Download frozen ORTHO safe artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: phase2-ortho-isolated-fresh-validation-safe
+          path: artifacts/ortho_safe
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36520233398
+          github-token: ${{ github.token }}
+      - name: Stage frozen ORTHO features
+        run: |
+          cp artifacts/ortho_safe/PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl
+      - name: Download pinned RAW and official CAMeLIRA TRAIN source only
+        run: |
+          RAWD="upstream/arabic-gec/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/train"
+          PRED="upstream/arabic-gec/data/gec/camelira_gec/qalb15"
+          mkdir -p "$RAWD" "$PRED"
+          BASE="https://raw.githubusercontent.com/CAMeL-Lab/arabic-gec/8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+          curl -fsSL "$BASE/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/train/QALB-2015-L2-Train.sent.no_ids" -o "$RAWD/QALB-2015-L2-Train.sent.no_ids"
+          curl -fsSL "$BASE/data/gec/camelira_gec/qalb15/qalb15_train.src.txt" -o "$PRED/qalb15_train.src.txt"
+          test ! -f "$RAWD/QALB-2015-L2-Train.cor.no_ids"
+      - name: Materialize preprocessing-faithful GED features
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/run_residual_ged_preprocessed.py 2>&1 | tee RESIDUAL_GED_PREPROCESSED_CONSOLE.txt
+      - name: Pre-label leakage audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for p in [Path("PHASE2_RESIDUAL_GED_PREPROCESSED_FEATURES.jsonl"),Path("PHASE2_RESIDUAL_GED_PREPROCESSED_RUNTIME.json")]:
+              s=p.read_text(encoding="utf-8")
+              assert not any("\u0600"<=c<="\u06ff" for c in s),p
+          print("pre-label leakage audit PASS")
+          PY
+      - name: Evaluate against consumed manual labels
+        run: |
+          PYTHONPATH=. python phase2/generalization/evaluate_residual_ged_preprocessed.py
+      - name: Persist safe replication evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_RESIDUAL_GED_PREPROCESSED_FEATURES.jsonl PHASE2_RESIDUAL_GED_PREPROCESSED_RUNTIME.json PHASE2_RESIDUAL_GED_PREPROCESSED_RESULTS.json
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Record preprocessed residual GED replication [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-residual-ged-preprocessed
+          path: |
+            PHASE2_RESIDUAL_GED_PREPROCESSED_FEATURES.jsonl
+            PHASE2_RESIDUAL_GED_PREPROCESSED_RUNTIME.json
+            PHASE2_RESIDUAL_GED_PREPROCESSED_RESULTS.json
+            RESIDUAL_GED_PREPROCESSED_CONSOLE.txt
+          if-no-files-found: warn
+          retention-days: 30
