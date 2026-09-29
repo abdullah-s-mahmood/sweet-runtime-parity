@@ -1,0 +1,200 @@
+name: Phase 2 Local-Edit Semantic Backstop Diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/LOCAL_EDIT_SEMANTIC_BACKSTOP_*.md"
+      - "phase2/generalization/run_local_edit_semantic_backstop.py"
+      - "phase2/generalization/evaluate_local_edit_semantic_backstop.py"
+      - ".github/workflows/phase2-local-edit-semantic-backstop.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  sweet-raw:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+      - name: Install official SWEET runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+          python -m pip install -r requirements.txt
+          python -m pip check
+      - name: Clone and pin QALB and SWEET upstreams
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+      - name: Download and verify SWEET NoPnx model
+        run: |
+          mkdir -p models/cross_sweet_nopnx artifacts
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          snapshot_download(
+              repo_id="CAMeL-Lab/text-editing-zaebuc-nopnx",
+              local_dir="models/cross_sweet_nopnx",
+              allow_patterns=["config.json","pytorch_model.bin","special_tokens_map.json","tokenizer_config.json","vocab.txt"],
+          )
+          PY
+      - name: Run frozen raw-only SWEET inference
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/run_cross_sweet.py 2>&1 | tee artifacts/SEM_BACKSTOP_SWEET_CONSOLE.txt
+          test -f artifacts/CROSS_SWEET_EVENTS.jsonl
+          test -f artifacts/CROSS_SWEET_SUMMARY.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: semantic-backstop-sweet-events
+          path: |
+            artifacts/CROSS_SWEET_EVENTS.jsonl
+            artifacts/CROSS_SWEET_SUMMARY.json
+          retention-days: 1
+
+  arabart-raw:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Clone and pin Arabic-GEC upstream
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+      - name: Install frozen AraBART runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "sentencepiece==0.1.99" "protobuf==3.20.3" "numpy<2"
+          python -m pip uninstall -y transformers || true
+          python -m pip install -e upstream/arabic-gec/transformers
+          python -m pip install "huggingface_hub>=0.9,<1.0"
+          mkdir -p "$CAMELTOOLS_DATA" artifacts
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+      - name: Run frozen raw-only AraBART inference
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/run_cross_arabart.py 2>&1 | tee artifacts/SEM_BACKSTOP_ARABART_CONSOLE.txt
+          test -f artifacts/CROSS_ARABART_EVENTS.jsonl
+          test -f artifacts/CROSS_ARABART_SUMMARY.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: semantic-backstop-arabart-events
+          path: |
+            artifacts/CROSS_ARABART_EVENTS.jsonl
+            artifacts/CROSS_ARABART_SUMMARY.json
+          retention-days: 1
+
+  semantic-backstop:
+    needs: [sweet-raw, arabart-raw]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      TOKENIZERS_PARALLELISM: "false"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - uses: actions/download-artifact@v4
+        with:
+          name: semantic-backstop-sweet-events
+          path: artifacts/sweet
+      - uses: actions/download-artifact@v4
+        with:
+          name: semantic-backstop-arabart-events
+          path: artifacts/arabart
+      - name: Materialize frozen cross-model agreement before semantic labels
+        run: |
+          mkdir -p artifacts
+          PYTHONPATH=. python phase2/generalization/materialize_cross_model_agreement.py
+          test -f artifacts/CROSS_MODEL_AGREEMENT_FEATURES.jsonl
+          test -f artifacts/CROSS_MODEL_AGREEMENT_RUNTIME.json
+          sha256sum artifacts/CROSS_MODEL_AGREEMENT_FEATURES.jsonl artifacts/CROSS_MODEL_AGREEMENT_RUNTIME.json | tee artifacts/SEM_BACKSTOP_AGREEMENT_SHA256.txt
+      - name: Clone pinned QALB raw source
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+      - name: Install semantic prototype runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==2.2.2+cpu"
+          python -m pip install "transformers==4.44.2" "sentencepiece==0.2.0" "protobuf<5" "huggingface_hub>=0.24,<1.0" "safetensors>=0.4"
+      - name: Materialize semantic decisions before labels
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/run_local_edit_semantic_backstop.py 2>&1 | tee artifacts/SEM_BACKSTOP_RUNTIME_CONSOLE.txt
+          test -f PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_FEATURES.jsonl
+          test -f PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RUNTIME.json
+          sha256sum PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_FEATURES.jsonl PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RUNTIME.json | tee artifacts/SEM_BACKSTOP_FROZEN_SHA256.txt
+      - name: Evaluate frozen semantic decisions
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/evaluate_local_edit_semantic_backstop.py 2>&1 | tee artifacts/SEM_BACKSTOP_EVAL_CONSOLE.txt
+          test -f PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RESULTS.json
+      - name: Audit persisted files for QALB text leakage
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          files=[
+              Path("PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_FEATURES.jsonl"),
+              Path("PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RUNTIME.json"),
+              Path("PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RESULTS.json"),
+          ]
+          for p in files:
+              raw=p.read_text(encoding="utf-8")
+              assert not any("\u0600"<=ch<="\u06ff" for ch in raw), p
+              assert "source_text" not in raw and "candidate_output" not in raw, p
+          print("semantic backstop leakage audit PASS")
+          PY
+      - name: Persist hash/score-only diagnostic evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_FEATURES.jsonl PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RUNTIME.json PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RESULTS.json
+          if git diff --cached --quiet; then
+            echo "Semantic backstop evidence unchanged."
+          else
+            git commit -m "Record local-edit semantic backstop diagnostic [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-local-edit-semantic-backstop-safe
+          path: |
+            PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RUNTIME.json
+            PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RESULTS.json
+            artifacts/SEM_BACKSTOP_FROZEN_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 30
