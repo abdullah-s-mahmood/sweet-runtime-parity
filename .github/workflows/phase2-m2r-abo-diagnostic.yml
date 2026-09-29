@@ -1,0 +1,29 @@
+name: M2-R ABO Construction Diagnostic
+on:
+  workflow_dispatch:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/m2r_diagnose_abo.py"
+      - ".github/workflows/phase2-m2r-abo-diagnostic.yml"
+permissions:
+  contents: read
+jobs:
+  diagnostic:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - run: python phase2/redesign/m2r_diagnose_abo.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2r-abo-diagnostic
+          path: |
+            M2R_ABO_DIAGNOSTIC_SUMMARY.json
+            M2R_ABO_DIAGNOSTIC_DEV_SAMPLES.json
+          retention-days: 30
