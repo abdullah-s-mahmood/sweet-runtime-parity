@@ -1,20 +1,28 @@
-# Cross-Training Tri-Model Voting — Brainstorm End
+# Tri-Model Voting — End Brainstorm
 
 Date: 2026-09-29
 
-| Idea | Decision | Evidence |
+| Idea | Decision | Why |
 |---|---|---|
-| Promote UNANIMOUS_3 | DROP | 4 wrong + 12 partial among 142 accepted events. |
-| Keep adding more GEC voters | DEPRIORITIZE | Third voter did not improve supported precision on the fresh slice. |
-| Treat exact gold only as safe | DROP | Valid alternative corrections exist; fixed-reference evaluation is incomplete. |
-| Re-tune vote thresholds on this slice | DROP | Would overfit the inspected population. |
-| Context-sensitive residual-risk guard | TEST NEXT | All 16 unsafe cases are contextual/structural residuals. |
-| Morphology only as correctness oracle | DROP | Earlier gates already falsified this. |
-| Dependency/morphology/context features as veto evidence | TEST | Matches the observed failure taxonomy: valency, agreement, clitics, prepositions, numerals, tense/aspect. |
-| Pure orthographic high-confidence lane | TEST AS SUBSET | Many supported cases are local orthographic normalization, but context guards are still needed. |
-| Human REVIEW for context-governed edits | KEEP | Current evidence does not support unattended auto-apply for these families. |
-| QALB15 TEST | KEEP SEALED | Not needed yet. |
+| 3/3 exact voting alone | DROP as auto-accept | 126/142 supported; 12 partial + 4 wrong. |
+| 2/3 voting | DROP for promotion | Superset of known unsafe 3/3 events. |
+| Add a fourth similar GEC voter | DEFER / low priority | More voters do not guarantee independence; contamination/training overlap is hard to control. |
+| More NLI threshold tuning | DROP | Semantic backstop already failed operating-point criteria. |
+| More GED/lexical filters | DROP as sole gate | Prior diagnostics captured too few unsafe edits. |
+| Character-family whitelist | DROP as primary | Initial-hamza and hamza-only families still contain partial/wrong outcomes. |
+| Post-edit fixed-point test | HIGH-PRIORITY PROTOTYPE | Direct test for incomplete repair; supported by iterative/multi-pass GEC literature. |
+| Contextual morphology identity preservation | HIGH-PRIORITY PROTOTYPE | Targets clitic/person/tense/lemma drift hidden inside local edits. |
+| Fixed-point + morphology conjunction | TEST | Complementary signals: completeness + identity preservation. |
+| Train meta-classifier on current labels | DROP | Repeatedly inspected and too small. |
+| Expand fresh disjoint evidence after diagnostic | INTEGRATE | Required before any policy freeze. |
+| Human REVIEW lane | INTEGRATE | Still required for context-sensitive grammar. |
 
-## Next hypothesis
+## Candidate next policies to pre-register
 
-A narrow acceptance lane may be defensible if exact multi-model agreement is combined with independent context-sensitive vetoes. The next gate must test veto features, not another generator ensemble.
+Diagnostic only on consumed data:
+
+1. POST_EDIT_ALL3_STABLE — PASS only when all three frozen voters make no new edit overlapping the original target after all unanimous edits are applied to the line.
+2. MORPH_IDENTITY_SAFE — PASS only when source/candidate analyses preserve lemma/POS/core features expected for an orthographic correction; REVIEW on lemma/POS/person/tense/number/gender/clitic drift or ambiguous analysis.
+3. STABLE_AND_MORPH_SAFE — conjunction of 1 and 2.
+
+The goal is not to maximize recall. The falsifiable question is whether either signal removes residual partial/wrong edits while retaining a useful supported lane.
