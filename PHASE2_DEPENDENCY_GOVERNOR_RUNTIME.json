@@ -1,0 +1,14 @@
+{
+  "status": "PHASE2_DEPENDENCY_GOVERNOR_FEATURES_FROZEN",
+  "diagnostic_only": true,
+  "labels_or_gold_read": false,
+  "population": "14 consumed ORTHO_ISOLATED_COMMON_NOUN_V1 fresh PASS events",
+  "rows": 14,
+  "parser_commit": "66f29f7e34e3b5b38780d08bd56cf481635bf1c6",
+  "mapping_reliable_rows": 14,
+  "any_structural_category_changed": 10,
+  "features_sha256": "110375944103740a6363e97710deeb7cb6816540e9863b10b915f9ca3d0da2e0",
+  "qalb_text_persisted": false,
+  "qalb15_test_read": false,
+  "rule_defined": false
+}
