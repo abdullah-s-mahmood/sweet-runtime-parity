@@ -261,3 +261,30 @@ M1-A status: IMPROVED / DATA_READY.
 M1 overall: improved research readiness but not fully independent-human-confirmed.
 Arabic auto-apply remains REVIEW-first.
 Next legitimate experimental step: pre-register and test one strong frontier verifier on expert-grounded evidence, preserving the A7'ta reserve and source-held-out reporting.
+
+
+### M2 frontier verifier final result — 2026-09-30
+
+P0 and the single permitted P1 were completed on disjoint 120-case expert-grounded development packets. Prediction hashes were committed before gold keys were opened.
+
+P0:
+- UAR 4.17%
+- SAC 22.22%
+- verdict FAIL: too conservative.
+
+P1:
+- UAR 18.75%
+- SAC 56.94%
+- FULL_EXPERT_REPAIR acceptance 69.44%
+- ALL_BUT_ONE_PARTIAL acceptance 66.67%
+- verdict FAIL: coverage improved but safety deteriorated.
+
+Forensic audit of the 9 P1 accepted partial constructions found at least three clear mandatory Hamza residual errors (ايران→إيران, اغلب→أغلب, اكبر→أكبر). Even if every punctuation/dialect-sensitive accepted case is forgiven, clear unsafe accepts are at least 3/48 = 6.25%, above the 5% gate.
+
+No P2 is allowed. A7'ta reserved 88 pairs remain unopened. M3 generator×verifier factorial is not authorized.
+
+Overall M2:
+- scientific understanding IMPROVED;
+- monolithic frontier verifier hypothesis NOT SUPPORTED;
+- Arabic auto-apply UNCHANGED / REVIEW-first;
+- next justified redesign is M2-R Residual Span Hunter Feasibility, which must start with fresh research/brainstorming and a new preregistration.

@@ -1,0 +1,114 @@
+{
+  "record_id": "M2_P1_DEVELOPMENT_RESULT",
+  "date": "2026-09-30",
+  "status": "FAIL",
+  "protocol": "M2_FRONTIER_VERIFIER_PROTOCOL_V1",
+  "prompt": "M2_FRONTIER_VERIFIER_PROMPT_P1",
+  "prediction_commitment_sha256": "1178d685cb3b06f96a3d8c20116f3dd95bdc690a4df7ca40393b3caff42c32a8",
+  "n_total": 120,
+  "n_safe": 72,
+  "n_unsafe": 48,
+  "unsafe_accept": 9,
+  "uar": 0.1875,
+  "safe_accept": 41,
+  "sac": 0.5694444444444444,
+  "review": 25,
+  "review_burden": 0.20833333333333334,
+  "safe_reject": 20,
+  "safe_rejection_error": 0.2777777777777778,
+  "family": {
+    "ALL_BUT_ONE_PARTIAL": {
+      "n": 12,
+      "accept": 8,
+      "review": 4,
+      "reject": 0,
+      "accept_rate": 0.6666666666666666
+    },
+    "CLEAN_REFERENCE_KEEP": {
+      "n": 36,
+      "accept": 16,
+      "review": 2,
+      "reject": 18,
+      "accept_rate": 0.4444444444444444
+    },
+    "ERRONEOUS_SOURCE_KEEP": {
+      "n": 24,
+      "accept": 0,
+      "review": 0,
+      "reject": 24,
+      "accept_rate": 0
+    },
+    "FULL_EXPERT_REPAIR": {
+      "n": 36,
+      "accept": 25,
+      "review": 9,
+      "reject": 2,
+      "accept_rate": 0.6944444444444444
+    },
+    "ONE_OF_MANY_PARTIAL": {
+      "n": 12,
+      "accept": 1,
+      "review": 10,
+      "reject": 1,
+      "accept_rate": 0.08333333333333333
+    }
+  },
+  "source": {
+    "QALB": {
+      "n": 96,
+      "unsafe_n": 48,
+      "unsafe_accept": 9,
+      "uar": 0.1875,
+      "safe_n": 48,
+      "safe_accept": 29,
+      "sac": 0.6041666666666666
+    },
+    "ZAEBUC": {
+      "n": 24,
+      "unsafe_n": 0,
+      "unsafe_accept": 0,
+      "uar": null,
+      "safe_n": 24,
+      "safe_accept": 12,
+      "sac": 0.5
+    }
+  },
+  "gate": {
+    "uar_le_0_05": false,
+    "all_but_one_zero_accept": false,
+    "one_of_many_accept_le_1_pending_audit": true,
+    "sac_ge_0_60": false,
+    "clean_keep_accept_ge_0_60": false,
+    "full_repair_accept_ge_0_60": true,
+    "all_source_uar_le_0_10": false
+  },
+  "forensic_audit": {
+    "workflow_run_id": 36646367644,
+    "artifact_digest": "sha256:7626f889b8e450cac9d3b3c9d9e02fa0e2a7c08e6d330dfdbf5c86142d771446",
+    "accepted_reference_partial_cases": 9,
+    "clearly_mandatory_residual_accepts": 3,
+    "clearly_mandatory_examples": [
+      {
+        "case_id": "M2P1D-041",
+        "residual": "ايران -> إيران",
+        "class": "hamza orthography"
+      },
+      {
+        "case_id": "M2P1D-047",
+        "residual": "اغلب -> أغلب",
+        "class": "hamza orthography"
+      },
+      {
+        "case_id": "M2P1D-054",
+        "residual": "اكبر -> أكبر",
+        "class": "hamza orthography"
+      }
+    ],
+    "disputed_or_optional_accepts": 6,
+    "conservative_lower_bound_clear_unsafe_accept_rate_on_reference_unsafe_denominator": 0.0625,
+    "interpretation": "Even if every disputed punctuation/dialect/reference-only case is treated as acceptable, at least 3/48 reference-unsafe cases are clear mandatory-error accepts, above the 5% gate."
+  },
+  "further_prompt_revision_allowed": false,
+  "a7ta_reserved_opened": false,
+  "conclusion": "Single monolithic frontier judge is not supported as an unattended Arabic auto-accept gate. P1 improved coverage but crossed the safety boundary, especially on near-complete repairs."
+}
