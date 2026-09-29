@@ -4,119 +4,139 @@ Date: 2026-09-29
 
 ## Decision
 
-**WORSENED versus the prior two-model agreement on supported-precision proxy; epistemically IMPROVED.**
+**WORSENED as an auto-accept candidate policy; IMPROVED epistemically.**
 
-The primary UNANIMOUS_3 policy does **not** satisfy its pre-registered promotion contract.
+Canonical fully corrected run:
+- workflow: Phase 2 Cross-Training Tri-Model Voting Gate V2
+- run: 36517205396
+- conclusion: SUCCESS
+- runtime votes frozen before gold: true
+- QALB-2015 TEST read: false
+- QALB text persisted: false
 
-## Fresh disjoint population
+## Primary policy: UNANIMOUS_3
 
-- Corpus: QALB-2015 L2 TRAIN.
-- Fresh deterministic 50-line raw-only slice excluding the previous 50-line cross-model slice.
-- Runtime votes were frozen before gold was opened.
-- QALB-2015 TEST remained unread.
-- QALB text was not persisted.
+Fresh population: QALB-2015 L2 TRAIN deterministic 50-line raw-only slice, explicitly excluding the prior 50-line cross-model slice.
 
-## UNANIMOUS_3 result after contextual review
-
-- candidate events: 142
+Automatic gold comparison:
+- accepted events: 142
 - exact-gold supported: 94
-- non-exact events contextually reviewed: 48
-- supported correction: 124 total
+- non-exact requiring contextual review: 48
+  - gold-overlap non-exact span: 23
+  - same gold span / different output: 14
+  - no gold edit overlap: 11
+
+Bounded contextual adjudication of all 48 non-exact events:
+- supported correction: 30
 - supported alternative: 2
 - partial correction: 12
 - wrong correction: 4
-- unnecessary edit: 0
-- supported total: 126/142 = **88.73%**
-- unsafe total under the frozen contract: 16/142 = **11.27%**
+- unnecessary: 0
 
-Manual review is same-agent contextual adjudication, not independent human validation.
+Final primary-policy development-generalization evidence:
+- supported total: 126 / 142
+- supported precision: 88.7324%
+- unsafe: 16 / 142 = 11.2676%
+- wrong: 4
+- partial: 12
 
-## Comparison with prior two-model agreement
-
-Prior two-model stream:
-- supported: 144/159 = **90.57%**
-- unsafe: 15/159 = **9.43%**
-
-Tri-model UNANIMOUS_3:
-- supported: 126/142 = **88.73%**
-- unsafe: 16/142 = **11.27%**
-
-Descriptive change:
-- supported precision: **-1.83 percentage points**
-- unsafe rate: **+1.83 percentage points**
-- accepted-event count on an equal 50-line slice: 159 -> 142 (**-10.7%**), noting that the slices are different and this is not a causal coverage estimate.
-
-Wrong-only rate improved descriptively:
-- prior: 8/159 = 5.03%
-- tri-model: 4/142 = 2.82%
-- change: **-2.21 pp**
-
-But partial-correction rate worsened:
-- prior: 6/159 = 3.77%
-- tri-model: 12/142 = 8.45%
-- change: **+4.68 pp**
-
-This is the key result: adding a differently trained third voter appears to suppress some clearly wrong edits, but it does not solve incomplete/contextually insufficient repairs.
-
-## Promotion contract
-
-Pre-registered requirements included zero wrong, zero partial, zero unnecessary, and at least 10 accepts.
-
-- minimum accepts: PASS
+Promotion contract:
+- minimum >=10 accepts: PASS
 - zero wrong: FAIL
 - zero partial: FAIL
 - zero unnecessary: PASS
 
-**Decision: DO_NOT_PROMOTE_UNANIMOUS_3.**
+**Decision: DO NOT PROMOTE UNANIMOUS_3.**
 
-## Failure taxonomy
+## Comparison with previous two-model exact agreement
 
-The 16 unsafe events cover:
-- numeral case incompleteness
-- lexical number residual
-- derivational-form residual
-- preposition/surface residual
-- determiner construction residual
-- title determiner residual
-- verb-valency residual
-- complementizer context change
-- compound numeral incompleteness
-- proper-name transliteration incompleteness
-- possessive-clitic loss
-- preposition lexical residual
-- lexical semantic change
-- demonstrative-gender residual
-- gender-agreement residual
-- tense/aspect change
+Previous independent two-model slice:
+- supported: 144 / 159
+- supported precision: 90.5660%
+- unsafe: 15 / 159 = 9.4340%
 
-The diversity of these failures is strong evidence that a single additional voter or one global similarity score is unlikely to provide the missing safety boundary.
+Tri-model fresh slice:
+- supported: 126 / 142
+- supported precision: 88.7324%
+- unsafe: 16 / 142 = 11.2676%
+
+Descriptive change:
+- supported precision: -1.8336 percentage points
+- unsafe rate: +1.8336 percentage points
+
+The slices are different, so this is not a causal estimate of adding the third voter. It is sufficient, however, to falsify the hypothesis that cross-training 3/3 agreement is by itself a safe unattended lane.
+
+## Why the third voter did not solve the problem
+
+The unsafe set contains several qualitatively different failure modes:
+- incomplete case/number/determiner repairs;
+- residual preposition and valency errors;
+- complementizer context change;
+- possessive/clitic loss;
+- lexical semantic substitution;
+- tense/aspect drift;
+- gender agreement residuals;
+- proper-name or multi-part spelling that remains incomplete.
+
+This means three models can converge on the same locally plausible edit while still sharing incomplete repair, context-insensitive orthographic bias, or semantic/morphosyntactic drift.
+
+## Secondary policies
+
+ARABART_PLUS_ANY_SWEET accepted 168 events.
+BOTH_SWEETS accepted 202 events.
+
+Both are supersets of the unsafe UNANIMOUS_3 accepts, so neither can satisfy the pre-registered zero-wrong / zero-partial promotion contract. Full manual adjudication of their extra lower-consensus events is not required to reject promotion.
+
+## Implementation/reproducibility repairs
+
+Two CI failures were metadata-only and occurred after successful inference:
+- legacy torch wheel did not expose torch.__version__ in SWEET jobs;
+- the same issue affected AraBART.
+
+Both were repaired by recording the installed torch version via importlib.metadata.version("torch"). No model, source data, inference output, threshold, vote rule, or evaluation policy changed.
+
+The legacy tri-model workflow was made manual-only; V2 is canonical.
+
+## Fresh research interpretation
+
+- Alhafni & Habash (ACL 2025) show Arabic text-editing models benefit from ensembling, but ensemble improvement does not imply zero-error acceptance.
+- Goto et al. (BEA 2026) show edit-level majority voting can mitigate over-correction, not eliminate correlated edit errors.
+- CLEME2.0 (ACL 2025) argues for disentangling correct, wrong, under-, and over-correction rather than relying on a single score.
+- Multi-pass Decoding (EMNLP 2024) shows iterative refinement can improve GEC and motivates testing whether accepted edits are stable or require subsequent repair.
+- COCOGEC (Findings ACL 2026) demonstrates context robustness is a distinct failure axis.
 
 ## Architectural conclusion
 
-Retain multi-model agreement as **candidate evidence**, not as acceptance proof.
+Do not add another voter merely to increase vote count.
+Do not tune model-confidence thresholds on these inspected slices.
+Do not return to NLI, GED, lexical-continuity, or simple character-family rules as sole gates.
 
-The next gate should test a **Contextual Residual-Risk Guard** that routes context-governed edits to REVIEW using independent morphosyntactic/fidelity evidence before any auto-accept lane is considered.
+The evidence points to two missing properties:
 
-Priority veto families derived from linguistic principles and observed failures:
-1. clitic/person/possessive changes;
-2. verb tense/aspect/valency changes;
-3. prepositions, complementizers, demonstratives and other function words;
-4. numerals and case-sensitive forms;
-5. proper names/transliteration;
-6. noun/adjective gender-number-determiner agreement;
-7. lexical/lemma changes.
+1. **Repair completeness / post-edit stability** — a supposedly safe edit should remain stable after accepted edits are applied and the sentence is re-evaluated.
+2. **Morphological identity preservation** — an edit presented as orthographic/local should not silently change lemma, POS, person, tense/aspect, number/gender, or clitic structure unless explicitly supported.
 
-A narrow pure-orthographic lane may remain viable only when these contextual risk checks do not fire.
+## Next recommended gate
 
-## Forecast
+**Phase 2 — Post-Edit Stability & Morphological Identity Diagnostic**
 
-Likely progress is now **selective rather than broad**. A high-precision auto-accept lane may be achievable for a subset of orthographic edits, while context-governed Arabic grammar should remain REVIEW-first.
+First run on the consumed 142 UNANIMOUS_3 events only as a diagnostic:
+- apply all unanimous accepted edits to each affected source line;
+- rerun the three frozen voters on the corrected line;
+- mark whether each original accepted target remains a fixed point or is edited again;
+- compare source/candidate contextual morphology with CAMeL morphology;
+- materialize stability/morphology evidence before reading the manual labels;
+- measure capture of 16 unsafe vs retention of 126 supported.
 
-Main blockers:
-- context-sensitive morphology and syntax;
-- incomplete local repairs that look superficially correct;
-- correlated model errors despite training-corpus diversity;
-- same-agent adjudication;
-- repeated development inspection and overfitting risk.
+No promotion from the consumed slice.
 
-Do not start Phase 3 and do not consume QALB15 TEST.
+Only if a pre-registered policy is promising: freeze it unchanged and validate on a new disjoint raw-only slice.
+
+## Constraints
+
+- No QALB-2015 TEST.
+- No final sealed benchmark.
+- No Phase 3.
+- No training on current manual labels.
+- No QALB text persistence.
+- Review remains a first-class outcome.
