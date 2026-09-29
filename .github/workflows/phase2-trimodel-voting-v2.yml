@@ -1,0 +1,216 @@
+name: Phase 2 Cross-Training Tri-Model Voting Gate V2
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/TRIMODEL_VOTING_*.md"
+      - "phase2/generalization/trimodel_common.py"
+      - "phase2/generalization/run_trimodel_sweet_v2.py"
+      - "phase2/generalization/run_trimodel_arabart.py"
+      - "phase2/generalization/materialize_trimodel_votes.py"
+      - "phase2/generalization/evaluate_trimodel_votes.py"
+      - ".github/workflows/phase2-trimodel-voting.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  sweet-q14:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      SWEET_MODEL_ID: "CAMeL-Lab/text-editing-qalb14-nopnx"
+      SWEET_VOTER_NAME: "SWEET_QALB14"
+      SWEET_OUTPUT_PREFIX: "TRI_SWEET_Q14"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+      - name: Install SWEET runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+          python -m pip install -r requirements.txt
+      - name: Clone pinned upstreams
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+      - name: Run SWEET QALB14 voter
+        run: |
+          mkdir -p artifacts
+          PYTHONPATH=. python phase2/generalization/run_trimodel_sweet_v2.py
+          test -f artifacts/TRI_SWEET_Q14_EVENTS.jsonl
+          test -f artifacts/TRI_SWEET_Q14_SUMMARY.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: trimodel-sweet-q14
+          path: |
+            artifacts/TRI_SWEET_Q14_EVENTS.jsonl
+            artifacts/TRI_SWEET_Q14_SUMMARY.json
+          retention-days: 1
+
+  sweet-zaebuc:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      SWEET_MODEL_ID: "CAMeL-Lab/text-editing-zaebuc-nopnx"
+      SWEET_VOTER_NAME: "SWEET_ZAEBUC"
+      SWEET_OUTPUT_PREFIX: "TRI_SWEET_ZAEBUC"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+      - name: Install SWEET runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+          python -m pip install -r requirements.txt
+      - name: Clone pinned upstreams
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+      - name: Run SWEET ZAEBUC voter
+        run: |
+          mkdir -p artifacts
+          PYTHONPATH=. python phase2/generalization/run_trimodel_sweet_v2.py
+          test -f artifacts/TRI_SWEET_ZAEBUC_EVENTS.jsonl
+          test -f artifacts/TRI_SWEET_ZAEBUC_SUMMARY.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: trimodel-sweet-zaebuc
+          path: |
+            artifacts/TRI_SWEET_ZAEBUC_EVENTS.jsonl
+            artifacts/TRI_SWEET_ZAEBUC_SUMMARY.json
+          retention-days: 1
+
+  arabart-q14:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Clone pinned Arabic-GEC upstream
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+      - name: Install AraBART runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "sentencepiece==0.1.99" "protobuf==3.20.3" "numpy<2"
+          python -m pip uninstall -y transformers || true
+          python -m pip install -e upstream/arabic-gec/transformers
+          python -m pip install "huggingface_hub>=0.9,<1.0"
+          mkdir -p "$CAMELTOOLS_DATA" artifacts
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+      - name: Run AraBART QALB14 voter
+        run: |
+          PYTHONPATH=. python phase2/generalization/run_trimodel_arabart.py
+          test -f artifacts/TRI_ARABART_Q14_EVENTS.jsonl
+          test -f artifacts/TRI_ARABART_Q14_SUMMARY.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: trimodel-arabart-q14
+          path: |
+            artifacts/TRI_ARABART_Q14_EVENTS.jsonl
+            artifacts/TRI_ARABART_Q14_SUMMARY.json
+          retention-days: 1
+
+  vote-and-evaluate:
+    needs: [sweet-q14, sweet-zaebuc, arabart-q14]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - uses: actions/download-artifact@v4
+        with:
+          name: trimodel-sweet-q14
+          path: artifacts/sweet_q14
+      - uses: actions/download-artifact@v4
+        with:
+          name: trimodel-sweet-zaebuc
+          path: artifacts/sweet_zaebuc
+      - uses: actions/download-artifact@v4
+        with:
+          name: trimodel-arabart-q14
+          path: artifacts/arabart_q14
+      - name: Materialize frozen votes before gold
+        run: |
+          PYTHONPATH=. python phase2/generalization/materialize_trimodel_votes.py
+          test -f artifacts/TRIMODEL_VOTE_FEATURES.jsonl
+          test -f artifacts/TRIMODEL_VOTE_RUNTIME.json
+          sha256sum artifacts/TRIMODEL_VOTE_FEATURES.jsonl artifacts/TRIMODEL_VOTE_RUNTIME.json > artifacts/TRIMODEL_VOTE_SHA256.txt
+      - name: Clone QALB source only after votes are frozen
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+      - name: Evaluate frozen votes against TRAIN gold
+        run: |
+          PYTHONPATH=. python phase2/generalization/evaluate_trimodel_votes.py
+          test -f PHASE2_TRIMODEL_VOTING_RESULTS.json
+      - name: QALB leakage audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          raw=Path("PHASE2_TRIMODEL_VOTING_RESULTS.json").read_text(encoding="utf-8")
+          assert not any("\u0600"<=ch<="\u06ff" for ch in raw)
+          for key in ["source_text","candidate_output","source_bases","output_bases","gold_words"]:
+              assert '"'+key+'"' not in raw,key
+          print("QALB leakage audit PASS")
+          PY
+      - name: Persist aggregate/hash-only result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_TRIMODEL_VOTING_RESULTS.json
+          if git diff --cached --quiet; then
+            echo "Tri-model result unchanged."
+          else
+            git commit -m "Record tri-model voting generalization evidence [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-trimodel-safe-evidence
+          path: |
+            artifacts/TRIMODEL_VOTE_RUNTIME.json
+            artifacts/TRIMODEL_VOTE_SHA256.txt
+            PHASE2_TRIMODEL_VOTING_RESULTS.json
+          if-no-files-found: warn
+          retention-days: 30
