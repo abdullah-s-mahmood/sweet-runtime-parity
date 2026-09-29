@@ -1,0 +1,109 @@
+name: Phase 2 CATiB PROP to NOM Retrospective Replication
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/CATIB_PROP_TO_NOM_RETROSPECTIVE_PROTOCOL.md"
+      - "phase2/generalization/run_catib_prop_to_nom_retrospective.py"
+      - "phase2/generalization/evaluate_catib_prop_to_nom_retrospective.py"
+      - ".github/workflows/phase2-catib-prop-to-nom-retrospective.yml"
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  replicate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.13"
+
+      - name: Download frozen tri-model AraBART artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: trimodel-arabart-q14
+          path: artifacts/tri_arabart
+          github-token: ${{ github.token }}
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36517205396
+
+      - name: Clone pinned QALB and CamelParser
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          git clone https://github.com/CAMeL-Lab/camel_parser.git upstream/camel_parser
+          git -C upstream/camel_parser checkout 66f29f7e34e3b5b38780d08bd56cf481635bf1c6
+
+      - name: Install parser runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake libboost-all-dev
+          cd upstream/camel_parser
+          python -m pip install --upgrade "pip<25"
+          python -m pip install -r requirements.txt
+          mkdir -p "$CAMELTOOLS_DATA"
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+          python download_models.py
+
+      - name: Materialize frozen CATiB decisions before labels
+        run: |
+          mkdir -p artifacts
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/run_catib_prop_to_nom_retrospective.py 2>&1 | tee artifacts/CATIB_RETRO_RUNTIME_CONSOLE.txt
+          sha256sum PHASE2_CATIB_PROP_TO_NOM_FEATURES.jsonl PHASE2_CATIB_PROP_TO_NOM_RUNTIME.json > artifacts/CATIB_RETRO_FROZEN_SHA256.txt
+
+      - name: Pre-label leakage audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for p in [Path("PHASE2_CATIB_PROP_TO_NOM_FEATURES.jsonl"),Path("PHASE2_CATIB_PROP_TO_NOM_RUNTIME.json")]:
+              s=p.read_text(encoding="utf-8")
+              assert not any("\u0600"<=c<="\u06ff" for c in s),p
+              assert "manual_class" not in s and "classification" not in s,p
+          print("CATiB retrospective pre-label leakage audit PASS")
+          PY
+
+      - name: Evaluate frozen retrospective decisions
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/evaluate_catib_prop_to_nom_retrospective.py 2>&1 | tee artifacts/CATIB_RETRO_EVAL_CONSOLE.txt
+
+      - name: Persist safe retrospective evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_CATIB_PROP_TO_NOM_FEATURES.jsonl PHASE2_CATIB_PROP_TO_NOM_RUNTIME.json PHASE2_CATIB_PROP_TO_NOM_RESULTS.json
+          if git diff --cached --quiet; then
+            echo unchanged
+          else
+            git commit -m "Record CATiB PROP-to-NOM retrospective replication [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-catib-prop-to-nom-retrospective-safe
+          path: |
+            PHASE2_CATIB_PROP_TO_NOM_RUNTIME.json
+            PHASE2_CATIB_PROP_TO_NOM_RESULTS.json
+            artifacts/CATIB_RETRO_FROZEN_SHA256.txt
+            artifacts/CATIB_RETRO_RUNTIME_CONSOLE.txt
+            artifacts/CATIB_RETRO_EVAL_CONSOLE.txt
+          if-no-files-found: warn
+          retention-days: 30
