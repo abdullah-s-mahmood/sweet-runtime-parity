@@ -6,7 +6,6 @@ on:
     branches:
       - phase2-arabic-eval
     paths:
-      - "phase2/generalization/LOCAL_EDIT_SEMANTIC_BACKSTOP_*.md"
       - "phase2/generalization/run_local_edit_semantic_backstop.py"
       - "phase2/generalization/evaluate_local_edit_semantic_backstop.py"
       - ".github/workflows/phase2-local-edit-semantic-backstop.yml"
