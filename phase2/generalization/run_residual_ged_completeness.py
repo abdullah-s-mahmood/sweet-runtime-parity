@@ -13,7 +13,7 @@ from phase2.arabart_audit.build_full_arabart_edit_queue import units
 
 ROOT=Path(__file__).resolve().parents[2]
 RAW=ROOT/"upstream/arabic-gec/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/train/QALB-2015-L2-Train.sent.no_ids"
-FEATURES=ROOT/"PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl"
+FEATURES=ROOT/"artifacts/ortho-safe/PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl"
 ARABART=ROOT/"artifacts/arabart/VAL_ARABART_Q14_EVENTS.jsonl"
 OUT=ROOT/"PHASE2_RESIDUAL_GED_COMPLETENESS_FEATURES.jsonl"
 RUNTIME=ROOT/"PHASE2_RESIDUAL_GED_COMPLETENESS_RUNTIME.json"
