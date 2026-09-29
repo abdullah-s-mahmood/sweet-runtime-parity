@@ -1,18 +1,7 @@
-name: Phase 2 Cross-Training Tri-Model Voting Gate
+name: Phase 2 Cross-Training Tri-Model Voting Gate (legacy manual)
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - phase2-arabic-eval
-    paths:
-      - "phase2/generalization/TRIMODEL_VOTING_*.md"
-      - "phase2/generalization/trimodel_common.py"
-      - "phase2/generalization/run_trimodel_sweet.py"
-      - "phase2/generalization/run_trimodel_arabart.py"
-      - "phase2/generalization/materialize_trimodel_votes.py"
-      - "phase2/generalization/evaluate_trimodel_votes.py"
-      - ".github/workflows/phase2-trimodel-voting.yml"
 
 permissions:
   contents: write
