@@ -2,14 +2,6 @@ name: Phase 2 Local-Edit Semantic Backstop Diagnostic
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - phase2-arabic-eval
-    paths:
-      - "phase2/generalization/run_local_edit_semantic_backstop.py"
-      - "phase2/generalization/evaluate_local_edit_semantic_backstop.py"
-      - ".github/workflows/phase2-local-edit-semantic-backstop.yml"
-
 permissions:
   contents: write
 
