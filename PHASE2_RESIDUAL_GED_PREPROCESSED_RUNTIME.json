@@ -1,0 +1,37 @@
+{
+  "status": "RESIDUAL_GED_PREPROCESSED_FEATURES_FROZEN",
+  "diagnostic_only": true,
+  "consumed_population": true,
+  "labels_read": false,
+  "rows": 14,
+  "decision_counts": {
+    "GED_TARGET_CLEAN_BOTH": {
+      "PASS": 12,
+      "REVIEW": 2
+    },
+    "GED_WINDOW1_CLEAN_BOTH": {
+      "PASS": 7,
+      "REVIEW": 7
+    },
+    "GED_WINDOW2_CLEAN_BOTH": {
+      "PASS": 7,
+      "REVIEW": 7
+    }
+  },
+  "preprocessing_already_candidate_count": 14,
+  "preprocessing_source": "official pinned CAMeLIRA QALB15 TRAIN source",
+  "preprocessing_faithful": true,
+  "models": {
+    "QALB14": {
+      "model_id": "CAMeL-Lab/camelbert-msa-qalb14-ged-13",
+      "revision": "447179dc63d186e4bff09a993e90e73ad622d571"
+    },
+    "ZAEBUC": {
+      "model_id": "CAMeL-Lab/camelbert-msa-zaebuc-ged-13",
+      "revision": "40c80685157d65504c942a8730f4f6b11c249679"
+    }
+  },
+  "features_sha256": "492419e0e939edb231f80043cb6973457ae784de238b8d9351a31c5983994e78",
+  "qalb15_test_read": false,
+  "qalb_text_persisted": false
+}

@@ -1,0 +1,49 @@
+{
+  "status": "PHASE2_RESIDUAL_GED_PREPROCESSED_EVALUATED",
+  "diagnostic_only": true,
+  "consumed_population": true,
+  "features_frozen_before_labels": true,
+  "preprocessing_faithful": true,
+  "preprocessing_already_candidate_count": 14,
+  "policy_results": {
+    "GED_TARGET_CLEAN_BOTH": {
+      "pass": 12,
+      "review": 2,
+      "review_burden": 0.14285714285714285,
+      "supported_pass": 12,
+      "partial_pass": 0,
+      "partial_captured": 2,
+      "supported_retained": 12,
+      "supported_retention": 1.0,
+      "status": "PROMISING_FOR_RETROSPECTIVE_REPLICATION"
+    },
+    "GED_WINDOW1_CLEAN_BOTH": {
+      "pass": 7,
+      "review": 7,
+      "review_burden": 0.5,
+      "supported_pass": 7,
+      "partial_pass": 0,
+      "partial_captured": 2,
+      "supported_retained": 7,
+      "supported_retention": 0.5833333333333334,
+      "status": "NOT_PROMISING"
+    },
+    "GED_WINDOW2_CLEAN_BOTH": {
+      "pass": 7,
+      "review": 7,
+      "review_burden": 0.5,
+      "supported_pass": 7,
+      "partial_pass": 0,
+      "partial_captured": 2,
+      "supported_retained": 7,
+      "supported_retention": 0.5833333333333334,
+      "status": "NOT_PROMISING"
+    }
+  },
+  "target_rule_promising": true,
+  "promotion_allowed": false,
+  "fourth_slice_allowed": false,
+  "next_action": "RETROSPECTIVE_REPLICATION_ON_EARLIER_CONSUMED_POPULATION",
+  "qalb15_test_read": false,
+  "qalb_text_persisted": false
+}
