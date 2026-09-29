@@ -135,9 +135,9 @@ def main():
         cand_tokens=list(tokens); cand_tokens[wi]=cand_surface
 
         if line_id not in source_cache:
-            source_cache[line_id]=dis.disambiguate_sentence(tokens)
+            source_cache[line_id]=dis.disambiguate(tokens)
         src_dw=source_cache[line_id]
-        cand_dw=dis.disambiguate_sentence(cand_tokens)
+        cand_dw=dis.disambiguate(cand_tokens)
         assert len(src_dw)==len(tokens) and len(cand_dw)==len(cand_tokens)
 
         sa=get_analysis(src_dw[wi]); ca=get_analysis(cand_dw[wi])
