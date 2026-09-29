@@ -1,0 +1,29 @@
+{
+  "status": "PHASE2_RESIDUAL_GED_TARGET_RETROSPECTIVE_EVALUATED",
+  "diagnostic_only": true,
+  "consumed_population": true,
+  "features_frozen_before_labels": true,
+  "population_total": 36,
+  "population_historical_supported": 34,
+  "population_historical_partial": 2,
+  "accepted": 29,
+  "review": 7,
+  "accepted_class_counts": {
+    "SUPPORTED_CORRECTION": 28,
+    "PARTIAL_CORRECTION": 1
+  },
+  "accepted_supported": 28,
+  "accepted_unsafe": 1,
+  "accepted_wrong": 0,
+  "accepted_partial": 1,
+  "accepted_unnecessary": 0,
+  "accepted_precision": 0.9655172413793104,
+  "strict_v1_subset_total": 19,
+  "strict_v1_subset_pass": 14,
+  "strict_v1_subset_supported_pass": 14,
+  "pre_registered_promising_criterion_met": false,
+  "status_for_next_step": "NOT_PROMISING",
+  "promotion_allowed": false,
+  "qalb15_test_read": false,
+  "qalb_text_persisted": false
+}

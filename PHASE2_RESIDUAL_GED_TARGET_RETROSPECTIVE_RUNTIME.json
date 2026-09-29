@@ -1,0 +1,26 @@
+{
+  "status": "RESIDUAL_GED_TARGET_RETROSPECTIVE_FEATURES_FROZEN",
+  "diagnostic_only": true,
+  "consumed_population": true,
+  "labels_read": false,
+  "rows": 36,
+  "strict_v1_rows": 19,
+  "pass": 29,
+  "review": 7,
+  "strict_v1_pass": 14,
+  "preprocessing_already_candidate_count": 36,
+  "preprocessing_faithful": true,
+  "features_sha256": "b3e5d938e7ae4e6e3ce672da2a80730a33c9886cff485afe463592639609dd6f",
+  "models": {
+    "QALB14": {
+      "model_id": "CAMeL-Lab/camelbert-msa-qalb14-ged-13",
+      "revision": "447179dc63d186e4bff09a993e90e73ad622d571"
+    },
+    "ZAEBUC": {
+      "model_id": "CAMeL-Lab/camelbert-msa-zaebuc-ged-13",
+      "revision": "40c80685157d65504c942a8730f4f6b11c249679"
+    }
+  },
+  "qalb15_test_read": false,
+  "qalb_text_persisted": false
+}
