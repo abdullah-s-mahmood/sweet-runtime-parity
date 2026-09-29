@@ -1,0 +1,39 @@
+{
+  "status": "PHASE2_CAD_DATA_FEASIBILITY_FROZEN",
+  "rule_version": "CAD_QALB14_LOCAL_COMPLETENESS_V1",
+  "splits": {
+    "train": {
+      "lines": 19411,
+      "counts": {
+        "POS_ISOLATED_ORTHO": 23565,
+        "NEG_NEARBY_RESIDUAL": 25949,
+        "NEG_ORTHO_SUBEDIT": 723
+      },
+      "positive": 23565,
+      "negative": 26672,
+      "source_sha256": "83226ee5f2f255f4e7fb6246700ceb70266fca750ca4609b481867e77b407127",
+      "gold_sha256": "034c03af5e74b6735380466c85efb3db50288e2c0d3141dea30eb869656d64b2",
+      "example_ids_sha256": "9ed5c98484af8d2726ac3fa25b71730ac4cb8f821b8c27948e2c82aacf3051f4"
+    },
+    "dev": {
+      "lines": 1017,
+      "counts": {
+        "POS_ISOLATED_ORTHO": 1209,
+        "NEG_NEARBY_RESIDUAL": 1370,
+        "NEG_ORTHO_SUBEDIT": 45
+      },
+      "positive": 1209,
+      "negative": 1415,
+      "source_sha256": "cd9d3158bf644691c659b23c7725cd4e81ad1e78b141e45caee8376dbf1f32d5",
+      "gold_sha256": "768e37951669929cbdc8f0eb453db247136b5b2f2d6bd5a17f88ad433db95c39",
+      "example_ids_sha256": "4afd7da05b6dcf27abe7917b851e08d672275e18cda22c86a245daccc8813235"
+    }
+  },
+  "current_phase_labels_read": false,
+  "qalb15_corrected_read": false,
+  "qalb15_test_read": false,
+  "qalb_text_persisted": false,
+  "pre_registered_feasibility_criterion_met": true,
+  "next_action": "TRAIN_EXTERNAL_CAD_FEASIBILITY_MODEL",
+  "all_example_ids_sha256": "67d5535ad07ba5b552ef2eda8d109d710576c0d7503925eb13a8badd7a3d3faf"
+}
