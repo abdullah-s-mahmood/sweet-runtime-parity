@@ -1,0 +1,79 @@
+{
+  "matrix_id": "ACAD_PASS_M1A_EVIDENCE_COVERAGE_V1",
+  "date": "2026-09-30",
+  "axes": {
+    "necessity": {
+      "coverage": "STRONG_FOR_REFERENCE_DIFFERENCES",
+      "sources": [
+        "QALB",
+        "ZAEBUC",
+        "A7TA",
+        "NAHW"
+      ],
+      "limitation": "Does not prove necessity of non-reference stylistic edits."
+    },
+    "local_correctness": {
+      "coverage": "STRONG_FOR_REFERENCE_SUPPORTED_EDITS",
+      "sources": [
+        "QALB_M2",
+        "A7TA",
+        "NAHW"
+      ],
+      "limitation": "Non-reference alternatives remain unresolved."
+    },
+    "contextual_correctness": {
+      "coverage": "MODERATE_TO_STRONG_FOR_FULL_REFERENCE",
+      "sources": [
+        "QALB",
+        "ZAEBUC",
+        "A7TA"
+      ],
+      "limitation": "Reference variation and ambiguity remain."
+    },
+    "edit_group_completeness": {
+      "coverage": "STRONG_CONTROLLED_QALB",
+      "sources": [
+        "QALB_M2"
+      ],
+      "limitation": "Controlled counterfactuals are not natural model outputs."
+    },
+    "residual_error_relation": {
+      "coverage": "PRESENCE_STRONG_RELATION_WEAK",
+      "sources": [
+        "QALB_M2"
+      ],
+      "limitation": "Withheld reference edits are known; related-vs-independent causal relation is not automatically gold."
+    },
+    "semantic_fidelity": {
+      "coverage": "PROTOCOL_SUPPORTED_NOT_ITEM_GOLD",
+      "sources": [
+        "QALB_guidelines",
+        "Mohi_2026_rubric"
+      ],
+      "limitation": "Requires dedicated human/scientific validation for project claims."
+    },
+    "scientific_fidelity": {
+      "coverage": "NOT_COVERED",
+      "sources": [],
+      "limitation": "Needs dedicated scientific stress/reference set."
+    },
+    "protected_invariants": {
+      "coverage": "NOT_COVERED_BY_LINGUISTIC_CORPORA",
+      "sources": [],
+      "limitation": "Should be deterministic/project-specific."
+    },
+    "document_integrity": {
+      "coverage": "NOT_COVERED",
+      "sources": [],
+      "limitation": "Requires DOCX/OOXML/OMML round-trip validation."
+    },
+    "ambiguity_author_intent": {
+      "coverage": "PARTIAL",
+      "sources": [
+        "QALB_multi_annotator_literature"
+      ],
+      "limitation": "Not systematic item-level gold in M1-A manifests."
+    }
+  },
+  "implication": "M2 may evaluate linguistic correctness/completeness selectively; M4/scientific stress work must cover document and scientific fidelity separately."
+}

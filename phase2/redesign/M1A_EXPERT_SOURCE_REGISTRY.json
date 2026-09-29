@@ -59,6 +59,25 @@
       "tier": "B",
       "use": "error taxonomy, annotation design, thesis-backed learner corpus methodology",
       "reason_not_primary": "not all corpus material is paired full correction gold"
+    },
+    {
+      "source": "MANUAL_ARABIC_SPELLING_ERRORS_ISLRN_922_673_450_479_2",
+      "tier": "B",
+      "use": "real human spelling-error robustness and error-type coverage",
+      "reason_not_primary": "records mistakes produced by users; not expert full linguistic post-editing"
+    },
+    {
+      "source": "MANUAL_360_SENTENCE_SYNTACTIC_REFERENCE",
+      "tier": "B_PENDING_ACCESS_AUDIT",
+      "use": "agreement, case-ending, definiteness targeted syntax evidence",
+      "evidence": "paper reports manual annotation of 360 sentences: 30 correct, 330 ungrammatical",
+      "reason_not_primary": "reusable paired artifact and annotator provenance not yet verified to Tier S/A standard"
+    },
+    {
+      "source": "MADAR_CODA",
+      "tier": "C_DOMAIN_SPECIFIC",
+      "use": "dialect/orthographic normalization robustness only",
+      "reason_not_primary": "dialectal CODA normalization is not the target MSA academic correction task"
     }
   ],
   "prohibited_shortcuts": [
@@ -67,5 +86,19 @@
     "single-reference mismatch called wrong",
     "synthetic data presented as natural expert correction",
     "scientific fidelity inferred from learner-corpus correction"
+  ],
+  "qa_issues": [
+    {
+      "source": "A7TA",
+      "issue": "Published 470 pairs vs 463 parseable non-empty aligned pairs in pinned GitHub snapshot.",
+      "delta_pairs": 7,
+      "delta_percent": 1.49,
+      "action": "Audit formatting/provenance before treating repository as exhaustive; current >=450 criterion remains satisfied without coercion."
+    },
+    {
+      "source": "QALB14_M2",
+      "issue": "493 changed lines did not reconstruct exactly from parsed M2 under current normalizer.",
+      "action": "Exclude those lines from controlled partial synthesis; full human source-reference pairs remain usable."
+    }
   ]
 }

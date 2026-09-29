@@ -76,3 +76,28 @@ The threshold was not reduced. M1-A v1.1 is pre-registered with a corrected evid
 - independent A7'ta expert-book evidence with 20% reserved for later M2 validation.
 
 See M1A_V1_TO_V11_CHANGELOG.md and M1A_EXPERT_GROUNDED_PROTOCOL_V11.md.
+
+
+## M1-A v1.1 — CLOSED DATA-READINESS ITERATION
+
+Successful workflow: 36641075882
+Safe result commit: 0bf3c8600404d089d079352deaf589d1bdd5abdd
+
+Result:
+- DATA_READY
+- 17/17 v1.1 criteria passed
+- 3,829 safe persisted calibration cases
+- 3 independent source families
+- no forbidden benchmark/test data read
+- raw Arabic text not persisted
+
+Interpretation:
+- direct availability of Arabic experts is no longer an immediate blocker for M1/M2 calibration;
+- independent human confirmation remains a later validation requirement;
+- Arabic production remains REVIEW-first.
+
+Next:
+- freeze an M2 frontier-verifier protocol against the expert-grounded evidence;
+- keep the 88 A7'ta reserved pairs untouched through prompt/rubric development;
+- report by source family;
+- do not treat scientific/document fidelity as solved.

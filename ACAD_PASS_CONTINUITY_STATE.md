@@ -239,3 +239,25 @@ Do not lower the v1 threshold post hoc. v1.1 changes the evidence definition ins
 - A7'ta adds expert-book error/correction evidence, with a deterministic 20% reserve for later M2 validation.
 
 M1-A v1.1 remains calibration evidence, not independent human confirmation of ACAD_PASS project cases and not an Arabic auto-accept claim.
+
+
+### M1-A v1.1 final result
+
+Canonical run 36641075882: SUCCESS.
+Safe result commit: 0bf3c8600404d089d079352deaf589d1bdd5abdd.
+
+M1-A v1.1 passed all 17 pre-registered data-readiness criteria using QALB14 TRAIN+DEV, ZAEBUC Arabic TRAIN, and the A7'ta expert-book corpus. It materialized 3,829 hashed/provenance calibration cases while leaving QALB14 TEST, all QALB15, ZAEBUC DEV/TEST, reserved Nahw, and sealed benchmark data unread.
+
+Key evidence pools:
+- QALB clean-reference KEEP 20,428;
+- QALB erroneous-source KEEP/full repair 20,380;
+- reconstructable QALB multi-edit cases 19,758;
+- ZAEBUC TRAIN 150 raw/corrected pairs;
+- A7'ta 463 parseable pairs: 375 bootstrap + 88 reserved for M2.
+
+A7'ta published count is 470, so the 7-pair discrepancy is an explicit QA issue, not silently repaired.
+
+M1-A status: IMPROVED / DATA_READY.
+M1 overall: improved research readiness but not fully independent-human-confirmed.
+Arabic auto-apply remains REVIEW-first.
+Next legitimate experimental step: pre-register and test one strong frontier verifier on expert-grounded evidence, preserving the A7'ta reserve and source-held-out reporting.
