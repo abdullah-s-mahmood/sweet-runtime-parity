@@ -1,0 +1,314 @@
+name: Phase 2 Post-Edit Stability Morphology Diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/POSTEDIT_MORPH_*.md"
+      - "phase2/generalization/prepare_postedit_consensus.py"
+      - "phase2/generalization/run_postedit_sweet.py"
+      - "phase2/generalization/run_postedit_arabart.py"
+      - "phase2/generalization/run_postedit_morphology.py"
+      - "phase2/generalization/materialize_postedit_morph_diagnostic.py"
+      - "phase2/generalization/evaluate_postedit_morph_diagnostic.py"
+      - ".github/workflows/phase2-postedit-morph-diagnostic.yml"
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Download canonical SWEET Q14 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: trimodel-sweet-q14
+          path: artifacts/sweet_q14
+          github-token: ${{ github.token }}
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36517205396
+      - name: Download canonical SWEET ZAEBUC artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: trimodel-sweet-zaebuc
+          path: artifacts/sweet_zaebuc
+          github-token: ${{ github.token }}
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36517205396
+      - name: Download canonical AraBART artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: trimodel-arabart-q14
+          path: artifacts/arabart_q14
+          github-token: ${{ github.token }}
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36517205396
+      - name: Clone pinned QALB raw source
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+      - name: Prepare jointly corrected lines from frozen votes
+        run: |
+          mkdir -p artifacts/consensus
+          PYTHONPATH=. python phase2/generalization/prepare_postedit_consensus.py
+          cp artifacts/POSTEDIT_CONSENSUS_LINES.jsonl artifacts/consensus/
+          cp artifacts/POSTEDIT_CONSENSUS_SUMMARY.json artifacts/consensus/
+          cp artifacts/sweet_q14/TRI_SWEET_Q14_SUMMARY.json artifacts/consensus/
+          cp artifacts/sweet_zaebuc/TRI_SWEET_ZAEBUC_SUMMARY.json artifacts/consensus/
+          cp artifacts/arabart_q14/TRI_ARABART_Q14_SUMMARY.json artifacts/consensus/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: postedit-consensus-internal
+          path: artifacts/consensus/
+          if-no-files-found: error
+          retention-days: 1
+
+  sweet-q14-post:
+    needs: prepare
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      SWEET_MODEL_ID: CAMeL-Lab/text-editing-qalb14-nopnx
+      SWEET_VOTER_NAME: SWEET_QALB14_POST
+      SWEET_OUTPUT_PREFIX: TRI_SWEET_Q14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - uses: actions/download-artifact@v4
+        with:
+          name: postedit-consensus-internal
+          path: artifacts/consensus
+      - name: Load canonical model revision
+        run: |
+          echo "SWEET_MODEL_REVISION=$(python -c 'import json;print(json.load(open("artifacts/consensus/TRI_SWEET_Q14_SUMMARY.json"))["model_revision"])')" >> "$GITHUB_ENV"
+      - name: Install frozen SWEET runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+          python -m pip install -r requirements.txt
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+      - name: Run second-pass SWEET Q14
+        run: |
+          mkdir -p artifacts
+          PYTHONPATH=. python phase2/generalization/run_postedit_sweet.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: postedit-sweet-q14
+          path: artifacts/TRI_SWEET_Q14_POSTEDIT_EVENTS.jsonl
+          retention-days: 1
+
+  sweet-zaebuc-post:
+    needs: prepare
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      SWEET_MODEL_ID: CAMeL-Lab/text-editing-zaebuc-nopnx
+      SWEET_VOTER_NAME: SWEET_ZAEBUC_POST
+      SWEET_OUTPUT_PREFIX: TRI_SWEET_ZAEBUC
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - uses: actions/download-artifact@v4
+        with:
+          name: postedit-consensus-internal
+          path: artifacts/consensus
+      - name: Load canonical model revision
+        run: |
+          echo "SWEET_MODEL_REVISION=$(python -c 'import json;print(json.load(open("artifacts/consensus/TRI_SWEET_ZAEBUC_SUMMARY.json"))["model_revision"])')" >> "$GITHUB_ENV"
+      - name: Install frozen SWEET runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+          python -m pip install -r requirements.txt
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+      - name: Run second-pass SWEET ZAEBUC
+        run: |
+          mkdir -p artifacts
+          PYTHONPATH=. python phase2/generalization/run_postedit_sweet.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: postedit-sweet-zaebuc
+          path: artifacts/TRI_SWEET_ZAEBUC_POSTEDIT_EVENTS.jsonl
+          retention-days: 1
+
+  arabart-post:
+    needs: prepare
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - uses: actions/download-artifact@v4
+        with:
+          name: postedit-consensus-internal
+          path: artifacts/consensus
+      - name: Load canonical model revisions
+        run: |
+          echo "GED_MODEL_REVISION=$(python -c 'import json;print(json.load(open("artifacts/consensus/TRI_ARABART_Q14_SUMMARY.json"))["ged_revision"])')" >> "$GITHUB_ENV"
+          echo "GEC_MODEL_REVISION=$(python -c 'import json;print(json.load(open("artifacts/consensus/TRI_ARABART_Q14_SUMMARY.json"))["gec_revision"])')" >> "$GITHUB_ENV"
+      - name: Clone and install frozen AraBART runtime
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "sentencepiece==0.1.99" "protobuf==3.20.3" "numpy<2"
+          python -m pip uninstall -y transformers || true
+          python -m pip install -e upstream/arabic-gec/transformers
+          python -m pip install "huggingface_hub>=0.9,<1.0"
+          mkdir -p "$CAMELTOOLS_DATA"
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+      - name: Run second-pass AraBART
+        run: |
+          mkdir -p artifacts
+          PYTHONPATH=. python phase2/generalization/run_postedit_arabart.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: postedit-arabart
+          path: artifacts/TRI_ARABART_Q14_POSTEDIT_EVENTS.jsonl
+          retention-days: 1
+
+  morphology:
+    needs: prepare
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - uses: actions/download-artifact@v4
+        with:
+          name: postedit-consensus-internal
+          path: artifacts/consensus
+      - name: Install CAMeL contextual morphology
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "protobuf==3.20.3" "numpy<2"
+          mkdir -p "$CAMELTOOLS_DATA"
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+      - name: Run contextual morphology identity diagnostic
+        run: |
+          mkdir -p artifacts
+          PYTHONPATH=. python phase2/generalization/run_postedit_morphology.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: postedit-morphology
+          path: artifacts/POSTEDIT_MORPH_IDENTITY.jsonl
+          retention-days: 1
+
+  evaluate:
+    needs: [prepare, sweet-q14-post, sweet-zaebuc-post, arabart-post, morphology]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - uses: actions/download-artifact@v4
+        with:
+          name: postedit-consensus-internal
+          path: artifacts/consensus
+      - uses: actions/download-artifact@v4
+        with:
+          name: postedit-sweet-q14
+          path: artifacts/sweet_q14_post
+      - uses: actions/download-artifact@v4
+        with:
+          name: postedit-sweet-zaebuc
+          path: artifacts/sweet_zaebuc_post
+      - uses: actions/download-artifact@v4
+        with:
+          name: postedit-arabart
+          path: artifacts/arabart_post
+      - uses: actions/download-artifact@v4
+        with:
+          name: postedit-morphology
+          path: artifacts/morph
+      - name: Materialize label-free diagnostic decisions
+        run: |
+          PYTHONPATH=. python phase2/generalization/materialize_postedit_morph_diagnostic.py
+          sha256sum PHASE2_POSTEDIT_MORPH_FEATURES.jsonl PHASE2_POSTEDIT_MORPH_RUNTIME.json > artifacts/POSTEDIT_MORPH_FROZEN_SHA256.txt
+      - name: Evaluate only after decisions are frozen
+        run: |
+          PYTHONPATH=. python phase2/generalization/evaluate_postedit_morph_diagnostic.py
+      - name: Leakage audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for p in [
+              Path("PHASE2_POSTEDIT_MORPH_FEATURES.jsonl"),
+              Path("PHASE2_POSTEDIT_MORPH_RUNTIME.json"),
+              Path("PHASE2_POSTEDIT_MORPH_RESULTS.json"),
+          ]:
+              raw=p.read_text(encoding="utf-8")
+              assert not any("\u0600"<=c<="\u06ff" for c in raw),p
+              assert "source_text" not in raw and "corrected_text" not in raw,p
+          print("post-edit persisted evidence leakage audit PASS")
+          PY
+      - name: Persist safe diagnostic evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_POSTEDIT_MORPH_FEATURES.jsonl PHASE2_POSTEDIT_MORPH_RUNTIME.json PHASE2_POSTEDIT_MORPH_RESULTS.json
+          if git diff --cached --quiet; then
+            echo unchanged
+          else
+            git commit -m "Record post-edit stability morphology diagnostic [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-postedit-morph-safe-evidence
+          path: |
+            PHASE2_POSTEDIT_MORPH_RUNTIME.json
+            PHASE2_POSTEDIT_MORPH_RESULTS.json
+            artifacts/POSTEDIT_MORPH_FROZEN_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 30
