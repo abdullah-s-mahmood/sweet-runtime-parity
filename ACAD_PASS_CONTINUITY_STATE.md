@@ -1,22 +1,20 @@
 # ACAD_PASS — Canonical Continuity State
 
-Date: 2026-09-28
+Date: 2026-09-29
 
 ## Project identity
 
 ACAD_PASS is the unified project context for the bilingual Academic Document Intelligence & Transformation Platform.
 
-The historical work came from:
-1. **"كتابة برومبت النظام الاحترافي"** — primary source for platform architecture, product scope, processing modes, semantic/safety constraints, document-preservation requirements, and phase boundaries.
-2. **"توصية بحثية أولية"** — major source for Phase 2 Arabic evaluation execution, adjudication, research iterations, and gate decisions.
-3. **ChatGPT Work / project work artifacts** — supporting implementation/research context.
-4. **GitHub repository `abdullah-s-mahmood/sweet-runtime-parity`, branch `phase2-arabic-eval`** — canonical execution/evidence ledger for the current Arabic correction work.
+Historical sources remain:
+1. "كتابة برومبت النظام الاحترافي" — platform architecture and phase boundaries.
+2. "توصية بحثية أولية" — Phase 2 Arabic evaluation execution and research iterations.
+3. ChatGPT Work / project artifacts.
+4. GitHub repository `abdullah-s-mahmood/sweet-runtime-parity`, branch `phase2-arabic-eval` — canonical current execution/evidence ledger.
 
-GitHub evidence does not supersede the broader platform architecture. The Arabic GEC stack is one bounded proofreading subsystem.
+The Arabic GEC stack remains one bounded proofreading subsystem and does not supersede the wider document-intelligence architecture.
 
 ## Permanent architecture context
-
-Platform flow remains:
 
 UNDERSTAND
 → PROTECT
@@ -29,163 +27,131 @@ UNDERSTAND
 → PRESERVE DOCUMENT
 → DELIVER
 
-Arabic correction acceptance must remain subordinate to:
-- strict-fidelity mode;
-- semantic fidelity verification;
-- scientific integrity / protected facts;
-- numbers, units, dates, statistics and citation protection;
-- DOCX/OOXML/OMML preservation;
-- mixed-language / wrong-language guards;
-- review-state enforcement.
+Arabic acceptance remains subordinate to strict fidelity, semantic fidelity, scientific integrity, protected facts, numbers/units/dates/statistics/citations, DOCX/OOXML/OMML preservation, mixed-language guards, and review-state enforcement.
 
 Arabic author-aware remains disabled unless separately validated.
 
-## Current Phase
+## Current phase
 
 **Phase 2 only.**
 
 Do NOT:
-- restart Phase 0 / 0B / earlier closed Phase 1 iterations;
+- restart closed Phase 0 / 0B / Phase 1 work;
 - regenerate the frozen 150 Nahw development targets;
 - change the 41 Nahw development passages;
 - consume the 59 reserved Nahw passage IDs;
-- create the final sealed benchmark yet;
+- create the final sealed benchmark;
 - start Phase 3;
-- tune SWEET or modify the frozen safety stack merely to improve current metrics.
+- tune SWEET or the frozen safety stack merely to improve current metrics;
+- read QALB15 TEST.
 
-## Closed / completed evidence
+## Important closed evidence
 
-### Independent Candidate Acceptance
-Clean canonical rerun:
-- existing local candidate policy `EXACT_LOCAL_AGREEMENT`
-- 23 accepted
-- 23 supported
-- 0 wrong
-- 0 partial
-- development-only
+Earlier closed evidence remains authoritative, including:
+- Independent Candidate Acceptance: 23/23 supported.
+- AraBART-only substitution audit: unsafe as an acceptance oracle.
+- Full AraBART event audit: complete edit-event representation required.
+- Reverse Acceptance Gate: 6/6 supported, development-only.
+- ZAEBUC disjoint generalization: context-free NUN acceptance falsified.
+- Generic FINAL_ALIF acceptance not promotable.
+- QALB15 contextual final-alif work: accusative/final-alif remains context-sensitive.
+- Cross-training tri-model voting fresh slice: 126/142 supported = 88.73%, 16 unsafe; DO_NOT_PROMOTE_UNANIMOUS_3.
+- Contextual residual-risk diagnostic on consumed tri-model population:
+  ORTHO_ISOLATED_COMMON_NOUN_V1 = 19/19 supported, 100%, eligible only for fresh validation.
 
-### AraBART-only substitution audit
-67 new one-to-one substitutions:
-- 29 supported/alternative
-- 33 wrong
-- 2 partial
-- 2 unnecessary
-- 1 alignment uncertain
+## Fresh ORTHO validation — CLOSED
 
-Conclusion:
-AraBART is a useful recall-expanding generator, not an acceptance oracle.
+Canonical workflow:
+- Phase 2 ORTHO Isolated Fresh Validation
+- run: 36520233398
+- conclusion: SUCCESS
 
-### Full AraBART event audit
-106 complete events:
-- 62 supported/alternative
-- 35 wrong
-- 7 partial
-- 2 unnecessary
+Population:
+- third disjoint deterministic 50-line QALB-2015 L2 TRAIN slice;
+- excludes both previous 50-line slices;
+- raw-only decisions frozen before corrected TRAIN was opened;
+- QALB15 TEST unread;
+- no QALB text persisted;
+- leakage audit PASS.
 
-Conclusion:
-complete edit-event representation is necessary; wordwise decomposition can misclassify multiword edits.
+Raw/frozen result:
+- exact tri-model unanimous candidates after veto: 175
+- ORTHO_ISOLATED_COMMON_NOUN_V1 PASS: 14
+- REVIEW: 161
 
-### Reverse Acceptance Gate
-Narrow structural local policy:
-- 6 accepted
-- 6 supported
-- 0 wrong
-- development-only
+Automatic gold relation:
+- 8 exact-gold supported
+- 6 non-exact contextual-review cases
 
-### Full Edit-Event Acceptance Prototype
-On repeatedly inspected development evidence:
-- EVENT_STRUCTURAL_TYPED: 24/24 supported
-- EVENT_STRUCTURAL_STRICT: 23/23 supported
-- 0 accepted wrong/partial
+Bounded contextual adjudication:
+- supported correction: 3
+- supported alternative: 1
+- partial correction: 2
+- wrong: 0
+- unnecessary: 0
 
-This result was explicitly NOT sufficient for freeze because of repeated-data risk.
+Final fresh result:
+- supported = 12/14 = 85.71%
+- partial = 2/14 = 14.29%
+- wrong = 0
+- unnecessary = 0
 
-## Generalization evidence
+Promotion contract:
+- PASS >=10: met
+- zero wrong: met
+- zero partial: FAILED
+- zero unnecessary: met
 
-### ZAEBUC-v1.0 Arabic DEV
-Frozen policy before gold.
+**Decision: DO_NOT_PROMOTE_ORTHO_ISOLATED_COMMON_NOUN_V1.**
 
-EVENT_STRUCTURAL_TYPED:
-- accepted 6
-- 5 supported
-- 1 wrong after contextual review
-- observed precision 83.33%
+Versus the prior consumed 19/19 diagnostic:
+- selected-lane precision: 100% -> 85.71%
+- descriptive change: -14.29 percentage points
+- therefore **WORSENED as an auto-accept lane, IMPROVED epistemically**.
 
-EVENT_STRUCTURAL_STRICT:
-- accepted 3
-- 2 supported
-- 1 wrong
-- observed precision 66.67%
+Failure interpretation:
+local orthographic plausibility + tri-model agreement + morphology identity + clitic identity + +/-2 voter isolation do not prove **repair completeness**. A candidate can be locally correct while leaving a broader lexical/syntactic repair unresolved.
 
-Critical counterexample:
-`ينشرون → ينشروا` looked locally like a valid five-verbs nun change but was wrong because context required singular `ينشر`.
-
-**Falsified:** context-free nun insertion/deletion as auto-accept proof.
-
-Post-gate:
-- NUN family = REVIEW_ONLY unless additional independent syntactic/controller evidence exists.
-
-### FINAL_ALIF disjoint validation on separate ZAEBUC TRAIN hash slice
-Generic final-alif family showed substantial exact support but also non-exact/unmatched cases.
-
-Conclusion:
-surface pattern `source + ا` conflates:
-1. context-sensitive accusative/tanwin alif;
-2. orthographic differentiating alif after plural waw.
-
-Generic final-alif is not promotable as a single family.
-
-### QALB-2015 L2 DEV context gate
-Deterministic raw-only 100-line slice; runtime decisions before gold; QALB test unread; no QALB text persisted.
-
-- WAW_ALIF_VERB_ONLY: 0 candidates → **UNPROVEN**, not failed.
-- ACCUSATIVE_ALIF_SINGLE: 28 diagnostic candidates; 14 exact-gold, 14 require contextual review.
-- FINAL_ALIF_GENERIC: 36 diagnostic candidates; 18 exact-gold, 18 require contextual review.
-
-Conclusion:
-accusative/final-alif family remains context-sensitive.
-WAW-alif needs a better morphosyntactic detector and a fresh untouched slice.
+No V1 retuning is permitted on this consumed validation slice.
 
 ## Current active task
 
-**QALB15 WAW-ALIF raw-only diagnostic**
+**Phase 2 — CONTEXTUAL_REPAIR_COMPLETENESS_V2 diagnostic**
 
-Purpose:
-determine why the source-POS-based WAW-alif rule produced zero candidates, without reading gold and without changing any policy on the consumed QALB15 DEV slice.
+This is diagnostic-only on consumed evidence first. No promotion is allowed from the consumed population.
 
-Parallel research conclusion:
-the Arabic differentiating alif is valid only after terminal **واو الجماعة attached to a verb**; it must not be inferred from final waw alone.
+Primary hypothesis:
+a candidate should not be eligible for unattended acceptance merely because its local spelling/morphology is stable; it should also show independent evidence that the sentence-level/local syntactic repair is complete.
 
-Candidate future hypothesis, to be tested only on a fresh disjoint population:
-- source ends in و;
-- candidate == source + ا;
-- candidate contextual morphology POS=verb;
-- candidate number=plural;
-- preferably explicit evidence that terminal waw is the group pronoun rather than root waw / nominal plural;
-- dependency/controller evidence if ambiguity remains.
+Candidate evidence to test:
+1. V1 PASS prerequisite.
+2. Post-edit fixed-point stability after applying the candidate.
+3. Re-run frozen voters on post-edit context.
+4. Dependency/governor compatibility around the target.
+5. Detect target-adjacent remaining repair signals or incompatible governor/dependent relations.
+6. Materialize diagnostic evidence before reading consumed labels.
+7. Measure capture of the two known partials versus retention of the 12 supported fresh PASS events and, where appropriate, the broader consumed tri-model set.
 
-## Scientific posture
+Research direction:
+- do not add voters merely to raise consensus;
+- dependency-aware Arabic evidence is justified;
+- fixed-point/post-edit stability is justified;
+- review remains first-class;
+- independent human validation is still required before production claims.
 
-The project is currently **epistemically improved but the generic structural auto-accept policy is MIXED/WORSENED under disjoint generalization**.
+## Next decision contract
 
-Do not hide negative evidence.
-Do not retune on consumed slices.
-Every next gate must report:
-- IMPROVED / WORSENED / MIXED;
-- magnitude with comparable metrics;
-- likely next progress;
-- blockers and failure risks.
+If V2 diagnostic is promising on consumed evidence:
+1. freeze V2 byte-for-byte before any new gold;
+2. pre-register selection of a **fourth disjoint untouched QALB15 TRAIN slice**;
+3. evaluate raw-only decisions before opening corrected TRAIN;
+4. require >=10 PASS and zero wrong/partial/unnecessary for any promotion consideration;
+5. still require later independent human validation.
 
-## Immediate next decision
-
-Wait for the raw-only WAW diagnostic.
-
-Then:
-1. define a new morphosyntactically justified WAW-alif hypothesis without consulting gold;
-2. pre-register it;
-3. test it on an untouched external slice;
-4. keep NUN auto-accept disabled;
-5. keep accusative-alif review-only unless an independently validated syntactic governor/case signal is added.
+If V2 does not capture the known partials without collapsing useful coverage:
+- do not force an auto-accept lane;
+- retain REVIEW-first behavior;
+- consider dependency-aware escalation or human verification as the product-safe architecture.
 
 No Phase 3.
-No final sealed benchmark yet.
+No final sealed benchmark.
