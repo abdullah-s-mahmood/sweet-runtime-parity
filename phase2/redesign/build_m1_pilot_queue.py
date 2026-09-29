@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Rebuild the M1 blinded pilot from already-consumed Phase-2 Nahw evidence."""
+"""Rebuild the M1 blinded pilot from already-consumed Phase-2 Nahw evidence.
+
+Historical labels are used only for deterministic stratification and are omitted
+from the reviewer packet. This script never reads QALB, sealed data, or a new split.
+"""
 from __future__ import annotations
 import json
 from pathlib import Path
@@ -19,20 +23,27 @@ def fnv1a(text):
         h=(h*0x01000193)&0xFFFFFFFF
     return h
 
+def pick(pool, n):
+    pool=sorted(pool,key=lambda x: fnv1a(f'{x["passage_id"]}:{x["edit_index"]}'))
+    out=[]; seen=set()
+    for x in pool:
+        if len(out)>=n: break
+        if x["passage_id"] not in seen:
+            out.append(x); seen.add(x["passage_id"])
+    for x in pool:
+        if len(out)>=n: break
+        if x not in out: out.append(x)
+    return out
+
 applied=rows(APPLIED)
 passages={x["passage_id"]:x for x in rows(QUEUE)}
-minority=[x for x in applied if x["classification"]!="SUPPORTED_CORRECTION"]
-supported=sorted((x for x in applied if x["classification"]=="SUPPORTED_CORRECTION"),
-                 key=lambda x: fnv1a(f'{x["passage_id"]}:{x["edit_index"]}'))
-chosen=[]; seen=set()
-for x in supported:
-    if len(chosen)>=13: break
-    if x["passage_id"] not in seen:
-        chosen.append(x); seen.add(x["passage_id"])
-for x in supported:
-    if len(chosen)>=13: break
-    if x not in chosen: chosen.append(x)
-selected=sorted(minority+chosen,key=lambda x: fnv1a(f'{x["passage_id"]}:{x["edit_index"]}'))
+unsafe=[x for x in applied if x["classification"] in {"WRONG_CORRECTION","PARTIAL_CORRECTION","UNNECESSARY_EDIT"}]
+positives=(
+    pick([x for x in applied if x["classification"]=="SUPPORTED_CORRECTION"],8)
+    + pick([x for x in applied if x["classification"]=="SUPPORTED_ALTERNATIVE"],5)
+)
+selected=sorted(unsafe+positives,key=lambda x: fnv1a(f'{x["passage_id"]}:{x["edit_index"]}'))
+assert len(selected)==24
 
 out=[]
 for i,x in enumerate(selected,1):
@@ -49,6 +60,5 @@ for i,x in enumerate(selected,1):
       "model_identity_exposed_to_reviewer":False,
       "reference_exposed_in_primary_pass":False
     })
-assert len(out)==24
 OUT.write_text("\n".join(json.dumps(x,ensure_ascii=False) for x in out)+"\n",encoding="utf-8")
 print(f"wrote {len(out)} cases to {OUT}")
