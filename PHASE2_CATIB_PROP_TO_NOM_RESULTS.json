@@ -1,0 +1,28 @@
+{
+  "status": "CATIB_PROP_TO_NOM_RETROSPECTIVE_EVALUATED",
+  "diagnostic_only": true,
+  "consumed_population": true,
+  "rule_version": "CATIB_PROP_TO_NOM_EVIDENCE_V1",
+  "population_total": 36,
+  "accepted": 21,
+  "review": 15,
+  "accepted_class_counts": {
+    "SUPPORTED_CORRECTION": 19,
+    "PARTIAL_CORRECTION": 2
+  },
+  "accepted_supported": 19,
+  "accepted_unsafe": 2,
+  "accepted_wrong": 0,
+  "accepted_partial": 2,
+  "accepted_unnecessary": 0,
+  "accepted_precision": 0.9047619047619048,
+  "strict_v1_subset_total": 19,
+  "strict_v1_subset_accepted": 9,
+  "strict_v1_subset_accepted_supported": 9,
+  "pre_registered_promising_criterion_met": false,
+  "status_for_next_step": "NOT_PROMISING",
+  "promotion_allowed": false,
+  "fresh_validation_allowed_only_if_pre_registered_again": false,
+  "qalb15_test_read": false,
+  "qalb_text_persisted": false
+}

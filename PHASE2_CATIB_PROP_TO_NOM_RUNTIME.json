@@ -1,0 +1,17 @@
+{
+  "status": "CATIB_PROP_TO_NOM_RETROSPECTIVE_RUNTIME_FROZEN",
+  "diagnostic_only": true,
+  "labels_or_gold_read": false,
+  "population": "36 consumed ORTHO_MORPH_COMMON_NOUN_V1 events",
+  "strict_v1_subset": 19,
+  "rows": 36,
+  "pass": 21,
+  "review": 15,
+  "strict_v1_pass_after_catib": 9,
+  "parser_commit": "66f29f7e34e3b5b38780d08bd56cf481635bf1c6",
+  "features_sha256": "543a28401289df6a3e8d11ca389fef92ca83204e602da0185a86f9e54d586c84",
+  "rule_version": "CATIB_PROP_TO_NOM_EVIDENCE_V1",
+  "rule_frozen_before_labels": true,
+  "qalb_text_persisted": false,
+  "qalb15_test_read": false
+}
