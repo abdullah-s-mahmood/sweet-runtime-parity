@@ -1,0 +1,75 @@
+name: Phase 2 CAD QALB14 Data Feasibility
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/probe_cad_qalb14_data.py"
+      - ".github/workflows/phase2-cad-data-feasibility.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Download pinned QALB14 train/dev source and gold only
+        run: |
+          BASE="https://raw.githubusercontent.com/CAMeL-Lab/arabic-gec/8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2014"
+          for SPLIT in train dev; do
+            if [ "$SPLIT" = "train" ]; then P="QALB-2014-L1-Train"; else P="QALB-2014-L1-Dev"; fi
+            D="upstream/arabic-gec/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2014/$SPLIT"
+            mkdir -p "$D"
+            curl -fsSL "$BASE/$SPLIT/$P.sent.no_ids" -o "$D/$P.sent.no_ids"
+            curl -fsSL "$BASE/$SPLIT/$P.cor.no_ids" -o "$D/$P.cor.no_ids"
+            test -s "$D/$P.sent.no_ids"
+            test -s "$D/$P.cor.no_ids"
+          done
+
+      - name: Materialize counts and hashes only
+        run: |
+          PYTHONPATH=. python phase2/generalization/probe_cad_qalb14_data.py
+          test -f PHASE2_CAD_DATA_FEASIBILITY.json
+
+      - name: Leakage audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path("PHASE2_CAD_DATA_FEASIBILITY.json")
+          s=p.read_text(encoding="utf-8")
+          assert not any("\u0600"<=c<="\u06ff" for c in s)
+          print("leakage audit PASS")
+          PY
+
+      - name: Persist safe feasibility result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_CAD_DATA_FEASIBILITY.json
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Record CAD QALB14 data feasibility [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-cad-data-feasibility
+          path: PHASE2_CAD_DATA_FEASIBILITY.json
+          if-no-files-found: warn
+          retention-days: 30
