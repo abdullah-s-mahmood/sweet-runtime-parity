@@ -6,7 +6,9 @@ on:
     branches:
       - phase2-arabic-eval
     paths:
-      - "phase2/generalization/CONTEXTUAL_RESIDUAL_GUARD_*.md"
+      - "phase2/generalization/CONTEXTUAL_RESIDUAL_GUARD_PROTOCOL.md"
+      - "phase2/generalization/CONTEXTUAL_RESIDUAL_GUARD_RESEARCH_START.md"
+      - "phase2/generalization/CONTEXTUAL_RESIDUAL_GUARD_BRAINSTORM_START.md"
       - "phase2/generalization/run_contextual_residual_guard.py"
       - "phase2/generalization/evaluate_contextual_residual_guard.py"
       - ".github/workflows/phase2-contextual-residual-guard.yml"
