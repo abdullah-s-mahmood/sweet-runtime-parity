@@ -1,7 +1,8 @@
-name: Phase 2 Local-Edit Semantic Backstop Diagnostic
+name: Phase 2 Local-Edit Semantic Backstop Diagnostic (closed manual)
 
 on:
   workflow_dispatch:
+
 permissions:
   contents: write
 
