@@ -135,7 +135,7 @@ def load_qalb(root):
 def load_zaebuc(root):
     raw=read_lines(root/"train.sent.raw"); cor=read_lines(root/"train.sent.cor")
     if len(raw)!=len(cor): raise SystemExit(f"ZAEBUC train line mismatch {len(raw)} != {len(cor)}")
-    rows=[]; st=Counter(total_pairs=len(raw))
+    rows=[]; st=Counter(raw_lines=len(raw),corrected_lines=len(cor),total_pairs=len(raw))
     for i,(a,b) in enumerate(zip(raw,cor),1):
         s,c=norm(a),norm(b)
         rows.append(make(f"ZAE-train-{i}-CK","ZAEBUC_AR","train",str(i),"ZAEBUC_CLEAN_REFERENCE_KEEP",c,c,c,"S",support=safe_support("ZAEBUC professionally corrected Arabic reference")))
@@ -216,18 +216,18 @@ def main():
       "qalb_multi_edit_reconstructable_ge_300":multi>=300,
       "qalb_one_of_many_ge_300":avail["QALB_ONE_OF_MANY_PARTIAL"]>=300,
       "qalb_all_but_one_ge_300":avail["QALB_ALL_BUT_ONE_PARTIAL"]>=300,
-      "zaebuc_line_counts_match":zstats["total_pairs"]==zstats["total_pairs"],
+      "zaebuc_line_counts_match":zstats["raw_lines"]==zstats["corrected_lines"],
       "zaebuc_total_ge_100":zstats["total_pairs"]>=100,
       "zaebuc_changed_ge_50":zstats.get("changed_pairs",0)>=50,
       "a7ta_discovered_ge_450":astats["discovered_pairs"]>=450,
       "a7ta_bootstrap_ge_300":astats["bootstrap_pairs"]>=300,
       "a7ta_reserved_ge_80":astats["reserved_m2_pairs"]>=80,
       "independent_source_families_ge_3":len(source_families)>=3,
-      "forbidden_splits_read":False,
-      "raw_arabic_persisted":False,
+      "no_forbidden_splits_read":True,
+      "no_raw_arabic_persisted":True,
       "provenance_complete":all(x.get("corpus") and x.get("evidence_tier") and "unresolved_axes" in x for x in sample)
     }
-    ready=all(v is True for k,v in criteria.items() if k!="forbidden_splits_read") and criteria["forbidden_splits_read"] is False
+    ready=all(v is True for v in criteria.values())
 
     manifest=out/"M1A_V11_EXPERT_BOOTSTRAP_HASHED.jsonl"
     manifest.write_text("\n".join(json.dumps(x,ensure_ascii=False,sort_keys=True) for x in sample)+"\n",encoding="utf-8")
