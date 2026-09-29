@@ -35,6 +35,11 @@ jobs:
           git -C upstream/camel_parser checkout 66f29f7e34e3b5b38780d08bd56cf481635bf1c6
           test "$(git -C upstream/camel_parser rev-parse HEAD)" = "66f29f7e34e3b5b38780d08bd56cf481635bf1c6"
 
+      - name: Install parser system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake libboost-all-dev
+
       - name: Install pinned parser runtime
         working-directory: upstream/camel_parser
         run: |
