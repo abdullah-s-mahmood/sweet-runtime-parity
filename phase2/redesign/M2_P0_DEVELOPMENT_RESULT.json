@@ -1,0 +1,86 @@
+{
+  "record_id": "M2_P0_DEVELOPMENT_RESULT",
+  "date": "2026-09-30",
+  "prediction_commitment_sha256": "8e9d80713ab3fa84fe9a6c0499bf762fda4a39afe8de0b6064bbbd3f9184891f",
+  "status": "FAIL",
+  "n_total": 120,
+  "n_safe": 72,
+  "n_unsafe": 48,
+  "unsafe_accept": 2,
+  "uar": 0.041666666666666664,
+  "safe_accept": 16,
+  "sac": 0.2222222222222222,
+  "review": 45,
+  "review_burden": 0.375,
+  "safe_reject": 32,
+  "safe_rejection_error": 0.4444444444444444,
+  "family": {
+    "CLEAN_REFERENCE_KEEP": {
+      "n": 36,
+      "accept": 6,
+      "review": 1,
+      "reject": 29,
+      "accept_rate": 0.16666666666666666
+    },
+    "FULL_EXPERT_REPAIR": {
+      "n": 36,
+      "accept": 10,
+      "review": 23,
+      "reject": 3,
+      "accept_rate": 0.2777777777777778
+    },
+    "ERRONEOUS_SOURCE_KEEP": {
+      "n": 24,
+      "accept": 0,
+      "review": 0,
+      "reject": 24,
+      "accept_rate": 0
+    },
+    "ONE_OF_MANY_PARTIAL": {
+      "n": 12,
+      "accept": 1,
+      "review": 11,
+      "reject": 0,
+      "accept_rate": 0.08333333333333333
+    },
+    "ALL_BUT_ONE_PARTIAL": {
+      "n": 12,
+      "accept": 1,
+      "review": 10,
+      "reject": 1,
+      "accept_rate": 0.08333333333333333
+    }
+  },
+  "source": {
+    "QALB": {
+      "n": 96,
+      "unsafe_n": 48,
+      "unsafe_accept": 2,
+      "uar": 0.041666666666666664,
+      "safe_n": 48,
+      "safe_accept": 14,
+      "sac": 0.2916666666666667
+    },
+    "ZAEBUC": {
+      "n": 24,
+      "unsafe_n": 0,
+      "unsafe_accept": 0,
+      "uar": null,
+      "safe_n": 24,
+      "safe_accept": 2,
+      "sac": 0.08333333333333333
+    }
+  },
+  "gate": {
+    "uar_le_0_05": true,
+    "all_but_one_zero_accept": false,
+    "one_of_many_accept_le_1_pending_audit": true,
+    "sac_ge_0_60": false,
+    "clean_keep_accept_ge_0_60": false,
+    "full_repair_accept_ge_0_60": false,
+    "all_source_uar_le_0_10": true
+  },
+  "gold_key_opened_after_prediction_commitment": true,
+  "a7ta_reserved_opened": false,
+  "interpretation": "P0 is highly conservative: it detects unchanged erroneous sources and most partial repairs, but rejects/reviews too many expert-supported clean/full corrections. P1 is permitted once under the preregistered protocol."
+}
