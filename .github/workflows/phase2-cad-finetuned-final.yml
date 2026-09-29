@@ -1,0 +1,230 @@
+name: Phase 2 Fine-Tuned Arabic CAD Final Feasibility
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/train_cad_finetuned_final.py"
+      - "phase2/generalization/score_cad_finetuned_consumed.py"
+      - "phase2/generalization/evaluate_cad_finetuned_consumed.py"
+      - ".github/workflows/phase2-cad-finetuned-final.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  train_external:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 240
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      TOKENIZERS_PARALLELISM: "false"
+    outputs:
+      feasible: ${{ steps.external_result.outputs.feasible }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install pinned fine-tuning runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==2.2.2+cpu"
+          python -m pip install "transformers==4.44.2" "scikit-learn==1.5.2" "numpy<2"
+
+      - name: Download pinned QALB14 TRAIN and DEV source/gold only
+        run: |
+          BASE="https://raw.githubusercontent.com/CAMeL-Lab/arabic-gec/8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2014"
+          for SPLIT in train dev; do
+            if [ "$SPLIT" = "train" ]; then P="QALB-2014-L1-Train"; else P="QALB-2014-L1-Dev"; fi
+            D="upstream/arabic-gec/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2014/$SPLIT"
+            mkdir -p "$D"
+            curl -fsSL "$BASE/$SPLIT/$P.sent.no_ids" -o "$D/$P.sent.no_ids"
+            curl -fsSL "$BASE/$SPLIT/$P.cor.no_ids" -o "$D/$P.cor.no_ids"
+            test -s "$D/$P.sent.no_ids"
+            test -s "$D/$P.cor.no_ids"
+          done
+
+      - name: Fine-tune and calibrate on QALB14 only
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/train_cad_finetuned_final.py 2>&1 | tee CAD_FINETUNED_TRAINING_CONSOLE.txt
+          test -d CAD_FINETUNED_MODEL
+          test -f PHASE2_CAD_FINETUNED_TRAINING_SUMMARY.json
+
+      - name: External-result leakage audit
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("PHASE2_CAD_FINETUNED_TRAINING_SUMMARY.json")
+          s=p.read_text(encoding="utf-8")
+          assert not any("\u0600"<=c<="\u06ff" for c in s)
+          j=json.loads(s)
+          assert j["current_phase_labels_read"] is False
+          assert j["qalb15_corrected_read"] is False
+          assert j["qalb15_test_read"] is False
+          print("external leakage audit PASS")
+          PY
+
+      - name: Expose frozen external decision
+        id: external_result
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          x=json.load(open("PHASE2_CAD_FINETUNED_TRAINING_SUMMARY.json",encoding="utf-8"))
+          print("feasible=" + ("true" if x["external_feasibility_criterion_met"] else "false"))
+          PY
+
+      - name: Persist safe external summary
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_CAD_FINETUNED_TRAINING_SUMMARY.json
+          if git diff --cached --quiet; then
+            echo "No summary changes"
+          else
+            git commit -m "Record fine-tuned CAD external feasibility [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phase2-cad-finetuned-model
+          path: |
+            CAD_FINETUNED_MODEL/
+            PHASE2_CAD_FINETUNED_TRAINING_SUMMARY.json
+            CAD_FINETUNED_TRAINING_CONSOLE.txt
+          if-no-files-found: error
+          retention-days: 30
+
+  score_consumed:
+    needs: train_external
+    if: needs.train_external.outputs.feasible == 'true'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      TOKENIZERS_PARALLELISM: "false"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install identical scoring runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==2.2.2+cpu"
+          python -m pip install "transformers==4.44.2" "numpy<2"
+
+      - name: Download frozen fine-tuned CAD model
+        uses: actions/download-artifact@v4
+        with:
+          name: phase2-cad-finetuned-model
+          path: artifacts/cad_model
+
+      - name: Download third-slice frozen AraBART candidate artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ortho-val-arabart-q14
+          path: artifacts/third_arabart
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36520233398
+          github-token: ${{ github.token }}
+
+      - name: Download third-slice frozen ORTHO safe artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: phase2-ortho-isolated-fresh-validation-safe
+          path: artifacts/third_ortho_safe
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36520233398
+          github-token: ${{ github.token }}
+
+      - name: Stage third-slice ORTHO features
+        run: |
+          cp artifacts/third_ortho_safe/PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl
+
+      - name: Download earlier frozen AraBART candidate artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: trimodel-arabart-q14
+          path: artifacts/old_arabart
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36517205396
+          github-token: ${{ github.token }}
+
+      - name: Download pinned QALB15 TRAIN RAW only
+        run: |
+          D="upstream/arabic-gec/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/train"
+          mkdir -p "$D"
+          BASE="https://raw.githubusercontent.com/CAMeL-Lab/arabic-gec/8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+          curl -fsSL "$BASE/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/train/QALB-2015-L2-Train.sent.no_ids" -o "$D/QALB-2015-L2-Train.sent.no_ids"
+          test -s "$D/QALB-2015-L2-Train.sent.no_ids"
+          test ! -f "$D/QALB-2015-L2-Train.cor.no_ids"
+
+      - name: Freeze consumed scores and decisions before labels
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/score_cad_finetuned_consumed.py 2>&1 | tee CAD_FINETUNED_CONSUMED_SCORING_CONSOLE.txt
+          test -f PHASE2_CAD_FINETUNED_CONSUMED_FEATURES.jsonl
+          test -f PHASE2_CAD_FINETUNED_CONSUMED_RUNTIME.json
+
+      - name: Pre-label leakage audit
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for p in [Path("PHASE2_CAD_FINETUNED_CONSUMED_FEATURES.jsonl"),Path("PHASE2_CAD_FINETUNED_CONSUMED_RUNTIME.json")]:
+              s=p.read_text(encoding="utf-8")
+              assert not any("\u0600"<=c<="\u06ff" for c in s),p
+          r=json.loads(Path("PHASE2_CAD_FINETUNED_CONSUMED_RUNTIME.json").read_text(encoding="utf-8"))
+          assert r["current_labels_read"] is False
+          assert r["qalb15_corrected_read"] is False
+          assert r["qalb15_test_read"] is False
+          print("pre-label leakage audit PASS")
+          PY
+
+      - name: Evaluate frozen decisions against consumed labels
+        run: |
+          PYTHONPATH=. python phase2/generalization/evaluate_cad_finetuned_consumed.py
+          test -f PHASE2_CAD_FINETUNED_CONSUMED_RESULTS.json
+
+      - name: Persist safe consumed evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_CAD_FINETUNED_CONSUMED_FEATURES.jsonl PHASE2_CAD_FINETUNED_CONSUMED_RUNTIME.json PHASE2_CAD_FINETUNED_CONSUMED_RESULTS.json
+          if git diff --cached --quiet; then
+            echo "No consumed evidence changes"
+          else
+            git commit -m "Record fine-tuned CAD consumed evidence [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-cad-finetuned-consumed-evidence
+          path: |
+            PHASE2_CAD_FINETUNED_CONSUMED_FEATURES.jsonl
+            PHASE2_CAD_FINETUNED_CONSUMED_RUNTIME.json
+            PHASE2_CAD_FINETUNED_CONSUMED_RESULTS.json
+            CAD_FINETUNED_CONSUMED_SCORING_CONSOLE.txt
+          if-no-files-found: warn
+          retention-days: 30
