@@ -32,6 +32,14 @@ jobs:
           python -m pip install --upgrade "pip<25"
           python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
           python -m pip install "transformers==4.30.0" "huggingface_hub<1.0" "numpy<2"
+      - name: Download frozen ORTHO safe artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: phase2-ortho-isolated-fresh-validation-safe
+          path: artifacts/ortho-safe
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36520233398
+          github-token: ${{ github.token }}
       - name: Download frozen AraBART candidate artifact
         uses: actions/download-artifact@v4
         with:
