@@ -1,0 +1,38 @@
+{
+  "status": "CAMELPARSER_DEPENDENCY_MAPPING_SMOKE_COMPLETE",
+  "parser_commit": "66f29f7e34e3b5b38780d08bd56cf481635bf1c6",
+  "python": "3.11.13",
+  "torch": "2.0.1",
+  "camel_tools": "1.5.6",
+  "transformers": "4.29.2",
+  "sentences": 2,
+  "tokenized_exact_input_sequence_all": true,
+  "details": [
+    {
+      "input_token_count": 7,
+      "preprocessed_token_count": 8,
+      "tokenized_token_count": 7,
+      "tokenized_exact_input_sequence": true,
+      "preprocessed_tree_token_count": 8,
+      "tokenized_tree_token_count": 7,
+      "preprocessed_tree_hash": "5b63c4f224581bf0cfe79b4dfda15b2811359250e02d78fe25263622d5589b74",
+      "tokenized_tree_hash": "b2a3c89d5b576d585b953dfc3914737d87986443b13b2903b3806e0c0777a7f5",
+      "preprocessed_forms_hash": "5b63c4f224581bf0cfe79b4dfda15b2811359250e02d78fe25263622d5589b74",
+      "tokenized_forms_hash": "b2a3c89d5b576d585b953dfc3914737d87986443b13b2903b3806e0c0777a7f5"
+    },
+    {
+      "input_token_count": 8,
+      "preprocessed_token_count": 9,
+      "tokenized_token_count": 8,
+      "tokenized_exact_input_sequence": true,
+      "preprocessed_tree_token_count": 9,
+      "tokenized_tree_token_count": 8,
+      "preprocessed_tree_hash": "5e4d34cc6a5ff4a558c271b66d16c12fb61caa6773b3ae3c6af9e30f8f037b15",
+      "tokenized_tree_hash": "5291a4aec56aa0fe4143af1b13411943cd87ae3c8a4b187d0ebea077533df04a",
+      "preprocessed_forms_hash": "5e4d34cc6a5ff4a558c271b66d16c12fb61caa6773b3ae3c6af9e30f8f037b15",
+      "tokenized_forms_hash": "5291a4aec56aa0fe4143af1b13411943cd87ae3c8a4b187d0ebea077533df04a"
+    }
+  ],
+  "qalb_data_read": false,
+  "qalb15_test_read": false
+}
