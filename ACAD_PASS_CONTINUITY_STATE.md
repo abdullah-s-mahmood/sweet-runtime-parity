@@ -226,3 +226,16 @@ Started 2026-09-30 to remove the immediate reviewer-availability blocker without
 Use already-consumed QALB14 TRAIN+DEV expert corrections and frozen Nahw development evidence only. Construct controlled complete/partial reference-grounded cases, persist hashes/provenance rather than QALB raw text, and leave unsupported scientific/document/author-intent dimensions unresolved.
 
 Do not use QALB15 or TEST/reserved/sealed data for M1-A.
+
+
+### M1-A v1 feasibility result and v1.1 redesign
+
+M1-A v1 run 36640207701 reached the data scan and failed only the pre-registered requirement for >=100 naturally unchanged QALB14 TRAIN+DEV source lines; observed 48. All major correction/completeness evidence gates passed numerically (20,380 changed lines; 19,758 reconstructable multi-edit lines). This is preserved as a real v1 feasibility failure.
+
+Do not lower the v1 threshold post hoc. v1.1 changes the evidence definition instead:
+- human-corrected reference text supplies CLEAN_REFERENCE_KEEP cases;
+- changed raw sources supply ERRONEOUS_SOURCE_KEEP cases;
+- ZAEBUC Arabic TRAIN adds independent professional correction evidence;
+- A7'ta adds expert-book error/correction evidence, with a deterministic 20% reserve for later M2 validation.
+
+M1-A v1.1 remains calibration evidence, not independent human confirmation of ACAD_PASS project cases and not an Arabic auto-accept claim.

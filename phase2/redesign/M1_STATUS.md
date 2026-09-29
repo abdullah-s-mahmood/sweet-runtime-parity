@@ -20,7 +20,12 @@ Not completed:
 - no adjudication;
 - no inter-annotator agreement report;
 - no main M1 queue yet;
-- no M2 frontier-verifier run.\n\nTooling ready:\n- validate_m1_reviewer_response.py validates schema, case IDs and blinding declarations;\n- analyze_m1_agreement.py reports per-axis raw agreement, nominal Cohen kappa and nominal Krippendorff alpha;\n- derive_m1_disposition.py derives study disposition only after adjudication.
+- no M2 frontier-verifier run.
+
+Tooling ready:
+- validate_m1_reviewer_response.py validates schema, case IDs and blinding declarations;
+- analyze_m1_agreement.py reports per-axis raw agreement, nominal Cohen kappa and nominal Krippendorff alpha;
+- derive_m1_disposition.py derives study disposition only after adjudication.
 
 ## Next legitimate action
 
@@ -53,3 +58,21 @@ Files:
 - workflow: phase2-m1a-expert-bootstrap.yml
 
 The original 24-case blinded project pilot remains preserved as M1_LOCAL_PROJECT_CHALLENGE_SET; it is not promoted to human gold.
+
+
+## M1-A v1 result and v1.1 redesign
+
+v1 run 36640207701: NOT_READY.
+- 20,380 changed QALB14 TRAIN+DEV lines
+- 19,758 reconstructable multi-edit lines
+- only 48 naturally unchanged raw lines
+- sole failed gate: source==reference >=100
+- no forbidden/test data read; no raw QALB text persisted
+
+The threshold was not reduced. M1-A v1.1 is pre-registered with a corrected evidence definition:
+- CLEAN_REFERENCE_KEEP from expert-corrected references;
+- ERRONEOUS_SOURCE_KEEP from changed raw sources;
+- independent professional ZAEBUC TRAIN evidence;
+- independent A7'ta expert-book evidence with 20% reserved for later M2 validation.
+
+See M1A_V1_TO_V11_CHANGELOG.md and M1A_EXPERT_GROUNDED_PROTOCOL_V11.md.

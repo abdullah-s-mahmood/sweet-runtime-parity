@@ -1,0 +1,71 @@
+{
+  "registry_id": "ACAD_PASS_M1A_EXPERT_SOURCE_REGISTRY_V1",
+  "date": "2026-09-30",
+  "primary_sources": [
+    {
+      "source": "QALB14_L1",
+      "tier": "S",
+      "use": "full human corrections, official edits, controlled incompleteness, clean reference keep",
+      "splits": "TRAIN+DEV only",
+      "pinned_revision": "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf",
+      "caveat": "multi-reference ambiguity means non-reference != wrong"
+    },
+    {
+      "source": "ZAEBUC_ARABIC",
+      "tier": "S",
+      "use": "independent professional correction domain; raw/corrected university writing",
+      "splits": "TRAIN only",
+      "pinned_revision": "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf",
+      "quality_evidence": "3 Arabic professional annotators; weekly quality checks; correction IAA Dice 97.1% on evaluated subset",
+      "caveat": "spelling/basic grammar scope, not scientific-document integrity"
+    },
+    {
+      "source": "A7TA",
+      "tier": "A",
+      "use": "expert-book error/correction pairs and clean corrected-side keep examples",
+      "partition": "80% bootstrap / 20% reserved for later M2 validation by deterministic hash",
+      "pinned_revision": "6e3acf8b38e159391131eaa448a55f0124e603f2",
+      "license": "CC BY 4.0 per Data in Brief article",
+      "caveat": "many examples are short expressions/sentences; not document-level"
+    },
+    {
+      "source": "NAHW",
+      "tier": "A",
+      "use": "existing frozen local Arabic grammar correction + explanation evidence",
+      "caveat": "one-location references; not full passage correction"
+    }
+  ],
+  "secondary_sources": [
+    {
+      "source": "TIBYAN",
+      "tier": "B",
+      "use": "error-type coverage and later robustness/calibration",
+      "reason_not_primary": "ChatGPT-augmented although linguistically expert-reviewed"
+    },
+    {
+      "source": "GAZELLE",
+      "tier": "B",
+      "use": "Arabic writing-assistance human-evaluation rubric and human-rated model outputs",
+      "reason_not_primary": "instruction dataset/human evaluation, not a direct full expert correction corpus for all cases"
+    },
+    {
+      "source": "MOHI_2026_GECE",
+      "tier": "B",
+      "use": "rubric calibration: grammatical correctness, fluency, meaning preservation; four native expert annotators",
+      "reason_not_primary": "human evaluation subset targets model outputs rather than serving as broad correction gold"
+    },
+    {
+      "source": "ALFAIFI_2015_ALC_THESIS",
+      "tier": "B",
+      "use": "error taxonomy, annotation design, thesis-backed learner corpus methodology",
+      "reason_not_primary": "not all corpus material is paired full correction gold"
+    }
+  ],
+  "prohibited_shortcuts": [
+    "agent labels called human gold",
+    "LLM majority vote called expert consensus",
+    "single-reference mismatch called wrong",
+    "synthetic data presented as natural expert correction",
+    "scientific fidelity inferred from learner-corpus correction"
+  ]
+}
