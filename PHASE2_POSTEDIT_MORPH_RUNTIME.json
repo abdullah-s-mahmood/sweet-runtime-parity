@@ -1,0 +1,30 @@
+{
+  "status": "PHASE2_POSTEDIT_MORPH_RUNTIME_FROZEN",
+  "diagnostic_only": true,
+  "labels_or_gold_read": false,
+  "source_population": "142 consumed UNANIMOUS_3 events from run 36517205396",
+  "rows": 142,
+  "decision_counts": {
+    "POST_EDIT_TARGET_STABLE_ALL3": {
+      "PASS": 139,
+      "REVIEW": 3
+    },
+    "POST_EDIT_WINDOW1_STABLE_ALL3": {
+      "PASS": 138,
+      "REVIEW": 4
+    },
+    "MORPH_IDENTITY_SAFE": {
+      "PASS": 127,
+      "REVIEW": 15
+    },
+    "TARGET_STABLE_AND_MORPH_SAFE": {
+      "PASS": 125,
+      "REVIEW": 17
+    }
+  },
+  "target_unanchored_insertion_limitation": "Pure second-pass insertions use [-1,-1] in the established event representation and therefore do not count as target/window overlap. Their per-line counts are retained diagnostically.",
+  "features_sha256": "a94e8ba766777b231ab34a08df8b91c4b38a495a215cc3131cd352daba7cb8f2",
+  "qalb_text_persisted": false,
+  "qalb15_test_read": false,
+  "policy_frozen_before_labels": true
+}
