@@ -1,24 +1,29 @@
-name: Phase 2 M2 P1 Fresh Blind Development Packet
+name: Phase 2 M2 P1 Blind Development Packet
+
 on:
   workflow_dispatch:
   push:
-    branches: [phase2-arabic-eval]
+    branches:
+      - phase2-arabic-eval
     paths:
-      - "phase2/redesign/m2_build_p1_fresh_packet.py"
-      - "phase2/redesign/M2_FRONTIER_VERIFIER_PROMPT_P1.md"
+      - "phase2/redesign/m2_build_p1_dev_packet.py"
       - ".github/workflows/phase2-m2-p1-packet.yml"
+
 permissions:
   contents: read
+
 jobs:
   packet:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-        with: {ref: phase2-arabic-eval}
+        with:
+          ref: phase2-arabic-eval
       - uses: actions/setup-python@v5
-        with: {python-version: "3.10"}
-      - name: Download allowed data only
+        with:
+          python-version: "3.10"
+      - name: Download allowed QALB14 and ZAEBUC TRAIN
         run: |
           set -euo pipefail
           REV="8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
@@ -27,17 +32,30 @@ jobs:
           for S in train dev; do
             if [ "$S" = train ]; then P="QALB-2014-L1-Train"; else P="QALB-2014-L1-Dev"; fi
             D="upstream/qalb14/$S"; mkdir -p "$D"
-            for F in "$P.sent.no_ids" "$P.cor.no_ids" "$P.m2"; do curl -fsSL "$Q/$S/$F" -o "$D/$F"; done
+            for F in "$P.sent.no_ids" "$P.cor.no_ids" "$P.m2"; do
+              curl -fsSL "$Q/$S/$F" -o "$D/$F"
+            done
           done
           Z="upstream/zaebuc"; mkdir -p "$Z"
           curl -fsSL "$BASE/data/gec/ZAEBUC-v1.0/data/ar/train/train.sent.raw" -o "$Z/train.sent.raw"
           curl -fsSL "$BASE/data/gec/ZAEBUC-v1.0/data/ar/train/train.sent.cor" -o "$Z/train.sent.cor"
           test ! -e upstream/qalb14/test
           test ! -e upstream/qalb15
-      - name: Build fresh disjoint P1 packet
+      - name: Build disjoint P1 packet
         run: |
-          python phase2/redesign/m2_build_p1_fresh_packet.py --qalb-root upstream/qalb14 --zaebuc-root upstream/zaebuc --out-dir .
+          python phase2/redesign/m2_build_p1_dev_packet.py             --qalb-root upstream/qalb14             --zaebuc-root upstream/zaebuc             --out-dir .
       - uses: actions/upload-artifact@v4
-        with: {name: m2-p1-dev-blind, path: M2_P1_DEV_BLIND.jsonl, retention-days: 30}
+        with:
+          name: m2-p1-dev-blind
+          path: M2_P1_DEV_BLIND.jsonl
+          retention-days: 30
       - uses: actions/upload-artifact@v4
-        with: {name: m2-p1-dev-key, path: M2_P1_DEV_KEY.jsonl, retention-days: 30}
+        with:
+          name: m2-p1-dev-key
+          path: M2_P1_DEV_KEY.jsonl
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2-p1-packet-summary
+          path: M2_P1_PACKET_SUMMARY.json
+          retention-days: 30
