@@ -1,0 +1,39 @@
+name: Phase 2 M2-R P0 Development Packet
+on:
+  workflow_dispatch:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/m2r_build_p0_dev_packet.py"
+      - "phase2/redesign/M2R_P0_PACKET_SPEC.md"
+      - ".github/workflows/phase2-m2r-p0-packet.yml"
+permissions:
+  contents: read
+jobs:
+  packet:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Build DEVELOPMENT-only packet
+        run: python phase2/redesign/m2r_build_p0_dev_packet.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2r-p0-dev-blind
+          path: M2R_P0_DEV_BLIND.jsonl
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2r-p0-dev-key
+          path: M2R_P0_DEV_KEY.jsonl
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2r-p0-packet-summary
+          path: M2R_P0_PACKET_SUMMARY.json
+          retention-days: 30
