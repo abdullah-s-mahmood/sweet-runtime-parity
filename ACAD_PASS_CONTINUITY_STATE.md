@@ -203,3 +203,26 @@ Even then:
 
 No Phase 3.
 No final sealed benchmark.
+
+
+## Permanent research and iteration rule
+
+For every ACAD_PASS phase, subphase, or substantive experimental iteration:
+- perform fresh rigorous research at the START and END;
+- perform maximum-effort technical/scientific brainstorming at the START and END;
+- challenge current assumptions and alternatives rather than merely justify the active path;
+- report whether the system/project IMPROVED, WORSENED, or stayed MIXED versus the previous comparable state;
+- quantify magnitude with concrete comparable metrics only;
+- provide a grounded forecast and the main risks/blockers;
+- do not suppress negative evidence or create incomparable percentage claims.
+
+This rule is mandatory for M1-A and all subsequent work.
+
+
+### M1-A expert-grounded bootstrap
+
+Started 2026-09-30 to remove the immediate reviewer-availability blocker without pretending agent labels are human gold.
+
+Use already-consumed QALB14 TRAIN+DEV expert corrections and frozen Nahw development evidence only. Construct controlled complete/partial reference-grounded cases, persist hashes/provenance rather than QALB raw text, and leave unsupported scientific/document/author-intent dimensions unresolved.
+
+Do not use QALB15 or TEST/reserved/sealed data for M1-A.

@@ -29,3 +29,27 @@ Export the blinded pilot to two qualified Arabic reviewers. Their primary judgme
 ## Decision state
 
 Arabic remains REVIEW-first. No new auto-accept capability has been established by M1 yet.
+
+
+## M1-A expert-grounded path — 2026-09-30
+
+Because two independent Arabic reviewers are not currently available, M1 now includes an expert-grounded bootstrap substage.
+
+Pre-registered:
+- fresh research start;
+- adversarial brainstorming;
+- QALB14 TRAIN+DEV only (already consumed);
+- frozen Nahw development targets only;
+- evidence-tiered partial labels;
+- no arbitrary wrong/unnecessary synthesis;
+- no QALB15, TEST, reserved/sealed material.
+
+Files:
+- M1A_RESEARCH_START.md
+- M1A_BRAINSTORM_START.md
+- M1A_EXPERT_GROUNDED_PROTOCOL.md
+- M1A_EXPERT_EVIDENCE_SCHEMA.json
+- m1a_build_expert_bootstrap.py
+- workflow: phase2-m1a-expert-bootstrap.yml
+
+The original 24-case blinded project pilot remains preserved as M1_LOCAL_PROJECT_CHALLENGE_SET; it is not promoted to human gold.

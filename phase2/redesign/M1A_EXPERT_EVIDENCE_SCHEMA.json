@@ -1,0 +1,41 @@
+{
+  "schema_id": "ACAD_PASS_M1A_EXPERT_EVIDENCE_V1",
+  "status": "PRE_REGISTERED",
+  "evidence_tiers": {
+    "TIER_A_DIRECT": "Directly derivable from human source/reference correction or published local correction.",
+    "TIER_B_PROTOCOL_SUPPORTED": "Supported by corpus annotation guidelines, not independently adjudicated per item.",
+    "TIER_C_UNESTABLISHED": "Not supported by this evidence source and must not be auto-filled."
+  },
+  "case_families": [
+    "FULL_EXPERT_REPAIR",
+    "EXPERT_KEEP",
+    "SINGLE_EDIT_COMPLETE",
+    "ONE_OF_MANY_PARTIAL",
+    "ALL_BUT_ONE_PARTIAL",
+    "NAHW_LOCAL_REFERENCE"
+  ],
+  "persisted_fields": [
+    "case_id",
+    "corpus",
+    "split",
+    "unit_id",
+    "case_family",
+    "source_sha256",
+    "candidate_sha256",
+    "reference_sha256",
+    "reference_edit_count",
+    "applied_reference_edit_indices",
+    "withheld_reference_edit_indices",
+    "evidence_tier",
+    "direct_assertions",
+    "protocol_support",
+    "unresolved_axes",
+    "raw_text_persisted"
+  ],
+  "forbidden_claims": [
+    "reference mismatch implies wrong",
+    "QALB proves scientific fidelity",
+    "expert reference proves author intent in ambiguity",
+    "expert bootstrap equals independent human validation of ACAD_PASS"
+  ]
+}
