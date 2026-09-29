@@ -1,0 +1,111 @@
+name: Phase 2 Semantic Backstop Reuse Frozen Agreement Artifacts
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-semantic-backstop-reuse.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  semantic-backstop-reuse:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      TOKENIZERS_PARALLELISM: "false"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Reuse frozen SWEET artifacts from canonical cross-model run
+        uses: actions/download-artifact@v4
+        with:
+          name: cross-sweet-raw-events
+          path: artifacts/sweet
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36484171517
+
+      - name: Reuse frozen AraBART artifacts from canonical cross-model run
+        uses: actions/download-artifact@v4
+        with:
+          name: cross-arabart-raw-events
+          path: artifacts/arabart
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36484171517
+
+      - name: Re-materialize identical frozen agreement
+        run: |
+          mkdir -p artifacts
+          PYTHONPATH=. python phase2/generalization/materialize_cross_model_agreement.py
+          test -f artifacts/CROSS_MODEL_AGREEMENT_FEATURES.jsonl
+          test -f artifacts/CROSS_MODEL_AGREEMENT_RUNTIME.json
+          python - <<'PY'
+          import json
+          x=json.load(open("artifacts/CROSS_MODEL_AGREEMENT_RUNTIME.json",encoding="utf-8"))
+          assert x["decision_counts"]["EXACT_SINGLE_SUB_AGREEMENT"]["ACCEPT"]==159,x
+          print("Canonical 159-event agreement recovered")
+          PY
+
+      - name: Clone pinned QALB raw source
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+
+      - name: Install semantic prototype runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==2.2.2+cpu"
+          python -m pip install "transformers==4.44.2" "sentencepiece==0.2.0" "protobuf<5" "huggingface_hub>=0.24,<1.0" "safetensors>=0.4"
+
+      - name: Materialize semantic decisions before labels
+        run: |
+          PYTHONPATH=. python phase2/generalization/run_local_edit_semantic_backstop.py
+          test -f PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_FEATURES.jsonl
+          test -f PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RUNTIME.json
+          sha256sum PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_FEATURES.jsonl PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RUNTIME.json > artifacts/SEM_BACKSTOP_FROZEN_SHA256.txt
+
+      - name: Evaluate frozen decisions
+        run: |
+          PYTHONPATH=. python phase2/generalization/evaluate_local_edit_semantic_backstop.py
+          test -f PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RESULTS.json
+
+      - name: Leakage audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for name in [
+              "PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_FEATURES.jsonl",
+              "PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RUNTIME.json",
+              "PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RESULTS.json",
+          ]:
+              raw=Path(name).read_text(encoding="utf-8")
+              assert not any("\u0600"<=ch<="\u06ff" for ch in raw),name
+              assert "source_text" not in raw and "candidate_output" not in raw,name
+          print("Leakage audit PASS")
+          PY
+
+      - name: Persist semantic diagnostic
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_FEATURES.jsonl PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RUNTIME.json PHASE2_LOCAL_EDIT_SEMANTIC_BACKSTOP_RESULTS.json
+          if git diff --cached --quiet; then
+            echo "Semantic evidence unchanged."
+          else
+            git commit -m "Record local-edit semantic backstop diagnostic [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
