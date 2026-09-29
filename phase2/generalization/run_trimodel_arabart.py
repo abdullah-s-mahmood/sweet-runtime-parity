@@ -3,7 +3,7 @@
 No corrected/gold text is opened.
 """
 from __future__ import annotations
-import json,platform,subprocess
+import importlib.metadata,json,platform,subprocess
 from pathlib import Path
 import torch
 from camel_tools.disambig.bert import BERTUnfactoredDisambiguator
@@ -59,7 +59,7 @@ def main():
         "selected_line_ids":[i for _,i,_ in selected],
         "selected_line_hashes":[h for h,_,_ in selected],
         "raw_total_lines":total_lines,"changed_lines":changed,"event_rows":len(rows),
-        "runtime":{"python":platform.python_version(),"torch":torch.__version(),"qalb_repo_commit":UPSTREAM_COMMIT},
+        "runtime":{"python":platform.python_version(),"torch":importlib.metadata.version("torch"),"qalb_repo_commit":UPSTREAM_COMMIT},
         "raw_sha256":sha_file(RAW),"license_sha256":sha_file(LICENSE),"qalb15_test_read":False,
     }
     SUMMARY.write_text(json.dumps(obj,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
