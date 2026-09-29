@@ -40,6 +40,18 @@ jobs:
           repository: abdullah-s-mahmood/sweet-runtime-parity
           run-id: 36520233398
           github-token: ${{ github.token }}
+      - name: Download frozen ORTHO safe artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: phase2-ortho-isolated-fresh-validation-safe
+          path: artifacts/ortho_safe
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36520233398
+          github-token: ${{ github.token }}
+      - name: Stage frozen ORTHO features
+        run: |
+          cp artifacts/ortho_safe/PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl
+          test -f PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl
       - name: Download pinned QALB15 TRAIN RAW only
         run: |
           D="upstream/arabic-gec/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/train"
