@@ -1,0 +1,239 @@
+name: Phase 2 ORTHO Isolated Fresh Validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/ortho_validation_common.py"
+      - "phase2/generalization/run_ortho_validation_sweet.py"
+      - "phase2/generalization/run_ortho_validation_arabart.py"
+      - "phase2/generalization/materialize_ortho_validation_votes.py"
+      - "phase2/generalization/run_ortho_isolated_validation_guard.py"
+      - "phase2/generalization/evaluate_ortho_isolated_validation.py"
+      - ".github/workflows/phase2-ortho-isolated-validation.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  sweet-q14:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      SWEET_MODEL_ID: "CAMeL-Lab/text-editing-qalb14-nopnx"
+      SWEET_MODEL_REVISION: "21286e56ce98a86362db540863f91c083b8970f9"
+      SWEET_VOTER_NAME: "SWEET_QALB14"
+      SWEET_OUTPUT_PREFIX: "VAL_SWEET_Q14"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+      - name: Install frozen SWEET runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+          python -m pip install -r requirements.txt
+      - name: Clone pinned raw/upstream code
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+      - name: Run frozen SWEET QALB14 voter
+        run: |
+          mkdir -p artifacts
+          PYTHONPATH=. python phase2/generalization/run_ortho_validation_sweet.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ortho-val-sweet-q14
+          path: |
+            artifacts/VAL_SWEET_Q14_EVENTS.jsonl
+            artifacts/VAL_SWEET_Q14_SUMMARY.json
+          retention-days: 1
+
+  sweet-zaebuc:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      SWEET_MODEL_ID: "CAMeL-Lab/text-editing-zaebuc-nopnx"
+      SWEET_MODEL_REVISION: "1da7198cb6eb8ae2de845ee32a3bfa61c186dbeb"
+      SWEET_VOTER_NAME: "SWEET_ZAEBUC"
+      SWEET_OUTPUT_PREFIX: "VAL_SWEET_ZAEBUC"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+      - name: Install frozen SWEET runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+          python -m pip install -r requirements.txt
+      - name: Clone pinned raw/upstream code
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+      - name: Run frozen SWEET ZAEBUC voter
+        run: |
+          mkdir -p artifacts
+          PYTHONPATH=. python phase2/generalization/run_ortho_validation_sweet.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ortho-val-sweet-zaebuc
+          path: |
+            artifacts/VAL_SWEET_ZAEBUC_EVENTS.jsonl
+            artifacts/VAL_SWEET_ZAEBUC_SUMMARY.json
+          retention-days: 1
+
+  arabart-q14:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Clone pinned Arabic-GEC upstream
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+      - name: Install frozen AraBART runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "sentencepiece==0.1.99" "protobuf==3.20.3" "numpy<2"
+          python -m pip uninstall -y transformers || true
+          python -m pip install -e upstream/arabic-gec/transformers
+          python -m pip install "huggingface_hub>=0.9,<1.0"
+          mkdir -p "$CAMELTOOLS_DATA" artifacts
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+      - name: Run frozen AraBART QALB14 voter
+        run: |
+          PYTHONPATH=. python phase2/generalization/run_ortho_validation_arabart.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ortho-val-arabart-q14
+          path: |
+            artifacts/VAL_ARABART_Q14_EVENTS.jsonl
+            artifacts/VAL_ARABART_Q14_SUMMARY.json
+          retention-days: 1
+
+  guard-and-evaluate:
+    needs: [sweet-q14, sweet-zaebuc, arabart-q14]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - uses: actions/download-artifact@v4
+        with:
+          name: ortho-val-sweet-q14
+          path: artifacts/sweet_q14
+      - uses: actions/download-artifact@v4
+        with:
+          name: ortho-val-sweet-zaebuc
+          path: artifacts/sweet_zaebuc
+      - uses: actions/download-artifact@v4
+        with:
+          name: ortho-val-arabart-q14
+          path: artifacts/arabart_q14
+
+      - name: Materialize exact unanimous votes before raw context/gold
+        run: |
+          PYTHONPATH=. python phase2/generalization/materialize_ortho_validation_votes.py
+          test -f artifacts/ORTHO_VALIDATION_VOTE_FEATURES.jsonl
+          test -f artifacts/ORTHO_VALIDATION_VOTE_RUNTIME.json
+
+      - name: Install frozen contextual morphology runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==2.2.2+cpu"
+          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "numpy<2" "protobuf==3.20.3" "transformers==4.44.2" "sentencepiece==0.2.0"
+          mkdir -p "$CAMELTOOLS_DATA"
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+
+      - name: Download RAW only for frozen guard
+        run: |
+          RAW_DIR="upstream/arabic-gec/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/train"
+          mkdir -p "$RAW_DIR"
+          curl -fsSL "https://raw.githubusercontent.com/CAMeL-Lab/arabic-gec/8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/train/QALB-2015-L2-Train.sent.no_ids" -o "$RAW_DIR/QALB-2015-L2-Train.sent.no_ids"
+          test ! -f "$RAW_DIR/QALB-2015-L2-Train.cor.no_ids"
+
+      - name: Freeze ORTHO_ISOLATED_COMMON_NOUN_V1 decisions before gold
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/run_ortho_isolated_validation_guard.py 2>&1 | tee artifacts/ORTHO_VALIDATION_GUARD_CONSOLE.txt
+          test -f PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl
+          test -f PHASE2_ORTHO_ISOLATED_VALIDATION_RUNTIME.json
+          sha256sum PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl PHASE2_ORTHO_ISOLATED_VALIDATION_RUNTIME.json > artifacts/ORTHO_VALIDATION_FROZEN_SHA256.txt
+
+      - name: Download corrected TRAIN only after decisions are frozen
+        run: |
+          RAW_DIR="upstream/arabic-gec/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/train"
+          curl -fsSL "https://raw.githubusercontent.com/CAMeL-Lab/arabic-gec/8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/train/QALB-2015-L2-Train.cor.no_ids" -o "$RAW_DIR/QALB-2015-L2-Train.cor.no_ids"
+
+      - name: Evaluate frozen PASS lane
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/evaluate_ortho_isolated_validation.py 2>&1 | tee artifacts/ORTHO_VALIDATION_EVAL_CONSOLE.txt
+          test -f PHASE2_ORTHO_ISOLATED_VALIDATION_RESULTS.json
+
+      - name: Leakage audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for p in [
+              Path("PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl"),
+              Path("PHASE2_ORTHO_ISOLATED_VALIDATION_RUNTIME.json"),
+              Path("PHASE2_ORTHO_ISOLATED_VALIDATION_RESULTS.json"),
+          ]:
+              raw=p.read_text(encoding="utf-8")
+              assert not any("\u0600"<=c<="\u06ff" for c in raw),p
+              for k in ["source_text","candidate_output","source_surfaces","output_surfaces","lex"]:
+                  assert '"'+k+'"' not in raw,(p,k)
+          print("fresh validation leakage audit PASS")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-ortho-isolated-fresh-validation-safe
+          path: |
+            PHASE2_ORTHO_ISOLATED_VALIDATION_FEATURES.jsonl
+            PHASE2_ORTHO_ISOLATED_VALIDATION_RUNTIME.json
+            PHASE2_ORTHO_ISOLATED_VALIDATION_RESULTS.json
+            artifacts/ORTHO_VALIDATION_VOTE_RUNTIME.json
+            artifacts/ORTHO_VALIDATION_FROZEN_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 30
