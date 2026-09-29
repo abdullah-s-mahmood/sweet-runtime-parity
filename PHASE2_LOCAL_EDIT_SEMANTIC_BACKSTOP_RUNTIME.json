@@ -1,0 +1,33 @@
+{
+  "status": "LOCAL_EDIT_SEMANTIC_BACKSTOP_RUNTIME_FROZEN",
+  "prototype": "LOCAL_EDIT_SEMANTIC_BACKSTOP_PROTOTYPE",
+  "diagnostic_only": true,
+  "labels_or_gold_read": false,
+  "population": "159 consumed EXACT_SINGLE_SUB_AGREEMENT events",
+  "rows": 159,
+  "model_id": "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+  "model_revision": "b5113eb38ab63efdd7f280f8c144ea8b13f978ce",
+  "label_mapping": {
+    "contradiction": 2,
+    "entailment": 0,
+    "neutral": 1
+  },
+  "decision_counts": {
+    "WHOLE_HISTORICAL_05": {
+      "PASS": 1,
+      "REVIEW": 158
+    },
+    "LOCAL_HISTORICAL_05": {
+      "PASS": 133,
+      "REVIEW": 26
+    },
+    "CONTRADICTION_ONLY_05": {
+      "PASS": 157,
+      "REVIEW": 2
+    }
+  },
+  "features_sha256": "909b3a62426a1f98a182f9ae129bd7c5018c2e87c4de6192326bad3e3e67d6e3",
+  "qalb_text_persisted": false,
+  "qalb15_test_read": false,
+  "thresholds_frozen_before_labels": true
+}
