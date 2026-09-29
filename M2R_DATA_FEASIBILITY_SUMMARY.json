@@ -1,0 +1,40 @@
+{
+  "status": "M2R_DATA_READY",
+  "date": "2026-09-30",
+  "dataset": "khaled44/arabigee-data",
+  "resolved_files": {
+    "annotations.csv": "cbfd255bd983043c809bcaf203d48fb905e6a4a4a65334a025278e13b7d540ee",
+    "contexts_nopnx.csv": "265700df5bce461b275acd2705f527167562dd36a6dfd1307b8f82245c67c69e",
+    "contexts_pnx.csv": "3a34849fde57bb4d2b0e880311e4ef7afb1e5b6614d67bb94b146194b3b8fc51"
+  },
+  "annotation_rows": 1211,
+  "nopnx_context_rows": 559,
+  "contexts_with_annotations": 559,
+  "multi_error_contexts": 236,
+  "partition_context_counts": {
+    "DEVELOPMENT": 387,
+    "HOLDOUT": 85,
+    "CONFIRMATION": 87
+  },
+  "dimension_annotation_counts": {
+    "ORTHOGRAPHY": 648,
+    "MORPHOLOGY": 305,
+    "LEXICAL": 250,
+    "SYNTAX": 211
+  },
+  "criteria": {
+    "annotations_ge_1000": true,
+    "nopnx_contexts_ge_400": true,
+    "contexts_with_annotations_ge_300": true,
+    "multi_error_contexts_ge_100": true,
+    "development_contexts_ge_250": true,
+    "confirmation_contexts_ge_50": true,
+    "holdout_contexts_ge_50": true,
+    "orthography_annotations_ge_100": true,
+    "structured_nonorth_dimensions_present": true
+  },
+  "data_ready": true,
+  "raw_text_persisted": false,
+  "holdout_text_exposed": false,
+  "forbidden_project_data_read": false
+}
