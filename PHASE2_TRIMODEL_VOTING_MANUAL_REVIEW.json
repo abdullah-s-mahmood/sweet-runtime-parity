@@ -1,0 +1,822 @@
+{
+  "status": "PHASE2_TRIMODEL_UNANIMOUS3_MANUAL_REVIEW_COMPLETE",
+  "date": "2026-09-29",
+  "development_generalization_only": true,
+  "population": "fresh QALB15 L2 TRAIN 50-line slice excluding prior 50",
+  "same_agent_contextual_review": true,
+  "independent_human_validation": false,
+  "runtime_votes_frozen_before_gold": true,
+  "reviewed_nonexact_events": 48,
+  "exact_gold_supported_events": 94,
+  "nonexact_manual_counts": {
+    "SUPPORTED_CORRECTION": 30,
+    "SUPPORTED_ALTERNATIVE": 2,
+    "PARTIAL_CORRECTION": 12,
+    "WRONG_CORRECTION": 4
+  },
+  "severity_counts": {
+    "LOW": 32,
+    "MEDIUM": 13,
+    "HIGH": 3
+  },
+  "primary_after_manual_review": {
+    "candidate_events": 142,
+    "supported_correction": 124,
+    "supported_alternative": 2,
+    "partial_correction": 12,
+    "wrong_correction": 4,
+    "unnecessary_edit": 0,
+    "supported_total": 126,
+    "unsafe_total": 16,
+    "supported_precision": 0.8873239436619719,
+    "unsafe_rate": 0.11267605633802817
+  },
+  "comparison_to_prior_two_model": {
+    "prior_supported": 144,
+    "prior_total": 159,
+    "prior_supported_precision": 0.9056603773584906,
+    "trimodel_supported_precision": 0.8873239436619719,
+    "absolute_precision_change_pp": -1.8336433696518717,
+    "note": "Different fresh deterministic slices; comparison is descriptive, not a causal estimate of the third voter."
+  },
+  "promotion_contract": {
+    "minimum_accepts_met": true,
+    "zero_wrong_met": false,
+    "zero_partial_met": false,
+    "zero_unnecessary_met": true,
+    "decision": "DO_NOT_PROMOTE_UNANIMOUS_3"
+  },
+  "items": [
+    {
+      "vote_id": "TRIV-367e340976d1fba51f34",
+      "line_id": 22,
+      "line_hash": "0ba4f4e0b562849d7dfd4da55f86092ba99dd9c7e562b824910e2ba5cad73c0d",
+      "source_lexical_span": [
+        143,
+        144
+      ],
+      "source_hash": "393ffea1c8742bec0ff296b4e1dd0bd867957ee8cbde58a26a2eb643efa720d9",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "ALIF_MAQSURA_YA_ORTHOGRAPHY",
+      "gold_source_hash": "fac2ccd24ad8a3d96aa14fa49dc289572c539cf3e3d4ca71f9a6bdb1e2f92bb2",
+      "gold_output_hash": "293869d96f37ad2c905d2fb9e713f656fcbfc05f4df5d472fc2944ccf1b54b1a"
+    },
+    {
+      "vote_id": "TRIV-ecf0120be7e40b7dc466",
+      "line_id": 26,
+      "line_hash": "08340d1231da233e9aaf3f395e33e2a31cdf34f4992c58e37629bc7f679d67a6",
+      "source_lexical_span": [
+        50,
+        51
+      ],
+      "source_hash": "37467e659753c661e79a7cfa293cc9aada2ccdacb24a1b009192cf3128a871a6",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "ALIF_MAQSURA_YA_ORTHOGRAPHY",
+      "gold_source_hash": "c1687d7137cecc98eda2dd17e42da42392ad0282f1d1a5d8ef8347ba524f2e93",
+      "gold_output_hash": "d168fd293bbeb7dd3e60fbac1dc8efdfa59c4a5d7bc065556802d4ca1d67276f"
+    },
+    {
+      "vote_id": "TRIV-5fa1888756eea66f2fa0",
+      "line_id": 31,
+      "line_hash": "282176e5a142687e5f5877b1f7aafe8cfd445600c5ac41ce2f5f931c8e176edf",
+      "source_lexical_span": [
+        45,
+        46
+      ],
+      "source_hash": "5295cd0a71e941cbb10114939d66aea1deb9445acb40e8a80c1aca1aafef046a",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_ALTERNATIVE",
+      "severity": "LOW",
+      "failure_or_support_type": "SOURCE_FIDELITY_VALID_SINGULAR",
+      "gold_source_hash": "810272c1a35dc1869a1edd485abce47aad22590c9e871c12a29ece41758148bd",
+      "gold_output_hash": "cf267ec84f5fb2be4ce5359378dfe98ac357e72e3d36dd5be77f14ba19095f54"
+    },
+    {
+      "vote_id": "TRIV-6fe058722b6622a66c00",
+      "line_id": 49,
+      "line_hash": "05b0d69458c1f565758f0aef67cb2067238a1d278cfaccb8278865cda16c3bbd",
+      "source_lexical_span": [
+        166,
+        167
+      ],
+      "source_hash": "7af00e4eaabbb5c85fc8b17a03d6f20ed467f2100b6a8a7c778a1b0e7ee7bd51",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZAT_WASL_LOCAL_CORRECTION",
+      "gold_source_hash": "4d46bceff5c15a4202b2629c4531d8d33012f109248557d1429f4546687a5dd6",
+      "gold_output_hash": "5337077db9cfd1ba94e6ff77e108b71ba1c3c032da384918f1a9bac5739b5a61"
+    },
+    {
+      "vote_id": "TRIV-9d58f6e91b3edd597b71",
+      "line_id": 49,
+      "line_hash": "05b0d69458c1f565758f0aef67cb2067238a1d278cfaccb8278865cda16c3bbd",
+      "source_lexical_span": [
+        169,
+        170
+      ],
+      "source_hash": "5a898d2a845b3cdd7c9d8fa870983bb8c4f1773c158e3495f9c9f51ee94ea974",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "NUMERAL_CASE_INCOMPLETE",
+      "gold_source_hash": "5a898d2a845b3cdd7c9d8fa870983bb8c4f1773c158e3495f9c9f51ee94ea974",
+      "gold_output_hash": "ecde8bc8e9d2f545a173d48b54424a7a93ca68bd7ba58ee95dddcaf81be854bf"
+    },
+    {
+      "vote_id": "TRIV-5e7107b9f5a2b7e5b2c1",
+      "line_id": 50,
+      "line_hash": "22d94114ab17c18a364edc0dc6f963366a1d52313f99ae0005dfe9da4351398f",
+      "source_lexical_span": [
+        24,
+        25
+      ],
+      "source_hash": "0bbb5bf9491280a650c74d2154b6ff0f0a8eac872febfadfa154df350d09f55c",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_ORTHOGRAPHY",
+      "gold_source_hash": "7ef2e0f31f5b9ad6e40d332ede1f39523f29dae1d637cf08027f7191c380db65",
+      "gold_output_hash": "37b6d4e829498fc4af6a9e7757d1e72791324b2c0f68666b9bc5d672825731d4"
+    },
+    {
+      "vote_id": "TRIV-0db533c4af9230da2d4f",
+      "line_id": 50,
+      "line_hash": "22d94114ab17c18a364edc0dc6f963366a1d52313f99ae0005dfe9da4351398f",
+      "source_lexical_span": [
+        37,
+        38
+      ],
+      "source_hash": "69412543199c5e9a5254330932fc1336155f7f4ba2cd95105bafef57c1ada682",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "LEXICAL_NUMBER_RESIDUAL",
+      "gold_source_hash": "69412543199c5e9a5254330932fc1336155f7f4ba2cd95105bafef57c1ada682",
+      "gold_output_hash": "deed2fbb770e2d0fe7c322855cd96cd0dde1a08aa8a21b646725ebbf95f2540e"
+    },
+    {
+      "vote_id": "TRIV-a02c045b4496a5d3464f",
+      "line_id": 60,
+      "line_hash": "09c08eda18893be7ecb13c78cc4aab50d2da99fc6488bdab3ff99696425614d4",
+      "source_lexical_span": [
+        62,
+        63
+      ],
+      "source_hash": "305e5f7169ed2f274a2d8f364facf410660811b758181eba13f097eb15f93b1c",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "DERIVATIONAL_FORM_RESIDUAL",
+      "gold_source_hash": "305e5f7169ed2f274a2d8f364facf410660811b758181eba13f097eb15f93b1c",
+      "gold_output_hash": "245a8c79400dd75cdfd3f1c3565bf1f5004db5c7ff006c227cf06a071ab3352a"
+    },
+    {
+      "vote_id": "TRIV-9cd297152d9f44cee20d",
+      "line_id": 64,
+      "line_hash": "08147a71375de663d52a73538a299ea2c5d39ae9426774c1abf45712df7fc2d0",
+      "source_lexical_span": [
+        50,
+        51
+      ],
+      "source_hash": "20ed11f711f6ae7a2e4ee62d8aea878c99baa8642d46e62abd35ee50ae124912",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "PREPOSITION_AND_SURFACE_RESIDUAL",
+      "gold_source_hash": "20ed11f711f6ae7a2e4ee62d8aea878c99baa8642d46e62abd35ee50ae124912",
+      "gold_output_hash": "4b2b060152a2358f0a145c557f5feb172df74b77ab3cd6644983c9ad2beda844"
+    },
+    {
+      "vote_id": "TRIV-ef4c72dc528a6c7d14fa",
+      "line_id": 64,
+      "line_hash": "08147a71375de663d52a73538a299ea2c5d39ae9426774c1abf45712df7fc2d0",
+      "source_lexical_span": [
+        88,
+        89
+      ],
+      "source_hash": "f7f6ad01da50b7011688fb7461843610325ed1ce5fe04045614987bac5ab1c7a",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_ORTHOGRAPHY",
+      "gold_source_hash": "4d472eb8de3a9ee01f20d6cc83d1d106915805385a72be7fb3406b0968a97925",
+      "gold_output_hash": "2c0a738c0501784ecdd1637322f5fa6a5901a207136c073875ce62209e89192f"
+    },
+    {
+      "vote_id": "TRIV-3b558c45d65d6232d651",
+      "line_id": 64,
+      "line_hash": "08147a71375de663d52a73538a299ea2c5d39ae9426774c1abf45712df7fc2d0",
+      "source_lexical_span": [
+        90,
+        91
+      ],
+      "source_hash": "4589eecbdc284ca7afcfecdf35e1b6e6b55b0cdde905c451900acfd5645f364a",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_ORTHOGRAPHY",
+      "gold_source_hash": "4d472eb8de3a9ee01f20d6cc83d1d106915805385a72be7fb3406b0968a97925",
+      "gold_output_hash": "2c0a738c0501784ecdd1637322f5fa6a5901a207136c073875ce62209e89192f"
+    },
+    {
+      "vote_id": "TRIV-5b5660868a25d641c535",
+      "line_id": 65,
+      "line_hash": "1de854b83ad9b4be530962bdabe4122e8b4f0c0241ad3631ff0dc5f76c55916e",
+      "source_lexical_span": [
+        54,
+        55
+      ],
+      "source_hash": "c55e5e7d99ef453c851919cac2d771930c1bdfe9573415c265f53e722b840ccf",
+      "automatic_gold_relation": "NO_GOLD_EDIT_OVERLAP",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZAT_WASL_CORRECTION",
+      "gold_source_hash": null,
+      "gold_output_hash": null
+    },
+    {
+      "vote_id": "TRIV-cc2b414a4d97b68255d9",
+      "line_id": 65,
+      "line_hash": "1de854b83ad9b4be530962bdabe4122e8b4f0c0241ad3631ff0dc5f76c55916e",
+      "source_lexical_span": [
+        80,
+        81
+      ],
+      "source_hash": "c55e5e7d99ef453c851919cac2d771930c1bdfe9573415c265f53e722b840ccf",
+      "automatic_gold_relation": "NO_GOLD_EDIT_OVERLAP",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZAT_WASL_CORRECTION",
+      "gold_source_hash": null,
+      "gold_output_hash": null
+    },
+    {
+      "vote_id": "TRIV-b6db5d9db7efbd10aace",
+      "line_id": 65,
+      "line_hash": "1de854b83ad9b4be530962bdabe4122e8b4f0c0241ad3631ff0dc5f76c55916e",
+      "source_lexical_span": [
+        89,
+        90
+      ],
+      "source_hash": "c55e5e7d99ef453c851919cac2d771930c1bdfe9573415c265f53e722b840ccf",
+      "automatic_gold_relation": "NO_GOLD_EDIT_OVERLAP",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZAT_WASL_CORRECTION",
+      "gold_source_hash": null,
+      "gold_output_hash": null
+    },
+    {
+      "vote_id": "TRIV-0de3c6b25338b1e90164",
+      "line_id": 90,
+      "line_hash": "21d07a3cf4a7c3e91576fcd0780dea0f663b60a9b48a8008c7d31eed3e43084f",
+      "source_lexical_span": [
+        16,
+        17
+      ],
+      "source_hash": "cec99c93a54bf0f341603f0b45bdcbea903a2f64e99741878176780ffdcef4ef",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_ORTHOGRAPHY",
+      "gold_source_hash": "1d96b76f3b867f52447916a143e576f3944bdea4cb88140507cc239b4b075c7a",
+      "gold_output_hash": "ea7429f2a0d04f5082e4303365654d869bc139eeb982326dc0bf96cd217924ae"
+    },
+    {
+      "vote_id": "TRIV-2eedeb782e2d55ad4e63",
+      "line_id": 90,
+      "line_hash": "21d07a3cf4a7c3e91576fcd0780dea0f663b60a9b48a8008c7d31eed3e43084f",
+      "source_lexical_span": [
+        25,
+        26
+      ],
+      "source_hash": "367aaa1c992e216ff16cfbc874ca3678399ecbea0a34138a14427902c128112e",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "ALIF_MAQSURA_YA_ORTHOGRAPHY",
+      "gold_source_hash": "dbdc149e15d01ca67dcc48b525664d5b897e4f1343bec2e8001f9afa614bdeef",
+      "gold_output_hash": "f59b5031ebe4bdc3085718fbc50e1877c5e06e3c67317a845f53640fb5aebdb0"
+    },
+    {
+      "vote_id": "TRIV-a6a5d4039b362cb63a75",
+      "line_id": 104,
+      "line_hash": "278af06c1a65efb81ee1367d644399ffe99fa952ecdaff97c5cf84725af99778",
+      "source_lexical_span": [
+        17,
+        18
+      ],
+      "source_hash": "6c5bf31e3aeb3cf8d929aa19baa4ad648b96985ef5bb8d602794be8b21529f57",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_AND_POSSESSIVE_ORTHOGRAPHY",
+      "gold_source_hash": "774107f11c57514ad10b564b4d04d773094599d3dbec76d7528b87b009925f20",
+      "gold_output_hash": "38564ebcce1927eaa1ad5d2ca558969896b21c259fba0805619db98121a0efd5"
+    },
+    {
+      "vote_id": "TRIV-772d33a74966aa727441",
+      "line_id": 104,
+      "line_hash": "278af06c1a65efb81ee1367d644399ffe99fa952ecdaff97c5cf84725af99778",
+      "source_lexical_span": [
+        21,
+        22
+      ],
+      "source_hash": "cb2b9aea61962b331fba3d10ae5e63b3e13c768f4e6723e9662092286ad9e8f7",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "ALIF_MAQSURA_YA_ORTHOGRAPHY",
+      "gold_source_hash": "7e14b9c9b4832d5329ba5709ea8b6bc1106cb2bc03d5bf34d44c1c52d9aa5a8d",
+      "gold_output_hash": "770564704e2124771927a7bdcf1ab25291aaa844afec8c0a07db44c13fee7f3f"
+    },
+    {
+      "vote_id": "TRIV-eb40586d4e807628fceb",
+      "line_id": 104,
+      "line_hash": "278af06c1a65efb81ee1367d644399ffe99fa952ecdaff97c5cf84725af99778",
+      "source_lexical_span": [
+        26,
+        27
+      ],
+      "source_hash": "231f48fc0ba9d25573ddcfd7d92b0dea83fe81f08fb3174d2a9c102728d96840",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "SUPPORTED_ALTERNATIVE",
+      "severity": "LOW",
+      "failure_or_support_type": "VALID_ORTHOGRAPHIC_SUBEDIT_REFERENCE_REWRITE",
+      "gold_source_hash": "231f48fc0ba9d25573ddcfd7d92b0dea83fe81f08fb3174d2a9c102728d96840",
+      "gold_output_hash": "1e13f87c113b024e7d4f3fa58f3dbb8ca73bb08f1c48f9ff15fc12679ae5e1fa"
+    },
+    {
+      "vote_id": "TRIV-5d760ccf734198e956f6",
+      "line_id": 104,
+      "line_hash": "278af06c1a65efb81ee1367d644399ffe99fa952ecdaff97c5cf84725af99778",
+      "source_lexical_span": [
+        36,
+        37
+      ],
+      "source_hash": "5c7487dbc6840e8ca0a050ea072b6d06e78aa629365874ce599654bdca7e1747",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "DETERMINER_CONSTRUCTION_RESIDUAL",
+      "gold_source_hash": "5c7487dbc6840e8ca0a050ea072b6d06e78aa629365874ce599654bdca7e1747",
+      "gold_output_hash": "1b7959991c95202f1ad26c5a5ab252d8e856ea9c83f5050f806b1ac5b83e6e28"
+    },
+    {
+      "vote_id": "TRIV-bcdd3df4d0cb9a810472",
+      "line_id": 105,
+      "line_hash": "089e8d462fa8cde62a44017ae28747011b53f066d592d5a4279209e323a08989",
+      "source_lexical_span": [
+        27,
+        28
+      ],
+      "source_hash": "3290e5c3a1dc21096b73afa268b8dcf449b762bca215acde640be19a51cf845a",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "ALIF_MAQSURA_YA_ORTHOGRAPHY",
+      "gold_source_hash": "afdd094285d2029e5fb1002b6e7b8f1fe9a496a76b06c775124299b3e0582b80",
+      "gold_output_hash": "94482e9e47847702d845cf01bb1cce7fcae124c336d7d13abccd80b3d63c8e3d"
+    },
+    {
+      "vote_id": "TRIV-8d8ae43837603c64caa5",
+      "line_id": 109,
+      "line_hash": "2a5f9bcb18365a227627a581dac12d68c97d524e04893ab7a4eb2679fe2aa8f3",
+      "source_lexical_span": [
+        14,
+        15
+      ],
+      "source_hash": "0fe95be3bfe2cfdf987693a119a015510e6cfeea6efa41430ce4e54c8e035e47",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "TITLE_DETERMINER_RESIDUAL",
+      "gold_source_hash": "0fe95be3bfe2cfdf987693a119a015510e6cfeea6efa41430ce4e54c8e035e47",
+      "gold_output_hash": "f11fbddd7b3f488aa2fe72a9476c0a1553cd2b7d969c5441e7d292630788dc49"
+    },
+    {
+      "vote_id": "TRIV-4b3dd706e7feadf96dfd",
+      "line_id": 118,
+      "line_hash": "0e6e7650c9cd1848778a2dbcf07bf2c1b4479049a990ff89f0ccb1045464f779",
+      "source_lexical_span": [
+        4,
+        5
+      ],
+      "source_hash": "4267292085d87796f0ea28137eddb21264cd2da85d2d3a56baf27da04d7f0c4e",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "VERB_VALENCY_RESIDUAL",
+      "gold_source_hash": "4267292085d87796f0ea28137eddb21264cd2da85d2d3a56baf27da04d7f0c4e",
+      "gold_output_hash": "7685dbadd764d5d0fb5639184643ebd688dbe84f1b31ea32000bb894a8c723bf"
+    },
+    {
+      "vote_id": "TRIV-6a420aa06bef0275e5b2",
+      "line_id": 127,
+      "line_hash": "1eeab3f1707db3006baeca0c409798e7aa908c2621c30200bbc7c5b2c721e148",
+      "source_lexical_span": [
+        28,
+        29
+      ],
+      "source_hash": "9216dd4a2f0b1115ae30f8f99069e5f9f37ffcbfcab0a7a6c3b297959f06c712",
+      "automatic_gold_relation": "NO_GOLD_EDIT_OVERLAP",
+      "manual_class": "WRONG_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "COMPLEMENTIZER_CONTEXT_CHANGE",
+      "gold_source_hash": null,
+      "gold_output_hash": null
+    },
+    {
+      "vote_id": "TRIV-47fbb3b0cf7fad8699cc",
+      "line_id": 127,
+      "line_hash": "1eeab3f1707db3006baeca0c409798e7aa908c2621c30200bbc7c5b2c721e148",
+      "source_lexical_span": [
+        84,
+        85
+      ],
+      "source_hash": "a07e2e3af4106de5f9501602a1a9075875f992415025103e4d57bd5784fff2b8",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "COMPOUND_NUMERAL_INCOMPLETE",
+      "gold_source_hash": "225ea368bbd376765e7d9d307304b139b3ebe5804b9b5bf82c0308e0b2e6a938",
+      "gold_output_hash": "07cbbc07d0d971d558c8481e81713c7e606fed54029ee55755fe7af569b72bdc"
+    },
+    {
+      "vote_id": "TRIV-13fb29a3328f189370fa",
+      "line_id": 127,
+      "line_hash": "1eeab3f1707db3006baeca0c409798e7aa908c2621c30200bbc7c5b2c721e148",
+      "source_lexical_span": [
+        185,
+        186
+      ],
+      "source_hash": "f04bb994eebe92e2cbe3f930c66aa86827646a2aa470b48008e7fd88d36af549",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "PROPER_NAME_TRANSLITERATION_INCOMPLETE",
+      "gold_source_hash": "f04bb994eebe92e2cbe3f930c66aa86827646a2aa470b48008e7fd88d36af549",
+      "gold_output_hash": "4ad820f3d74a6cbaafb8b8838c712d09c607b943ff548f34d39c5c270d1b1f82"
+    },
+    {
+      "vote_id": "TRIV-b2be7f3f268101c6ca54",
+      "line_id": 127,
+      "line_hash": "1eeab3f1707db3006baeca0c409798e7aa908c2621c30200bbc7c5b2c721e148",
+      "source_lexical_span": [
+        199,
+        200
+      ],
+      "source_hash": "0862bc15f1b7d5983d20755266f76284960d22cc4c833aa3f1e2f7b152c74fb3",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_ORTHOGRAPHY",
+      "gold_source_hash": "c1bc8b9d0396371494d474668db381150659339a23ecaa4f636ee05547b61106",
+      "gold_output_hash": "79cd246d0025949c15ce93dc3025bc267132a45de3ce848da720d3459a539cee"
+    },
+    {
+      "vote_id": "TRIV-fece1b1526087377a332",
+      "line_id": 127,
+      "line_hash": "1eeab3f1707db3006baeca0c409798e7aa908c2621c30200bbc7c5b2c721e148",
+      "source_lexical_span": [
+        206,
+        207
+      ],
+      "source_hash": "f48b8da9cab4ba09b7f165fe6ed38119e773f94667ed6a39b963fa2b38bcb42c",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_ORTHOGRAPHY",
+      "gold_source_hash": "e251896ac3246ed3e4d3e0ca679a6e57a42d1e581c57a1a7e50c705e1ddb88c2",
+      "gold_output_hash": "5fce20a9a640f3ea6e53e531e4e9d95c32359d05b7679b3f37071f99ad46bf38"
+    },
+    {
+      "vote_id": "TRIV-9e45fc60fc6b680a8a0f",
+      "line_id": 165,
+      "line_hash": "1836728e62bf296cb1cb12b88d28c7885fd7b19f7d53857d5e9a5afb5c2377c1",
+      "source_lexical_span": [
+        13,
+        14
+      ],
+      "source_hash": "31382b2c104a630df0b2a751725614795627f43bf92cfd4f79138c9574205f20",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_ORTHOGRAPHY",
+      "gold_source_hash": "31382b2c104a630df0b2a751725614795627f43bf92cfd4f79138c9574205f20",
+      "gold_output_hash": "5afe7861811a916c51ee7ad69190b46377b0cfee773a2a7233fb19da721002d1"
+    },
+    {
+      "vote_id": "TRIV-932ed79d829abcfcfa82",
+      "line_id": 166,
+      "line_hash": "27fda358bd16fc185c49af2b028f943ed704577ad0c069c099f68e3559c8c7c5",
+      "source_lexical_span": [
+        20,
+        21
+      ],
+      "source_hash": "56ab8d1b18c4a1595be901d75299a4281ac3f533cfc8c1d4920d81ea7a36e001",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "WRONG_CORRECTION",
+      "severity": "HIGH",
+      "failure_or_support_type": "POSSESSIVE_CLITIC_LOSS",
+      "gold_source_hash": "f9f02968b631490ce3a9aa9795c6f4c57be8c68a58fd1b2510cab35046c675a0",
+      "gold_output_hash": "7f942d135c2dc6181f49e901dd5c5467a972b9b219b007cf5a777e25bdcfd962"
+    },
+    {
+      "vote_id": "TRIV-1208ecee83b7d586600a",
+      "line_id": 166,
+      "line_hash": "27fda358bd16fc185c49af2b028f943ed704577ad0c069c099f68e3559c8c7c5",
+      "source_lexical_span": [
+        43,
+        44
+      ],
+      "source_hash": "0aa20f6b2447f7e4f14ef4493ea7d809ce774290be59768e21cb67e37cb87189",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "PREPOSITION_LEXICAL_RESIDUAL",
+      "gold_source_hash": "0aa20f6b2447f7e4f14ef4493ea7d809ce774290be59768e21cb67e37cb87189",
+      "gold_output_hash": "97fe3fe5b0630302287817b5b01e9ccafd6f040285ab1d4d19f54311ce95d316"
+    },
+    {
+      "vote_id": "TRIV-b44549d8c8e2459881fc",
+      "line_id": 166,
+      "line_hash": "27fda358bd16fc185c49af2b028f943ed704577ad0c069c099f68e3559c8c7c5",
+      "source_lexical_span": [
+        118,
+        119
+      ],
+      "source_hash": "5c7487dbc6840e8ca0a050ea072b6d06e78aa629365874ce599654bdca7e1747",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_ORTHOGRAPHY",
+      "gold_source_hash": "a1b2f333c061524a9467e66387d3a1d3ef6b61943aed26f293b6902179a3690c",
+      "gold_output_hash": "22bf6e3734f4b53fb3871db16a4cd6d6e877316a8e04ea53c5fa01e5e8d9d239"
+    },
+    {
+      "vote_id": "TRIV-20c9172be56377dd3ad1",
+      "line_id": 179,
+      "line_hash": "247bf0333f7dc16300266662dba2993f3db0893d7a42d0bca065ade6fffac63e",
+      "source_lexical_span": [
+        32,
+        33
+      ],
+      "source_hash": "924c734bcc474b65fc2b3f57c8a709970287b3e3dde9528a3310dc77ff7b0490",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "WRONG_CORRECTION",
+      "severity": "HIGH",
+      "failure_or_support_type": "LEXICAL_SEMANTIC_CHANGE",
+      "gold_source_hash": "924c734bcc474b65fc2b3f57c8a709970287b3e3dde9528a3310dc77ff7b0490",
+      "gold_output_hash": "9f6c9d244adf95ffc90e2085a7e722c64ecce3f8a7a8126d39781c2a846fd616"
+    },
+    {
+      "vote_id": "TRIV-962ecbafec28a1b067b5",
+      "line_id": 206,
+      "line_hash": "13d4109fb4b2e6dc0362524fed2557e0cfa761dc184e54e26e9c630ab2be0c01",
+      "source_lexical_span": [
+        2,
+        3
+      ],
+      "source_hash": "be60d49fbec0568f6e2e229e2c54559b53034b3d6932f66935fbc0fe53be8c5f",
+      "automatic_gold_relation": "NO_GOLD_EDIT_OVERLAP",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "PROPER_NAME_HAMZA",
+      "gold_source_hash": null,
+      "gold_output_hash": null
+    },
+    {
+      "vote_id": "TRIV-3d6fac9b7e1650e015dc",
+      "line_id": 206,
+      "line_hash": "13d4109fb4b2e6dc0362524fed2557e0cfa761dc184e54e26e9c630ab2be0c01",
+      "source_lexical_span": [
+        39,
+        40
+      ],
+      "source_hash": "be60d49fbec0568f6e2e229e2c54559b53034b3d6932f66935fbc0fe53be8c5f",
+      "automatic_gold_relation": "NO_GOLD_EDIT_OVERLAP",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "PROPER_NAME_HAMZA",
+      "gold_source_hash": null,
+      "gold_output_hash": null
+    },
+    {
+      "vote_id": "TRIV-dd55cadf5241e2c5923b",
+      "line_id": 206,
+      "line_hash": "13d4109fb4b2e6dc0362524fed2557e0cfa761dc184e54e26e9c630ab2be0c01",
+      "source_lexical_span": [
+        64,
+        65
+      ],
+      "source_hash": "be60d49fbec0568f6e2e229e2c54559b53034b3d6932f66935fbc0fe53be8c5f",
+      "automatic_gold_relation": "NO_GOLD_EDIT_OVERLAP",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "PROPER_NAME_HAMZA",
+      "gold_source_hash": null,
+      "gold_output_hash": null
+    },
+    {
+      "vote_id": "TRIV-c2ddd2f09f3d4b0d91ec",
+      "line_id": 206,
+      "line_hash": "13d4109fb4b2e6dc0362524fed2557e0cfa761dc184e54e26e9c630ab2be0c01",
+      "source_lexical_span": [
+        70,
+        71
+      ],
+      "source_hash": "be60d49fbec0568f6e2e229e2c54559b53034b3d6932f66935fbc0fe53be8c5f",
+      "automatic_gold_relation": "NO_GOLD_EDIT_OVERLAP",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "PROPER_NAME_HAMZA",
+      "gold_source_hash": null,
+      "gold_output_hash": null
+    },
+    {
+      "vote_id": "TRIV-7468d82745757d4e8a00",
+      "line_id": 206,
+      "line_hash": "13d4109fb4b2e6dc0362524fed2557e0cfa761dc184e54e26e9c630ab2be0c01",
+      "source_lexical_span": [
+        112,
+        113
+      ],
+      "source_hash": "be60d49fbec0568f6e2e229e2c54559b53034b3d6932f66935fbc0fe53be8c5f",
+      "automatic_gold_relation": "NO_GOLD_EDIT_OVERLAP",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "PROPER_NAME_HAMZA",
+      "gold_source_hash": null,
+      "gold_output_hash": null
+    },
+    {
+      "vote_id": "TRIV-0e4b99ed686c9e56451a",
+      "line_id": 208,
+      "line_hash": "16e60aa428a1e5c312199bc45fb354caeae9c7e71b21aad351eeb7d7b98ff7c1",
+      "source_lexical_span": [
+        72,
+        73
+      ],
+      "source_hash": "89865824604cdeca018beaa655d29dd4ad1024f57549fc96dcab50bfbb4d0f6b",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_SPELLING",
+      "gold_source_hash": "466022a9115344a644438fe1521b05c8e85997030eaf246144f7b689483753f4",
+      "gold_output_hash": "51823111a2cf0d1758331a1a6fd229d08cd9aee3ca6a0034e217ffa871b96181"
+    },
+    {
+      "vote_id": "TRIV-5e60dbc276fc2856c7f5",
+      "line_id": 208,
+      "line_hash": "16e60aa428a1e5c312199bc45fb354caeae9c7e71b21aad351eeb7d7b98ff7c1",
+      "source_lexical_span": [
+        134,
+        135
+      ],
+      "source_hash": "89865824604cdeca018beaa655d29dd4ad1024f57549fc96dcab50bfbb4d0f6b",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_SPELLING",
+      "gold_source_hash": "1ee4bcb6b5c644a6a75af6591375bc2c4f20d1906159cc72d4d4340a462973fe",
+      "gold_output_hash": "ab59c72131d2f2ff4395b4afbb45afe3aaa252f45021eb782b59361546118236"
+    },
+    {
+      "vote_id": "TRIV-09e6248e73e78d4a87ac",
+      "line_id": 208,
+      "line_hash": "16e60aa428a1e5c312199bc45fb354caeae9c7e71b21aad351eeb7d7b98ff7c1",
+      "source_lexical_span": [
+        208,
+        209
+      ],
+      "source_hash": "868b7f698a595642d4a019fe037af88b622eb417ea81be705c3a32c21cc8f8cb",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "DEMONSTRATIVE_GENDER_RESIDUAL",
+      "gold_source_hash": "aef0d8458cb8235e5aa90e5b038bd9442d70ad4a33733eb90f887c8b1934496e",
+      "gold_output_hash": "e7ff78c5c83ad32a4cdf23a65d5d8a92efe19011dea18af1c7f0185a0df06c3d"
+    },
+    {
+      "vote_id": "TRIV-ba11dd6625cce58007d4",
+      "line_id": 222,
+      "line_hash": "0b090f325db53ae42f9a6f7d64317f423a4cbef562e7f85078bd40d7e989f65b",
+      "source_lexical_span": [
+        65,
+        66
+      ],
+      "source_hash": "2c253dfe6f4887f81dce6c6551ca0d1d24b9c07328ee8cafac69213ec6f1eedc",
+      "automatic_gold_relation": "NO_GOLD_EDIT_OVERLAP",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "PROPER_NAME_HAMZA",
+      "gold_source_hash": null,
+      "gold_output_hash": null
+    },
+    {
+      "vote_id": "TRIV-c08fdb08831f65c4b298",
+      "line_id": 222,
+      "line_hash": "0b090f325db53ae42f9a6f7d64317f423a4cbef562e7f85078bd40d7e989f65b",
+      "source_lexical_span": [
+        85,
+        86
+      ],
+      "source_hash": "c39a2d4673351159b9ed6e2650361da0d0dc3cb1d14ce5b0bb86117b3b35e296",
+      "automatic_gold_relation": "NO_GOLD_EDIT_OVERLAP",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "TA_MARBUTA_ORTHOGRAPHY",
+      "gold_source_hash": null,
+      "gold_output_hash": null
+    },
+    {
+      "vote_id": "TRIV-ca3f43611425ef923e67",
+      "line_id": 244,
+      "line_hash": "100426341391298ad721325fce6d3c7ba84423731c885e1dd1c9ec444cc17f83",
+      "source_lexical_span": [
+        124,
+        125
+      ],
+      "source_hash": "322144d5bec0f1a59bc65d068bdc5bab89c0d2a061b59f5ca68b73dcb984586f",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "GENDER_AGREEMENT_RESIDUAL",
+      "gold_source_hash": "322144d5bec0f1a59bc65d068bdc5bab89c0d2a061b59f5ca68b73dcb984586f",
+      "gold_output_hash": "739bfc849beb5d1597d06fa03d998a28540e1076dad1620ba0cca5ea69db3864"
+    },
+    {
+      "vote_id": "TRIV-eab6c772ec1af3751d02",
+      "line_id": 261,
+      "line_hash": "044f2f45152fe1f04e4791cd68c8d0ae0d9c05f2d25b04e4737dddb19d85b1c7",
+      "source_lexical_span": [
+        35,
+        36
+      ],
+      "source_hash": "f762c4ce75b0e6b97954ff6b75a6c417d06f11c67c9c86d7cc9f775116f980ba",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_ORTHOGRAPHY",
+      "gold_source_hash": "9ccfe4432a4b1e721b7a01bd4959778813ab7b1d82b81d6f69abe014478f0dd0",
+      "gold_output_hash": "2f32425af3179e7f83206a86bec4397212fdb0fc5b8e5429c1c3c2024e0b1a29"
+    },
+    {
+      "vote_id": "TRIV-b3e46f6716f634121758",
+      "line_id": 263,
+      "line_hash": "01be9f61dcfbc8435684e2e63e5a7bc8af880596027cf92fd6a1171112174eb5",
+      "source_lexical_span": [
+        11,
+        12
+      ],
+      "source_hash": "496b01d0765b9e111bacf3f2af982f9007595d3ea7d0eb7f43e0552ccf44987e",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "FIVE_VERB_NUN_CORRECTION",
+      "gold_source_hash": "0494fc1ba038495886745e5c14e337f3b51f2c1362d0d83e108dd4f6b10514c7",
+      "gold_output_hash": "589261d645c52825c3ea56190759fe5325a0b0393b290818fe7a91fd5f4fb611"
+    },
+    {
+      "vote_id": "TRIV-d56d947c9fc3b51633f7",
+      "line_id": 290,
+      "line_hash": "1a8fb95ecc12d61e3a4196a8cd511dfafbe43b190fe876427f2f23d58ab2365d",
+      "source_lexical_span": [
+        52,
+        53
+      ],
+      "source_hash": "5f99920556933b3b2e04b88ea2a55eb99d64f72f032fc6d257e3be43baaddbaf",
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "WRONG_CORRECTION",
+      "severity": "HIGH",
+      "failure_or_support_type": "TENSE_ASPECT_CHANGE",
+      "gold_source_hash": "5f99920556933b3b2e04b88ea2a55eb99d64f72f032fc6d257e3be43baaddbaf",
+      "gold_output_hash": "c103cf992baae06227c0ad493c66017422b9e90c304101c7439cd727e20068f9"
+    },
+    {
+      "vote_id": "TRIV-cfdf1572e7160e50dbd7",
+      "line_id": 302,
+      "line_hash": "14e884bce97c01ccac9170cd7253bce117b33b5db16efe9ed61779d583e9ea4e",
+      "source_lexical_span": [
+        111,
+        112
+      ],
+      "source_hash": "0af864301ddcb903302a55f81c49472003f19a8ca1f1d5d7433a4060f9a4935e",
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "HAMZA_ORTHOGRAPHY",
+      "gold_source_hash": "e9c55049cd12bc89153280f750d164149a20970406e5402fbc4915142a4e0890",
+      "gold_output_hash": "410998e9866f3f0a53b0ee8786cf278d059964d4c5a5b0df4d257c8b7e762fd8"
+    }
+  ],
+  "qalb15_test_read": false,
+  "qalb_text_persisted": false,
+  "note": "QALB text was used internally for bounded adjudication but is not persisted here."
+}
