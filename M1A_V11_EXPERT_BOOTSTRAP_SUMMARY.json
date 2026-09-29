@@ -1,0 +1,120 @@
+{
+  "status": "M1A_V11_DATA_READY",
+  "date": "2026-09-30",
+  "version": "1.1",
+  "qalb_stats": {
+    "train": {
+      "source_lines": 19411,
+      "corrected_lines": 19411,
+      "m2_blocks": 19411,
+      "m2_count_matches_lines": 1,
+      "clean_reference_keep": 19411,
+      "changed_lines": 19364,
+      "m2_reconstructable": 18884,
+      "multi_edit_reconstructable": 18762,
+      "m2_reconstruction_fail": 480,
+      "single_edit_complete": 122,
+      "naturally_unchanged": 47
+    },
+    "dev": {
+      "source_lines": 1017,
+      "corrected_lines": 1017,
+      "m2_blocks": 1017,
+      "m2_count_matches_lines": 1,
+      "clean_reference_keep": 1017,
+      "changed_lines": 1016,
+      "m2_reconstructable": 1003,
+      "multi_edit_reconstructable": 996,
+      "m2_reconstruction_fail": 13,
+      "single_edit_complete": 7,
+      "naturally_unchanged": 1
+    }
+  },
+  "zaebuc_train_stats": {
+    "raw_lines": 150,
+    "corrected_lines": 150,
+    "total_pairs": 150,
+    "clean_reference_keep": 150,
+    "changed_pairs": 150
+  },
+  "a7ta_stats": {
+    "discovered_pairs": 463,
+    "bootstrap_pairs": 375,
+    "reserved_m2_pairs": 88
+  },
+  "m2_reconstruction_failures": 493,
+  "available_case_families": {
+    "QALB_CLEAN_REFERENCE_KEEP": 20428,
+    "QALB_ERRONEOUS_SOURCE_KEEP": 20380,
+    "QALB_FULL_EXPERT_REPAIR": 20380,
+    "QALB_ONE_OF_MANY_PARTIAL": 19758,
+    "QALB_ALL_BUT_ONE_PARTIAL": 19758,
+    "QALB_SINGLE_EDIT_COMPLETE": 129,
+    "ZAEBUC_CLEAN_REFERENCE_KEEP": 150,
+    "ZAEBUC_FULL_EXPERT_REPAIR": 150,
+    "ZAEBUC_ERRONEOUS_SOURCE_KEEP": 150,
+    "A7TA_EXPERT_RULE_PAIR": 375,
+    "A7TA_CLEAN_REFERENCE_KEEP": 375
+  },
+  "persisted_sample_counts": {
+    "A7TA_CLEAN_REFERENCE_KEEP": 375,
+    "A7TA_EXPERT_RULE_PAIR": 375,
+    "QALB_FULL_EXPERT_REPAIR": 500,
+    "QALB_ALL_BUT_ONE_PARTIAL": 500,
+    "QALB_CLEAN_REFERENCE_KEEP": 500,
+    "QALB_ERRONEOUS_SOURCE_KEEP": 500,
+    "QALB_SINGLE_EDIT_COMPLETE": 129,
+    "QALB_ONE_OF_MANY_PARTIAL": 500,
+    "ZAEBUC_CLEAN_REFERENCE_KEEP": 150,
+    "ZAEBUC_FULL_EXPERT_REPAIR": 150,
+    "ZAEBUC_ERRONEOUS_SOURCE_KEEP": 150
+  },
+  "source_families": [
+    "A7TA",
+    "QALB14_L1",
+    "ZAEBUC_AR"
+  ],
+  "criteria": {
+    "qalb_line_counts_match": true,
+    "qalb_changed_ge_1000": true,
+    "qalb_clean_reference_keep_ge_1000": true,
+    "qalb_erroneous_source_keep_ge_1000": true,
+    "qalb_multi_edit_reconstructable_ge_300": true,
+    "qalb_one_of_many_ge_300": true,
+    "qalb_all_but_one_ge_300": true,
+    "zaebuc_line_counts_match": true,
+    "zaebuc_total_ge_100": true,
+    "zaebuc_changed_ge_50": true,
+    "a7ta_discovered_ge_450": true,
+    "a7ta_bootstrap_ge_300": true,
+    "a7ta_reserved_ge_80": true,
+    "independent_source_families_ge_3": true,
+    "no_forbidden_splits_read": true,
+    "no_raw_arabic_persisted": true,
+    "provenance_complete": true
+  },
+  "data_ready": true,
+  "forbidden_data": {
+    "qalb14_test_read": false,
+    "qalb15_read": false,
+    "zaebuc_dev_read": false,
+    "zaebuc_test_read": false,
+    "reserved_nahw_read": false,
+    "sealed_benchmark_read": false
+  },
+  "interpretation": {
+    "improved_vs_v1": [
+      "clean KEEP no longer depends on naturally unchanged noisy-source lines",
+      "adds independent professional university-writing corrections from ZAEBUC",
+      "adds expert-book rule-grounded A7ta pairs",
+      "reserves 20 percent of A7ta pairs for later M2 validation"
+    ],
+    "still_unresolved": [
+      "independent human confirmation on ACAD_PASS project cases",
+      "scientific fidelity",
+      "document integrity",
+      "non-reference alternative correctness",
+      "Arabic production auto-accept"
+    ]
+  }
+}
