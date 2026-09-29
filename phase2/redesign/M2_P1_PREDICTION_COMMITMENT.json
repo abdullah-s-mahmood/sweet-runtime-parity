@@ -1,0 +1,35 @@
+{
+  "record_id": "M2_P1_VERIFIER_PREDICTION_COMMITMENT",
+  "date": "2026-09-30",
+  "status": "PREDICTIONS_FROZEN_BEFORE_GOLD_KEY_READ",
+  "verifier": {
+    "product_model": "GPT-5.6 Sol",
+    "reasoning_setting": "High",
+    "execution_surface": "ChatGPT text session",
+    "prompt_version": "M2_FRONTIER_VERIFIER_PROMPT_P1",
+    "prompt_revision_number": 1,
+    "further_prompt_revision_allowed": false
+  },
+  "blind_packet": {
+    "workflow_run_id": 36645744310,
+    "artifact_id": 11067694968,
+    "artifact_name": "m2-p1-dev-blind",
+    "artifact_digest": "sha256:2a3ccf18a3e4ad46d994de7efa48760d14d21532619ae5a4b254c165055fa24b",
+    "cases": 120,
+    "p0_overlap": 0
+  },
+  "prediction_file": {
+    "local_filename": "M2_P1_VERIFIER_OUTPUT.jsonl",
+    "cases": 120,
+    "sha256": "1178d685cb3b06f96a3d8c20116f3dd95bdc690a4df7ca40393b3caff42c32a8",
+    "schema_validated": true,
+    "counts": {
+      "ACCEPT": 50,
+      "REVIEW": 25,
+      "REJECT": 45
+    },
+    "repair_incomplete_accept_violations": 0
+  },
+  "gold_key_read_at_commit_time": false,
+  "a7ta_reserved_opened": false
+}
