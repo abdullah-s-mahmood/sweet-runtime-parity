@@ -1,0 +1,102 @@
+name: Phase 2 Residual GED Retrospective Replication
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/run_residual_ged_retrospective.py"
+      - "phase2/generalization/evaluate_residual_ged_retrospective.py"
+      - ".github/workflows/phase2-residual-ged-retrospective.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  replicate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install frozen GED runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu torch==1.12.1+cpu
+          python -m pip install "transformers==4.30.0" "huggingface_hub<1.0" "numpy<2"
+
+      - name: Download frozen earlier AraBART artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: trimodel-arabart-q14
+          path: artifacts/arabart
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36517205396
+          github-token: ${{ github.token }}
+
+      - name: Download pinned RAW and official CAMeLIRA TRAIN source only
+        run: |
+          RAWD="upstream/arabic-gec/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/train"
+          PRED="upstream/arabic-gec/data/gec/camelira_gec/qalb15"
+          mkdir -p "$RAWD" "$PRED"
+          BASE="https://raw.githubusercontent.com/CAMeL-Lab/arabic-gec/8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+          curl -fsSL "$BASE/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2015/train/QALB-2015-L2-Train.sent.no_ids" -o "$RAWD/QALB-2015-L2-Train.sent.no_ids"
+          curl -fsSL "$BASE/data/gec/camelira_gec/qalb15/qalb15_train.src.txt" -o "$PRED/qalb15_train.src.txt"
+          test ! -f "$RAWD/QALB-2015-L2-Train.cor.no_ids"
+
+      - name: Materialize frozen retrospective GED features before labels
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/run_residual_ged_retrospective.py 2>&1 | tee RESIDUAL_GED_RETROSPECTIVE_CONSOLE.txt
+          test -f PHASE2_RESIDUAL_GED_RETROSPECTIVE_FEATURES.jsonl
+          test -f PHASE2_RESIDUAL_GED_RETROSPECTIVE_RUNTIME.json
+
+      - name: Pre-label leakage audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for p in [Path("PHASE2_RESIDUAL_GED_RETROSPECTIVE_FEATURES.jsonl"),Path("PHASE2_RESIDUAL_GED_RETROSPECTIVE_RUNTIME.json")]:
+              s=p.read_text(encoding="utf-8")
+              assert not any("\u0600"<=c<="\u06ff" for c in s),p
+          print("pre-label leakage audit PASS")
+          PY
+
+      - name: Evaluate against closed historical labels
+        run: |
+          PYTHONPATH=. python phase2/generalization/evaluate_residual_ged_retrospective.py
+          test -f PHASE2_RESIDUAL_GED_RETROSPECTIVE_RESULTS.json
+
+      - name: Persist safe retrospective evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_RESIDUAL_GED_RETROSPECTIVE_FEATURES.jsonl PHASE2_RESIDUAL_GED_RETROSPECTIVE_RUNTIME.json PHASE2_RESIDUAL_GED_RETROSPECTIVE_RESULTS.json
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Record residual GED retrospective replication [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-residual-ged-retrospective
+          path: |
+            PHASE2_RESIDUAL_GED_RETROSPECTIVE_FEATURES.jsonl
+            PHASE2_RESIDUAL_GED_RETROSPECTIVE_RUNTIME.json
+            PHASE2_RESIDUAL_GED_RETROSPECTIVE_RESULTS.json
+            RESIDUAL_GED_RETROSPECTIVE_CONSOLE.txt
+          if-no-files-found: warn
+          retention-days: 30
