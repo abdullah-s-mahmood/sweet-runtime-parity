@@ -20,7 +20,7 @@ Not completed:
 - no adjudication;
 - no inter-annotator agreement report;
 - no main M1 queue yet;
-- no M2 frontier-verifier run.
+- no M2 frontier-verifier run.\n\nTooling ready:\n- validate_m1_reviewer_response.py validates schema, case IDs and blinding declarations;\n- analyze_m1_agreement.py reports per-axis raw agreement, nominal Cohen kappa and nominal Krippendorff alpha;\n- derive_m1_disposition.py derives study disposition only after adjudication.
 
 ## Next legitimate action
 
