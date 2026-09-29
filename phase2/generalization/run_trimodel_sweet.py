@@ -7,7 +7,7 @@ Required env:
 No corrected/gold text is opened.
 """
 from __future__ import annotations
-import json,os,platform,subprocess,sys
+import json,os,platform,subprocess,sys,importlib.metadata
 from pathlib import Path
 import torch
 from huggingface_hub import HfApi
