@@ -1,0 +1,140 @@
+name: Phase 2 CamelParser Dependency Mapping Smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/DEPENDENCY_GOVERNOR_RESEARCH_START.md"
+      - "phase2/generalization/DEPENDENCY_GOVERNOR_BRAINSTORM_START.md"
+      - "phase2/generalization/DEPENDENCY_MAPPING_SMOKE_PROTOCOL.md"
+      - ".github/workflows/phase2-dependency-mapping-smoke.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  smoke:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.13"
+
+      - name: Clone pinned CamelParser
+        run: |
+          git clone https://github.com/CAMeL-Lab/camel_parser.git upstream/camel_parser
+          git -C upstream/camel_parser checkout 66f29f7e34e3b5b38780d08bd56cf481635bf1c6
+          test "$(git -C upstream/camel_parser rev-parse HEAD)" = "66f29f7e34e3b5b38780d08bd56cf481635bf1c6"
+
+      - name: Install pinned parser runtime
+        working-directory: upstream/camel_parser
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install -r requirements.txt
+          mkdir -p "$CAMELTOOLS_DATA"
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+          python download_models.py
+
+      - name: Run synthetic mapping smoke
+        working-directory: upstream/camel_parser
+        run: |
+          cat > /tmp/dependency_smoke.txt <<'EOF'
+          ذهبت إلى المدرسة وجلست في الاستراحة .
+          زار الباحث الجامعة وناقش النتائج مع الأستاذ .
+          EOF
+          python text_to_conll_cli.py -i /tmp/dependency_smoke.txt -f preprocessed_text -m catib > /tmp/preprocessed.conll
+          python text_to_conll_cli.py -i /tmp/dependency_smoke.txt -f tokenized -m catib > /tmp/tokenized.conll
+          PYTHONPATH=. python - <<'PY'
+          import hashlib,json,platform,re
+          from pathlib import Path
+          import importlib.metadata
+
+          inp=[x.strip() for x in Path('/tmp/dependency_smoke.txt').read_text(encoding='utf-8').splitlines() if x.strip()]
+
+          def parse(path):
+              lines=Path(path).read_text(encoding='utf-8').splitlines()
+              sents=[];cur=[];tree=None;text=None
+              for ln in lines+['']:
+                  if ln.startswith('# text = '): text=ln[len('# text = '):]
+                  elif ln.startswith('# treeTokens = '): tree=ln[len('# treeTokens = '):].split()
+                  elif ln and not ln.startswith('#'):
+                      cols=ln.split('\t')
+                      assert len(cols)==10,(path,ln)
+                      cur.append(cols)
+                  elif not ln and cur:
+                      sents.append({'text':text,'tree':tree,'rows':cur});cur=[];tree=None;text=None
+              return sents
+
+          pre=parse('/tmp/preprocessed.conll')
+          tok=parse('/tmp/tokenized.conll')
+          assert len(pre)==len(inp)==len(tok)
+
+          details=[]
+          tokenized_exact=True
+          for src,p,t in zip(inp,pre,tok):
+              ws=src.split()
+              tforms=[r[1] for r in t['rows']]
+              pforms=[r[1] for r in p['rows']]
+              exact=(tforms==ws)
+              tokenized_exact &= exact
+              details.append({
+                  'input_token_count':len(ws),
+                  'preprocessed_token_count':len(pforms),
+                  'tokenized_token_count':len(tforms),
+                  'tokenized_exact_input_sequence':exact,
+                  'preprocessed_tree_token_count':len(p['tree'] or []),
+                  'tokenized_tree_token_count':len(t['tree'] or []),
+                  'preprocessed_tree_hash':hashlib.sha256(' '.join(p['tree'] or []).encode()).hexdigest(),
+                  'tokenized_tree_hash':hashlib.sha256(' '.join(t['tree'] or []).encode()).hexdigest(),
+                  'preprocessed_forms_hash':hashlib.sha256(' '.join(pforms).encode()).hexdigest(),
+                  'tokenized_forms_hash':hashlib.sha256(' '.join(tforms).encode()).hexdigest(),
+              })
+
+          obj={
+              'status':'CAMELPARSER_DEPENDENCY_MAPPING_SMOKE_COMPLETE',
+              'parser_commit':'66f29f7e34e3b5b38780d08bd56cf481635bf1c6',
+              'python':platform.python_version(),
+              'torch':importlib.metadata.version('torch'),
+              'camel_tools':importlib.metadata.version('camel-tools'),
+              'transformers':importlib.metadata.version('transformers'),
+              'sentences':len(inp),
+              'tokenized_exact_input_sequence_all':tokenized_exact,
+              'details':details,
+              'qalb_data_read':False,
+              'qalb15_test_read':False,
+          }
+          Path('../../PHASE2_DEPENDENCY_MAPPING_SMOKE_RESULTS.json').write_text(json.dumps(obj,indent=2)+"\n")
+          print(json.dumps(obj))
+          PY
+
+      - name: Persist smoke result
+        working-directory: ${{ github.workspace }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_DEPENDENCY_MAPPING_SMOKE_RESULTS.json
+          if git diff --cached --quiet; then
+            echo unchanged
+          else
+            git commit -m "Record CamelParser dependency mapping smoke [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-dependency-mapping-smoke
+          path: PHASE2_DEPENDENCY_MAPPING_SMOKE_RESULTS.json
+          if-no-files-found: warn
+          retention-days: 30
