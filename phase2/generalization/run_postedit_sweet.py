@@ -19,12 +19,13 @@ def main():
     model_id=os.environ["SWEET_MODEL_ID"]
     voter=os.environ["SWEET_VOTER_NAME"]
     prefix=os.environ["SWEET_OUTPUT_PREFIX"]
+    revision=os.environ["SWEET_MODEL_REVISION"]
     out_path=ART/f"{prefix}_POSTEDIT_EVENTS.jsonl"
     sys.path.insert(0,str(UP.resolve()))
     from gec.tag import rewrite
 
-    tok=BertTokenizer.from_pretrained(model_id)
-    model=BertForTokenClassification.from_pretrained(model_id).eval().cpu()
+    tok=BertTokenizer.from_pretrained(model_id,revision=revision)
+    model=BertForTokenClassification.from_pretrained(model_id,revision=revision).eval().cpu()
     rows=[]
     for n,x in enumerate(jl(CONS),1):
         source=x["corrected_text"]
