@@ -1,0 +1,125 @@
+name: Phase 2 Dependency Governor Feature Diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/DEPENDENCY_FEATURE_DIAGNOSTIC_PROTOCOL.md"
+      - "phase2/generalization/run_dependency_governor_features.py"
+      - "phase2/generalization/evaluate_dependency_governor_features.py"
+      - ".github/workflows/phase2-dependency-governor-diagnostic.yml"
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.13"
+
+      - name: Download frozen ORTHO safe evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: phase2-ortho-isolated-fresh-validation-safe
+          path: artifacts/ortho_safe
+          github-token: ${{ github.token }}
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36520233398
+
+      - name: Download frozen AraBART voter artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ortho-val-arabart-q14
+          path: artifacts/ortho_arabart
+          github-token: ${{ github.token }}
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36520233398
+
+      - name: Clone pinned QALB RAW and CamelParser
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          git clone https://github.com/CAMeL-Lab/camel_parser.git upstream/camel_parser
+          git -C upstream/camel_parser checkout 66f29f7e34e3b5b38780d08bd56cf481635bf1c6
+
+      - name: Install parser system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake libboost-all-dev
+
+      - name: Install pinned parser runtime
+        working-directory: upstream/camel_parser
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install -r requirements.txt
+          mkdir -p "$CAMELTOOLS_DATA"
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+          python download_models.py
+
+      - name: Materialize label-blind dependency features
+        working-directory: ${{ github.workspace }}
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/run_dependency_governor_features.py 2>&1 | tee artifacts/DEPENDENCY_FEATURE_CONSOLE.txt
+          test -f PHASE2_DEPENDENCY_GOVERNOR_FEATURES.jsonl
+          test -f PHASE2_DEPENDENCY_GOVERNOR_RUNTIME.json
+          sha256sum PHASE2_DEPENDENCY_GOVERNOR_FEATURES.jsonl PHASE2_DEPENDENCY_GOVERNOR_RUNTIME.json > artifacts/DEPENDENCY_FEATURE_FROZEN_SHA256.txt
+
+      - name: Leakage audit before labels
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for p in [Path("PHASE2_DEPENDENCY_GOVERNOR_FEATURES.jsonl"),Path("PHASE2_DEPENDENCY_GOVERNOR_RUNTIME.json")]:
+              raw=p.read_text(encoding="utf-8")
+              assert not any("\u0600"<=c<="\u06ff" for c in raw),p
+              for key in ["source_text","candidate_text","source_surfaces","output_surfaces"]:
+                  assert '"'+key+'"' not in raw,(p,key)
+          print("dependency feature pre-label leakage audit PASS")
+          PY
+
+      - name: Evaluate frozen features descriptively
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/evaluate_dependency_governor_features.py 2>&1 | tee artifacts/DEPENDENCY_EVAL_CONSOLE.txt
+          test -f PHASE2_DEPENDENCY_GOVERNOR_RESULTS.json
+
+      - name: Persist safe diagnostic evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_DEPENDENCY_GOVERNOR_FEATURES.jsonl PHASE2_DEPENDENCY_GOVERNOR_RUNTIME.json PHASE2_DEPENDENCY_GOVERNOR_RESULTS.json
+          if git diff --cached --quiet; then
+            echo unchanged
+          else
+            git commit -m "Record dependency governor feature diagnostic [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-dependency-governor-safe
+          path: |
+            PHASE2_DEPENDENCY_GOVERNOR_RUNTIME.json
+            PHASE2_DEPENDENCY_GOVERNOR_RESULTS.json
+            artifacts/DEPENDENCY_FEATURE_FROZEN_SHA256.txt
+            artifacts/DEPENDENCY_FEATURE_CONSOLE.txt
+            artifacts/DEPENDENCY_EVAL_CONSOLE.txt
+          if-no-files-found: warn
+          retention-days: 30
