@@ -1,0 +1,111 @@
+name: Phase 2 Contextual Residual-Risk Guard Diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/generalization/CONTEXTUAL_RESIDUAL_GUARD_*.md"
+      - "phase2/generalization/run_contextual_residual_guard.py"
+      - "phase2/generalization/evaluate_contextual_residual_guard.py"
+      - ".github/workflows/phase2-contextual-residual-guard.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    env:
+      CAMELTOOLS_DATA: ${{ github.workspace }}/.camel_tools
+      GH_TOKEN: ${{ github.token }}
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Download frozen canonical tri-model artifacts
+        run: |
+          mkdir -p artifacts/sweet_q14 artifacts/sweet_zaebuc artifacts/arabart_q14
+          gh run download 36517205396 -n trimodel-sweet-q14 -D artifacts/sweet_q14
+          gh run download 36517205396 -n trimodel-sweet-zaebuc -D artifacts/sweet_zaebuc
+          gh run download 36517205396 -n trimodel-arabart-q14 -D artifacts/arabart_q14
+          test -f artifacts/sweet_q14/TRI_SWEET_Q14_EVENTS.jsonl
+          test -f artifacts/sweet_zaebuc/TRI_SWEET_ZAEBUC_EVENTS.jsonl
+          test -f artifacts/arabart_q14/TRI_ARABART_Q14_EVENTS.jsonl
+
+      - name: Clone pinned QALB raw source
+        run: |
+          mkdir -p upstream
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+
+      - name: Install contextual morphology runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "camel-tools==1.4.1" "cachetools==4.2.4" "numpy<2" "protobuf==3.20.3"
+          mkdir -p "$CAMELTOOLS_DATA"
+          camel_data -i morphology-db-msa-r13
+          camel_data -i disambig-bert-unfactored-msa
+
+      - name: Materialize guard decisions before labels
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/run_contextual_residual_guard.py 2>&1 | tee artifacts/CONTEXTUAL_GUARD_RUNTIME_CONSOLE.txt
+          test -f PHASE2_CONTEXTUAL_RESIDUAL_GUARD_FEATURES.jsonl
+          test -f PHASE2_CONTEXTUAL_RESIDUAL_GUARD_RUNTIME.json
+          sha256sum PHASE2_CONTEXTUAL_RESIDUAL_GUARD_FEATURES.jsonl PHASE2_CONTEXTUAL_RESIDUAL_GUARD_RUNTIME.json > artifacts/CONTEXTUAL_GUARD_FROZEN_SHA256.txt
+
+      - name: Evaluate frozen decisions
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python phase2/generalization/evaluate_contextual_residual_guard.py 2>&1 | tee artifacts/CONTEXTUAL_GUARD_EVAL_CONSOLE.txt
+          test -f PHASE2_CONTEXTUAL_RESIDUAL_GUARD_RESULTS.json
+
+      - name: Leakage audit
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for p in [
+              Path("PHASE2_CONTEXTUAL_RESIDUAL_GUARD_FEATURES.jsonl"),
+              Path("PHASE2_CONTEXTUAL_RESIDUAL_GUARD_RUNTIME.json"),
+              Path("PHASE2_CONTEXTUAL_RESIDUAL_GUARD_RESULTS.json"),
+          ]:
+              raw=p.read_text(encoding="utf-8")
+              assert not any("\u0600"<=ch<="\u06ff" for ch in raw), p
+              for k in ["source_text","candidate_output","source_surfaces","output_surfaces","lex"]:
+                  assert '"'+k+'"' not in raw, (p,k)
+          print("contextual residual guard leakage audit PASS")
+          PY
+
+      - name: Persist hash/category-only evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PHASE2_CONTEXTUAL_RESIDUAL_GUARD_FEATURES.jsonl PHASE2_CONTEXTUAL_RESIDUAL_GUARD_RUNTIME.json PHASE2_CONTEXTUAL_RESIDUAL_GUARD_RESULTS.json
+          if git diff --cached --quiet; then
+            echo "Contextual guard evidence unchanged."
+          else
+            git commit -m "Record contextual residual-risk guard diagnostic [skip ci]"
+            git pull --rebase origin phase2-arabic-eval
+            git push origin HEAD:phase2-arabic-eval
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-contextual-residual-guard-safe
+          path: |
+            PHASE2_CONTEXTUAL_RESIDUAL_GUARD_RUNTIME.json
+            PHASE2_CONTEXTUAL_RESIDUAL_GUARD_RESULTS.json
+            artifacts/CONTEXTUAL_GUARD_FROZEN_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 30
