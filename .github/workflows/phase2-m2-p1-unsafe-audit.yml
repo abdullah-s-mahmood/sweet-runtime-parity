@@ -1,0 +1,38 @@
+name: M2 P1 Unsafe-Accept Forensic Audit
+on:
+  workflow_dispatch:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/m2_audit_p1_unsafe_accepts.py"
+      - ".github/workflows/phase2-m2-p1-unsafe-audit.yml"
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Download already-consumed QALB14 TRAIN
+        run: |
+          set -euo pipefail
+          REV="8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+          BASE="https://raw.githubusercontent.com/CAMeL-Lab/arabic-gec/$REV/data/gec/QALB-0.9.1-Dec03-2021-SharedTasks/data/2014/train"
+          D="upstream/qalb14/train"; mkdir -p "$D"
+          P="QALB-2014-L1-Train"
+          for F in "$P.sent.no_ids" "$P.cor.no_ids" "$P.m2"; do curl -fsSL "$BASE/$F" -o "$D/$F"; done
+          test ! -e upstream/qalb14/test
+          test ! -e upstream/qalb15
+      - name: Audit accepted partial cases
+        run: python phase2/redesign/m2_audit_p1_unsafe_accepts.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2-p1-unsafe-accept-audit
+          path: M2_P1_UNSAFE_ACCEPT_AUDIT.json
+          retention-days: 30
