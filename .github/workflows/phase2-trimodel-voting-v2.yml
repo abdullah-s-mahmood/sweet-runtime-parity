@@ -12,7 +12,7 @@ on:
       - "phase2/generalization/run_trimodel_arabart.py"
       - "phase2/generalization/materialize_trimodel_votes.py"
       - "phase2/generalization/evaluate_trimodel_votes.py"
-      - ".github/workflows/phase2-trimodel-voting.yml"
+      - ".github/workflows/phase2-trimodel-voting-v2.yml"
 
 permissions:
   contents: write
