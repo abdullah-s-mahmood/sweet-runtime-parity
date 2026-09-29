@@ -1,0 +1,32 @@
+{
+  "record_id": "M2R_P0_RESIDUAL_HUNTER_PREDICTION_COMMITMENT",
+  "date": "2026-09-30",
+  "status": "PREDICTIONS_FROZEN_BEFORE_GOLD_KEY_READ",
+  "verifier": {
+    "product_model": "GPT-5.6 Sol",
+    "reasoning_setting": "High",
+    "execution_surface": "ChatGPT text session",
+    "protocol": "M2R_RESIDUAL_SPAN_PROTOCOL_V1",
+    "prompt_version": "M2R_P0"
+  },
+  "blind_packet": {
+    "workflow_run_id": 36647401964,
+    "artifact_id": 11068883180,
+    "artifact_name": "m2r-p0-v11-dev-blind",
+    "artifact_digest": "sha256:9f18cd4df93d28fb9ba1d04159c6fcdaf2fb056da343f4730c31b9a33f3d048b",
+    "cases": 120
+  },
+  "predictions": {
+    "local_filename": "M2R_P0_VERIFIER_OUTPUT.jsonl",
+    "cases": 120,
+    "cases_with_mandatory_errors": 102,
+    "cases_with_no_mandatory_errors": 18,
+    "total_claimed_errors": 235,
+    "invalid_surface_claims": 0,
+    "sha256": "5cc66688e544ed91bf6a77852f199a6851f05ca8b6d93da36b9748bdee1a76be"
+  },
+  "gold_key_read_at_commit_time": false,
+  "confirmation_partition_opened": false,
+  "holdout_partition_opened": false,
+  "a7ta_reserved_opened": false
+}
