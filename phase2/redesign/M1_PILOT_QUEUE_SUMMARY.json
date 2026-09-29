@@ -1,0 +1,20 @@
+{
+  "status": "M1_PILOT_BLINDED_QUEUE_MATERIALIZED",
+  "date": "2026-09-30",
+  "contract": "ACAD_PASS_EDIT_CONTRACT_V1",
+  "population_source": "already-consumed PHASE2_SURGICAL_APPLIED_EDIT_ADJUDICATION (60 edits)",
+  "total_pilot_cases": 35,
+  "sampling": "all historical non-supported classes + 13 deterministic supported cases; historical labels not present in reviewer packet",
+  "hidden_historical_strata_counts": {
+    "SUPPORTED_CORRECTION": 13,
+    "WRONG_CORRECTION": 7,
+    "SUPPORTED_ALTERNATIVE": 11,
+    "UNNECESSARY_EDIT": 2,
+    "PARTIAL_CORRECTION": 2
+  },
+  "independent_human_labels_present": false,
+  "purpose": "annotation-contract calibration only, not performance estimation",
+  "qalb15_test_read": false,
+  "reserved_or_sealed_consumed": false,
+  "fourth_qalb15_slice_consumed": false
+}

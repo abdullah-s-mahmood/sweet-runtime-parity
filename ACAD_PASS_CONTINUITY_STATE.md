@@ -164,36 +164,27 @@ token-level residual GED is useful as an independent review/ranking feature but 
 
 ## Current active task
 
-**Phase 2 — Sentence-Level Correction Acceptability Discrimination feasibility diagnostic**
+**Phase 2 Redesign — M1: Edit Contract & Independent Labeling Protocol.**
 
-Purpose:
-determine whether a dedicated source-candidate acceptability/discrimination layer can detect incomplete but locally valid Arabic corrections that survived:
-- tri-model voting;
-- local orthographic constraints;
-- contextual morphology identity;
-- neighborhood isolation;
-- post-edit fixed-point checks;
-- dependency/governor diagnostics;
-- CATiB retrospective rules;
-- residual target-level GED.
+The independent audit supersedes the prior assumption that the current CAD proxy directly measures sentence-level repair completeness. Fine-tuned CAD run 36536562562 is recorded as a technical serialization failure after three epochs; its scientific outcome is unresolved and it is not the active research question.
 
-This next diagnostic must remain consumed-evidence-only first.
+M1 rules:
+- repair the measurement contract before any new verifier training;
+- preserve all historical labels as provenance;
+- use consumed evidence first;
+- require two independent qualified Arabic reviewers plus adjudication for human gold;
+- no QALB15 TEST, reserved/sealed data, fourth QALB15 slice, Phase 3, or production promotion;
+- M2 frontier-verifier testing begins only after M1 stabilizes the labels and adjudication protocol.
 
-Research basis:
-- correction acceptability discrimination directly evaluates whether a candidate correction is acceptable in sentence context rather than merely locally plausible;
-- detector/corrector and edit-voting work supports using independent verification but does not justify another simple voter;
-- Arabic grammar remains sufficiently difficult that review must remain a first-class fallback.
-
-Before implementation:
-1. identify a defensible Arabic-capable sentence-pair discriminator architecture and training/evaluation source that does not leak current consumed labels;
-2. prefer external/pinned training evidence (e.g. earlier corpus split such as QALB14 or another public Arabic GEC source) rather than training on the current 14/36 adjudications;
-3. pre-register model, data, negative construction, decision rule, and consumed-population success criterion;
-4. materialize scores/decisions before reading current labels;
-5. do not tune thresholds after seeing current labels.
-
-If no defensible discriminator can be constructed without leakage or unjustified synthetic assumptions:
-- stop pursuing unattended Arabic auto-accept in Phase 2;
-- retain high-recall correction generation + independent risk signals + REVIEW-first/human verification.
+Materialized on 2026-09-30 under `phase2/redesign/`:
+- M1_RESEARCH_START.md
+- ACAD_PASS_EDIT_CONTRACT_V1.md
+- M1_LABEL_SCHEMA.json
+- M1_ADJUDICATION_PROTOCOL.md
+- M1_PILOT_BLINDED_QUEUE.jsonl
+- M1_PILOT_QUEUE_SUMMARY.json
+- build_m1_pilot_queue.py
+- M1_STATUS.md
 
 ## Next decision contract
 

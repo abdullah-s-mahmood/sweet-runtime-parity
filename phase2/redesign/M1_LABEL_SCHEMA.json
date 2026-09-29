@@ -1,0 +1,102 @@
+{
+  "schema_id": "ACAD_PASS_M1_LABEL_SCHEMA_V1",
+  "version": 1,
+  "status": "FROZEN_FOR_M1_PILOT",
+  "primary_unit": "reversible_edit_transaction",
+  "reviewer_independence_required": true,
+  "axes": {
+    "necessity": [
+      "REQUIRED_ERROR_FIX",
+      "OPTIONAL_IMPROVEMENT",
+      "UNNECESSARY",
+      "AMBIGUOUS_INTENT",
+      "INSUFFICIENT_CONTEXT"
+    ],
+    "local_correctness": [
+      "CORRECT",
+      "INCORRECT",
+      "VALID_ALTERNATIVE",
+      "AMBIGUOUS",
+      "NOT_APPLICABLE"
+    ],
+    "contextual_correctness": [
+      "CORRECT_IN_CONTEXT",
+      "INCORRECT_IN_CONTEXT",
+      "AMBIGUOUS_READING",
+      "INSUFFICIENT_CONTEXT"
+    ],
+    "edit_group_status": [
+      "ATOMIC_COMPLETE",
+      "GROUP_REQUIRED_COMPLETE",
+      "GROUP_REQUIRED_INCOMPLETE",
+      "GROUP_BOUNDARY_UNCERTAIN",
+      "NOT_APPLICABLE"
+    ],
+    "residual_relation": [
+      "NO_RELEVANT_RESIDUAL",
+      "RELATED_RESIDUAL",
+      "INDEPENDENT_RESIDUAL",
+      "POSSIBLE_RESIDUAL_UNCERTAIN",
+      "OUT_OF_SCOPE"
+    ],
+    "semantic_fidelity": [
+      "PRESERVED",
+      "CHANGED_BUT_EQUIVALENT",
+      "SEMANTIC_DRIFT",
+      "AMBIGUOUS",
+      "INSUFFICIENT_CONTEXT"
+    ],
+    "scientific_fidelity": [
+      "PRESERVED",
+      "AT_RISK",
+      "VIOLATED",
+      "AMBIGUOUS",
+      "NOT_APPLICABLE"
+    ],
+    "protected_invariants": [
+      "PASS",
+      "FAIL",
+      "NOT_TESTED",
+      "NOT_APPLICABLE"
+    ],
+    "document_integrity": [
+      "PASS",
+      "FAIL",
+      "UNKNOWN",
+      "NOT_APPLICABLE"
+    ],
+    "ambiguity_author_intent": [
+      "RESOLVED",
+      "MATERIAL_AMBIGUITY",
+      "AUTHOR_REQUIRED",
+      "INSUFFICIENT_CONTEXT"
+    ],
+    "severity": [
+      "LOW",
+      "MEDIUM",
+      "HIGH",
+      "CRITICAL"
+    ]
+  },
+  "derived_disposition": [
+    "ELIGIBLE_FOR_LATER_VERIFIER_STUDY",
+    "REVIEW_REQUIRED",
+    "REJECT_EDIT"
+  ],
+  "required_free_text": [
+    "brief_rationale",
+    "evidence_span_or_relation"
+  ],
+  "optional_free_text": [
+    "residual_error_description",
+    "ambiguity_description",
+    "scientific_risk_description",
+    "adjudicator_note"
+  ],
+  "historical_labels_are_provenance_only": true,
+  "reference_policy": {
+    "primary_pass": "HIDDEN",
+    "secondary_reference_check": "ONLY_AFTER_PRIMARY_LABELS_LOCKED",
+    "reference_is_not_oracle": true
+  }
+}
