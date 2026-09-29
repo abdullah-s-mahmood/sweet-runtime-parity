@@ -114,44 +114,101 @@ local orthographic plausibility + tri-model agreement + morphology identity + cl
 
 No V1 retuning is permitted on this consumed validation slice.
 
+## V2 repair-completeness diagnostics — CLOSED TO DATE
+
+Post-edit stability/morphology:
+- canonical repaired run: 36522179119
+- fixed-point stability captured only 1/16 unsafe;
+- morphology identity captured 4/16 unsafe and 2/4 wrong;
+- no tested rule met the pre-registered capture criterion;
+- no fresh validation allowed.
+
+Dependency/governor diagnostic:
+- canonical run: 36523340807
+- simple dependency structural-change evidence failed to separate the two fresh ORTHO partials;
+- no dependency-change rule was promotable.
+
+CATiB PROP→NOM retrospective:
+- canonical run: 36524375608
+- accepted 21/36;
+- supported 19;
+- partial 2;
+- precision 90.48%;
+- pre-registered criterion failed;
+- no fresh slice justified.
+
+Residual GED repair-completeness:
+- direct-text run: 36530908345
+- on the consumed third-slice 14 ORTHO V1 PASS events, GED_TARGET_CLEAN_BOTH gave 12/12 supported PASS and captured both partials;
+- preprocessing-faithful CAMeLIRA replication run: 36531381438 reproduced 12/12 supported PASS and 2/2 partial capture;
+- official CAMeLIRA preprocessing had already normalized the target to candidate in 14/14 cases, so the signal was contextual rather than merely surface spelling;
+- this justified only retrospective replication, not a new slice.
+
+Residual GED target-clean retrospective:
+- canonical run: 36531699643
+- earlier consumed ORTHO_MORPH population: 34 supported / 36 total, 2 partial;
+- GED_TARGET_CLEAN_BOTH PASS: 29
+- supported PASS: 28
+- partial PASS: 1
+- wrong/unnecessary PASS: 0
+- PASS precision: 96.55%
+- supported retention: 82.35%
+- partial capture: 50%
+- nested strict V1: 14/19 PASS, all 14 supported
+- pre-registered zero-partial criterion: FAILED
+- **status: NOT_PROMISING for a fourth disjoint validation**
+- no fourth slice may be spent on this rule.
+
+Interpretation:
+token-level residual GED is useful as an independent review/ranking feature but still does not prove sentence-level repair completeness.
+
 ## Current active task
 
-**Phase 2 — CONTEXTUAL_REPAIR_COMPLETENESS_V2 diagnostic**
+**Phase 2 — Sentence-Level Correction Acceptability Discrimination feasibility diagnostic**
 
-This is diagnostic-only on consumed evidence first. No promotion is allowed from the consumed population.
+Purpose:
+determine whether a dedicated source-candidate acceptability/discrimination layer can detect incomplete but locally valid Arabic corrections that survived:
+- tri-model voting;
+- local orthographic constraints;
+- contextual morphology identity;
+- neighborhood isolation;
+- post-edit fixed-point checks;
+- dependency/governor diagnostics;
+- CATiB retrospective rules;
+- residual target-level GED.
 
-Primary hypothesis:
-a candidate should not be eligible for unattended acceptance merely because its local spelling/morphology is stable; it should also show independent evidence that the sentence-level/local syntactic repair is complete.
+This next diagnostic must remain consumed-evidence-only first.
 
-Candidate evidence to test:
-1. V1 PASS prerequisite.
-2. Post-edit fixed-point stability after applying the candidate.
-3. Re-run frozen voters on post-edit context.
-4. Dependency/governor compatibility around the target.
-5. Detect target-adjacent remaining repair signals or incompatible governor/dependent relations.
-6. Materialize diagnostic evidence before reading consumed labels.
-7. Measure capture of the two known partials versus retention of the 12 supported fresh PASS events and, where appropriate, the broader consumed tri-model set.
+Research basis:
+- correction acceptability discrimination directly evaluates whether a candidate correction is acceptable in sentence context rather than merely locally plausible;
+- detector/corrector and edit-voting work supports using independent verification but does not justify another simple voter;
+- Arabic grammar remains sufficiently difficult that review must remain a first-class fallback.
 
-Research direction:
-- do not add voters merely to raise consensus;
-- dependency-aware Arabic evidence is justified;
-- fixed-point/post-edit stability is justified;
-- review remains first-class;
-- independent human validation is still required before production claims.
+Before implementation:
+1. identify a defensible Arabic-capable sentence-pair discriminator architecture and training/evaluation source that does not leak current consumed labels;
+2. prefer external/pinned training evidence (e.g. earlier corpus split such as QALB14 or another public Arabic GEC source) rather than training on the current 14/36 adjudications;
+3. pre-register model, data, negative construction, decision rule, and consumed-population success criterion;
+4. materialize scores/decisions before reading current labels;
+5. do not tune thresholds after seeing current labels.
+
+If no defensible discriminator can be constructed without leakage or unjustified synthetic assumptions:
+- stop pursuing unattended Arabic auto-accept in Phase 2;
+- retain high-recall correction generation + independent risk signals + REVIEW-first/human verification.
 
 ## Next decision contract
 
-If V2 diagnostic is promising on consumed evidence:
-1. freeze V2 byte-for-byte before any new gold;
-2. pre-register selection of a **fourth disjoint untouched QALB15 TRAIN slice**;
-3. evaluate raw-only decisions before opening corrected TRAIN;
-4. require >=10 PASS and zero wrong/partial/unnecessary for any promotion consideration;
-5. still require later independent human validation.
+No fourth disjoint QALB15 TRAIN slice is currently authorized.
 
-If V2 does not capture the known partials without collapsing useful coverage:
-- do not force an auto-accept lane;
-- retain REVIEW-first behavior;
-- consider dependency-aware escalation or human verification as the product-safe architecture.
+A fourth slice may only be considered if a new sentence-level acceptability diagnostic:
+- is trained/calibrated without current-label leakage;
+- satisfies a pre-registered consumed-population criterion with zero wrong/partial/unnecessary PASS;
+- retains useful coverage;
+- has reproducible pinned provenance.
+
+Even then:
+- the fourth slice is development-generalization only;
+- QALB15 TEST remains unread;
+- independent human validation is still required before any production auto-apply claim.
 
 No Phase 3.
 No final sealed benchmark.
