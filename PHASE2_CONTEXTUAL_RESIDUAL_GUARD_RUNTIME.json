@@ -1,0 +1,25 @@
+{
+  "status": "CONTEXTUAL_RESIDUAL_GUARD_RUNTIME_FROZEN",
+  "diagnostic_only": true,
+  "source_trimodel_run": 36517205396,
+  "labels_or_gold_read": false,
+  "rows": 142,
+  "decision_counts": {
+    "ORTHO_ISOLATED_COMMON_NOUN_V1": {
+      "PASS": 19,
+      "REVIEW": 123
+    },
+    "ORTHO_MORPH_COMMON_NOUN_V1": {
+      "PASS": 36,
+      "REVIEW": 106
+    },
+    "ORTHO_ISOLATED_NOUN_ADV_V1": {
+      "PASS": 19,
+      "REVIEW": 123
+    }
+  },
+  "features_sha256": "de250b5de1ec2a7da4cf3f21eff944ebe13b12cde5c02fb7f067346738199580",
+  "qalb_text_persisted": false,
+  "qalb15_test_read": false,
+  "rules_frozen_before_labels": true
+}
