@@ -1,0 +1,88 @@
+{
+  "status": "PHASE2_ORTHO_ISOLATED_FRESH_MANUAL_REVIEW_COMPLETE",
+  "date": "2026-09-29",
+  "source_run": 36520233398,
+  "development_generalization_only": true,
+  "population": "third disjoint QALB15 L2 TRAIN 50-line slice",
+  "rule_version": "ORTHO_ISOLATED_COMMON_NOUN_V1",
+  "runtime_rule_frozen_before_gold": true,
+  "same_agent_contextual_review": true,
+  "independent_human_validation": false,
+  "pass_events": 14,
+  "exact_gold_supported": 8,
+  "reviewed_nonexact_events": 6,
+  "nonexact_manual_counts": {
+    "SUPPORTED_CORRECTION": 3,
+    "SUPPORTED_ALTERNATIVE": 1,
+    "PARTIAL_CORRECTION": 2,
+    "WRONG_CORRECTION": 0,
+    "UNNECESSARY_EDIT": 0
+  },
+  "final_counts": {
+    "supported_total": 12,
+    "partial_correction": 2,
+    "wrong_correction": 0,
+    "unnecessary_edit": 0,
+    "supported_precision": 0.8571428571428571,
+    "unsafe_rate": 0.14285714285714285
+  },
+  "promotion_contract": {
+    "minimum_pass_events_ge_10": true,
+    "zero_wrong": true,
+    "zero_partial": false,
+    "zero_unnecessary": true,
+    "decision": "DO_NOT_PROMOTE_ORTHO_ISOLATED_COMMON_NOUN_V1"
+  },
+  "items": [
+    {
+      "vote_id": "OVAL-916f286600bd32a83ee0",
+      "line_id": 24,
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "ORTHOGRAPHY_ONLY_INCOMPLETE_LEXICAL_SYNTACTIC_REPAIR"
+    },
+    {
+      "vote_id": "OVAL-f3f90b1edecb0aceec4e",
+      "line_id": 128,
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_ALTERNATIVE",
+      "severity": "LOW",
+      "failure_or_support_type": "VALID_LOCAL_HAMZA_REPAIR_REFERENCE_ADDS_OPTIONAL_POSSESSIVE_SPECIFICITY"
+    },
+    {
+      "vote_id": "OVAL-b6c0cf6be83af5c4fcef",
+      "line_id": 128,
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "VALID_LOCAL_HAMZA_REPAIR_WITH_BROADER_REFERENCE_EDIT"
+    },
+    {
+      "vote_id": "OVAL-1c123bc47ae34d82b58e",
+      "line_id": 224,
+      "automatic_gold_relation": "SAME_GOLD_SPAN_DIFFERENT_OUTPUT",
+      "manual_class": "PARTIAL_CORRECTION",
+      "severity": "MEDIUM",
+      "failure_or_support_type": "ORTHOGRAPHY_ONLY_INCOMPLETE_PREPOSITION_VALENCY_REPAIR"
+    },
+    {
+      "vote_id": "OVAL-27f368714a907269559b",
+      "line_id": 297,
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "VALID_LOCAL_HAMZA_REPAIR_WITH_BROADER_REFERENCE_EDIT"
+    },
+    {
+      "vote_id": "OVAL-bec771db7aeffc806591",
+      "line_id": 297,
+      "automatic_gold_relation": "GOLD_OVERLAP_NONEXACT_SPAN",
+      "manual_class": "SUPPORTED_CORRECTION",
+      "severity": "LOW",
+      "failure_or_support_type": "VALID_LOCAL_HAMZA_REPAIR_WITH_BROADER_REFERENCE_EDIT"
+    }
+  ],
+  "qalb15_test_read": false,
+  "qalb_text_persisted": false
+}
