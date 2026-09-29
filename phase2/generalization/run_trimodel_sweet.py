@@ -74,7 +74,7 @@ def main():
         "raw_total_lines":total_lines,
         "changed_lines":changed,
         "event_rows":len(rows),
-        "runtime":{"python":platform.python_version(),"torch":torch.__version(),"sweet_commit":SWEET_COMMIT,"qalb_repo_commit":QALB_COMMIT},
+        "runtime":{"python":platform.python_version(),"torch":importlib.metadata.version("torch"),"sweet_commit":SWEET_COMMIT,"qalb_repo_commit":QALB_COMMIT},
         "raw_sha256":sha_file(RAW),
         "license_sha256":sha_file(LICENSE),
         "qalb15_test_read":False,
