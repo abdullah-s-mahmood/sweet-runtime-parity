@@ -1,0 +1,45 @@
+name: Phase 2 M2-H CALIBRATION Materialization
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/m2h_materialize_calibration.py"
+      - ".github/workflows/phase2-m2h-calibration-materialize.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  calibration:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Materialize CALIBRATION only
+        run: python phase2/redesign/m2h_materialize_calibration.py
+      - name: Assert only calibration content is persisted
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("M2H_CALIBRATION_SUMMARY_V1.json"))
+          i=s["integrity"]
+          assert i["calibration_only"] is True
+          assert i["internal_evaluation_text_materialized"] is False
+          assert i["stress_diagnostic_text_materialized"] is False
+          assert i["p0_p1_overlap"] == 0
+          print("CALIBRATION_ONLY_OK")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2h-calibration-v1
+          path: |
+            M2H_CALIBRATION_V1.jsonl
+            M2H_CALIBRATION_SUMMARY_V1.json
+          retention-days: 90
