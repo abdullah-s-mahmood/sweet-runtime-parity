@@ -1,5 +1,10 @@
 # RESUME HERE — ACAD_PASS / Phase 2 Arabic / M2-H
 
+## 0. Resume maintenance policy
+
+This file is the canonical live handoff. Update it after every meaningful checkpoint: successful workflow, scientifically relevant failure, architecture/gate decision, frozen hash/manifest, or change in the exact next authorized step. Do not update it for trivial status polls that add no new state.
+
+
 **Canonical handoff state date:** 2026-09-30  
 **Repository:** `abdullah-s-mahmood/sweet-runtime-parity`  
 **Branch:** `phase2-arabic-eval`  
