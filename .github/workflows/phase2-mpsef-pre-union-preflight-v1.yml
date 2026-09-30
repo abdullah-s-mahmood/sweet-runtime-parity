@@ -1,0 +1,175 @@
+name: Phase 2 MP-SEF Pre-Union Preflight v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-pre-union-preflight-v1.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Assert required frozen protocol files exist
+        run: |
+          set -euo pipefail
+          test -s phase2/redesign/MPSEF_PRE_UNION_PROTOCOL_V3.md
+          test -s phase2/redesign/MPSEF_BUNDLE_CONTRACT_V1.md
+          test -s phase2/redesign/MPSEF_TARGET_AND_MATCHING_CONTRACT_V1.md
+          test -s phase2/redesign/MPSEF_PROTECTED_INVARIANTS_CONTRACT_V1.md
+          test -s phase2/redesign/MPSEF_P1_RUNTIME_LOCK_V1.md
+          test -s phase2/redesign/MPSEF_P2_RUNTIME_LOCK_V1.md
+
+      - name: Download exposure ledger
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-exposure-ledger-v1
+          path: exposure_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36762360756
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download future role split
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-role-split-v1
+          path: role_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36762615920
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run preflight checks
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from collections import Counter,defaultdict
+          from pathlib import Path
+
+          ledger_path=Path("exposure_artifact/MPSEF_EXPOSURE_LEDGER_V1.jsonl")
+          role_path=Path("role_artifact/MPSEF_ROLE_SPLIT_V1.jsonl")
+          ls=json.load(open("exposure_artifact/MPSEF_EXPOSURE_LEDGER_V1_SUMMARY.json",encoding="utf-8"))
+          rs=json.load(open("role_artifact/MPSEF_ROLE_SPLIT_V1_SUMMARY.json",encoding="utf-8"))
+
+          ledger=[json.loads(x) for x in ledger_path.read_text(encoding="utf-8").splitlines() if x.strip()]
+          roles=[json.loads(x) for x in role_path.read_text(encoding="utf-8").splitlines() if x.strip()]
+
+          assert len(ledger)==6888
+          assert len(roles)==6888
+          assert {x["uid"] for x in ledger}=={x["uid"] for x in roles}
+
+          assert ls["ledger_sha256"]=="a58fd47ff8a85969eb740ed669d71e98fff10369779c7e8cef152a001135b1b3"
+          assert rs["uid_role_cluster_sha256"]=="85a5dcb1b26a9773ea0ef7e04bb42e8e56dde5d44f1e63fcbe54141dbcb47dfc"
+
+          by_cluster=defaultdict(set)
+          for x in roles:
+              by_cluster[x["cluster_id"]].add(x["role"])
+          assert all(len(v)==1 for v in by_cluster.values())
+
+          rc=Counter(x["role"] for x in roles)
+          assert rc==Counter({"C_F":1918,"C_T":2898,"C_R":2072})
+
+          assert all(x["historically_independent"] is False for x in roles)
+          assert all(x["future_role_only"] is True for x in roles)
+
+          for key in [
+              "internal_evaluation_text_materialized",
+              "stress_diagnostic_text_materialized",
+              "confirmation_opened",
+              "holdout_opened",
+              "a7ta_reserved_opened",
+              "qalb15_test_opened",
+          ]:
+              assert ls["integrity"][key] is False
+
+          for key in [
+              "internal_evaluation_opened",
+              "stress_diagnostic_opened",
+              "confirmation_opened",
+              "holdout_opened",
+              "a7ta_reserved_opened",
+              "qalb15_test_opened",
+          ]:
+              assert rs["integrity"][key] is False
+
+          assert rs["integrity"]["feasibility_metric_computed"] is False
+          assert rs["integrity"]["cluster_role_overlap"]==0
+
+          contracts=[
+              "phase2/redesign/MPSEF_PRE_UNION_PROTOCOL_V3.md",
+              "phase2/redesign/MPSEF_BUNDLE_CONTRACT_V1.md",
+              "phase2/redesign/MPSEF_TARGET_AND_MATCHING_CONTRACT_V1.md",
+              "phase2/redesign/MPSEF_PROTECTED_INVARIANTS_CONTRACT_V1.md",
+              "phase2/redesign/MPSEF_P1_RUNTIME_LOCK_V1.md",
+              "phase2/redesign/MPSEF_P2_RUNTIME_LOCK_V1.md",
+          ]
+          hashes={}
+          for p in contracts:
+              b=Path(p).read_bytes()
+              hashes[p]=hashlib.sha256(b).hexdigest()
+
+          summary={
+              "record_id":"MPSEF_PRE_UNION_PREFLIGHT_V1",
+              "status":"PASS",
+              "measurement_authorized_by_preflight":False,
+              "cases":6888,
+              "clusters":len(by_cluster),
+              "roles_records":dict(rc),
+              "roles_clusters":rs["roles_clusters"],
+              "historical_independence":False,
+              "training_overlap_claim_scope":"DEVELOPMENT_FEASIBILITY_ONLY",
+              "exposure_ledger_sha256":ls["ledger_sha256"],
+              "role_split_uid_cluster_sha256":rs["uid_role_cluster_sha256"],
+              "contract_sha256":hashes,
+              "integrity":{
+                  "cluster_role_overlap":0,
+                  "all_records_assigned_once":True,
+                  "feasibility_metric_computed":False,
+                  "selector_trained":False,
+                  "internal_evaluation_opened":False,
+                  "stress_diagnostic_opened":False,
+                  "confirmation_opened":False,
+                  "holdout_opened":False,
+                  "a7ta_reserved_opened":False,
+                  "qalb15_test_opened":False,
+              },
+              "next_step":"SEPARATE_EXPLICIT_MEASUREMENT_AUTHORIZATION_DECISION"
+          }
+          Path("MPSEF_PRE_UNION_PREFLIGHT_V1_SUMMARY.json").write_text(
+              json.dumps(summary,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Record preflight hashes
+        run: |
+          sha256sum \
+            phase2/redesign/MPSEF_PRE_UNION_PROTOCOL_V3.md \
+            phase2/redesign/MPSEF_BUNDLE_CONTRACT_V1.md \
+            phase2/redesign/MPSEF_TARGET_AND_MATCHING_CONTRACT_V1.md \
+            phase2/redesign/MPSEF_PROTECTED_INVARIANTS_CONTRACT_V1.md \
+            phase2/redesign/MPSEF_P1_RUNTIME_LOCK_V1.md \
+            phase2/redesign/MPSEF_P2_RUNTIME_LOCK_V1.md \
+            exposure_artifact/MPSEF_EXPOSURE_LEDGER_V1.jsonl \
+            role_artifact/MPSEF_ROLE_SPLIT_V1.jsonl \
+            MPSEF_PRE_UNION_PREFLIGHT_V1_SUMMARY.json \
+            > MPSEF_PRE_UNION_PREFLIGHT_V1_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-pre-union-preflight-v1
+          path: |
+            MPSEF_PRE_UNION_PREFLIGHT_V1_SUMMARY.json
+            MPSEF_PRE_UNION_PREFLIGHT_V1_SHA256.txt
+          retention-days: 90
