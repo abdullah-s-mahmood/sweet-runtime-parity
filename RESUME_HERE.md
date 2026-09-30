@@ -1336,3 +1336,92 @@ Reserved datasets remain closed.
 Do not continue M2-H tuning.
 
 The next substantive Arabic correction step must be a **new architecture decision phase** with fresh research, explicit alternatives, and frozen gates before any new evaluation.
+
+
+## 28. Arabic correction architecture v2 — MP-SEF STARTED
+
+The closed M2-H path remains closed.
+
+New architecture decision:
+`phase2/redesign/ARABIC_CORRECTION_ARCHITECTURE_V2_MPSEF.md`
+
+Commit:
+`730b9bb944a1967180e33401fa3836fed72cbc8a`
+
+Architecture:
+**Multi-Proposer Selective Edit Fusion (MP-SEF)**
+
+Core principle:
+separate proposal generation from edit authorization.
+
+Initial reproducible proposers:
+- P1: SWEET QALB14 NoPnx, same frozen weights as H1-v1 but separately versioned with documented iterative decoding `decode_iter=2`;
+- P2: AraBART+Morph+GED QALB14 with paired CAMeLBERT GED and official arabic-gec preprocessing/inference path.
+
+Proposer identity freeze:
+`phase2/redesign/MPSEF_PROPOSER_IDENTITY_FREEZE_V1.md`
+
+Commit:
+`b453236cf5d80c0916a0c23fd167af14edaefc85`
+
+P2 frozen identities:
+- AraBART GEC revision:
+  `410588a318d988cdcfdbf64cf5745ed4adea0f6a`
+- CAMeLBERT GED revision:
+  `447179dc63d186e4bff09a993e90e73ad622d571`
+- official arabic-gec repo revision:
+  `8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf`
+- modified Transformers dependency:
+  `bc21aaca789f1a366c05e8b5e111632944886393`
+
+Initial feasibility gate:
+- candidate-union recall >=95% before any selector is built;
+- 90% to <95% = borderline methodological review;
+- <90% = proposer architecture must be revisited;
+- no selector tuning before proposal gate passes.
+
+Conditional components MTAGEC and STAGEET are research-track only until reproducible checkpoints/code are established.
+
+### P1 iterative parity — RUNNING
+
+Runner:
+`phase2/redesign/mpsef_p1_iterative_parity.py`
+
+Workflow:
+`.github/workflows/phase2-mpsef-p1-iterative-parity-v1.yml`
+
+Workflow commit:
+`a514e99159c4e87b9fdca83225224618dc2e7d6b`
+
+Current run:
+`36748281679`
+
+Job:
+`109999992046`
+
+Last observed state:
+**in_progress**
+
+Parity sample:
+- 64 deterministic CALIBRATION source-only cases;
+- no gold/reference consulted;
+- two-pass NoPnx trace comparison;
+- required pass1/pass2/all-field match: 100%.
+
+Do not start P2 parity until P1 parity is resolved.
+
+Reserved/internal datasets remain closed.
+
+### Scientific classification
+
+**IMPROVED ARCHITECTURALLY / PERFORMANCE NOT YET MEASURED**
+
+The new design directly addresses the demonstrated single-proposer recall bottleneck while preserving REVIEW-first operation and protected-invariant safeguards.
+
+### Exact next authorized step
+
+1. Resolve P1 parity run `36748281679`.
+2. If P1 parity passes, freeze its runtime artifact/hash.
+3. Only then run P2 runtime parity.
+4. Only after both parity checks pass, implement canonical edit extraction and the P1+P2 candidate-union feasibility experiment.
+5. Do not build an authorization selector until candidate-union recall is frozen.
