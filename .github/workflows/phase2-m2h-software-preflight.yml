@@ -1,0 +1,51 @@
+name: Phase 2 M2-H Software Feasibility Preflight
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/m2h_software_preflight.py"
+      - ".github/workflows/phase2-m2h-software-preflight.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      TOKENIZERS_PARALLELISM: "false"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install frozen/compatible runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.12.1+cpu"
+          python -m pip install "transformers==4.30.0" "huggingface_hub==0.16.4" "sentencepiece>=0.1.99,<0.2"
+          python -m pip install "git+https://github.com/CAMeL-Lab/camel_tools.git@be79ca9fc493f0df795375a7255bafef246a802d"
+
+      - name: Install frozen CAMeL MSA morphology data
+        run: |
+          camel_data -i morphology-db-msa-r13
+
+      - name: Run H1/H3 synthetic smoke preflight and artifact hashing
+        run: |
+          python phase2/redesign/m2h_software_preflight.py
+
+      - name: Upload safe preflight evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: m2h-software-preflight-v1
+          path: |
+            m2h_preflight/M2H_PREFLIGHT_RESULT.json
+            m2h_preflight/M2H_PREFLIGHT_PIP_FREEZE.txt
+          retention-days: 30
