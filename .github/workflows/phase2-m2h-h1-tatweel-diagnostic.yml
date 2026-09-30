@@ -1,0 +1,129 @@
+name: Phase 2 M2-H H1 Tatweel Assertion Diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-m2h-h1-tatweel-diagnostic.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install minimal diagnostic dependencies
+        run: |
+          python -m pip install "editdistance==0.8.1"
+
+      - name: Clone frozen official implementation
+        run: |
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          cd upstream/text-editing
+          git checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Download frozen CALIBRATION
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-calibration-v1
+          path: calibration_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36654588477
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Trace representative tatweel failures
+        run: |
+          python - <<'PY'
+          import json, re, sys, types, unicodedata, traceback
+          from pathlib import Path
+
+          # Minimal CAMeL-compatible shims used by the frozen alignment code.
+          cps=frozenset(chr(i) for i in range(0x110000)
+                        if unicodedata.category(chr(i))[0] in {"P","S"})
+          m=types.ModuleType("camel_tools")
+          u=types.ModuleType("camel_tools.utils")
+          cs=types.ModuleType("camel_tools.utils.charsets")
+          nz=types.ModuleType("camel_tools.utils.normalize")
+          cs.UNICODE_PUNCT_SYMBOL_CHARSET=cps
+          cs.AR_LETTERS_CHARSET=frozenset(
+              "ءآأؤإئابتثجحخدذرزسشصضطظعغـفقكلمنهوىيٱپچڤگ"
+          )
+          nz.normalize_alef_ar=lambda s: re.sub("[إأٱآ]","ا",s)
+          nz.normalize_alef_maksura_ar=lambda s: s.replace("ى","ي")
+          nz.normalize_teh_marbuta_ar=lambda s: s.replace("ة","ه")
+          sys.modules["camel_tools"]=m
+          sys.modules["camel_tools.utils"]=u
+          sys.modules["camel_tools.utils.charsets"]=cs
+          sys.modules["camel_tools.utils.normalize"]=nz
+
+          sys.path.insert(0, str(Path("upstream/text-editing").resolve()))
+          sys.path.insert(0, str(Path("upstream/text-editing/edits").resolve()))
+          from edits.alignment.aligner import word_level_alignment, char_level_alignment
+          from edits.edit import Edit, SubwordEdits
+
+          wanted={
+              "M2H-CAL-00036",
+              "M2H-CAL-00049",
+              "M2H-CAL-00063",
+              "M2H-CAL-01086",
+              "M2H-CAL-00711",
+          }
+          rows=[]
+          for line in Path("calibration_artifact/M2H_CALIBRATION_V1.jsonl").read_text(encoding="utf-8").splitlines():
+              r=json.loads(line)
+              if r["case_id"] in wanted:
+                  rows.append(r)
+
+          def stage(name, fn):
+              try:
+                  out=fn()
+                  print("STAGE_OK",name,flush=True)
+                  return out
+              except Exception:
+                  print("STAGE_FAIL",name,flush=True)
+                  traceback.print_exc()
+                  raise
+
+          for r in rows:
+              print("\n=== CASE",r["case_id"],r["uid"],"===",flush=True)
+              print("SRC",r["source"],flush=True)
+              print("REF",r["reference"],flush=True)
+              try:
+                  wa=stage("word_level_alignment",
+                           lambda: word_level_alignment(src_sent=r["source"], tgt_sent=r["reference"]))
+                  ca=stage("char_level_alignment", lambda: char_level_alignment(wa))
+                  for i,(src_chars,tgt_chars,src_words) in enumerate(zip(ca["src"],ca["tgt"],wa["src"])):
+                      try:
+                          we=Edit.create(src_chars,tgt_chars)
+                      except Exception:
+                          print("EDIT_CREATE_FAIL index",i,"src_words",repr(src_words),
+                                "src_chars",repr(src_chars),"tgt_chars",repr(tgt_chars),flush=True)
+                          traceback.print_exc()
+                          raise
+                      try:
+                          SubwordEdits.create(src_words,we.edit)
+                      except Exception:
+                          print("WORD_PROJECT_FAIL index",i,"src_words",repr(src_words),
+                                "edit",repr(we.edit),flush=True)
+                          traceback.print_exc()
+                          raise
+                  print("CASE_OK",r["case_id"],flush=True)
+              except Exception:
+                  print("CASE_FAILED",r["case_id"],flush=True)
+
+          print("DIAGNOSTIC_DONE",flush=True)
+          PY
