@@ -1,0 +1,108 @@
+{
+  "record_id": "M2R_P0_DEVELOPMENT_RESULT",
+  "date": "2026-09-30",
+  "status": "FAIL",
+  "protocol": "M2R_RESIDUAL_SPAN_PROTOCOL_V1",
+  "prompt_version": "M2R_P0",
+  "prediction_commitment_sha256": "5cc66688e544ed91bf6a77852f199a6851f05ca8b6d93da36b9748bdee1a76be",
+  "prediction_cases": 120,
+  "total_claimed_errors": 235,
+  "invalid_surface_claims": 0,
+  "metrics": {
+    "CRR": {
+      "num": 53,
+      "den": 90,
+      "value": 0.5888888888888889,
+      "gate": 0.85,
+      "pass": false
+    },
+    "GELR": {
+      "num": 64,
+      "den": 170,
+      "value": 0.3764705882352941,
+      "gate": 0.8,
+      "pass": false
+    },
+    "CFPR": {
+      "num": 18,
+      "den": 30,
+      "value": 0.6,
+      "gate": 0.05,
+      "pass": false
+    },
+    "NCWR": {
+      "num": 21,
+      "den": 30,
+      "value": 0.7,
+      "gate": 0.9,
+      "pass": false
+    },
+    "ORTHOGRAPHY_RECALL": {
+      "num": 52,
+      "den": 106,
+      "value": 0.49056603773584906,
+      "gate": 0.95,
+      "pass": false
+    },
+    "MORPHOLOGY_RECALL": {
+      "num": 16,
+      "den": 43,
+      "value": 0.37209302325581395,
+      "gate": 0.7,
+      "gate_applies": true,
+      "pass": false
+    },
+    "SYNTAX_RECALL": {
+      "num": 5,
+      "den": 25,
+      "value": 0.2,
+      "gate": 0.7,
+      "gate_applies": true,
+      "pass": false
+    },
+    "LEXICAL_RECALL": {
+      "num": 2,
+      "den": 23,
+      "value": 0.08695652173913043,
+      "gate": 0.7,
+      "gate_applies": true,
+      "pass": false
+    },
+    "STRICT_REFERENCE_CLAIM_PRECISION": {
+      "num": 59,
+      "den": 235,
+      "value": 0.251063829787234
+    }
+  },
+  "passed_gates": [
+    "invalid_surface_claim_rate_le_0_02"
+  ],
+  "failed_gates": [
+    "CFPR_le_0_05",
+    "CRR_ge_0_85",
+    "GELR_ge_0_80",
+    "NCWR_ge_0_90",
+    "ORTHOGRAPHY_RECALL_ge_0_95",
+    "MORPHOLOGY_RECALL_ge_0_70",
+    "SYNTAX_RECALL_ge_0_70",
+    "LEXICAL_RECALL_ge_0_70"
+  ],
+  "scorer_repairs": [
+    {
+      "type": "technical_only",
+      "issue": "dimension-specific gate attempted numeric comparison when denominator/value was unavailable",
+      "scientific_change": false
+    },
+    {
+      "type": "technical_only",
+      "issue": "v1.1 near-complete family is named EXPERT_REINSERTED_RESIDUAL rather than the older ALL_BUT_ONE_RESIDUAL",
+      "scientific_change": false
+    }
+  ],
+  "confirmation_opened": false,
+  "holdout_opened": false,
+  "a7ta_reserved_opened": false,
+  "p1_allowed": true,
+  "further_after_p1_allowed": false,
+  "interpretation": "P0 residual-span hunter has both low recall and very high clean false-positive rate. It is not suitable for promotion. One preregistered structural prompt revision P1 remains allowed."
+}
