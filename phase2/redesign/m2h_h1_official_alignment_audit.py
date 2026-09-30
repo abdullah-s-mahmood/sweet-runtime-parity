@@ -169,8 +169,8 @@ def apply_edits(tokenized_text, edits):
             collapsed.append(subword)
     return [x.strip() for x in collapsed if x != ""]
 
-def create_official_subword_edits(source, target, tokenizer, word_level_alignment,
-                                  char_level_alignment, Edit, SubwordEdits, SubwordEdit):
+def create_official_edit_paths(source, target, tokenizer, word_level_alignment,
+                               char_level_alignment, Edit, SubwordEdits, SubwordEdit):
     wa = word_level_alignment(src_sent=source, tgt_sent=target)
     ca = char_level_alignment(wa)
     aligned_src_words = wa["src"]
@@ -180,14 +180,32 @@ def create_official_subword_edits(source, target, tokenizer, word_level_alignmen
     if not (len(aligned_src_words) == len(aligned_tgt_words) ==
             len(aligned_src_chars) == len(aligned_tgt_chars)):
         raise RuntimeError("Official alignment length mismatch")
+
+    word_edits = []
     subword_edits = []
+    subword_assertion = False
+
     for src_chars, tgt_chars, src_words, _ in zip(
         aligned_src_chars, aligned_tgt_chars, aligned_src_words, aligned_tgt_words
     ):
         word_edit = Edit.create(src_chars, tgt_chars)
-        sw = SubwordEdits.create(src_words, word_edit.edit, tokenizer)
-        subword_edits.extend(sw.edits)
-    return insert_to_append(subword_edits, SubwordEdit)
+
+        word_path = SubwordEdits.create(src_words, word_edit.edit)
+        word_edits.extend(word_path.edits)
+
+        if not subword_assertion:
+            try:
+                subword_path = SubwordEdits.create(src_words, word_edit.edit, tokenizer)
+                subword_edits.extend(subword_path.edits)
+            except AssertionError:
+                subword_assertion = True
+
+    word_edits = insert_to_append(word_edits, SubwordEdit)
+    if subword_assertion:
+        return word_edits, None, True
+
+    subword_edits = insert_to_append(subword_edits, SubwordEdit)
+    return word_edits, subword_edits, False
 
 def parse_m2_summary(path):
     vals = {}
@@ -281,24 +299,73 @@ def main():
     failures = []
     pnx_changed = 0
     full_reconstruction_fail = 0
+    subword_success_cases = 0
+    subword_assertion_cases = 0
+    tatweel_fallback_cases = 0
+    non_tatweel_subword_failures = 0
+    cross_path_mismatches = 0
+    cross_path_mismatch_examples = []
 
     for rec in rows:
         src, ref = norm(rec["source"]), norm(rec["reference"])
         try:
-            edits = create_official_subword_edits(
+            word_edits, subword_edits, subword_assertion = create_official_edit_paths(
                 src, ref, ext_tok, word_level_alignment, char_level_alignment,
                 Edit, SubwordEdits, SubwordEdit
             )
-            raw_src, _ = ext_tok.tokenize(src, flatten=True)
-            full = norm(" ".join(apply_edits(raw_src, edits)))
-            if full != ref:
+
+            # Word-level official path always preserves the original surface.
+            word_full = norm(" ".join(apply_edits(src.split(), word_edits)))
+            if word_full != ref:
                 full_reconstruction_fail += 1
-                raise RuntimeError(f"Full reconstruction mismatch: {full} != {ref}")
-            nopnx_edits = []
-            for e in edits:
+                raise RuntimeError(f"Word full reconstruction mismatch: {word_full} != {ref}")
+
+            word_nopnx_edits = []
+            for e in word_edits:
                 sep = separate_pnx_edit(e.edit)
-                nopnx_edits.append(SubwordEdit(e.subword, e.raw_subword, sep["no_pnx_edit"]))
-            nopnx = norm(" ".join(apply_edits(raw_src, nopnx_edits)))
+                word_nopnx_edits.append(
+                    SubwordEdit(e.subword, e.raw_subword, sep["no_pnx_edit"])
+                )
+            word_nopnx = norm(" ".join(apply_edits(src.split(), word_nopnx_edits)))
+
+            if subword_assertion:
+                subword_assertion_cases += 1
+                if "ـ" not in src and "ـ" not in ref:
+                    non_tatweel_subword_failures += 1
+                    raise RuntimeError("Subword AssertionError without tatweel")
+                tatweel_fallback_cases += 1
+                nopnx = word_nopnx
+            else:
+                subword_success_cases += 1
+                raw_src, _ = ext_tok.tokenize(src, flatten=True)
+                subword_full = norm(" ".join(apply_edits(raw_src, subword_edits)))
+                if subword_full != ref:
+                    full_reconstruction_fail += 1
+                    raise RuntimeError(
+                        f"Subword full reconstruction mismatch: {subword_full} != {ref}"
+                    )
+
+                subword_nopnx_edits = []
+                for e in subword_edits:
+                    sep = separate_pnx_edit(e.edit)
+                    subword_nopnx_edits.append(
+                        SubwordEdit(e.subword, e.raw_subword, sep["no_pnx_edit"])
+                    )
+                subword_nopnx = norm(
+                    " ".join(apply_edits(raw_src, subword_nopnx_edits))
+                )
+
+                if word_nopnx != subword_nopnx:
+                    cross_path_mismatches += 1
+                    if len(cross_path_mismatch_examples) < 20:
+                        cross_path_mismatch_examples.append({
+                            "case_id": rec["case_id"],
+                            "uid": rec["uid"],
+                            "word_nopnx": word_nopnx,
+                            "subword_nopnx": subword_nopnx,
+                        })
+                nopnx = subword_nopnx
+
             nopnx_refs.append(nopnx)
             pnx_changed += int(nopnx != ref)
         except Exception as exc:
@@ -308,15 +375,25 @@ def main():
             })
             nopnx_refs.append(None)
 
-    if failures:
+    if failures or cross_path_mismatches:
         summary = {
-            "status": "FAIL_GOLD_CONSTRUCTION",
+            "status": (
+                "FAIL_CROSS_PATH_MISMATCH"
+                if cross_path_mismatches
+                else "FAIL_GOLD_CONSTRUCTION"
+            ),
             "cases": len(rows),
             "parity_sample": 256,
             "parity": dict(parity),
             "parity_mismatches": len(mismatches),
             "gold_construction_failures": len(failures),
             "full_reconstruction_failures": full_reconstruction_fail,
+            "subword_success_cases": subword_success_cases,
+            "subword_assertion_cases": subword_assertion_cases,
+            "tatweel_fallback_cases": tatweel_fallback_cases,
+            "non_tatweel_subword_failures": non_tatweel_subword_failures,
+            "cross_path_mismatches": cross_path_mismatches,
+            "cross_path_mismatch_examples": cross_path_mismatch_examples,
             "integrity": {
                 "internal_evaluation_opened": False,
                 "stress_diagnostic_opened": False,
@@ -383,6 +460,11 @@ def main():
         "official_nopnx_gold": {
             "construction_failures": 0,
             "full_reconstruction_failures": 0,
+            "subword_success_cases": subword_success_cases,
+            "subword_assertion_cases": subword_assertion_cases,
+            "tatweel_fallback_cases": tatweel_fallback_cases,
+            "non_tatweel_subword_failures": non_tatweel_subword_failures,
+            "cross_path_mismatches": cross_path_mismatches,
             "cases_where_nopnx_differs_from_full_reference": pnx_changed,
             "derived_gold_m2_edit_lines": gold_edit_lines,
         },
