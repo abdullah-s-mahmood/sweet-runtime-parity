@@ -26,10 +26,15 @@ Relevant paths:
 ## Candidate diagnostic runtime
 
 Python:
-- 3.9
+- 3.8
 
 CAMeL Tools:
 - 1.2.0
+
+Compatibility rationale:
+- scikit-learn==0.23.2 has a Linux CPython 3.8 wheel but no CPython 3.9 wheel;
+- Python 3.8 therefore preserves the frozen historical package pins while avoiding an unsupported source-build path through numpy==1.17.3;
+- no ARETA dependency version is loosened in this compatibility revision.
 
 Aligner requirements:
 - docopt==0.6.2
@@ -109,3 +114,9 @@ REVIEW-first.
 
 Next authorized action:
 Create and run the diagnostic preflight workflow exactly against this frozen specification.
+
+## Compatibility Revision 2026-09-30
+
+Preflight v1 on Python 3.9 failed before any ARETA execution because scikit-learn==0.23.2 attempted a source build and pulled numpy==1.17.3 as a build dependency, which failed during metadata generation with `NameError: CCompiler is not defined`.
+
+Decision: change only Python 3.9 -> 3.8. Keep CAMeL Tools 1.2.0 and all repository-pinned ARETA requirements unchanged.
