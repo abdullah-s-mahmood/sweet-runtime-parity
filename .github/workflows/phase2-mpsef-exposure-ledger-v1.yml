@@ -1,0 +1,88 @@
+name: Phase 2 MP-SEF Exposure Ledger v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-exposure-ledger-v1.yml"
+      - "phase2/redesign/mpsef_materialize_exposure_ledger_v1.py"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  exposure-ledger:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Download frozen CALIBRATION
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-calibration-v1
+          path: calibration_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36654588477
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate frozen input
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          p="calibration_artifact/M2H_CALIBRATION_V1.jsonl"
+          rows=[json.loads(x) for x in open(p,encoding="utf-8") if x.strip()]
+          assert len(rows)==6888
+          uid_sha=hashlib.sha256(("\n".join(r["uid"] for r in rows)+"\n").encode()).hexdigest()
+          assert uid_sha=="3b6c1128f412531223b3c2e5346082d3290f40daac706eb13bbafa1db10a09c9"
+          print("CALIBRATION_INPUT_OK")
+          PY
+
+      - name: Materialize exposure ledger
+        run: |
+          python phase2/redesign/mpsef_materialize_exposure_ledger_v1.py \
+            --calibration calibration_artifact/M2H_CALIBRATION_V1.jsonl \
+            --out-prefix MPSEF_EXPOSURE_LEDGER_V1
+
+      - name: Validate exposure contract
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_EXPOSURE_LEDGER_V1_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["scope"]=="CALIBRATION_ONLY"
+          assert s["cases"]==6888
+          assert s["historical_independence"] is False
+          assert s["all_records_gold_reference_exposed"] is True
+          assert s["future_role_split_restores_historical_independence"] is False
+          assert s["integrity"]["internal_evaluation_text_materialized"] is False
+          assert s["integrity"]["stress_diagnostic_text_materialized"] is False
+          print("EXPOSURE_LEDGER_CONTRACT_OK")
+          PY
+
+      - name: Record hashes
+        run: |
+          sha256sum \
+            phase2/redesign/mpsef_materialize_exposure_ledger_v1.py \
+            MPSEF_EXPOSURE_LEDGER_V1.jsonl \
+            MPSEF_EXPOSURE_LEDGER_V1_SUMMARY.json \
+            > MPSEF_EXPOSURE_LEDGER_V1_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-exposure-ledger-v1
+          path: |
+            MPSEF_EXPOSURE_LEDGER_V1.jsonl
+            MPSEF_EXPOSURE_LEDGER_V1_SUMMARY.json
+            MPSEF_EXPOSURE_LEDGER_V1_SHA256.txt
+          retention-days: 90
