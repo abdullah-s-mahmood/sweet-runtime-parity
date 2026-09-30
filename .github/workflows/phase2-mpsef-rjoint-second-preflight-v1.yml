@@ -1,0 +1,142 @@
+name: Phase 2 MP-SEF R_joint Second Premeasurement Preflight v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-rjoint-second-preflight-v1.yml"
+      - ".github/workflows/phase2-mpsef-rjoint-measurement-v1.yml"
+      - "phase2/redesign/mpsef_rjoint_core_v1.py"
+      - "phase2/redesign/mpsef_rjoint_score_v1.py"
+      - "phase2/redesign/MPSEF_TARGET_FAMILY_MAP_V1.md"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  second-premeasurement-preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Assert measurement workflow cannot auto-run on push
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path(".github/workflows/phase2-mpsef-rjoint-measurement-v1.yml")
+          t=p.read_text(encoding="utf-8")
+          head=t.split("permissions:",1)[0]
+          assert "workflow_dispatch:" in head
+          assert "\n  push:" not in head
+          assert "MEASURE_R_JOINT_V1" in t
+          assert "\\${{" not in t
+          print("MEASUREMENT_WORKFLOW_GUARD_OK")
+          PY
+
+      - name: Clone frozen official text-editing scorer
+        run: |
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git -C upstream/text-editing rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Compile and synthetic-test frozen scorer only
+        run: |
+          python -m py_compile phase2/redesign/mpsef_rjoint_core_v1.py
+          python -m py_compile phase2/redesign/mpsef_rjoint_score_v1.py
+          python phase2/redesign/mpsef_rjoint_score_v1.py \
+            --self-test \
+            --upstream-root upstream/text-editing
+
+      - name: Download frozen P1 C_F proposals
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2 C_F proposals
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-cf-proposals-v1
+          path: p2_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36768378938
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate proposal identities without gold
+        run: |
+          test "$(sha256sum p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl | awk '{print $1}')" = "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          test "$(sha256sum p1_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl | awk '{print $1}')" = "2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          test "$(sha256sum p2_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl | awk '{print $1}')" = "f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b"
+          python - <<'PY'
+          import json
+          p1=[json.loads(x) for x in open("p1_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl",encoding="utf-8") if x.strip()]
+          p2=[json.loads(x) for x in open("p2_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl",encoding="utf-8") if x.strip()]
+          assert len(p1)==1918==len(p2)
+          assert {x["uid"] for x in p1}=={x["uid"] for x in p2}
+          assert all(x["gold_reference_consulted"] is False and x["feasibility_scored"] is False for x in p1+p2)
+          print("FROZEN_PROPOSAL_INPUTS_OK")
+          PY
+
+      - name: Record frozen implementation hashes
+        run: |
+          sha256sum \
+            phase2/redesign/mpsef_rjoint_core_v1.py \
+            phase2/redesign/mpsef_rjoint_score_v1.py \
+            phase2/redesign/MPSEF_TARGET_FAMILY_MAP_V1.md \
+            .github/workflows/phase2-mpsef-rjoint-measurement-v1.yml \
+            .github/workflows/phase2-mpsef-rjoint-second-preflight-v1.yml \
+            p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl \
+            p1_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl \
+            p2_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl \
+            > MPSEF_RJOINT_SECOND_PREFLIGHT_V1_SHA256.txt
+
+      - name: Write second premeasurement status
+        run: |
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          hashes=Path("MPSEF_RJOINT_SECOND_PREFLIGHT_V1_SHA256.txt").read_text(encoding="utf-8")
+          s={
+            "record_id":"MPSEF_RJOINT_SECOND_PREFLIGHT_V1",
+            "status":"PASS",
+            "population":"C_F",
+            "cases":1918,
+            "clusters":764,
+            "source_manifest_sha256":"051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193",
+            "p1_proposal_sha256":"2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d",
+            "p2_proposal_sha256":"f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b",
+            "frozen_gold_m2_expected_sha256":"971b6fbb28dc3767193e7a4b0f722c3abebfc8600155a57093ba483dac6491e8",
+            "gold_downloaded_by_preflight":False,
+            "measurement_metric_computed":False,
+            "measurement_authorized_by_preflight":False,
+            "selector_trained":False,
+            "internal_evaluation_opened":False,
+            "stress_diagnostic_opened":False,
+            "reserved_data_opened":False,
+            "hash_manifest_sha256":hashlib.sha256(hashes.encode()).hexdigest(),
+          }
+          Path("MPSEF_RJOINT_SECOND_PREFLIGHT_V1_SUMMARY.json").write_text(json.dumps(s,indent=2)+"\n",encoding="utf-8")
+          print(json.dumps(s,indent=2))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-rjoint-second-preflight-v1
+          path: |
+            MPSEF_RJOINT_SECOND_PREFLIGHT_V1_SUMMARY.json
+            MPSEF_RJOINT_SECOND_PREFLIGHT_V1_SHA256.txt
+          retention-days: 90
