@@ -18,7 +18,7 @@ This file is the canonical live handoff. Update it after every meaningful checkp
 
 Use **checkpoint execution**.
 
-A single user "اكمل" may perform 2–4 tool operations, but they must be **strictly sequential**. Do not run tools in parallel. If a workflow is still running, inspect once and stop. If a step fails, identify the exact cause before changing architecture.
+A single user "اكمل" may perform up to **10 tool operations**, but they must be **strictly sequential**. Do not run tools in parallel. If a workflow is still running, inspect once and stop. If a step fails, identify the exact cause before changing architecture.
 
 Arabic responses should be RTL-friendly. Keep English technical terms isolated in backticks such as `CALIBRATION`, `H3`, `ARETA`.
 
@@ -548,7 +548,7 @@ The next authorized work is:
 
 Recommended instruction:
 
-> Read `RESUME_HERE.md` from branch `phase2-arabic-eval` in `abdullah-s-mahmood/sweet-runtime-parity`. Treat it as canonical. Inspect current branch HEAD and continue only from the exact next step. Do not restart closed phases. Use checkpoint execution with 2–4 strictly sequential tool operations and no parallel tool calls. Keep Arabic responses RTL-friendly and isolate English technical terms in backticks.
+> Read `RESUME_HERE.md` from branch `phase2-arabic-eval` in `abdullah-s-mahmood/sweet-runtime-parity`. Treat it as canonical. Inspect current branch HEAD and continue only from the exact next step. Do not restart closed phases. Use checkpoint execution with up to 10 strictly sequential tool operations and no parallel tool calls. Keep Arabic responses RTL-friendly and isolate English technical terms in backticks.
 
 
 
@@ -660,3 +660,177 @@ Scientific classification:
 
 Exact next authorized step:
 run H2 → H3 → H4 component calibration on `CALIBRATION` only, then freeze enabled/disabled families before opening `INTERNAL_EVALUATION`.
+
+
+## 22. H1 candidate generation + H2 orthographic calibration + ALIF_VARIANT blind packet — CURRENT CHECKPOINT
+
+### H1 CALIBRATION candidate generation — COMPLETE
+
+Frozen H1 candidate contract:
+`phase2/redesign/M2H_H1_CANDIDATE_CONTRACT_V1.md`
+
+Workflow:
+- run: `36691616010`
+- job: `h1-calibration-candidates`
+- conclusion: **SUCCESS**
+- started: `2026-09-30T08:44:42Z`
+- completed: `2026-09-30T09:19:00Z`
+
+Artifact:
+- id: `11088155733`
+- name: `m2h-h1-calibration-candidates-v1`
+- SHA256: `907065fd1a3e156456cec7a31f86facff689896b4d8d39b50cbc852ffd7cc8d3`
+
+H1 results:
+- CALIBRATION cases: **6,888**
+- structured H1 candidates: **46,811**
+- exact QALB-reference-supported: **32,502**
+- reference-unsupported: **14,309**
+- overall strict-reference support rate: **69.4324%**
+- truncated cases: **0**
+- non-applicable H1 edits: **18**
+
+Important:
+- H1 remains a candidate generator only.
+- H1 confidence is diagnostic only and is not safety evidence.
+- `REFERENCE_UNSUPPORTED` is not automatically linguistically wrong because QALB is single-reference.
+
+### H2 deterministic orthographic calibration — COMPLETE
+
+Frozen predicates:
+`phase2/redesign/M2H_H2_ORTHOGRAPHIC_RULES_V1.md`
+
+Calibration scorer:
+`phase2/redesign/m2h_h2_calibrate.py`
+
+Frozen result:
+`phase2/redesign/M2H_H2_CALIBRATION_RESULT_V1.md`
+
+Results:
+- `HAMZA_ALIF_SEAT`: **85.57%** strict-reference lower bound
+- `ALIF_MAQSURA_YA`: **90.34%**
+- `TA_MARBUTA_HA`: **94.01%**
+- `ALIF_VARIANT`: **95.85%**
+- `SINGLE_ARABIC_LETTER_ORTHOGRAPHIC`: **93.90%**
+- `DIACRITIC_ONLY`: no candidates, diagnostic-only
+- `TATWEEL_ONLY`: no candidates, diagnostic-only
+
+Frozen promotion gate remains:
+`strict-reference precision lower bound >= 98%`
+
+Result:
+**0 / 5 non-diagnostic H2 families auto-promoted.**
+
+The 98% gate was not lowered.
+
+Scientific classification:
+**MIXED**
+- improved methodologically because H1→H2 is now measured reproducibly;
+- worsened performance outlook for direct family-wide H2 auto-approval.
+
+### ALIF_VARIANT blind adjudication — PROTOCOL AND PACKET FROZEN
+
+Reason:
+`ALIF_VARIANT` is closest to the 98% gate and QALB single-reference may undercount valid mandatory corrections.
+
+Frozen protocol:
+`phase2/redesign/M2H_H2_ALIF_VARIANT_BLIND_ADJUDICATION_PROTOCOL_V1.md`
+
+Population:
+- family total: **19,338**
+- exact-supported: **18,536**
+- reference-unsupported: **802**
+
+To reach 98% overall:
+- at least **416 / 802** unsupported candidates must truly be safe mandatory corrections.
+
+Frozen sample:
+- unsupported: **200**
+- hidden exact-supported controls: **50**
+- packet total: **250**
+
+Frozen sampling salt:
+`M2H-H2-ALIF-VARIANT-BLIND-V1-20260930-A`
+
+Frozen statistical decision:
+- exact one-sided 95% hypergeometric lower bound;
+- need at least **115 / 200** unsupported sampled rows adjudicated exactly `SUPPORTED_MANDATORY`;
+- this gives `K_lower_95 >= 419`;
+- combined lower-bound family precision >= **98.019%**.
+
+Anything below 115/200 fails to establish the 98% gate in this v1 protocol.
+
+Controls:
+- 50 exact-supported rows are hidden in the packet;
+- any confirmed `UNNECESSARY_EDIT` or `WRONG_CORRECTION` control is a critical contradiction and prevents auto-promotion under v1.
+
+Reviewer instructions:
+`phase2/redesign/M2H_H2_ALIF_VARIANT_REVIEWER_INSTRUCTIONS_V1.md`
+
+Primary-review validator:
+`phase2/redesign/m2h_h2_validate_primary_review.py`
+
+Blind-packet workflow:
+- run: `36699684143`
+- job: `build-blind-packet`
+- conclusion: **SUCCESS**
+- started: `2026-09-30T10:00:13Z`
+- completed: `2026-09-30T10:00:21Z`
+
+Review artifact:
+- id: `11088429825`
+- name: `m2h-h2-alif-variant-blind-review-v1`
+- artifact SHA256: `4f25f69bc1d8b46b37629ab490273024dc032cd4ef40a57f3351e33f014b6d55`
+
+Key artifact:
+- id: `11088684206`
+- name: `m2h-h2-alif-variant-blind-key-v1`
+- artifact SHA256: `7edbdbee65627c85b9ad03a5f7081430f8b42bd8eb002c5cb94e069366299c82`
+
+Blind packet content SHA256:
+`e8e7dd687267cb4a53ea30c8f089114358b24123d9a0b4f3fbc9f061a404d9de`
+
+Blind key content SHA256:
+`f82c8a92cfdeeddef0a1a87b52f7e72a8e26e1c9d1ace959d8aa9805f0b315ae`
+
+Packet integrity:
+- unsupported population: **802**
+- exact-supported population: **18,536**
+- sample: **200 unsupported + 50 hidden controls**
+- packet contains no gold-support label
+- packet contains no QALB reference
+- packet contains no H1 identity/confidence
+- key is separate
+- unique packet IDs: PASS
+- unique candidate IDs in key: PASS
+- local packet SHA verification: PASS
+
+Still unopened:
+- `INTERNAL_EVALUATION`
+- `STRESS_DIAGNOSTIC`
+- Confirmation
+- Holdout
+- A7'ta reserve
+- reserved Nahw IDs
+- QALB15 TEST
+
+### Promotion-standard reviewer requirement
+
+Two independent qualified Arabic reviewers are required for the primary blinded Stage-A pass.
+
+AI may prepare packets, validate structure, and perform explicitly labeled developmental diagnostics, but AI-only judgments do **not** satisfy the promotion-standard human-evidence requirement.
+
+A higher-capability ChatGPT/model may be used only for a small focused ambiguous-case review packet when genuinely needed; do not send the whole project/system.
+
+### Exact next authorized step
+
+1. Do NOT open the blind key.
+2. Do NOT reveal QALB reference or support status to primary reviewers.
+3. Obtain two independent blinded primary reviews of the 250-row review packet.
+4. Validate each review with `m2h_h2_validate_primary_review.py`.
+5. Freeze/hash Reviewer A and Reviewer B outputs.
+6. Compute pre-adjudication raw agreement / Cohen's kappa and disposition confusion matrix.
+7. Resolve disagreements with a third qualified Arabic adjudicator or documented qualified consensus.
+8. Only after final adjudication is frozen may the blind key be opened and the 115/200 hypergeometric decision computed.
+9. If ALIF_VARIANT fails, do not lower the 98% gate. Proceed with H3/H4 with H2 ALIF_VARIANT disabled unless a separately versioned development iteration is justified.
+10. Keep all reserved/internal splits closed until component activation decisions are frozen.
