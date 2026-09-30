@@ -169,10 +169,8 @@ def apply_edits(tokenized_text, edits):
             collapsed.append(subword)
     return [x.strip() for x in collapsed if x != ""]
 
-def create_official_edit_paths(source, target, tokenizer, word_level_alignment,
-                               char_level_alignment, Edit, SubwordEdits, SubwordEdit):
-    wa = word_level_alignment(src_sent=source, tgt_sent=target)
-    ca = char_level_alignment(wa)
+def create_official_edit_paths_from_alignments(wa, ca, tokenizer,
+                                                Edit, SubwordEdits, SubwordEdit):
     aligned_src_words = wa["src"]
     aligned_tgt_words = wa["tgt"]
     aligned_src_chars = ca["src"]
@@ -255,8 +253,51 @@ def main():
     sys.modules["camel_tools.utils.normalize"] = camel_normalize_mod
 
     from edits.tokenizer import Tokenizer
-    from edits.alignment.aligner import word_level_alignment, char_level_alignment
+    from edits.alignment.aligner import (
+        word_level_alignment, char_level_alignment, post_process_alignment
+    )
+    from edits.alignment.ced_alignment import _gen_alignments
+    from edits.alignment.utils import PUNCS, norm_digits
     from edits.edit import Edit, SubwordEdits, SubwordEdit
+
+    def char_level_alignment_preserve_tatweel(aligned_sents):
+        aligned_src = aligned_sents["src"]
+        aligned_tgt = aligned_sents["tgt"]
+        if len(aligned_src) != len(aligned_tgt):
+            raise RuntimeError("Preserve-tatweel aligned-word length mismatch")
+
+        basic_alignment = []
+        for src_word, tgt_word in zip(aligned_src, aligned_tgt):
+            def norm_keep_tatweel(s):
+                out = re.sub(r'([' + re.escape(PUNCS) + '])', r'PNX\\1', s.strip())
+                return norm_digits(out)
+
+            ns = norm_keep_tatweel(src_word)
+            nt = norm_keep_tatweel(tgt_word)
+            src_chars = list(src_word)
+            tgt_chars = list(tgt_word)
+            norm_src_chars = re.findall(r'PNX.|.', ns)
+            norm_tgt_chars = re.findall(r'PNX.|.', nt)
+            basic_alignment.append(list(_gen_alignments(
+                norm_src_chars, norm_tgt_chars, src_chars, tgt_chars
+            )))
+
+        clean_alignment = post_process_alignment(
+            basic_alignment, is_char_align=True
+        )
+        ca = {"src": [], "tgt": []}
+        for i, aligned_words in enumerate(clean_alignment):
+            src_word_chars = aligned_words["src"]
+            tgt_word_chars = aligned_words["tgt"]
+            if len(src_word_chars) != len(tgt_word_chars):
+                raise RuntimeError("Preserve-tatweel char length mismatch")
+            if "".join(src_word_chars) != aligned_src[i]:
+                raise RuntimeError("Preserve-tatweel source reconstruction mismatch")
+            if "".join(tgt_word_chars) != aligned_tgt[i]:
+                raise RuntimeError("Preserve-tatweel target reconstruction mismatch")
+            ca["src"].append(src_word_chars)
+            ca["tgt"].append(tgt_word_chars)
+        return ca
 
     import torch
     import torch.nn.functional as F
@@ -305,13 +346,42 @@ def main():
     non_tatweel_subword_failures = 0
     cross_path_mismatches = 0
     cross_path_mismatch_examples = []
+    official_charalign_success = 0
+    official_charalign_tatweel_failures = 0
+    tatweel_charalign_fallback_cases = 0
+    charalign_cross_mismatches = 0
+    charalign_cross_mismatch_examples = []
 
     for rec in rows:
         src, ref = norm(rec["source"]), norm(rec["reference"])
         try:
-            word_edits, subword_edits, subword_assertion = create_official_edit_paths(
-                src, ref, ext_tok, word_level_alignment, char_level_alignment,
-                Edit, SubwordEdits, SubwordEdit
+            wa = word_level_alignment(src_sent=src, tgt_sent=ref)
+            preserve_ca = char_level_alignment_preserve_tatweel(wa)
+
+            try:
+                official_ca = char_level_alignment(wa)
+                official_charalign_success += 1
+                if official_ca != preserve_ca:
+                    charalign_cross_mismatches += 1
+                    if len(charalign_cross_mismatch_examples) < 20:
+                        charalign_cross_mismatch_examples.append({
+                            "case_id": rec["case_id"],
+                            "uid": rec["uid"],
+                        })
+                selected_ca = official_ca
+            except AssertionError:
+                if "ـ" not in src and "ـ" not in ref:
+                    raise RuntimeError(
+                        "Official char alignment failed without tatweel"
+                    )
+                official_charalign_tatweel_failures += 1
+                tatweel_charalign_fallback_cases += 1
+                selected_ca = preserve_ca
+
+            word_edits, subword_edits, subword_assertion = (
+                create_official_edit_paths_from_alignments(
+                    wa, selected_ca, ext_tok, Edit, SubwordEdits, SubwordEdit
+                )
             )
 
             # Word-level official path always preserves the original surface.
@@ -375,12 +445,16 @@ def main():
             })
             nopnx_refs.append(None)
 
-    if failures or cross_path_mismatches:
+    if failures or cross_path_mismatches or charalign_cross_mismatches:
         summary = {
             "status": (
-                "FAIL_CROSS_PATH_MISMATCH"
-                if cross_path_mismatches
-                else "FAIL_GOLD_CONSTRUCTION"
+                "FAIL_CHARALIGN_CROSS_MISMATCH"
+                if charalign_cross_mismatches
+                else (
+                    "FAIL_CROSS_PATH_MISMATCH"
+                    if cross_path_mismatches
+                    else "FAIL_GOLD_CONSTRUCTION"
+                )
             ),
             "cases": len(rows),
             "parity_sample": 256,
@@ -394,6 +468,11 @@ def main():
             "non_tatweel_subword_failures": non_tatweel_subword_failures,
             "cross_path_mismatches": cross_path_mismatches,
             "cross_path_mismatch_examples": cross_path_mismatch_examples,
+            "official_charalign_success": official_charalign_success,
+            "official_charalign_tatweel_failures": official_charalign_tatweel_failures,
+            "tatweel_charalign_fallback_cases": tatweel_charalign_fallback_cases,
+            "charalign_cross_mismatches": charalign_cross_mismatches,
+            "charalign_cross_mismatch_examples": charalign_cross_mismatch_examples,
             "integrity": {
                 "internal_evaluation_opened": False,
                 "stress_diagnostic_opened": False,
@@ -465,6 +544,10 @@ def main():
             "tatweel_fallback_cases": tatweel_fallback_cases,
             "non_tatweel_subword_failures": non_tatweel_subword_failures,
             "cross_path_mismatches": cross_path_mismatches,
+            "official_charalign_success": official_charalign_success,
+            "official_charalign_tatweel_failures": official_charalign_tatweel_failures,
+            "tatweel_charalign_fallback_cases": tatweel_charalign_fallback_cases,
+            "charalign_cross_mismatches": charalign_cross_mismatches,
             "cases_where_nopnx_differs_from_full_reference": pnx_changed,
             "derived_gold_m2_edit_lines": gold_edit_lines,
         },
