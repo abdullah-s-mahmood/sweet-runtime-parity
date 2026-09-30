@@ -2068,3 +2068,61 @@ Do not compute R_joint before step 8.
 
 No parallel execution.
 Reserved/internal datasets remain closed.
+
+
+## 36. MP-SEF P1/P2 C_F premeasurement proposal freeze
+
+Date: 2026-09-30
+
+### P1 C_F — FROZEN PASS
+
+- run: `36765798233`
+- artifact: `11123050529`
+- artifact ZIP SHA256: `e4020418ca2f2793d4bb79bc766e26838398fb9affba6d0f1c704255cd5aed46`
+- source manifest: **1918 records / 764 clusters**
+- source manifest SHA256: `051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193`
+- batch-vs-single parity: **64/64**
+- changed source-only: **1838/1918 = 95.83%**
+- protected touch: **19/1918 = 0.99%**
+- empty outputs: **0**
+- proposal SHA256: `2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d`
+- lock: `phase2/redesign/MPSEF_P1_CF_PROPOSAL_LOCK_V1.md`
+- R_joint: **NOT COMPUTED**
+
+### P2 C_F — FROZEN PASS
+
+- run: `36768378938`
+- artifact: `11124303107`
+- artifact ZIP SHA256: `5209633d389db02054456a42710a96a1d6e573cefca308254747897969c7d41c`
+- consumed the exact same P1 C_F source manifest
+- batch-vs-single parity: **32/32 all fields**
+- changed source-only: **1906/1918 = 99.37%**
+- protected touch: **21/1918 = 1.10%**
+- empty outputs: **0**
+- proposal SHA256: `f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b`
+- lock: `phase2/redesign/MPSEF_P2_CF_PROPOSAL_LOCK_V1.md`
+- R_joint: **NOT COMPUTED**
+
+P2 step 10 ran approximately 35 minutes. The runner did emit
+`P2_CF_BATCH_PROGRESS` through 1918/1918; active-log `BlobNotFound`
+through the ChatGPT GitHub connector caused the apparent observability gap,
+not a stalled model process.
+
+### Current classification
+
+**IMPROVED IMPLEMENTATION COMPLETENESS / QUALITY PERFORMANCE STILL UNMEASURED**
+
+Both primary proposers are now frozen, source-only, parity-validated, and
+anchored to the same C_F population.
+
+### Next authorized sequence
+
+1. prepare independent higher-model premeasurement review packet;
+2. implement the frozen-artifact R_joint scorer;
+3. freeze scorer/workflow hashes;
+4. run second pre-measurement preflight;
+5. make explicit measurement-authorization decision;
+6. only then compute R_joint once.
+
+No selector training. No INTERNAL_EVALUATION or STRESS_DIAGNOSTIC opening.
+No reserved-set use.
