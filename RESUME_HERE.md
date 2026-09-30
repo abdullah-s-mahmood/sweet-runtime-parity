@@ -834,3 +834,108 @@ A higher-capability ChatGPT/model may be used only for a small focused ambiguous
 8. Only after final adjudication is frozen may the blind key be opened and the 115/200 hypergeometric decision computed.
 9. If ALIF_VARIANT fails, do not lower the 98% gate. Proceed with H3/H4 with H2 ALIF_VARIANT disabled unless a separately versioned development iteration is justified.
 10. Keep all reserved/internal splits closed until component activation decisions are frozen.
+
+
+## 23. Reviewer-bottleneck resolution + H2-v2 closure — COMPLETE
+
+### Reviewer bottleneck resolution
+
+The 250-row blinded ALIF_VARIANT human-review packet remains frozen and valid, but **human review is no longer on the critical execution path** because qualified independent Arabic reviewers are not practically available.
+
+Do not misrepresent AI review as human validation.
+
+If qualified human reviewers become available later, the packet may be used as optional external validation.
+
+A higher-capability ChatGPT/model may be used only for small focused ambiguity packets when genuinely needed; it does not substitute for independent human validation.
+
+### H2 evidence-constrained development iteration v2
+
+Frozen protocol:
+`phase2/redesign/M2H_H2_EVIDENCE_CONSTRAINED_ITERATION_V2.md`
+
+Purpose:
+test a narrower automatic `ALIF_VARIANT` subset using independent CALIMA-MSA evidence, without lowering the 98% gate.
+
+Frozen predicate:
+- H2-v1 ALIF_VARIANT surface predicate passes;
+- clean one-token Arabic source and candidate;
+- source has zero CALIMA-MSA analyses;
+- candidate has >=1 analysis;
+- candidate analyses agree on one lexical identity;
+- no proper-name risk;
+- no analyzer/invariant failure.
+
+Frozen activation gate:
+- n >= 50
+- strict-reference precision lower bound >= 98%
+- zero invariant failures
+- zero analyzer failures among accepted rows
+
+Workflow:
+- run: `36702245858`
+- job: `h2-v2-calibration`
+- conclusion: **SUCCESS**
+- started: `2026-09-30T10:24:42Z`
+- completed: `2026-09-30T10:26:54Z`
+
+Artifact:
+- id: `11090183156`
+- name: `m2h-h2-v2-calibration-v1`
+- SHA256: `769bcd52f897868ebcb5b64b46f217d0b0ee63b047d1815174ca2c7d3ab38d2b`
+
+Results:
+- ALIF_VARIANT family candidates: **19,338**
+- accepted candidates: **0**
+- exact-supported accepted: **0**
+- reference-unsupported accepted: **0**
+- accepted case coverage: **0**
+- invariant failures among accepted: **0**
+- analyzer failures: **0**
+
+Reason counts:
+- `SOURCE_ANALYZABLE`: **18,998**
+- `CANDIDATE_UNANALYZABLE`: **339**
+- `SURFACE_HYGIENE_FAIL`: **1**
+
+Automatic activation:
+**DISABLED**
+
+Interpretation:
+the hypothesis that erroneous ALIF_VARIANT source forms would often be absent from CALIMA-MSA while the corrected form is attested was falsified on CALIBRATION. Modern Arabic morphological analyzers have broad coverage, so analyzability alone is too permissive to act as a spelling-error discriminator.
+
+Frozen result:
+`phase2/redesign/M2H_H2_V2_RESULT.md`
+
+Decision:
+- H2-v2 CLOSED;
+- do not lower the 98% gate;
+- do not create another narrower ALIF_VARIANT rule from the same observed v2 failures;
+- do not block progress waiting for human reviewers;
+- current automatic H2 activation remains **none**.
+
+Scientific classification versus H2-v1:
+**WORSENED FOR H2 COVERAGE / IMPROVED SCIENTIFICALLY**
+
+Magnitude:
+- H2-v1 best family lower bound: ALIF_VARIANT **95.85%**, not activatable;
+- H2-v2 accepted coverage: **0 / 19,338 = 0%**;
+- automatic H2 families enabled: remains **0**.
+
+Still unopened:
+- `INTERNAL_EVALUATION`
+- `STRESS_DIAGNOSTIC`
+- Confirmation
+- Holdout
+- A7'ta reserve
+- reserved Nahw IDs
+- QALB15 TEST
+
+### Exact next authorized step
+
+Proceed directly to:
+1. H3 morphology-aware CALIBRATION development proxy using the already frozen MI/MT protocol;
+2. H4 structural boundary calibration;
+3. freeze final component activation decisions;
+4. only then consider opening INTERNAL_EVALUATION.
+
+Do not reopen H2 tuning in the current development iteration.
