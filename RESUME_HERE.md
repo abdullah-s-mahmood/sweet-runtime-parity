@@ -1425,3 +1425,74 @@ The new design directly addresses the demonstrated single-proposer recall bottle
 3. Only then run P2 runtime parity.
 4. Only after both parity checks pass, implement canonical edit extraction and the P1+P2 candidate-union feasibility experiment.
 5. Do not build an authorization selector until candidate-union recall is frozen.
+
+
+## 29. MP-SEF P1 runtime parity — PASS; P2 parity started
+
+P1 runtime lock:
+`phase2/redesign/MPSEF_P1_RUNTIME_LOCK_V1.md`
+
+Lock commit:
+`e3e878db3736fe1b7aab5afc88fb68caa34ff0de`
+
+P1 parity run:
+`36749690421`
+
+P1 artifact:
+- id: `11113469233`
+- digest: `sha256:994c98dbe965883f9097a1845dc3240105b3fb11de709aeb11f454b6a34dfbb0`
+
+P1 result:
+- sample: **64 source-only CALIBRATION cases**
+- pass 1 exact trace match: **64 / 64**
+- pass 2 exact trace match: **64 / 64**
+- all-field match: **64 / 64**
+- mismatches: **0**
+- gold/reference consulted: **false**
+- INTERNAL_EVALUATION opened: **false**
+- STRESS_DIAGNOSTIC opened: **false**
+
+P1 runner SHA256:
+`31b0d7728b2d74e9848601653fd91017e54d83867861c287479bbe1c847fe1f1`
+
+P1 pip-freeze SHA256:
+`aa9c31581f733395b1da19244c9971818499dd1d5bd1d3da0b2057b91fe66df4`
+
+Decision:
+**P1 activated as proposer only.**
+No automatic correction is authorized.
+
+### P2 parity — RUNNING
+
+Runner:
+`phase2/redesign/mpsef_p2_arabart_ged_parity.py`
+
+Workflow:
+`.github/workflows/phase2-mpsef-p2-arabart-ged-parity-v1.yml`
+
+Workflow commit:
+`cbba8356faf662104f14849f9c9e89a33826d813`
+
+Current run:
+`36750725611`
+
+Current job:
+`110008353484`
+
+Last observed state:
+- run: queued/in progress transition;
+- clone frozen official arabic-gec implementation: in progress;
+- P2 inference not started yet.
+
+P2 parity gate:
+- deterministic 64 source-only CALIBRATION cases;
+- exact morphology-preprocessed text match: 64/64;
+- GED labels match: 64/64;
+- GEC subword tokens/input ids/GED label ids match: 64/64;
+- exact generated output match: 64/64;
+- all-field match: 64/64;
+- no gold/reference consultation.
+
+Do not compute candidate-union recall until P2 parity is frozen PASS.
+
+Reserved/internal datasets remain closed.
