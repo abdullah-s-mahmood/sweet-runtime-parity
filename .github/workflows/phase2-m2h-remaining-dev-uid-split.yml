@@ -1,0 +1,45 @@
+name: Phase 2 M2-H Remaining DEVELOPMENT UID Split
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/m2h_build_remaining_dev_uid_split.py"
+      - ".github/workflows/phase2-m2h-remaining-dev-uid-split.yml"
+      - "phase2/redesign/M2H_REMAINING_DEV_SPLIT_SPEC_V1.md"
+
+permissions:
+  contents: read
+
+jobs:
+  uid-split:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Build UID-only remaining DEVELOPMENT split
+        run: python phase2/redesign/m2h_build_remaining_dev_uid_split.py
+      - name: Assert no text-bearing keys in manifest
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open("M2H_REMAINING_DEV_UID_SPLIT_V1.json"))
+          blob=json.dumps(p,ensure_ascii=False)
+          for forbidden in ['"source"', '"reference"', '"candidate"', '"gold_errors"']:
+              if forbidden in blob:
+                  raise SystemExit("forbidden text-bearing key: "+forbidden)
+          print("UID_ONLY_MANIFEST_OK")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2h-remaining-dev-uid-split-v1
+          path: |
+            M2H_REMAINING_DEV_UID_SPLIT_V1.json
+            M2H_REMAINING_DEV_UID_SPLIT_SUMMARY_V1.json
+          retention-days: 90
