@@ -4,7 +4,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
+import types
+import unicodedata
 from pathlib import Path
 
 import torch
@@ -111,6 +114,30 @@ def main():
     upstream = Path(args.upstream_root).resolve()
     sys.path.insert(0, str(upstream))
     sys.path.insert(0, str(upstream / "gec"))
+
+    # Exact compatibility shim reused from the frozen H1 official-alignment
+    # audit. P1 rewrite needs only these CAMeL Tools constants/normalizers;
+    # no morphology resource is involved in SWEET NoPnx inference.
+    unicode_punct_symbol = frozenset(
+        chr(i) for i in range(0x110000)
+        if unicodedata.category(chr(i))[0] in {"P", "S"}
+    )
+    camel_tools_mod = types.ModuleType("camel_tools")
+    camel_utils_mod = types.ModuleType("camel_tools.utils")
+    camel_charsets_mod = types.ModuleType("camel_tools.utils.charsets")
+    camel_normalize_mod = types.ModuleType("camel_tools.utils.normalize")
+    camel_charsets_mod.UNICODE_PUNCT_SYMBOL_CHARSET = unicode_punct_symbol
+    camel_charsets_mod.AR_LETTERS_CHARSET = frozenset(
+        "ءآأؤإئابتثجحخدذرزسشصضطظعغـفقكلمنهوىيٱپچڤگ"
+    )
+    camel_normalize_mod.normalize_alef_ar = lambda s: re.sub("[إأٱآ]", "ا", s)
+    camel_normalize_mod.normalize_alef_maksura_ar = lambda s: s.replace("ى", "ي")
+    camel_normalize_mod.normalize_teh_marbuta_ar = lambda s: s.replace("ة", "ه")
+    sys.modules["camel_tools"] = camel_tools_mod
+    sys.modules["camel_tools.utils"] = camel_utils_mod
+    sys.modules["camel_tools.utils.charsets"] = camel_charsets_mod
+    sys.modules["camel_tools.utils.normalize"] = camel_normalize_mod
+
     from gec.tag import rewrite
 
     tokenizer = BertTokenizer.from_pretrained(args.model_dir)
