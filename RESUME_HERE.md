@@ -1615,3 +1615,197 @@ Do NOT:
 until the review is returned and adjudicated.
 
 Reserved/internal datasets remain closed.
+
+
+## 31. MP-SEF independent review adjudicated — V3 pre-union methodology frozen
+
+Independent review supplied by user:
+- MPSEF_INDEPENDENT_REVIEW_AR.md
+- decision: **MODIFY PROTOCOL BEFORE UNION MEASUREMENT**
+- no union measurement, simulation, selector training, or reserved-data access occurred in that review.
+
+Core review requirements adopted:
+- replace raw union recall with jointly realizable `R_joint`;
+- represent proposer output as source-anchored bundles with dependencies/conflicts;
+- preserve original-source provenance through P1 iterative passes and P2 morphology/GED/generation;
+- maintain explicit exposure ledger;
+- freeze stop rules before any metric;
+- keep the >=95% candidate-availability floor, but apply it to `R_joint`;
+- do not authorize selector training or AUTO_SAFE merely because proposal availability passes.
+
+Frozen protocol:
+`phase2/redesign/MPSEF_PRE_UNION_PROTOCOL_V3.md`
+
+Protocol commit:
+`a666ec4da15a552b347d5907b87f58ae496526b5`
+
+Frozen contracts:
+- `MPSEF_BUNDLE_CONTRACT_V1.md`
+  commit `642c39bc7b14af1ba0525da4416c2cf723d5c04e`
+- `MPSEF_TARGET_AND_MATCHING_CONTRACT_V1.md`
+  commit `1780842256ddb9833054df3a8ff7f685a85f47c0`
+- `MPSEF_PROTECTED_INVARIANTS_CONTRACT_V1.md`
+  commit `1a9b4f536d031f4278e995e2cc4aad73c64fdac1`
+
+No candidate metric was computed while creating these documents.
+
+## 32. New training-overlap discovery — protocol amended BEFORE measurement
+
+A required provenance audit found that the frozen 6,888-record CALIBRATION artifact contains:
+- **6,571 QALB-2014 train-origin records**
+- **317 QALB-2014 dev-origin records**
+
+Public provenance confirms:
+- P1 SWEET-QALB14 was fine-tuned on QALB-2014 and the paper trains QALB-2014 taggers on the QALB-2014 training setup;
+- P2 AraBART-QALB14 was fine-tuned on QALB-2014 with the standard Train-L1 / Dev-L1 / Test-L1 organization.
+
+Therefore a generic random 30/40/30 split across all CALIBRATION would put direct proposer-training-origin records into the primary feasibility population.
+
+This confound was discovered before any P1+P2 feasibility metric.
+
+Frozen audit:
+`phase2/redesign/MPSEF_TRAINING_OVERLAP_AUDIT_V1.md`
+
+Audit commit:
+`e8389cdbaa3804df396e337d1e195671b74d737d`
+
+Frozen amendment:
+`phase2/redesign/MPSEF_PRE_UNION_PROTOCOL_V3_TRAINING_OVERLAP_AMENDMENT_V1.md`
+
+Amendment commit:
+`1f2827083b599325017e69d8852e9584a9a1e694`
+
+Revised primary feasibility population:
+**D_DEV_FEAS_V1**
+
+Definition:
+- all 317 CALIBRATION records with original QALB-2014 split == dev;
+- no QALB-2014 train-origin record;
+- developmental / dev-origin / not independent.
+
+Train-origin population:
+**D_TRAIN_INTERNAL_V1**
+- 6,571 records;
+- development only;
+- excluded from primary candidate-availability gate.
+
+The higher-model 30/40/30 concept is deferred for any future selector role separation; it is not used to define the first proposer-feasibility population.
+
+## 33. Pre-union manifests and exposure ledger — PASS / FROZEN
+
+Source-only manifest generator:
+`phase2/redesign/mpsef_prepare_preunion_manifests_v1.py`
+
+Generator commit:
+`549406b2151727280db57fe077ce6e6e885a1c54`
+
+Generator SHA256:
+`a79e0bfc0c73a9cf92ea342103cc4d4b357363ba61da049e212ba576be1f0d5d`
+
+Workflow:
+`.github/workflows/phase2-mpsef-preunion-manifests-v1.yml`
+
+Workflow commit:
+`c5dfd4db8da6e84f36988cd3bd14ba596344c79a`
+
+Run:
+`36761718922`
+
+Job:
+`110045678462`
+
+Conclusion:
+**SUCCESS**
+
+Artifact:
+- id: `11119695370`
+- name: `mpsef-preunion-manifests-v1`
+- digest:
+  `sha256:1163b37d2c0b50f8a1f6f804e3c012928f1bc3a894c7cb0d87cbffd66196b712`
+
+Manifest lock:
+`phase2/redesign/MPSEF_PREUNION_MANIFEST_LOCK_V1.md`
+
+Lock commit:
+`bfc08addb199808e311d21820a7e1ee2cdd03a30`
+
+Preflight:
+**PASS**
+
+Reproduced counts:
+- total CALIBRATION records: **6,888**
+- train-origin: **6,571**
+- dev-origin: **317**
+- total duplicate/near-duplicate clusters: **6,871**
+- non-singleton clusters: **15**
+- max cluster size: **4**
+- near-duplicate edges: **20**
+- dev clusters: **317**
+- train/dev crossing clusters: **0**
+- D_DEV_FEAS_V1 records: **317**
+- D_DEV_FEAS_V1 clusters: **317**
+- D_TRAIN_INTERNAL_V1 records: **6,571**
+- D_TRAIN_INTERNAL_V1 clusters: **6,554**
+- cluster overlap between the two populations: **0**
+
+Exposure ledger:
+- all 6,888 records gold_exposed=true;
+- all 6,888 aggregate_result_exposed=true;
+- all 6,888 independence_claim_allowed=false;
+- 6,571 marked KNOWN_OR_HIGHLY_EXPECTED_DIRECT_TRAIN_OVERLAP;
+- 317 marked MODEL_DEVELOPMENT_EVALUATION_EXPOSURE;
+- fine-grained historical error-analysis exposure conservatively unknown for all records.
+
+Integrity:
+- candidate_metric_computed=false
+- reference_content_used_for_manifest_generation=false
+- gold_edit_content_used_for_manifest_generation=false
+- INTERNAL_EVALUATION opened=false
+- STRESS_DIAGNOSTIC opened=false
+- reserved_data_opened=false
+
+### Scientific classification
+
+Relative to the initial MP-SEF v2 proposal:
+
+**IMPROVED METHODOLOGICALLY / PERFORMANCE STILL NOT MEASURED**
+
+Specific improvement:
+the primary feasibility population is no longer dominated by direct proposer-training-origin records.
+
+Remaining limitation:
+D_DEV_FEAS_V1 is still development-exposed and cannot be treated as independent generalization evidence.
+
+### Current authorization state
+
+P1:
+PASS / proposer only.
+
+P2:
+PASS / proposer only.
+
+Pre-union methodology:
+FROZEN WITH TRAINING-OVERLAP AMENDMENT.
+
+Pre-union manifests:
+PASS / FROZEN.
+
+Candidate feasibility / R_joint:
+**NOT RUN**
+
+Selector:
+**NOT AUTHORIZED**
+
+AUTO_SAFE:
+**NOT AUTHORIZED**
+
+Reserved/internal datasets:
+**CLOSED**
+
+### Exact next decision point
+
+Before running the single P1+P2 feasibility measurement on D_DEV_FEAS_V1, adjudicate whether the training-overlap amendment should receive a focused independent delta review because it changes the higher-model review's originally proposed generic 30/40/30 role split.
+
+Do not silently revert to 30/40/30 across train+dev.
+
+Do not run feasibility until this decision is explicitly resolved.
