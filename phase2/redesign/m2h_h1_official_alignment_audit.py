@@ -269,7 +269,7 @@ def main():
         basic_alignment = []
         for src_word, tgt_word in zip(aligned_src, aligned_tgt):
             def norm_keep_tatweel(s):
-                out = re.sub(r'([' + re.escape(PUNCS) + '])', r'PNX\\1', s.strip())
+                out = re.sub(r'([' + re.escape(PUNCS) + '])', r'PNX\1', s.strip())
                 return norm_digits(out)
 
             ns = norm_keep_tatweel(src_word)
