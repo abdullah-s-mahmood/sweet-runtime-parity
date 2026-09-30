@@ -1288,3 +1288,51 @@ Perform a focused methodological review of:
 4. whether such a diagnostic would have a preregistered no-tuning stopping rule.
 
 If no defensible exception is established, close H1-v1 and the current M2-H path before H5/H6.
+
+
+## 27. H1-v1 formal closure — CURRENT AUTHORIZED STATE
+
+Final decision file:
+`phase2/redesign/M2H_H1_FINAL_DECISION_V1.md`
+
+Decision:
+**H1-v1 = CLOSED FAIL**
+
+Basis:
+- frozen operational gate realization: official-alignment one-pass NoPnx M2 recall;
+- observed Recall: **69.39%**;
+- frozen gate: **>=80%**;
+- deficit: **-10.61 pp**;
+- classification: not borderline.
+
+Supporting reproducibility:
+- inference parity: **256 / 256**, mismatches **0**;
+- CALIBRATION gold construction: **6,888 / 6,888**;
+- gold-construction failures: **0**;
+- char-alignment cross mismatches: **0**;
+- word/subword cross-path mismatches: **0**.
+
+Current M2-H path:
+**CLOSED BEFORE H5/H6**
+
+Do NOT start:
+- H5 Risk Fusion
+- H6 Sentence Completeness
+- INTERNAL_EVALUATION
+- STRESS_DIAGNOSTIC
+
+Public SWEET usage does show iterative NoPnx decoding (`decode_iter=2`), but H1-v1 was frozen as one-pass and cannot be retroactively changed.
+
+Any future iterative SWEET study must be a separately versioned architectural diagnostic with a new frozen protocol. It cannot overwrite H1-v1 and is not currently authorized as part of the closed M2-H path.
+
+Reserved datasets remain closed.
+
+### Scientific classification
+
+**WORSENED FOR CURRENT M2-H VIABILITY / IMPROVED SCIENTIFIC CERTAINTY**
+
+### Exact next authorized direction
+
+Do not continue M2-H tuning.
+
+The next substantive Arabic correction step must be a **new architecture decision phase** with fresh research, explicit alternatives, and frozen gates before any new evaluation.
