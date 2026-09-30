@@ -1,0 +1,100 @@
+name: Phase 2 M2-H H2 ALIF_VARIANT Blind Packet
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-m2h-h2-alif-variant-blind-packet.yml"
+      - "phase2/redesign/M2H_H2_ALIF_VARIANT_BLIND_ADJUDICATION_PROTOCOL_V1.md"
+      - "phase2/redesign/M2H_H2_ORTHOGRAPHIC_RULES_V1.md"
+      - "phase2/redesign/m2h_h2_calibrate.py"
+      - "phase2/redesign/m2h_h2_build_alif_variant_blind_packet.py"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build-blind-packet:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Download frozen H1 CALIBRATION artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-h1-calibration-candidates-v1
+          path: h1_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36691616010
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate frozen H1 artifact inputs
+        run: |
+          test -s h1_artifact/M2H_H1_CALIBRATION_CANDIDATES_V1.jsonl
+          test -s h1_artifact/M2H_H1_CALIBRATION_INFERENCE_V1.jsonl
+          test -s h1_artifact/M2H_H1_CALIBRATION_CANDIDATE_SUMMARY_V1.json
+          python - <<'PY'
+          import json
+          s=json.load(open("h1_artifact/M2H_H1_CALIBRATION_CANDIDATE_SUMMARY_V1.json",encoding="utf-8"))
+          assert s["cases"]==6888
+          assert s["candidates"]==46811
+          assert s["exact_gold_supported_candidates"]==32502
+          assert s["reference_unsupported_candidates"]==14309
+          assert s["integrity"]["internal_evaluation_opened"] is False
+          assert s["integrity"]["stress_diagnostic_opened"] is False
+          print("H1_ARTIFACT_INPUT_OK")
+          PY
+
+      - name: Build blinded ALIF_VARIANT adjudication packet
+        run: |
+          python phase2/redesign/m2h_h2_build_alif_variant_blind_packet.py \
+            --candidates h1_artifact/M2H_H1_CALIBRATION_CANDIDATES_V1.jsonl \
+            --inference h1_artifact/M2H_H1_CALIBRATION_INFERENCE_V1.jsonl \
+            --out-dir m2h_h2_alif_variant_blind_v1
+
+      - name: Validate packet contract without inspecting examples
+        run: |
+          python - <<'PY'
+          import json
+          p="m2h_h2_alif_variant_blind_v1/M2H_H2_ALIF_VARIANT_BLIND_PACKET_SUMMARY_V1.json"
+          s=json.load(open(p,encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["population"]["unsupported"]==802
+          assert s["population"]["exact_supported"]==18536
+          assert s["sample"]["unsupported"]==200
+          assert s["sample"]["hidden_controls"]==50
+          assert s["sample"]["packet_total"]==250
+          assert s["blinding"]["packet_contains_gold_support"] is False
+          assert s["blinding"]["packet_contains_qalb_reference"] is False
+          assert s["blinding"]["packet_contains_h1_identity_or_confidence"] is False
+          assert s["integrity"]["unique_packet_ids"] is True
+          assert s["integrity"]["unique_candidate_ids_in_key"] is True
+          assert s["integrity"]["internal_evaluation_opened"] is False
+          assert s["integrity"]["stress_diagnostic_opened"] is False
+          print("ALIF_VARIANT_BLIND_PACKET_CONTRACT_OK")
+          print("BLIND_PACKET_SHA256",s["sha256"]["blind_packet"])
+          print("BLIND_KEY_SHA256",s["sha256"]["blind_key"])
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2h-h2-alif-variant-blind-review-v1
+          path: |
+            m2h_h2_alif_variant_blind_v1/M2H_H2_ALIF_VARIANT_BLIND_PACKET_V1.jsonl
+            m2h_h2_alif_variant_blind_v1/M2H_H2_ALIF_VARIANT_BLIND_PACKET_SUMMARY_V1.json
+          retention-days: 90
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2h-h2-alif-variant-blind-key-v1
+          path: |
+            m2h_h2_alif_variant_blind_v1/M2H_H2_ALIF_VARIANT_BLIND_KEY_V1.jsonl
+            m2h_h2_alif_variant_blind_v1/M2H_H2_ALIF_VARIANT_BLIND_PACKET_SUMMARY_V1.json
+          retention-days: 90
