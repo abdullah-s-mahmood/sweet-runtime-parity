@@ -550,3 +550,74 @@ Recommended instruction:
 
 > Read `RESUME_HERE.md` from branch `phase2-arabic-eval` in `abdullah-s-mahmood/sweet-runtime-parity`. Treat it as canonical. Inspect current branch HEAD and continue only from the exact next step. Do not restart closed phases. Use checkpoint execution with 2–4 strictly sequential tool operations and no parallel tool calls. Keep Arabic responses RTL-friendly and isolate English technical terms in backticks.
 
+
+
+## 20. CALIBRATION ARETA enrichment — COMPLETE
+
+Workflow:
+- `Phase 2 M2-H CALIBRATION ARETA Enrichment`
+- run: `36658916857`
+- head: `87a150f237850ef395458123cd41b105fbe84133`
+- conclusion: **SUCCESS**
+
+Scope validation:
+- `CALIBRATION` cases reconstructed: **6,888**
+- sentence groups processed by ARETA: **6,888**
+- `CALIBRATION_RECONSTRUCTION_OK`: PASS
+- `ARETA_CALIBRATION_SCOPE_OK`: PASS
+
+Case-level diagnostic strata:
+- orthographic: **6,363 / 6,888 = 92.38%**
+- morphology primary (`MI` or `MT`): **1,544 / 6,888 = 22.42%**
+- syntax: **3,640 / 6,888 = 52.85%**
+- boundary (`MG` or `SP`): **2,997 / 6,888 = 43.51%**
+- contains `UNK`: **706 / 6,888 = 10.25%**
+
+Selected token/code counts:
+- `OH`: 34,188
+- `OT`: 5,917
+- `OR`: 3,577
+- `OA`: 2,923
+- `OM`: 2,698
+- `OD`: 2,583
+- `MI`: 2,558
+- `MT`: 39
+- `MG`: 2,626
+- `SP`: 3,093
+- `UNK`: 992
+- `UC`: 264,067
+
+Important interpretation:
+- these are **ARETA diagnostic strata**, not independent gold;
+- H2 can now be calibrated on a large orthographic stratum;
+- H3 has a non-trivial `MI/MT` development-proxy stratum;
+- `UNK` remains material at ~10.25% of cases and must be handled explicitly rather than silently treated as clean;
+- boundary ARETA labels are only diagnostic and do not replace the stricter pure-whitespace H4 gold contract already frozen.
+
+Artifact:
+- id: `11074295904`
+- name: `m2h-calibration-areta-enrichment-v1`
+- ZIP SHA256: `e29cd674e8606eff4d685ef59fa3e11b51b6a769425a29dcb4042884100dde1c`
+
+Integrity:
+- `INTERNAL_EVALUATION`: unopened
+- `STRESS_DIAGNOSTIC`: unopened
+- Confirmation: unopened
+- Holdout: unopened
+- A7'ta reserve: unopened
+- reserved Nahw IDs: unopened
+- QALB15 TEST: unopened
+
+Scientific classification versus the prior checkpoint:
+**IMPROVED**
+
+Magnitude:
+- moved from software-feasible ARETA smoke test to full diagnostic enrichment of all 6,888 CALIBRATION cases;
+- no M2-H verifier quality metric has been measured yet, so scientific performance remains **UNCHANGED / NOT YET EVALUATED**.
+
+Exact next authorized step:
+1. validate the enrichment artifact structure and UID alignment;
+2. define/freeze H2 deterministic orthographic rule families using CALIBRATION only;
+3. define/freeze H3 morphology development-proxy protocol on `MI/MT`;
+4. run H4 deterministic calibration against the previously frozen pure-whitespace boundary gold;
+5. only after component rules/thresholds are frozen may `INTERNAL_EVALUATION` be opened.

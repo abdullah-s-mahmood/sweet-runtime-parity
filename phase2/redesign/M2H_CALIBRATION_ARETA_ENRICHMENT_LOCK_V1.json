@@ -1,0 +1,52 @@
+{
+  "record_id": "M2H_CALIBRATION_ARETA_ENRICHMENT_LOCK_V1",
+  "date": "2026-09-30",
+  "status": "PASS_AND_FROZEN",
+  "workflow": {
+    "run_id": 36658916857,
+    "head_sha": "87a150f237850ef395458123cd41b105fbe84133",
+    "conclusion": "success"
+  },
+  "scope": {
+    "cases": 6888,
+    "sentence_groups": 6888,
+    "calibration_only": true
+  },
+  "case_strata": {
+    "orthographic": 6363,
+    "morphology_primary_MI_or_MT": 1544,
+    "syntax": 3640,
+    "boundary_MG_or_SP": 2997,
+    "contains_UNK": 706
+  },
+  "selected_code_counts": {
+    "OH": 34188,
+    "OT": 5917,
+    "OR": 3577,
+    "OA": 2923,
+    "OM": 2698,
+    "OD": 2583,
+    "MI": 2558,
+    "MT": 39,
+    "MG": 2626,
+    "SP": 3093,
+    "UNK": 992,
+    "UC": 264067
+  },
+  "artifact": {
+    "id": 11074295904,
+    "name": "m2h-calibration-areta-enrichment-v1",
+    "zip_sha256": "e29cd674e8606eff4d685ef59fa3e11b51b6a769425a29dcb4042884100dde1c"
+  },
+  "integrity": {
+    "internal_evaluation_opened": false,
+    "stress_diagnostic_opened": false,
+    "confirmation_opened": false,
+    "holdout_opened": false,
+    "a7ta_reserved_opened": false,
+    "reserved_nahw_opened": false,
+    "qalb15_test_opened": false
+  },
+  "scientific_role": "DIAGNOSTIC_STRATIFICATION_ONLY_NOT_INDEPENDENT_GOLD",
+  "next_authorized_step": "Validate enrichment structure/UID alignment, then freeze H2/H3/H4 component calibration protocols before opening INTERNAL_EVALUATION."
+}
