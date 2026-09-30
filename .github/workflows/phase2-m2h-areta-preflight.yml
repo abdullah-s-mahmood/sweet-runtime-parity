@@ -42,6 +42,11 @@ jobs:
           python -m pip install             "docopt==0.6.2"             "editdistance==0.5.3"
           python -m pip install -r upstream/arabic-gec/areta/requirements.txt
 
+      - name: Install CAMeL Tools v1.2.0 light data bundle
+        run: |
+          camel_data light
+          test -f "$HOME/.camel_tools/data/morphology_db/calima-msa-r13/morphology.db"
+
       - name: Record environment
         run: |
           python --version > areta_python_version.txt

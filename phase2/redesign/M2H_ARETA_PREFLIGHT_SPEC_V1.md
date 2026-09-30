@@ -120,3 +120,24 @@ Create and run the diagnostic preflight workflow exactly against this frozen spe
 Preflight v1 on Python 3.9 failed before any ARETA execution because scikit-learn==0.23.2 attempted a source build and pulled numpy==1.17.3 as a build dependency, which failed during metadata generation with `NameError: CCompiler is not defined`.
 
 Decision: change only Python 3.9 -> 3.8. Keep CAMeL Tools 1.2.0 and all repository-pinned ARETA requirements unchanged.
+
+
+## CAMeL Tools 1.2.0 data requirement
+
+The official v1.2.0 CLI uses:
+- `camel_data light`
+- `camel_data full`
+
+It does not use the newer per-package `-i morphology-db-msa-r13` syntax.
+
+For this diagnostic preflight, use:
+
+`camel_data light`
+
+Rationale:
+- the v1.2.0 catalogue states that `light` contains morphology and MLE disambiguation data;
+- its MorphologyDB default is `calima-msa-r13`;
+- the morphology database version in that catalogue is 0.4.0;
+- this is the minimum official data bundle needed by ARETA's morphology-dependent path.
+
+Do not download the 1.8 GB `full` package unless a later diagnostic proves `light` insufficient.
