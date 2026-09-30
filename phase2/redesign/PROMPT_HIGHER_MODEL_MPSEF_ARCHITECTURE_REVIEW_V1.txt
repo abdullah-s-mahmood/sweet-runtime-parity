@@ -1,0 +1,152 @@
+You are acting as an independent senior methodological reviewer for the ACAD_PASS Arabic correction research program.
+
+I will attach one file:
+
+FOCUSED_REVIEW_PACKET_MPSEF_ARCHITECTURE_V2.md
+
+Your task is NOT to continue implementation and NOT to validate the current plan by default.
+
+Your task is to critically review whether the proposed MP-SEF architecture and its next candidate-union experiment are scientifically defensible before any further evaluation is run.
+
+IMPORTANT OPERATING RULES
+
+1. Read the entire attached review packet before forming a conclusion.
+2. Treat all previous architectural choices as challengeable.
+3. Do not assume MP-SEF is correct because the project has already invested effort in it.
+4. Do not weaken any frozen gate merely because an observed result might fail it.
+5. Do not recommend opening or using:
+   - INTERNAL_EVALUATION
+   - STRESS_DIAGNOSTIC
+   - QALB15 TEST
+   - Confirmation
+   - Holdout
+   - A7'ta reserve
+   - reserved Nahw IDs
+6. Do not run, simulate, or request the candidate-union experiment yet.
+7. Do not propose selector training until you have first decided whether the candidate-stage construct and protocol are valid.
+8. Separate:
+   - factual evidence,
+   - methodological inference,
+   - recommendation,
+   - uncertainty.
+9. Perform fresh rigorous literature research before concluding. Prefer primary peer-reviewed papers and official repositories/model cards. Search specifically for:
+   - Arabic grammatical error correction;
+   - Arabic GED + GEC;
+   - system combination in GEC;
+   - edit-level fusion;
+   - selective prediction / abstention;
+   - over-correction and semantic drift in seq2seq GEC;
+   - candidate generation followed by edit scoring/reranking;
+   - diversity requirements in ensemble/system combination;
+   - calibration leakage, double-dipping, and adaptive reuse of development data;
+   - evaluation construct validity for edit-level vs sentence-level GEC.
+10. Verify whether any 2025-2026 Arabic GEC work materially changes the architectural decision, including but not limited to SWEET, ArbESC+, MTAGEC, STAGEET, AraBART/AraT5-family work, or stronger reproducible alternatives.
+11. If a paper reports a benchmark improvement, do not assume that benchmark gain transfers to ACAD_PASS. ACAD_PASS prioritizes:
+   - preservation of scientific meaning;
+   - preservation of facts, numbers, units, citations, equations, and document structure;
+   - reversible source-anchored edits;
+   - REVIEW-first Arabic behavior;
+   - very high precision for any AUTO_SAFE edit.
+12. Challenge the assumption that seq2seq outputs can always be decomposed into independent atomic edits. Determine whether coupled multi-token transformations create a construct-validity problem.
+13. Challenge the assumption that P1 and P2 are sufficiently diverse merely because one is edit-tagging and one is seq2seq.
+14. Challenge the proposed candidate-union recall >=95% gate. If you recommend a different threshold, justify it mathematically or methodologically and specify the exact replacement.
+15. Pay special attention to development-set reuse:
+   - P1/P2 feasibility is measured on frozen CALIBRATION;
+   - a later selector might also need calibration/training data.
+   Determine whether this creates unacceptable adaptive overfitting or double-dipping.
+   If a new preregistered split is required, specify exactly how it should be constructed BEFORE any union metric is observed.
+16. Evaluate whether the proposer-retention rule (>=1.0 pp unique union recall OR meaningful weak-family gain OR unique corroborative evidence) is defensible.
+17. Propose exact anti-loop stop rules so the project cannot keep adding proposers indefinitely after weak results.
+18. Consider simpler alternatives, including:
+   - GED-first REVIEW routing with suggestion-only correction;
+   - suggestion-only seq2seq without learned authorization;
+   - staged typed edit systems;
+   - rule/neural hybrid routing;
+   - no AUTO_SAFE Arabic correction at all, only REVIEW recommendations.
+19. Do not optimize for implementation convenience. Optimize for scientific validity, safety, reproducibility, and likelihood of producing a genuinely useful Arabic correction subsystem.
+20. If evidence is insufficient for a firm decision, say exactly what is missing and identify the smallest experiment needed to resolve it.
+
+REQUIRED REVIEW QUESTIONS
+
+A. Is separating proposal generation from edit authorization the correct abstraction for ACAD_PASS?
+
+B. Are P1 (iterative SWEET) and P2 (AraBART + Morph + GED) a scientifically meaningful first proposer pair?
+
+C. Is the current canonical reversible edit-transaction idea valid for seq2seq output, or must coupled edits be represented differently?
+
+D. What should be the PRIMARY candidate-stage endpoint?
+Choose and justify among, or replace:
+- gold edit-instance recall;
+- representation-invariant M2 recall;
+- complete-sentence repair coverage;
+- error-family coverage;
+- another construct.
+Also specify mandatory secondary endpoints.
+
+E. Is union recall >=95% a defensible preregistered feasibility gate?
+If not, give the exact replacement gate and rationale.
+
+F. Must CALIBRATION be split again before candidate-union evaluation to preserve an untouched selector-calibration partition?
+If yes, specify:
+- split proportions;
+- stratification variables;
+- deterministic split method;
+- what each split may and may not be used for.
+
+G. Should candidate-union evaluation use only P1+P2 first, or should a third proposer be frozen before the first measurement?
+Do not add a third proposer unless there is a principled reason independent of the unseen union result.
+
+H. Are the proposed proposer-retention rules methodologically sound?
+
+I. What exact stop rules should be frozen before the first union run?
+
+J. If the candidate stage passes, should a learned selector be allowed at all?
+If yes, what form of selector and calibration design is defensible?
+If no, what should replace it?
+
+K. Is there a materially better architecture than MP-SEF for this product objective?
+If yes, describe it concretely enough to replace MP-SEF.
+
+L. Given all currently available evidence, choose one of the following only after defining explicit criteria:
+- PROCEED WITH P1+P2 UNION FEASIBILITY AS DESIGNED
+- MODIFY PROTOCOL BEFORE UNION MEASUREMENT
+- REPLACE ONE OR MORE PROPOSERS BEFORE UNION MEASUREMENT
+- ABANDON MP-SEF FOR A SIMPLER/SAFER ARCHITECTURE
+
+Do not choose based on intuition alone. Tie the decision to the evidence and frozen project constraints.
+
+REQUIRED OUTPUT
+
+Write the final response in Arabic, with English technical terms in backticks where useful, and keep formatting RTL-friendly. Avoid wide tables.
+
+Structure the review as:
+
+1. Executive decision
+2. Fatal methodological concerns
+3. Non-fatal corrections
+4. Independent assessment of P1
+5. Independent assessment of P2
+6. Assessment of proposer diversity
+7. Assessment of canonical edit decomposition
+8. Leakage / double-dipping analysis
+9. Exact candidate-stage metrics
+10. Exact frozen gates
+11. Exact stop rules
+12. Whether a new CALIBRATION split is required
+13. Whether a selector should ever be trained
+14. Better alternative architectures, if any
+15. Final authorized next step only
+16. Confidence level and unresolved uncertainties
+17. Fresh sources used, with links/DOIs
+
+For every proposed change, state whether it is:
+- REQUIRED BEFORE UNION
+- OPTIONAL IMPROVEMENT
+- REJECTED / NOT JUSTIFIED
+
+Do not write implementation code.
+Do not start the union experiment.
+Do not rewrite the historical H1-v1 result.
+Do not use hidden/reserved evaluation data.
+
+The goal is to decide the scientifically strongest next move before we observe P1+P2 union performance.
