@@ -2195,3 +2195,37 @@ Exact next authorized sequence:
 5. run second premeasurement preflight;
 6. make explicit measurement authorization decision;
 7. only then compute R_joint once.
+
+
+## CHECKPOINT — mandatory long-process monitoring instrumentation
+
+From this checkpoint onward, every NEW long-running ACAD_PASS process must use:
+
+- `phase2/redesign/process_progress_v1.py`
+- `phase2/redesign/run_with_progress_watchdog_v1.py`
+- `phase2/redesign/ACAD_PASS_LONG_PROCESS_MONITORING_CONTRACT_V1.md`
+
+Required live fields:
+- child alive/dead;
+- processed;
+- total;
+- percent;
+- last_progress_at;
+- stale_seconds;
+- rate_per_min;
+- ETA where meaningful;
+- stage;
+- final return code.
+
+Recommended cadence:
+- progress update every batch or <=60 s;
+- watchdog poll every 20 s;
+- external GitHub status publication every 60 s;
+- default stale threshold 600 s unless process-specific evidence justifies another threshold.
+
+For GitHub Actions long processes, prefer a narrowly scoped `statuses: write` permission and publish progress to a dedicated commit-status context so progress can be inspected while a job is running even if live job logs are unavailable.
+
+Do not rerun already completed P1/P2 artifacts solely to add monitoring.
+
+Classification:
+**IMPROVED OPERATIONAL OBSERVABILITY / SCIENTIFIC PERFORMANCE UNCHANGED**
