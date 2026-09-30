@@ -1,0 +1,142 @@
+name: Phase 2 MP-SEF R_joint Measurement v1
+
+on:
+  workflow_dispatch:
+    inputs:
+      authorization:
+        description: "Exact authorization token required to expose the single C_F measurement"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  rjoint-measurement:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+
+    steps:
+      - name: Require explicit frozen authorization token
+        run: |
+          test "\${{ inputs.authorization }}" = "MEASURE_R_JOINT_V1"
+          echo "EXPLICIT_MEASUREMENT_AUTHORIZATION_OK"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Clone frozen official text-editing scorer
+        run: |
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git -C upstream/text-editing rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Download frozen CALIBRATION
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-calibration-v1
+          path: calibration_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36654588477
+          github-token: \${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P1 C_F proposals
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: \${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2 C_F proposals
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-cf-proposals-v1
+          path: p2_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36768378938
+          github-token: \${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen official NoPnx M2 gold
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-h1-official-alignment-scoring-continuation-v1
+          path: gold_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36720612925
+          github-token: \${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify all frozen input hashes before scoring
+        run: |
+          test "$(sha256sum p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl | awk '{print $1}')" = "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          test "$(sha256sum p1_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl | awk '{print $1}')" = "2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          test "$(sha256sum p2_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl | awk '{print $1}')" = "f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b"
+          test "$(sha256sum gold_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2 | awk '{print $1}')" = "971b6fbb28dc3767193e7a4b0f722c3abebfc8600155a57093ba483dac6491e8"
+          echo "RJOINT_FROZEN_INPUT_HASHES_OK"
+
+      - name: Run frozen R_joint measurement once
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: |
+          python phase2/redesign/mpsef_rjoint_score_v1.py \
+            --upstream-root upstream/text-editing \
+            --authorization "\${{ inputs.authorization }}" \
+            --calibration calibration_artifact/M2H_CALIBRATION_V1.jsonl \
+            --full-gold-m2 gold_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2 \
+            --source-manifest p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl \
+            --p1-proposals p1_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl \
+            --p2-proposals p2_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl \
+            --out-prefix MPSEF_RJOINT_MEASUREMENT_V1
+
+      - name: Validate measurement output contract
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_RJOINT_MEASUREMENT_V1_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="MEASUREMENT_COMPLETE"
+          assert s["cases"]==1918
+          assert s["clusters"]==764
+          assert s["R_joint"]==s["R_pair"]
+          if s["R_raw"] is not None and s["R_joint"] is not None:
+              assert s["R_raw"]+1e-12>=s["R_joint"]
+          i=s["integrity"]
+          assert i["authorization_token_validated"] is True
+          assert i["internal_evaluation_opened"] is False
+          assert i["stress_diagnostic_opened"] is False
+          assert i["reserved_data_opened"] is False
+          assert i["selector_trained"] is False
+          print("RJOINT_OUTPUT_CONTRACT_OK")
+          PY
+
+      - name: Freeze measurement environment and output hashes
+        if: always()
+        run: |
+          python -m pip freeze > MPSEF_RJOINT_MEASUREMENT_V1_PIP_FREEZE.txt
+          sha256sum \
+            phase2/redesign/mpsef_rjoint_core_v1.py \
+            phase2/redesign/mpsef_rjoint_score_v1.py \
+            phase2/redesign/MPSEF_TARGET_FAMILY_MAP_V1.md \
+            .github/workflows/phase2-mpsef-rjoint-measurement-v1.yml \
+            MPSEF_RJOINT_MEASUREMENT_V1_SUMMARY.json \
+            MPSEF_RJOINT_MEASUREMENT_V1_PER_SENTENCE.jsonl \
+            MPSEF_RJOINT_MEASUREMENT_V1_PIP_FREEZE.txt \
+            > MPSEF_RJOINT_MEASUREMENT_V1_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-rjoint-measurement-v1
+          path: |
+            MPSEF_RJOINT_MEASUREMENT_V1_SUMMARY.json
+            MPSEF_RJOINT_MEASUREMENT_V1_PER_SENTENCE.jsonl
+            MPSEF_RJOINT_MEASUREMENT_V1_PIP_FREEZE.txt
+            MPSEF_RJOINT_MEASUREMENT_V1_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
