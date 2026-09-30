@@ -1,0 +1,64 @@
+{
+  "record_id": "M2H_REMAINING_DEVELOPMENT_UID_SPLIT_LOCK_V1",
+  "date": "2026-09-30",
+  "status": "FROZEN_BEFORE_TEXT_MATERIALIZATION",
+  "workflow": {
+    "run_id": 36654181674,
+    "conclusion": "success",
+    "head_sha": "96572a8400cb3d9848612cf3cf46716009aab1b7"
+  },
+  "source": {
+    "qalb_revision": "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf",
+    "scope": "QALB14 TRAIN+DEV / existing M2-R v2 DEVELOPMENT partition only",
+    "split_salt": "M2H-REMAINING-DEV-SPLIT-V1-20260930-A"
+  },
+  "counts": {
+    "development_reconstructable_records": 14017,
+    "excluded_m2r_p0_uids": 120,
+    "excluded_m2r_p1_uids": 120,
+    "p0_p1_overlap": 0,
+    "remaining_uids": 13777,
+    "calibration": 6888,
+    "internal_evaluation": 5510,
+    "stress_diagnostic": 1379
+  },
+  "origin_counts": {
+    "calibration": {
+      "train": 6571,
+      "dev": 317
+    },
+    "internal_evaluation": {
+      "train": 5229,
+      "dev": 281
+    },
+    "stress_diagnostic": {
+      "train": 1313,
+      "dev": 66
+    }
+  },
+  "uid_list_sha256": {
+    "calibration": "3b6c1128f412531223b3c2e5346082d3290f40daac706eb13bbafa1db10a09c9",
+    "internal_evaluation": "55a07608bd4ffd88f9d443aa877cae0830a20f4e797621853fb5bd096c276255",
+    "stress_diagnostic": "aa0c341451adca4bf861a0758c36f6b6629e3c3af65b5f8c9f73da2997752587",
+    "all_remaining": "0a03e6f5a5a7c46ef917630a9fd8fc69fea1d651141c163ed55751564c6b375c"
+  },
+  "artifact": {
+    "id": 11070694457,
+    "name": "m2h-remaining-dev-uid-split-v1",
+    "zip_sha256": "1295330168ca59e3ef49a69ce220adbf3642487b1d58b1c6d8829ad8ae6276ad"
+  },
+  "integrity": {
+    "uid_only_manifest_ok": true,
+    "text_persisted": false,
+    "source_text_in_manifest": false,
+    "reference_text_in_manifest": false,
+    "candidate_text_in_manifest": false,
+    "gold_edits_in_manifest": false,
+    "confirmation_opened": false,
+    "holdout_opened": false,
+    "a7ta_reserved_opened": false,
+    "qalb15_test_opened": false,
+    "reserved_nahw_opened": false
+  },
+  "next_authorized_step": "Materialize CALIBRATION only; keep INTERNAL_EVALUATION and STRESS_DIAGNOSTIC text unopened."
+}
