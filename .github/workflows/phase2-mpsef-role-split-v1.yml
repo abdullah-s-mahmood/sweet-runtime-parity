@@ -1,0 +1,104 @@
+name: Phase 2 MP-SEF Future Role Split v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-role-split-v1.yml"
+      - "phase2/redesign/mpsef_materialize_role_split_v1.py"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  role-split:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Download frozen CALIBRATION
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-calibration-v1
+          path: calibration_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36654588477
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen exposure ledger
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-exposure-ledger-v1
+          path: exposure_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36762360756
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate frozen inputs
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          cal="calibration_artifact/M2H_CALIBRATION_V1.jsonl"
+          led="exposure_artifact/MPSEF_EXPOSURE_LEDGER_V1.jsonl"
+          cr=[json.loads(x) for x in open(cal,encoding="utf-8") if x.strip()]
+          lr=[json.loads(x) for x in open(led,encoding="utf-8") if x.strip()]
+          assert len(cr)==6888==len(lr)
+          assert {x["uid"] for x in cr}=={x["uid"] for x in lr}
+          s=json.load(open("exposure_artifact/MPSEF_EXPOSURE_LEDGER_V1_SUMMARY.json",encoding="utf-8"))
+          assert s["historical_independence"] is False
+          assert s["ledger_sha256"]=="a58fd47ff8a85969eb740ed669d71e98fff10369779c7e8cef152a001135b1b3"
+          print("ROLE_SPLIT_INPUTS_OK")
+          PY
+
+      - name: Materialize future role split
+        run: |
+          python phase2/redesign/mpsef_materialize_role_split_v1.py \
+            --calibration calibration_artifact/M2H_CALIBRATION_V1.jsonl \
+            --ledger exposure_artifact/MPSEF_EXPOSURE_LEDGER_V1.jsonl \
+            --out-prefix MPSEF_ROLE_SPLIT_V1
+
+      - name: Validate role split contract
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_ROLE_SPLIT_V1_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["cases"]==6888
+          assert sum(s["roles_records"].values())==6888
+          assert sum(s["roles_clusters"].values())==s["clusters"]
+          assert s["historical_independence_restored"] is False
+          assert s["integrity"]["every_calibration_record_assigned_once"] is True
+          assert s["integrity"]["cluster_role_overlap"]==0
+          assert s["integrity"]["feasibility_metric_computed"] is False
+          assert s["integrity"]["internal_evaluation_opened"] is False
+          assert s["integrity"]["stress_diagnostic_opened"] is False
+          print("ROLE_SPLIT_CONTRACT_OK")
+          PY
+
+      - name: Record hashes
+        run: |
+          sha256sum \
+            phase2/redesign/mpsef_materialize_role_split_v1.py \
+            MPSEF_ROLE_SPLIT_V1.jsonl \
+            MPSEF_ROLE_SPLIT_V1_SUMMARY.json \
+            > MPSEF_ROLE_SPLIT_V1_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-role-split-v1
+          path: |
+            MPSEF_ROLE_SPLIT_V1.jsonl
+            MPSEF_ROLE_SPLIT_V1_SUMMARY.json
+            MPSEF_ROLE_SPLIT_V1_SHA256.txt
+          retention-days: 90
