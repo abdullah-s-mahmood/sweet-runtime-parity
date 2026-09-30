@@ -1,0 +1,130 @@
+name: Phase 2 MP-SEF Pre-Union Manifests v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-preunion-manifests-v1.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  preunion-manifests:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Download frozen CALIBRATION
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-calibration-v1
+          path: calibration_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36654588477
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate source-only exposure and feasibility manifests
+        run: |
+          mkdir -p mpsef_preunion_manifests
+          python phase2/redesign/mpsef_prepare_preunion_manifests_v1.py             --calibration calibration_artifact/M2H_CALIBRATION_V1.jsonl             --out-dir mpsef_preunion_manifests
+
+      - name: Validate preflight
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root=Path("mpsef_preunion_manifests")
+          p=json.loads((root/"MPSEF_PRE_UNION_MANIFEST_PREFLIGHT_V1.json").read_text())
+
+          assert p["status"]=="PASS"
+          assert p["observed"]["total_records"]==6888
+          assert p["observed"]["train_records"]==6571
+          assert p["observed"]["dev_records"]==317
+          assert p["observed"]["total_clusters"]==6871
+          assert p["observed"]["non_singleton_clusters"]==15
+          assert p["observed"]["max_cluster_size"]==4
+          assert p["observed"]["dev_clusters"]==317
+          assert p["observed"]["cross_split_clusters"]==0
+          assert p["feasibility_population_records"]==317
+          assert p["feasibility_population_clusters"]==317
+          assert p["population_cluster_overlap"]==0
+          assert p["candidate_metric_computed"] is False
+          assert p["reference_content_used_for_manifest_generation"] is False
+          assert p["gold_edit_content_used_for_manifest_generation"] is False
+          assert p["internal_evaluation_opened"] is False
+          assert p["stress_diagnostic_opened"] is False
+          assert p["reserved_data_opened"] is False
+
+          required=[
+            "MPSEF_EXPOSURE_LEDGER_V1.jsonl",
+            "MPSEF_EXPOSURE_LEDGER_SUMMARY_V1.json",
+            "MPSEF_CLUSTER_MAP_V1.jsonl",
+            "MPSEF_CLUSTER_MAP_SUMMARY_V1.json",
+            "MPSEF_FEASIBILITY_POPULATION_V1.jsonl",
+            "MPSEF_FEASIBILITY_POPULATION_SUMMARY_V1.json",
+            "MPSEF_TRAIN_INTERNAL_POPULATION_V1.jsonl",
+            "MPSEF_TRAIN_INTERNAL_POPULATION_SUMMARY_V1.json",
+            "MPSEF_NEAR_DUPLICATE_EDGES_V1.jsonl",
+            "MPSEF_PRE_UNION_MANIFEST_PREFLIGHT_V1.json",
+            "MPSEF_PRE_UNION_MANIFEST_SHA256.txt",
+          ]
+          for name in required:
+              assert (root/name).exists(), name
+
+          print("MPSEF_PREUNION_PREFLIGHT_OK")
+          PY
+
+      - name: Record generator identity
+        run: |
+          sha256sum phase2/redesign/mpsef_prepare_preunion_manifests_v1.py             > mpsef_preunion_manifests/MPSEF_PRE_UNION_GENERATOR_SHA256.txt
+          git rev-parse HEAD > mpsef_preunion_manifests/MPSEF_PRE_UNION_REPO_HEAD.txt
+
+      - name: Write final status
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root=Path("mpsef_preunion_manifests")
+          pre=root/"MPSEF_PRE_UNION_MANIFEST_PREFLIGHT_V1.json"
+          if pre.exists():
+              p=json.loads(pre.read_text())
+              out={
+                  "status":"COMPLETED" if p.get("status")=="PASS" else "FAILED",
+                  "stage":"PREUNION_MANIFESTS_DONE",
+                  "preflight_status":p.get("status"),
+                  "candidate_metric_computed":False,
+              }
+          else:
+              out={
+                  "status":"FAILED",
+                  "stage":"SEE_WORKFLOW_LOG",
+                  "candidate_metric_computed":False,
+              }
+          (root/"MPSEF_PRE_UNION_FINAL_STATUS_V1.json").write_text(
+              json.dumps(out,indent=2)+"\n",encoding="utf-8"
+          )
+          print(json.dumps(out),flush=True)
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-preunion-manifests-v1
+          path: mpsef_preunion_manifests/
+          if-no-files-found: error
+          retention-days: 90
