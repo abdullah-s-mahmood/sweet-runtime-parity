@@ -2,234 +2,343 @@
 
 Date: 2026-09-30
 Status: FROZEN BEFORE FEASIBILITY MEASUREMENT
+Parent:
+phase2/redesign/MPSEF_PRE_UNION_PROTOCOL_V3.md
 
-## 1. Scope
+## 1. Population and scope
 
-This contract defines the reference target set and scoring semantics for the first MP-SEF candidate-feasibility cycle.
+Primary feasibility population:
+C_F only, as frozen by MPSEF_ROLE_SPLIT_V1.
 
-Population:
-D_DEV_FEAS_V1 only.
+C_F is a future-role development partition.
+It is NOT historically untouched and is NOT an independent generalization set.
 
 Cycle scope:
 NoPnx linguistic correction.
 
+No selector is trained or calibrated on C_F in this cycle.
+
 ## 2. Source of truth
 
-Targets derive only from the frozen CALIBRATION record/reference and the already frozen official-alignment NoPnx construction rules.
+Targets derive only from:
+- the frozen CALIBRATION source/reference records;
+- the already established official-alignment NoPnx construction rules.
 
-No new annotation or reference repair is introduced for the first feasibility cycle.
+No new annotation, reference repair, alternative-reference adjudication, or
+gold-driven candidate decomposition is introduced.
 
 ## 3. Target unit
 
-A reference target is a complete frozen NoPnx correction unit under the official alignment/matching representation.
+A target is a COMPLETE frozen NoPnx reference correction unit under the frozen
+official-alignment representation.
 
 A target is not:
 - an arbitrary character difference;
-- a partial component of a coupled correction;
-- a gold-guided fragment extracted from a proposer bundle.
+- a proposer tag;
+- half of a complete correction;
+- a gold-guided fragment extracted from a proposer hypothesis.
 
-Each target has:
+Each target must have:
 - target_id;
-- source_record_id;
-- source span/effect identity;
+- source uid/case id;
+- frozen source-span/effect identity;
 - complete reference replacement/effect;
 - operation family;
 - punctuation scope;
-- matching identity/version.
+- matching-version identity.
 
 ## 4. Punctuation scope
 
-Primary target denominator excludes punctuation-only corrections for this first cycle.
+Primary denominator excludes punctuation-only reference targets.
 
-Mandatory reporting:
-- number of punctuation-only targets;
-- number of mixed punctuation+linguistic targets;
-- how mixed targets are represented.
+Mandatory reporting still includes:
+- punctuation-only target count;
+- mixed punctuation+linguistic target count;
+- representation of mixed targets.
 
-Mixed reference targets are not silently split merely to improve NoPnx recall unless the frozen official target construction already defines a separable linguistic target independently of proposer output.
+A mixed target is not partially stripped using proposer output or gold-guided
+post-hoc decomposition.
 
-## 5. Matching principle
+No punctuation target disappears from product-level accounting.
 
-A legal candidate output y is scored against the frozen target set G_s using a single frozen representation-invariant matching function.
+## 5. Frozen action spaces
 
-Matching is based on achieved source-to-output correction effect under the official-alignment definition.
+### A_primary
 
-No proposer-specific tag identity is required.
+Defined by MPSEF_BUNDLE_CONTRACT_V1:
 
-## 6. TP_fixed
+- KEEP;
+- whole P1_FINAL if executable;
+- whole P2_FINAL if executable.
 
-For a legal output y and target set G_s:
+No edit-level fusion.
 
-TP_fixed(y,G_s)
+### A_diagnostic
 
-counts complete frozen reference targets achieved by y.
+Contains proposer diagnostic component evidence only.
+
+It is not executable and is used only for R_raw/family diagnostics.
+
+Gold/reference is consulted only after both action spaces are frozen.
+
+## 6. Frozen matching principle
+
+For each legal final output y in A_primary, score the transformation from the
+ORIGINAL source x0 to y using one frozen representation-invariant official
+alignment/matching implementation.
+
+Proposer-specific internal tags are irrelevant to correctness credit.
+
+No gold/reference may:
+- alter candidate alignment;
+- repair a failed proposal;
+- split a bundle;
+- create a candidate;
+- choose a source span that was not frozen beforehand.
+
+## 7. TP_fixed
+
+TP_fixed(y,G_s) counts COMPLETE frozen reference targets achieved by legal
+output y.
 
 Rules:
-- one target can receive at most one credit;
-- no half-credit;
+- one target receives at most one credit;
 - no duplicate credit;
-- no credit for a component that does not achieve the full frozen target;
-- no reference-driven split of candidate bundles;
-- no reference-driven repair of candidate alignment.
+- no half-credit;
+- no credit for incomplete target realization;
+- no gold-driven candidate split;
+- no gold-driven alignment repair.
 
-## 7. Primary metric
+## 8. Primary endpoint: R_joint
+
+For C_F:
 
 R_joint(P) =
-sum_s max_{y in A_s(P)} TP_fixed(y,G_s)
+sum_s max_{y in A_primary,s(P)} TP_fixed(y,G_s)
 /
 sum_s |G_s|
 
-The action space A_s(P) must be frozen before G_s is consulted for scoring.
+where G_s is the frozen in-scope target set.
 
-## 8. Exact optimization
+Interpretation:
+R_joint is an oracle candidate-availability ceiling over the WHOLE-HYPOTHESIS
+primary action space.
 
-Preferred:
-exact maximization over the legal action space.
+It is not:
+- expected selector performance;
+- edit-level fusion performance;
+- precision;
+- semantic safety;
+- sentence-level grammaticality proof.
 
-If exact optimization is not feasible:
-- compute a mathematically valid lower bound L;
-- compute a mathematically valid upper bound U;
-- report [L,U].
+Because A_primary has at most KEEP/P1_FINAL/P2_FINAL, exact maximization should
+be trivial once the frozen scorer is available.
 
-Decision:
-- PASS only if L >=0.95;
-- FAIL only if U <0.95;
+If exact evaluation nevertheless cannot be established and only [L,U] is
+provable:
+- PASS only if L >= 0.95;
+- FAIL only if U < 0.95;
 - otherwise INCONCLUSIVE.
 
-A greedy result alone is not called R_joint.
+A heuristic point estimate is never called exact R_joint.
 
-## 9. R_raw
+## 9. R_P1 and R_P2
 
-For each reference target, ask whether at least one legal action in A_s(P) achieves that complete target.
+Using the identical target and matching semantics:
 
-R_raw =
-reachable complete targets / all in-scope targets.
+R_P1 = R_joint({P1})
+R_P2 = R_joint({P2})
+R_pair = R_joint({P1,P2})
 
-R_raw ignores whether all individually reachable targets can be realized jointly in one output.
+Leave-one-out gains:
+
+Delta_P1 = R_pair - R_P2
+Delta_P2 = R_pair - R_P1
+
+## 10. Diagnostic R_raw
+
+R_raw asks, target by target, whether the COMPLETE target effect is present
+within the frozen diagnostic source-to-proposer component evidence of either
+P1 or P2.
+
+R_raw does NOT require all reachable targets to occur in one executable output.
+
+It does not make diagnostic components executable.
 
 Expected:
-R_raw >= R_joint.
 
-## 10. R_clean
+R_raw >= R_joint
 
-R_clean is the maximum target recall achievable by a legal action that contains no extra reference-incompatible edit under the same frozen reference comparison.
+Report:
 
-R_clean is a reference-based diagnostic, not a full semantic safety proof.
+R_raw - R_joint
 
-## 11. Complete-sentence repair
+as the decomposition/fusion opportunity gap.
 
-For erroneous source sentences only:
+A target counts in R_raw only if its complete frozen effect is represented;
+partial fragments receive no credit.
+
+## 11. R_clean
+
+R_clean is the maximum target recall over A_primary when the selected legal
+final output contains no extra reference-incompatible edit under the SAME
+frozen reference comparison.
+
+R_clean is a reference-based over-correction diagnostic.
+
+It is not proof of semantic or scientific safety, because valid unannotated
+alternatives may be penalized and reference-compatible changes may still have
+domain-specific risk.
+
+## 12. Complete-sentence repair
+
+Among erroneous C_F sentences:
 
 complete_sentence_repair =
-sentences for which one legal action achieves all frozen in-scope reference targets with no extra reference-incompatible edits
+sentences with one A_primary output that achieves all frozen in-scope targets
+and introduces no reference-incompatible edit
 /
-erroneous sentences
+erroneous sentences.
 
-Reference-clean sentences are reported separately.
+Reference-clean sentences are excluded from this denominator and reported
+separately.
 
-## 12. Clean-sentence proposal rate
+## 13. Clean-sentence proposal rate
 
-For reference-clean sentences:
+Among reference-clean C_F sentences:
 
 clean_proposal_rate =
-clean sentences with >=1 raw non-KEEP proposal
+clean sentences with >=1 raw non-KEEP proposer output
 /
-reference-clean sentences
+reference-clean sentences.
 
-Also report total raw proposals on clean sentences.
+Also report:
+- P1 clean proposal count;
+- P2 clean proposal count;
+- either-proposer clean proposal count.
 
-## 13. Per-proposer metrics
+## 14. Four-way reachability
 
-Using identical target/matching semantics:
-- R_P1 = R_joint({P1});
-- R_P2 = R_joint({P2});
-- R_pair = R_joint({P1,P2}).
+For each COMPLETE target, using diagnostic reachability:
 
-Leave-one-out:
-- Delta_P1 = R_pair - R_P2;
-- Delta_P2 = R_pair - R_P1.
-
-## 14. Coverage quadrants
-
-Each complete target belongs to exactly one reachability quadrant:
 - BOTH;
 - P1_ONLY;
 - P2_ONLY;
 - NEITHER.
 
-This is raw target reachability, not proof that all targets in a quadrant can be jointly realized.
+This is not a joint-realizability classification.
 
 ## 15. Family reporting
 
+Report for every frozen non-empty operation/error family:
+- targets;
+- sentences;
+- document clusters;
+- R_P1;
+- R_P2;
+- R_pair;
+- R_raw.
+
 Report:
-- target count;
-- sentence count;
-- document/cluster count where available;
 - micro recall;
-- per-family recall;
 - macro average across non-empty frozen families.
 
 Empty family:
 N/A.
 
-No family denominator may be created or removed after metrics are observed.
+No family definition may change after measurement.
 
-## 16. Historical comparison
+Frozen proposer-retention weak-family routes:
+- INSERT;
+- MERGE/SPLIT.
 
-H1-v1 historical recall 69.39% remains a separate frozen historical metric.
+Any mapping from official target labels to these families must be frozen before
+scoring.
 
-Do not subtract it from R_joint unless a validated mapping establishes:
-- same population;
-- same target unit;
-- same punctuation scope;
-- same matching semantics.
+## 16. Protected-policy accounting
 
-Otherwise comparison is:
-NOT COMPARABLE.
+Protected-span policy never improves recall by silently shrinking denominators.
 
-## 17. Residual target set
+Report:
+- raw proposer hypotheses touching protected spans;
+- executable hypotheses blocked by protection;
+- in-scope reference targets affected by protection;
+- resulting unreachable targets.
 
-A historical-H1 residual set may be reported secondarily only if constructed with a frozen compatibility mapping before pair metrics are inspected.
+These targets remain visible in product accounting.
 
-It does not replace the primary all-target D_DEV_FEAS_V1 denominator in this V1 cycle.
+## 17. Failure accounting
 
-## 18. Failures
+Every C_F record must terminate in an accountable state.
 
-Records with:
+Mandatory failure categories include:
 - proposer execution failure;
 - truncation;
-- unalignable output;
-- non-executable bundles;
-remain in the source population.
+- empty output;
+- source mismatch;
+- alignment failure;
+- alignment ambiguity;
+- nonreversible transformation;
+- protected blocked;
+- scoring failure.
 
-Their unreachable reference targets remain in denominators.
+Failed/blocked records remain in C_F denominators.
 
-No complete-case-only scoring is permitted.
+No complete-case-only analysis is permitted.
+
+## 18. Historical H1 residual
+
+H1-v1 historical recall 69.39% remains unchanged.
+
+Primary V3 denominator is all frozen in-scope C_F NoPnx targets.
+
+A secondary historical-residual target set may be reported only if a
+compatibility mapping is frozen BEFORE pair metrics are inspected.
+
+Do not infer residual recall from overall R_joint by subtraction unless:
+- population matches;
+- target unit matches;
+- punctuation scope matches;
+- alignment/matching semantics match.
+
+Otherwise:
+NOT COMPARABLE.
 
 ## 19. Alternative references
 
-The first cycle uses the frozen reference representation already established in CALIBRATION.
+The first cycle uses the already frozen CALIBRATION reference representation.
 
 Do not:
-- choose among alternatives after seeing proposer output;
-- synthesize a hybrid gold;
-- adjudicate alternatives to rescue the gate.
+- select reference alternatives based on proposer output;
+- synthesize hybrid gold;
+- conduct rescue adjudication after weak results and then rerun the gate.
 
-Human adjudication of valid alternatives may be a later diagnostic only and cannot retroactively convert this first-cycle decision.
+Later blinded adjudication may diagnose reference limitations but cannot
+retroactively change the first-cycle decision.
 
-## 20. Gate
+## 20. Primary gate
 
-Primary candidate availability gate:
-R_joint(P1,P2) >=0.95
+Candidate availability PASS:
 
-Developmental population label:
-DEV-ORIGIN / DEVELOPMENTAL / NOT INDEPENDENT
+R_joint(P1,P2) >= 0.95
 
-Passing this gate means candidate availability only.
+Diagnostic interpretation:
+- >=0.95: PASS candidate availability only;
+- >=0.90 and <0.95: FAIL, one diagnostic memo permitted;
+- <0.90: FAIL current high-coverage P1+P2 cycle;
+- interval crossing 0.95: INCONCLUSIVE.
 
-It does not imply:
-- independent generalization;
-- selector success;
-- precision;
-- semantic fidelity;
-- AUTO_SAFE authorization.
+No post-result threshold change.
+
+## 21. Scientific claim scope
+
+Any V3 C_F result is labeled:
+
+DEVELOPMENT FEASIBILITY / ADAPTIVELY CONSUMED QALB-2014 ORIGIN /
+NOT INDEPENDENT GENERALIZATION EVIDENCE
+
+Passing does not authorize:
+- selector training automatically;
+- AUTO_SAFE;
+- opening reserved/internal sets;
+- a third proposer.
