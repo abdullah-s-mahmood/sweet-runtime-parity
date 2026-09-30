@@ -1496,3 +1496,122 @@ P2 parity gate:
 Do not compute candidate-union recall until P2 parity is frozen PASS.
 
 Reserved/internal datasets remain closed.
+
+
+## 30. MP-SEF P2 runtime parity — PASS; independent review checkpoint
+
+P2 runtime lock:
+`phase2/redesign/MPSEF_P2_RUNTIME_LOCK_V1.md`
+
+Lock commit:
+`a49bc394033edfdd8552cff163e92d163f26318d`
+
+P2 parity run:
+`36751445734`
+
+P2 job:
+`110010823722`
+
+P2 artifact:
+- id: `11114738715`
+- digest:
+  `sha256:c8d2ea2b378a03b3e6ca5f81b53a0527f0f796d8610a6d615027eedce06cbaf3`
+
+P2 deterministic source-only parity:
+- sample: **64**
+- morphology-preprocessed text: **64 / 64**
+- GED labels: **64 / 64**
+- AraBART subword tokens: **64 / 64**
+- input IDs: **64 / 64**
+- GED label IDs: **64 / 64**
+- generated exact output: **64 / 64**
+- generated normalized output: **64 / 64**
+- all-field match: **64 / 64**
+- mismatches: **0**
+
+P2 sample UID SHA256:
+`f787df9c7acabbb5b6cb02a04c12e5d505e7590b94b19deca9064d321223c6f6`
+
+P2 runner SHA256:
+`746274e34cc73f0a6f99994f25d5f7e23dd064f54d1b86a2eddc716da7a15f75`
+
+P2 pip-freeze SHA256:
+`cbd42c8a3296eb59e933b04f83c70f34d78b98160f09a069fea32fcfc142fe38`
+
+P2 model hashes:
+- GED pytorch_model.bin:
+  `23385ffe560860a8f5e9e46e05b66a31c33a4b0bd58e9a718933fdab8161f50f`
+- GEC pytorch_model.bin:
+  `5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f`
+
+Integrity:
+- gold/reference consulted: **false**
+- INTERNAL_EVALUATION opened: **false**
+- STRESS_DIAGNOSTIC opened: **false**
+
+Current proposer status:
+- P1 iterative SWEET: **PASS / proposer only**
+- P2 AraBART+Morph+GED: **PASS / proposer only**
+
+No candidate-union metric has been observed.
+
+### Independent review gate
+
+Candidate-union evaluation is now:
+**BLOCKED PENDING INDEPENDENT HIGHER-MODEL METHODOLOGICAL REVIEW**
+
+Final review packet:
+`phase2/redesign/FOCUSED_REVIEW_PACKET_MPSEF_ARCHITECTURE_V2.md`
+
+Final packet commit:
+`3313b592120368ad7a11569ad0b1079e7bcdc1c7`
+
+Higher-model prompt:
+`phase2/redesign/PROMPT_HIGHER_MODEL_MPSEF_ARCHITECTURE_REVIEW_V1.txt`
+
+Prompt commit:
+`dc23dd7d3dfb0dc58176a34830692c2d0d94b845`
+
+The higher-model review must occur before candidate-union measurement to avoid post-hoc protocol adaptation after seeing union performance.
+
+Fresh literature challenge before consultation supports investigating heterogeneous system combination, edit-level selection, and generator+scorer designs, but also highlights:
+- system diversity as a prerequisite for useful combination;
+- seq2seq over-correction risk;
+- candidate/edit decomposition construct risk;
+- development-data reuse/double-dipping risk.
+
+### Scientific classification
+
+Relative to the closed M2-H path:
+
+**IMPROVED ARCHITECTURALLY AND REPRODUCIBLY / PERFORMANCE NOT YET MEASURED**
+
+Magnitude of reproducibility improvement:
+- P1 runtime parity: **64/64 all-field**
+- P2 runtime parity: **64/64 all-field**
+- both source-only; no gold/reference consultation.
+
+Performance forecast:
+candidate-union coverage is expected to be at least as high as the best constituent proposer under a valid union definition, but the magnitude of unique gain is intentionally unknown and must not be estimated from the unseen CALIBRATION result.
+
+Main unresolved risks before union:
+1. seq2seq coupled-edit decomposition;
+2. definition of the primary candidate-stage endpoint;
+3. whether CALIBRATION must be subdivided before union/selector work;
+4. proposer diversity sufficiency;
+5. anti-loop stop rules;
+6. whether a learned selector should be permitted at all.
+
+### Exact next authorized step
+
+Obtain independent higher-model review using the frozen packet and prompt.
+
+Do NOT:
+- run candidate-union evaluation;
+- add a third proposer;
+- train/calibrate a selector;
+- change the >=95% proposed union gate;
+- repartition CALIBRATION;
+until the review is returned and adjudicated.
+
+Reserved/internal datasets remain closed.
