@@ -1,0 +1,119 @@
+name: Phase 2 M2-H H2 v2 Evidence-Constrained CALIBRATION
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-m2h-h2-v2-calibration.yml"
+      - "phase2/redesign/M2H_H2_EVIDENCE_CONSTRAINED_ITERATION_V2.md"
+      - "phase2/redesign/m2h_h2_v2_calibrate.py"
+      - "phase2/redesign/m2h_h2_calibrate.py"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  h2-v2-calibration:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install frozen CAMeL Tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "git+https://github.com/CAMeL-Lab/camel_tools.git@be79ca9fc493f0df795375a7255bafef246a802d"
+          camel_data -i morphology-db-msa-r13
+
+      - name: Verify morphology DB hash
+        run: |
+          python - <<'PY'
+          import hashlib, pathlib
+          expected="195bc25a333237a2126470da888d7936b59ed3729f9210e0a4194ba43497dd70"
+          root=pathlib.Path.home()/".camel_tools"
+          hits=[]
+          for p in root.rglob("morphology.db"):
+              h=hashlib.sha256(p.read_bytes()).hexdigest()
+              print("MORPH_DB",p,h)
+              hits.append(h)
+          assert expected in hits, (expected,hits)
+          print("MORPHOLOGY_DB_HASH_OK")
+          PY
+
+      - name: Download frozen H1 CALIBRATION artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-h1-calibration-candidates-v1
+          path: h1_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36691616010
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate H1 input artifact
+        run: |
+          python - <<'PY'
+          import json
+          p="h1_artifact/M2H_H1_CALIBRATION_CANDIDATE_SUMMARY_V1.json"
+          s=json.load(open(p,encoding="utf-8"))
+          assert s["cases"]==6888
+          assert s["candidates"]==46811
+          assert s["integrity"]["internal_evaluation_opened"] is False
+          assert s["integrity"]["stress_diagnostic_opened"] is False
+          print("H1_CALIBRATION_INPUT_OK")
+          PY
+
+      - name: Run evidence-constrained H2 v2 calibration
+        env:
+          PYTHONPATH: phase2/redesign
+        run: |
+          python phase2/redesign/m2h_h2_v2_calibrate.py \
+            --candidates h1_artifact/M2H_H1_CALIBRATION_CANDIDATES_V1.jsonl \
+            --out-prefix M2H_H2_V2_ALIF_VARIANT
+
+      - name: Validate v2 summary
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("M2H_H2_V2_ALIF_VARIANT_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["scope"]=="CALIBRATION_ONLY"
+          assert s["family_candidates"]==19338
+          assert s["promotion_gate"]["min_n"]==50
+          assert s["promotion_gate"]["min_precision"]==0.98
+          assert s["integrity"]["internal_evaluation_opened"] is False
+          assert s["integrity"]["stress_diagnostic_opened"] is False
+          print("H2_V2_SUMMARY_OK")
+          print(json.dumps({
+              "accepted_candidates":s["accepted_candidates"],
+              "exact_gold_supported_accepted":s["exact_gold_supported_accepted"],
+              "reference_unsupported_accepted":s["reference_unsupported_accepted"],
+              "strict_reference_precision_lower_bound":s["strict_reference_precision_lower_bound"],
+              "auto_activation_enabled":s["promotion_gate"]["auto_activation_enabled"],
+              "reason_counts":s["reason_counts"],
+          },ensure_ascii=False,indent=2))
+          PY
+
+      - name: Record runtime
+        run: |
+          python -m pip freeze > M2H_H2_V2_PIP_FREEZE.txt
+          sha256sum M2H_H2_V2_PIP_FREEZE.txt > M2H_H2_V2_PIP_FREEZE.sha256
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2h-h2-v2-calibration-v1
+          path: |
+            M2H_H2_V2_ALIF_VARIANT_EVIDENCE.jsonl
+            M2H_H2_V2_ALIF_VARIANT_SUMMARY.json
+            M2H_H2_V2_PIP_FREEZE.txt
+            M2H_H2_V2_PIP_FREEZE.sha256
+          retention-days: 90
