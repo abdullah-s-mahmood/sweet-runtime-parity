@@ -40,7 +40,7 @@ jobs:
           assert "workflow_dispatch:" in head
           assert "\n  push:" not in head
           assert "MEASURE_R_JOINT_V1" in t
-          assert "\\${{" not in t
+          assert ("\\"+chr(36)+"{{") not in t
           print("MEASUREMENT_WORKFLOW_GUARD_OK")
           PY
 
