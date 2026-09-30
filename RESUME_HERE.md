@@ -1149,3 +1149,142 @@ Audit H1 reproducibility and gold-span matching on CALIBRATION only:
 5. only after that determination decide whether H5/H6 remains scientifically viable.
 
 INTERNAL_EVALUATION and every reserved dataset remain unopened.
+
+
+## 26. H1 official-alignment recall audit — FINAL / H1-v1 GATE FAIL
+
+The provisional exact-transaction figure in Section 25 is superseded for the H1 feasibility decision by the representation-invariant official-alignment audit below.
+
+### Inference parity — PASS
+
+Frozen H1:
+- model: `CAMeL-Lab/text-editing-qalb14-nopnx`
+- model revision: `21286e56ce98a86362db540863f91c083b8970f9`
+- implementation revision: `4d552ca3ae98029550f27fc52aa1b22883e16e61`
+- decode: one-pass, top-1, NoPnx
+
+Deterministic CALIBRATION parity sample:
+- sample: **256**
+- subwords match: **256 / 256**
+- labels match: **256 / 256**
+- normalized rewrite match: **256 / 256**
+- all-field parity: **256 / 256**
+- mismatches: **0**
+
+Conclusion:
+the frozen H1 inference stream is validated against the public/official inference path. The recall deficit is not explained by an H1 runner parity bug.
+
+### Tatweel alignment edge case — resolved without dropping cases
+
+Upstream `char_level_alignment` fails on QALB rows containing U+0640 tatweel because the upstream normalization removes kashida before exact surface reconstruction.
+
+Frozen amendments:
+- `phase2/redesign/M2H_H1_OFFICIAL_ALIGNMENT_TATWEEL_AMENDMENT_V1.md`
+- `phase2/redesign/M2H_H1_OFFICIAL_ALIGNMENT_TATWEEL_CHARALIGN_AMENDMENT_V1.md`
+
+Final CALIBRATION gold-construction loop:
+- cases processed: **6,888 / 6,888**
+- elapsed: **1,279.8 s**
+- final rate: **5.382 cases/s**
+- construction failures: **0**
+- char-alignment cross mismatches: **0**
+- word/subword NoPnx cross-path mismatches: **0**
+
+Source run:
+`36716848223`
+
+Source artifact:
+- id: `11098030966`
+- SHA256: `ad476c7dfb8e194320a1a5d4b0a05ea016be5e4b012403854290fc86ca455fb1`
+
+### Scoring-only continuation — SUCCESS
+
+To avoid rerunning the completed 6,888-case gold-construction loop after an operational M2 import-context failure, a frozen scoring-only continuation was created:
+
+`phase2/redesign/M2H_H1_SCORING_CONTINUATION_CHECKPOINT_V1.md`
+
+Workflow:
+- run: `36720612925`
+- job: `h1-scoring-continuation`
+- conclusion: **SUCCESS**
+
+Artifact:
+- id: `11101562193`
+- name: `m2h-h1-official-alignment-scoring-continuation-v1`
+- SHA256: `5f3478162cb54034cb89a58a47db32f70e50573186b7df980215e56b3259e420`
+
+### Official-alignment one-pass NoPnx M2 result
+
+- Precision: **71.53%**
+- Recall: **69.39%**
+- F1: **70.44%**
+- F0.5: **71.09%**
+- frozen H1 recall gate: **>=80%**
+- recall deficit: **-10.61 pp**
+- gate: **FAIL**
+
+Secondary:
+- derived gold M2 edit lines: **35,559**
+- exact NoPnx reference sentences: **1,540 / 6,888 = 22.36%**
+- source-copy sentences: **283 / 6,888 = 4.11%**
+
+This is **not borderline**. The miss exceeds 10 percentage points.
+
+### Fresh external sanity check
+
+The public SWEET model card/repository example uses iterative NoPnx decoding (`decode_iter=2`) before one Pnx pass.
+
+This does not retroactively rescue H1-v1 because H1-v1 was frozen as one-pass before metrics were observed.
+
+A separately versioned iterative diagnostic may be considered only after focused methodological review, with:
+- H1-v1 permanently retained as FAIL;
+- no change to the 80% gate;
+- no INTERNAL_EVALUATION access;
+- a preregistered one-attempt stopping rule;
+- no iterative tuning loop.
+
+### Downstream validity
+
+Because H1 inference parity passed 256/256 and the H1 candidate stream did not change:
+- H2 does **not** require candidate regeneration; remains closed with no automatic family activated.
+- H3 does **not** require rerun; remains CLOSED FAIL.
+- H4 does **not** require rerun; remains not activated.
+- M1 / M2 / M2-R remain closed and unaffected.
+
+H5/H6:
+**BLOCKED pending focused methodological decision.**
+
+Do NOT open:
+- INTERNAL_EVALUATION
+- STRESS_DIAGNOSTIC
+- Confirmation
+- Holdout
+- A7'ta reserve
+- reserved Nahw IDs
+- QALB15 TEST
+
+Focused review packet:
+`phase2/redesign/FOCUSED_REVIEW_PACKET_H1_PARITY_AND_DOWNSTREAM_VALIDITY.md`
+
+### Scientific classification
+
+**WORSENED FOR M2-H VIABILITY / IMPROVED SCIENTIFIC CERTAINTY**
+
+Magnitude:
+- frozen target: **80.00% recall**
+- observed official-alignment one-pass recall: **69.39%**
+- deficit: **10.61 pp**
+- parity uncertainty reduced to **0 / 256 mismatches**
+- gold-construction failures reduced from the tatweel blocker to **0 / 6,888**
+
+### Exact next authorized step
+
+Do **not** start H5/H6 and do **not** open INTERNAL_EVALUATION yet.
+
+Perform a focused methodological review of:
+1. whether official-alignment M2 recall is the defensible realization of the frozen H1 candidate-recall gate;
+2. whether H1-v1 should be formally CLOSED FAIL;
+3. whether exactly one separately versioned iterative-decoding diagnostic is scientifically justified by the published SWEET usage pattern;
+4. whether such a diagnostic would have a preregistered no-tuning stopping rule.
+
+If no defensible exception is established, close H1-v1 and the current M2-H path before H5/H6.
