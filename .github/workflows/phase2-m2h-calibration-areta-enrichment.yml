@@ -1,0 +1,112 @@
+name: Phase 2 M2-H CALIBRATION ARETA Enrichment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-m2h-calibration-areta-enrichment.yml"
+      - "phase2/redesign/m2h_areta_enrich_calibration.py"
+
+permissions:
+  contents: read
+
+jobs:
+  enrich:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+
+      - name: Clone frozen arabic-gec revision
+        run: |
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          cd upstream/arabic-gec
+          git checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+
+      - name: Install frozen ARETA diagnostic runtime
+        run: |
+          python -m pip install --upgrade "pip<24"
+          python -m pip install "camel-tools==1.2.0"
+          python -m pip install "docopt==0.6.2" "editdistance==0.5.3"
+          python -m pip install -r upstream/arabic-gec/areta/requirements.txt
+          camel_data light
+          test -f "$HOME/.camel_tools/data/morphology_db/calima-msa-r13/morphology.db"
+
+      - name: Materialize CALIBRATION only
+        run: |
+          python phase2/redesign/m2h_materialize_calibration.py
+          python - <<'PY'
+          import json
+          s=json.load(open("M2H_CALIBRATION_SUMMARY_V1.json"))
+          assert s["cases"]==6888
+          assert s["calibration_uid_sha256"]=="3b6c1128f412531223b3c2e5346082d3290f40daac706eb13bbafa1db10a09c9"
+          assert s["integrity"]["internal_evaluation_text_materialized"] is False
+          assert s["integrity"]["stress_diagnostic_text_materialized"] is False
+          print("CALIBRATION_RECONSTRUCTION_OK")
+          PY
+
+      - name: Build source/reference files for CALIBRATION
+        run: |
+          python - <<'PY'
+          import json
+          rows=[json.loads(x) for x in open("M2H_CALIBRATION_V1.jsonl",encoding="utf-8") if x.strip()]
+          open("m2h_calibration.source.txt","w",encoding="utf-8").write("\n".join(r["source"] for r in rows)+"\n")
+          open("m2h_calibration.reference.txt","w",encoding="utf-8").write("\n".join(r["reference"] for r in rows)+"\n")
+          print("CALIBRATION_TEXT_FILES_READY",len(rows))
+          PY
+
+      - name: Run official word aligner
+        working-directory: upstream/arabic-gec/areta/aligner
+        run: |
+          python align_text.py             --raw ../../../../m2h_calibration.source.txt             --correct ../../../../m2h_calibration.reference.txt             --mode align             --out ../m2h_calibration
+          test -s ../m2h_calibration.coAlign
+
+      - name: Run enhanced ARETA on CALIBRATION
+        working-directory: upstream/arabic-gec/areta
+        run: |
+          python annotate_err_type_ar.py             --alignment m2h_calibration.coAlign             --output_path m2h_calibration.areta.txt             --enriched_output_path m2h_calibration.areta.enriched.tsv
+          test -s m2h_calibration.areta.txt
+          test -s m2h_calibration.areta.enriched.tsv
+
+      - name: Build diagnostic enrichment and strata summary
+        run: |
+          python phase2/redesign/m2h_areta_enrich_calibration.py
+
+      - name: Validate scope
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("M2H_CALIBRATION_ARETA_SUMMARY_V1.json"))
+          assert s["cases"]==6888
+          i=s["integrity"]
+          assert i["calibration_only"] is True
+          assert i["internal_evaluation_opened"] is False
+          assert i["stress_diagnostic_opened"] is False
+          assert s["scientific_role"]=="DIAGNOSTIC_STRATIFICATION_ONLY_NOT_INDEPENDENT_GOLD"
+          print("ARETA_CALIBRATION_SCOPE_OK")
+          PY
+
+      - name: Record environment
+        run: |
+          python -m pip freeze > M2H_ARETA_CALIBRATION_PIP_FREEZE.txt
+          sha256sum M2H_ARETA_CALIBRATION_PIP_FREEZE.txt > M2H_ARETA_CALIBRATION_PIP_FREEZE.sha256
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2h-calibration-areta-enrichment-v1
+          path: |
+            M2H_CALIBRATION_ARETA_ENRICHMENT_V1.jsonl
+            M2H_CALIBRATION_ARETA_SUMMARY_V1.json
+            M2H_ARETA_CALIBRATION_PIP_FREEZE.txt
+            M2H_ARETA_CALIBRATION_PIP_FREEZE.sha256
+          retention-days: 90
