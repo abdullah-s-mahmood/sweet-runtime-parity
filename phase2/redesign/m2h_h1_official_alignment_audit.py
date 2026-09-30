@@ -8,6 +8,7 @@ import re
 import string
 import subprocess
 import sys
+import time
 import unicodedata
 from collections import Counter
 from pathlib import Path
@@ -24,6 +25,31 @@ def uid_digest(uids):
 
 def sha_rank(uid):
     return hashlib.sha256((PARITY_SALT + "|" + uid).encode("utf-8")).hexdigest()
+
+def emit_progress(stage, done, total, started_at, last_case_id=None, github_notice=False):
+    elapsed = max(time.monotonic() - started_at, 1e-9)
+    rate = done / elapsed if done else 0.0
+    remaining = max(total - done, 0)
+    eta_seconds = (remaining / rate) if rate > 0 else None
+    payload = {
+        "stage": stage,
+        "processed": done,
+        "total": total,
+        "percent": round((done / total * 100.0) if total else 100.0, 2),
+        "elapsed_seconds": round(elapsed, 1),
+        "cases_per_second": round(rate, 3),
+        "eta_seconds": round(eta_seconds, 1) if eta_seconds is not None else None,
+        "last_case_id": last_case_id,
+    }
+    print("PROGRESS " + json.dumps(payload, ensure_ascii=False), flush=True)
+    if github_notice:
+        print(
+            "::notice title=H1 Audit Progress::"
+            + f"{stage} {done}/{total} ({payload['percent']}%), "
+            + f"rate={payload['cases_per_second']} cases/s, "
+            + f"ETA={payload['eta_seconds']}s, last_case={last_case_id}",
+            flush=True,
+        )
 
 UNICODE_PUNCT_SYMBOL = frozenset(
     chr(i) for i in range(0x110000)
@@ -335,6 +361,16 @@ def main():
                     "subwords_match": ok_s, "labels_match": ok_l, "rewrite_match": ok_r,
                 })
 
+    print(
+        "STAGE_DONE PARITY "
+        + json.dumps({
+            "sample_n": 256,
+            "all_match": parity["all_match"],
+            "mismatches": len(mismatches),
+        }),
+        flush=True,
+    )
+
     ext_tok = Tokenizer(args.model_dir)
     nopnx_refs = []
     failures = []
@@ -352,7 +388,10 @@ def main():
     charalign_cross_mismatches = 0
     charalign_cross_mismatch_examples = []
 
-    for rec in rows:
+    gold_loop_started = time.monotonic()
+    print(f"STAGE_START GOLD_LOOP total={len(rows)}", flush=True)
+
+    for case_index, rec in enumerate(rows, start=1):
         src, ref = norm(rec["source"]), norm(rec["reference"])
         try:
             wa = word_level_alignment(src_sent=src, tgt_sent=ref)
@@ -445,6 +484,35 @@ def main():
             })
             nopnx_refs.append(None)
 
+        if (
+            case_index == 1
+            or case_index % 100 == 0
+            or case_index == len(rows)
+        ):
+            emit_progress(
+                "GOLD_LOOP",
+                case_index,
+                len(rows),
+                gold_loop_started,
+                rec["case_id"],
+                github_notice=(
+                    case_index == 1
+                    or case_index % 500 == 0
+                    or case_index == len(rows)
+                ),
+            )
+
+    print(
+        "STAGE_DONE GOLD_LOOP "
+        + json.dumps({
+            "processed": len(rows),
+            "failures": len(failures),
+            "charalign_cross_mismatches": charalign_cross_mismatches,
+            "cross_path_mismatches": cross_path_mismatches,
+        }),
+        flush=True,
+    )
+
     if failures or cross_path_mismatches or charalign_cross_mismatches:
         summary = {
             "status": (
@@ -494,19 +562,24 @@ def main():
     gold_target_file.write_text("\n".join(nopnx_refs) + "\n", encoding="utf-8")
     system_file.write_text("\n".join(norm(x["h1_rewrite"]) for x in inf) + "\n", encoding="utf-8")
 
-    m2dir = upstream / "gec" / "utils" / "m2scorer"
     gold_m2 = Path.cwd() / (args.out_prefix + "_NOPNX_GOLD.m2")
+
+    print("STAGE_START M2_EDIT_CREATOR", flush=True)
     subprocess.run(
         [
-            sys.executable, str(m2dir / "edit_creator.py"),
+            sys.executable,
+            "-m", "gec.utils.m2scorer.edit_creator",
             "--max_unchanged_words", "2",
             "--output", str(gold_m2),
             str(source_file.resolve()), str(gold_target_file.resolve())
         ],
-        cwd=str(m2dir), check=True
+        cwd=str(upstream),
+        check=True,
     )
+    print("STAGE_DONE M2_EDIT_CREATOR", flush=True)
 
     run_m2 = upstream / "gec" / "utils" / "run_m2scorer.py"
+    print("STAGE_START M2_SCORER", flush=True)
     subprocess.run(
         [
             sys.executable, str(run_m2),
@@ -515,6 +588,7 @@ def main():
         ],
         check=True
     )
+    print("STAGE_DONE M2_SCORER", flush=True)
     m2 = parse_m2_summary(str(system_file) + ".m2")
 
     exact_sentence = sum(norm(x["h1_rewrite"]) == g for x, g in zip(inf, nopnx_refs))
