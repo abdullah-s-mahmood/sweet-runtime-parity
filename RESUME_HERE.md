@@ -1861,3 +1861,210 @@ Obtain/adjudicate the focused delta review first because the training-overlap di
 No files/data are currently missing from the project side.
 
 Reserved/internal datasets remain closed.
+
+
+## 31. MP-SEF V3 foundational pre-measurement artifacts — PASS
+
+Independent higher-model review decision:
+**MODIFY PROTOCOL BEFORE UNION MEASUREMENT**
+
+The requested V3 methodology has now been materialized and frozen.
+
+### V3 protocol
+
+File:
+`phase2/redesign/MPSEF_PRE_UNION_PROTOCOL_V3.md`
+
+Commit:
+`a666ec4da15a552b347d5907b87f58ae496526b5`
+
+Primary methodological changes:
+- raw union recall replaced by jointly realizable `R_joint`;
+- original-source anchoring required;
+- gold-guided atomic decomposition forbidden;
+- bundle/dependency semantics frozen;
+- CALIBRATION explicitly treated as historically consumed development evidence;
+- future role split cannot restore historical independence;
+- strict stop rules frozen.
+
+### Exposure ledger — PASS
+
+Workflow run:
+`36762360756`
+
+Artifact:
+- id: `11119212690`
+- digest:
+  `sha256:556946d798e58ea507ec73f45d9de2192d873465c684c1a170820af100e58a47`
+
+Ledger SHA256:
+`a58fd47ff8a85969eb740ed669d71e98fff10369779c7e8cef152a001135b1b3`
+
+Evidence:
+- cases: **6,888**
+- train origin: **6,571**
+- dev origin: **317**
+- document IDs recovered: **2,563**
+- author IDs available: **0**
+- exact duplicate groups: **7**
+- exact duplicate records: **15**
+- all records historically independent: **false**
+- all records gold/reference exposed: **true**
+- all records aggregate-result exposed: **true**
+- exact record-level manual/error-analysis exposure: **unknown**
+
+Training-overlap claim:
+- P1 dataset scope: QALB-2014 confirmed
+- P2 dataset scope: QALB-2014 confirmed
+- record-level training overlap: unresolved
+- permitted scientific claim: **DEVELOPMENT FEASIBILITY ONLY**
+
+No internal/reserved set was opened.
+
+### Future role split — PASS
+
+Workflow run:
+`36762615920`
+
+Artifact:
+- id: `11119351957`
+- digest:
+  `sha256:bb5aaca9505c0d6dd026cfeba14bbf9abc1eac555d0bf6b03cfd200f50007a23`
+
+Role manifest SHA256:
+`6912dac4405c5f2456c24a4268869c167beba4480c9d3d3cd193574f7cab4c12`
+
+UID/role/cluster digest:
+`85a5dcb1b26a9773ea0ef7e04bb42e8e56dde5d44f1e63fcbe54141dbcb47dfc`
+
+Clustering:
+- total clusters: **2,552**
+- same-document union edges: **4,325**
+- exact-duplicate union edges: **8**
+- near-duplicate pairs with Jaccard >=0.90: **20**
+- cluster role overlap: **0**
+
+Role allocation:
+- C_F: **1,918 records / 764 clusters**
+- C_T: **2,898 records / 1,020 clusters**
+- C_R: **2,072 records / 768 clusters**
+
+Cluster fractions:
+- C_F: **29.94%**
+- C_T: **39.97%**
+- C_R: **30.09%**
+
+Record fractions differ because document/duplicate clusters are kept intact.
+
+Interpretation:
+**FUTURE ROLE SEPARATION ONLY / HISTORICAL INDEPENDENCE NOT RESTORED**
+
+No feasibility metric was computed.
+
+### Bundle contract tightened
+
+File:
+`phase2/redesign/MPSEF_BUNDLE_CONTRACT_V1.md`
+
+Commit:
+`be18311b29fd7c4c9b72739f78b52d15fdde5e80`
+
+Primary V3 executable action space is deliberately conservative:
+- KEEP
+- whole P1 final pass-2 sentence
+- whole P2 final sentence
+
+No edit-level hybrid fusion in the primary measurement.
+
+Diagnostic component edits may be used for `R_raw`, but are not executable.
+
+This prevents gold-guided/cherry-picked decomposition from inflating primary coverage.
+
+### Target/matching contract aligned to V3
+
+File:
+`phase2/redesign/MPSEF_TARGET_AND_MATCHING_CONTRACT_V1.md`
+
+Commit:
+`21660b6ab4a468d52789893e76ac5578df3d40de`
+
+Primary population:
+**C_F only**
+
+Primary endpoint:
+`R_joint(P1,P2)`
+
+Primary gate:
+**>=95%**
+
+Secondary mandatory:
+- R_P1
+- R_P2
+- R_raw
+- R_raw - R_joint
+- R_clean
+- complete-sentence repair
+- four-way reachability
+- leave-one-out gains
+- family metrics
+- clean-sentence proposal rate
+- conflicts
+- candidate volume
+- protected-touch accounting
+- failure accounting
+
+Claim scope:
+**DEVELOPMENT FEASIBILITY / NOT INDEPENDENT GENERALIZATION EVIDENCE**
+
+### Foundational preflight — PASS
+
+Workflow run:
+`36763150865`
+
+Artifact:
+- id: `11119532160`
+- digest:
+  `sha256:9e8f0ad13838a334830553fdd2b0de41cdc02849b68f0cefc7d7e20030a5a13a`
+
+Preflight status:
+**PASS**
+
+Verified:
+- all 6,888 records assigned once;
+- 2,552 clusters;
+- zero cluster-role overlap;
+- no feasibility metric computed;
+- no selector trained;
+- all reserved/internal sets closed;
+- protocol/contract hashes frozen.
+
+Important:
+the preflight explicitly states:
+`measurement_authorized_by_preflight=false`
+
+### Remaining blocker before any R_joint measurement
+
+The exact MEASUREMENT runner/workflow do not yet exist and therefore cannot yet
+have frozen hashes.
+
+V3 requires the scientific measurement implementation itself to be frozen
+before any metric is observed.
+
+Therefore current state is:
+
+**FOUNDATIONAL PREFLIGHT PASS / MEASUREMENT STILL BLOCKED**
+
+Exact next authorized work:
+1. implement source-only C_F P1 proposal runner/workflow;
+2. freeze and preflight it without gold scoring;
+3. implement source-only C_F P2 proposal runner/workflow;
+4. freeze and preflight it without gold scoring;
+5. implement the scorer/R_joint runner against the already frozen proposal artifacts;
+6. freeze measurement runner/workflow hashes;
+7. run a SECOND pre-measurement preflight;
+8. only then make the explicit measurement authorization decision.
+
+Do not compute R_joint before step 8.
+
+No parallel execution.
+Reserved/internal datasets remain closed.
