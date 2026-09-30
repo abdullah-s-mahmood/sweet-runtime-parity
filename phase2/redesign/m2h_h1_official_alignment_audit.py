@@ -219,6 +219,23 @@ def main():
     sys.path.insert(0, str(upstream))
     sys.path.insert(0, str(upstream / "edits"))
 
+    import types
+    camel_tools_mod = types.ModuleType("camel_tools")
+    camel_utils_mod = types.ModuleType("camel_tools.utils")
+    camel_charsets_mod = types.ModuleType("camel_tools.utils.charsets")
+    camel_normalize_mod = types.ModuleType("camel_tools.utils.normalize")
+    camel_charsets_mod.UNICODE_PUNCT_SYMBOL_CHARSET = UNICODE_PUNCT_SYMBOL
+    camel_charsets_mod.AR_LETTERS_CHARSET = frozenset(
+        "ءآأؤإئابتثجحخدذرزسشصضطظعغـفقكلمنهوىيٱپچڤگ"
+    )
+    camel_normalize_mod.normalize_alef_ar = lambda s: re.sub("[إأٱآ]", "ا", s)
+    camel_normalize_mod.normalize_alef_maksura_ar = lambda s: s.replace("ى", "ي")
+    camel_normalize_mod.normalize_teh_marbuta_ar = lambda s: s.replace("ة", "ه")
+    sys.modules["camel_tools"] = camel_tools_mod
+    sys.modules["camel_tools.utils"] = camel_utils_mod
+    sys.modules["camel_tools.utils.charsets"] = camel_charsets_mod
+    sys.modules["camel_tools.utils.normalize"] = camel_normalize_mod
+
     from edits.tokenizer import Tokenizer
     from edits.alignment.aligner import word_level_alignment, char_level_alignment
     from edits.edit import Edit, SubwordEdits, SubwordEdit
