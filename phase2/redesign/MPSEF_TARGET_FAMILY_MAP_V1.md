@@ -120,10 +120,31 @@ The route requires all frozen protocol conditions:
 
 The scorer must report all three quantities.
 
-## 7. Empty families
+## 7. Additional-target and cluster semantics
+
+For weak-family retention, an `additional complete target` for proposer j is
+a family-F target that:
+
+- is completely matched by proposer j's legal whole hypothesis;
+- is not completely matched by any legal non-KEEP proposer output in the
+  system with proposer j removed;
+- remains a complete frozen target; no partial credit or decomposition is
+  allowed.
+
+This target-wise diagnostic is used only for the `>=10 additional targets`
+and `>=10 document clusters` conditions. It does not replace the
+family-restricted whole-hypothesis recall gain.
+
+Distinct-cluster count is computed from the frozen C_F source manifest
+`cluster_id` attached to the target's source sentence.
+
+If the proposer hypothesis is protected-blocked or otherwise non-executable,
+its target matches do not count as additional legal targets for retention.
+
+## 8. Empty families
 
 Any zero-target family is reported as `N/A` and excluded from macro averages.
 
-## 8. Stop rule
+## 9. Stop rule
 
 This mapping may not change after any C_F pair metric is observed.
