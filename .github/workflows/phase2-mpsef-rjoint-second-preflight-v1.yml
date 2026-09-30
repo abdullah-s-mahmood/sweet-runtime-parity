@@ -30,7 +30,7 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Assert measurement workflow cannot auto-run on push
+      - name: Assert measurement workflow has only the frozen authorization trigger
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -38,7 +38,10 @@ jobs:
           t=p.read_text(encoding="utf-8")
           head=t.split("permissions:",1)[0]
           assert "workflow_dispatch:" in head
-          assert "\n  push:" not in head
+          assert "\n  push:" in head
+          assert "phase2/redesign/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V1.json" in head
+          push_block=head.split("\n  push:",1)[1]
+          assert push_block.count('      - "')==1
           assert "MEASURE_R_JOINT_V1" in t
           assert ("\\"+chr(36)+"{{") not in t
           print("MEASUREMENT_WORKFLOW_GUARD_OK")
