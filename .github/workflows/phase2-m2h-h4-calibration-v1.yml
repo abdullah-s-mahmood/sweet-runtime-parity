@@ -75,7 +75,7 @@ jobs:
           assert c["cases"]==6888
           assert h["cases"]==6888
           assert h["candidates"]==46811
-          assert c["integrity"]["internal_evaluation_opened"] is False
+          assert c["integrity"]["internal_evaluation_text_materialized"] is False
           assert h["integrity"]["internal_evaluation_opened"] is False
           print("H4_FROZEN_INPUTS_OK")
           PY
