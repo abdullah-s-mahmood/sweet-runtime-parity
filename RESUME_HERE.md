@@ -621,3 +621,42 @@ Exact next authorized step:
 3. define/freeze H3 morphology development-proxy protocol on `MI/MT`;
 4. run H4 deterministic calibration against the previously frozen pure-whitespace boundary gold;
 5. only after component rules/thresholds are frozen may `INTERNAL_EVALUATION` be opened.
+
+
+## 21. ARETA artifact validation + component calibration freeze — COMPLETE
+
+Artifact `11074295904` was downloaded and validated directly.
+
+Validation:
+- rows: **6,888**
+- unique UIDs: **6,888**
+- unique case IDs: **6,888**
+- case IDs: `M2H-CAL-00001` through `M2H-CAL-06888`
+- case ID sequence: PASS
+- structural errors: **0**
+- UID SHA256:
+  `3b6c1128f412531223b3c2e5346082d3290f40daac706eb13bbafa1db10a09c9`
+- frozen UID SHA256 match: PASS
+- pip-freeze SHA256:
+  `56b9a3964f149eeab9db64ff118287b23a63bf05eb52c6599e9b4af859a12704`
+- recorded pip-freeze hash match: PASS
+- reserved/internal dataset markers in enrichment artifact: none found
+
+Result:
+**ARTIFACT VALIDATION PASS**
+
+Component search space is now frozen in:
+`phase2/redesign/M2H_COMPONENT_CALIBRATION_FREEZE_V1.md`
+
+Key consequences:
+- H2 may calibrate only the preregistered conservative surface families.
+- H3 remains an MI/MT DEVELOPMENT PROXY and requires compatible morphology evidence; analyzability alone is insufficient.
+- H4 still uses exact character preservation with whitespace-only boundary change; ARETA MG/SP is diagnostic only.
+- H4 automatic approval requires at least two distinct frozen non-H1 evidence families.
+- `UNK` is an explicit uncertainty state, never silently treated as clean or erroneous.
+
+Scientific classification:
+**IMPROVED METHODOLOGICALLY / PERFORMANCE NOT YET EVALUATED**
+
+Exact next authorized step:
+run H2 → H3 → H4 component calibration on `CALIBRATION` only, then freeze enabled/disabled families before opening `INTERNAL_EVALUATION`.

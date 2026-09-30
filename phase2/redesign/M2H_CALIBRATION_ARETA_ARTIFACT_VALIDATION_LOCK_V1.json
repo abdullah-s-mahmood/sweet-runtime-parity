@@ -1,0 +1,44 @@
+{
+  "record_id": "M2H_CALIBRATION_ARETA_ARTIFACT_VALIDATION_LOCK_V1",
+  "date": "2026-09-30",
+  "status": "PASS_AND_FROZEN",
+  "artifact": {
+    "id": 11074295904,
+    "zip_sha256": "e29cd674e8606eff4d685ef59fa3e11b51b6a769425a29dcb4042884100dde1c",
+    "files": [
+      "M2H_CALIBRATION_ARETA_ENRICHMENT_V1.jsonl",
+      "M2H_CALIBRATION_ARETA_SUMMARY_V1.json",
+      "M2H_ARETA_CALIBRATION_PIP_FREEZE.txt",
+      "M2H_ARETA_CALIBRATION_PIP_FREEZE.sha256"
+    ]
+  },
+  "structural_validation": {
+    "rows": 6888,
+    "unique_uids": 6888,
+    "unique_case_ids": 6888,
+    "first_case_id": "M2H-CAL-00001",
+    "last_case_id": "M2H-CAL-06888",
+    "case_id_sequence_ok": true,
+    "structural_errors": 0
+  },
+  "uid_validation": {
+    "algorithm": "sha256(join(uids,'\\n') + trailing_newline)",
+    "observed": "3b6c1128f412531223b3c2e5346082d3290f40daac706eb13bbafa1db10a09c9",
+    "expected": "3b6c1128f412531223b3c2e5346082d3290f40daac706eb13bbafa1db10a09c9",
+    "match": true
+  },
+  "environment_validation": {
+    "pip_freeze_sha256_actual": "56b9a3964f149eeab9db64ff118287b23a63bf05eb52c6599e9b4af859a12704",
+    "pip_freeze_sha256_recorded": "56b9a3964f149eeab9db64ff118287b23a63bf05eb52c6599e9b4af859a12704",
+    "match": true
+  },
+  "scope_integrity": {
+    "internal_evaluation_marker_found": false,
+    "stress_diagnostic_marker_found": false,
+    "confirmation_marker_found": false,
+    "holdout_marker_found": false,
+    "a7ta_marker_found": false,
+    "qalb15_marker_found": false
+  },
+  "conclusion": "ARTIFACT_STRUCTURE_UID_ORDER_ENVIRONMENT_AND_SCOPE_VALIDATED"
+}
