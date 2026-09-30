@@ -1,0 +1,128 @@
+You are performing a SECOND, highly focused independent methodological review for the ACAD_PASS Arabic correction project.
+
+You will receive one file:
+
+FOCUSED_REVIEW_PACKET_MPSEF_V3_TRAINING_OVERLAP_DELTA.md
+
+This is NOT a request to re-review the entire MP-SEF architecture.
+
+The first independent review has already been completed and resulted in:
+
+MODIFY PROTOCOL BEFORE UNION MEASUREMENT
+
+After that review, but BEFORE any candidate-union / R_joint measurement, a new data-provenance fact was discovered:
+
+the frozen 6,888-record CALIBRATION population is composed of 6,571 QALB-2014 train-origin records and only 317 QALB-2014 dev-origin records, while both P1 and P2 are QALB-2014 fine-tuned systems.
+
+The project therefore changed the proposed primary feasibility population from a generic 30/40/30 split across all CALIBRATION records to a dev-origin-only population D_DEV_FEAS_V1 containing 317 records.
+
+Your task is to independently judge ONLY whether this amendment is methodologically correct and whether anything must change BEFORE the first P1+P2 R_joint measurement.
+
+MANDATORY RULES
+
+1. Read the entire attached delta packet before deciding.
+2. Perform fresh source verification where needed, especially:
+   - P1 SWEET QALB-2014 training provenance;
+   - P2 AraBART+GED QALB-2014 training provenance;
+   - appropriate interpretation of development-set evaluation after model training/model selection.
+3. Do not assume the amendment is correct because it is more conservative.
+4. Do not recommend putting QALB-2014 train-origin records back into the primary gate unless you can justify why direct fine-tuning overlap does not invalidate the intended feasibility construct.
+5. Distinguish clearly:
+   - direct training overlap;
+   - model-development/dev-set exposure;
+   - ACAD_PASS adaptive reuse;
+   - duplicate/near-duplicate leakage;
+   - independent generalization evidence.
+6. Do not run or simulate P1, P2, union, R_joint, or selector training.
+7. Do not estimate the unseen R_joint result.
+8. Do not open or recommend opening:
+   - INTERNAL_EVALUATION
+   - STRESS_DIAGNOSTIC
+   - QALB15 TEST
+   - Confirmation
+   - Holdout
+   - A7'ta reserve
+   - reserved Nahw IDs
+9. Do not alter the historical H1-v1 result.
+10. Do not add a third proposer.
+11. Do not lower the frozen >=95% R_joint gate merely because the new feasibility population is smaller.
+12. If 317 records are insufficient for some secondary family-specific rule, distinguish that from insufficiency for the primary micro R_joint question.
+13. Treat D_DEV_FEAS_V1 explicitly as DEVELOPMENTAL / NOT INDEPENDENT unless you can rigorously justify otherwise.
+14. Consider whether an external non-QALB corpus is:
+    - required BEFORE this developmental candidate-feasibility measurement;
+    - required only before generalization claims;
+    - required only before AUTO_SAFE certification;
+    - or not required.
+15. If you propose another population design, specify it exactly and explain why it is less biased than D_DEV_FEAS_V1 without using forbidden data.
+16. Preserve all first-review requirements unless this new provenance fact logically requires changing them:
+    - R_joint;
+    - bundles/dependencies;
+    - source anchoring;
+    - protected invariants;
+    - anti-loop rules;
+    - proposer-retention rules;
+    - selector remains unauthorized.
+17. Prefer primary papers/model cards and official sources.
+18. State uncertainty explicitly.
+
+REQUIRED QUESTIONS
+
+A. Is D_DEV_FEAS_V1, exactly 317 QALB-2014 dev-origin records with zero train-origin records and zero frozen near-duplicate cross-split clusters, a defensible population for the FIRST developmental P1+P2 candidate-availability feasibility measurement?
+
+B. Is it methodologically better than a generic 30/40/30 partition across all 6,888 CALIBRATION records given that 6,571 are QALB-2014 train-origin records?
+
+C. Does QALB-2014 Dev exposure by the original model developers prevent its use even for a clearly labeled developmental feasibility decision, or only prevent independent-generalization claims?
+
+D. Does prior ACAD_PASS use of CALIBRATION prevent using these 317 cases for a frozen one-shot architecture-development gate, assuming the result is explicitly labeled adaptive/developmental?
+
+E. Is 317 sentences sufficient for the primary R_joint >=95% feasibility question?
+Discuss target counts and uncertainty requirements, but do not invent unseen counts.
+
+F. Should the >=95% R_joint floor remain unchanged?
+
+G. Should D_TRAIN_INTERNAL_V1 remain outside the primary gate?
+
+H. Is a fresh non-QALB corpus required before the first developmental feasibility measurement?
+
+I. Does the new provenance evidence require modifying any of:
+- R_joint definition;
+- bundle semantics;
+- protected-invariant policy;
+- stop rules;
+- proposer-retention rules?
+
+J. Choose exactly one final decision:
+- ACCEPT AMENDMENT — proceed later with one D_DEV_FEAS_V1 R_joint feasibility run under frozen V3.
+- MODIFY AMENDMENT BEFORE MEASUREMENT.
+- REQUIRE A NEW NON-QALB DEVELOPMENT CORPUS BEFORE ANY P1+P2 FEASIBILITY MEASUREMENT.
+- ABANDON THE CURRENT P1+P2 FEASIBILITY DESIGN.
+
+REQUIRED OUTPUT
+
+Write the response in Arabic with RTL-friendly formatting and English technical terms in backticks where useful.
+
+Use these sections:
+
+1. Executive delta decision
+2. Verified provenance facts
+3. Direct training-overlap analysis
+4. Dev-set exposure analysis
+5. ACAD_PASS adaptive-reuse analysis
+6. Duplicate/near-duplicate analysis
+7. Adequacy of 317-case D_DEV_FEAS_V1
+8. Status of the >=95% R_joint gate
+9. Treatment of D_TRAIN_INTERNAL_V1
+10. Whether external non-QALB data is required now
+11. Any REQUIRED BEFORE MEASUREMENT changes
+12. Final authorized next step only
+13. Confidence and unresolved uncertainty
+14. Fresh sources used with links/DOIs
+
+For every proposed change, label it:
+- REQUIRED BEFORE MEASUREMENT
+- OPTIONAL / LATER
+- NOT JUSTIFIED
+
+Do not write implementation code.
+Do not run the experiment.
+Do not speculate about unseen R_joint.
