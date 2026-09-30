@@ -1809,3 +1809,55 @@ Before running the single P1+P2 feasibility measurement on D_DEV_FEAS_V1, adjudi
 Do not silently revert to 30/40/30 across train+dev.
 
 Do not run feasibility until this decision is explicitly resolved.
+
+
+## 34. Focused higher-model delta review prepared — current stop point
+
+Reason:
+the first higher-model review recommended a generic 30/40/30 future role split before candidate measurement, but it did not have the newly established CALIBRATION composition and proposer-training-overlap evidence.
+
+New fact established before any candidate metric:
+- CALIBRATION train-origin: 6,571
+- CALIBRATION dev-origin: 317
+- P1: QALB-2014 fine-tuned system
+- P2: QALB-2014 fine-tuned system
+- train/dev crossing duplicate clusters under frozen rule: 0
+
+Primary feasibility population was therefore prospectively changed to:
+**D_DEV_FEAS_V1 = 317 dev-origin records**
+
+This is labeled:
+**DEVELOPMENTAL / DEV-ORIGIN / NOT INDEPENDENT**
+
+A focused delta review packet now exists:
+
+`phase2/redesign/FOCUSED_REVIEW_PACKET_MPSEF_V3_TRAINING_OVERLAP_DELTA.md`
+
+Packet commit:
+`18672b4a28d21fd8494743cddbf913d3a6bde148`
+
+Higher-model delta prompt:
+
+`phase2/redesign/PROMPT_HIGHER_MODEL_MPSEF_V3_TRAINING_OVERLAP_DELTA_REVIEW_V1.txt`
+
+Prompt commit:
+`66c4e62e13e9bfc1417c6b167b388ebf6091df07`
+
+The delta review asks only whether:
+- D_DEV_FEAS_V1 is a defensible first developmental feasibility population;
+- it is preferable to train-dominated generic 30/40/30;
+- 317 dev-origin cases are sufficient for the limited primary R_joint question;
+- the >=95% floor should remain;
+- external non-QALB evidence is required now or only for later generalization/AUTO_SAFE claims.
+
+No experiment is requested in the delta review.
+
+### Exact current stop rule
+
+Do NOT run P1+P2 R_joint yet.
+
+Obtain/adjudicate the focused delta review first because the training-overlap discovery changes one material recommendation from the first independent review.
+
+No files/data are currently missing from the project side.
+
+Reserved/internal datasets remain closed.
