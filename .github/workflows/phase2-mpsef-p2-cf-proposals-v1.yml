@@ -1,0 +1,168 @@
+name: Phase 2 MP-SEF P2 C_F Source-Only Proposals v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-p2-cf-proposals-v1.yml"
+      - "phase2/redesign/mpsef_p2_cf_proposals_v1.py"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  p2-cf-proposals:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 300
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Clone frozen official arabic-gec implementation
+        run: |
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+
+      - name: Install frozen P2 runtime stack
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "numpy==1.23.5" "camel-tools==1.4.1" "datasets==2.5.1" "sentencepiece==0.1.99" "protobuf==3.20.3"
+          python -m pip install "huggingface-hub==0.10.1" "tokenizers==0.12.1"
+          python -m pip install --force-reinstall --no-deps ./upstream/arabic-gec/transformers
+          python - <<'PY'
+          import transformers
+          assert transformers.__version__ == "4.22.2"
+          from transformers import DataCollatorForSeq2SeqGEC
+          print("MODIFIED_TRANSFORMERS_GED_SUPPORT_OK")
+          PY
+
+      - name: Install frozen CAMeL disambiguation data
+        run: |
+          camel_data -i disambig-bert-unfactored-msa
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          expected_morph="195bc25a333237a2126470da888d7936b59ed3729f9210e0a4194ba43497dd70"
+          expected_disambig="a1a22431cdc0934151e4039abbd7890f06ba7c1f914ca71a90eba218401ae539"
+          root=Path.home()/".camel_tools"
+          morph=[]; models=[]
+          for p in root.rglob("morphology.db"):
+              morph.append(hashlib.sha256(p.read_bytes()).hexdigest())
+          for p in root.rglob("pytorch_model.bin"):
+              models.append(hashlib.sha256(p.read_bytes()).hexdigest())
+          assert expected_morph in morph,(expected_morph,morph)
+          assert expected_disambig in models,(expected_disambig,models)
+          print("CAMEL_P2_RESOURCES_HASH_OK")
+          PY
+
+      - name: Download frozen P2 GED and GEC model revisions
+        run: |
+          python - <<'PY'
+          import shutil
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+          ged_rev="447179dc63d186e4bff09a993e90e73ad622d571"
+          gec_rev="410588a318d988cdcfdbf64cf5745ed4adea0f6a"
+          ged_src=Path(snapshot_download(repo_id="CAMeL-Lab/camelbert-msa-qalb14-ged-13",revision=ged_rev,cache_dir="hf_cache"))
+          gec_src=Path(snapshot_download(repo_id="CAMeL-Lab/arabart-qalb14-gec-ged-13",revision=gec_rev,cache_dir="hf_cache"))
+          shutil.copytree(ged_src,"p2_ged_model",symlinks=False)
+          shutil.copytree(gec_src,"p2_gec_model",symlinks=False)
+          print("P2_MODELS_READY")
+          PY
+          test "$(sha256sum p2_ged_model/pytorch_model.bin | awk '{print $1}')" = "23385ffe560860a8f5e9e46e05b66a31c33a4b0bd58e9a718933fdab8161f50f"
+          test "$(sha256sum p2_gec_model/pytorch_model.bin | awk '{print $1}')" = "5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f"
+
+      - name: Download exact frozen C_F source manifest from P1
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_cf_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate identical source-only C_F manifest
+        run: |
+          test "$(sha256sum p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl | awk '{print $1}')" = "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          python - <<'PY'
+          import json
+          rows=[json.loads(x) for x in open("p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl",encoding="utf-8") if x.strip()]
+          assert len(rows)==1918
+          assert len({x["cluster_id"] for x in rows})==764
+          assert all(x["role"]=="C_F" for x in rows)
+          forbidden={"reference","gold","edits","operations","corrected","target"}
+          assert not any(forbidden & set(x.keys()) for x in rows)
+          print("P2_CF_IDENTICAL_SOURCE_MANIFEST_OK")
+          PY
+
+      - name: Run frozen P2 source-only proposals
+        env:
+          PYTHONUNBUFFERED: "1"
+          TOKENIZERS_PARALLELISM: "false"
+        run: |
+          python phase2/redesign/mpsef_p2_cf_proposals_v1.py \
+            --source-manifest p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl \
+            --ged-model-dir p2_ged_model \
+            --gec-model-dir p2_gec_model \
+            --batch-size 8 \
+            --preflight-n 32 \
+            --out-prefix MPSEF_P2_CF_PROPOSALS_V1
+
+      - name: Validate P2 proposal artifact
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_P2_CF_PROPOSALS_V1_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="PREMEASUREMENT_PROPOSALS_READY"
+          assert s["cases"]==1918
+          assert s["clusters"]==764
+          assert s["source_manifest_sha256"]=="051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          assert s["batch_single_parity_n"]==32
+          assert s["batch_single_all_field_match"]==32
+          assert all(v==32 for v in s["batch_single_field_matches"].values())
+          assert s["gold_reference_consulted"] is False
+          assert s["reference_content_used"] is False
+          assert s["feasibility_metric_computed"] is False
+          assert s["r_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["internal_evaluation_opened"] is False
+          assert s["stress_diagnostic_opened"] is False
+          assert s["reserved_data_opened"] is False
+          print("P2_CF_PREMEASUREMENT_PROPOSALS_OK")
+          PY
+
+      - name: Record P2 environment and frozen hashes
+        if: always()
+        run: |
+          python -m pip freeze > MPSEF_P2_CF_PROPOSALS_V1_PIP_FREEZE.txt
+          sha256sum \
+            phase2/redesign/mpsef_p2_cf_proposals_v1.py \
+            .github/workflows/phase2-mpsef-p2-cf-proposals-v1.yml \
+            p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl \
+            MPSEF_P2_CF_PROPOSALS_V1.jsonl \
+            MPSEF_P2_CF_PROPOSALS_V1_SUMMARY.json \
+            MPSEF_P2_CF_PROPOSALS_V1_PIP_FREEZE.txt \
+            > MPSEF_P2_CF_PROPOSALS_V1_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-p2-cf-proposals-v1
+          path: |
+            MPSEF_P2_CF_PROPOSALS_V1.jsonl
+            MPSEF_P2_CF_PROPOSALS_V1_SUMMARY.json
+            MPSEF_P2_CF_PROPOSALS_V1_PIP_FREEZE.txt
+            MPSEF_P2_CF_PROPOSALS_V1_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
