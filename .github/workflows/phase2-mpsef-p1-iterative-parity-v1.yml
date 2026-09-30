@@ -7,6 +7,7 @@ on:
       - phase2-arabic-eval
     paths:
       - ".github/workflows/phase2-mpsef-p1-iterative-parity-v1.yml"
+      - "phase2/redesign/mpsef_p1_iterative_parity.py"
 
 permissions:
   contents: read
