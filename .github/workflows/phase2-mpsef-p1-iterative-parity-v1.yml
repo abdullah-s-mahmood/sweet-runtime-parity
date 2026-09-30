@@ -1,0 +1,135 @@
+name: Phase 2 MP-SEF P1 Iterative Parity v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-p1-iterative-parity-v1.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  p1-iterative-parity:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install frozen P1 stack
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.12.1+cpu"
+          python -m pip install "transformers==4.30.0" "huggingface_hub==0.16.4" "sentencepiece==0.1.99"
+
+      - name: Clone frozen text-editing implementation
+        run: |
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          cd upstream/text-editing
+          git checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Download frozen P1 model revision
+        run: |
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          rev="21286e56ce98a86362db540863f91c083b8970f9"
+          snapshot_download(
+              repo_id="CAMeL-Lab/text-editing-qalb14-nopnx",
+              revision=rev,
+              local_dir="p1_model",
+              local_dir_use_symlinks=False,
+          )
+          print("P1_MODEL_READY",rev,flush=True)
+          PY
+          test "$(sha256sum p1_model/pytorch_model.bin | awk '{print $1}')" = "9324bd3e8bcbfd5a45d5562979cccd4279f0a7946c25a13abb10aba9cc42364d"
+
+      - name: Download frozen CALIBRATION
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-calibration-v1
+          path: calibration_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36654588477
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run source-only iterative parity
+        run: |
+          python phase2/redesign/mpsef_p1_iterative_parity.py \
+            --calibration calibration_artifact/M2H_CALIBRATION_V1.jsonl \
+            --model-dir p1_model \
+            --upstream-root upstream/text-editing \
+            --sample-n 64 \
+            --out-prefix MPSEF_P1_ITERATIVE_PARITY_V1
+
+      - name: Validate parity summary
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_P1_ITERATIVE_PARITY_V1_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["sample_n"]==64
+          assert s["decode_iter"]==2
+          assert s["pass1_exact_trace_match"]==64
+          assert s["pass2_exact_trace_match"]==64
+          assert s["all_field_match"]==64
+          assert s["mismatches"]==0
+          assert s["gold_reference_consulted"] is False
+          assert s["internal_evaluation_opened"] is False
+          assert s["stress_diagnostic_opened"] is False
+          print("MPSEF_P1_PARITY_OK",flush=True)
+          PY
+
+      - name: Record environment
+        if: always()
+        run: |
+          python -m pip freeze > MPSEF_P1_ITERATIVE_PARITY_V1_PIP_FREEZE.txt
+          sha256sum phase2/redesign/mpsef_p1_iterative_parity.py \
+                    MPSEF_P1_ITERATIVE_PARITY_V1_PIP_FREEZE.txt \
+                    > MPSEF_P1_ITERATIVE_PARITY_V1_SHA256.txt
+
+      - name: Write final status
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("MPSEF_P1_ITERATIVE_PARITY_V1_FINAL_STATUS.json")
+          summary=Path("MPSEF_P1_ITERATIVE_PARITY_V1_SUMMARY.json")
+          if summary.exists():
+              s=json.loads(summary.read_text(encoding="utf-8"))
+              out={
+                  "status":"COMPLETED" if s.get("status")=="PASS" else "FAILED",
+                  "stage":"P1_PARITY_DONE",
+                  "all_field_match":s.get("all_field_match"),
+                  "sample_n":s.get("sample_n"),
+                  "mismatches":s.get("mismatches"),
+              }
+          else:
+              out={"status":"FAILED","stage":"SEE_WORKFLOW_LOG"}
+          p.write_text(json.dumps(out,indent=2)+"\n",encoding="utf-8")
+          print(json.dumps(out),flush=True)
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-p1-iterative-parity-v1
+          path: |
+            MPSEF_P1_ITERATIVE_PARITY_V1_SUMMARY.json
+            MPSEF_P1_ITERATIVE_PARITY_V1_TRACE.jsonl
+            MPSEF_P1_ITERATIVE_PARITY_V1_FINAL_STATUS.json
+            MPSEF_P1_ITERATIVE_PARITY_V1_PIP_FREEZE.txt
+            MPSEF_P1_ITERATIVE_PARITY_V1_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
