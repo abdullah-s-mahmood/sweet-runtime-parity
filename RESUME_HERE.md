@@ -18,7 +18,7 @@ This file is the canonical live handoff. Update it after every meaningful checkp
 
 Use **checkpoint execution**.
 
-A single user "اكمل" may perform up to **10 tool operations**, but they must be **strictly sequential**. Do not run tools in parallel. If a workflow is still running, inspect once and stop. If a step fails, identify the exact cause before changing architecture.
+A single user "اكمل" may perform up to **20 tool operations**, but they must be **strictly sequential**. Do not run tools in parallel. If a workflow is still running, inspect once and stop. If a step fails, identify the exact cause before changing architecture.
 
 Arabic responses should be RTL-friendly. Keep English technical terms isolated in backticks such as `CALIBRATION`, `H3`, `ARETA`.
 
@@ -548,7 +548,7 @@ The next authorized work is:
 
 Recommended instruction:
 
-> Read `RESUME_HERE.md` from branch `phase2-arabic-eval` in `abdullah-s-mahmood/sweet-runtime-parity`. Treat it as canonical. Inspect current branch HEAD and continue only from the exact next step. Do not restart closed phases. Use checkpoint execution with up to 10 strictly sequential tool operations and no parallel tool calls. Keep Arabic responses RTL-friendly and isolate English technical terms in backticks.
+> Read `RESUME_HERE.md` from branch `phase2-arabic-eval` in `abdullah-s-mahmood/sweet-runtime-parity`. Treat it as canonical. Inspect current branch HEAD and continue only from the exact next step. Do not restart closed phases. Use checkpoint execution with up to 20 strictly sequential tool operations and no parallel tool calls. Keep Arabic responses RTL-friendly and isolate English technical terms in backticks.
 
 
 
@@ -939,3 +939,151 @@ Proceed directly to:
 4. only then consider opening INTERNAL_EVALUATION.
 
 Do not reopen H2 tuning in the current development iteration.
+
+
+## 24. H3 + H4 closure and H1-H4 activation freeze — COMPLETE
+
+### H3 morphology-aware CALIBRATION — CLOSED FAIL
+
+Protocol:
+`phase2/redesign/M2H_H3_MORPHOLOGY_CALIBRATION_PROTOCOL_V1.md`
+
+Workflow:
+- run: `36703934748`
+- job: `h3-calibration`
+- conclusion: **SUCCESS**
+
+Artifact:
+- id: `11091545756`
+- SHA256: `82372c564d0f05dd16b3f7cc6d141c5eb77647a2c3a4277560ab6c6dc71d7f27`
+
+Results:
+- MI/MT annotations: **2,597**
+- mapped annotations: **2,529**
+- exact-span H1 candidates: **169**
+- exact-reference-supported nominated: **85**
+- H3-supported: **3**
+- exact-reference-supported H3-supported: **1**
+- candidate recall: **1.18%**
+- target recall: **>=70%**
+- supported-candidate precision proxy: **33.33%**
+- false-positive case proxy: **66.67%** on only 3 supported cases
+
+H3 activation:
+**DISABLED**
+
+Result file:
+`phase2/redesign/M2H_H3_CALIBRATION_RESULT_V1.md`
+
+### H4 structural boundary CALIBRATION — CLOSED / NOT ACTIVATED
+
+Frozen protocol:
+`phase2/redesign/M2H_H4_BOUNDARY_CALIBRATION_PROTOCOL_V1.md`
+
+Initial workflow run:
+`36704936665`
+failed before H4 execution because the workflow validator referenced an old-summary integrity key that did not exist. This was an operational validation bug only.
+
+Fix commit:
+`7a962e124321d4ba993bd8fc9165c667b4f78b87`
+
+Successful workflow:
+- run: `36705698086`
+- job: `h4-calibration`
+- conclusion: **SUCCESS**
+- started: `2026-09-30T10:58:55Z`
+- completed: `2026-09-30T11:00:59Z`
+
+Artifact:
+- id: `11092051414`
+- name: `m2h-h4-calibration-v1`
+- SHA256: `060b5ee437feefae2031108c102ee408ffe61178a813b54396599b199970994e`
+
+SPLIT:
+- pure gold total: **2,633**
+- accepted: **0**
+- recall: **0.00%**
+- H1 PURE_SPLIT stream: **1,920**
+- H1 accepted: **0**
+- non-pure adversarial accepted: **0 / 1,143**
+- general diagnostic accepted: **0 / 1,000**
+- activation: **DISABLED**
+
+MERGE:
+- pure gold total: **5,505**
+- accepted: **2,612**
+- recall: **47.45%**
+- frozen recall target: **>=70%**
+- H1 PURE_MERGE stream: **3,792**
+- H1 accepted: **1,853**
+- accepted exact-reference-supported: **1,779**
+- accepted reference-unsupported: **74**
+- strict-reference precision lower bound: **96.01%**
+- frozen precision target: **>=90%**
+- non-pure adversarial accepted: **0 / 1,124**
+- general diagnostic accepted: **0 / 1,000**
+- activation: **DISABLED** because recall failed by **22.55 pp**
+
+H4 result:
+`phase2/redesign/M2H_H4_CALIBRATION_RESULT_V1.md`
+
+Scientific interpretation:
+- structural invariance is highly safe;
+- current two-of-three evidence requirement is too sparse for required recall;
+- do not tune H4-v1 post hoc;
+- any future contextual boundary verifier must be separately versioned.
+
+### H1-H4 activation freeze
+
+Frozen in:
+`phase2/redesign/M2H_COMPONENT_ACTIVATION_FREEZE_V1.md`
+
+Commit:
+`50794b34b224ac867f0cadde0d2c8facc2d83fa9`
+
+Current component state:
+- H1: **ACTIVE AS CANDIDATE GENERATOR ONLY**
+- H2: **NO AUTOMATIC FAMILY ACTIVATED**
+- H3: **NOT ACTIVATED**
+- H4: **NO OPERATION ACTIVATED**
+
+Standalone automatic validators after CALIBRATION:
+**NONE**
+
+This negative result does not authorize gate weakening.
+
+### H5/H6 remain authorized by the original protocol
+
+The original frozen `M2H_HYBRID_VERIFIER_PROTOCOL_V1.md` explicitly preregistered:
+- H5 Risk Fusion
+- H6 Sentence Completeness
+
+Therefore H5/H6 are not a post-hoc invention.
+
+One-attempt rule now applies:
+- one preregistered H5/H6 CALIBRATION implementation only;
+- no iterative tuning loop;
+- freeze features/model/thresholds before INTERNAL_EVALUATION;
+- if H5/H6 cannot meet the preregistered feasibility logic without changing definitions/gates, record failure and stop the M2-H path.
+
+H5 may consume frozen raw H1-H4 evidence features, but failed H2/H3/H4 components may not be reinterpreted as standalone safe validators.
+
+### INTERNAL_EVALUATION remains unopened
+
+Still unopened:
+- INTERNAL_EVALUATION text
+- STRESS_DIAGNOSTIC text
+- Confirmation
+- Holdout
+- A7'ta reserve
+- reserved Nahw IDs
+- QALB15 TEST
+
+### Exact next authorized step
+
+Start the single H5/H6 iteration:
+1. fresh rigorous research and adversarial brainstorming;
+2. freeze H5 target labels, feature set, calibration model, thresholds, and H6 sentence-completeness derivation;
+3. calibrate on CALIBRATION only;
+4. freeze H5/H6 result;
+5. only after that freeze, open INTERNAL_EVALUATION once.
