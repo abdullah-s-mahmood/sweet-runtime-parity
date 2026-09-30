@@ -1,0 +1,125 @@
+name: Phase 2 M2-H H4 Boundary CALIBRATION v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-m2h-h4-calibration-v1.yml"
+      - "phase2/redesign/M2H_H4_BOUNDARY_CALIBRATION_PROTOCOL_V1.md"
+      - "phase2/redesign/m2h_h4_calibrate.py"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  h4-calibration:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install frozen CAMeL Tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "git+https://github.com/CAMeL-Lab/camel_tools.git@be79ca9fc493f0df795375a7255bafef246a802d"
+          camel_data -i morphology-db-msa-r13
+
+      - name: Verify frozen morphology DB
+        run: |
+          python - <<'PY'
+          import hashlib, pathlib
+          expected="195bc25a333237a2126470da888d7936b59ed3729f9210e0a4194ba43497dd70"
+          hashes=[]
+          for p in (pathlib.Path.home()/".camel_tools").rglob("morphology.db"):
+              h=hashlib.sha256(p.read_bytes()).hexdigest()
+              print("MORPH_DB",p,h)
+              hashes.append(h)
+          assert expected in hashes, (expected,hashes)
+          print("MORPHOLOGY_DB_HASH_OK")
+          PY
+
+      - name: Download frozen CALIBRATION corpus
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-calibration-v1
+          path: calibration_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36654588477
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen H1 candidate artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-h1-calibration-candidates-v1
+          path: h1_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36691616010
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate frozen inputs
+        run: |
+          python - <<'PY'
+          import json
+          c=json.load(open("calibration_artifact/M2H_CALIBRATION_SUMMARY_V1.json",encoding="utf-8"))
+          h=json.load(open("h1_artifact/M2H_H1_CALIBRATION_CANDIDATE_SUMMARY_V1.json",encoding="utf-8"))
+          assert c["cases"]==6888
+          assert h["cases"]==6888
+          assert h["candidates"]==46811
+          assert c["integrity"]["internal_evaluation_opened"] is False
+          assert h["integrity"]["internal_evaluation_opened"] is False
+          print("H4_FROZEN_INPUTS_OK")
+          PY
+
+      - name: Run H4 structural boundary calibration
+        run: |
+          python phase2/redesign/m2h_h4_calibrate.py \
+            --calibration calibration_artifact/M2H_CALIBRATION_V1.jsonl \
+            --h1-candidates h1_artifact/M2H_H1_CALIBRATION_CANDIDATES_V1.jsonl \
+            --out-prefix M2H_H4_CALIBRATION_V1
+
+      - name: Validate H4 summary contract
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("M2H_H4_CALIBRATION_V1_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["scope"]=="CALIBRATION_ONLY"
+          assert s["evidence_rule"]=="AT_LEAST_2_OF_3_NON_H1_FAMILIES"
+          assert s["frozen_targets"]["recall_min"]==0.70
+          assert s["frozen_targets"]["precision_min"]==0.90
+          assert s["operations"]["SPLIT"]["gold_pure_total"]==2633
+          assert s["operations"]["MERGE"]["gold_pure_total"]==5505
+          assert s["operations"]["SPLIT"]["nonpure_adversarial_total"]==1143
+          assert s["operations"]["MERGE"]["nonpure_adversarial_total"]==1124
+          assert s["operations"]["SPLIT"]["h1_stream_total"]==1920
+          assert s["operations"]["MERGE"]["h1_stream_total"]==3792
+          assert s["integrity"]["internal_evaluation_opened"] is False
+          assert s["integrity"]["stress_diagnostic_opened"] is False
+          print(json.dumps(s,ensure_ascii=False,indent=2))
+          print("H4_SUMMARY_CONTRACT_OK")
+          PY
+
+      - name: Record runtime
+        run: |
+          python -m pip freeze > M2H_H4_PIP_FREEZE.txt
+          sha256sum M2H_H4_PIP_FREEZE.txt > M2H_H4_PIP_FREEZE.sha256
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2h-h4-calibration-v1
+          path: |
+            M2H_H4_CALIBRATION_V1_DECISIONS.jsonl
+            M2H_H4_CALIBRATION_V1_SUMMARY.json
+            M2H_H4_PIP_FREEZE.txt
+            M2H_H4_PIP_FREEZE.sha256
+          retention-days: 90
