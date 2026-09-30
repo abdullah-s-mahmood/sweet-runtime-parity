@@ -1,16 +1,16 @@
 {
   "record_id": "MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V1",
   "date": "2026-09-30",
-  "decision": "AUTHORIZE_SINGLE_C_F_MEASUREMENT",
+  "decision": "AUTHORIZE_SINGLE_C_F_MEASUREMENT_TECHNICAL_RERUN_1",
   "authorization": "MEASURE_R_JOINT_V1",
   "measurement_version": "MPSEF_RJOINT_MEASUREMENT_V1",
   "single_run_only": true,
   "second_preflight": {
-    "run_id": 36775003433,
-    "artifact_id": 11124981776,
-    "artifact_digest": "sha256:7f36cb0653c3660fc333fe9cef30284837853a9c0facbfd69bd8023261ea1136",
+    "run_id": 36775614363,
+    "artifact_id": 11125902334,
+    "artifact_digest": "sha256:a78ac1fbb9f795920b6ccba3d5af71af37e715ae126bdfd5a551fb9369c54f12",
     "status": "PASS",
-    "hash_manifest_sha256": "cb4b1f6bf864170e391f92db85075766baf23c9026dc2f9dbf228fb3b6d92c33"
+    "hash_manifest_sha256": "d6001189d6522fb0f0e98a087bc01aa5ad386330b7720641ff82e1220c4c4877"
   },
   "frozen_inputs": {
     "cases": 1918,
@@ -22,10 +22,18 @@
     "scorer_sha256": "0a70b14089dd061dd8773251838dbd160b0d63a78414c045d4db67857e9bc6fd",
     "core_sha256": "33fc7c9fa90854486bc10ad45219d3e78637247d946c0a381a79cd891db510dd",
     "family_map_sha256": "b1dd1dd9d8afbe6eefbde80a308b48a89fd916c9af7277c797e64b1177b06a7f",
-    "measurement_workflow_sha256": "54e4e2d00622ead1f0de52d607656eaac5d817e7ffac085a29258774ec571f2d"
+    "measurement_workflow_sha256": "c2892cb142a54fcf81b12ec2b71772d45ebe37df50290aa89c76bc2515550178"
   },
   "claim_scope": "DEVELOPMENT_FEASIBILITY_ONLY_NOT_INDEPENDENT_GENERALIZATION",
   "selector_authorized": false,
   "auto_safe_authorized": false,
-  "reserved_sets_authorized": false
+  "reserved_sets_authorized": false,
+  "technical_rerun": {
+    "permitted_by_stop_rule": true,
+    "ordinal": 1,
+    "prior_run_id": 36775239051,
+    "prior_failure_stage": "BEFORE_ANY_METRIC",
+    "prior_failure_reason": "push event passed empty workflow_dispatch input to scorer; scorer exited MEASUREMENT_NOT_AUTHORIZED before processing any case",
+    "scientific_configuration_changed": false
+  }
 }
