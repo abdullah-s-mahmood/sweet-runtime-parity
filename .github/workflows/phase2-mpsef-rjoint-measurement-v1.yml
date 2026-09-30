@@ -51,6 +51,7 @@ jobs:
               raise AssertionError(event)
           print("EXPLICIT_MEASUREMENT_AUTHORIZATION_OK",mode)
           PY
+          echo "MEASUREMENT_AUTH_TOKEN=MEASURE_R_JOINT_V1" >> "$GITHUB_ENV"
 
       - uses: actions/setup-python@v5
         with:
@@ -112,7 +113,7 @@ jobs:
         run: |
           python phase2/redesign/mpsef_rjoint_score_v1.py \
             --upstream-root upstream/text-editing \
-            --authorization "${{ inputs.authorization }}" \
+            --authorization "$MEASUREMENT_AUTH_TOKEN" \
             --calibration calibration_artifact/M2H_CALIBRATION_V1.jsonl \
             --full-gold-m2 gold_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2 \
             --source-manifest p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl \
