@@ -2,195 +2,169 @@
 
 Date: 2026-09-30
 Status: FROZEN BEFORE FEASIBILITY MEASUREMENT
+Parent:
+phase2/redesign/MPSEF_PRE_UNION_PROTOCOL_V3.md
 
 ## 1. Purpose
 
-This contract defines how P1 and P2 outputs are converted into source-anchored hypotheses and executable bundles before any reference-based feasibility metric is computed.
+This contract prevents false candidate coverage caused by gold-guided or
+spatial-only decomposition of proposer outputs.
 
-No gold/reference may influence decomposition.
+Reversibility does not imply grammatical, semantic, or factual independence.
 
-## 2. Immutable source
+## 2. Immutable hypothesis
 
-Every record has:
-- source_record_id;
-- source_uid;
-- source_text;
-- source_sha256;
-- source_tokenization_version.
+For every original source x0, each proposer contributes at most one final
+hypothesis in the first V3 feasibility cycle:
 
-All offsets are anchored to this original source.
+- P1: final pass-2 output x2;
+- P2: final AraBART generated output y.
 
-## 3. Hypothesis object
+KEEP is always a separate legal alternative when source integrity is valid.
 
-Required fields:
-- hypothesis_id;
-- proposer_id;
-- proposer_runtime_lock;
-- source_record_id;
-- source_sha256;
-- proposer_output_text;
-- proposer_output_sha256;
-- execution_status;
-- truncation_status;
-- alignment_status;
-- protected_touch_status;
-- provenance_trace.
+P1 pass-1 output is provenance only.
+No P2 n-best output exists in this cycle.
 
-One final hypothesis per proposer in the first cycle:
-- P1: final pass-2 output only;
-- P2: final generated output only.
+## 3. Primary executable-bundle rule
 
-KEEP is represented separately and is always legal unless source integrity fails.
+For the V3 PRIMARY action space, each final proposer hypothesis is ONE
+sentence-level executable bundle.
 
-## 4. Provenance
+Therefore, subject to structural/protected-span validity, the primary legal
+outputs are:
 
-### P1
+- KEEP(x0);
+- P1_FINAL(x0);
+- P2_FINAL(x0).
 
-Store:
-- x0 source;
-- x1 pass-1 output;
-- x2 pass-2 output;
-- pass-1 edit trace;
-- pass-2 edit trace.
+P1_FINAL and P2_FINAL are mutually exclusive sentence alternatives.
 
-Final hypothesis:
-x0 -> x2
+The primary V3 measurement DOES NOT create hybrid sentences by selecting
+individual edits from P1 and P2.
 
-x1 is never counted as an independent proposer.
+This is intentionally conservative. It avoids assuming that:
+- non-overlapping edits are grammatically independent;
+- edits emitted in one model hypothesis are independently optional;
+- a seq2seq rewrite can be factorized safely;
+- the subset of edits matching gold is itself a hypothesis proposed by the model.
 
-If a pass-2 action depends on text created in pass 1, preserve that dependency in provenance.
+## 4. Diagnostic component edits
 
-### P2
+Each final hypothesis must still be aligned from ORIGINAL x0 to final output
+and decomposed into diagnostic component edits.
 
-Store:
-- x0 source;
-- morphology-preprocessed text;
-- GED labels;
-- GED-expanded subword labels;
-- final generated output.
-
-Final hypothesis:
-x0 -> final output.
-
-Any difference introduced by morphology/preprocessing remains part of the source-to-final provenance.
-
-## 5. Component edit extraction
-
-A deterministic source-to-output aligner may produce component edits for explanation and execution planning.
-
-Each component contains:
+Each component records:
 - component_id;
-- original source span;
+- hypothesis_id;
+- original-source span;
 - source text;
 - replacement text;
 - operation family;
-- proposer provenance;
-- reversible inverse.
+- source-to-output alignment evidence;
+- proposer-stage provenance;
+- protected-span contact;
+- ambiguity status;
+- reversible inverse where deterministically defined.
 
-Component extraction is not permission to authorize the component independently.
+Diagnostic components are NOT independently executable in Bundle Contract V1.
 
-## 6. Bundle definition
+They are used only for:
+- R_raw target reachability;
+- operation-family diagnostics;
+- conflict description;
+- protected-touch accounting;
+- future dependency research.
 
-A bundle is the smallest unit that may be treated as independently executable under source/proposer-only evidence.
+## 5. P1 provenance
 
-Required fields:
-- bundle_id;
-- hypothesis_id;
-- component_ids;
-- source spans;
-- replacement effect;
-- requires_bundle_ids;
-- mutually_exclusive_bundle_ids;
-- unresolved_dependency;
-- protected_overlap;
-- executable;
-- reversible;
-- failure_reason.
+Trace:
+x0 -> x1 -> x2
 
-## 7. Dependency rule
+Store:
+- pass-1 edit trace;
+- pass-2 edit trace;
+- x2-to-x0 source anchoring;
+- whether pass-2 material acts on text created or modified during pass 1.
 
-Two or more component edits remain in the same bundle when independence cannot be established without gold/reference information.
+Executable P1 bundle:
+x0 -> x2 as a whole.
 
-Examples:
-- agreement changes across noun/adjective;
-- paired morphology changes;
-- a pass-2 SWEET edit depending on a pass-1 edit;
-- seq2seq multi-token rewrite whose grammatical validity depends on combined application.
+x1 is never an independent candidate in this cycle and cannot be added after
+observing weak results.
 
-Non-overlapping character spans do not imply independence.
+## 6. P2 provenance
 
-## 8. Gold-blind decomposition
+Trace:
+x0 -> morph_preprocessed -> GED -> generated y
 
-Before reference access:
-- create hypothesis;
-- align source to output;
-- identify candidate components;
-- determine bundles;
-- determine requires/mutual exclusion;
-- freeze bundle graph.
+Store:
+- x0;
+- morphology-preprocessed text;
+- GED labels;
+- subword-expanded GED labels;
+- final y;
+- x0 -> y alignment.
 
-After this freeze, reference may score actions but may not:
-- split bundles;
-- merge bundles;
-- alter offsets;
-- remove components;
-- repair a failed alignment;
-- reclassify a dependency to improve coverage.
+Any surface effect introduced by preprocessing that survives into y remains in
+the x0 -> y transaction history.
 
-## 9. Alignment ambiguity
+Executable P2 bundle:
+x0 -> y as a whole.
 
-If deterministic alignment has multiple materially different decompositions and no source/proposer-only rule selects one:
-- mark alignment_status=AMBIGUOUS;
-- keep the full hypothesis as one bundle when reversible and executable;
-- otherwise mark hypothesis non-executable.
+GED is proposal-generation evidence, not independent verification.
 
-Do not choose an alignment using the reference.
+## 7. Gold-blind alignment
 
-## 10. Textual equivalence
+Source-to-proposer alignment is constructed before target scoring.
 
-Two bundles are textually equivalent if applying either to the same original source yields the same final source string for the affected execution scope.
+Gold/reference data may not:
+- split a final bundle;
+- remove a wrong component while retaining a correct component;
+- invent an edit absent from the proposer;
+- alter source offsets;
+- choose a favorable competing alignment;
+- convert a diagnostic component into an executable action.
 
-Textual equivalence:
-- deduplicates candidate-count metrics;
-- does not erase proposer provenance;
-- does not imply statistical independence.
+Gold is used only after the action space is frozen to score reachable outputs.
 
-## 11. Conflicts
+## 8. Alignment ambiguity
 
-Conflict types:
-- SPAN_OVERLAP;
-- REPLACEMENT_INCOMPATIBLE;
-- REQUIRES_VIOLATION;
-- MUTUAL_EXCLUSION;
-- PROTECTED_POLICY;
-- SOURCE_VERSION_MISMATCH;
-- EXECUTION_ORDER_CONFLICT.
+If deterministic source-to-output alignment has materially different valid
+decompositions:
+- retain all ambiguity in diagnostics;
+- do not use gold to choose;
+- the final proposer sentence remains a single executable bundle if the exact
+  x0 -> final transformation itself is deterministic and reversible;
+- otherwise mark the proposer hypothesis non-executable.
 
-Conflict resolution must use frozen deterministic rules or remain unresolved.
+Alignment ambiguity therefore cannot increase the primary action space.
 
-Reference correctness cannot resolve candidate conflict for action-space construction.
+## 9. Bundle equivalence
 
-## 12. Reversibility
+P1_FINAL and P2_FINAL are textually equivalent if applying each to the same x0
+produces the same exact final Unicode string under the frozen comparison
+contract.
 
-An executable bundle must:
-- apply deterministically to the exact source version;
-- produce deterministic output;
-- store enough information to restore the original source exactly.
+Equivalent final outputs count as one reachable textual output for candidate
+coverage, but both proposer provenance records remain attached.
 
-Reversibility does not imply correctness or safety.
+Agreement is not treated as two independent witnesses.
 
-## 13. Bundle execution
+## 10. Protected-span interaction
 
-A legal action may include zero or more bundles only when:
-- all requires constraints are satisfied;
-- no mutual exclusion is violated;
-- no source conflict exists;
-- protected policy permits execution;
-- all selected bundles are executable and reversible.
+A raw final proposer hypothesis may touch a protected span and remain recorded
+for risk accounting.
 
-## 14. Failure accounting
+If the frozen protected-invariants contract forbids its execution:
+- the hypothesis is PROTECTED_BLOCKED;
+- it does not enter the primary executable action space;
+- the source case and affected reference targets remain in denominators.
 
-Mandatory statuses:
+No gold-based partial removal of the protected edit is permitted.
+
+## 11. Failure states
+
+Mandatory hypothesis states include:
 - OK;
 - ALIGNMENT_AMBIGUOUS;
 - ALIGNMENT_FAILED;
@@ -201,20 +175,63 @@ Mandatory statuses:
 - PROTECTED_BLOCKED;
 - EXECUTION_FAILED.
 
-No failed record is removed from later denominators.
+Failed or blocked cases are never removed from metric denominators.
 
-## 15. First-cycle constraints
+## 12. Primary and diagnostic action spaces
 
-- exactly P1 final pass-2 hypothesis;
-- exactly P2 final hypothesis;
-- no P1 pass-1 independent candidate;
-- no n-best;
-- no top-k;
-- no third proposer;
-- no punctuation proposer.
+### A_primary
 
-## 16. Integrity
+The primary V3 action space is:
+- KEEP;
+- whole P1_FINAL if executable;
+- whole P2_FINAL if executable.
 
-This contract must be applied before target matching.
+No intra-hypothesis or cross-proposer edit fusion is allowed.
 
-Any implementation change that changes bundle construction after feasibility metrics are observed invalidates that protocol version.
+### A_diagnostic
+
+Diagnostic component reachability may be examined without execution authority.
+
+A_diagnostic exists only to compute R_raw and family diagnostics.
+
+It is not a selector action space.
+
+## 13. Consequence for metrics
+
+Primary R_joint is optimized only over A_primary.
+
+R_raw may examine whether complete reference targets are individually present
+within diagnostic proposer components, without claiming those components can be
+jointly or independently executed.
+
+Therefore:
+
+R_raw >= R_joint
+
+The gap:
+R_raw - R_joint
+
+is explicitly interpreted as apparent coverage that depends on currently
+unproven decomposition/fusion.
+
+## 14. Future edit-level fusion
+
+Edit-level fusion is not rejected permanently.
+
+A later version may authorize smaller executable bundles only if, BEFORE
+scoring, it freezes:
+- a source/proposer-only dependency rule;
+- deterministic decomposition;
+- exact provenance;
+- no-gold validation of that decomposition;
+- a new action-space version;
+- a new pre-registered measurement plan.
+
+Bundle Contract V1 does not authorize that future step.
+
+## 15. Integrity
+
+- selector training: not authorized;
+- hybrid edit-level output: not authorized;
+- third proposer: not authorized;
+- internal/reserved evaluation: remains closed.
