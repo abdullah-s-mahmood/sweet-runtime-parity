@@ -1,0 +1,137 @@
+{
+  "record_id": "M2H_PREFLIGHT_V2_REPRODUCIBILITY_LOCK",
+  "date": "2026-09-30",
+  "status": "PASS_AND_FROZEN_BEFORE_M2H_DATA_MATERIALIZATION",
+  "workflow": {
+    "run_id": 36653526757,
+    "head_sha": "1f6c36d104d5d8e3d0a9746bbca2c7ec07783c97",
+    "conclusion": "success"
+  },
+  "h1": {
+    "artifact_id": 11071522116,
+    "artifact_digest": "sha256:02b0fe8af4777ac95cbb86bb16dc649fa6961c9d54d53aedc4985a38ac79eb97",
+    "model_id": "CAMeL-Lab/text-editing-qalb14-nopnx",
+    "huggingface_revision": "21286e56ce98a86362db540863f91c083b8970f9",
+    "smoke_test": {
+      "status": "PASS",
+      "synthetic_only": true,
+      "input_shape": [
+        1,
+        6
+      ],
+      "logits_shape": [
+        1,
+        6,
+        250
+      ]
+    },
+    "environment": {
+      "python": "3.10",
+      "torch": "1.12.1+cpu",
+      "transformers": "4.30.0",
+      "huggingface_hub": "0.16.4",
+      "pip_freeze_sha256": "604f14d8ddc248a635abfaddfedc75c5e6e766ba3cc691b9a2c3b17169d1056d",
+      "pip_freeze_hash_recomputed_match": true
+    },
+    "files": [
+      {
+        "path": ".gitattributes",
+        "bytes": 1519,
+        "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361"
+      },
+      {
+        "path": "README.md",
+        "bytes": 3739,
+        "sha256": "c74be6a068a74b3b8daaf05041c8ab4c0eeb808ea1851ba88ca03e2716927ad8"
+      },
+      {
+        "path": "config.json",
+        "bytes": 14028,
+        "sha256": "8eef46ce003ec0f959afe6cc0d615d2c2855b53ac31f8c65b40ecd55cee56287"
+      },
+      {
+        "path": "pytorch_model.bin",
+        "bytes": 539250417,
+        "sha256": "9324bd3e8bcbfd5a45d5562979cccd4279f0a7946c25a13abb10aba9cc42364d"
+      },
+      {
+        "path": "special_tokens_map.json",
+        "bytes": 125,
+        "sha256": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 443,
+        "sha256": "f15301b94259bc4b7255a05153513b99e5c7a5504600f5814ca7e4a26e37c468"
+      },
+      {
+        "path": "trainer_state.json",
+        "bytes": 728,
+        "sha256": "7d94381dffebe4ca047d3a9e2ad4f704f47fbefd5e1d1a42f8d7f6ea0186cf07"
+      },
+      {
+        "path": "training_args.bin",
+        "bytes": 4079,
+        "sha256": "1b83058884047283546b5a78935d396e0c0b755b091d032a3dea3242bb85a9ca"
+      },
+      {
+        "path": "vocab.txt",
+        "bytes": 760795,
+        "sha256": "57f15013d81a48c99ee349f0c55e617123d2ea4f2e6fc99e9380a4bc8b830e37"
+      }
+    ]
+  },
+  "h3": {
+    "artifact_id": 11071023356,
+    "artifact_digest": "sha256:839ff6dfbaeec6b6a9e70a9142c4f6ff546bc03d64e366ac1e32a9c2c5824184",
+    "camel_tools_git_sha": "be79ca9fc493f0df795375a7255bafef246a802d",
+    "morphology_db": "calima-msa-r13",
+    "smoke_test": {
+      "status": "PASS",
+      "synthetic_only": true,
+      "analysis_counts": {
+        "والكتاب": 36,
+        "بالمدرسة": 4,
+        "كتاب": 18
+      }
+    },
+    "environment": {
+      "python": "3.11",
+      "pip_freeze_sha256": "c9e679752c819dd2174c93b7b7df984a7ca1b9ef2699a0740c86b1b71f0e8871",
+      "pip_freeze_hash_recomputed_match": true
+    },
+    "data_files": [
+      {
+        "path": "catalogue.json",
+        "bytes": 47966,
+        "sha256": "bde5abed1f15cdf52ad804affdea53bc06d1bfdb4d8e77d3d6a8159b2a2ef6d1"
+      },
+      {
+        "path": "data/morphology_db/calima-msa-r13/LICENSE",
+        "bytes": 16919,
+        "sha256": "7a71f85f07e46759dcc1c16dba64352d9932447759cf71ca3deae3729d85d23e"
+      },
+      {
+        "path": "data/morphology_db/calima-msa-r13/morphology.db",
+        "bytes": 40471399,
+        "sha256": "195bc25a333237a2126470da888d7936b59ed3729f9210e0a4194ba43497dd70"
+      },
+      {
+        "path": "versions.json",
+        "bytes": 40,
+        "sha256": "d5be81f65eeb54fff8e632d952ca350de3c51d361b531889dbfee6c42e1c4625"
+      }
+    ],
+    "licensing_note": "Code and data/model licensing remain tracked separately; morphology DB LICENSE artifact is hashed and must be reviewed for downstream packaging."
+  },
+  "integrity": {
+    "evaluation_data_read": false,
+    "qalb_evaluation_packet_materialized": false,
+    "confirmation_opened": false,
+    "holdout_opened": false,
+    "a7ta_reserved_opened": false,
+    "reserved_nahw_opened": false,
+    "qalb15_test_opened": false
+  },
+  "decision": "DUAL_ENVIRONMENT_PREFLIGHT_REPRODUCIBLE_AND_READY_FOR_SAFE_M2H_DEVELOPMENT_SPLIT_MATERIALIZATION"
+}
