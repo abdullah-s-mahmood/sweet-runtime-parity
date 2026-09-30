@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Require explicit frozen authorization token
         run: |
-          test "\${{ inputs.authorization }}" = "MEASURE_R_JOINT_V1"
+          test "${{ inputs.authorization }}" = "MEASURE_R_JOINT_V1"
           echo "EXPLICIT_MEASUREMENT_AUTHORIZATION_OK"
 
       - uses: actions/checkout@v4
@@ -44,7 +44,7 @@ jobs:
           path: calibration_artifact
           repository: abdullah-s-mahmood/sweet-runtime-parity
           run-id: 36654588477
-          github-token: \${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download frozen P1 C_F proposals
         uses: actions/download-artifact@v4
@@ -53,7 +53,7 @@ jobs:
           path: p1_artifact
           repository: abdullah-s-mahmood/sweet-runtime-parity
           run-id: 36765798233
-          github-token: \${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download frozen P2 C_F proposals
         uses: actions/download-artifact@v4
@@ -62,7 +62,7 @@ jobs:
           path: p2_artifact
           repository: abdullah-s-mahmood/sweet-runtime-parity
           run-id: 36768378938
-          github-token: \${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download frozen official NoPnx M2 gold
         uses: actions/download-artifact@v4
@@ -71,7 +71,7 @@ jobs:
           path: gold_artifact
           repository: abdullah-s-mahmood/sweet-runtime-parity
           run-id: 36720612925
-          github-token: \${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Verify all frozen input hashes before scoring
         run: |
@@ -87,7 +87,7 @@ jobs:
         run: |
           python phase2/redesign/mpsef_rjoint_score_v1.py \
             --upstream-root upstream/text-editing \
-            --authorization "\${{ inputs.authorization }}" \
+            --authorization "${{ inputs.authorization }}" \
             --calibration calibration_artifact/M2H_CALIBRATION_V1.jsonl \
             --full-gold-m2 gold_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2 \
             --source-manifest p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl \
