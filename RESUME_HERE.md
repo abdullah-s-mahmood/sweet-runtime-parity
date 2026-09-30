@@ -1087,3 +1087,65 @@ Start the single H5/H6 iteration:
 3. calibrate on CALIBRATION only;
 4. freeze H5/H6 result;
 5. only after that freeze, open INTERNAL_EVALUATION once.
+
+
+## 25. Critical pre-H5 H1 recall audit — PROVISIONAL BLOCKER
+
+Before freezing H5/H6, the original H1 feasibility gate in `M2H_HYBRID_VERIFIER_PROTOCOL_V1.md` was rechecked.
+
+Frozen H1 target:
+- candidate edit-instance recall >= **80%**
+
+Direct strict-reference audit on CALIBRATION, using current H1 candidate exact-support matching:
+
+- total QALB gold edit instances: **108,266**
+- exact gold edit identities covered by at least one current H1 candidate: **32,502**
+- provisional strict edit-instance recall: **30.0205%**
+
+By QALB operation:
+- Edit: 26,662 / 59,875 = **44.53%**
+- Add_before: 0 / 34,816 = **0.00%**
+- Split: 1,782 / 3,776 = **47.19%**
+- Merge: 3,806 / 6,629 = **57.41%**
+- Delete: 189 / 2,427 = **7.79%**
+- Move: 1 / 132 = **0.76%**
+- Other: 62 / 599 = **10.35%**
+- Add_after: 0 / 12 = **0.00%**
+
+Case-level diagnostic:
+- cases with at least one gold edit: **6,867**
+- at least one gold edit covered: **6,478 / 6,867 = 94.34%**
+- all gold edits covered: **53 / 6,867 = 0.77%**
+
+### IMPORTANT: this is not yet a final H1 scientific failure
+
+The zero coverage for all 34,816 `Add_before` edits is suspicious.
+
+Possible causes that must be falsified before interpreting the 30.02% value:
+1. source-span convention mismatch for insertion edits between QALB reconstructed gold and H1/difflib candidate transactions;
+2. candidate extraction alignment semantics may fail to map H1 insertions to zero-width QALB spans;
+3. current H1 runner uses Hugging Face `BertForTokenClassification` and direct tokenization rather than the official repository's custom `gec.model.BertForTokenClassification` + official preprocessing pipeline;
+4. one-pass candidate transaction alignment may undercount exact gold even when the rewritten sentence contains the correct insertion.
+
+Therefore:
+
+**H5/H6 is temporarily BLOCKED pending H1 feasibility audit.**
+
+Do NOT:
+- declare H1 failed solely from the provisional 30.02% figure;
+- open INTERNAL_EVALUATION;
+- change H5 architecture;
+- tune H1 model;
+- change the frozen 80% gate.
+
+### Exact next authorized step
+
+Audit H1 reproducibility and gold-span matching on CALIBRATION only:
+
+1. inspect H1 candidate operation counts, especially INSERT / Add_before mapping;
+2. inspect a deterministic small sample of current H1 insertion candidates versus QALB Add_before span semantics;
+3. compare the current runner against official `CAMeL-Lab/text-editing` inference/preprocessing code at frozen revision `4d552ca3ae98029550f27fc52aa1b22883e16e61`;
+4. determine whether the provisional recall deficit is a measurement/extraction bug or genuine model coverage;
+5. only after that determination decide whether H5/H6 remains scientifically viable.
+
+INTERNAL_EVALUATION and every reserved dataset remain unopened.
