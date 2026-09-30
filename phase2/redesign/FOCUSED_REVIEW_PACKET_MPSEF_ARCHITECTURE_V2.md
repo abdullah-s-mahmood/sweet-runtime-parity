@@ -100,7 +100,38 @@ Frozen identities:
 - CAMeL MSA BERT disambiguator weight SHA256:
   a1a22431cdc0934151e4039abbd7890f06ba7c1f914ca71a90eba218401ae539
 
-P2 parity is currently being established and is not yet considered valid.
+P2 runtime parity is now frozen PASS.
+
+P2 runtime parity:
+- deterministic source-only CALIBRATION sample n=64
+- morphology-preprocessed text match: 64/64
+- GED labels match: 64/64
+- AraBART subword tokens match: 64/64
+- input IDs match: 64/64
+- GED label IDs match: 64/64
+- generated exact output match: 64/64
+- generated normalized output match: 64/64
+- all-field match: 64/64
+- mismatches: 0
+
+P2 workflow run:
+36751445734
+
+P2 artifact:
+- id: 11114738715
+- digest: sha256:c8d2ea2b378a03b3e6ca5f81b53a0527f0f796d8610a6d615027eedce06cbaf3
+
+Observed P2 model hashes:
+- GED pytorch_model.bin:
+  23385ffe560860a8f5e9e46e05b66a31c33a4b0bd58e9a718933fdab8161f50f
+- GEC pytorch_model.bin:
+  5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f
+
+P2 runner SHA256:
+746274e34cc73f0a6f99994f25d5f7e23dd064f54d1b86a2eddc716da7a15f75
+
+P2 pip-freeze SHA256:
+cbd42c8a3296eb59e933b04f83c70f34d78b98160f09a069fea32fcfc142fe38
 
 ## 4. Candidate representation
 
@@ -180,6 +211,32 @@ Low-confidence valid edits should go to REVIEW rather than lowering the precisio
 - any LLM authorizer
 
 These require separate justification after P1+P2 union behavior is known.
+
+
+## 9A. Fresh independent literature challenge
+
+A fresh methodological literature check performed before candidate-union evaluation found several relevant patterns:
+
+- GEC system combination can outperform the strongest individual component when combination operates at edit/system-output level rather than simple averaging.
+- Diversity among component systems matters; combining architecturally similar systems can limit gains.
+- Two-stage designs in which one model generates edits and another scores/classifies them have empirical precedent.
+- Sequence-to-sequence systems can over-correct because they regenerate the sentence; edit/action-based methods reduce this risk but can lose coverage.
+- System-combination objectives can trade precision and recall depending on the selection criterion.
+
+Relevant methodological works include:
+- Qorib, Na, and Ng (2022), Frustratingly Easy System Combination for Grammatical Error Correction.
+- Han and Ng (2021), Diversity-Driven Combination for Grammatical Error Correction.
+- Sorokin (2022), Improved Grammatical Error Correction by Ranking Elementary Edits.
+- Raina and Gales (2023), Minimum Bayes' Risk Decoding for System Combination of Grammatical Error Correction Systems.
+- Li et al. (2022), Sequence-to-Action: Grammatical Error Correction with Action Guided Sequence Generation.
+
+This evidence supports testing heterogeneous proposal fusion, but does NOT establish that MP-SEF is valid for ACAD_PASS's scientific-preservation objective.
+
+The independent reviewer should therefore specifically test whether:
+1. SWEET iterative tagging and GED-conditioned AraBART are sufficiently diverse in error reach;
+2. seq2seq edits can be decomposed without creating false independence assumptions;
+3. candidate-union recall is the correct primary construct before authorization;
+4. the same CALIBRATION population can be reused later for selector fitting without unacceptable double-dipping.
 
 ## 10. Important anti-bias constraints
 
