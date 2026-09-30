@@ -1,0 +1,210 @@
+name: Phase 2 M2-H H1 Scoring Continuation v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-m2h-h1-scoring-continuation-v1.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  h1-scoring-continuation:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Clone frozen official text-editing implementation
+        run: |
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          cd upstream/text-editing
+          git checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Download completed H1 gold-construction checkpoint
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-h1-official-alignment-audit-v1
+          path: checkpoint_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36716848223
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate checkpoint identity
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          expected = [
+              "M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_SOURCE.txt",
+              "M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_REFERENCE.txt",
+              "M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_H1_SYSTEM.txt",
+          ]
+          root=Path("checkpoint_artifact")
+          for name in expected:
+              p=root/name
+              assert p.exists(), name
+              n=sum(1 for _ in p.open(encoding="utf-8"))
+              assert n==6888, (name,n)
+              print("CHECKPOINT_FILE_OK", name, n, flush=True)
+          print("CHECKPOINT_VALID 6888", flush=True)
+          PY
+          sha256sum checkpoint_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_SOURCE.txt \
+                    checkpoint_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_REFERENCE.txt \
+                    checkpoint_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_H1_SYSTEM.txt \
+                    > M2H_H1_SCORING_CONTINUATION_INPUT_SHA256.txt
+
+      - name: Create frozen M2 gold edits
+        run: |
+          echo "STAGE_START M2_EDIT_CREATOR"
+          python phase2/redesign/m2_edit_creator_package_wrapper.py \
+            upstream/text-editing \
+            --max_unchanged_words 2 \
+            --output M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2 \
+            checkpoint_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_SOURCE.txt \
+            checkpoint_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_REFERENCE.txt
+          echo "STAGE_DONE M2_EDIT_CREATOR"
+          test -s M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2
+
+      - name: Run frozen M2 scorer
+        run: |
+          echo "STAGE_START M2_SCORER"
+          python upstream/text-editing/gec/utils/run_m2scorer.py \
+            --system_output checkpoint_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_H1_SYSTEM.txt \
+            --m2_file M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2
+          echo "STAGE_DONE M2_SCORER"
+          test -s checkpoint_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_H1_SYSTEM.txt.m2
+
+      - name: Summarize final H1 audit metrics
+        run: |
+          python - <<'PY'
+          import json, hashlib
+          from pathlib import Path
+
+          root=Path("checkpoint_artifact")
+          src=(root/"M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_SOURCE.txt").read_text(encoding="utf-8").splitlines()
+          ref=(root/"M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_REFERENCE.txt").read_text(encoding="utf-8").splitlines()
+          sysout=(root/"M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_H1_SYSTEM.txt").read_text(encoding="utf-8").splitlines()
+          assert len(src)==len(ref)==len(sysout)==6888
+
+          vals={}
+          score_path=root/"M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_H1_SYSTEM.txt.m2"
+          for line in score_path.read_text(encoding="utf-8").splitlines():
+              if ":" in line:
+                  k,v=line.split(":",1)
+                  vals[k.strip()]=float(v.strip())
+
+          gold=Path("M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2")
+          gold_edit_lines=sum(
+              1 for line in gold.read_text(encoding="utf-8").splitlines()
+              if line.startswith("A ")
+          )
+          exact=sum(a==b for a,b in zip(sysout,ref))
+          copy=sum(a==b for a,b in zip(sysout,src))
+
+          summary={
+              "record_id":"M2H_H1_OFFICIAL_ALIGNMENT_SCORING_CONTINUATION_V1",
+              "status":"PASS",
+              "scope":"CALIBRATION_ONLY",
+              "checkpoint":{
+                  "source_run_id":36716848223,
+                  "source_artifact_id":11098030966,
+                  "source_artifact_digest":"sha256:ad476c7dfb8e194320a1a5d4b0a05ea016be5e4b012403854290fc86ca455fb1",
+                  "cases":6888,
+                  "gold_construction_failures":0,
+                  "charalign_cross_mismatches":0,
+                  "cross_path_mismatches":0,
+              },
+              "official_alignment_m2":{
+                  "precision":vals.get("Precision"),
+                  "recall":vals.get("Recall"),
+                  "f1":vals.get("F_1.0"),
+                  "f0_5":vals.get("F_0.5"),
+                  "frozen_h1_recall_gate":0.80,
+                  "recall_gate_passed":(
+                      vals.get("Recall") is not None and vals["Recall"]>=0.80
+                  ),
+              },
+              "secondary":{
+                  "derived_gold_m2_edit_lines":gold_edit_lines,
+                  "exact_nopnx_reference_sentences":exact,
+                  "exact_nopnx_reference_sentence_rate":exact/6888,
+                  "source_copy_sentences":copy,
+                  "source_copy_rate":copy/6888,
+              },
+              "integrity":{
+                  "internal_evaluation_opened":False,
+                  "stress_diagnostic_opened":False,
+              },
+          }
+          Path("M2H_H1_OFFICIAL_ALIGNMENT_SCORING_CONTINUATION_V1_SUMMARY.json").write_text(
+              json.dumps(summary,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          final={
+              "status":"COMPLETED",
+              "stage":"M2_SCORER_DONE",
+              "summary_file":"M2H_H1_OFFICIAL_ALIGNMENT_SCORING_CONTINUATION_V1_SUMMARY.json",
+              "recall_gate_passed":summary["official_alignment_m2"]["recall_gate_passed"],
+              "metrics":summary["official_alignment_m2"],
+          }
+          Path("M2H_H1_SCORING_CONTINUATION_FINAL_STATUS.json").write_text(
+              json.dumps(final,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          print(json.dumps(summary,ensure_ascii=False,indent=2),flush=True)
+          print("RUN_COMPLETE H1_SCORING_CONTINUATION",flush=True)
+          PY
+
+      - name: Validate final status
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("M2H_H1_OFFICIAL_ALIGNMENT_SCORING_CONTINUATION_V1_SUMMARY.json",encoding="utf-8"))
+          f=json.load(open("M2H_H1_SCORING_CONTINUATION_FINAL_STATUS.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["scope"]=="CALIBRATION_ONLY"
+          assert s["checkpoint"]["cases"]==6888
+          assert f["status"]=="COMPLETED"
+          assert f["stage"]=="M2_SCORER_DONE"
+          assert s["integrity"]["internal_evaluation_opened"] is False
+          assert s["integrity"]["stress_diagnostic_opened"] is False
+          print("FINAL_STATUS_OK",flush=True)
+          PY
+
+      - name: Write failure final status if needed
+        if: failure()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("M2H_H1_SCORING_CONTINUATION_FINAL_STATUS.json")
+          if not p.exists():
+              p.write_text(json.dumps({
+                  "status":"FAILED",
+                  "stage":"SEE_WORKFLOW_LOG",
+                  "source_run_id":36716848223,
+              },indent=2)+"\n",encoding="utf-8")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: m2h-h1-official-alignment-scoring-continuation-v1
+          path: |
+            M2H_H1_OFFICIAL_ALIGNMENT_SCORING_CONTINUATION_V1_SUMMARY.json
+            M2H_H1_SCORING_CONTINUATION_FINAL_STATUS.json
+            M2H_H1_SCORING_CONTINUATION_INPUT_SHA256.txt
+            M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2
+            checkpoint_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_H1_SYSTEM.txt.m2
+          if-no-files-found: warn
+          retention-days: 90
