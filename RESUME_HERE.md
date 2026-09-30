@@ -18,7 +18,7 @@ This file is the canonical live handoff. Update it after every meaningful checkp
 
 Use **checkpoint execution**.
 
-A single user "اكمل" may perform up to **20 tool operations**, but they must be **strictly sequential**. Do not run tools in parallel. If a workflow is still running, inspect once and stop. If a step fails, identify the exact cause before changing architecture.
+A single user "اكمل" may perform up to **20 tool operations**, but they must be **strictly sequential**. Do not run tools in parallel. For a long-running workflow: check up to five times at ~20-second intervals; if still running, switch to ~1-minute checks. Do not stop merely because it is still running; stop only when it completes or when evidence shows it is genuinely stalled/problematic. Keep all checks strictly sequential. If a step fails, identify the exact cause before changing architecture.
 
 Arabic responses should be RTL-friendly. Keep English technical terms isolated in backticks such as `CALIBRATION`, `H3`, `ARETA`.
 
@@ -2126,3 +2126,72 @@ anchored to the same C_F population.
 
 No selector training. No INTERNAL_EVALUATION or STRESS_DIAGNOSTIC opening.
 No reserved-set use.
+
+
+## CHECKPOINT 2026-09-30 — MP-SEF P1/P2 C_F FROZEN; INDEPENDENT PREMEASUREMENT REVIEW READY
+
+P1 C_F:
+- run: `36765798233`
+- artifact: `11123050529`
+- conclusion: SUCCESS
+- cases: 1,918 / 1,918
+- clusters: 764
+- batch/single parity: 64/64
+- changed-vs-source activity: 1,838 / 1,918 = 95.83%
+- protected-touch: 19 / 1,918 = 0.99%
+- empty outputs: 0
+- proposal SHA256:
+  `2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d`
+- lock:
+  `phase2/redesign/MPSEF_P1_CF_PROPOSAL_LOCK_V1.md`
+
+P2 C_F:
+- run: `36768378938`
+- artifact: `11124303107`
+- conclusion: SUCCESS
+- cases: 1,918 / 1,918
+- clusters: 764
+- batch/single all-field parity: 32/32
+- changed-vs-source activity: 1,906 / 1,918 = 99.37%
+- protected-touch: 21 / 1,918 = 1.10%
+- empty outputs: 0
+- proposal SHA256:
+  `f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b`
+- lock:
+  `phase2/redesign/MPSEF_P2_CF_PROPOSAL_LOCK_V1.md`
+
+Shared exact C_F source manifest:
+`051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193`
+
+P2 runtime observation:
+- heavy proposal step ran approximately 35 minutes;
+- emitted progress through 1,918/1,918;
+- ChatGPT GitHub connector could not read active-step logs and returned `BlobNotFound`;
+- this was an observability limitation, not a stalled process.
+
+Independent review package:
+`phase2/redesign/MPSEF_PREMEASUREMENT_INDEPENDENT_REVIEW_PACKAGE_V1.md`
+commit:
+`c18902bfb9b2a7c0c5c9ac32ce1ac2e6bf8399fb`
+
+Higher-model review prompt:
+`phase2/redesign/MPSEF_HIGHER_MODEL_REVIEW_PROMPT_V1.md`
+updated after P2 freeze.
+
+Current classification versus prior checkpoint:
+**IMPROVED IMPLEMENTATION COMPLETENESS / QUALITY PERFORMANCE STILL UNMEASURED**
+
+Important:
+- `R_joint` has NOT been computed.
+- selector has NOT been trained.
+- reserved/internal sets remain closed.
+- source-change percentages are activity only, not quality.
+
+Exact next authorized sequence:
+1. obtain independent higher-model premeasurement review;
+2. resolve any BLOCKER/MAJOR findings before measurement;
+3. implement gold-blind executable-action legalizer + R_joint scorer;
+4. freeze legalizer/scorer/workflow hashes;
+5. run second premeasurement preflight;
+6. make explicit measurement authorization decision;
+7. only then compute R_joint once.
