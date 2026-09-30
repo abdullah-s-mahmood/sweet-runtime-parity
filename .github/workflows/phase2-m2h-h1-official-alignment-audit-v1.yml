@@ -1,0 +1,143 @@
+name: Phase 2 M2-H H1 Official-Alignment Recall Audit v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-m2h-h1-official-alignment-audit-v1.yml"
+      - "phase2/redesign/M2H_H1_OFFICIAL_ALIGNMENT_RECALL_AUDIT_V1.md"
+      - "phase2/redesign/m2h_h1_official_alignment_audit.py"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  h1-official-alignment-audit:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install frozen H1 stack plus audit-only utilities
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.12.1+cpu"
+          python -m pip install "transformers==4.30.0" "huggingface_hub==0.16.4" "sentencepiece==0.1.99"
+          python -m pip install "datasets==2.14.7" "pyarrow<15" "editdistance==0.8.1"
+
+      - name: Clone frozen official text-editing implementation
+        run: |
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          cd upstream/text-editing
+          git checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Download exact frozen H1 model revision
+        run: |
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          rev="21286e56ce98a86362db540863f91c083b8970f9"
+          snapshot_download(
+              repo_id="CAMeL-Lab/text-editing-qalb14-nopnx",
+              revision=rev,
+              local_dir="h1_model",
+              local_dir_use_symlinks=False,
+          )
+          print("H1_MODEL_READY",rev)
+          PY
+
+      - name: Download frozen CALIBRATION
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-calibration-v1
+          path: calibration_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36654588477
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen H1 inference artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-h1-calibration-candidates-v1
+          path: h1_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36691616010
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate frozen input identities
+        run: |
+          python - <<'PY'
+          import json
+          c=json.load(open("calibration_artifact/M2H_CALIBRATION_SUMMARY_V1.json",encoding="utf-8"))
+          h=json.load(open("h1_artifact/M2H_H1_CALIBRATION_CANDIDATE_SUMMARY_V1.json",encoding="utf-8"))
+          assert c["cases"]==6888
+          assert h["cases"]==6888
+          assert h["model_revision"]=="21286e56ce98a86362db540863f91c083b8970f9"
+          assert h["implementation_revision"]=="4d552ca3ae98029550f27fc52aa1b22883e16e61"
+          assert h["candidate_generation"]["decode_passes"]==1
+          assert h["candidate_generation"]["top_k"]==1
+          assert h["integrity"]["internal_evaluation_opened"] is False
+          assert c["integrity"]["internal_evaluation_text_materialized"] is False
+          print("H1_AUDIT_FROZEN_INPUTS_OK")
+          PY
+
+      - name: Run official-alignment recall audit
+        run: |
+          python phase2/redesign/m2h_h1_official_alignment_audit.py \
+            --calibration calibration_artifact/M2H_CALIBRATION_V1.jsonl \
+            --h1-inference h1_artifact/M2H_H1_CALIBRATION_INFERENCE_V1.jsonl \
+            --model-dir h1_model \
+            --upstream-root upstream/text-editing \
+            --out-prefix M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1
+
+      - name: Validate audit result
+        if: success()
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["scope"]=="CALIBRATION_ONLY"
+          assert s["cases"]==6888
+          assert s["public_model_card_parity"]["sample_n"]==256
+          assert s["public_model_card_parity"]["passed"] is True
+          assert s["official_nopnx_gold"]["construction_failures"]==0
+          assert s["integrity"]["internal_evaluation_opened"] is False
+          assert s["integrity"]["stress_diagnostic_opened"] is False
+          print(json.dumps(s,ensure_ascii=False,indent=2))
+          print("H1_OFFICIAL_ALIGNMENT_AUDIT_OK")
+          PY
+
+      - name: Record runtime
+        if: always()
+        run: |
+          python -m pip freeze > M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_PIP_FREEZE.txt
+          sha256sum M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_PIP_FREEZE.txt > M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_PIP_FREEZE.sha256
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: m2h-h1-official-alignment-audit-v1
+          path: |
+            M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_SUMMARY.json
+            M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_FAILURES.jsonl
+            M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_PARITY_MISMATCHES.jsonl
+            M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_SOURCE.txt
+            M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_REFERENCE.txt
+            M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_H1_SYSTEM.txt
+            M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2
+            M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_H1_SYSTEM.txt.m2
+            M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_PIP_FREEZE.txt
+            M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_PIP_FREEZE.sha256
+          if-no-files-found: warn
+          retention-days: 90
