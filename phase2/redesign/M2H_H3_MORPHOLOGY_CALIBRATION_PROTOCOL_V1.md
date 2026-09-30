@@ -90,7 +90,7 @@ Retain only analyses whose:
 - `lex` is non-empty;
 - `pos` is non-empty.
 
-Both sides must retain at least one analysis.
+Both source surface and H1 candidate replacement must each contain exactly one whitespace-delimited token. Multi-token surfaces are `REVIEW_OUTSIDE_INFLECTION` and are not passed to the word-level analyzer.\n\nBoth sides must retain at least one analysis.
 
 ## 7. Stable lexical identity
 
