@@ -1,0 +1,121 @@
+name: Phase 2 M2-H H1 CALIBRATION Candidate Generation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-m2h-h1-calibration-candidates.yml"
+      - "phase2/redesign/M2H_H1_CANDIDATE_CONTRACT_V1.md"
+      - "phase2/redesign/m2h_h1_generate_candidates.py"
+      - "phase2/redesign/m2h_materialize_calibration.py"
+
+permissions:
+  contents: read
+
+jobs:
+  h1-calibration-candidates:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 240
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install frozen H1 reproduction stack
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.12.1+cpu"
+          python -m pip install "transformers==4.30.0" "huggingface_hub==0.16.4" "sentencepiece==0.1.99"
+
+      - name: Clone frozen official text-editing implementation
+        run: |
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          cd upstream/text-editing
+          git checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Download exact frozen H1 model revision
+        run: |
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          rev="21286e56ce98a86362db540863f91c083b8970f9"
+          snapshot_download(
+              repo_id="CAMeL-Lab/text-editing-qalb14-nopnx",
+              revision=rev,
+              local_dir="h1_model",
+              local_dir_use_symlinks=False,
+          )
+          print("H1_MODEL_SNAPSHOT_READY",rev)
+          PY
+
+      - name: Materialize CALIBRATION only
+        run: |
+          python phase2/redesign/m2h_materialize_calibration.py
+          python - <<'PY'
+          import json
+          s=json.load(open("M2H_CALIBRATION_SUMMARY_V1.json",encoding="utf-8"))
+          assert s["cases"]==6888
+          assert s["calibration_uid_sha256"]=="3b6c1128f412531223b3c2e5346082d3290f40daac706eb13bbafa1db10a09c9"
+          assert s["integrity"]["internal_evaluation_text_materialized"] is False
+          assert s["integrity"]["stress_diagnostic_text_materialized"] is False
+          print("CALIBRATION_SCOPE_OK")
+          PY
+
+      - name: Generate one-pass top-1 H1 candidate artifact
+        run: |
+          python phase2/redesign/m2h_h1_generate_candidates.py \
+            --calibration M2H_CALIBRATION_V1.jsonl \
+            --model-dir h1_model \
+            --upstream-root upstream/text-editing \
+            --model-revision 21286e56ce98a86362db540863f91c083b8970f9 \
+            --impl-revision 4d552ca3ae98029550f27fc52aa1b22883e16e61 \
+            --batch-size 16
+
+      - name: Validate H1 artifact contract
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          s=json.load(open("M2H_H1_CALIBRATION_CANDIDATE_SUMMARY_V1.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["scope"]=="CALIBRATION_ONLY"
+          assert s["cases"]==6888
+          assert s["model_revision"]=="21286e56ce98a86362db540863f91c083b8970f9"
+          assert s["implementation_revision"]=="4d552ca3ae98029550f27fc52aa1b22883e16e61"
+          assert s["candidate_generation"]["decode_passes"]==1
+          assert s["candidate_generation"]["top_k"]==1
+          assert s["candidate_generation"]["confidence_used_as_safety_evidence"] is False
+          i=s["integrity"]
+          assert i["internal_evaluation_opened"] is False
+          assert i["stress_diagnostic_opened"] is False
+          for fn in [
+              "M2H_H1_CALIBRATION_INFERENCE_V1.jsonl",
+              "M2H_H1_CALIBRATION_CANDIDATES_V1.jsonl",
+              "M2H_H1_CALIBRATION_CANDIDATE_SUMMARY_V1.json",
+          ]:
+              h=hashlib.sha256(open(fn,"rb").read()).hexdigest()
+              print(fn,h)
+          print("H1_CANDIDATE_CONTRACT_OK")
+          PY
+
+      - name: Record frozen runtime
+        run: |
+          python -m pip freeze > M2H_H1_CALIBRATION_PIP_FREEZE.txt
+          sha256sum M2H_H1_CALIBRATION_PIP_FREEZE.txt > M2H_H1_CALIBRATION_PIP_FREEZE.sha256
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2h-h1-calibration-candidates-v1
+          path: |
+            M2H_H1_CALIBRATION_INFERENCE_V1.jsonl
+            M2H_H1_CALIBRATION_CANDIDATES_V1.jsonl
+            M2H_H1_CALIBRATION_CANDIDATE_SUMMARY_V1.json
+            M2H_H1_CALIBRATION_PIP_FREEZE.txt
+            M2H_H1_CALIBRATION_PIP_FREEZE.sha256
+          retention-days: 90
