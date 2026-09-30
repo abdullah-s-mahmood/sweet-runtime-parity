@@ -20,7 +20,7 @@ def norm(s):
     return " ".join((s or "").strip().split())
 
 def uid_digest(uids):
-    return hashlib.sha256(("\\n".join(uids) + "\\n").encode("utf-8")).hexdigest()
+    return hashlib.sha256(("\n".join(uids) + "\n").encode("utf-8")).hexdigest()
 
 def sha_rank(uid):
     return hashlib.sha256((PARITY_SALT + "|" + uid).encode("utf-8")).hexdigest()
@@ -32,11 +32,11 @@ UNICODE_PUNCT_SYMBOL = frozenset(
 PNX_SET = frozenset(string.punctuation) | UNICODE_PUNCT_SYMBOL | frozenset("&amp;")
 
 def grouped_ops(edit):
-    return re.findall(r'I_\\[.*?\\]+|R_\\[.*?\\]+|A_\\[.*?\\]+|D+|K+|.', edit)
+    return re.findall(r'I_\[.*?\]+|R_\[.*?\]+|A_\[.*?\]+|D+|K+|.', edit)
 
 def reconstruct_edit(pnx_edit, no_pnx_edit):
     def parse_edits(s):
-        return re.findall(r'I_\\[.*?\\]+|R_\\[.*?\\]+|A_\\[.*?\\]+|D|K|.', s)
+        return re.findall(r'I_\[.*?\]+|R_\[.*?\]+|A_\[.*?\]+|D|K|.', s)
     def is_insert_or_append(e):
         return e.startswith("I") or e.startswith("A")
     def is_replace(e):
@@ -72,7 +72,7 @@ def separate_pnx_edit(edit):
     for g in ops:
         if g.startswith("A_[") or g.startswith("I_[") or g.startswith("R_["):
             op = g[0]
-            seq = re.sub(op + r'_\\[(.*?)\\]', r'\\1', g)
+            seq = re.sub(op + r'_\[(.*?)\]', r'\1', g)
             seq = re.sub(" +", "", seq)
             is_pnx = bool(seq) and all(ch in PNX_SET for ch in seq)
             if is_pnx:
@@ -97,12 +97,12 @@ def separate_pnx_edit(edit):
     return {"no_pnx_edit": no_pnx_edit, "pnx_edit": pnx_final}
 
 def compress_appends(subword_edit):
-    edits = re.findall(r'I_\\[.*?\\]+|A_\\[.*?\\]+|R_\\[.*?\\]+|K\\*|.', subword_edit)
+    edits = re.findall(r'I_\[.*?\]+|A_\[.*?\]+|R_\[.*?\]+|K\*|.', subword_edit)
     compressed = []
     buf = []
     for edit in edits:
         if edit.startswith("A_"):
-            buf.append(re.sub(r'A_\\[(.*?)\\]', r'\\1', edit))
+            buf.append(re.sub(r'A_\[(.*?)\]', r'\1', edit))
         else:
             if buf:
                 compressed.append(f"A_[{' '.join(buf)}]")
@@ -118,7 +118,7 @@ def insert_to_append(edits, SubwordEdit):
     subwords = [e.subword for e in edits]
     raw_subwords = [e.raw_subword for e in edits]
     for edit in edits:
-        edit_parts = re.findall(r'I_\\[.*?\\]+|R_\\[.*?\\]+|K\\*|.', edit.edit)
+        edit_parts = re.findall(r'I_\[.*?\]+|R_\[.*?\]+|K\*|.', edit.edit)
         all_inserts = all(e.startswith("I_[") for e in edit_parts)
         if all_inserts:
             if edit.subword != "":
@@ -140,7 +140,7 @@ def insert_to_append(edits, SubwordEdit):
         return []
     if not (len(processed_edits) == len(subwords) == len(raw_subwords)):
         raise RuntimeError("insert_to_append length mismatch")
-    if processed_edits[0].startswith("A") and re.sub(r'A_\\[.*?\\]', '', processed_edits[0]) == "K":
+    if processed_edits[0].startswith("A") and re.sub(r'A_\[.*?\]', '', processed_edits[0]) == "K":
         processed_edits[0] = processed_edits[0].replace(
             "K", "K" * len(subwords[0].replace("##", ""))
         )
@@ -152,7 +152,7 @@ def apply_edits(tokenized_text, edits):
     rewritten = []
     for subword, edit in zip(tokenized_text, edits):
         rewritten_subword = edit.apply(subword)
-        edit_ops = re.findall(r'I_\\[.*?\\]+|R_\\[.*?\\]+|A_\\[.*?\\]+|D+|K+|.', edit.edit)
+        edit_ops = re.findall(r'I_\[.*?\]+|R_\[.*?\]+|A_\[.*?\]+|D+|K+|.', edit.edit)
         if "M" in edit_ops:
             if not rewritten:
                 raise RuntimeError("Merge at start")
@@ -323,10 +323,10 @@ def main():
             },
         }
         Path(args.out_prefix + "_SUMMARY.json").write_text(
-            json.dumps(summary, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+            json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
         Path(args.out_prefix + "_FAILURES.jsonl").write_text(
-            "\\n".join(json.dumps(x, ensure_ascii=False) for x in failures) + "\\n", encoding="utf-8"
+            "\n".join(json.dumps(x, ensure_ascii=False) for x in failures) + "\n", encoding="utf-8"
         )
         print(json.dumps(summary, ensure_ascii=False, indent=2))
         raise SystemExit(2)
@@ -334,9 +334,9 @@ def main():
     source_file = Path(args.out_prefix + "_SOURCE.txt")
     gold_target_file = Path(args.out_prefix + "_NOPNX_REFERENCE.txt")
     system_file = Path(args.out_prefix + "_H1_SYSTEM.txt")
-    source_file.write_text("\\n".join(norm(r["source"]) for r in rows) + "\\n", encoding="utf-8")
-    gold_target_file.write_text("\\n".join(nopnx_refs) + "\\n", encoding="utf-8")
-    system_file.write_text("\\n".join(norm(x["h1_rewrite"]) for x in inf) + "\\n", encoding="utf-8")
+    source_file.write_text("\n".join(norm(r["source"]) for r in rows) + "\n", encoding="utf-8")
+    gold_target_file.write_text("\n".join(nopnx_refs) + "\n", encoding="utf-8")
+    system_file.write_text("\n".join(norm(x["h1_rewrite"]) for x in inf) + "\n", encoding="utf-8")
 
     m2dir = upstream / "gec" / "utils" / "m2scorer"
     gold_m2 = Path.cwd() / (args.out_prefix + "_NOPNX_GOLD.m2")
@@ -416,10 +416,10 @@ def main():
     }
 
     Path(args.out_prefix + "_SUMMARY.json").write_text(
-        json.dumps(summary, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+        json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     Path(args.out_prefix + "_PARITY_MISMATCHES.jsonl").write_text(
-        "\\n".join(json.dumps(x, ensure_ascii=False) for x in mismatches) + ("\\n" if mismatches else ""),
+        "\n".join(json.dumps(x, ensure_ascii=False) for x in mismatches) + ("\n" if mismatches else ""),
         encoding="utf-8"
     )
     print(json.dumps(summary, ensure_ascii=False, indent=2))
