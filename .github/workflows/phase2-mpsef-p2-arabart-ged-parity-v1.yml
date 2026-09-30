@@ -80,23 +80,26 @@ jobs:
       - name: Download frozen P2 GED and GEC model revisions
         run: |
           python - <<'PY'
+          import shutil
+          from pathlib import Path
           from huggingface_hub import snapshot_download
 
           ged_rev="447179dc63d186e4bff09a993e90e73ad622d571"
           gec_rev="410588a318d988cdcfdbf64cf5745ed4adea0f6a"
 
-          snapshot_download(
+          ged_src=Path(snapshot_download(
               repo_id="CAMeL-Lab/camelbert-msa-qalb14-ged-13",
               revision=ged_rev,
-              local_dir="p2_ged_model",
-              local_dir_use_symlinks=False,
-          )
-          snapshot_download(
+              cache_dir="hf_cache",
+          ))
+          gec_src=Path(snapshot_download(
               repo_id="CAMeL-Lab/arabart-qalb14-gec-ged-13",
               revision=gec_rev,
-              local_dir="p2_gec_model",
-              local_dir_use_symlinks=False,
-          )
+              cache_dir="hf_cache",
+          ))
+
+          shutil.copytree(ged_src,"p2_ged_model",symlinks=False)
+          shutil.copytree(gec_src,"p2_gec_model",symlinks=False)
           print("P2_MODELS_READY",ged_rev,gec_rev,flush=True)
           PY
 
