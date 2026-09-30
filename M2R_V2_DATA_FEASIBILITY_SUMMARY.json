@@ -1,0 +1,67 @@
+{
+  "status": "M2R_V2_DATA_READY",
+  "date": "2026-09-30",
+  "revision": "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf",
+  "counts": {
+    "train_source_lines": 19411,
+    "train_corrected_lines": 19411,
+    "train_m2_blocks": 19411,
+    "reconstructable_lines": 19935,
+    "detectable_edit_instances": 196389,
+    "strict_single_token_edit_instances": 161875,
+    "lines_with_detectable_edits": 19476,
+    "lines_with_strict_edit": 18929,
+    "all_but_one_strict_pool": 18870,
+    "reconstruction_fail": 493,
+    "dev_source_lines": 1017,
+    "dev_corrected_lines": 1017,
+    "dev_m2_blocks": 1017
+  },
+  "m2_type_top20": [
+    [
+      "Edit",
+      173553
+    ],
+    [
+      "Add_before",
+      100775
+    ],
+    [
+      "Merge",
+      18866
+    ],
+    [
+      "Split",
+      10936
+    ],
+    [
+      "Delete",
+      6829
+    ],
+    [
+      "Other",
+      1595
+    ],
+    [
+      "Move",
+      409
+    ],
+    [
+      "Add_after",
+      22
+    ]
+  ],
+  "criteria": {
+    "line_counts_match": true,
+    "reconstructable_lines_ge_15000": true,
+    "detectable_edits_ge_10000": true,
+    "lines_with_detectable_ge_5000": true,
+    "strict_edit_instances_ge_1000": true,
+    "all_but_one_strict_pool_ge_500": true,
+    "no_test_or_qalb15_read": true
+  },
+  "data_ready": true,
+  "raw_text_persisted": false,
+  "qalb14_test_read": false,
+  "qalb15_read": false
+}
