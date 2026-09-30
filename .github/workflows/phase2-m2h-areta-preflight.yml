@@ -1,0 +1,197 @@
+name: Phase 2 M2-H ARETA Diagnostic Preflight
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-m2h-areta-preflight.yml"
+      - "phase2/redesign/M2H_ARETA_PREFLIGHT_SPEC_V1.md"
+
+permissions:
+  contents: read
+
+jobs:
+  areta-preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout ACAD_PASS branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Clone frozen CAMeL-Lab arabic-gec revision
+        run: |
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          cd upstream/arabic-gec
+          git checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+
+      - name: Install frozen diagnostic runtime
+        run: |
+          python -m pip install --upgrade "pip<24"
+          python -m pip install "camel-tools==1.2.0"
+          python -m pip install             "docopt==0.6.2"             "editdistance==0.5.3"
+          python -m pip install -r upstream/arabic-gec/areta/requirements.txt
+
+      - name: Record environment
+        run: |
+          python --version > areta_python_version.txt
+          python -m pip freeze > areta_pip_freeze.txt
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+
+          p = Path("areta_pip_freeze.txt")
+          print(
+              hashlib.sha256(p.read_bytes()).hexdigest(),
+              file=open("areta_pip_freeze.sha256", "w")
+          )
+          PY
+
+      - name: Run official aligner on synthetic Arabic
+        working-directory: upstream/arabic-gec/areta/aligner
+        run: |
+          cat > m2h_synthetic.raw <<'EOF'
+          هذا اختبار بسيط
+          اكثر الطلاب حضروا
+          EOF
+
+          cat > m2h_synthetic.correct <<'EOF'
+          هذا اختبار بسيط
+          أكثر الطلاب حضروا
+          EOF
+
+          python align_text.py             --raw m2h_synthetic.raw             --correct m2h_synthetic.correct             --mode align             --out m2h_synthetic
+
+          test -s m2h_synthetic.coAlign
+
+      - name: Validate coAlign contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path("upstream/arabic-gec/areta/aligner/m2h_synthetic.coAlign")
+          lines = p.read_text(encoding="utf-8").splitlines()
+
+          if not lines:
+              raise SystemExit("empty coAlign output")
+
+          if "	" not in lines[0] and "\\" not in lines[0]:
+              raise SystemExit("missing header-like first line")
+
+          data_rows = [x for x in lines[1:] if x.strip()]
+          if not data_rows:
+              raise SystemExit("no aligned data rows")
+
+          for row in data_rows:
+              if "	" not in row:
+                  raise SystemExit("non-tab alignment row")
+
+          print("COALIGN_CONTRACT_OK")
+          PY
+
+      - name: Run enhanced ARETA on synthetic alignment
+        working-directory: upstream/arabic-gec/areta
+        run: |
+          python annotate_err_type_ar.py             --alignment aligner/m2h_synthetic.coAlign             --output_path m2h_synthetic.areta.txt             --enriched_output_path m2h_synthetic.areta.enriched.tsv
+
+          test -s m2h_synthetic.areta.txt
+          test -s m2h_synthetic.areta.enriched.tsv
+
+      - name: Validate diagnostic output
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          raw = Path(
+              "upstream/arabic-gec/areta/m2h_synthetic.areta.txt"
+          ).read_text(encoding="utf-8", errors="replace")
+
+          enriched = Path(
+              "upstream/arabic-gec/areta/m2h_synthetic.areta.enriched.tsv"
+          ).read_text(encoding="utf-8", errors="replace")
+
+          if not raw.strip():
+              raise SystemExit("empty ARETA output")
+
+          labels = []
+          for line in raw.splitlines():
+              if not line.strip():
+                  continue
+              parts = line.split("	")
+              if len(parts) >= 3:
+                  labels.append(parts[2].strip())
+
+          if not labels:
+              raise SystemExit("no ARETA labels")
+
+          non_unk = [x for x in labels if x and x != "UNK"]
+          if not non_unk:
+              raise SystemExit("no non-UNK diagnostic label")
+
+          print("ARETA_SYNTHETIC_DIAGNOSTIC_OK")
+          print("labels:", labels)
+          print("enriched_bytes:", len(enriched.encode("utf-8")))
+          PY
+
+      - name: Build safe preflight result
+        if: success()
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          freeze = Path("areta_pip_freeze.txt").read_text()
+          result = {
+              "record_id": "M2H_ARETA_DIAGNOSTIC_PREFLIGHT_V1",
+              "status": "PASS",
+              "scientific_evaluation": False,
+              "data_scope": "synthetic_only",
+              "python": sys.version.split()[0],
+              "arabic_gec_revision":
+                  "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf",
+              "camel_tools_requested_version": "1.2.0",
+              "pip_freeze_sha256":
+                  hashlib.sha256(freeze.encode()).hexdigest(),
+              "integrity": {
+                  "calibration_opened": False,
+                  "internal_evaluation_opened": False,
+                  "stress_diagnostic_opened": False,
+                  "confirmation_opened": False,
+                  "holdout_opened": False,
+                  "a7ta_reserved_opened": False,
+                  "reserved_nahw_opened": False,
+                  "qalb15_test_opened": False
+              }
+          }
+
+          Path("M2H_ARETA_PREFLIGHT_RESULT_V1.json").write_text(
+              json.dumps(result, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8"
+          )
+          print(json.dumps(result, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload safe preflight artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m2h-areta-diagnostic-preflight-v1
+          path: |
+            M2H_ARETA_PREFLIGHT_RESULT_V1.json
+            areta_python_version.txt
+            areta_pip_freeze.txt
+            areta_pip_freeze.sha256
+          retention-days: 90
