@@ -1,0 +1,50 @@
+{
+  "record_id": "M2R_ARABIGEE_P0_DIAGNOSTIC_RESULT",
+  "date": "2026-09-30",
+  "status": "BENCHMARK_INVALID_FOR_FULL_GATE",
+  "prediction_commitment_sha256": "df60a25db277078396e9a6be947aebcb6adfd0581e4ce34aa241bc4e07df8479",
+  "n_total": 120,
+  "families": {
+    "NATURAL_ERROR_CONTEXT": 60,
+    "EXPERT_REINSERTED_RESIDUAL": 30,
+    "CLEAN_TARGET_CONTEXT": 30
+  },
+  "directly_interpretable_metrics": {
+    "context_residual_recall": 0.5111111111111111,
+    "gold_error_localization_recall": 0.34705882352941175,
+    "controlled_single_residual_recall": 0.6,
+    "invalid_surface_rate": 0,
+    "dimension_recall": {
+      "ORTHOGRAPHY": {
+        "n": 106,
+        "hit": 47,
+        "recall": 0.44339622641509435
+      },
+      "MORPHOLOGY": {
+        "n": 43,
+        "hit": 22,
+        "recall": 0.5116279069767442
+      },
+      "SYNTAX": {
+        "n": 25,
+        "hit": 5,
+        "recall": 0.2
+      },
+      "LEXICAL": {
+        "n": 23,
+        "hit": 2,
+        "recall": 0.08695652173913043
+      }
+    }
+  },
+  "noninterpretable_full_sentence_metrics": {
+    "observed_clean_fp_rate": 0.6,
+    "observed_claim_precision": 0.14025974025974025,
+    "reason": "ArabiGEE annotations are selective explanation annotations; target contexts are not proven exhaustive sentence-level gold."
+  },
+  "clean_control_counterexamples_verified": 4,
+  "p1_run": false,
+  "confirmation_opened": false,
+  "holdout_opened": false,
+  "decision": "Redesign M2-R v2 around QALB14 TRAIN/DEV complete human corrections and M2 edit scripts. Retain ArabiGEE for taxonomy/explanation support."
+}
