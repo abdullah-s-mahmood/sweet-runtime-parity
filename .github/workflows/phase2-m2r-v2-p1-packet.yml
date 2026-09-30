@@ -1,0 +1,41 @@
+name: Phase 2 M2-R v2 P1 Development Packet
+on:
+  workflow_dispatch:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/m2r_v2_build_p1_packet.py"
+      - "phase2/redesign/M2R_V2_P1_PACKET_SPEC.md"
+      - ".github/workflows/phase2-m2r-v2-p1-packet.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  packet:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Build fresh P1 packet and hard-check P0 overlap
+        run: python phase2/redesign/m2r_v2_build_p1_packet.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2rv2-p1-dev-blind
+          path: M2RV2_P1_DEV_BLIND.jsonl
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2rv2-p1-dev-key
+          path: M2RV2_P1_DEV_KEY.jsonl
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2rv2-p1-summary
+          path: M2RV2_P1_PACKET_SUMMARY.json
+          retention-days: 30
