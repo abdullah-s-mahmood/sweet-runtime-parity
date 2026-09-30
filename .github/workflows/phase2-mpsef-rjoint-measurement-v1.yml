@@ -7,6 +7,11 @@ on:
         description: "Exact authorization token required to expose the single C_F measurement"
         required: true
         type: string
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/redesign/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V1.json"
 
 permissions:
   contents: read
@@ -18,14 +23,34 @@ jobs:
     timeout-minutes: 180
 
     steps:
-      - name: Require explicit frozen authorization token
-        run: |
-          test "${{ inputs.authorization }}" = "MEASURE_R_JOINT_V1"
-          echo "EXPLICIT_MEASUREMENT_AUTHORIZATION_OK"
-
       - uses: actions/checkout@v4
         with:
           ref: phase2-arabic-eval
+
+      - name: Require explicit frozen authorization
+        env:
+          DISPATCH_AUTH: ${{ inputs.authorization }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          event=os.environ["EVENT_NAME"]
+          if event=="workflow_dispatch":
+              assert os.environ.get("DISPATCH_AUTH")=="MEASURE_R_JOINT_V1"
+              mode="MANUAL_DISPATCH"
+          elif event=="push":
+              p=Path("phase2/redesign/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V1.json")
+              assert p.exists()
+              x=json.loads(p.read_text(encoding="utf-8"))
+              assert x["authorization"]=="MEASURE_R_JOINT_V1"
+              assert x["measurement_version"]=="MPSEF_RJOINT_MEASUREMENT_V1"
+              assert x["single_run_only"] is True
+              mode="FROZEN_AUTHORIZATION_FILE"
+          else:
+              raise AssertionError(event)
+          print("EXPLICIT_MEASUREMENT_AUTHORIZATION_OK",mode)
+          PY
 
       - uses: actions/setup-python@v5
         with:
