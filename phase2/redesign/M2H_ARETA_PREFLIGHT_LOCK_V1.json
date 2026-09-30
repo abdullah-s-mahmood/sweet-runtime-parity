@@ -1,0 +1,48 @@
+{
+  "record_id": "M2H_ARETA_DIAGNOSTIC_PREFLIGHT_LOCK_V1",
+  "date": "2026-09-30",
+  "status": "PASS_AND_FROZEN",
+  "workflow": {
+    "run_id": 36657724871,
+    "head_sha": "90eb4e3dd0b36106493376efc7221422aa91a067",
+    "conclusion": "success"
+  },
+  "environment": {
+    "python": "3.8",
+    "camel_tools": "1.2.0",
+    "data_bundle": "light",
+    "morphology_db": "calima-msa-r13",
+    "pip_freeze_sha256": "56b9a3964f149eeab9db64ff118287b23a63bf05eb52c6599e9b4af859a12704"
+  },
+  "smoke": {
+    "coalign_contract_ok": true,
+    "areta_synthetic_diagnostic_ok": true,
+    "labels": [
+      "UC",
+      "UC",
+      "UC",
+      "OH",
+      "UC",
+      "UC"
+    ],
+    "non_unk_label_present": true,
+    "expected_hamza_label_observed": "OH"
+  },
+  "artifact": {
+    "id": 11073405357,
+    "name": "m2h-areta-diagnostic-preflight-v1",
+    "zip_sha256": "9623141a4fb21ffaa8ff893ea6fb187610611ef854d055870c157ec86e4acfed"
+  },
+  "integrity": {
+    "calibration_opened": false,
+    "internal_evaluation_opened": false,
+    "stress_diagnostic_opened": false,
+    "confirmation_opened": false,
+    "holdout_opened": false,
+    "a7ta_reserved_opened": false,
+    "reserved_nahw_opened": false,
+    "qalb15_test_opened": false
+  },
+  "scientific_interpretation": "SOFTWARE_FEASIBLE_DIAGNOSTIC_ONLY_NO_VERIFIER_PERFORMANCE_CLAIM",
+  "next_authorized_step": "ARETA enrichment on CALIBRATION only"
+}
