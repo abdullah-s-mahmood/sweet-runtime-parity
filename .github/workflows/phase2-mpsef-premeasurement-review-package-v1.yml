@@ -1,0 +1,100 @@
+name: Phase 2 MP-SEF Premeasurement Review Package v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-premeasurement-review-package-v1.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  package-review:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Download frozen P1 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: package/artifacts/p1
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-cf-proposals-v1
+          path: package/artifacts/p2
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36768378938
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Assemble review documents
+        run: |
+          mkdir -p package/docs
+          cp RESUME_HERE.md package/docs/
+          cp phase2/redesign/MPSEF_PRE_UNION_PROTOCOL_V3.md package/docs/
+          cp phase2/redesign/MPSEF_BUNDLE_CONTRACT_V1.md package/docs/
+          cp phase2/redesign/MPSEF_TARGET_AND_MATCHING_CONTRACT_V1.md package/docs/
+          cp phase2/redesign/MPSEF_PROTECTED_INVARIANTS_CONTRACT_V1.md package/docs/
+          cp phase2/redesign/MPSEF_P1_CF_PROPOSAL_LOCK_V1.md package/docs/
+          cp phase2/redesign/MPSEF_P2_CF_PROPOSAL_LOCK_V1.md package/docs/
+          cp phase2/redesign/MPSEF_P1_P2_PREMEASUREMENT_REVIEW_PACKET_V1.md package/docs/
+          cp phase2/redesign/MPSEF_HIGHER_MODEL_REVIEW_PROMPT_V1.md package/docs/
+
+      - name: Write package manifest
+        run: |
+          python - <<'PY'
+          import hashlib, json, subprocess
+          from pathlib import Path
+          root=Path('package')
+          files=[]
+          for p in sorted(root.rglob('*')):
+              if p.is_file():
+                  h=hashlib.sha256(p.read_bytes()).hexdigest()
+                  files.append({'path':str(p.relative_to(root)),'bytes':p.stat().st_size,'sha256':h})
+          manifest={
+              'record_id':'MPSEF_PREMEASUREMENT_REVIEW_PACKAGE_V1',
+              'status':'READY',
+              'branch':'phase2-arabic-eval',
+              'head_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              'p1_run_id':36765798233,
+              'p1_artifact_id':11123050529,
+              'p1_artifact_zip_sha256':'e4020418ca2f2793d4bb79bc766e26838398fb9affba6d0f1c704255cd5aed46',
+              'p2_run_id':36768378938,
+              'p2_artifact_id':11124303107,
+              'p2_artifact_zip_sha256':'5209633d389db02054456a42710a96a1d6e573cefca308254747897969c7d41c',
+              'r_joint_computed':False,
+              'selector_trained':False,
+              'reserved_sets_opened':False,
+              'files':files,
+          }
+          Path('package/PACKAGE_MANIFEST.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({k:v for k,v in manifest.items() if k!='files'},indent=2))
+          PY
+
+      - name: Build deterministic review ZIP
+        run: |
+          find package -type f -print0 | sort -z | xargs -0 touch -t 202609302030.00
+          (cd package && find . -type f -print | LC_ALL=C sort | zip -X -q ../MPSEF_PREMEASUREMENT_REVIEW_V1.zip -@)
+          sha256sum MPSEF_PREMEASUREMENT_REVIEW_V1.zip > MPSEF_PREMEASUREMENT_REVIEW_V1_SHA256.txt
+          cat MPSEF_PREMEASUREMENT_REVIEW_V1_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-premeasurement-review-v1
+          path: |
+            MPSEF_PREMEASUREMENT_REVIEW_V1.zip
+            MPSEF_PREMEASUREMENT_REVIEW_V1_SHA256.txt
+          if-no-files-found: error
+          retention-days: 90
