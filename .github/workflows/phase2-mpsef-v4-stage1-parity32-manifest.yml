@@ -1,0 +1,62 @@
+name: Phase 2 MP-SEF V4 Stage1 Parity32 Manifest Freeze
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - ".github/workflows/phase2-mpsef-v4-stage1-parity32-manifest.yml"
+      - "phase2/redesign/mpsef_v4_build_stage1_parity32_manifest_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  freeze:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage1-packet-v1
+          path: packet
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36871466394
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build parity32 manifest
+        run: |
+          set -euo pipefail
+          python phase2/redesign/mpsef_v4_build_stage1_parity32_manifest_v1.py             --packet packet/MPSEF_V4_STAGE1_PACKET_V1.jsonl             --out-prefix MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1
+      - name: Validate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib
+          rows=[json.loads(x) for x in pathlib.Path("MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1.jsonl").read_text().splitlines() if x.strip()]
+          s=json.loads(pathlib.Path("MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1_SUMMARY.json").read_text())
+          assert s["status"]=="PASS"
+          assert len(rows)==32==s["n"]
+          assert len({x["uid"] for x in rows})==32
+          assert s["gold_reference_consulted"] is False
+          assert s["proposer_output_consulted"] is False
+          assert s["quality_metric_computed"] is False
+          print("PARITY32_MANIFEST_PASS")
+          PY
+      - name: Hash
+        run: |
+          sha256sum             phase2/redesign/mpsef_v4_build_stage1_parity32_manifest_v1.py             .github/workflows/phase2-mpsef-v4-stage1-parity32-manifest.yml             MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1.jsonl             MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1_SUMMARY.json             > MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1_SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-v4-stage1-parity32-manifest-v1
+          path: |
+            MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1.jsonl
+            MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1_SUMMARY.json
+            MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1_SHA256.txt
+          retention-days: 90
