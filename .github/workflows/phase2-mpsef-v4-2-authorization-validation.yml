@@ -63,6 +63,16 @@ jobs:
           assert a["frozen_inputs"]["clusters"]==l["population_clusters"]==764
           assert a["claim_scope"]==l["claim_scope"]
 
+          g=a["consumption_guard"]
+          assert g["file"]=="phase2/redesign/mpsef_rjoint_v4_2_consumption_guard_v1.py"
+          assert g["sha256"]==sha256_file(g["file"])
+          assert g["sha256"]=="895128860ba4e03f287b91c56d3505f5df5a9c31292a5555088654aedd468070"
+          assert g["status_context"]=="acad-pass/v4-2-consumption-guard-valid"
+          assert g["status"]=="success"
+          assert g["consumed_context"]=="acad-pass/v4-2-rjoint-consumed"
+          assert g["claim_before_gold_access"] is True
+          assert g["rerun_after_consumption_forbidden"] is True
+
           forbidden=a["forbidden_during_or_after_this_authorized_run"]
           assert all(forbidden.values())
           assert l["authorization_boundary"]["real_r_joint_computed"] is False
