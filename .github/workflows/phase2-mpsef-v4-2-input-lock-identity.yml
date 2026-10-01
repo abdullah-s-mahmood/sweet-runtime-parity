@@ -39,7 +39,18 @@ jobs:
           assert x["authorization_boundary"]["gold_content_opened_by_this_lock"] is False
           assert x["authorization_boundary"]["real_r_joint_computed"] is False
           assert x["pre_gold_verification"]["scorer_preflight"]["passed"]==33
-          assert x["pre_gold_verification"]["wrapper_preflight"]["passed"]==14
+          assert x["pre_gold_verification"]["wrapper_preflight"]["passed"]==16
+          assert x["pre_gold_verification"]["workflow_run_id"]==36940030184
+          assert x["pre_gold_verification"]["verification_artifact"]["id"]==11199084513
+          assert x["pre_gold_verification"]["verification_artifact"]["digest"]=="sha256:5f16c02fdbe8612499c24b6b2209a19ee03f6738d529e78b10f545fe7c430b20"
+          assert x["numpy_version"]=="1.23.5"
+          assert x["editdistance_version"]=="0.6.2"
+          assert x["pre_gold_verification"]["hardened_runtime_identity"]["python_major_minor"]=="3.10"
+          assert x["pre_gold_verification"]["hardened_runtime_identity"]["numpy"]=="1.23.5"
+          assert x["pre_gold_verification"]["hardened_runtime_identity"]["editdistance"]=="0.6.2"
+          assert x["supersession"]["replacement_required"] is False
+          assert x["refreeze"]["gold_opened"] is False
+          assert x["refreeze"]["real_r_joint_computed"] is False
           PY
 
       - name: Publish exact input-lock SHA256
