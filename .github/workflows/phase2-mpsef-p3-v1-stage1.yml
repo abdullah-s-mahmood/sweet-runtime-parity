@@ -1,0 +1,152 @@
+name: Phase 2 MP-SEF P3 V1 Stage1 Source-Only
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-p3-v1-stage1.yml"
+      - "phase2/redesign/mpsef_p3_v1_stage1_v1.py"
+      - "phase2/redesign/mpsef_p1_cf_proposals_v1.py"
+      - "phase2/redesign/process_progress_v1.py"
+      - "phase2/redesign/run_with_progress_watchdog_v1.py"
+      - "phase2/redesign/MPSEF_P3_V1_STAGE1_IDENTITY_LOCK_V1.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+
+jobs:
+  p3-stage1:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Download frozen Stage1 packet
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage1-packet-v1
+          path: stage1_packet
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36871466394
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P1 parent proposals
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_parent
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify packet and parent identities
+        run: |
+          set -euo pipefail
+          test "$(sha256sum stage1_packet/MPSEF_V4_STAGE1_PACKET_V1.jsonl | awk '{print $1}')" = "8460900d88656ff25fe4da05d156ba0b31980188e3d1135052ed1825f10087b1"
+          test "$(sha256sum p1_parent/MPSEF_P1_CF_PROPOSALS_V1.jsonl | awk '{print $1}')" = "2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          echo "P3_STAGE1_PARENT_AND_PACKET_IDENTITIES_OK"
+
+      - name: Install frozen SWEET runtime
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.12.1+cpu"
+          python -m pip install "transformers==4.30.0" "huggingface_hub==0.16.4" "sentencepiece==0.1.99"
+
+      - name: Clone frozen text-editing implementation
+        run: |
+          set -euo pipefail
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git -C upstream/text-editing rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Download exact frozen Pnx revision
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          snapshot_download(
+              repo_id="CAMeL-Lab/text-editing-qalb14-pnx",
+              revision="a162d77269ab6ff556d2c58c5dff8b967c1f649e",
+              local_dir="pnx_model",
+              local_dir_use_symlinks=False,
+          )
+          PY
+          test "$(sha256sum pnx_model/pytorch_model.bin | awk '{print $1}')" = "d98d683f9ef1738c27f5031c99483d93e9f73c4116c158a97a678270c84fd262"
+          echo "P3_STAGE1_PNX_IDENTITY_OK"
+
+      - name: Run monitored P3 Stage1 source-only proposals
+        env:
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONUNBUFFERED: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 45m             python phase2/redesign/run_with_progress_watchdog_v1.py               --state-file MPSEF_P3_V1_STAGE1_PROGRESS.json               --context "acad-pass/p3-v1-stage1"               --poll-seconds 20               --publish-seconds 60               --stale-seconds 600               --kill-on-stale               --               python phase2/redesign/mpsef_p3_v1_stage1_v1.py                 --packet stage1_packet/MPSEF_V4_STAGE1_PACKET_V1.jsonl                 --p1-proposals p1_parent/MPSEF_P1_CF_PROPOSALS_V1.jsonl                 --pnx-model-dir pnx_model                 --upstream-root upstream/text-editing                 --batch-size 32                 --out-prefix MPSEF_P3_V1_STAGE1_V1                 --progress-state MPSEF_P3_V1_STAGE1_PROGRESS.json
+
+      - name: Validate P3 Stage1 artifact
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib
+          rows=[json.loads(x) for x in pathlib.Path("MPSEF_P3_V1_STAGE1_V1.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+          s=json.loads(pathlib.Path("MPSEF_P3_V1_STAGE1_V1_SUMMARY.json").read_text(encoding="utf-8"))
+          progress=json.loads(pathlib.Path("MPSEF_P3_V1_STAGE1_PROGRESS.json").read_text(encoding="utf-8"))
+          assert s["status"]=="SOURCE_ONLY_PROPOSALS_COMPLETE"
+          assert len(rows)==128==s["cases"]
+          assert len({r["uid"] for r in rows})==128
+          assert len({r["cluster_id"] for r in rows})==128==s["clusters"]
+          assert s["packet_sha256"]=="8460900d88656ff25fe4da05d156ba0b31980188e3d1135052ed1825f10087b1"
+          assert s["p1_parent_proposal_sha256"]=="2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          assert s["pnx_revision"]=="a162d77269ab6ff556d2c58c5dff8b967c1f649e"
+          assert s["pnx_weight_sha256"]=="d98d683f9ef1738c27f5031c99483d93e9f73c4116c158a97a678270c84fd262"
+          assert s["batch_single_parity_n"]==8
+          assert s["batch_single_parity_match"]==8
+          assert s["p1_rerun"] is False
+          assert s["exact_frozen_p1_parent_reused"] is True
+          assert s["gold_reference_consulted"] is False
+          assert s["project_gold_loaded"] is False
+          assert s["quality_metric_computed"] is False
+          assert s["r_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["quality_claimed"] is False
+          assert progress["status"]=="COMPLETE"
+          assert progress["processed"]==144==progress["total"]
+          assert progress["percent"]==100.0
+          for r in rows:
+              assert r["input_sha256"]==r["parent_output_sha256"]
+              assert r["source_only"] is True
+              assert r["gold_reference_consulted"] is False
+              assert r["quality_scored"] is False
+          print("P3_V1_STAGE1_SOURCE_ONLY_PASS")
+          PY
+
+      - name: Freeze environment and hashes
+        if: always()
+        run: |
+          python -m pip freeze > MPSEF_P3_V1_STAGE1_V1_PIP_FREEZE.txt
+          sha256sum             phase2/redesign/mpsef_p3_v1_stage1_v1.py             phase2/redesign/mpsef_p1_cf_proposals_v1.py             phase2/redesign/process_progress_v1.py             phase2/redesign/run_with_progress_watchdog_v1.py             phase2/redesign/MPSEF_P3_V1_STAGE1_IDENTITY_LOCK_V1.md             .github/workflows/phase2-mpsef-p3-v1-stage1.yml             stage1_packet/MPSEF_V4_STAGE1_PACKET_V1.jsonl             p1_parent/MPSEF_P1_CF_PROPOSALS_V1.jsonl             pnx_model/pytorch_model.bin             MPSEF_P3_V1_STAGE1_V1.jsonl             MPSEF_P3_V1_STAGE1_V1_SUMMARY.json             MPSEF_P3_V1_STAGE1_PROGRESS.json             MPSEF_P3_V1_STAGE1_V1_PIP_FREEZE.txt             > MPSEF_P3_V1_STAGE1_V1_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-p3-v1-stage1-v1
+          path: |
+            MPSEF_P3_V1_STAGE1_V1.jsonl
+            MPSEF_P3_V1_STAGE1_V1_SUMMARY.json
+            MPSEF_P3_V1_STAGE1_PROGRESS.json
+            MPSEF_P3_V1_STAGE1_V1_PIP_FREEZE.txt
+            MPSEF_P3_V1_STAGE1_V1_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
