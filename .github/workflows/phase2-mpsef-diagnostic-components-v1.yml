@@ -8,7 +8,6 @@ on:
     paths:
       - ".github/workflows/phase2-mpsef-diagnostic-components-v1.yml"
       - "phase2/redesign/mpsef_build_diagnostic_components_v1.py"
-      - "phase2/redesign/mpsef_rjoint_core_v2.py"
 
 permissions:
   contents: read
