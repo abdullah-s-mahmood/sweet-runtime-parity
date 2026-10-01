@@ -1,0 +1,41 @@
+{
+  "record_id": "MPSEF_RJOINT_EXPERIMENT_ID_V2",
+  "date_frozen": "2026-10-01",
+  "experiment_id": "MPSEF-RJOINT-V2-CF1918-20261001-A",
+  "status": "IDENTITY_FROZEN_NOT_AUTHORIZED",
+  "population": {
+    "role": "C_F",
+    "cases": 1918,
+    "clusters": 764,
+    "source_manifest_sha256": "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+  },
+  "primary_gate": {
+    "metric": "R_joint",
+    "threshold": 0.95,
+    "pass_rule": "PASS only if exact>=0.95 or proven lower_bound>=0.95",
+    "fail_rule": "FAIL only if exact<0.95 or proven upper_bound<0.95; otherwise INCONCLUSIVE"
+  },
+  "primary_action_contract": "KEEP + frozen whole P1_FINAL/P2_FINAL only if present in frozen executable-action artifact",
+  "frozen_executable_actions_sha256": "6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a",
+  "frozen_hypotheses_sha256": "c91195a66a687ba8acf12d1b1e51741183b28992f89681c8510cdac8fddf9e14",
+  "frozen_diagnostic_components_sha256": "2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e",
+  "p1_proposal_sha256": "2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d",
+  "p2_proposal_sha256": "f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b",
+  "gold_m2_expected_sha256": "971b6fbb28dc3767193e7a4b0f722c3abebfc8600155a57093ba483dac6491e8",
+  "claim_scope": "DEVELOPMENT_FEASIBILITY / ADAPTIVELY_CONSUMED QALB-2014 ORIGIN / NOT_INDEPENDENT_GENERALIZATION_EVIDENCE",
+  "consumption_policy": {
+    "status_context": "acad-pass/mpsef-rjoint-v2-consumed",
+    "claim_before_gold_access": true,
+    "sequential_rerun_after_claim": "FORBIDDEN",
+    "concurrent_run": "FORBIDDEN",
+    "cancelled_after_claim": "CONSUMED",
+    "failed_after_claim": "CONSUMED",
+    "failed_before_claim": "NOT_CONSUMED_IF_AND_ONLY_IF_GOLD_NOT_ACCESSED"
+  },
+  "authorization": {
+    "measurement_authorized": false,
+    "selector_authorized": false,
+    "auto_safe_authorized": false,
+    "reserved_sets_authorized": false
+  }
+}
