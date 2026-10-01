@@ -130,6 +130,8 @@ def build_targets(uid, gold):
         if len(corrections) != 1:
             raise RuntimeError(f"{uid}: expected one correction alternative")
         correction = corrections[0]
+        if original == correction:
+            raise RuntimeError(f"{uid}: no-op frozen target")
         scope = target_scope(original, correction)
         family = target_family(start, end, original, correction)
         tid = sha_text(
@@ -159,6 +161,21 @@ def self_test(upstream_root=None):
     assert target_scope("", ".") == "PUNCTUATION_ONLY"
     assert target_scope("نص", "نص ،") == "PUNCTUATION_ONLY"
     assert target_family(0, 2, "يا بطل", "يابطل") == "MERGE"
+
+    # Alternative references and no-op targets must fail closed.
+    try:
+        build_targets("ALT", [(0,1,"خطا",["خطأ","خطاء"])])
+    except RuntimeError:
+        pass
+    else:
+        raise AssertionError("multiple reference alternatives were accepted")
+
+    try:
+        build_targets("NOOP", [(0,1,"نص",["نص"])])
+    except RuntimeError:
+        pass
+    else:
+        raise AssertionError("no-op target was accepted")
 
     if upstream_root is not None:
         _, lev = import_m2(upstream_root)
