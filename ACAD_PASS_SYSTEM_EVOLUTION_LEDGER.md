@@ -2931,3 +2931,40 @@ No real R_joint was computed.
 
 Classification:
 **MIXED / REPRODUCIBILITY IMPROVED / AUTHORIZATION TEMPORARILY ROLLED BACK FAIL-CLOSED**
+### 2026-10-02 — Additional pre-gold runtime identity hardening
+
+A final pre-gold adversarial check found that the V4.2 production wrapper was verifying the dependency-lock file identity but not the actually installed package versions.
+
+Hardening applied before any gold access:
+- enforce dependency-lock contents at runtime;
+- require Python 3.10;
+- require frozen Arabic-GEC revision;
+- require numpy 1.23.5;
+- require editdistance 0.6.2;
+- enforce no network download during measurement;
+- enforce no model inference during measurement.
+
+Wrapper preflight expanded:
+14 tests → 16 tests.
+
+New negative tests:
+- reject mismatched runtime package version;
+- reject weakened runtime policy.
+
+Code commits:
+- wrapper hardening: `07bed9062757e96ce40c531e772f18d70ffe8303`
+- preflight extension: `d5543b72d139248423bfbf94a905ee02d1d8dbc4`
+- exact-dependency verification workflow: `500b176475b60ab5207c6715fa28e2c84f76c70e`
+
+After three status checks, no workflow status was yet exposed, so polling stopped according to protocol.
+
+Effect on previous authorization:
+the old wrapper/input-lock/authorization identities are superseded and MUST NOT authorize gold access until the new wrapper preflight passes and all dependent hashes are regenerated.
+
+Scientific boundary unchanged:
+- gold newly opened: false
+- real R_joint computed: false
+- selector/consensus/P4/LLM judge: false
+
+Classification:
+**IMPROVED IN PRE-GOLD REPRODUCIBILITY HARDENING / AUTHORIZATION TEMPORARILY RE-LOCKED PENDING 16/16 VERIFICATION**
