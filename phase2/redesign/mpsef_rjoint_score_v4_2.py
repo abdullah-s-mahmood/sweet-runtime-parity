@@ -357,7 +357,7 @@ def validate_measurement_identity_contract(actual, expected):
     return True
 
 
-def score_population_v4_1(
+def score_population_v4_2(
     lev,
     source_rows,
     action_sets,
