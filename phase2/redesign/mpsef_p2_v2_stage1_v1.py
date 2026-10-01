@@ -13,6 +13,7 @@ import torch
 from camel_tools.disambig.bert import BERTUnfactoredDisambiguator
 from transformers import AutoTokenizer, BertForTokenClassification, MBartForConditionalGeneration
 
+from process_progress_v1 import update_state
 from mpsef_p2_v2_real_model_stage0 import (
     EXPECTED_GED_WEIGHT_SHA,
     EXPECTED_GEC_WEIGHT_SHA,
@@ -283,6 +284,19 @@ def progress_line(done, total, started, last_elapsed=None):
 
 
 def run(args):
+    progress_path = Path(args.progress_state)
+    total_work = PARITY_N * 3 + EXPECTED_CASES
+    work_done = 0
+    update_state(
+        progress_path,
+        process_id="MPSEF_P2_V2_STAGE1_V1",
+        stage="INITIALIZE",
+        processed=0,
+        total=total_work,
+        status="RUNNING",
+        message="validating frozen packet and loading models",
+    )
+
     packet_path = Path(args.packet)
     packet_sha = sha_bytes(packet_path.read_bytes())
     if packet_sha != EXPECTED_PACKET_SHA256:
@@ -306,21 +320,45 @@ def run(args):
     # UID-sorted packet. It is not selected from output behavior.
     parity_rows = rows[:PARITY_N]
 
-    parity_first = [
-        infer_one(r, models, include_trace=True)
-        for r in parity_rows
-    ]
-    parity_repeat = [
-        infer_one(r, models, include_trace=True)
-        for r in parity_rows
-    ]
-    parity_reversed = {
-        rec["uid"]: rec
-        for rec in [
-            infer_one(r, models, include_trace=True)
-            for r in reversed(parity_rows)
-        ]
-    }
+    parity_first = []
+    for r in parity_rows:
+        parity_first.append(infer_one(r, models, include_trace=True))
+        work_done += 1
+        update_state(
+            progress_path,
+            "MPSEF_P2_V2_STAGE1_V1",
+            "PARITY_FIRST",
+            work_done,
+            total_work,
+            message=f'parity first uid={r["uid"]}',
+        )
+
+    parity_repeat = []
+    for r in parity_rows:
+        parity_repeat.append(infer_one(r, models, include_trace=True))
+        work_done += 1
+        update_state(
+            progress_path,
+            "MPSEF_P2_V2_STAGE1_V1",
+            "PARITY_REPEAT",
+            work_done,
+            total_work,
+            message=f'parity repeat uid={r["uid"]}',
+        )
+
+    parity_reversed = {}
+    for r in reversed(parity_rows):
+        rec = infer_one(r, models, include_trace=True)
+        parity_reversed[rec["uid"]] = rec
+        work_done += 1
+        update_state(
+            progress_path,
+            "MPSEF_P2_V2_STAGE1_V1",
+            "PARITY_REVERSED",
+            work_done,
+            total_work,
+            message=f'parity reversed uid={r["uid"]}',
+        )
 
     repeat_matches = 0
     reorder_matches = 0
@@ -356,6 +394,15 @@ def run(args):
         rec = infer_one(row, models, include_trace=True)
         out_rows.append(rec)
         case_times.append(float(rec["runtime_seconds"]))
+        work_done += 1
+        update_state(
+            progress_path,
+            "MPSEF_P2_V2_STAGE1_V1",
+            "STAGE1_PROPOSALS",
+            work_done,
+            total_work,
+            message=f'proposal uid={row["uid"]} state={rec["execution_state"]}',
+        )
         if idx == 1 or idx % args.progress_every == 0 or idx == len(rows):
             progress_line(
                 idx, len(rows), started, rec["runtime_seconds"]
@@ -413,9 +460,7 @@ def run(args):
         "runtime_seconds_total": total_elapsed,
         "runtime_seconds_mean": statistics.mean(case_times),
         "runtime_seconds_median": statistics.median(case_times),
-        "runtime_seconds_p95_nearest_rank": sorted(case_times)[
-            max(0, min(len(case_times)-1, math.ceil(0.95*len(case_times))-1))
-        ] if False else None,
+        "runtime_seconds_p95_nearest_rank": None,
         "max_rss_kb": max_rss_kb,
         "identities": identities,
         "source_only": True,
@@ -457,6 +502,15 @@ def run(args):
         encoding="utf-8",
     )
 
+    update_state(
+        progress_path,
+        "MPSEF_P2_V2_STAGE1_V1",
+        "COMPLETE",
+        total_work,
+        total_work,
+        status="COMPLETE",
+        message="P2_V2 Stage1 source-only proposals complete",
+    )
     print(json.dumps(summary, ensure_ascii=False, indent=2), flush=True)
 
 
@@ -467,6 +521,10 @@ def main():
     ap.add_argument("--gec-model-dir", required=True)
     ap.add_argument("--out-prefix", default="MPSEF_P2_V2_STAGE1_V1")
     ap.add_argument("--progress-every", type=int, default=8)
+    ap.add_argument(
+        "--progress-state",
+        default="MPSEF_P2_V2_STAGE1_PROGRESS.json",
+    )
     args = ap.parse_args()
     run(args)
 
