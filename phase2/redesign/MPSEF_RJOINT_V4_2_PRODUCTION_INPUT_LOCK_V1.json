@@ -1,7 +1,7 @@
 {
   "record_id": "MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1",
   "date": "2026-10-02",
-  "status": "SUPERSEDED_PENDING_RUNTIME_IDENTITY_REFREEZE",
+  "status": "FROZEN_READY_FOR_SINGLE_RUN_AUTHORIZATION",
   "experiment_id": "MPSEF-RJOINT-V4_2-CF1918-20261002-A",
   "claim_scope": "DEVELOPMENT / ADAPTIVELY_CONSUMED / REFERENCE_RELATIVE / NOT_INDEPENDENT_GENERALIZATION",
   "governing_contract": "phase2/redesign/MPSEF_V4_PRE_GOLD_DEVELOPMENT_MEASUREMENT_CONTRACT_V1_AMENDMENT_A1.md",
@@ -95,10 +95,22 @@
     "date": "2026-10-02",
     "reason": "Production wrapper hardened to validate actual installed dependency versions and runtime policy before gold access.",
     "previous_input_lock_sha256": "3f3e4bd95bbd5d49ad71ec58466573d56a476eefcf0cdc3719c2c732d3de19d0",
-    "replacement_required": true,
+    "replacement_required": false,
     "gold_opened_under_superseded_lock": false,
-    "real_r_joint_computed_under_superseded_lock": false
+    "real_r_joint_computed_under_superseded_lock": false,
+    "resolution": "Exact-runtime source-free verification closed PASS: scorer 33/33, wrapper 16/16, workflow run 36940030184."
   },
   "numpy_version": "1.23.5",
-  "editdistance_version": "0.6.2"
+  "editdistance_version": "0.6.2",
+  "refreeze": {
+    "date": "2026-10-02",
+    "basis_workflow_run_id": 36940030184,
+    "basis_workflow_commit": "705129dc9f319d835321a47a2530d48bd18ac468",
+    "scorer_preflight": "33/33 PASS",
+    "wrapper_preflight": "16/16 PASS",
+    "artifact_id": 11199084513,
+    "artifact_digest": "sha256:5f16c02fdbe8612499c24b6b2209a19ee03f6738d529e78b10f545fe7c430b20",
+    "gold_opened": false,
+    "real_r_joint_computed": false
+  }
 }
