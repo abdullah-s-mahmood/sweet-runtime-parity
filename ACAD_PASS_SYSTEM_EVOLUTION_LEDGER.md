@@ -2633,3 +2633,139 @@ Scientific consequence:
 
 Classification:
 **MEASUREMENT READINESS IMPROVED / REVIEW GATE OPEN / LINGUISTIC PERFORMANCE UNMEASURED**
+
+
+### 2026-10-02 — V4 R_joint adversarial review, A1 repair, and hardened V4.2 verification pending
+
+**Internal adversarial review**
+
+Record:
+`phase2/redesign/ACAD_PASS_V4_RJOINT_INTERNAL_ADVERSARIAL_REVIEW_V1.md`
+commit:
+`0bb90f26f745a77c2f3334789581c8f2e817c1af`
+
+Verdict:
+**MODIFY BEFORE GOLD**
+
+Findings:
+- BLOCKER: 0
+- MAJOR: 4
+- MINOR: 3
+
+Major findings:
+1. V4 population scorer did not yet emit the composite M05 BOUNDARY={SPLIT,MERGE} route/additional-target/additional-cluster evidence.
+2. Primary-only gold scoring could count a correct reference-supported punctuation repair as an extra edit.
+3. A production measurement identity-lock wrapper was not yet frozen.
+4. The historical 95% candidate-availability gate was underspecified in V4.
+
+No project gold/reference was opened during review.
+
+**Contract amendment**
+
+`phase2/redesign/MPSEF_V4_PRE_GOLD_DEVELOPMENT_MEASUREMENT_CONTRACT_V1_AMENDMENT_A1.md`
+commit:
+`cae6c3f95e9ffdad9f7e550aa41d971f5541ff41`
+
+A1 freezes:
+- full-reference action scoring;
+- projection to primary vs punctuation targets;
+- PRIMARY_RECOVERY;
+- PRIMARY_CLEAN_RECOVERY;
+- PRIMARY_COMPLETE_REPAIR;
+- ALL_REFERENCE_COMPLETE_REPAIR;
+- mutually exclusive sentence reference states;
+- M05 composite BOUNDARY and INSERT routes;
+- family additional-target/cluster evidence;
+- historical 95% ROSTER primary candidate-availability gate;
+- production input-lock identity requirements.
+
+**V4.1 repair**
+
+Scorer:
+`mpsef_rjoint_score_v4_1.py`
+commit:
+`61a810e3c1ae443e0671fb150c83374d2c981869`
+
+Expanded synthetic harness:
+27 cases
+commit:
+`4fdaafd894f3e80eec5e39901a46b7da80d05fc3`
+
+Workflow:
+`31242b687015df9c2220e68c7ae2c87cc8548d58`
+
+Result:
+**SUCCESS**
+
+This established that the A1 construct repairs were executable source-free.
+
+**Additional pre-closure hardening**
+
+A second guard review found that the scorer should fail closed on malformed action sets even though the frozen Stage2 artifact itself is already deduplicated.
+
+New requirements:
+- duplicate literal output -> fail;
+- non-KEEP output equal to source/KEEP -> fail;
+- output SHA mismatch -> fail;
+- KEEP/source SHA mismatch -> fail.
+
+This is defensive measurement hardening, not a linguistic/model-quality change.
+
+**V4.2**
+
+Scorer:
+`phase2/redesign/mpsef_rjoint_score_v4_2.py`
+
+Commits:
+- `6e278abbe0431043ee74e2bac4c1f6ed649f4005`
+- `f5e50f2f9e3371ab7ea7f294cc1b3b499b1f4e63`
+
+31-case harness:
+`phase2/redesign/mpsef_rjoint_v4_2_synthetic_preflight.py`
+commit:
+`3559c73d0014f314806d2613163e3e7f536d026b`
+
+Initial workflow commit:
+`710920fd7426aa6c7aa2cfa330012fb695623459`
+
+Observed:
+- outer preflight status: FAILURE;
+- scorer/test/core/result hash status publication succeeded.
+
+Failure was preserved; no immediate rerun/repair was performed.
+
+Diagnostic rerun:
+`8654902115d3036f7a391e3a11fb8097c91e8cce`
+
+Observed:
+- diagnostic summary status appeared;
+- no test-specific failure contexts were exposed.
+
+Interpretation:
+possible workflow/observability failure rather than proven scorer/test failure, but connector evidence was insufficient to conclude PASS.
+
+A minimal unchanged verification-only workflow was therefore frozen:
+commit:
+`2481dcb8b2160a47d017a3a9a0409437bdb9f331`
+
+It publishes `acad-pass/v4-2-rjoint-31of31=success` only after exact 31/31 validation.
+
+Three polls in the current execution turn exposed no status, so polling stopped under the permanent max-3 rule.
+
+Diagnostic lock:
+`phase2/redesign/MPSEF_RJOINT_V4_2_PREFLIGHT_ATTEMPT_DIAGNOSTIC_LOCK_V1.md`
+commit:
+`05f1fec3345c0c8100a2044b6cde67e2e9ea5f73`
+
+**Current scientific classification**
+
+**MIXED / METHODOLOGICAL HARDENING IMPROVED / CLOSURE PENDING**
+
+Performance:
+**UNMEASURED**
+
+Gold exposure:
+**UNCHANGED / NO NEW GOLD**
+
+Next:
+check only the minimal verification commit in a new continuation turn; do not alter scorer/harness until its result is known.
