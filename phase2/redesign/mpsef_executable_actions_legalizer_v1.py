@@ -369,6 +369,21 @@ def p2_ged_word_alignment_status(prop):
         "excess_labels":0,
     }
 
+def p2_input_integrity_status(prop, trace):
+    if trace is None:
+        return {"status":"UNKNOWN","reason":"MISSING_INDEPENDENT_GENERATION_TRACE"}
+    required = ["morph_word_count","ged_prediction_count","ged_predictions_consumed","ged_predictions_dropped","ged_word_alignment_status"]
+    missing = [k for k in required if k not in trace]
+    if missing:
+        return {"status":"UNKNOWN","reason":"MISSING_INPUT_INTEGRITY_FIELDS:"+",".join(missing)}
+    if trace["ged_word_alignment_status"] != "PASS":
+        return {"status":"FAIL","reason":"GED_WORD_LABEL_ALIGNMENT_MISMATCH"}
+    if trace["ged_predictions_dropped"] != 0:
+        return {"status":"FAIL","reason":"GED_PREDICTIONS_DROPPED"}
+    if trace["ged_predictions_consumed"] != trace["morph_word_count"]:
+        return {"status":"FAIL","reason":"GED_WORD_COVERAGE_MISMATCH"}
+    return {"status":"PASS","reason":None}
+
 def p2_truncation_status(prop, trace):
     # P2 requires independent generation metadata because decoded text alone
     # cannot prove natural termination before max_length=100.
@@ -377,7 +392,6 @@ def p2_truncation_status(prop, trace):
     required = [
         "uid","source_sha256","output_sha256","decoder_start_token_id",
         "eos_token_id","generated_token_ids","max_length",
-        "ged_word_count","morph_word_count","ged_label_count",
     ]
     missing = [k for k in required if k not in trace]
     if missing:
@@ -387,9 +401,6 @@ def p2_truncation_status(prop, trace):
     ids = trace["generated_token_ids"]
     if not isinstance(ids, list) or not ids:
         return {"status":"UNKNOWN","reason":"EMPTY_GENERATION_TOKEN_TRACE"}
-    if trace["ged_word_count"] != trace["morph_word_count"] or trace["ged_label_count"] != trace["morph_word_count"]:
-        return {"status":"FAIL","reason":"GED_COVERAGE_MISMATCH"}
-
     start = 1 if ids and ids[0] == trace["decoder_start_token_id"] else 0
     eos = trace["eos_token_id"]
     eos_positions = [i for i in range(start, len(ids)) if ids[i] == eos]
@@ -452,6 +463,10 @@ def legalize_one(man, prop, proposer, p2_trace=None):
         ged_alignment = p2_ged_word_alignment_status(prop)
         if ged_alignment["status"] != "PASS":
             reasons.append("EXECUTION_FAILED:"+str(ged_alignment["reason"]))
+
+    input_integrity = {"status":"PASS","reason":"P1_NOT_APPLICABLE"} if proposer == "P1" else p2_input_integrity_status(prop, p2_trace)
+    if input_integrity["status"] in {"FAIL","UNKNOWN"}:
+        reasons.append("EXECUTION_FAILED:"+str(input_integrity["reason"]))
 
     trunc = p1_truncation_status(prop) if proposer == "P1" else p2_truncation_status(prop, p2_trace)
     if trunc["status"] in {"FAIL","UNKNOWN"}:
