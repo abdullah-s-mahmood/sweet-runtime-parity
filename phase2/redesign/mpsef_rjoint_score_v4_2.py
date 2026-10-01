@@ -365,7 +365,15 @@ def score_population_v4_2(
     *,
     evaluate_fn=None,
     frozen_identity=None,
+    expected_identity=None,
 ):
+    # Production identity must be verified before any source/gold target analysis.
+    # Synthetic/source-free callers may omit both identities.
+    if (frozen_identity is None) != (expected_identity is None):
+        raise RuntimeError("IDENTITY_CONTRACT_INCOMPLETE")
+    if frozen_identity is not None:
+        validate_measurement_identity_contract(frozen_identity, expected_identity)
+
     if evaluate_fn is None:
         def evaluate_fn(output, source, gold):
             return evaluate_action_against_gold(lev, output, source, gold)
