@@ -8,7 +8,7 @@ on:
     paths:
       - ".github/workflows/phase2-mpsef-scorer-v2-synthetic-preflight.yml"
 
-# controlled-trigger: orchestration-v1
+# controlled-trigger: scorer-core-final-eabdef589f725774e
 
 permissions:
   contents: read
