@@ -7,8 +7,8 @@ on:
       - phase2-arabic-eval
     paths:
       - ".github/workflows/phase2-mpsef-scorer-v2-synthetic-preflight.yml"
-      - "phase2/redesign/mpsef_rjoint_core_v2.py"
-      - "phase2/redesign/mpsef_rjoint_score_v2.py"
+
+# controlled-trigger: orchestration-v1
 
 permissions:
   contents: read
