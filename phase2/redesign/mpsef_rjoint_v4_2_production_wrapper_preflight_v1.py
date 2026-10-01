@@ -325,10 +325,46 @@ def main():
             "PROVENANCE_SIGNATURE_MAP_SHA_MISMATCH",
         ), results)
 
+        bad_dep_version = td / "dep_bad_version.txt"
+        write_dep(bad_dep_version, numpy_value="0.0.0")
+        bad = dict(full_lock)
+        bad["dependency_lock_sha256"] = sha256_file(bad_dep_version)
+        check("W15_RUNTIME_PACKAGE_VERSION_MISMATCH_REJECTED", lambda: expect_error(
+            lambda: validate_pre_gold_inputs(
+                input_lock=bad,
+                source_manifest=sourcep,
+                action_sets=actionp,
+                dependency_lock=bad_dep_version,
+                scorer_path=scorerp,
+                core_path=corep,
+                wrapper_path=wrapperp,
+                upstream_root=upstream,
+            ),
+            "DEPENDENCY_VERSION_MISMATCH:numpy",
+        ), results)
+
+        bad_dep_policy = td / "dep_bad_policy.txt"
+        write_dep(bad_dep_policy, network_policy="allowed")
+        bad = dict(full_lock)
+        bad["dependency_lock_sha256"] = sha256_file(bad_dep_policy)
+        check("W16_RUNTIME_POLICY_MISMATCH_REJECTED", lambda: expect_error(
+            lambda: validate_pre_gold_inputs(
+                input_lock=bad,
+                source_manifest=sourcep,
+                action_sets=actionp,
+                dependency_lock=bad_dep_policy,
+                scorer_path=scorerp,
+                core_path=corep,
+                wrapper_path=wrapperp,
+                upstream_root=upstream,
+            ),
+            "DEPENDENCY_POLICY_MISMATCH:network_download",
+        ), results)
+
     passed = sum(x["status"] == "PASS" for x in results)
     summary = {
         "record_id": VERSION,
-        "status": "PASS" if passed == 14 else "FAIL",
+        "status": "PASS" if passed == 16 else "FAIL",
         "test_count": len(results),
         "passed": passed,
         "failed": len(results) - passed,
