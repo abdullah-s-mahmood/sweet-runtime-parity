@@ -1,0 +1,42 @@
+name: Phase 2 MP-SEF Scorer V3 Synthetic Preflight
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-scorer-v3-synthetic-preflight.yml"
+      - "phase2/redesign/mpsef_rjoint_score_v3.py"
+      - "phase2/redesign/mpsef_rjoint_core_v2.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scorer-v3-synthetic:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Run scorer v3 synthetic self-test
+        run: |
+          python phase2/redesign/mpsef_rjoint_score_v3.py --self-test
+
+      - name: Freeze hashes
+        run: |
+          sha256sum             phase2/redesign/mpsef_rjoint_score_v3.py             phase2/redesign/mpsef_rjoint_core_v2.py             > MPSEF_SCORER_V3_SYNTHETIC_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-scorer-v3-synthetic-preflight
+          path: MPSEF_SCORER_V3_SYNTHETIC_SHA256.txt
+          retention-days: 90
