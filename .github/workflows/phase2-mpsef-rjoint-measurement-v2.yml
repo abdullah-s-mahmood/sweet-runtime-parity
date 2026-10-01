@@ -40,8 +40,11 @@ jobs:
           import json,os
           from pathlib import Path
           p=Path("phase2/redesign/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2.json")
+          review=Path("phase2/redesign/MPSEF_CORRECTED_INDEPENDENT_REVIEW_AR_V2.md")
           if not p.exists():
               raise SystemExit("AUTHORIZATION_V2_FILE_MISSING")
+          if not review.exists():
+              raise SystemExit("CORRECTED_INDEPENDENT_REVIEW_FILE_MISSING")
           x=json.loads(p.read_text(encoding="utf-8"))
           if x.get("record_id")!="MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2":
               raise SystemExit("AUTHORIZATION_V2_RECORD_ID_INVALID")
@@ -53,6 +56,7 @@ jobs:
           Path("/tmp/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2.json").write_text(
               json.dumps(x,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
           )
+          Path("/tmp/MPSEF_CORRECTED_INDEPENDENT_REVIEW_AR_V2.md").write_bytes(review.read_bytes())
           print("AUTHORIZATION_V2_METADATA_READ")
           PY
 
@@ -68,7 +72,10 @@ jobs:
           changed=subprocess.check_output(
               ["git","diff","--name-only",code,trigger],text=True
           ).splitlines()
-          allowed={"phase2/redesign/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2.json"}
+          allowed={
+              "phase2/redesign/MPSEF_CORRECTED_INDEPENDENT_REVIEW_AR_V2.md",
+              "phase2/redesign/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2.json",
+          }
           if set(changed)!=allowed:
               raise SystemExit(f"TRIGGER_DIFF_NOT_AUTHORIZATION_ONLY: {changed}")
           print("AUTHORIZATION_ONLY_TRIGGER_DIFF_OK")
