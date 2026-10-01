@@ -1,0 +1,133 @@
+name: Phase 2 MP-SEF V4 Stage2 Protocol Completion V2
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/mpsef_v4_stage2_protocol_completion_v2.py"
+      - ".github/workflows/phase2-mpsef-v4-stage2-protocol-completion-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  protocol-completion:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Download immutable Stage2 V1 analysis evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage2-full-cf-source-only-analysis-v1
+          path: analysis_v1
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36923877787
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P1 and C_F manifest
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2 full C_F
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-v2-stage2-full-cf-v1
+          path: p2
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36899056538
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P3 full C_F
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p3-v1-stage2-full-cf-v1
+          path: p3
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36920015935
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Complete frozen Stage2 protocol outputs without rerunning inference
+        run: |
+          set -euo pipefail
+          mkdir -p stage2_v2
+          python phase2/redesign/mpsef_v4_stage2_protocol_completion_v2.py \
+            --analysis-dir analysis_v1 \
+            --manifest p1/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl \
+            --p1 p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl \
+            --p2 p2/MPSEF_P2_V2_STAGE2_FULL_CF_V1.jsonl \
+            --p3 p3/MPSEF_P3_V1_STAGE2_FULL_CF_V1.jsonl \
+            --out-dir stage2_v2
+
+      - name: Validate contract-required outputs and scientific boundary
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          d = Path("stage2_v2")
+          required = [
+              "MPSEF_V4_STAGE2_PROPOSER_ROWS_V1.jsonl",
+              "MPSEF_V4_STAGE2_LEGAL_ACTION_SETS_V1.jsonl",
+              "MPSEF_V4_STAGE2_DIVERSITY_SUMMARY_V1.json",
+              "MPSEF_V4_STAGE2_FAMILY_SUMMARY_V1.json",
+              "MPSEF_V4_STAGE2_FAILURES_V1.jsonl",
+              "MPSEF_V4_STAGE2_RUNTIME_V1.json",
+              "MPSEF_V4_STAGE2_SHA256.txt",
+              "MPSEF_V4_STAGE2_PROTOCOL_COMPLETION_V2.json",
+          ]
+          for name in required:
+              p = d / name
+              assert p.is_file() and p.stat().st_size > 0, name
+
+          s = json.loads((d / "MPSEF_V4_STAGE2_DIVERSITY_SUMMARY_V1.json").read_text(encoding="utf-8"))
+          f = json.loads((d / "MPSEF_V4_STAGE2_FAMILY_SUMMARY_V1.json").read_text(encoding="utf-8"))
+          p = json.loads((d / "MPSEF_V4_STAGE2_PROTOCOL_COMPLETION_V2.json").read_text(encoding="utf-8"))
+
+          assert s["cases"] == 1918
+          assert s["clusters"] == 764
+          assert p["status"] == "PASS"
+          assert p["historical_analysis_run_preserved"] == 36923877787
+
+          fam_hist = f["SOURCE_ONLY_INDEPENDENT_NONKEEP_FAMILY_COUNT"]["uid_histogram"]
+          assert sum(fam_hist.values()) == 1918
+          avail = f["SOURCE_ONLY_FAMILY_AVAILABILITY_STATE"]["uid_counts"]
+          assert sum(avail.values()) == 1918
+          assert set(f["SOURCE_ONLY_LEAVE_ONE_FAMILY_OUT"]) == {"SWEET_QALB14", "SEQ2SEQ_GED_MORPH"}
+
+          boundary = s["scientific_boundary"]
+          assert boundary["source_only"] is True
+          assert boundary["gold_reference_consulted"] is False
+          assert boundary["quality_metric_computed"] is False
+          assert boundary["r_joint_computed"] is False
+          assert boundary["selector_trained"] is False
+          assert boundary["family_consensus_activated"] is False
+
+          assert s["p3_specific"]["stage_b_classifier_version"] == "MPSEF_STAGEB_CHANGE_DOMAIN_CLASSIFIER_V1"
+          assert s["p2_full_population_diagnostics"]["D_all"] == 1918
+          print("STAGE2_PROTOCOL_COMPLETION_V2_PASS")
+          PY
+
+      - name: Upload immutable protocol-completion evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-v4-stage2-protocol-completion-v2
+          path: stage2_v2/
+          if-no-files-found: error
+          retention-days: 90
