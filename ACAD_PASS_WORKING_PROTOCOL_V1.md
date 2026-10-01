@@ -159,3 +159,14 @@ Transform → Protect → Verify → Drift → Repair/Escalate → Review → Pr
 
 Prefer the strongest defensible system over preserving an old architecture.
 Scientific defensibility, reproducibility, provenance, fail-closed behavior, and document fidelity take precedence over attractive but weakly-supported metrics.
+
+
+## 11. Protocol maintenance and response-size control
+
+- This file is the canonical cross-chat working-style agreement.
+- Whenever the user and assistant agree on a new persistent working rule, update this file at the next meaningful checkpoint.
+- Do not leave durable working agreements only in chat history.
+- A new conversation should not duplicate all working rules in its opening prompt; it should instruct the assistant to read this file together with `RESUME_HERE.md` and the ledger.
+- To reduce UI/runtime recovery issues, prefer shorter tool batches and shorter progress messages.
+- Avoid very long chains of repository/tool operations in one response when the task can be safely checkpointed.
+- Preserve the existing max-3 polling rule for long-running processes.
