@@ -3332,3 +3332,112 @@ Any new ACAD_PASS conversation must read, in order:
 4. latest relevant locks/artifacts/runs
 
 This freezes the user's execution preferences across chats, including sequential-only operations, max-3 polling with ~20 s spacing for long runs, ETA reporting from actual progress, non-repetition of unchanged estimates, failure-first diagnosis, fresh research/brainstorming gates, higher-model consultation rules, scientific-boundary discipline, and meaningful checkpoint updates.
+
+
+## 2026-10-02 — Stage2 protocol-complete; post-Stage2 rebaseline; V4 R_joint source-free preflight PASS
+
+Stage2 source-only protocol completion:
+- historical full-C_F analysis run: `36923877787`
+- historical artifact: `11192953283`
+- artifact digest: `sha256:d773c8b65f607e06ce811d44d7e18deaf49c0da0c17428122d2258b043f82c4b`
+- protocol-completion lock:
+  `phase2/redesign/MPSEF_V4_STAGE2_PROTOCOL_COMPLETION_V2_LOCK.md`
+- lock commit: `524e3e4e63bf58a3344b90b5795550f37497b3ee`
+
+Full-C_F source-only family evidence:
+- legal non-KEEP from >=1 family: **1843/1918 = 96.09%**
+- BOTH independent families: **1736/1918 = 90.51%**
+- SWEET only: **67**
+- SEQ2SEQ_GED_MORPH only: **40**
+- NONE: **75**
+- exact cross-family legal non-KEEP agreement: **167 UIDs / 144 clusters**
+- P3 MIXED_FROM_P1: **1800/1918 = 93.85%**
+- P2 fail-closed generation-completeness rows: **22/1918 = 1.15%**
+- no gold/reference, no quality metric, no R_joint, no selector, no consensus.
+
+Fresh post-Stage2 research/rebaseline:
+- record:
+  `phase2/redesign/ACAD_PASS_POST_STAGE2_FRESH_RESEARCH_REBASELINE_V1.md`
+- commit: `651e55c7e1726facaf5ca23d7eb918eb4ebe2d81`
+- decision:
+  - P1 KEEP
+  - P2 KEEP
+  - P3 KEEP AS SAME-FAMILY ALTERNATE
+  - P4 DEFER
+  - Gemma-3-1B Arabic GEC reserved as source-only probe candidate only; NOT gold-eligible because training provenance does not exclude QALB overlap
+  - family consensus DEFER
+  - learned selector DEFER
+  - generic LLM judge DEFER from primary evidence
+- critical finding:
+  historical `mpsef_rjoint_score_v3.py` is incompatible with V4 because V4 can contain KEEP+P1+P2+P3 (4 actions) and requires P1/P3 same-family semantics.
+
+Frozen pre-gold V4 measurement contract:
+`phase2/redesign/MPSEF_V4_PRE_GOLD_DEVELOPMENT_MEASUREMENT_CONTRACT_V1.md`
+commit:
+`2a749a5a41d5f8e8fd57b596d5c6d25a23c7f986`
+
+New V4 scorer:
+`phase2/redesign/mpsef_rjoint_score_v4.py`
+commit:
+`3edee5e48c96c2930246c35783312686cf894e8b`
+
+Synthetic harness:
+`phase2/redesign/mpsef_rjoint_v4_synthetic_preflight.py`
+commit:
+`cf55653873c561018b5e0102c582d74510cc008c`
+
+Observable workflow commit:
+`df097dffee26b155cb013206e71d6594b3734df4`
+
+GitHub status:
+`acad-pass/v4-rjoint-source-free-preflight = success`
+
+Synthetic result:
+**20/20 PASS**
+
+Frozen source SHA256:
+- scorer: `b9fdbe205e6e00082b51a7ee16c74d0010c4bbe50406ad58d2f6f9e166db7513`
+- synthetic harness: `cb07b046fbd36f2afd0c27f46efd3f7561a42f2ac90b9f4ac5f477e8dd56b8b3`
+- core/matcher: `b9f8c81706c266b75786e04a4363f8af8a5900eb9629acc99dac15ad72389d3c`
+
+Preflight closure lock:
+`phase2/redesign/MPSEF_RJOINT_V4_SOURCE_FREE_PREFLIGHT_CLOSURE_LOCK_V1.md`
+commit:
+`0a56dc4995dc5d28be41ddcc8f30bfcfd521ba7d`
+
+Adversarial review packet:
+`phase2/redesign/ACAD_PASS_V4_RJOINT_PRE_GOLD_ADVERSARIAL_REVIEW_PACKET_V1.md`
+commit:
+`493b75d2a1de7aae16f6fd8d8423d8be02ea70a0`
+
+Scientific boundary remains:
+- **NO real C_F gold/reference load yet**
+- **NO real R_joint yet**
+- **NO P4 execution**
+- **NO selector training**
+- **NO family consensus**
+- **NO generic LLM judge**
+- reserved/internal populations remain closed.
+
+### Exact next unfinished task
+
+Perform an independent/adversarial pre-gold review of:
+1. `MPSEF_V4_PRE_GOLD_DEVELOPMENT_MEASUREMENT_CONTRACT_V1.md`
+2. `MPSEF_RJOINT_V4_SOURCE_FREE_PREFLIGHT_CLOSURE_LOCK_V1.md`
+3. `mpsef_rjoint_score_v4.py`
+4. `mpsef_rjoint_v4_synthetic_preflight.py`
+5. `mpsef_rjoint_core_v2.py`
+6. Stage2 protocol-completion lock
+7. post-Stage2 research rebaseline.
+
+Allowed verdict:
+**PROCEED / MODIFY / BLOCK**
+
+If MODIFY/BLOCK:
+- remediate before any gold;
+- rerun source-free synthetic preflight for semantics-changing changes.
+
+Only after review resolution may a separate lock authorize one C_F gold-aware DEVELOPMENT / REFERENCE-RELATIVE measurement.
+
+Current classification:
+**IMPROVED STRONGLY / PRE-GOLD MEASUREMENT IMPLEMENTATION READY / LINGUISTIC PERFORMANCE STILL UNMEASURED**
