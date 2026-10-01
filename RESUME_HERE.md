@@ -2441,3 +2441,21 @@ After a PASS:
 
 Current classification:
 **IMPROVED METHODOLOGICAL VALIDITY / P2 EXECUTABILITY WORSENED TO ZERO / CORRECTED QUALITY PERFORMANCE STILL UNMEASURED**
+
+
+### Corrected matching contracts added before Second Preflight
+
+Governing corrected-cycle files:
+- `phase2/redesign/MPSEF_TARGET_FAMILY_MAP_V2.md`
+- `phase2/redesign/MPSEF_TARGET_AND_MATCHING_CONTRACT_V2_AMENDMENT.md`
+
+Key freeze:
+- punctuation-only classification preserves lexical token-boundary changes;
+- `m -> a!` and `ياولد -> يا ولد،` cannot disappear from the linguistic denominator;
+- execution/legalization alignment is source-only;
+- diagnostic decomposition is source-only;
+- official M2 gold-aware path selection is permitted only inside evaluation of an already frozen whole action;
+- evaluation matching cannot mutate legality, actions, diagnostic evidence, protection, or denominator;
+- scoring failure yields [L,U], not known zero.
+
+These files must be included in Second Preflight contract hashes.
