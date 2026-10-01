@@ -3164,3 +3164,31 @@ New preregistered additions:
 
 Current state:
 **STAGE2 CONTRACT FROZEN / AWAITING ADVERSARIAL HIGHER-MODEL REVIEW / NO FULL-C_F EXECUTION YET**
+
+
+## 2026-10-01 — Higher-model Stage2 review resolved
+
+Higher-model verdict:
+**MODIFY**
+
+Accepted:
+- 0 BLOCKER
+- M01 production-bound replay
+- M02 P2 partial failure evidence
+- M03 family leave-one-out + frozen Stage-B classifier
+- M04 watchdog/process-tree/partial-artifact semantics
+- N01 overlapping cluster-presence bins
+- N02 runtime/burden eligibility
+
+Frozen amendment:
+`MPSEF_V4_STAGE2_SOURCE_ONLY_FULL_CF_EXECUTION_CONTRACT_V1_AMENDMENT_A1.md`
+
+Resolution lock:
+`ACAD_PASS_STAGE2_HIGHER_MODEL_REVIEW_RESOLUTION_LOCK_V1.md`
+
+P4 remains DEFER.
+P2 budget remains 240 min.
+P3 budget remains 90 min.
+
+Stage2 full-C_F execution is still BLOCKED until:
+production adapters + watchdog V2 + P2 partial-evidence schema + Stage-B classifier tests + input lock + production-bound Parity32 replay + P2 B01 adapter replay all PASS.
