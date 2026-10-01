@@ -1,0 +1,37 @@
+{
+  "record_id": "MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2_TEMPLATE",
+  "status": "TEMPLATE_NOT_AUTHORIZED",
+  "note": "Do not rename this template to the active authorization file unless an exact SHA-bound independent review returns GO TO MEASUREMENT AUTHORIZATION.",
+  "experiment_id": "MPSEF-RJOINT-V2-CF1918-20261001-A",
+  "measurement_version": "MPSEF_RJOINT_MEASUREMENT_V2",
+  "decision": "PENDING_INDEPENDENT_REVIEW",
+  "single_run_only": true,
+  "code_commit_sha": "<SECOND_PREFLIGHT_CODE_COMMIT_SHA>",
+  "second_preflight": {
+    "status": "<PASS>",
+    "run_id": "<RUN_ID>",
+    "summary_sha256": "<SUMMARY_SHA256>",
+    "code_commit_sha": "<SECOND_PREFLIGHT_CODE_COMMIT_SHA>"
+  },
+  "frozen_inputs": {
+    "source_manifest_sha256": "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193",
+    "p1_proposal_sha256": "2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d",
+    "p2_proposal_sha256": "f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b",
+    "executable_actions_sha256": "6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a",
+    "hypotheses_sha256": "b4736383019d017780a8bfe4b076a0cd742e71bccfbb50350da8fa59b7c9ac75",
+    "diagnostic_components_sha256": "2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e",
+    "gold_m2_sha256": "971b6fbb28dc3767193e7a4b0f722c3abebfc8600155a57093ba483dac6491e8"
+  },
+  "implementation_hashes": "<COPY EXACT MAP FROM SECOND PREFLIGHT SUMMARY>",
+  "contract_hashes": "<COPY EXACT MAP FROM SECOND PREFLIGHT SUMMARY>",
+  "independent_review": {
+    "verdict": "<GO TO MEASUREMENT AUTHORIZATION>",
+    "reviewed_code_commit_sha": "<SECOND_PREFLIGHT_CODE_COMMIT_SHA>",
+    "reviewed_preflight_run_id": "<RUN_ID>",
+    "report_sha256": "<SHA256 OF phase2/redesign/MPSEF_CORRECTED_INDEPENDENT_REVIEW_AR_V2.md>"
+  },
+  "claim_scope": "DEVELOPMENT_FEASIBILITY / ADAPTIVELY_CONSUMED QALB-2014 ORIGIN / NOT_INDEPENDENT_GENERALIZATION_EVIDENCE",
+  "selector_authorized": false,
+  "auto_safe_authorized": false,
+  "reserved_sets_authorized": false
+}
