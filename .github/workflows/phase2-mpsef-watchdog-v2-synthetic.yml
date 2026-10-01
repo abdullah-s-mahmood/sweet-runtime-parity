@@ -1,0 +1,48 @@
+name: Phase 2 MP-SEF Watchdog V2 Synthetic Preflight
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/run_with_progress_watchdog_v2.py"
+      - "phase2/redesign/test_run_with_progress_watchdog_v2.py"
+      - ".github/workflows/phase2-mpsef-watchdog-v2-synthetic.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  watchdog-v2:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Run Watchdog V2 synthetic tests
+        run: |
+          set -euo pipefail
+          python phase2/redesign/test_run_with_progress_watchdog_v2.py | tee WATCHDOG_V2_SYNTHETIC.log
+          grep -q '"status": "PASS"' WATCHDOG_V2_SYNTHETIC.log
+          grep -q '"count": 4' WATCHDOG_V2_SYNTHETIC.log
+
+      - name: Freeze hashes
+        if: always()
+        run: |
+          sha256sum             phase2/redesign/run_with_progress_watchdog_v2.py             phase2/redesign/test_run_with_progress_watchdog_v2.py             .github/workflows/phase2-mpsef-watchdog-v2-synthetic.yml             WATCHDOG_V2_SYNTHETIC.log             > WATCHDOG_V2_SYNTHETIC_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-watchdog-v2-synthetic-v1
+          path: |
+            WATCHDOG_V2_SYNTHETIC.log
+            WATCHDOG_V2_SYNTHETIC_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
