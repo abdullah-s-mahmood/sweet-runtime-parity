@@ -3585,3 +3585,105 @@ commit:
 
 Exact next action:
 use the compact prompt with the independent higher model; return its verdict/review to this branch/chat; then resolve BLOCKER/MAJOR findings before any real C_F gold load.
+
+
+## 2026-10-02 — V4.2 hardened preflight verification pending
+
+Internal adversarial review:
+`phase2/redesign/ACAD_PASS_V4_RJOINT_INTERNAL_ADVERSARIAL_REVIEW_V1.md`
+commit:
+`0bb90f26f745a77c2f3334789581c8f2e817c1af`
+
+Verdict:
+**MODIFY BEFORE GOLD**
+- BLOCKER: 0
+- MAJOR: 4
+- MINOR: 3
+
+Primary repairs:
+- full-reference scoring with primary/punctuation projection;
+- explicit M05 composite BOUNDARY={SPLIT,MERGE};
+- 95% ROSTER primary candidate-availability gate;
+- production identity-lock requirement.
+
+Amendment:
+`phase2/redesign/MPSEF_V4_PRE_GOLD_DEVELOPMENT_MEASUREMENT_CONTRACT_V1_AMENDMENT_A1.md`
+commit:
+`cae6c3f95e9ffdad9f7e550aa41d971f5541ff41`
+
+V4.1:
+- scorer commit: `61a810e3c1ae443e0671fb150c83374d2c981869`
+- 27-case harness commit: `4fdaafd894f3e80eec5e39901a46b7da80d05fc3`
+- workflow commit: `31242b687015df9c2220e68c7ae2c87cc8548d58`
+- status: SUCCESS
+- source-free: true
+- gold: false
+
+Pre-closure guard review found additional input-semantics hardening needed:
+- reject duplicate literal outputs;
+- reject non-KEEP source-equivalent output;
+- reject action output SHA mismatch;
+- reject KEEP/source SHA mismatch.
+
+V4.2 hardened scorer:
+`phase2/redesign/mpsef_rjoint_score_v4_2.py`
+commits:
+- `6e278abbe0431043ee74e2bac4c1f6ed649f4005`
+- `f5e50f2f9e3371ab7ea7f294cc1b3b499b1f4e63`
+
+31-case harness:
+`phase2/redesign/mpsef_rjoint_v4_2_synthetic_preflight.py`
+commit:
+`3559c73d0014f314806d2613163e3e7f536d026b`
+
+Initial V4.2 workflow:
+commit `710920fd7426aa6c7aa2cfa330012fb695623459`
+observed:
+- preflight status = FAILURE
+- scorer/test/core/result SHA status publication succeeded.
+
+Diagnostic rerun:
+commit `8654902115d3036f7a391e3a11fb8097c91e8cce`
+observed:
+- diagnostic summary context published;
+- no per-test fail contexts exposed.
+
+Minimal unchanged verification-only workflow:
+commit `2481dcb8b2160a47d017a3a9a0409437bdb9f331`
+
+Three status polls in the current turn returned no exposed status yet.
+Polling stopped per working protocol.
+
+Diagnostic lock:
+`phase2/redesign/MPSEF_RJOINT_V4_2_PREFLIGHT_ATTEMPT_DIAGNOSTIC_LOCK_V1.md`
+commit:
+`05f1fec3345c0c8100a2044b6cde67e2e9ea5f73`
+
+Scientific boundary:
+- NO real C_F gold/reference load;
+- NO real R_joint;
+- NO P4;
+- NO selector;
+- NO consensus;
+- NO LLM judge;
+- reserved/internal populations closed.
+
+### Exact next unfinished task
+
+Inspect commit:
+`2481dcb8b2160a47d017a3a9a0409437bdb9f331`
+
+If:
+`acad-pass/v4-2-rjoint-31of31 = success`
+
+then:
+1. freeze V4.2 source-free closure and SHA identities;
+2. perform remediation closure review;
+3. build/freeze production premeasurement input-lock/wrapper;
+4. gold remains closed until an explicit authorization lock.
+
+If status is absent/failure:
+diagnose the verification-only workflow before changing scorer/harness.
+
+Current classification:
+**MIXED / METHOD HARDENED / V4.2 CLOSURE PENDING / PERFORMANCE UNMEASURED**
