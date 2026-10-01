@@ -21,7 +21,7 @@ from mpsef_rjoint_score_v4_2 import (
     validate_measurement_identity_contract,
 )
 
-VERSION = "MPSEF_RJOINT_V4_2_SOURCE_FREE_SYNTHETIC_PREFLIGHT_V1"
+VERSION = "MPSEF_RJOINT_V4_2_SOURCE_FREE_SYNTHETIC_PREFLIGHT_V2"
 
 
 def sha(s):
@@ -275,13 +275,16 @@ def main():
     check("T19_SCORING_ERROR_EVIDENCE_PRESERVED", t19, results)
 
     def t20():
-        bad = aset(source, [keep], source_sha="BAD")
+        # The action set is internally valid. Only the externally expected
+        # source fingerprint is wrong, so this specifically exercises the
+        # external identity guard rather than an earlier internal invariant.
+        valid = aset(source, [keep])
         try:
-            validate_action_set(bad, sha(source))
+            validate_action_set(valid, "BAD_EXPECTED_SOURCE_SHA")
         except RuntimeError as exc:
             assert "ACTION_SOURCE_IDENTITY_MISMATCH" in str(exc)
             return
-        raise AssertionError("identity mismatch did not fail closed")
+        raise AssertionError("external source identity mismatch did not fail closed")
     check("T20_ACTION_IDENTITY_FAIL_CLOSED", t20, results)
 
     def t21():
@@ -337,16 +340,18 @@ def main():
 
     def t24():
         uid = "BOUNDARY"
-        src = "ab cd"
+        src = "ab c d"
         k = action("K24", src, keep=True)
-        split = action("S24", "a b cd", ("P1",))
-        merge = action("M24", "ab c d", ("P3",))
+        split = action("S24", "a b c d", ("P1",))
+        merge = action("M24", "ab cd", ("P3",))
         rows = [source_row(uid, src)]
         sets = [aset(src, [k, split, merge], uid=uid)]
         gold = {
             uid: [
+                # SPLIT: one lexical token -> multiple tokens with same concat.
                 (0, 1, "ab", ["a b"]),
-                (1, 2, "cd", ["c d"]),
+                # MERGE: multiple lexical tokens -> one token with same concat.
+                (1, 3, "c d", ["cd"]),
             ]
         }
         out = score_population_v4_2(
@@ -475,10 +480,72 @@ def main():
         raise AssertionError("KEEP/source SHA mismatch accepted")
     check("T31_KEEP_SOURCE_SHA_MISMATCH_FAIL_CLOSED", t31, results)
 
+    def identity_fixture():
+        return {
+            "source_manifest_sha256": "A",
+            "action_set_sha256": "B",
+            "scorer_sha256": "C",
+            "core_sha256": "D",
+            "matching_version": "E",
+            "family_map_version": "F",
+            "punctuation_policy_version": PUNCTUATION_POLICY_VERSION,
+            "population_uid_sha256": "G",
+            "gold_sha256": "H",
+            "python_version": "3.10",
+            "dependency_lock_sha256": "I",
+            "result_schema_version": "J",
+        }
+
+    def t32():
+        # Identity mismatch MUST be rejected before build_targets() examines
+        # even a deliberately invalid synthetic gold record.
+        uid = "IDENTITY_BEFORE_GOLD"
+        src = "نص"
+        k = action("K32", src, keep=True)
+        actual = identity_fixture()
+        expected = identity_fixture()
+        actual["gold_sha256"] = "WRONG"
+        invalid_gold = {uid: [(0, 1, "خطا", ["خطأ", "خطاء"])]}
+        try:
+            score_population_v4_2(
+                None,
+                [source_row(uid, src)],
+                [aset(src, [k], uid=uid)],
+                invalid_gold,
+                evaluate_fn=fake_eval({src: ([], 0)}),
+                frozen_identity=actual,
+                expected_identity=expected,
+            )
+        except RuntimeError as exc:
+            assert "IDENTITY_MISMATCH:gold_sha256" in str(exc)
+            return
+        raise AssertionError("identity mismatch did not precede gold analysis")
+    check("T32_IDENTITY_REJECTS_BEFORE_GOLD_ANALYSIS", t32, results)
+
+    def t33():
+        uid = "IDENTITY_INCOMPLETE"
+        src = "نص"
+        k = action("K33", src, keep=True)
+        try:
+            score_population_v4_2(
+                None,
+                [source_row(uid, src)],
+                [aset(src, [k], uid=uid)],
+                {uid: []},
+                evaluate_fn=fake_eval({src: ([], 0)}),
+                frozen_identity=identity_fixture(),
+                expected_identity=None,
+            )
+        except RuntimeError as exc:
+            assert "IDENTITY_CONTRACT_INCOMPLETE" in str(exc)
+            return
+        raise AssertionError("incomplete identity contract accepted")
+    check("T33_IDENTITY_PAIR_REQUIRED_FAIL_CLOSED", t33, results)
+
     passed = sum(r["status"] == "PASS" for r in results)
     summary = {
         "record_id": VERSION,
-        "status": "PASS" if passed == 31 else "FAIL",
+        "status": "PASS" if passed == 33 else "FAIL",
         "test_count": len(results),
         "passed": passed,
         "failed": len(results) - passed,
@@ -490,7 +557,7 @@ def main():
         "family_consensus_activated": False,
         "tests": results,
     }
-    Path("MPSEF_RJOINT_V4_2_SYNTHETIC_PREFLIGHT_V1.json").write_text(
+    Path("MPSEF_RJOINT_V4_2_SYNTHETIC_PREFLIGHT_V2.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
