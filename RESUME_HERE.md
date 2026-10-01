@@ -2979,3 +2979,45 @@ Lock:
 
 Next:
 build/freeze P2_V2 Stage1 source-only runner from the source-free real-model PASS path.
+
+
+## 2026-10-01 — P2_V2 Stage1 source-only COMPLETE
+
+Run:
+`36872617551`
+
+Artifact:
+`11168548251`
+
+Artifact digest:
+`sha256:050d376b98ecf0b0be2c9ff49610d1d67834fa4f0839b02ab344f828f6d82ce9`
+
+Results:
+- monitored work: 152/152 = 100%
+- OK: 127/128 = 99.21875%
+- non-executable: 1/128 = 0.78125%
+- changed vs source: 126/128 = 98.4375% (activity only, not correctness)
+- empty output: 0
+- repeat parity: 8/8
+- reversed-order parity: 8/8
+- true batch-vs-single: N/A; no batched model-call path exists in V1
+- main proposal runtime: 581.313 s (~9.69 min)
+- mean: 4.540 s/case
+- median: 4.536 s/case
+- p95: 5.535 s/case
+- peak RSS: ~2.51 GiB
+
+Single failure:
+- UID `train:12118`
+- `GEC_EOS_AT_GENERATION_CEILING_FAIL_CLOSED`
+- class: CAPACITY / GENERATION-COMPLETENESS BOUNDARY
+- repairability: FIXABLE_NEXT_VERSION_ONLY
+- preserved non-executable in V1.
+
+No gold/reference, no quality metric, no R_joint, no selector training.
+
+Lock:
+`phase2/redesign/MPSEF_P2_V2_STAGE1_RESULT_LOCK_V1.md`
+
+Next:
+P3 source-only Stage1 using exact P1 parent outputs on the same frozen 128-case packet.
