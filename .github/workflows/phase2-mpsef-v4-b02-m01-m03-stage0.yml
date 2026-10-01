@@ -1,0 +1,65 @@
+name: Phase 2 MP-SEF V4 B02 M01 M03 Stage0
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-v4-b02-m01-m03-stage0.yml"
+      - "phase2/redesign/mpsef_v4_b02_m01_m03_stage0.py"
+      - "phase2/redesign/mpsef_executable_actions_legalizer_v1.py"
+      - "phase2/redesign/MPSEF_V4_CANDIDATE_REGISTRY_ACTIONSET_CONTRACT_V2.md"
+      - "phase2/redesign/MPSEF_P3_V1_ROLE_AMENDMENT_V2.md"
+      - "phase2/redesign/MPSEF_SHADOW_PROTECTION_DIAGNOSTICS_CONTRACT_V1.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stage0:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Run source-free B02 M01 M03 Stage0
+        run: |
+          python phase2/redesign/mpsef_v4_b02_m01_m03_stage0.py --self-test             | tee MPSEF_V4_B02_M01_M03_STAGE0_RESULT.json
+
+      - name: Validate source-free result
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("MPSEF_V4_B02_M01_M03_STAGE0_RESULT.json").read_text())
+          assert x["status"]=="PASS"
+          assert x["contract_results"]["B02"]["status"]=="PASS"
+          assert x["contract_results"]["M01"]["status"]=="PASS"
+          assert x["contract_results"]["M03"]["status"]=="PASS"
+          assert x["project_source_loaded"] is False
+          assert x["project_gold_loaded"] is False
+          assert x["project_metric_computed"] is False
+          assert x["quality_claimed"] is False
+          assert x["v3_artifacts_modified"] is False
+          print("V4_B02_M01_M03_STAGE0_PASS")
+          PY
+
+      - name: Freeze hashes
+        run: |
+          sha256sum             phase2/redesign/mpsef_v4_b02_m01_m03_stage0.py             phase2/redesign/mpsef_executable_actions_legalizer_v1.py             phase2/redesign/MPSEF_V4_CANDIDATE_REGISTRY_ACTIONSET_CONTRACT_V2.md             phase2/redesign/MPSEF_P3_V1_ROLE_AMENDMENT_V2.md             phase2/redesign/MPSEF_SHADOW_PROTECTION_DIAGNOSTICS_CONTRACT_V1.md             MPSEF_V4_B02_M01_M03_STAGE0_RESULT.json             > MPSEF_V4_B02_M01_M03_STAGE0_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-v4-b02-m01-m03-stage0
+          path: |
+            MPSEF_V4_B02_M01_M03_STAGE0_RESULT.json
+            MPSEF_V4_B02_M01_M03_STAGE0_SHA256.txt
+          retention-days: 90
