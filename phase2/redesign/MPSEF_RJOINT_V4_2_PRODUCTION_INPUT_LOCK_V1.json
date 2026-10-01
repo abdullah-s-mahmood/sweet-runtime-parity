@@ -1,0 +1,84 @@
+{
+  "record_id": "MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1",
+  "date": "2026-10-02",
+  "status": "FROZEN_READY_FOR_SINGLE_RUN_AUTHORIZATION",
+  "experiment_id": "MPSEF-RJOINT-V4_2-CF1918-20261002-A",
+  "claim_scope": "DEVELOPMENT / ADAPTIVELY_CONSUMED / REFERENCE_RELATIVE / NOT_INDEPENDENT_GENERALIZATION",
+  "governing_contract": "phase2/redesign/MPSEF_V4_PRE_GOLD_DEVELOPMENT_MEASUREMENT_CONTRACT_V1_AMENDMENT_A1.md",
+  "independent_delta_review": {
+    "verdict": "MODIFY",
+    "new_blocker_major_findings": "NONE",
+    "gold_authorization": "DO NOT AUTHORIZE YET",
+    "required_preconditions": [
+      "repair V4.2 synthetic preflight defects",
+      "complete A1 section A1.6 production wrapper/input lock",
+      "freeze V4.2 closure evidence",
+      "issue separate exact-SHA-bound single-run authorization"
+    ]
+  },
+  "population_cases": 1918,
+  "population_clusters": 764,
+  "source_manifest_sha256": "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193",
+  "action_set_sha256": "e38393abb36734d3882e29a78f3b33c80718791957b9b8c0c6e8a8ab77f6e138",
+  "population_uid_sha256": "51e2e1decf1c7c9efbc31e343eba1c7dfb08d0de314041cb57f5b3118ffd550f",
+  "population_cluster_sha256": "bb2f49c6aaf312cf9c388237090a79861fa6218da15de57d0119efd39327ae3c",
+  "uid_cluster_map_sha256": "32b89f9dcadefa0f17cb0fddac6099433d611508a01ad96b428e0534c1057c5d",
+  "provenance_signature_map_sha256": "18561c75c397821c34e3dc06214bb4f64cc5ff8d6757f61835cbe9e6808befbd",
+  "scorer_sha256": "be9cf725b71b8d26a23eff9e9afd4ca434294a4d8f72e0271caa179ca892f2e1",
+  "core_sha256": "b9f8c81706c266b75786e04a4363f8af8a5900eb9629acc99dac15ad72389d3c",
+  "wrapper_sha256": "72bf23c9f910c2b203caf11e6e677729fa914d66c2d1e062ac0fd7dfd6da357f",
+  "dependency_lock_sha256": "aa66ec3d6fdb4aef1b4fada26a1b6cf794f632139655e22462a7a1c27aab7bc5",
+  "matching_version": "MPSEF_RJOINT_M2_EVALUATION_MATCH_V2",
+  "family_map_version": "MPSEF_TARGET_FAMILY_MAP_V2",
+  "punctuation_policy_version": "MPSEF_V4_1_FULL_REFERENCE_PRIMARY_PROJECTION_V1",
+  "result_schema_version": "MPSEF_RJOINT_V4_2_RESULT_SCHEMA_V1",
+  "gold_projection_version": "MPSEF_CF_GOLD_PROJECTION_V2",
+  "gold_sha256": "971b6fbb28dc3767193e7a4b0f722c3abebfc8600155a57093ba483dac6491e8",
+  "calibration_uid_sha256": "3b6c1128f412531223b3c2e5346082d3290f40daac706eb13bbafa1db10a09c9",
+  "python_version": "3.10",
+  "arabic_gec_revision": "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf",
+  "source_artifact": {
+    "record": "MPSEF_CF_SOURCE_MANIFEST_V1",
+    "cases": 1918,
+    "clusters": 764
+  },
+  "action_set_artifact": {
+    "source_analysis_run": 36923877787,
+    "artifact_id": 11192953283,
+    "artifact_digest": "sha256:d773c8b65f607e06ce811d44d7e18deaf49c0da0c17428122d2258b043f82c4b",
+    "filename": "MPSEF_V4_STAGE2_SOURCE_ONLY_ACTION_SETS_V2.jsonl"
+  },
+  "proposer_family_binding": {
+    "KEEP": "KEEP",
+    "P1_CONTROL_SWEET_QALB14_NOPNX_ITER2": "SWEET_QALB14",
+    "P2_V2_ARABART_GED_MORPH_WORDALIGNED": "SEQ2SEQ_GED_MORPH",
+    "P3_V1_SWEET_NOPNX2_PNX1": "SWEET_QALB14"
+  },
+  "pre_gold_verification": {
+    "workflow_commit": "23a60899ba35b06f5955eccca4eac0dcb8972cd9",
+    "status_context": "acad-pass/v4-2-pre-gold-wrapper",
+    "status": "success",
+    "scorer_preflight": {
+      "passed": 33,
+      "total": 33,
+      "harness_sha256": "da31f7c1dd6d1f0bfd5356a54a19aba518742ce489f9f3d7d59242609566c25c",
+      "result_sha256": "c46ac5e3fe6ffc349273104c6f8849b9628fa0383780e40e20fb077ad50b5a1e"
+    },
+    "wrapper_preflight": {
+      "passed": 14,
+      "total": 14,
+      "test_sha256": "d62696e3a2df2ee9fbb20839cef35bca7e4b0aec39155206837af400686c3ab8",
+      "result_sha256": "1b03bf5a0192b35abd03d38b8d31c5a7396473fe1509bb39f591f418cf27a27e"
+    }
+  },
+  "authorization_boundary": {
+    "gold_content_opened_by_this_lock": false,
+    "real_r_joint_computed": false,
+    "selector_authorized": false,
+    "family_consensus_authorized": false,
+    "p4_authorized": false,
+    "llm_judge_authorized": false,
+    "reserved_sets_authorized": false,
+    "single_run_authorization_required": true
+  }
+}
