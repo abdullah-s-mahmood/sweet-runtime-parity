@@ -1,0 +1,220 @@
+name: Phase 2 MP-SEF R_joint Second Premeasurement Preflight v2
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-rjoint-second-preflight-v2.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  second-preflight-v2:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Clone frozen official text-editing scorer for synthetic-only tests
+        run: |
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git -C upstream/text-editing rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Run all module-level non-project smoke tests
+        run: |
+          python phase2/redesign/mpsef_executable_actions_legalizer_v1.py --self-test
+          python - <<'PY'
+          import sys
+          sys.path.insert(0,"phase2/redesign")
+          from mpsef_rjoint_core_v2 import self_test
+          assert self_test("upstream/text-editing")
+          print("CORE_V2_OFFICIAL_M2_SYNTHETIC_OK")
+          PY
+          python phase2/redesign/mpsef_rjoint_score_v2.py --self-test
+          python phase2/redesign/mpsef_measurement_guard_v2.py --self-test
+          python phase2/redesign/mpsef_cf_gold_projection_v2.py --self-test
+          python phase2/redesign/mpsef_rjoint_measurement_v2.py --self-test
+
+      - name: Download frozen P1/source artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-cf-proposals-v1
+          path: p2_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36768378938
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download corrected frozen executable-action artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-source-only-legalizer-v1
+          path: legalizer_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36808497947
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen diagnostic artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-diagnostic-components-v1
+          path: diagnostic_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36807629220
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Execute C01-C22 machine-checkable acceptance suite
+        run: |
+          python phase2/redesign/mpsef_second_preflight_checks_v2.py             --repo-root .             --code-commit-sha "$GITHUB_SHA"             --source-manifest p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl             --p1-proposals p1_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl             --p2-proposals p2_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl             --action-sets legalizer_artifact/MPSEF_EXECUTABLE_ACTIONS_V1_ACTION_SETS.jsonl             --hypotheses legalizer_artifact/MPSEF_EXECUTABLE_ACTIONS_V1_HYPOTHESES.jsonl             --diagnostic-components diagnostic_artifact/MPSEF_DIAGNOSTIC_COMPONENTS_V1.jsonl             --measurement-workflow .github/workflows/phase2-mpsef-rjoint-measurement-v2.yml             --second-preflight-workflow .github/workflows/phase2-mpsef-rjoint-second-preflight-v2.yml             --out MPSEF_SECOND_PREFLIGHT_CHECKS_V2.json
+
+      - name: Require all 22 checks PASS and no project measurement
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("MPSEF_SECOND_PREFLIGHT_CHECKS_V2.json",encoding="utf-8"))
+          assert x["status"]=="PASS"
+          assert x["pass_count"]==22 and x["required_count"]==22
+          assert set(x["checks"])=={f"C{i:02d}" for i in range(1,23)}
+          assert all(v["status"]=="PASS" for v in x["checks"].values())
+          assert x["project_gold_loaded"] is False
+          assert x["project_metric_computed"] is False
+          assert x["measurement_authorized_by_preflight"] is False
+          assert x["source_only_artifacts_unchanged"] is True
+          print("SECOND_PREFLIGHT_C01_C22_PASS")
+          PY
+
+      - name: Build exact implementation and contract hash ledger
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,platform
+          from pathlib import Path
+          def sha(p):
+              return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+
+          implementation_paths=[
+            "phase2/redesign/mpsef_executable_actions_legalizer_v1.py",
+            "phase2/redesign/mpsef_build_diagnostic_components_v1.py",
+            "phase2/redesign/mpsef_rjoint_core_v2.py",
+            "phase2/redesign/mpsef_rjoint_score_v2.py",
+            "phase2/redesign/mpsef_measurement_guard_v2.py",
+            "phase2/redesign/mpsef_cf_gold_projection_v2.py",
+            "phase2/redesign/mpsef_rjoint_measurement_v2.py",
+            "phase2/redesign/mpsef_second_preflight_checks_v2.py",
+            "phase2/redesign/process_progress_v1.py",
+            "phase2/redesign/run_with_progress_watchdog_v1.py",
+            ".github/workflows/phase2-mpsef-source-only-legalizer-v1.yml",
+            ".github/workflows/phase2-mpsef-diagnostic-components-v1.yml",
+            ".github/workflows/phase2-mpsef-scorer-v2-synthetic-preflight.yml",
+            ".github/workflows/phase2-mpsef-rjoint-measurement-v2.yml",
+            ".github/workflows/phase2-mpsef-rjoint-second-preflight-v2.yml",
+          ]
+
+          contract_paths=[
+            "phase2/redesign/MPSEF_PRE_UNION_PROTOCOL_V3.md",
+            "phase2/redesign/MPSEF_BUNDLE_CONTRACT_V1.md",
+            "phase2/redesign/MPSEF_TARGET_AND_MATCHING_CONTRACT_V1.md",
+            "phase2/redesign/MPSEF_TARGET_AND_MATCHING_CONTRACT_V2_AMENDMENT.md",
+            "phase2/redesign/MPSEF_TARGET_FAMILY_MAP_V2.md",
+            "phase2/redesign/MPSEF_PROTECTED_INVARIANTS_CONTRACT_V1.md",
+            "phase2/redesign/ACAD_PASS_LONG_PROCESS_MONITORING_CONTRACT_V1.md",
+            "phase2/redesign/MPSEF_MEASUREMENT_EXPOSURE_AUDIT_V1.md",
+            "phase2/redesign/MPSEF_OPERATOR_EXPOSURE_ATTESTATION_V1.md",
+            "phase2/redesign/MPSEF_POPULATION_PRECEDENCE_DECISION_V1.md",
+            "phase2/redesign/MPSEF_P2_GED_WORD_ALIGNMENT_PROVENANCE_AUDIT_V1.md",
+            "phase2/redesign/MPSEF_SOURCE_ONLY_LEGALIZER_LOCK_V1R1.md",
+            "phase2/redesign/MPSEF_DIAGNOSTIC_COMPONENTS_LOCK_V1.md",
+            "phase2/redesign/MPSEF_SCORER_V2_FINAL_SYNTHETIC_PREFLIGHT_LOCK.md",
+            "phase2/redesign/MPSEF_RJOINT_EXPERIMENT_ID_V2.json",
+            "phase2/redesign/MPSEF_CORRECTED_PREAUTH_REVIEW_PACKAGE_V2.md",
+            "phase2/redesign/MPSEF_HIGHER_MODEL_CORRECTED_REVIEW_PROMPT_V2.md",
+            "phase2/redesign/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2_TEMPLATE.json",
+          ]
+
+          impl={p:sha(p) for p in implementation_paths}
+          contracts={p:sha(p) for p in contract_paths}
+          checks=json.load(open("MPSEF_SECOND_PREFLIGHT_CHECKS_V2.json",encoding="utf-8"))
+
+          summary={
+            "record_id":"MPSEF_RJOINT_SECOND_PREFLIGHT_V2",
+            "status":"PASS",
+            "run_id":int(os.environ["GITHUB_RUN_ID"]),
+            "code_commit_sha":os.environ["GITHUB_SHA"],
+            "checklist_version":"C01-C22_FROM_INDEPENDENT_REVIEW_2026-10-01",
+            "checks_passed":checks["pass_count"],
+            "checks_required":checks["required_count"],
+            "checklist_sha256":sha("MPSEF_SECOND_PREFLIGHT_CHECKS_V2.json"),
+            "implementation_hashes":impl,
+            "contract_hashes":contracts,
+            "source_manifest_sha256":"051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193",
+            "P1_proposal_sha256":"2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d",
+            "P2_proposal_sha256":"f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b",
+            "executable_actions_sha256":"6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a",
+            "hypotheses_sha256":"b4736383019d017780a8bfe4b076a0cd742e71bccfbb50350da8fa59b7c9ac75",
+            "diagnostic_components_sha256":"2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e",
+            "upstream_text_editing_revision":"4d552ca3ae98029550f27fc52aa1b22883e16e61",
+            "python_version":platform.python_version(),
+            "project_gold_loaded":False,
+            "project_metric_computed":False,
+            "measurement_authorized_by_preflight":False,
+            "selector_authorized":False,
+            "reserved_sets_authorized":False,
+            "next_gate":"INDEPENDENT_CORRECTED_PREAUTH_REVIEW",
+          }
+          Path("MPSEF_RJOINT_SECOND_PREFLIGHT_V2_SUMMARY.json").write_text(
+              json.dumps(summary,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Validate preflight output is explicitly non-authorizing
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_RJOINT_SECOND_PREFLIGHT_V2_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["checks_passed"]==22 and s["checks_required"]==22
+          assert s["code_commit_sha"]=="${{ github.sha }}"
+          assert s["project_gold_loaded"] is False
+          assert s["project_metric_computed"] is False
+          assert s["measurement_authorized_by_preflight"] is False
+          assert s["selector_authorized"] is False
+          assert s["reserved_sets_authorized"] is False
+          assert s["next_gate"]=="INDEPENDENT_CORRECTED_PREAUTH_REVIEW"
+          print("SECOND_PREFLIGHT_V2_NON_AUTHORIZING_PASS")
+          PY
+
+      - name: Freeze preflight environment and output hashes
+        run: |
+          python -m pip freeze > MPSEF_RJOINT_SECOND_PREFLIGHT_V2_PIP_FREEZE.txt
+          sha256sum             MPSEF_SECOND_PREFLIGHT_CHECKS_V2.json             MPSEF_RJOINT_SECOND_PREFLIGHT_V2_SUMMARY.json             MPSEF_RJOINT_SECOND_PREFLIGHT_V2_PIP_FREEZE.txt             > MPSEF_RJOINT_SECOND_PREFLIGHT_V2_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-rjoint-second-preflight-v2
+          path: |
+            MPSEF_SECOND_PREFLIGHT_CHECKS_V2.json
+            MPSEF_RJOINT_SECOND_PREFLIGHT_V2_SUMMARY.json
+            MPSEF_RJOINT_SECOND_PREFLIGHT_V2_PIP_FREEZE.txt
+            MPSEF_RJOINT_SECOND_PREFLIGHT_V2_SHA256.txt
+          retention-days: 90
