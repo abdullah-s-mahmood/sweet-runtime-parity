@@ -3067,3 +3067,51 @@ P3 is mostly MIXED relative to P1 rather than punctuation-only on this packet. T
 
 Next:
 V4 source-only legal/dedup/diversity analysis over P1/P2_V2/P3.
+
+
+## 2026-10-01 — V4 Stage1 PROTOCOL COMPLETE
+
+Stage1 source-only packet and proposer execution are now protocol-complete.
+
+Parity32 manifest:
+- SHA: `384f1a6d08f79c6a9d73dc4298f1a1fac245d9f43bed2e77a5395cc1a2f4711e`
+- run: `36878829104`
+- artifact: `11170650411`
+
+Parity remediation:
+- P1: 32/32 PASS — run `36879926916`
+- P2_V2: 32/32 PASS — run `36880639044`
+- P3_V1: 32/32 PASS — run `36882627604`
+
+P1 artifact:
+`11170907081`
+digest `eab2ac1854de3bff1858c9c09e23b3a1c212ec1b50af33fd4755053f3b8d189d`
+
+P2 artifact:
+`11170904136`
+digest `7da2451dd06e7d9e6221f6614cbda8127c6fe7666c974999a4b0f6542810362d`
+
+P3 artifact:
+`11171344349`
+digest `55bad830353501a139b85d920c70cdd6be6920e10257c4a286691258d4da88e4`
+
+Stage1 legality/dedup/diversity:
+- analysis run `36878256574`
+- artifact `11170390314`
+- P1 legal 120/128
+- P2 legal 122/128
+- P3 legal 119/128
+- unique legal contribution P1/P2/P3 = 101/115/111 UIDs
+- non-KEEP legal candidate on 123/128
+- 98/128 have 4 unique actions including KEEP.
+
+Important:
+P3 Stage-B is mostly MIXED_FROM_P1 (118/128), not punctuation-only.
+
+No gold/reference, no R_joint, no selector training.
+
+Stage1 classification:
+**IMPROVED STRONGLY / PROTOCOL COMPLETE / LINGUISTIC QUALITY UNMEASURED**
+
+Next:
+fresh post-Stage1 research + maximum-effort brainstorming before any Stage2/P4/V4 consensus authorization.
