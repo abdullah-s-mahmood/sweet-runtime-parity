@@ -2462,3 +2462,147 @@ No P4, selector, consensus, or generic LLM judge has been activated.
 
 Classification:
 **IMPROVED STRONGLY IN MEASUREMENT READINESS / LINGUISTIC PERFORMANCE UNMEASURED**
+### 2026-10-02 — Stage2 source-only protocol completion and V4 pre-gold scorer re-baseline
+
+**Stage2 protocol-complete closure**
+
+Historical Stage2 full-C_F analysis:
+- run: `36923877787`
+- artifact: `11192953283`
+- artifact digest: `sha256:d773c8b65f607e06ce811d44d7e18deaf49c0da0c17428122d2258b043f82c4b`
+
+A protocol audit after the successful run found missing contract outputs, including a dedicated family-summary artifact and several family-aware/cluster-level diagnostics.
+
+Classification:
+**IMPLEMENTATION/PROTOCOL GAP / NOT A SCIENTIFIC FAILURE**
+
+Repair:
+- no proposer inference rerun;
+- no legalizer rerun;
+- deterministic post-processing of the exact frozen artifact bytes;
+- exact frozen input SHA256 identities revalidated.
+
+Closure:
+`phase2/redesign/MPSEF_V4_STAGE2_PROTOCOL_COMPLETION_V2_LOCK.md`
+
+Full-C_F source-only evidence:
+- 1,918 UIDs / 764 clusters
+- >=1 legal non-KEEP family: **1,843 / 1,918 = 96.09%**
+- both independent families: **1,736 / 1,918 = 90.51%**
+- SWEET-only: **67**
+- SEQ2SEQ_GED_MORPH-only: **40**
+- none: **75**
+- exact cross-family legal non-KEEP agreement: **167 UIDs / 144 clusters**
+
+Per proposer:
+- P1 executable 1,918; legal 1,806; protection-blocked 112
+- P2 executable 1,896; failed 22; legal 1,790; protection-blocked 106
+- P3 executable 1,918; legal 1,768; protection-blocked 150
+
+P2 diagnostic:
+- all 1,918 passed morphology/GED/GEC tokenization/interface identity stages;
+- 22 failed closed at generation completeness/ceiling;
+- zero zero-token, over-budget-word, unmapped-label, or GEC-input-too-long failures.
+
+P3 Stage-B V1:
+- NO_CHANGE: 61
+- PUNCTUATION_ONLY: 57
+- BOUNDARY_ONLY: 0
+- LEXICAL_ONLY: 0
+- MIXED: 1,800
+- UNAVAILABLE: 0
+
+Interpretation:
+P3 is overwhelmingly a mixed same-family extension rather than punctuation-only. It is not source-only redundant, but it must never count as an independent family vote.
+
+**Fresh post-Stage2 research re-baseline**
+
+Frozen record:
+`phase2/redesign/ACAD_PASS_POST_STAGE2_FRESH_RESEARCH_REBASELINE_V1.md`
+
+Fresh evidence reviewed:
+- ACL 2025 SWEET/text-editing;
+- ArbESC+ multi-system Arabic GEC;
+- BEA 2026 edit-level majority voting;
+- AAAI 2026 JELV;
+- TACL 2026 edit-transport evaluation;
+- EACL 2026 Nahw;
+- MTAGEC;
+- current public Gemma-3 1B Arabic GEC checkpoint.
+
+Decisions:
+- P1 KEEP
+- P2 KEEP
+- P3 KEEP as same-family alternate
+- P4 primary/gold-eligible DEFER
+- Gemma P4 only a reserved source-only probe because training provenance does not exclude QALB overlap
+- selector DEFER
+- consensus DEFER
+- generic LLM judge DEFER from primary evidence
+- protection KEEP
+- whole-action semantics KEEP
+
+**Critical scorer incompatibility**
+
+Historical `mpsef_rjoint_score_v3.py` was found incompatible with V4:
+- V3 groups P1/P2/PAIR only;
+- V3 expects <=3 actions;
+- V4 supports KEEP+P1+P2+P3 = 4 actions;
+- V4 requires P1+P3 family aggregation without double counting.
+
+Scientific consequence:
+**DO NOT RUN V3 DIRECTLY ON V4**
+
+**V4 pre-gold contract**
+
+`phase2/redesign/MPSEF_V4_PRE_GOLD_DEVELOPMENT_MEASUREMENT_CONTRACT_V1.md`
+commit:
+`2a749a5a41d5f8e8fd57b596d5c6d25a23c7f986`
+
+**R_joint V4 source-free implementation**
+
+Scorer:
+`phase2/redesign/mpsef_rjoint_score_v4.py`
+commit:
+`3edee5e48c96c2930246c35783312686cf894e8b`
+
+Synthetic harness:
+`phase2/redesign/mpsef_rjoint_v4_synthetic_preflight.py`
+commit:
+`cf55653873c561018b5e0102c582d74510cc008c`
+
+Final observable workflow commit:
+`5c280d4cc6abda3e1f5f21c0fbcb6e79c2d6df2d`
+
+GitHub status:
+**SUCCESS**
+
+Synthetic:
+- 20/20 PASS
+- M04 retained
+- M05 retained
+- max 4 actions supported
+- proposer isolation PASS
+- P1/P3 same-family semantics PASS
+- cross-family provenance PASS
+- ROSTER whole-action/no-fusion PASS
+- punctuation separation PASS
+- scorer-failure preservation PASS
+- source/action identity fail-closed PASS
+
+Frozen SHA256:
+- scorer: `b9fdbe205e6e00082b51a7ee16c74d0010c4bbe50406ad58d2f6f9e166db7513`
+- synthetic test source: `cb07b046fbd36f2afd0c27f46efd3f7561a42f2ac90b9f4ac5f477e8dd56b8b3`
+- synthetic result: `4eb8c2510fd62b50ff3a557018bc58d52853e53e4625389572308e62b39585d2`
+- core: `b9f8c81706c266b75786e04a4363f8af8a5900eb9629acc99dac15ad72389d3c`
+
+Closure lock:
+`phase2/redesign/MPSEF_RJOINT_V4_SOURCE_FREE_PREFLIGHT_CLOSURE_LOCK_V1.md`
+final lock commit:
+`544e4059af4fd891c504492faf2b876bad8fca76`
+
+Classification:
+**IMPROVED STRONGLY IN MEASUREMENT READINESS / LINGUISTIC PERFORMANCE UNMEASURED**
+
+Next:
+independent/higher-model adversarial review before any C_F gold/reference load.
