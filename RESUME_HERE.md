@@ -4086,3 +4086,46 @@ Exact next action on next continuation:
 5. then perform result analysis + fresh end-of-phase research/red-team before any architecture decision.
 
 No selector, P4, family consensus, LLM judge, internal evaluation, stress diagnostic, or reserved population is authorized.
+## 2026-10-02 — V4.2 one-shot measurement crossed gold boundary; R_joint actively running
+
+Workflow run:
+`36940844664`
+
+The one-shot run has now crossed the authorized gold boundary.
+
+Observed completed steps:
+- exact runtime dependencies — PASS
+- exact Arabic-GEC revision — PASS
+- frozen source manifest download — PASS
+- frozen V4 action-set download — PASS
+- all pre-gold identity checks — PASS
+- source-free self-tests before consumption — PASS
+- one-shot consumption claim — PASS
+- frozen CALIBRATION download after claim — PASS
+- frozen official M2 gold download after claim — PASS
+- post-claim gold identity verification — PASS
+
+Durable consumption status:
+`acad-pass/v4-2-rjoint-consumed = success`
+
+Consumption target:
+`https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36940844664`
+
+Current active step:
+`Run one-shot DEVELOPMENT-only R_joint V4.2`
+
+Current scientific boundary:
+- gold/reference is now officially opened for this consumed DEVELOPMENT run;
+- the experiment is consumed and MUST NOT be silently rerun;
+- real R_joint execution is in progress;
+- no completed metric result has yet been observed;
+- selector/P4/family-consensus/LLM judge/internal/stress/reserved populations remain forbidden.
+
+Polling discipline:
+three inspections were used in this continuation; polling stopped.
+
+Exact next action:
+1. inspect run `36940844664`;
+2. if measurement completed, freeze summary/per-sentence/environment/hash outputs before interpretation;
+3. if failed after consumption, DO NOT rerun automatically — apply the documented technical stop-rule and preserve the failure;
+4. after frozen result exists, perform result analysis and the required end-of-phase fresh research/red-team before architecture closure.
