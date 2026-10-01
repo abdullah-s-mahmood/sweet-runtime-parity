@@ -149,6 +149,7 @@ jobs:
           assert lock["wrapper_sha256"]==sha("phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_v1.py")
           assert lock["dependency_lock_sha256"]==sha("phase2/redesign/MPSEF_RJOINT_V4_2_DEPENDENCY_LOCK_V1.txt")
           assert auth["input_lock_sha256"]==sha("phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json")
+          assert auth["consumption_guard"]["sha256"]==sha("phase2/redesign/mpsef_rjoint_v4_2_consumption_guard_v1.py")
           assert auth["measurement_authorized"] is True
           assert auth["single_run_only"] is True
           assert auth["consumption_guard"]["claim_before_gold_access"] is True
