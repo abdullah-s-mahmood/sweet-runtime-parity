@@ -2143,3 +2143,37 @@ candidate diversity, protection burden, and whether a third independent family b
 **Next**
 
 Freeze deterministic Stage1 source-only packet and implement/freeze Stage1 proposer/action tooling before execution.
+
+
+### 2026-10-01 — Deterministic V4 Stage1 source-only packet freezes
+
+After the fresh 2025-2026 architecture re-baseline authorized Stage1 engineering, a deterministic packet was selected from the already frozen C_F source-only manifest.
+
+Run:
+`36871466394`
+
+Result:
+**PASS**
+
+Population:
+- **128 UIDs**
+- **128 distinct clusters**
+- one UID per cluster
+
+Packet SHA:
+`8460900d88656ff25fe4da05d156ba0b31980188e3d1135052ed1825f10087b1`
+
+No proposer output, reference, gold edit, correctness score, or target family influenced selection.
+
+**Interpretation**
+
+Stage1 moved from design to a frozen source-only input population without increasing gold exposure.
+
+Methodological state:
+**IMPROVED**
+
+Linguistic performance:
+**NOT MEASURED**
+
+Next:
+P2_V2 and P3 source-only proposal generation on the exact frozen packet, followed by V4 legal action/dedup/diversity diagnostics.
