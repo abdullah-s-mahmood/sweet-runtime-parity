@@ -2606,3 +2606,30 @@ Classification:
 
 Next:
 independent/higher-model adversarial review before any C_F gold/reference load.
+### 2026-10-02 — V4 pre-gold adversarial review packet frozen
+
+Frozen packet:
+`phase2/redesign/ACAD_PASS_V4_PRE_GOLD_HIGHER_MODEL_REVIEW_PACKET_V1.md`
+
+Commit:
+`8e1257c037c196c67feabcc82f238ae31a4e29e1`
+
+Purpose:
+obtain an independent/higher-model verdict on V4 denominator freezing, provenance/family semantics, M04/M05, punctuation treatment, reference incompleteness, historical C_F exposure, action-set identity, and hidden leakage paths before any gold-aware execution.
+
+Review contract:
+- verdict must be PROCEED / MODIFY / BLOCK;
+- 30 mandatory questions;
+- explicit gold-authorization decision;
+- no performance estimation;
+- no gate weakening;
+- no opening of confirmation/holdout/internal/stress populations.
+
+Current state:
+no independent higher-model endpoint is available in the present toolset, so no review result has been claimed or fabricated.
+
+Scientific consequence:
+**REAL C_F GOLD LOAD AND REAL R_joint V4 REMAIN BLOCKED PENDING INDEPENDENT REVIEW RESOLUTION.**
+
+Classification:
+**MEASUREMENT READINESS IMPROVED / REVIEW GATE OPEN / LINGUISTIC PERFORMANCE UNMEASURED**
