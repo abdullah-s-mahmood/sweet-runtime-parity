@@ -30,12 +30,6 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Install exact measurement runtime dependencies
-        run: |
-          set -euo pipefail
-          python -m pip install --upgrade "pip<25"
-          python -m pip install "numpy==1.23.5" "editdistance==0.6.2"
-
       - name: Install frozen measurement runtime dependencies
         run: |
           set -euo pipefail
