@@ -3038,3 +3038,38 @@ Scientific boundary remains intact:
 
 Classification:
 **IMPROVED STRONGLY / EXACT-RUNTIME PRE-GOLD GATE CLOSED / FINAL AUTHORIZATION VALIDATION PENDING**
+### 2026-10-02 — V4.2 one-shot DEVELOPMENT measurement activated
+
+Exact-runtime pre-gold verification closed:
+- scorer: 33/33 PASS
+- production wrapper: 16/16 PASS
+- successful verification run: 36940030184
+- artifact: 11199084513
+- artifact digest: sha256:5f16c02fdbe8612499c24b6b2209a19ee03f6738d529e78b10f545fe7c430b20
+
+Refrozen input lock SHA256:
+`6ac8656226c64b64e8fc6a408475dbff1e231ec3d87b7afa3da464b1dee25132`
+
+Replacement authorization validated:
+- validation commit: `679e0d73ea3f1ce936911c4b74eae3d6ead56363`
+- authorization SHA256:
+  `7b8a4ebd8216bd2fd06c42d919bbe16d219b6cbc0b46cfad07f286f08651fb49`
+
+Activation commit:
+`eabbd984744d3c5551e19b537d2b5b89d9cb5d8a`
+
+One-shot workflow run:
+`36940844664`
+
+Last observed state:
+- IN_PROGRESS
+- activation/identity/code-checkout gates all PASS
+- runtime dependency installation in progress
+- consumption claim not yet observed
+- gold access not yet evidenced
+- real R_joint not yet observed
+
+Polling stopped after the third sequential inspection according to protocol.
+
+Classification:
+**IMPROVED STRONGLY / PRE-GOLD GATES CLOSED / ONE-SHOT RUN ACTIVATED / METRIC RESULT PENDING OBSERVATION**
