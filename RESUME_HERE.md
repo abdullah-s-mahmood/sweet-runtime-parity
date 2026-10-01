@@ -2459,3 +2459,43 @@ Key freeze:
 - scoring failure yields [L,U], not known zero.
 
 These files must be included in Second Preflight contract hashes.
+
+
+## 2026-10-01 — MP-SEF source-only legality checkpoint
+
+Independent premeasurement review remediation progressed without running R_joint.
+
+Frozen evidence:
+- operator exposure status: UNKNOWN / insufficient recollection
+- C_F precedence remains 1918 cases / 764 clusters
+- P2 generation trace reproduced 1918/1918 frozen outputs exactly
+- P2 GED word-label alignment mismatch: 1918/1918 cases
+- P2 total dropped GED predictions from zip behavior: 30,341
+- P2 generation-ceiling cases: 24
+- P2 missing terminal EOS cases: 0
+
+Gold-blind executable-action legalizer run:
+- workflow run: 36818173661
+- P1_OK = 1806
+- P1_PROTECTED_BLOCKED = 112
+- P2_EXECUTION_FAILED = 1918
+- hypotheses = 3836
+- action sets = 1918
+- hypotheses SHA256 = a54c1bcd38c9d34d389054cb125878be92bc9e603f062621e6d44a627037dc4f
+- action sets SHA256 = 6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a
+
+Legalizer lock:
+- phase2/redesign/MPSEF_EXECUTABLE_ACTIONS_LOCK_V1.md
+- commit 1127968ee97693d3bdc188378ed4e8fb3ff92970
+
+Current scientific status:
+IMPROVED SUBSTANTIALLY IN METHODOLOGICAL SAFETY / WORSENED IN AVAILABLE P2 COVERAGE.
+
+Do NOT run R_joint yet.
+Next sequence:
+1. Correct scorer according to S01-S12.
+2. Rebuild second preflight C01-C22 around immutable executable-action artifacts.
+3. Independent re-review / explicit authorization.
+4. Only then allow any gold-aware measurement.
+
+Long-process monitoring now includes adaptive ETA, predicted finish timestamp, EWMA rate, confidence, and stale detection for future runs.
