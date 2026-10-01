@@ -2037,3 +2037,52 @@ Linguistic quality:
 **Next**
 
 Close B02/M01/M03 with source-free Stage0 synthetic tests. After the complete Stage0 gate, perform fresh deep research and maximum-effort architecture brainstorming before materializing Stage1.
+
+
+### 2026-10-01 — V4 pre-Stage1 source-free Stage0 fully closes
+
+**Aggregate result**
+
+- B01 synthetic: **20/20 PASS**
+- B01 real-model source-free: **PASS**
+- B02: **17/17 PASS**
+- M01: **4/4 PASS**
+- M03: **10/10 PASS**
+- M04/M05 scorer V3 synthetic preflight: **PASS**
+
+Final B02/M01/M03 fail-closed run:
+`36869672029`
+
+Artifact:
+`11164888387`
+
+Digest:
+`sha256:7efc253149097073929baeec7a6b69f05eb94dcfb9405dfb7033083a83d8ba4f`
+
+**Failures preserved**
+
+P2_V2 real-model Stage0 initially failed on a tokenizer interface assumption and was repaired after root-cause triage.
+
+B02/M01/M03 Stage0 initially failed because shadow diagnostics prioritized alignment ambiguity over a known protected-signature change; the workflow also lacked pipefail through tee. Both were repaired and revalidated.
+
+**Scientific state**
+
+No project-source Stage1 execution occurred.
+No new project gold/reference was opened.
+No correctness metric or R_joint was computed.
+
+**Comparison**
+
+Implementation/provenance readiness:
+**IMPROVED STRONGLY**
+
+Linguistic performance:
+**UNCHANGED / NOT MEASURED**
+
+**Architecture consequence**
+
+Stage0 completion is not automatic Stage1 authorization.
+
+A fresh 2025–2026 research review and maximum-effort architecture brainstorming gate is mandatory before materializing the deterministic Stage1 packet.
+
+The next decision must explicitly evaluate KEEP / REPAIR / REPLACE / ADD COMPLEMENT / DEFER for P1, P2_V2, P3 and possible V4 consensus.
