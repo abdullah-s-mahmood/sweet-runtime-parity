@@ -1,0 +1,108 @@
+name: Phase 2 MP-SEF V4.1 R_joint Source-Free Preflight
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/mpsef_rjoint_score_v4_1.py"
+      - "phase2/redesign/mpsef_rjoint_v4_1_synthetic_preflight.py"
+      - ".github/workflows/phase2-mpsef-v4-1-rjoint-source-free-preflight.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  synthetic-preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Compile V4.1 scorer and harness
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            phase2/redesign/mpsef_rjoint_score_v4_1.py \
+            phase2/redesign/mpsef_rjoint_v4_1_synthetic_preflight.py
+
+      - name: Run 27-case source-free synthetic preflight
+        run: |
+          set -euo pipefail
+          PYTHONPATH=phase2/redesign \
+            python phase2/redesign/mpsef_rjoint_v4_1_synthetic_preflight.py
+
+      - name: Validate source-free boundary
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_RJOINT_V4_1_SYNTHETIC_PREFLIGHT_V1.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["test_count"]==27
+          assert s["passed"]==27
+          assert s["failed"]==0
+          assert s["source_free"] is True
+          assert s["project_source_loaded"] is False
+          assert s["project_gold_loaded"] is False
+          assert s["real_r_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["family_consensus_activated"] is False
+          print("MPSEF_RJOINT_V4_1_SOURCE_FREE_PREFLIGHT_PASS")
+          PY
+
+      - name: Freeze source identities
+        if: always()
+        run: |
+          sha256sum \
+            phase2/redesign/mpsef_rjoint_score_v4_1.py \
+            phase2/redesign/mpsef_rjoint_v4_1_synthetic_preflight.py \
+            phase2/redesign/mpsef_rjoint_core_v2.py \
+            MPSEF_RJOINT_V4_1_SYNTHETIC_PREFLIGHT_V1.json \
+            > MPSEF_RJOINT_V4_1_SYNTHETIC_PREFLIGHT_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-rjoint-v4-1-source-free-preflight-v1
+          path: |
+            MPSEF_RJOINT_V4_1_SYNTHETIC_PREFLIGHT_V1.json
+            MPSEF_RJOINT_V4_1_SYNTHETIC_PREFLIGHT_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Publish observable commit status and SHA256 identities
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ github.sha }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          set -euo pipefail
+          if [ "$JOB_STATUS" = "success" ]; then STATE=success; else STATE=failure; fi
+          SCORER_SHA="$(sha256sum phase2/redesign/mpsef_rjoint_score_v4_1.py | awk '{print $1}')"
+          TEST_SHA="$(sha256sum phase2/redesign/mpsef_rjoint_v4_1_synthetic_preflight.py | awk '{print $1}')"
+          CORE_SHA="$(sha256sum phase2/redesign/mpsef_rjoint_core_v2.py | awk '{print $1}')"
+          RESULT_SHA="$(sha256sum MPSEF_RJOINT_V4_1_SYNTHETIC_PREFLIGHT_V1.json | awk '{print $1}')"
+
+          post_status () {
+            local state="$1" context="$2" description="$3"
+            curl -fsSL -X POST \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/abdullah-s-mahmood/sweet-runtime-parity/statuses/$SHA" \
+              -d "{\"state\":\"$state\",\"context\":\"$context\",\"description\":\"$description\"}"
+          }
+
+          post_status "$STATE" "acad-pass/v4-1-rjoint-source-free-preflight" "V4.1 R_joint source-free 27-case preflight"
+          post_status success "acad-pass/v4-1-rjoint-scorer-sha256" "$SCORER_SHA"
+          post_status success "acad-pass/v4-1-rjoint-test-sha256" "$TEST_SHA"
+          post_status success "acad-pass/v4-1-rjoint-core-sha256" "$CORE_SHA"
+          post_status success "acad-pass/v4-1-rjoint-result-sha256" "$RESULT_SHA"
