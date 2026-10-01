@@ -1,0 +1,123 @@
+name: Phase 2 MP-SEF Scorer v2 Synthetic Preflight
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-scorer-v2-synthetic-preflight.yml"
+      - "phase2/redesign/mpsef_rjoint_core_v2.py"
+      - "phase2/redesign/mpsef_rjoint_score_v2.py"
+      - "phase2/redesign/mpsef_executable_actions_legalizer_v1.py"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  scorer-v2-synthetic-preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run source-only legalizer synthetic tests
+        run: |
+          python phase2/redesign/mpsef_executable_actions_legalizer_v1.py --self-test
+
+      - name: Run target/core v2 synthetic tests
+        run: |
+          python phase2/redesign/mpsef_rjoint_core_v2.py
+
+      - name: Run scorer v2 synthetic tests
+        run: |
+          python phase2/redesign/mpsef_rjoint_score_v2.py --self-test
+
+      - name: Prove project measurement CLI remains disabled
+        run: |
+          set +e
+          python phase2/redesign/mpsef_rjoint_score_v2.py > scorer_disabled.txt 2>&1
+          rc=$?
+          set -e
+          test "$rc" -ne 0
+          grep -q "PROJECT_MEASUREMENT_DISABLED_IN_SCORER_V2_LIBRARY" scorer_disabled.txt
+          echo "SCORER_V2_PROJECT_MEASUREMENT_DISABLED_OK"
+
+      - name: Download frozen source-only legalizer artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-source-only-legalizer-v1
+          path: legalizer_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36807189754
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen diagnostic artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-diagnostic-components-v1
+          path: diagnostic_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36807629220
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate frozen source-only evidence hashes
+        run: |
+          test "$(sha256sum legalizer_artifact/MPSEF_EXECUTABLE_ACTIONS_V1_ACTION_SETS.jsonl | awk '{print $1}')" = "6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a"
+          test "$(sha256sum legalizer_artifact/MPSEF_EXECUTABLE_ACTIONS_V1_HYPOTHESES.jsonl | awk '{print $1}')" = "c91195a66a687ba8acf12d1b1e51741183b28992f89681c8510cdac8fddf9e14"
+          test "$(sha256sum diagnostic_artifact/MPSEF_DIAGNOSTIC_COMPONENTS_V1.jsonl | awk '{print $1}')" = "2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e"
+          python - <<'PY'
+          import json
+          l=json.load(open("legalizer_artifact/MPSEF_EXECUTABLE_ACTIONS_V1_SUMMARY.json",encoding="utf-8"))
+          d=json.load(open("diagnostic_artifact/MPSEF_DIAGNOSTIC_COMPONENTS_V1_SUMMARY.json",encoding="utf-8"))
+          assert l["gold_reference_consulted"] is False
+          assert l["R_joint_computed"] is False
+          assert d["gold_reference_consulted"] is False
+          assert d["R_joint_computed"] is False
+          assert d["R_raw_computed"] is False
+          print("FROZEN_SOURCE_ONLY_EVIDENCE_OK")
+          PY
+
+      - name: Write synthetic preflight summary
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          def sha(p):
+              return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          s={
+            "record_id":"MPSEF_SCORER_V2_SYNTHETIC_PREFLIGHT",
+            "status":"PASS",
+            "project_gold_loaded":False,
+            "project_metric_computed":False,
+            "scorer_project_cli_enabled":False,
+            "executable_actions_sha256":"6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a",
+            "hypotheses_sha256":"c91195a66a687ba8acf12d1b1e51741183b28992f89681c8510cdac8fddf9e14",
+            "diagnostic_components_sha256":"2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e",
+            "core_v2_sha256":sha("phase2/redesign/mpsef_rjoint_core_v2.py"),
+            "scorer_v2_sha256":sha("phase2/redesign/mpsef_rjoint_score_v2.py"),
+          }
+          Path("MPSEF_SCORER_V2_SYNTHETIC_PREFLIGHT.json").write_text(json.dumps(s,indent=2)+"\n")
+          print(json.dumps(s,indent=2))
+          PY
+
+      - name: Record hashes
+        run: |
+          sha256sum             phase2/redesign/mpsef_rjoint_core_v2.py             phase2/redesign/mpsef_rjoint_score_v2.py             phase2/redesign/mpsef_executable_actions_legalizer_v1.py             .github/workflows/phase2-mpsef-scorer-v2-synthetic-preflight.yml             MPSEF_SCORER_V2_SYNTHETIC_PREFLIGHT.json             > MPSEF_SCORER_V2_SYNTHETIC_PREFLIGHT_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-scorer-v2-synthetic-preflight
+          path: |
+            MPSEF_SCORER_V2_SYNTHETIC_PREFLIGHT.json
+            MPSEF_SCORER_V2_SYNTHETIC_PREFLIGHT_SHA256.txt
+            scorer_disabled.txt
+          retention-days: 90
