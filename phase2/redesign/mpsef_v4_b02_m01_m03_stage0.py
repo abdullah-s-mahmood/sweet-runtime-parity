@@ -1,3 +1,4 @@
+# Revalidation trigger: fail-closed workflow with pipefail.
 #!/usr/bin/env python3
 from __future__ import annotations
 
