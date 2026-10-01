@@ -2714,3 +2714,37 @@ Stage 1 has NOT started.
 Exact next gate:
 focused independent closure review of B01/B02/M01/M02 + Stage0 evidence.
 Only after GO may deterministic 128-UID / 128-cluster source-only Stage 1 run.
+
+
+## 2026-10-01 — Architecture review remediation checkpoint
+
+Independent higher-model verdict:
+**MODIFY BEFORE IMPLEMENTATION**
+
+Findings:
+- 2 BLOCKER
+- 5 MAJOR
+- 2 MINOR
+
+Review lock:
+`phase2/redesign/ACAD_PASS_ARABIC_ARCHITECTURE_INDEPENDENT_REVIEW_LOCK_V1.md`
+commit `ab142dd90e0c600fa11de5650b2ab15eeb5fcc7b`
+
+Closed design items:
+- B01: `MPSEF_P2_V2_WORD_IDENTITY_CONTRACT_V1.md`
+  commit `0d32f7ff4fb75aa98ec67c92b291597ebb406faa`
+- B02: `MPSEF_V4_PROPOSER_REGISTRY_ACTION_SET_CONTRACT_V1.md`
+  commit `5466e6b9e64235c34db44355d57b638206b9a939`
+- M01: `MPSEF_P3_V1_ROLE_AMENDMENT_V2.md`
+  commit `b2f56fee86666100ce5e9690a8fe6057228cfde0`
+- M02: `MPSEF_SOURCE_ONLY_PROPOSER_DIVERSITY_PROTOCOL_V2.md`
+  commit `88077f47090041a61dfab8caf1df459b5bf3cc68`
+- M03: `MPSEF_PROTECTION_SHADOW_DIAGNOSTIC_CONTRACT_V1.md`
+  commit `fb4cf91396e1ef584b60177a6ad870862df05105`
+
+Current exact next work:
+1. fix M04 in scorer: all-actions-fail must preserve frozen target-count uncertainty [0,N], never collapse to [0,0];
+2. fix M05: BOUNDARY group must maximize one whole action over SPLIT∪MERGE, not sum separate maxima;
+3. add synthetic regressions for both;
+4. version scorer/preflight accordingly;
+5. no Stage1/Stage2/gold until required predecessor gates are satisfied.
