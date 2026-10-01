@@ -3097,3 +3097,75 @@ this experiment is now consumed. Any future technical rerun after failure requir
 
 Classification:
 **IMPROVED / AUTHORIZED GOLD BOUNDARY CROSSED / REAL R_JOINT IN PROGRESS / RESULT NOT YET AVAILABLE**
+### 2026-10-02 — V4.2 DEVELOPMENT R_joint measurement closed successfully
+
+Workflow run:
+`36940844664`
+
+Conclusion:
+`success`
+
+Consumed one-shot experiment:
+`acad-pass/v4-2-rjoint-consumed = success`
+
+Frozen artifact:
+- id: 11200024879
+- digest: `sha256:10ecdb75b5d80540d2c9ddf5e94672e8d64bbe3eb685ca3f53d63789c3d308af`
+
+Evidence:
+- summary SHA256:
+  `5a649c5e050b34679e27958814201d49a948e039c38961032ced263bdacddc91`
+- per-sentence SHA256:
+  `0e6c51435e978c1c917b9a37a361fad1a5fe4f65da6e18b17759ad2ecb67cc50`
+
+Primary result:
+- denominator: 9,679 targets
+- ROSTER: 72.2285–72.2699%
+- SWEET: 66.9284–66.9697%
+- SEQ2SEQ: 58.6941%
+- ROSTER over SWEET: +5.26 to +5.34 pp
+- ROSTER 95% availability gate: FAIL
+- deficit to 95%: 2,201 targets / 22.7301 pp
+
+Whole-action cleanliness:
+- ROSTER clean primary recovery: 23.6491–23.6905%
+- ROSTER primary complete repair: 21.8884–21.9421%
+
+Clean-reference candidate activity:
+- P1: 3/48
+- P2: 36/48
+- P3: 43/48
+- ROSTER: 45/48
+
+These are candidate-activity diagnostics, not deployed FPR.
+
+Result disposition:
+- P1 KEEP
+- P2 KEEP because it contributes material independent-family complementarity
+- P3 keep only as same-family diagnostic alternate; defer as primary product route
+- do not train selector on current whole-sentence roster
+- selector DEFER
+- family consensus DEFER
+- generic LLM judge DEFER as primary
+- prior specific P4 DEFER pending provenance/overlap audit
+- candidate representation enters REPAIR / REDESIGN
+
+Fresh end-gate research considered:
+- ArbESC+ (2025)
+- STAGEET (2026)
+- JELV (AAAI 2026)
+- CLEME2.0 (ACL 2025)
+
+Scientific interpretation:
+the next bottleneck is candidate generation / representation, not selector optimization, because a selector cannot select absent corrections.
+
+C_F is permanently adaptively consumed and may not be used as a clean confirmation set for future result-driven architecture changes.
+
+Closure artifacts:
+- evidence lock commit: `fdad9788e152f1747a2a695973eb04a594e7b3cf`
+- result analysis commit: `fe130325130f073f5e97704a5f7eecd7b040c165`
+- measurement closure commit: `fa1cee35f3fdaa5aaade3efdc7e2c4621c5f928c`
+- resume advancement commit: `dfd211716805457b6f19f1e66a5d4a4bfb36e7ab`
+
+Classification:
+**IMPROVED SCIENTIFICALLY / V4.2 MEASUREMENT CLOSED / CURRENT CANDIDATE ARCHITECTURE REQUIRES REDESIGN BEFORE SELECTOR**
