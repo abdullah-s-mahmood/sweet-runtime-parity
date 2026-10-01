@@ -3223,3 +3223,38 @@ Current state:
 
 Next:
 production-bound B01 + real-model adapter validation + frozen Parity32 through the exact Stage2 production adapter.
+
+
+## 2026-10-01 — P2 Stage2 M01 production-bound replay CLOSED
+
+Production-bound B01 + real-model preflight:
+- run 36893287680 SUCCESS
+- B01 semantic 20/20
+- production-adapter B01 routing 20/20
+- real-model source-free 3/3
+- artifact 11177717089
+- digest sha256:3b5d88e2fb40d7afab724e875cbfff0152e008f35a376a121c48849eaff93cbb
+
+Production-bound frozen Parity32:
+- run 36894512600 SUCCESS
+- FRESH COMPLETE 32/32
+- REPEAT COMPLETE 32/32
+- REVERSED COMPLETE 32/32
+- fresh_vs_repeat 32/32
+- fresh_vs_reordered 32/32
+- fresh_vs_frozen_trace_output 32/32
+- production_adapter_cli_used=true
+- artifact 11179398082
+- digest sha256:b35b8614d0a9ab4e444b650db2c9027d2b2f59e3e8c44a9b16be8a9da02e1b5e
+
+Closure:
+`phase2/redesign/MPSEF_P2_V2_STAGE2_M01_PRODUCTION_BOUND_REPLAY_CLOSURE_LOCK_V1.md`
+
+Current state:
+- M01: CLOSED PASS
+- M02 production adapter partial evidence: PASS at source-free/unit + production-bound routing
+- M04 Watchdog V2: PASS; durable-record production semantics demonstrated on Parity32
+- full-C_F Stage2: STILL BLOCKED
+
+Next mandatory step:
+materialize and freeze Stage2 Input Lock, then bind P3 production path + classifier/test prerequisites before any 1,918-case execution.
