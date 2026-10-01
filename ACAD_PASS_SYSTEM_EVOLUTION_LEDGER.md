@@ -1555,3 +1555,95 @@ Classification:
 **Next step**
 
 Prepare P2_V2 and P3_V1 source-only specifications plus independent higher-model architecture review before implementing any gold-aware measurement.
+
+
+### 2026-10-01 — Versioned proposer redesign specifications + independent review gate
+
+**Objective**
+
+Convert the architecture re-baseline into explicit source-only implementation specifications before any new proposer execution or gold-aware measurement.
+
+**New frozen design artifacts**
+
+P2_V2 specification:
+`phase2/redesign/MPSEF_P2_V2_IMPLEMENTATION_SPEC.md`
+
+Commit:
+`5e34e8e75dd3ef1e930d3d2b6528e7f79b709932`
+
+Key decision:
+- repair the Seq2Seq++ GED/morphology route in a NEW version;
+- use first-wordpiece/ignore-index word-level GED alignment;
+- prohibit zip truncation;
+- preserve segmentation/truncation/EOS/provenance traces;
+- no gold during implementation validation.
+
+P3_V1 specification:
+`phase2/redesign/MPSEF_P3_V1_SWEET_PNX_CASCADE_SPEC.md`
+
+Commit:
+`73ae1bee99c866dec8b91affd7f50c5465f36082`
+
+Important discovery:
+current P1 already equals `SWEET_QALB14_NOPNX_ITER2`.
+Therefore a third proposer must NOT duplicate SWEET2.
+P3_V1 is the published cascade:
+`NoPnx ×2 -> Pnx ×1`.
+
+Source-only proposer diversity protocol:
+`phase2/redesign/MPSEF_SOURCE_ONLY_PROPOSER_DIVERSITY_PROTOCOL_V1.md`
+
+Commit:
+`5e0ad432b513bd65daa567cdc2e046c9d18996dd`
+
+The protocol freezes:
+- synthetic stage;
+- deterministic source-only parity packet;
+- hard provenance/parity/truncation gates;
+- pairwise output/component diversity;
+- architecture-independence labels;
+- diagnostic-only consensus support;
+- no correctness metrics;
+- no arbitrary numeric diversity threshold before independent review.
+
+**Fresh literature consequence**
+
+ACL 2025 reports:
+- iterative SWEET improves MSA up to two iterations;
+- NoPnx then Pnx cascade improves MSA;
+- heterogeneous ensemble of Seq2Seq++ + SWEET2 + SWEET2_NoPnx→SWEET_Pnx outperforms single systems;
+- ensemble uses source-aligned edit majority support, prioritizing precision.
+
+This strongly supports comparing heterogeneous proposer families rather than restoring only one failed route.
+
+**Independent review gate**
+
+Review package:
+`phase2/redesign/ACAD_PASS_ARABIC_ARCHITECTURE_INDEPENDENT_REVIEW_PACKAGE_V1.md`
+
+Commit:
+`43c8a4ad27b76f3715e723e77a80f737ba330829`
+
+Higher-model prompt:
+`phase2/redesign/ACAD_PASS_HIGHER_MODEL_ARCHITECTURE_REVIEW_PROMPT_V1.md`
+
+Commit:
+`f091590971954bedb3efaaaf27627ee344f86878`
+
+Architecture snapshot for independent review:
+`5e0ad432b513bd65daa567cdc2e046c9d18996dd`
+
+**Current classification**
+
+**IMPROVED STRONGLY IN ARCHITECTURE DISCIPLINE / PERFORMANCE NOT YET MEASURED**
+
+No new gold/reference metric has been computed.
+
+**Next gate**
+
+Obtain independent higher-model architecture review.
+
+If verdict:
+- GO: proceed to source-only synthetic prototypes;
+- MODIFY: fix BLOCKER/MAJOR findings first;
+- STOP/REBASELINE: do not implement the current redesign.
