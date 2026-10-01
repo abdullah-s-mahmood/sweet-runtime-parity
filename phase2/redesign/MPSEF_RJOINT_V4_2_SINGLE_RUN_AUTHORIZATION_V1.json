@@ -56,5 +56,14 @@
     "clean_holdout_claim": true,
     "independent_generalization_claim": true
   },
-  "authorization_consumption_rule": "This record authorizes exactly one development-only V4.2 R_joint execution. Any rerun after a metric-producing run requires a new explicit authorization record. Technical reruns before any metric require a separate documented stop-rule decision."
+  "authorization_consumption_rule": "This record authorizes exactly one development-only V4.2 R_joint execution. Any rerun after a metric-producing run requires a new explicit authorization record. Technical reruns before any metric require a separate documented stop-rule decision.",
+  "consumption_guard": {
+    "file": "phase2/redesign/mpsef_rjoint_v4_2_consumption_guard_v1.py",
+    "sha256": "895128860ba4e03f287b91c56d3505f5df5a9c31292a5555088654aedd468070",
+    "status_context": "acad-pass/v4-2-consumption-guard-valid",
+    "status": "success",
+    "consumed_context": "acad-pass/v4-2-rjoint-consumed",
+    "claim_before_gold_access": true,
+    "rerun_after_consumption_forbidden": true
+  }
 }
