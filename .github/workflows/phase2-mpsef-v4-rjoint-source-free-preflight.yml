@@ -1,0 +1,94 @@
+name: Phase 2 MP-SEF V4 R_joint Source-Free Preflight
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/mpsef_rjoint_score_v4.py"
+      - "phase2/redesign/mpsef_rjoint_v4_synthetic_preflight.py"
+      - ".github/workflows/phase2-mpsef-v4-rjoint-source-free-preflight.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  synthetic-preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Compile V4 scorer
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            phase2/redesign/mpsef_rjoint_score_v4.py \
+            phase2/redesign/mpsef_rjoint_v4_synthetic_preflight.py
+
+      - name: Run 20-case source-free synthetic preflight
+        run: |
+          set -euo pipefail
+          PYTHONPATH=phase2/redesign \
+            python phase2/redesign/mpsef_rjoint_v4_synthetic_preflight.py
+
+      - name: Validate source-free boundary
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          p="MPSEF_RJOINT_V4_SYNTHETIC_PREFLIGHT_V1.json"
+          s=json.load(open(p,encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["test_count"]==20
+          assert s["passed"]==20
+          assert s["failed"]==0
+          assert s["source_free"] is True
+          assert s["project_source_loaded"] is False
+          assert s["project_gold_loaded"] is False
+          assert s["real_r_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["family_consensus_activated"] is False
+          print("MPSEF_RJOINT_V4_SOURCE_FREE_PREFLIGHT_PASS")
+          PY
+
+      - name: Freeze source identities
+        if: always()
+        run: |
+          sha256sum \
+            phase2/redesign/mpsef_rjoint_score_v4.py \
+            phase2/redesign/mpsef_rjoint_v4_synthetic_preflight.py \
+            MPSEF_RJOINT_V4_SYNTHETIC_PREFLIGHT_V1.json \
+            > MPSEF_RJOINT_V4_SYNTHETIC_PREFLIGHT_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-rjoint-v4-source-free-preflight-v1
+          path: |
+            MPSEF_RJOINT_V4_SYNTHETIC_PREFLIGHT_V1.json
+            MPSEF_RJOINT_V4_SYNTHETIC_PREFLIGHT_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Publish observable commit status
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ github.sha }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          set -euo pipefail
+          if [ "$JOB_STATUS" = "success" ]; then STATE=success; else STATE=failure; fi
+          curl -fsSL -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/abdullah-s-mahmood/sweet-runtime-parity/statuses/$SHA" \
+            -d "{\"state\":\"$STATE\",\"context\":\"acad-pass/v4-rjoint-source-free-preflight\",\"description\":\"V4 R_joint source-free 20-case preflight\"}"
