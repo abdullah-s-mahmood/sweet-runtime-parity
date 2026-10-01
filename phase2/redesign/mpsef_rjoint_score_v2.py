@@ -58,12 +58,17 @@ def ratio_interval(lower_num, upper_num, den):
     }
 
 def gate_from_interval(interval):
-    if interval["denominator"]==0:
+    den=interval["denominator"]
+    if den==0:
         return "INCONCLUSIVE_NO_TARGETS"
-    lo,hi=interval["lower"],interval["upper"]
-    if lo is not None and lo>=0.95:
+    lo_num=interval.get("lower_numerator")
+    hi_num=interval.get("upper_numerator")
+    if lo_num is None or hi_num is None:
+        raise RuntimeError("gate interval missing integer numerators")
+    # Frozen 95% rule, evaluated without floating-point threshold comparisons.
+    if 20*lo_num >= 19*den:
         return "PASS_CANDIDATE_AVAILABILITY"
-    if hi is not None and hi<0.95:
+    if 20*hi_num < 19*den:
         return "FAIL_CANDIDATE_AVAILABILITY"
     return "INCONCLUSIVE_INTERVAL_CROSSES_GATE"
 
@@ -326,9 +331,35 @@ def score_population(
     if set(uids)!=set(gold_by_uid):
         raise RuntimeError("gold population identity mismatch")
 
+    # S02: freeze the entire target population and denominator BEFORE any
+    # candidate action is evaluated. A target-build defect aborts measurement.
+    prepared={}
+    all_target_ids=set()
     den=0
-    nums={k:[0,0] for k in ("P1","P2","PAIR","CLEAN")}
     scope_counts=Counter()
+    for uid in uids:
+        all_gold=gold_by_uid[uid]
+        all_targets=build_targets(uid,all_gold)
+        for t in all_targets:
+            if t["target_id"] in all_target_ids:
+                raise RuntimeError(f'{uid}: duplicate frozen target identity')
+            all_target_ids.add(t["target_id"])
+            scope_counts[t["scope"]]+=1
+        keep_idx=[i for i,t in enumerate(all_targets) if t["scope"]!="PUNCTUATION_ONLY"]
+        primary_gold=[all_gold[i] for i in keep_idx]
+        targets=[all_targets[i] for i in keep_idx]
+        prepared[uid]={
+            "all_gold":all_gold,
+            "all_targets":all_targets,
+            "primary_gold":primary_gold,
+            "targets":targets,
+        }
+        den+=len(targets)
+
+    if den<=0:
+        raise RuntimeError("primary target denominator is zero")
+
+    nums={k:[0,0] for k in ("P1","P2","PAIR","CLEAN")}
     family_den=Counter()
     family_sent=defaultdict(set)
     family_cluster=defaultdict(set)
@@ -385,16 +416,11 @@ def score_population(
         different_and_overlap+=int(diff and overlap)
         different_without_overlap+=int(diff and not overlap)
 
-        all_gold=gold_by_uid[uid]
-        all_targets=build_targets(uid,all_gold)
-        for t in all_targets:
-            scope_counts[t["scope"]]+=1
-
-        keep_idx=[i for i,t in enumerate(all_targets) if t["scope"]!="PUNCTUATION_ONLY"]
-        primary_gold=[all_gold[i] for i in keep_idx]
-        targets=[all_targets[i] for i in keep_idx]
-
-        den += len(targets)
+        frozen_targets=prepared[uid]
+        all_gold=frozen_targets["all_gold"]
+        all_targets=frozen_targets["all_targets"]
+        primary_gold=frozen_targets["primary_gold"]
+        targets=frozen_targets["targets"]
         if targets:
             erroneous+=1
         else:
@@ -751,6 +777,8 @@ def self_test():
     assert gate_from_interval(ratio_interval(19,19,20))=="PASS_CANDIDATE_AVAILABILITY"
     assert gate_from_interval(ratio_interval(18,18,20))=="FAIL_CANDIDATE_AVAILABILITY"
     assert gate_from_interval(ratio_interval(18,19,20))=="INCONCLUSIVE_INTERVAL_CROSSES_GATE"
+    assert gate_from_interval(ratio_interval(95,95,100))=="PASS_CANDIDATE_AVAILABILITY"
+    assert gate_from_interval(ratio_interval(94,94,100))=="FAIL_CANDIDATE_AVAILABILITY"
 
     print(json.dumps({"self_test":"PASS","scorer_version":SCORER_VERSION},ensure_ascii=False))
 
