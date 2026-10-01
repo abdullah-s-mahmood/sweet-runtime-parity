@@ -3115,3 +3115,29 @@ Stage1 classification:
 
 Next:
 fresh post-Stage1 research + maximum-effort brainstorming before any Stage2/P4/V4 consensus authorization.
+
+
+## 2026-10-01 — Post-Stage1 fresh research / P4 decision
+
+Frozen record:
+`phase2/redesign/ACAD_PASS_POST_STAGE1_FRESH_RESEARCH_REBASELINE_V1.md`
+
+Decision:
+- P4 before Stage2: **DEFER**
+- current roster: **SUFFICIENT FOR SOURCE-ONLY FULL-C_F STAGE2**
+- Stage2: **AUTHORIZED SOURCE-ONLY ONLY**
+- family-consensus activation: **DEFER**
+- gold/reference: **NOT AUTHORIZED**
+- R_joint: **NOT AUTHORIZED**
+- learned selector: **NOT AUTHORIZED**
+
+Fresh audit did not find a third-family Arabic GEC system that simultaneously has a trained public checkpoint, reproducible inference, freezeable provenance, and low integration debt.
+
+MTAGEC/AraT5/ByT5/mT5 remain P4 candidates, but not immediate roster members.
+
+The 2026 ZAEBUC Arabic GEC release uses CAMeLBERT GED + AraBART GEC and is therefore the same independent-family lineage as P2, not a P4.
+
+P1 and P3 remain one SWEET family for future family-support logic.
+
+Next:
+freeze Stage2 source-only full-C_F execution contract before any execution.
