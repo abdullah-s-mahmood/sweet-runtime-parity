@@ -26,7 +26,7 @@
   "provenance_signature_map_sha256": "18561c75c397821c34e3dc06214bb4f64cc5ff8d6757f61835cbe9e6808befbd",
   "scorer_sha256": "be9cf725b71b8d26a23eff9e9afd4ca434294a4d8f72e0271caa179ca892f2e1",
   "core_sha256": "b9f8c81706c266b75786e04a4363f8af8a5900eb9629acc99dac15ad72389d3c",
-  "wrapper_sha256": "72bf23c9f910c2b203caf11e6e677729fa914d66c2d1e062ac0fd7dfd6da357f",
+  "wrapper_sha256": "251883f11c20b79699d7aac89a39bb11c46b51229ce515eb35d066d9cfda8993",
   "dependency_lock_sha256": "aa66ec3d6fdb4aef1b4fada26a1b6cf794f632139655e22462a7a1c27aab7bc5",
   "matching_version": "MPSEF_RJOINT_M2_EVALUATION_MATCH_V2",
   "family_map_version": "MPSEF_TARGET_FAMILY_MAP_V2",
@@ -55,20 +55,30 @@
     "P3_V1_SWEET_NOPNX2_PNX1": "SWEET_QALB14"
   },
   "pre_gold_verification": {
-    "workflow_commit": "23a60899ba35b06f5955eccca4eac0dcb8972cd9",
+    "workflow_commit": "705129dc9f319d835321a47a2530d48bd18ac468",
+    "workflow_run_id": 36940030184,
     "status_context": "acad-pass/v4-2-pre-gold-wrapper",
     "status": "success",
+    "verification_artifact": {
+      "id": 11199084513,
+      "name": "mpsef-rjoint-v4-2-pre-gold-wrapper-verification",
+      "digest": "sha256:5f16c02fdbe8612499c24b6b2209a19ee03f6738d529e78b10f545fe7c430b20"
+    },
     "scorer_preflight": {
       "passed": 33,
-      "total": 33,
-      "harness_sha256": "da31f7c1dd6d1f0bfd5356a54a19aba518742ce489f9f3d7d59242609566c25c",
-      "result_sha256": "c46ac5e3fe6ffc349273104c6f8849b9628fa0383780e40e20fb077ad50b5a1e"
+      "total": 33
     },
     "wrapper_preflight": {
-      "passed": 14,
-      "total": 14,
-      "test_sha256": "d62696e3a2df2ee9fbb20839cef35bca7e4b0aec39155206837af400686c3ab8",
-      "result_sha256": "1b03bf5a0192b35abd03d38b8d31c5a7396473fe1509bb39f591f418cf27a27e"
+      "passed": 16,
+      "total": 16
+    },
+    "hardened_runtime_identity": {
+      "python_major_minor": "3.10",
+      "numpy": "1.23.5",
+      "editdistance": "0.6.2",
+      "arabic_gec_revision": "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf",
+      "network_download_during_measurement": "forbidden",
+      "model_inference_during_measurement": "forbidden"
     }
   },
   "authorization_boundary": {
@@ -88,5 +98,7 @@
     "replacement_required": true,
     "gold_opened_under_superseded_lock": false,
     "real_r_joint_computed_under_superseded_lock": false
-  }
+  },
+  "numpy_version": "1.23.5",
+  "editdistance_version": "0.6.2"
 }
