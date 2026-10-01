@@ -240,6 +240,26 @@ def main():
             ["git", "-C", str(upstream), "rev-parse", "HEAD"], text=True
         ).strip()
 
+        numpy_version = importlib.metadata.version("numpy")
+        editdistance_version = importlib.metadata.version("editdistance")
+
+        def write_dep(path, numpy_value=None, network_policy="forbidden"):
+            numpy_value = numpy_version if numpy_value is None else numpy_value
+            Path(path).write_text(
+                "\n".join([
+                    "MPSEF_RJOINT_V4_2_DEPENDENCY_LOCK_SYNTH",
+                    f"python_major_minor={sys.version_info.major}.{sys.version_info.minor}",
+                    f"arabic_gec_revision={rev}",
+                    f"numpy={numpy_value}",
+                    f"editdistance={editdistance_version}",
+                    f"network_download_during_measurement={network_policy}",
+                    "model_inference_during_measurement=forbidden",
+                ]) + "\n",
+                encoding="utf-8",
+            )
+
+        write_dep(dep)
+
         here = Path(__file__).resolve().parent
         wrapperp = here / "mpsef_rjoint_v4_2_production_wrapper_v1.py"
         scorerp = here / "mpsef_rjoint_score_v4_2.py"
