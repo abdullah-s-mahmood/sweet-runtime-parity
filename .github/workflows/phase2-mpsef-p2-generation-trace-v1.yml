@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: \${{ github.sha }}
+          ref: ${{ github.sha }}
 
       - uses: actions/setup-python@v5
         with:
@@ -55,7 +55,7 @@ jobs:
           path: p1_cf_artifact
           repository: abdullah-s-mahmood/sweet-runtime-parity
           run-id: 36765798233
-          github-token: \${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download frozen P2 proposals
         uses: actions/download-artifact@v4
@@ -64,7 +64,7 @@ jobs:
           path: p2_cf_artifact
           repository: abdullah-s-mahmood/sweet-runtime-parity
           run-id: 36768378938
-          github-token: \${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate frozen source/proposal identities
         run: |
@@ -88,7 +88,7 @@ jobs:
         env:
           PYTHONUNBUFFERED: "1"
           TOKENIZERS_PARALLELISM: "false"
-          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python phase2/redesign/run_with_progress_watchdog_v1.py \
             --state-file MPSEF_P2_GENERATION_TRACE_V1_PROGRESS.json \
