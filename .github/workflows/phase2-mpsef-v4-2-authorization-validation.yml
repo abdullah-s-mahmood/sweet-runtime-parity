@@ -1,0 +1,84 @@
+name: Phase 2 MP-SEF V4.2 Single-Run Authorization Validation
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - ".github/workflows/phase2-mpsef-v4-2-authorization-validation.yml"
+      - "phase2/redesign/MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1.json"
+      - "phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Validate exact-SHA-bound authorization
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+
+          def sha256_file(p):
+              h=hashlib.sha256()
+              with Path(p).open("rb") as f:
+                  for chunk in iter(lambda:f.read(1024*1024),b""):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          authp=Path("phase2/redesign/MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1.json")
+          lockp=Path("phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json")
+          a=json.load(authp.open(encoding="utf-8"))
+          l=json.load(lockp.open(encoding="utf-8"))
+
+          assert a["record_id"]=="MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1"
+          assert a["status"]=="AUTHORIZED_SINGLE_DEVELOPMENT_RUN"
+          assert a["experiment_id"]==l["experiment_id"]=="MPSEF-RJOINT-V4_2-CF1918-20261002-A"
+          assert a["decision"]=="AUTHORIZE_DEVELOPMENT_ONLY_RJOINT_V4_2_SINGLE_RUN"
+          assert a["measurement_authorized"] is True
+          assert a["gold_access_allowed_after_claim"] is True
+          assert a["consumption_claimed_before_gold_access"] is True
+          assert a["single_run_only"] is True
+          assert a["input_lock_sha256"]==sha256_file(lockp)
+          assert a["input_lock_sha256"]=="3f3e4bd95bbd5d49ad71ec58466573d56a476eefcf0cdc3719c2c732d3de19d0"
+
+          for k in ("scorer_sha256","core_sha256","wrapper_sha256","dependency_lock_sha256"):
+              assert a["frozen_implementation"][k]==l[k]
+          for k in ("source_manifest_sha256","action_set_sha256","population_uid_sha256",
+                    "population_cluster_sha256","uid_cluster_map_sha256",
+                    "provenance_signature_map_sha256"):
+              assert a["frozen_inputs"][k]==l[k]
+          assert a["frozen_inputs"]["gold_m2_sha256"]==l["gold_sha256"]
+          assert a["frozen_inputs"]["cases"]==l["population_cases"]==1918
+          assert a["frozen_inputs"]["clusters"]==l["population_clusters"]==764
+          assert a["claim_scope"]==l["claim_scope"]
+
+          forbidden=a["forbidden_during_or_after_this_authorized_run"]
+          assert all(forbidden.values())
+          assert l["authorization_boundary"]["real_r_joint_computed"] is False
+          assert l["authorization_boundary"]["gold_content_opened_by_this_lock"] is False
+          print("V4_2_SINGLE_RUN_AUTHORIZATION_VALID")
+          PY
+
+      - name: Publish authorization validation and SHA256
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          AUTH_SHA="$(sha256sum phase2/redesign/MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1.json | awk '{print $1}')"
+          post_status () {
+            curl -fsSL -X POST               -H "Authorization: Bearer $GH_TOKEN"               -H "Accept: application/vnd.github+json"               "https://api.github.com/repos/abdullah-s-mahmood/sweet-runtime-parity/statuses/$SHA"               -d "{\"state\":\"$1\",\"context\":\"$2\",\"description\":\"$3\"}"
+          }
+          post_status success "acad-pass/v4-2-authorization-valid" "Exact-SHA single-run authorization validated"
+          post_status success "acad-pass/v4-2-authorization-sha256/$AUTH_SHA" "V4.2 single-run authorization SHA256"
