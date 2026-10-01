@@ -3073,3 +3073,27 @@ Polling stopped after the third sequential inspection according to protocol.
 
 Classification:
 **IMPROVED STRONGLY / PRE-GOLD GATES CLOSED / ONE-SHOT RUN ACTIVATED / METRIC RESULT PENDING OBSERVATION**
+### 2026-10-02 — V4.2 DEVELOPMENT run consumed and actively measuring R_joint
+
+Run:
+`36940844664`
+
+Consumption claim:
+`acad-pass/v4-2-rjoint-consumed = success`
+
+Gold boundary state:
+- crossed lawfully after successful durable consumption claim;
+- CALIBRATION download PASS;
+- official M2 gold download PASS;
+- post-claim gold identity verification PASS.
+
+Current active step:
+`Run one-shot DEVELOPMENT-only R_joint V4.2`
+
+No completed metric has yet been observed.
+
+Consequence:
+this experiment is now consumed. Any future technical rerun after failure requires explicit stop-rule handling and a new documented authorization decision; silent rerun is forbidden.
+
+Classification:
+**IMPROVED / AUTHORIZED GOLD BOUNDARY CROSSED / REAL R_JOINT IN PROGRESS / RESULT NOT YET AVAILABLE**
