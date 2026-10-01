@@ -1,0 +1,144 @@
+name: Phase 2 MP-SEF V4 Stage1 Source-Only Analysis
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-v4-stage1-source-only-analysis.yml"
+      - "phase2/redesign/mpsef_v4_stage1_source_only_analysis_v1.py"
+      - "phase2/redesign/mpsef_executable_actions_legalizer_v1.py"
+      - "phase2/redesign/mpsef_v4_b02_m01_m03_stage0.py"
+      - "phase2/redesign/process_progress_v1.py"
+      - "phase2/redesign/run_with_progress_watchdog_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 75
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Download frozen Stage1 packet
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage1-packet-v1
+          path: stage1_packet
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36871466394
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P1 proposals
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2_V2 Stage1 proposals
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-v2-stage1-v1
+          path: p2
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36872617551
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P3_V1 Stage1 proposals
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p3-v1-stage1-v1
+          path: p3
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36877195995
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify exact frozen input identities
+        run: |
+          set -euo pipefail
+          test "$(sha256sum stage1_packet/MPSEF_V4_STAGE1_PACKET_V1.jsonl | awk '{print $1}')" = "8460900d88656ff25fe4da05d156ba0b31980188e3d1135052ed1825f10087b1"
+          test "$(sha256sum p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl | awk '{print $1}')" = "2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          test "$(sha256sum p2/MPSEF_P2_V2_STAGE1_V1.jsonl | awk '{print $1}')" = "df89c7dc2c7f177b3c4ca02e8df8a291b6de917a81246c5258f1f66652e1f69e"
+          test "$(sha256sum p3/MPSEF_P3_V1_STAGE1_V1.jsonl | awk '{print $1}')" = "69720287154071611a0e0d0af2a6689ef6ed5242acf374fb945de70013a16083"
+          echo "V4_STAGE1_ANALYSIS_INPUT_IDENTITIES_OK"
+
+      - name: Run monitored source-only legality and diversity analysis
+        env:
+          PYTHONUNBUFFERED: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 45m             python phase2/redesign/run_with_progress_watchdog_v1.py               --state-file MPSEF_V4_STAGE1_ANALYSIS_PROGRESS.json               --context "acad-pass/v4-stage1-analysis"               --poll-seconds 20               --publish-seconds 60               --stale-seconds 600               --kill-on-stale               --               python phase2/redesign/mpsef_v4_stage1_source_only_analysis_v1.py                 --packet stage1_packet/MPSEF_V4_STAGE1_PACKET_V1.jsonl                 --p1 p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl                 --p2 p2/MPSEF_P2_V2_STAGE1_V1.jsonl                 --p3 p3/MPSEF_P3_V1_STAGE1_V1.jsonl                 --out-prefix MPSEF_V4_STAGE1                 --progress-state MPSEF_V4_STAGE1_ANALYSIS_PROGRESS.json
+
+      - name: Validate Stage1 source-only analysis
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib
+          s=json.loads(pathlib.Path("MPSEF_V4_STAGE1_DIVERSITY_SUMMARY_V1.json").read_text(encoding="utf-8"))
+          rows=[json.loads(x) for x in pathlib.Path("MPSEF_V4_STAGE1_PROPOSER_ROWS_V2.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+          acts=[json.loads(x) for x in pathlib.Path("MPSEF_V4_STAGE1_SOURCE_ONLY_ACTION_SETS_V2.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+          p=json.loads(pathlib.Path("MPSEF_V4_STAGE1_ANALYSIS_PROGRESS.json").read_text(encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["cases"]==128
+          assert s["clusters"]==128
+          assert len(rows)==384
+          assert len(acts)==128
+          assert all(1 <= a["unique_action_count"] <= 4 for a in acts)
+          assert all(any(x["keep_semantics"] for x in a["actions"]) for a in acts)
+          for k in ("P1","P2","P3"):
+              ps=s["proposer_summary"][k]
+              assert ps["D_all"]==128
+              assert ps["raw_executable"] + ps["raw_execution_failure"] == 128
+              assert ps["legal"] + ps["nonlegal"] == 128
+          assert s["packet_sha256"]=="8460900d88656ff25fe4da05d156ba0b31980188e3d1135052ed1825f10087b1"
+          assert s["registry_sha256"]=="b448650c571f6c93dffe4825417e4f65d6a8cd02e33bd9551728ceac2b242b1a"
+          assert s["gold_reference_consulted"] is False
+          assert s["project_gold_loaded"] is False
+          assert s["quality_metric_computed"] is False
+          assert s["r_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["quality_claimed"] is False
+          assert s["human_correctness_selection"] is False
+          assert s["internal_evaluation_opened"] is False
+          assert s["stress_diagnostic_opened"] is False
+          assert s["reserved_data_opened"] is False
+          assert p["status"]=="COMPLETE"
+          assert p["processed"]==128==p["total"]
+          print("V4_STAGE1_SOURCE_ONLY_ANALYSIS_PASS")
+          PY
+
+      - name: Freeze hashes
+        if: always()
+        run: |
+          sha256sum             phase2/redesign/mpsef_v4_stage1_source_only_analysis_v1.py             phase2/redesign/mpsef_executable_actions_legalizer_v1.py             phase2/redesign/mpsef_v4_b02_m01_m03_stage0.py             .github/workflows/phase2-mpsef-v4-stage1-source-only-analysis.yml             stage1_packet/MPSEF_V4_STAGE1_PACKET_V1.jsonl             p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl             p2/MPSEF_P2_V2_STAGE1_V1.jsonl             p3/MPSEF_P3_V1_STAGE1_V1.jsonl             MPSEF_V4_STAGE1_PROPOSER_ROWS_V2.jsonl             MPSEF_V4_STAGE1_SOURCE_ONLY_ACTION_SETS_V2.jsonl             MPSEF_V4_STAGE1_DIVERSITY_SUMMARY_V1.json             MPSEF_V4_STAGE1_FAILURES_V1.jsonl             MPSEF_V4_STAGE1_RUNTIME_V1.json             MPSEF_V4_STAGE1_ANALYSIS_PROGRESS.json             > MPSEF_V4_STAGE1_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-v4-stage1-source-only-analysis-v1
+          path: |
+            MPSEF_V4_STAGE1_PROPOSER_ROWS_V2.jsonl
+            MPSEF_V4_STAGE1_SOURCE_ONLY_ACTION_SETS_V2.jsonl
+            MPSEF_V4_STAGE1_DIVERSITY_SUMMARY_V1.json
+            MPSEF_V4_STAGE1_FAILURES_V1.jsonl
+            MPSEF_V4_STAGE1_RUNTIME_V1.json
+            MPSEF_V4_STAGE1_ANALYSIS_PROGRESS.json
+            MPSEF_V4_STAGE1_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
