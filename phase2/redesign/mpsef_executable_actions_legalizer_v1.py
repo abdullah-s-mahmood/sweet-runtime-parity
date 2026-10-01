@@ -9,6 +9,8 @@ import unicodedata
 from collections import Counter
 from pathlib import Path
 
+from process_progress_v1 import update_state
+
 EXPECTED_CASES = 1918
 EXPECTED_CLUSTERS = 764
 EXPECTED_SOURCE_SHA = "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
@@ -540,11 +542,14 @@ def main():
     ap.add_argument("--p2-proposals")
     ap.add_argument("--p2-generation-trace")
     ap.add_argument("--out-prefix", default="MPSEF_EXECUTABLE_ACTIONS_V1")
+    ap.add_argument("--state-file", default="MPSEF_EXECUTABLE_ACTIONS_V1_PROGRESS.json")
     args = ap.parse_args()
 
     if args.self_test:
         self_test()
         return
+
+    update_state(Path(args.state_file), POLICY_VERSION, "INITIALIZING", 0, EXPECTED_CASES)
 
     required = [args.source_manifest,args.p1_proposals,args.p2_proposals]
     if any(x is None for x in required):
@@ -585,7 +590,7 @@ def main():
     action_sets = []
     counts = Counter()
 
-    for uid in sorted(man):
+    for index, uid in enumerate(sorted(man), start=1):
         a1 = legalize_one(man[uid], p1[uid], "P1", None)
         a2 = legalize_one(man[uid], p2[uid], "P2", traces.get(uid))
         records.extend([a1,a2])
@@ -625,6 +630,14 @@ def main():
             "unique_action_count":len(actions),
         })
 
+        if index == 1 or index % 32 == 0 or index == EXPECTED_CASES:
+            update_state(
+                Path(args.state_file), POLICY_VERSION, "LEGALIZING_SOURCE_ONLY_ACTIONS",
+                index, EXPECTED_CASES,
+                message=f"P1_OK={counts.get('P1_OK',0)};P2_OK={counts.get('P2_OK',0)};P2_EXECUTION_FAILED={counts.get('P2_EXECUTION_FAILED',0)}",
+            )
+            print(f"LEGALIZER_PROGRESS {index}/{EXPECTED_CASES}", flush=True)
+
     if len(records) != EXPECTED_CASES*2:
         raise RuntimeError("hypothesis record count mismatch")
     if any(x["unique_action_count"] < 1 or x["unique_action_count"] > 3 for x in action_sets):
@@ -663,6 +676,11 @@ def main():
     summary["hypotheses_sha256"] = sha256_file(rec_path)
     summary["action_sets_sha256"] = sha256_file(act_path)
     Path(str(prefix)+"_SUMMARY.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    update_state(
+        Path(args.state_file), POLICY_VERSION, "COMPLETE",
+        EXPECTED_CASES, EXPECTED_CASES, status="COMPLETED",
+        message=f"actions_sha256={summary['action_sets_sha256']}",
+    )
     print(json.dumps(summary,ensure_ascii=False,indent=2),flush=True)
 
 if __name__ == "__main__":
