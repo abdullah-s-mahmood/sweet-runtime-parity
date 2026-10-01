@@ -48,8 +48,14 @@ def verify_stored_input(proposal, tokenizer, model):
     input_ids = proposal["gec_input_ids"]
     label_ids = proposal["gec_ged_label_ids"]
 
-    if len(morph_words) != len(labels):
-        raise RuntimeError(f'{proposal["uid"]}: morph/GED count mismatch {len(morph_words)} != {len(labels)}')
+    ged_prediction_count = len(labels)
+    morph_word_count = len(morph_words)
+    ged_predictions_consumed = min(morph_word_count, ged_prediction_count)
+    ged_predictions_dropped = max(0, ged_prediction_count - morph_word_count)
+    ged_word_alignment_status = (
+        "PASS" if ged_prediction_count == morph_word_count
+        else "FAIL_GED_WORD_LABEL_ALIGNMENT_MISMATCH"
+    )
 
     rebuilt_tokens = []
     per_word_piece_counts = []
@@ -85,8 +91,12 @@ def verify_stored_input(proposal, tokenizer, model):
         )
 
     return {
-        "morph_word_count": len(morph_words),
-        "ged_label_count": len(labels),
+        "morph_word_count": morph_word_count,
+        "ged_prediction_count": ged_prediction_count,
+        "ged_predictions_consumed": ged_predictions_consumed,
+        "ged_predictions_dropped": ged_predictions_dropped,
+        "ged_word_alignment_status": ged_word_alignment_status,
+        "ged_label_count": ged_prediction_count,
         "subword_count": len(stored_tokens),
         "per_word_piece_counts": per_word_piece_counts,
         "gec_input_length": len(input_ids),
@@ -186,6 +196,8 @@ def main():
     exact_output_matches = 0
     ceiling_count = 0
     missing_eos_count = 0
+    ged_alignment_mismatch_count = 0
+    total_ged_predictions_dropped = 0
 
     update_state(state_file, TRACE_VERSION, "REGENERATING_FROZEN_P2_OUTPUTS", 0, EXPECTED_CASES)
 
@@ -208,6 +220,8 @@ def main():
             ceiling_count += int(reached_ceiling)
 
             s = static_checks[uid]
+            ged_alignment_mismatch_count += int(s["ged_word_alignment_status"] != "PASS")
+            total_ged_predictions_dropped += int(s["ged_predictions_dropped"])
             out.append({
                 "record_id": TRACE_VERSION,
                 "uid": uid,
@@ -226,8 +240,12 @@ def main():
                 "max_length": MAX_LENGTH,
                 "reached_generation_ceiling": reached_ceiling,
                 "num_beams": NUM_BEAMS,
-                "ged_word_count": s["ged_label_count"],
+                "ged_word_count": s["ged_predictions_consumed"],
                 "morph_word_count": s["morph_word_count"],
+                "ged_prediction_count": s["ged_prediction_count"],
+                "ged_predictions_consumed": s["ged_predictions_consumed"],
+                "ged_predictions_dropped": s["ged_predictions_dropped"],
+                "ged_word_alignment_status": s["ged_word_alignment_status"],
                 "ged_label_count": s["ged_label_count"],
                 "subword_count": s["subword_count"],
                 "per_word_piece_counts": s["per_word_piece_counts"],
@@ -245,7 +263,7 @@ def main():
         update_state(
             state_file, TRACE_VERSION, "REGENERATING_FROZEN_P2_OUTPUTS",
             processed, EXPECTED_CASES,
-            message=f"exact_matches={exact_output_matches}; ceiling={ceiling_count}; missing_eos={missing_eos_count}",
+            message=f"exact_matches={exact_output_matches}; ged_mismatch={ged_alignment_mismatch_count}; dropped={total_ged_predictions_dropped}; ceiling={ceiling_count}; missing_eos={missing_eos_count}",
         )
         print(f"P2_TRACE_PROGRESS {processed}/{EXPECTED_CASES}", flush=True)
 
@@ -265,6 +283,8 @@ def main():
         "exact_frozen_output_matches": exact_output_matches,
         "generation_ceiling_cases": ceiling_count,
         "missing_terminal_eos_cases": missing_eos_count,
+        "ged_alignment_mismatch_cases": ged_alignment_mismatch_count,
+        "total_ged_predictions_dropped": total_ged_predictions_dropped,
         "source_manifest_sha256": sha256_file(source_path),
         "P2_proposal_sha256": sha256_file(prop_path),
         "GEC_weight_sha256": weight_sha,
