@@ -1495,3 +1495,63 @@ It is potentially valuable future reproducibility/methodology evidence, but is n
 **Next authorized step**
 
 Architecture re-baseline + independent higher-model review before any new R_joint authorization.
+
+
+### 2026-10-01 — Arabic correction architecture re-baseline V1
+
+**Objective**
+
+Reassess whether the effective P1-only current cycle remains the strongest architecture after the frozen P2 provenance failure, without consuming new gold.
+
+**Why this route**
+
+The advanced source-only Second Preflight reached 22/22 PASS, but P2 still contributes 0/1918 executable actions. Finishing a gold-aware measurement on this asymmetric candidate space could waste evaluation exposure if a stronger source-only architecture can first be constructed.
+
+Fresh literature and implementation review showed:
+
+- ACL 2025 SWEET/text editing is a strong current Arabic GEC family and supports iterative/cascaded correction.
+- The strongest published ensembles combine heterogeneous systems, notably Seq2Seq++ plus multiple SWEET variants.
+- The ACL 2025 ensemble uses source-aligned edit majority voting and prioritizes precision.
+- EMNLP 2023 Arabic Seq2Seq+GED/morphology remains a strong complementary architecture family.
+- EACL 2026 Nahw indicates that current general LLMs still have substantial Arabic grammar limitations and should not be promoted to sole primary corrector/verifier.
+
+**Decision**
+
+The frozen V3 cycle remains immutable as the control lane.
+
+Open a new redesign lane with:
+
+1. P1 family retained as frozen/control SWEET NoPnx.
+2. P2_V2: repair the Seq2Seq++ GED/morphology route with explicit wordpiece-to-word GED alignment and complete provenance.
+3. P3_V1: add a strong reproducible iterative/cascaded SWEET variant.
+4. optional heterogeneous fourth proposer only if independently reproducible and justified.
+
+P2 is therefore:
+- NOT abandoned;
+- NOT repaired in place;
+- FIXABLE_NEXT_VERSION_ONLY;
+- strategically retained because architecture diversity is valuable.
+
+A new MP-SEF V4 candidate may investigate source-only consensus/edit voting, but current V3 whole-action rules MUST NOT be changed retroactively.
+
+**Research significance**
+
+The re-baseline creates a testable research question about whether heterogeneous proposer families improve candidate diversity and later safe candidate availability while protected invariants remain fail-closed.
+
+**Performance status**
+
+No new correctness metric was computed.
+
+Classification:
+**IMPROVED STRATEGICALLY / PERFORMANCE NOT YET MEASURED**
+
+**Evidence**
+
+- re-baseline document:
+  `phase2/redesign/ACAD_PASS_ARABIC_ARCHITECTURE_REBASELINE_V1.md`
+- commit:
+  `2204718b51f9580a6d4d8ddaa33a903f686eb262`
+
+**Next step**
+
+Prepare P2_V2 and P3_V1 source-only specifications plus independent higher-model architecture review before implementing any gold-aware measurement.
