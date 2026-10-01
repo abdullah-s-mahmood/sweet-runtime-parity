@@ -332,13 +332,10 @@ def runtime_summary(items, metric_type):
 
 def proposer_summary_for(key, rows_by_uid):
     items = [rows_by_uid[uid][key] for uid in rows_by_uid]
-    raw_valid = sum(not base.identity_check(x["normalized"], {
-        "uid": x["normalized"]["uid"],
-        "case_id": x["normalized"]["case_id"],
-        "cluster_id": x["normalized"]["cluster_id"],
-        "source": x["normalized"]["source"],
-        "source_sha256": x["normalized"]["source_sha256"],
-    }) for x in items)
+    raw_valid = sum(
+        not x["legalization"]["identity_reasons"]
+        for x in items
+    )
     executable = sum(x["normalized"]["raw_execution_state"] == "OK" for x in items)
     legal = sum(x["legalization"]["legal"] for x in items)
     protection_blocked = sum(
