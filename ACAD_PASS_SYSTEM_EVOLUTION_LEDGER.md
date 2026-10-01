@@ -1647,3 +1647,183 @@ If verdict:
 - GO: proceed to source-only synthetic prototypes;
 - MODIFY: fix BLOCKER/MAJOR findings first;
 - STOP/REBASELINE: do not implement the current redesign.
+
+
+### 2026-10-01 — Independent architecture review remediation checkpoint
+
+**Independent review verdict**
+
+`MODIFY BEFORE IMPLEMENTATION`
+
+Frozen review lock:
+`phase2/redesign/ACAD_PASS_ARABIC_ARCHITECTURE_INDEPENDENT_REVIEW_LOCK_V1.md`
+
+Review uploaded-file SHA256 identities:
+- report: `fd66165131b6cd597c1d864f5d7d85f8c17a3dac9b273e37f89909995a635457`
+- ZIP: `c9393fb260ef7e27d9fa7b2d7edb908240332f44d3e9798c9a742a24d443e9ab`
+- START_HERE: `df08fd84747afc028cfe237c502428dea447c15580093905032a60d4f251c980`
+
+Findings:
+- BLOCKER: 2
+- MAJOR: 5
+- MINOR: 2
+- 30 review questions answered
+- 6 synthetic findings reproduced by independent reviewer
+
+**B01 — design remediation**
+
+New contract:
+`phase2/redesign/MPSEF_P2_V2_WORD_IDENTITY_CONTRACT_V1.md`
+
+Commit:
+`0d32f7ff4fb75aa98ec67c92b291597ebb406faa`
+
+Adds explicit UID→morph-word→segment→first-wordpiece→GED label→GEC subword identity, zero-token failure, single-word-over-budget failure, label-name mapping, generation-config identity, and ged_tags interface proof.
+
+Status:
+**DESIGN CLOSED / SYNTHETIC IMPLEMENTATION VALIDATED**
+
+**B02 — design remediation**
+
+New contract:
+`phase2/redesign/MPSEF_V4_CANDIDATE_REGISTRY_ACTIONSET_CONTRACT_V1.md`
+
+Commit:
+`e7e24a1430c89bc70106abf00833e845092d07c7`
+
+Defines:
+- new V4 registry namespace;
+- explicit P1/P2_V2/P3 IDs/versions/families/ancestry;
+- KEEP invariant;
+- exact-string dedup preserving all provenance;
+- 1+N pre-dedup action capacity;
+- generic future legalizer boundary;
+- strict isolation from V3 scorer/guard/experiment identities.
+
+Status:
+**DESIGN CLOSED**
+
+**M01 — P3 role remediation**
+
+New amendment:
+`phase2/redesign/MPSEF_P3_V1_ROLE_INDEPENDENCE_AMENDMENT_V2.md`
+
+Commit:
+`007247d3ad2f297b7272da3baa35379cfe91c5a6`
+
+P3 is now:
+- OPTIONAL;
+- FULL_WITH_PUNCTUATION;
+- same `SWEET_QALB14` family as P1;
+- not an independent support vote;
+- final legality evaluated original-source→P3-final.
+
+Status:
+**DESIGN CLOSED**
+
+**M02 — diversity protocol remediation**
+
+New protocol:
+`phase2/redesign/MPSEF_SOURCE_ONLY_PROPOSER_DIVERSITY_PROTOCOL_V2.md`
+
+Commit:
+`88077f47090041a61dfab8caf1df459b5bf3cc68`
+
+Stage 1 now frozen to:
+- 128 UIDs;
+- 128 distinct clusters;
+- deterministic source-only cluster-aware hashing;
+- parity subset: 32 UIDs;
+- explicit D_all / D_exec / D_joint_exec / D_legal / D_changed denominators;
+- source-only legal marginal contribution;
+- source-only KEEP-only reduction;
+- source-only leave-one-proposer-out;
+- failure-inclusive pairwise diagnostics;
+- 180-minute engineering workflow timeout;
+- no invented quality/diversity threshold.
+
+Status:
+**DESIGN CLOSED**
+
+**M03 — protection diagnosis**
+
+New shadow diagnostic:
+`phase2/redesign/ACAD_PASS_PROTECTED_LINKAGE_SHADOW_DIAGNOSTIC_V1.md`
+
+Commit:
+`0d2e183023efa1a86030deed4bed30e3de5c2902`
+
+Current frozen protection remains authoritative.
+Shadow policy can only diagnose global-word-ordinal-only disagreement.
+
+Status:
+**DIAGNOSTIC CONTRACT READY / NO HISTORICAL RESCUE**
+
+**M04 / M05 — scorer repair**
+
+Historical scorer V2 remains unchanged.
+
+New scorer:
+`phase2/redesign/mpsef_rjoint_score_v3.py`
+
+Commit:
+`e18561cab8d50b10061f7ed5882a8b0b2081aa64`
+
+M04 fix:
+- target count comes from independently frozen target population;
+- all-action scoring failure with N targets preserves conservative `[0,N]`.
+
+M05 fix:
+- combined weak route such as BOUNDARY={SPLIT,MERGE} maximizes one whole action over the union of target indices;
+- no `sum(max)` across different actions.
+
+Synthetic workflow:
+- run: `36863251498`
+- conclusion: SUCCESS
+- artifact: `11162062048`
+- artifact digest:
+  `sha256:d051f6c4a93543f7d23cb07c36c711fc3de7197137e5d7b6b2dc334f07030982`
+
+Status:
+**SYNTHETIC PASS**
+
+**P2_V2 Stage 0 identity harness**
+
+Implementation:
+`phase2/redesign/mpsef_p2_v2_identity_stage0.py`
+
+Commit:
+`27998071ba124d0126931b936ce263f585044f55`
+
+Workflow:
+`.github/workflows/phase2-mpsef-p2-v2-identity-stage0.yml`
+
+Run:
+`36863549449`
+
+Conclusion:
+**SUCCESS**
+
+Artifact:
+`11162862266`
+
+Artifact digest:
+`sha256:c6a875b7880db119ea660ea84a47c250f49f624d610b4849419e2fd5aa5893e8`
+
+Properties:
+- project source loaded: false
+- project gold loaded: false
+- project metric computed: false
+- real model inference: false
+- B01 identity/overflow/zero-token/label/EOS/ged_tags synthetic cases: PASS
+
+**Current classification**
+
+**IMPROVED SUBSTANTIALLY / REVIEW FINDINGS BEING CLOSED WITHOUT GOLD**
+
+No Stage 1 source packet has been executed yet.
+No new R_joint has been computed.
+
+**Next gate**
+
+A focused independent closure review is required for B01/B02/M01/M02 and the Stage 0 evidence before Stage 1 project-source execution.
