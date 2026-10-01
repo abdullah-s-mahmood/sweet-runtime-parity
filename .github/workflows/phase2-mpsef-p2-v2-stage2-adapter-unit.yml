@@ -1,0 +1,55 @@
+name: Phase 2 MP-SEF P2 V2 Stage2 Production Adapter Unit Preflight
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/mpsef_p2_v2_stage2_production_adapter_v1.py"
+      - "phase2/redesign/test_mpsef_p2_v2_stage2_production_adapter_v1.py"
+      - ".github/workflows/phase2-mpsef-p2-v2-stage2-adapter-unit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  adapter-unit:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install import dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.12.1+cpu"
+          python -m pip install "transformers==4.22.2" "numpy==1.23.5" "camel-tools==1.4.1"
+
+      - name: Run production adapter source-free unit preflight
+        run: |
+          set -euo pipefail
+          python phase2/redesign/test_mpsef_p2_v2_stage2_production_adapter_v1.py | tee P2_STAGE2_ADAPTER_UNIT.log
+          grep -q '"status": "PASS"' P2_STAGE2_ADAPTER_UNIT.log
+          grep -q '"test_count": 4' P2_STAGE2_ADAPTER_UNIT.log
+
+      - name: Freeze hashes
+        if: always()
+        run: |
+          sha256sum             phase2/redesign/mpsef_p2_v2_stage2_production_adapter_v1.py             phase2/redesign/test_mpsef_p2_v2_stage2_production_adapter_v1.py             phase2/redesign/mpsef_p2_v2_stage1_v1.py             phase2/redesign/mpsef_p2_v2_real_model_stage0.py             phase2/redesign/process_progress_v1.py             .github/workflows/phase2-mpsef-p2-v2-stage2-adapter-unit.yml             P2_STAGE2_ADAPTER_UNIT.log             > P2_STAGE2_ADAPTER_UNIT_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-p2-v2-stage2-adapter-unit-v1
+          path: |
+            P2_STAGE2_ADAPTER_UNIT.log
+            P2_STAGE2_ADAPTER_UNIT_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
