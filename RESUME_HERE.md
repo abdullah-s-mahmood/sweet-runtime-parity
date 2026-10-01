@@ -3687,3 +3687,77 @@ diagnose the verification-only workflow before changing scorer/harness.
 
 Current classification:
 **MIXED / METHOD HARDENED / V4.2 CLOSURE PENDING / PERFORMANCE UNMEASURED**
+## 2026-10-02 — Independent delta review remediation completed; V4.2 pre-gold closure frozen
+
+Independent delta-review result:
+- verdict: MODIFY
+- new BLOCKER/MAJOR findings: NONE
+- B01 CLOSED
+- B02 PARTIAL at review time
+- M01-M05 CLOSED
+- N01-N02 CLOSED
+- gold authorization at review time: DO NOT AUTHORIZE YET
+
+Remediation completed source-free:
+- T20 repaired to isolate external source identity mismatch;
+- T24 repaired to contain true SPLIT + MERGE;
+- score_population_v4_2 now validates frozen_identity vs expected_identity before build_targets/gold analysis;
+- incomplete identity contract fails closed;
+- progress callback added and reverified;
+- production dependency lock created;
+- production wrapper created under A1 §A1.6;
+- wrapper fail-closed preflight created.
+
+Official verification:
+- scorer preflight: **33/33 PASS**
+- wrapper preflight: **14/14 PASS**
+- combined GitHub status:
+  `acad-pass/v4-2-pre-gold-wrapper = success`
+
+Frozen SHA256:
+- scorer: `be9cf725b71b8d26a23eff9e9afd4ca434294a4d8f72e0271caa179ca892f2e1`
+- core: `b9f8c81706c266b75786e04a4363f8af8a5900eb9629acc99dac15ad72389d3c`
+- wrapper: `72bf23c9f910c2b203caf11e6e677729fa914d66c2d1e062ac0fd7dfd6da357f`
+- scorer harness: `da31f7c1dd6d1f0bfd5356a54a19aba518742ce489f9f3d7d59242609566c25c`
+- wrapper test: `d62696e3a2df2ee9fbb20839cef35bca7e4b0aec39155206837af400686c3ab8`
+- dependency lock: `aa66ec3d6fdb4aef1b4fada26a1b6cf794f632139655e22462a7a1c27aab7bc5`
+- scorer preflight result: `c46ac5e3fe6ffc349273104c6f8849b9628fa0383780e40e20fb077ad50b5a1e`
+- wrapper preflight result: `1b03bf5a0192b35abd03d38b8d31c5a7396473fe1509bb39f591f418cf27a27e`
+
+Full-C_F production identities:
+- cases: 1,918
+- clusters: 764
+- source manifest SHA256: `051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193`
+- action-set SHA256: `e38393abb36734d3882e29a78f3b33c80718791957b9b8c0c6e8a8ab77f6e138`
+- UID SHA256: `51e2e1decf1c7c9efbc31e343eba1c7dfb08d0de314041cb57f5b3118ffd550f`
+- cluster SHA256: `bb2f49c6aaf312cf9c388237090a79861fa6218da15de57d0119efd39327ae3c`
+- UID-cluster map SHA256: `32b89f9dcadefa0f17cb0fddac6099433d611508a01ad96b428e0534c1057c5d`
+- provenance map SHA256: `18561c75c397821c34e3dc06214bb4f64cc5ff8d6757f61835cbe9e6808befbd`
+- frozen gold M2 SHA256 identity: `971b6fbb28dc3767193e7a4b0f722c3abebfc8600155a57093ba483dac6491e8`
+- gold content newly opened: false
+
+Production input lock:
+`phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json`
+commit:
+`d71ad97e9b3ee47c4fbcbaf4a6d6fcdc66fcd744`
+
+Pre-gold closure lock:
+`phase2/redesign/MPSEF_RJOINT_V4_2_PRE_GOLD_CLOSURE_LOCK_V1.md`
+commit:
+`134bc2204914033850b8a3c200381fb2363e25b6`
+
+Input-lock SHA publication workflow:
+commit:
+`c49d572f82e3939ad4461ad0b78ff45655d2ac7b`
+
+Three status inspections in the current continuation returned no exposed input-lock SHA context yet. Per protocol, polling stopped.
+
+Exact next sequence:
+1. inspect commit `c49d572f82e3939ad4461ad0b78ff45655d2ac7b` once in the next continuation;
+2. capture `acad-pass/v4-2-input-lock-sha256/<SHA256>`;
+3. create separate exact-SHA-bound single-run authorization lock;
+4. validate authorization lock;
+5. only then allow one DEVELOPMENT-only V4.2 R_joint run.
+
+Hard boundary:
+**GOLD/R_JOINT REMAIN CLOSED UNTIL THE INPUT-LOCK SHA IS BOUND INTO THE AUTHORIZATION RECORD.**
