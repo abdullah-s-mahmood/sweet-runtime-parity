@@ -187,6 +187,29 @@ def group_action_results(action_set, scored, proposer=None):
         "exact":not failures or lower==upper,
     }
 
+def validate_scoring_result(result, target_count):
+    if not isinstance(result,dict):
+        raise RuntimeError("scorer returned non-dict")
+    required={"matched_indices","correct","proposed","gold","extra"}
+    if not required.issubset(result):
+        raise RuntimeError("scorer result missing required fields")
+    matched=result["matched_indices"]
+    if not isinstance(matched,list) or any(not isinstance(i,int) for i in matched):
+        raise RuntimeError("matched_indices malformed")
+    if len(set(matched))!=len(matched):
+        raise RuntimeError("duplicate target credit")
+    if any(i<0 or i>=target_count for i in matched):
+        raise RuntimeError("matched target index out of range")
+    if result["gold"]!=target_count:
+        raise RuntimeError("scorer gold denominator mismatch")
+    if result["correct"]!=len(matched):
+        raise RuntimeError("scorer correct count mismatch")
+    if result["proposed"]<result["correct"]:
+        raise RuntimeError("proposed < correct")
+    if result["extra"]!=result["proposed"]-result["correct"]:
+        raise RuntimeError("extra count mismatch")
+    return result
+
 def evaluate_sentence(lev, source, primary_gold, action_set, evaluate_fn=None):
     if evaluate_fn is None:
         def evaluate_fn(output, src, gold):
@@ -195,7 +218,8 @@ def evaluate_sentence(lev, source, primary_gold, action_set, evaluate_fn=None):
     scored={}
     for action in action_set["actions"]:
         try:
-            scored[action["action_id"]]=evaluate_fn(action["output"],source,primary_gold)
+            raw=evaluate_fn(action["output"],source,primary_gold)
+            scored[action["action_id"]]=validate_scoring_result(raw,len(primary_gold))
         except Exception as e:
             scored[action["action_id"]]={"error":f"{type(e).__name__}: {str(e)[:300]}"}
 
@@ -238,6 +262,7 @@ def score_population(
     diagnostic_rows,
     gold_by_uid,
     evaluate_fn=None,
+    progress_callback=None,
 ):
     source=index_records(source_rows,["uid"])
     actions=index_records(action_sets,["uid"])
@@ -369,6 +394,9 @@ def score_population(
             if tid in protected_target_ids and not legal_known_reach and not ev["PAIR"]["failures"]:
                 protected_unreachable_ids.add(tid)
 
+        if progress_callback is not None:
+            progress_callback(len(before_sizes), len(uids), uid)
+
     intervals={k:ratio_interval(v[0],v[1],den) for k,v in nums.items()}
     raw_interval=ratio_interval(raw_bounds[0],raw_bounds[1],den)
 
@@ -481,6 +509,14 @@ def self_test():
     ev=evaluate_sentence(None,"SRC",[1,2],action_set,fake)
     assert ev["PAIR"]["lower"]==1 and ev["PAIR"]["upper"]==1
 
+    # Duplicate target credit must invalidate that action score.
+    def duplicate_credit(output,src,gold):
+        if output=="P1":
+            return {"matched_indices":[0,0],"correct":2,"proposed":2,"gold":2,"extra":0}
+        return fake(output,src,gold)
+    ev_bad=evaluate_sentence(None,"SRC",[1,2],action_set,duplicate_credit)
+    assert ev_bad["P1"]["failures"], ev_bad
+
     # Scoring failure creates an interval; it does not become known zero.
     def flaky(output,src,gold):
         if output=="P2":
@@ -488,6 +524,26 @@ def self_test():
         return fake(output,src,gold)
     ev2=evaluate_sentence(None,"SRC",[1,2],action_set,flaky)
     assert ev2["PAIR"]["lower"]==1 and ev2["PAIR"]["upper"]==2
+
+    # R_clean must exclude known extra edits.
+    clean_group={
+        "successful":[
+            ({"action_id":"K"},{"correct":0,"extra":0}),
+            ({"action_id":"A"},{"correct":2,"extra":1}),
+            ({"action_id":"B"},{"correct":1,"extra":0}),
+        ],
+        "failures":[],
+    }
+    assert best_clean_bounds(clean_group,2)==(1,1)
+
+    # Candidate-size statistics use the frozen nearest-rank definition.
+    st=size_stats([1,1,2,2,3])
+    assert st["mean"]==1.8 and st["median"]==2 and st["p95"]==3 and st["max"]==3
+
+    # Frozen 95% interval gate semantics.
+    assert gate_from_interval(ratio_interval(19,19,20))=="PASS_CANDIDATE_AVAILABILITY"
+    assert gate_from_interval(ratio_interval(18,18,20))=="FAIL_CANDIDATE_AVAILABILITY"
+    assert gate_from_interval(ratio_interval(18,19,20))=="INCONCLUSIVE_INTERVAL_CROSSES_GATE"
 
     print(json.dumps({"self_test":"PASS","scorer_version":SCORER_VERSION},ensure_ascii=False))
 
