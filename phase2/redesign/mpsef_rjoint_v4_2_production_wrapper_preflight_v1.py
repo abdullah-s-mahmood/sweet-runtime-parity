@@ -275,6 +275,8 @@ def main():
             "wrapper_sha256": sha256_file(wrapperp),
             "python_version": f"{sys.version_info.major}.{sys.version_info.minor}",
             "arabic_gec_revision": rev,
+            "numpy_version": numpy_version,
+            "editdistance_version": editdistance_version,
             "matching_version": MATCHING_VERSION,
             "family_map_version": FAMILY_MAP_VERSION,
             "punctuation_policy_version": PUNCTUATION_POLICY_VERSION,
