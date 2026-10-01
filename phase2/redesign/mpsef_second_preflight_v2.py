@@ -226,11 +226,17 @@ def main():
                "Experiment authorization/consumption lock and push-vs-dispatch negative tests are not yet complete.")
     progress(21,"C21",results["C21"]["status"])
 
-    # C22: this runner has no gold input and never invokes measurement.
-    cli=Path(__file__).read_text(encoding="utf-8").lower()
-    no_gold_arg=("--gold" not in cli and "--calibration" not in cli)
+    # C22: inspect the declared argparse interface rather than searching raw
+    # source text (which would match this test's own literals).
+    declared_options={
+        opt
+        for action in ap._actions
+        for opt in action.option_strings
+    }
+    forbidden_options={"--gold","--full-gold-m2","--calibration","--authorization"}
+    no_gold_arg=declared_options.isdisjoint(forbidden_options)
     set_result(results,"C22","PASS" if no_gold_arg else "FAIL",
-               "Second-preflight runner outputs only source-only/synthetic evidence and has no gold or measurement invocation.")
+               "Second-preflight runner exposes no gold/calibration/measurement authorization input and does not invoke measurement.")
     progress(22,"C22",results["C22"]["status"])
 
     counts={}
