@@ -2666,3 +2666,51 @@ Current exact state:
 
 Next action:
 obtain independent higher-model architecture review using the prepared package/prompt.
+
+
+## 2026-10-01 — Independent review remediation / Stage0 PASS
+
+Independent review verdict:
+**MODIFY BEFORE IMPLEMENTATION**
+
+Review lock:
+`phase2/redesign/ACAD_PASS_ARABIC_ARCHITECTURE_INDEPENDENT_REVIEW_LOCK_V1.md`
+
+Current finding status:
+
+- B01 P2 word/wordpiece/label identity: DESIGN CLOSED + synthetic Stage0 PASS
+- B02 new proposer/action-set registry isolation: DESIGN CLOSED
+- M01 P3 optional same-family role: DESIGN CLOSED
+- M02 diversity denominators/packet/budget: DESIGN CLOSED
+- M03 protection overblocking: shadow diagnostic contract ready; frozen policy unchanged
+- M04 all-actions-fail scorer bounds: fixed in scorer V3; synthetic PASS
+- M05 combined BOUNDARY whole-action aggregation: fixed in scorer V3; synthetic PASS
+
+Key files:
+- `MPSEF_P2_V2_WORD_IDENTITY_CONTRACT_V1.md`
+- `MPSEF_V4_CANDIDATE_REGISTRY_ACTIONSET_CONTRACT_V1.md`
+- `MPSEF_P3_V1_ROLE_INDEPENDENCE_AMENDMENT_V2.md`
+- `MPSEF_SOURCE_ONLY_PROPOSER_DIVERSITY_PROTOCOL_V2.md`
+- `ACAD_PASS_PROTECTED_LINKAGE_SHADOW_DIAGNOSTIC_V1.md`
+- `mpsef_rjoint_score_v3.py`
+- `mpsef_p2_v2_identity_stage0.py`
+
+Scorer V3 synthetic run:
+- run `36863251498`
+- SUCCESS
+- artifact digest `sha256:d051f6c4a93543f7d23cb07c36c711fc3de7197137e5d7b6b2dc334f07030982`
+
+P2_V2 Stage0 source-free run:
+- run `36863549449`
+- SUCCESS
+- artifact digest `sha256:c6a875b7880db119ea660ea84a47c250f49f624d610b4849419e2fd5aa5893e8`
+- project source loaded=false
+- project gold loaded=false
+- project metric computed=false
+- real model inference=false
+
+Stage 1 has NOT started.
+
+Exact next gate:
+focused independent closure review of B01/B02/M01/M02 + Stage0 evidence.
+Only after GO may deterministic 128-UID / 128-cluster source-only Stage 1 run.
