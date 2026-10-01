@@ -3525,3 +3525,37 @@ Current exact next sequence:
 
 Current classification:
 **IMPROVED STRONGLY / PRE-GOLD V4 SCORER READY FOR ADVERSARIAL REVIEW / LINGUISTIC PERFORMANCE STILL UNMEASURED**
+## 2026-10-02 — V4 pre-gold adversarial review packet frozen
+
+Review packet:
+`phase2/redesign/ACAD_PASS_V4_PRE_GOLD_HIGHER_MODEL_REVIEW_PACKET_V1.md`
+
+Commit:
+`8e1257c037c196c67feabcc82f238ae31a4e29e1`
+
+Purpose:
+independent/higher-model adversarial review of the frozen V4 pre-gold contract and scorer before any C_F gold/reference loading.
+
+Packet includes:
+- authoritative evidence order;
+- frozen scorer/test/core hashes;
+- V4 proposer/family/action semantics;
+- M04/M05 requirements;
+- single-reference and historical-exposure boundaries;
+- 30 mandatory review questions;
+- strict PROCEED / MODIFY / BLOCK verdict format;
+- explicit gold-authorization field.
+
+Current tool limitation:
+no independent higher-model execution endpoint is available in the present toolset. Therefore no higher-model verdict has been claimed.
+
+Current exact next action:
+1. submit `ACAD_PASS_V4_PRE_GOLD_HIGHER_MODEL_REVIEW_PACKET_V1.md` to an independent higher model;
+2. store the returned review verbatim or as a frozen repository review artifact;
+3. resolve every BLOCKER and every semantics-changing MAJOR;
+4. rerun the source-free V4 synthetic preflight if scorer/contract semantics change;
+5. create an explicit review-resolution authorization lock;
+6. only then may C_F gold/reference be loaded for a development-feasibility R_joint V4 measurement.
+
+Hard boundary now:
+**REAL GOLD/R_JOINT REMAINS BLOCKED PENDING INDEPENDENT REVIEW RESOLUTION.**
