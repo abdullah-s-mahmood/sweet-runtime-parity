@@ -2216,3 +2216,39 @@ New risk signal:
 very high output activity (98.44%) means later safety/legal-diversity analysis is important before any correctness interpretation.
 
 No new gold/reference was consumed.
+
+
+### 2026-10-01 — P3_V1 reaches source-only Stage1 with 128/128 executable rows
+
+Run:
+`36877195995`
+
+Engineering result:
+**PASS**
+
+- 128/128 executable
+- true batch/single parity 8/8
+- exact P1 parent artifact reused
+- no P1 rerun
+- main batched pass ~22.19 s
+- peak RSS ~1.30 GiB
+
+Stage-B activity relative to P1:
+- 118/128 MIXED
+- 4/128 punctuation-only
+- 6/128 unchanged
+
+The first attempt failed before inference because the new workflow did not reproduce the already-proven P1 dependency stack. This was triaged and repaired without producing P3 outputs.
+
+**Comparison**
+
+P3 implementation/provenance readiness:
+**IMPROVED STRONGLY**
+
+Linguistic performance:
+**NOT MEASURED**
+
+New architecture risk signal:
+P3's effect is mostly mixed rather than punctuation-only, so protection and legal marginal contribution are now more important than raw distinctness.
+
+No gold/reference was consumed.
