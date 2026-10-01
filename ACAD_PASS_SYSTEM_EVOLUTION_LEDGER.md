@@ -3001,3 +3001,40 @@ Scientific boundary unchanged:
 
 Classification:
 **MIXED TEMPORARILY / ROOT CAUSE IDENTIFIED / NO SCIENTIFIC REGRESSION / REPAIRED VERIFICATION PENDING**
+### 2026-10-02 — Exact-runtime V4.2 verification closed PASS; dormant one-shot path frozen
+
+The repaired exact-runtime verification completed successfully:
+- commit `705129dc9f319d835321a47a2530d48bd18ac468`
+- run `36940030184`
+- scorer: **33/33 PASS**
+- wrapper/runtime: **16/16 PASS**
+- artifact `11199084513`
+- digest `sha256:5f16c02fdbe8612499c24b6b2209a19ee03f6738d529e78b10f545fe7c430b20`
+
+Production input lock refreshed:
+`f3f40b1425e272f27d2e19a41f45792310102ad7a62ef9037e78868430517ff3`
+
+Dormant one-shot measurement workflow frozen:
+`7ad25c7207700cca202b3a2727200c7a1d59c409c9ec57bfe013865d63d3f3d8`
+
+Authorization refreshed:
+`a91b25d68b2b2fb80e32326e614853026e6b90d1ce3dac4cc00f571be1425ce3`
+
+Verified one-shot consumption guard remains:
+`895128860ba4e03f287b91c56d3505f5df5a9c31292a5555088654aedd468070`
+
+Final authorization validation launched at commit:
+`8aba3486fc85c473e0c67ef4333f5ab4a8c305e8`
+
+No validation status was exposed within the bounded three-check window, so activation was intentionally NOT created.
+
+A non-triggering activation template was prepared at:
+`phase2/redesign/MPSEF_RJOINT_V4_2_EXECUTION_ACTIVATION_V1_TEMPLATE.json`
+
+Scientific boundary remains intact:
+- new gold access: false
+- real R_joint: false
+- selector/consensus/P4/LLM judge: false
+
+Classification:
+**IMPROVED STRONGLY / EXACT-RUNTIME PRE-GOLD GATE CLOSED / FINAL AUTHORIZATION VALIDATION PENDING**
