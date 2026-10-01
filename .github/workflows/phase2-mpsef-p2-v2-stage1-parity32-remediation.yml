@@ -1,0 +1,150 @@
+name: Phase 2 MP-SEF P2 V2 Stage1 Parity32 Remediation
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - ".github/workflows/phase2-mpsef-p2-v2-stage1-parity32-remediation.yml"
+      - "phase2/redesign/mpsef_p2_v2_stage1_parity32_remediation_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 70
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Download parity32 manifest
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage1-parity32-manifest-v1
+          path: parity32
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36878829104
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2_V2 Stage1 proposals
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-v2-stage1-v1
+          path: p2
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36872617551
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify frozen identities
+        run: |
+          set -euo pipefail
+          test "$(sha256sum parity32/MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1.jsonl | awk '{print $1}')" = "384f1a6d08f79c6a9d73dc4298f1a1fac245d9f43bed2e77a5395cc1a2f4711e"
+          test "$(sha256sum p2/MPSEF_P2_V2_STAGE1_V1.jsonl | awk '{print $1}')" = "df89c7dc2c7f177b3c4ca02e8df8a291b6de917a81246c5258f1f66652e1f69e"
+          echo "P2_V2_PARITY32_INPUT_IDENTITIES_OK"
+
+      - name: Clone frozen Arabic-GEC implementation
+        run: |
+          set -euo pipefail
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+
+      - name: Install frozen P2 runtime stack
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "numpy==1.23.5" "camel-tools==1.4.1" "datasets==2.5.1" "sentencepiece==0.1.99" "protobuf==3.20.3"
+          python -m pip install "huggingface-hub==0.10.1" "tokenizers==0.12.1"
+          python -m pip install --force-reinstall --no-deps ./upstream/arabic-gec/transformers
+          python - <<'PY'
+          import transformers
+          assert transformers.__version__ == "4.22.2"
+          from transformers import DataCollatorForSeq2SeqGEC
+          print("P2_V2_PARITY32_RUNTIME_OK")
+          PY
+
+      - name: Install frozen CAMeL resources
+        run: |
+          set -euo pipefail
+          camel_data -i disambig-bert-unfactored-msa
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          expected_morph="195bc25a333237a2126470da888d7936b59ed3729f9210e0a4194ba43497dd70"
+          expected_disambig="a1a22431cdc0934151e4039abbd7890f06ba7c1f914ca71a90eba218401ae539"
+          root=Path.home()/".camel_tools"
+          morph=[hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob("morphology.db")]
+          models=[hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob("pytorch_model.bin")]
+          assert expected_morph in morph
+          assert expected_disambig in models
+          print("P2_V2_PARITY32_CAMEL_RESOURCES_OK")
+          PY
+
+      - name: Download exact frozen GED/GEC model revisions
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import shutil
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+          ged_src=Path(snapshot_download(repo_id="CAMeL-Lab/camelbert-msa-qalb14-ged-13",revision="447179dc63d186e4bff09a993e90e73ad622d571",cache_dir="hf_cache"))
+          gec_src=Path(snapshot_download(repo_id="CAMeL-Lab/arabart-qalb14-gec-ged-13",revision="410588a318d988cdcfdbf64cf5745ed4adea0f6a",cache_dir="hf_cache"))
+          shutil.copytree(ged_src,"p2v2_ged_model",symlinks=False)
+          shutil.copytree(gec_src,"p2v2_gec_model",symlinks=False)
+          PY
+          test "$(sha256sum p2v2_ged_model/pytorch_model.bin | awk '{print $1}')" = "23385ffe560860a8f5e9e46e05b66a31c33a4b0bd58e9a718933fdab8161f50f"
+          test "$(sha256sum p2v2_gec_model/pytorch_model.bin | awk '{print $1}')" = "5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f"
+
+      - name: Run P2_V2 parity32 remediation
+        env:
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONUNBUFFERED: "1"
+        run: |
+          set -euo pipefail
+          python phase2/redesign/mpsef_p2_v2_stage1_parity32_remediation_v1.py             --manifest parity32/MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1.jsonl             --p2-proposals p2/MPSEF_P2_V2_STAGE1_V1.jsonl             --ged-model-dir p2v2_ged_model             --gec-model-dir p2v2_gec_model             --out MPSEF_P2_V2_STAGE1_PARITY32_REMEDIATION_V1.json
+
+      - name: Validate remediation result
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          x=json.load(open("MPSEF_P2_V2_STAGE1_PARITY32_REMEDIATION_V1.json",encoding="utf-8"))
+          assert x["status"]=="PASS"
+          assert x["n"]==32
+          assert x["counts"]["fresh_vs_repeat"]==32
+          assert x["counts"]["fresh_vs_reordered"]==32
+          assert x["counts"]["fresh_vs_frozen_trace_output"]==32
+          assert x["true_model_batch_call_supported"] is False
+          assert x["batch_vs_single_parity"]=="NOT_APPLICABLE_SINGLE_CASE_MODEL_CALL_IMPLEMENTATION"
+          assert x["project_gold_loaded"] is False
+          assert x["gold_reference_consulted"] is False
+          assert x["quality_metric_computed"] is False
+          assert x["r_joint_computed"] is False
+          assert x["proposal_artifact_modified"] is False
+          print("P2_V2_STAGE1_PARITY32_REMEDIATION_PASS")
+          PY
+
+      - name: Freeze hashes
+        run: |
+          set -euo pipefail
+          python -m pip freeze > MPSEF_P2_V2_STAGE1_PARITY32_REMEDIATION_V1_PIP_FREEZE.txt
+          sha256sum             phase2/redesign/mpsef_p2_v2_stage1_parity32_remediation_v1.py             .github/workflows/phase2-mpsef-p2-v2-stage1-parity32-remediation.yml             parity32/MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1.jsonl             p2/MPSEF_P2_V2_STAGE1_V1.jsonl             p2v2_ged_model/pytorch_model.bin             p2v2_gec_model/pytorch_model.bin             MPSEF_P2_V2_STAGE1_PARITY32_REMEDIATION_V1.json             MPSEF_P2_V2_STAGE1_PARITY32_REMEDIATION_V1_PIP_FREEZE.txt             > MPSEF_P2_V2_STAGE1_PARITY32_REMEDIATION_V1_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-p2-v2-stage1-parity32-remediation-v1
+          path: |
+            MPSEF_P2_V2_STAGE1_PARITY32_REMEDIATION_V1.json
+            MPSEF_P2_V2_STAGE1_PARITY32_REMEDIATION_V1_PIP_FREEZE.txt
+            MPSEF_P2_V2_STAGE1_PARITY32_REMEDIATION_V1_SHA256.txt
+          retention-days: 90
