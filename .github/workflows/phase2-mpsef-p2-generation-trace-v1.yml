@@ -1,0 +1,156 @@
+name: Phase 2 MP-SEF P2 Frozen-Output Generation Trace v1
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+
+jobs:
+  p2-generation-trace:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 300
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: \${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Clone frozen arabic-gec implementation
+        run: |
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+
+      - name: Install frozen P2 generation runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "numpy==1.23.5" "sentencepiece==0.1.99" "protobuf==3.20.3"
+          python -m pip install "huggingface-hub==0.10.1" "tokenizers==0.12.1"
+          python -m pip install --force-reinstall --no-deps ./upstream/arabic-gec/transformers
+          python - <<'PY'
+          import transformers
+          assert transformers.__version__ == "4.22.2"
+          from transformers import DataCollatorForSeq2SeqGEC
+          print("P2_TRACE_MODIFIED_TRANSFORMERS_OK")
+          PY
+
+      - name: Download frozen C_F source manifest
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_cf_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: \${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2 proposals
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-cf-proposals-v1
+          path: p2_cf_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36768378938
+          github-token: \${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate frozen source/proposal identities
+        run: |
+          test "$(sha256sum p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl | awk '{print $1}')" = "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          test "$(sha256sum p2_cf_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl | awk '{print $1}')" = "f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b"
+
+      - name: Download exact frozen P2 GEC model revision
+        run: |
+          python - <<'PY'
+          import shutil
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+          rev="410588a318d988cdcfdbf64cf5745ed4adea0f6a"
+          src=Path(snapshot_download(repo_id="CAMeL-Lab/arabart-qalb14-gec-ged-13",revision=rev,cache_dir="hf_cache"))
+          shutil.copytree(src,"p2_gec_model",symlinks=False)
+          print("P2_TRACE_GEC_MODEL_READY")
+          PY
+          test "$(sha256sum p2_gec_model/pytorch_model.bin | awk '{print $1}')" = "5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f"
+
+      - name: Run source-only generation trace with watchdog
+        env:
+          PYTHONUNBUFFERED: "1"
+          TOKENIZERS_PARALLELISM: "false"
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python phase2/redesign/run_with_progress_watchdog_v1.py \
+            --state-file MPSEF_P2_GENERATION_TRACE_V1_PROGRESS.json \
+            --context acad-pass/mpsef-p2-trace \
+            --poll-seconds 20 \
+            --publish-seconds 60 \
+            --stale-seconds 900 \
+            -- \
+            python phase2/redesign/mpsef_p2_generation_trace_v1.py \
+              --source-manifest p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl \
+              --p2-proposals p2_cf_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl \
+              --gec-model-dir p2_gec_model \
+              --batch-size 8 \
+              --state-file MPSEF_P2_GENERATION_TRACE_V1_PROGRESS.json \
+              --out-prefix MPSEF_P2_GENERATION_TRACE_V1
+
+      - name: Validate trace artifact without quality measurement
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_P2_GENERATION_TRACE_V1_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="TRACE_COMPLETE"
+          assert s["cases"]==1918
+          assert s["exact_frozen_output_matches"]==1918
+          assert s["source_manifest_sha256"]=="051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          assert s["P2_proposal_sha256"]=="f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b"
+          assert s["GEC_weight_sha256"]=="5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f"
+          assert s["gold_reference_consulted"] is False
+          assert s["reference_content_used"] is False
+          assert s["R_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["internal_evaluation_opened"] is False
+          assert s["stress_diagnostic_opened"] is False
+          assert s["reserved_data_opened"] is False
+          p=json.load(open("MPSEF_P2_GENERATION_TRACE_V1_PROGRESS.json",encoding="utf-8"))
+          assert p["status"]=="COMPLETED"
+          assert p["processed"]==1918 and p["total"]==1918
+          print("P2_GENERATION_TRACE_SOURCE_ONLY_OK")
+          print("CEILING_CASES",s["generation_ceiling_cases"])
+          print("MISSING_EOS_CASES",s["missing_terminal_eos_cases"])
+          PY
+
+      - name: Record trace environment and hashes
+        if: always()
+        run: |
+          python -m pip freeze > MPSEF_P2_GENERATION_TRACE_V1_PIP_FREEZE.txt
+          sha256sum \
+            phase2/redesign/mpsef_p2_generation_trace_v1.py \
+            phase2/redesign/process_progress_v1.py \
+            phase2/redesign/run_with_progress_watchdog_v1.py \
+            .github/workflows/phase2-mpsef-p2-generation-trace-v1.yml \
+            p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl \
+            p2_cf_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl \
+            MPSEF_P2_GENERATION_TRACE_V1.jsonl \
+            MPSEF_P2_GENERATION_TRACE_V1_SUMMARY.json \
+            MPSEF_P2_GENERATION_TRACE_V1_PROGRESS.json \
+            MPSEF_P2_GENERATION_TRACE_V1_PIP_FREEZE.txt \
+            > MPSEF_P2_GENERATION_TRACE_V1_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-p2-generation-trace-v1
+          path: |
+            MPSEF_P2_GENERATION_TRACE_V1.jsonl
+            MPSEF_P2_GENERATION_TRACE_V1_SUMMARY.json
+            MPSEF_P2_GENERATION_TRACE_V1_PROGRESS.json
+            MPSEF_P2_GENERATION_TRACE_V1_PIP_FREEZE.txt
+            MPSEF_P2_GENERATION_TRACE_V1_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
