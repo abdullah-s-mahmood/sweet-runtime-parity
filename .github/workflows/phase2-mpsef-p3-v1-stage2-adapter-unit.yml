@@ -1,0 +1,52 @@
+name: Phase 2 MP-SEF P3 V1 Stage2 Production Adapter Unit Preflight
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/mpsef_p3_v1_stage2_production_adapter_v1.py"
+      - "phase2/redesign/test_mpsef_p3_v1_stage2_production_adapter_v1.py"
+      - "phase2/redesign/mpsef_stageb_change_domain_classifier_v1.py"
+      - ".github/workflows/phase2-mpsef-p3-v1-stage2-adapter-unit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  p3-adapter-unit:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install import dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.12.1+cpu"
+          python -m pip install "transformers==4.30.0" "huggingface_hub==0.16.4" "sentencepiece==0.1.99"
+          python -m pip install "numpy==1.23.5" "pandas==1.5.3" "pyarrow==14.0.2" "datasets==2.14.7" "editdistance==0.8.1"
+      - name: Run P3 adapter unit preflight
+        run: |
+          set -euo pipefail
+          python phase2/redesign/test_mpsef_p3_v1_stage2_production_adapter_v1.py             | tee P3_STAGE2_ADAPTER_UNIT.log
+          grep -q '"status": "PASS"' P3_STAGE2_ADAPTER_UNIT.log
+          grep -q '"test_count": 5' P3_STAGE2_ADAPTER_UNIT.log
+      - name: Freeze hashes
+        if: always()
+        run: |
+          sha256sum             phase2/redesign/mpsef_p3_v1_stage2_production_adapter_v1.py             phase2/redesign/test_mpsef_p3_v1_stage2_production_adapter_v1.py             phase2/redesign/mpsef_stageb_change_domain_classifier_v1.py             phase2/redesign/mpsef_p3_v1_stage1_v1.py             phase2/redesign/mpsef_p1_cf_proposals_v1.py             phase2/redesign/process_progress_v1.py             .github/workflows/phase2-mpsef-p3-v1-stage2-adapter-unit.yml             P3_STAGE2_ADAPTER_UNIT.log             > P3_STAGE2_ADAPTER_UNIT_SHA256.txt || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-p3-v1-stage2-adapter-unit-v1
+          path: |
+            P3_STAGE2_ADAPTER_UNIT.log
+            P3_STAGE2_ADAPTER_UNIT_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
