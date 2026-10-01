@@ -21,8 +21,6 @@ EXPECTED = {
     "hypotheses_sha256": "b4736383019d017780a8bfe4b076a0cd742e71bccfbb50350da8fa59b7c9ac75",
     "diagnostic_components_sha256": "2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e",
     "gold_m2_sha256": "971b6fbb28dc3767193e7a4b0f722c3abebfc8600155a57093ba483dac6491e8",
-    "core_v2_sha256": "2f86146e5485cf79da5a3db44b9f8c86ee2b7ea60bac5859ff9a079fe66d3588",
-    "scorer_v2_sha256": "5fdcf0653cd0fafd3195444b926c19d8ab0fdef18dea8c728af1ca171821e2da",
 }
 
 def sha256_file(path):
@@ -100,6 +98,15 @@ def validate_authorization(auth, exp, preflight):
     for key,val in EXPECTED.items():
         if fi.get(key)!=val:
             raise RuntimeError(f"authorization frozen input mismatch: {key}")
+
+    impl=auth.get("implementation_hashes")
+    contracts=auth.get("contract_hashes")
+    if not isinstance(impl,dict) or impl != preflight.get("implementation_hashes"):
+        raise RuntimeError("authorization implementation hashes mismatch second preflight")
+    if not isinstance(contracts,dict) or contracts != preflight.get("contract_hashes"):
+        raise RuntimeError("authorization contract hashes mismatch second preflight")
+    if not impl or not contracts:
+        raise RuntimeError("implementation/contract hash sets must be non-empty")
 
     if auth.get("claim_scope") != (
         "DEVELOPMENT_FEASIBILITY / ADAPTIVELY_CONSUMED QALB-2014 ORIGIN / "
@@ -199,10 +206,14 @@ def self_test():
             "summary_sha256":"a"*64,"code_commit_sha":"b"*40,
         },
         "frozen_inputs":dict(EXPECTED),
+        "implementation_hashes":{"scorer":"1"*64,"guard":"2"*64},
+        "contract_hashes":{"bundle":"3"*64},
         "claim_scope":"DEVELOPMENT_FEASIBILITY / ADAPTIVELY_CONSUMED QALB-2014 ORIGIN / NOT_INDEPENDENT_GENERALIZATION_EVIDENCE",
         "selector_authorized":False,"auto_safe_authorized":False,"reserved_sets_authorized":False,
     }
     pre["code_commit_sha"]="b"*40
+    pre["implementation_hashes"]=dict(auth["implementation_hashes"])
+    pre["contract_hashes"]=dict(auth["contract_hashes"])
     assert validate_authorization(auth,exp,pre)
     assert consumed_status_present([]) is False
     assert consumed_status_present([{"context":"other"}]) is False
