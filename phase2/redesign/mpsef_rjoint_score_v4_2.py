@@ -366,6 +366,7 @@ def score_population_v4_2(
     evaluate_fn=None,
     frozen_identity=None,
     expected_identity=None,
+    progress_callback=None,
 ):
     # Production identity must be verified before any source/gold target analysis.
     # Synthetic/source-free callers may omit both identities.
@@ -580,6 +581,8 @@ def score_population_v4_2(
                 item["action_id"] for item in scoring_failures if item["uid"] == uid
             }),
         })
+        if progress_callback is not None:
+            progress_callback(len(sentence_records), len(uids), uid)
 
     primary_intervals = {
         g: interval(primary_bounds[g], primary_den) for g in GROUPS
