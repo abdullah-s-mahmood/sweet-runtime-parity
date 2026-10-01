@@ -1,0 +1,129 @@
+name: Phase 2 MP-SEF P2 V2 Stage2 Production-Bound Preflight
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/mpsef_p2_v2_stage2_production_adapter_v1.py"
+      - "phase2/redesign/mpsef_p2_v2_stage2_production_bound_preflight_v1.py"
+      - "phase2/redesign/mpsef_p2_v2_identity_stage0.py"
+      - "phase2/redesign/mpsef_p2_v2_real_model_stage0.py"
+      - ".github/workflows/phase2-mpsef-p2-v2-stage2-production-bound-preflight.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-bound-preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Clone frozen Arabic-GEC implementation
+        run: |
+          set -euo pipefail
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+          grep -q "self.embed_ged_tags = nn.Embedding" upstream/arabic-gec/transformers/src/transformers/models/mbart/modeling_mbart.py
+          grep -q "hidden_states = inputs_embeds + embed_pos + ged_tags_embed" upstream/arabic-gec/transformers/src/transformers/models/mbart/modeling_mbart.py
+
+      - name: Install exact frozen P2 runtime
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "numpy==1.23.5" "camel-tools==1.4.1" "datasets==2.5.1" "sentencepiece==0.1.99" "protobuf==3.20.3"
+          python -m pip install "huggingface-hub==0.10.1" "tokenizers==0.12.1"
+          python -m pip install --force-reinstall --no-deps ./upstream/arabic-gec/transformers
+          python - <<'PY'
+          import transformers
+          assert transformers.__version__ == "4.22.2"
+          from transformers import DataCollatorForSeq2SeqGEC
+          print("P2_STAGE2_PRODUCTION_BOUND_RUNTIME_OK")
+          PY
+
+      - name: Install frozen CAMeL resources
+        run: |
+          set -euo pipefail
+          camel_data -i disambig-bert-unfactored-msa
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          expected_morph="195bc25a333237a2126470da888d7936b59ed3729f9210e0a4194ba43497dd70"
+          expected_disambig="a1a22431cdc0934151e4039abbd7890f06ba7c1f914ca71a90eba218401ae539"
+          root=Path.home()/".camel_tools"
+          morph=[hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob("morphology.db")]
+          models=[hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob("pytorch_model.bin")]
+          assert expected_morph in morph
+          assert expected_disambig in models
+          print("P2_STAGE2_PRODUCTION_BOUND_CAMEL_OK")
+          PY
+
+      - name: Download exact frozen GED/GEC revisions
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import shutil
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+          ged=Path(snapshot_download(repo_id="CAMeL-Lab/camelbert-msa-qalb14-ged-13",revision="447179dc63d186e4bff09a993e90e73ad622d571",cache_dir="hf_cache"))
+          gec=Path(snapshot_download(repo_id="CAMeL-Lab/arabart-qalb14-gec-ged-13",revision="410588a318d988cdcfdbf64cf5745ed4adea0f6a",cache_dir="hf_cache"))
+          shutil.copytree(ged,"p2v2_ged_model",symlinks=False)
+          shutil.copytree(gec,"p2v2_gec_model",symlinks=False)
+          PY
+          test "$(sha256sum p2v2_ged_model/pytorch_model.bin | awk '{print $1}')" = "23385ffe560860a8f5e9e46e05b66a31c33a4b0bd58e9a718933fdab8161f50f"
+          test "$(sha256sum p2v2_gec_model/pytorch_model.bin | awk '{print $1}')" = "5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f"
+
+      - name: Run production-bound B01 and real-model source-free preflight
+        env:
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONUNBUFFERED: "1"
+        run: |
+          set -euo pipefail
+          python phase2/redesign/mpsef_p2_v2_stage2_production_bound_preflight_v1.py             --ged-model-dir p2v2_ged_model             --gec-model-dir p2v2_gec_model             --out MPSEF_P2_V2_STAGE2_PRODUCTION_BOUND_PREFLIGHT_V1.json             | tee P2_STAGE2_PRODUCTION_BOUND_PREFLIGHT.log
+
+      - name: Validate preflight
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          x=json.load(open("MPSEF_P2_V2_STAGE2_PRODUCTION_BOUND_PREFLIGHT_V1.json",encoding="utf-8"))
+          assert x["status"]=="PASS"
+          assert x["legacy_b01_semantic_pass"]==20
+          assert x["production_adapter_b01_routing_pass"]==20
+          assert x["real_model_source_free_pass"]==3
+          assert x["project_source_loaded"] is False
+          assert x["project_gold_loaded"] is False
+          assert x["quality_metric_computed"] is False
+          assert x["model_identities"]["ged_weight_sha256"]=="23385ffe560860a8f5e9e46e05b66a31c33a4b0bd58e9a718933fdab8161f50f"
+          assert x["model_identities"]["gec_weight_sha256"]=="5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f"
+          print("P2_STAGE2_PRODUCTION_BOUND_PREFLIGHT_PASS")
+          PY
+
+      - name: Freeze environment and hashes
+        if: always()
+        run: |
+          python -m pip freeze > MPSEF_P2_V2_STAGE2_PRODUCTION_BOUND_PIP_FREEZE.txt
+          sha256sum             phase2/redesign/mpsef_p2_v2_stage2_production_adapter_v1.py             phase2/redesign/mpsef_p2_v2_stage2_production_bound_preflight_v1.py             phase2/redesign/mpsef_p2_v2_identity_stage0.py             phase2/redesign/mpsef_p2_v2_real_model_stage0.py             phase2/redesign/mpsef_p2_v2_stage1_v1.py             phase2/redesign/process_progress_v1.py             upstream/arabic-gec/transformers/src/transformers/models/mbart/modeling_mbart.py             p2v2_ged_model/pytorch_model.bin             p2v2_gec_model/pytorch_model.bin             MPSEF_P2_V2_STAGE2_PRODUCTION_BOUND_PREFLIGHT_V1.json             MPSEF_P2_V2_STAGE2_PRODUCTION_BOUND_PIP_FREEZE.txt             .github/workflows/phase2-mpsef-p2-v2-stage2-production-bound-preflight.yml             > MPSEF_P2_V2_STAGE2_PRODUCTION_BOUND_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-p2-v2-stage2-production-bound-preflight-v1
+          path: |
+            MPSEF_P2_V2_STAGE2_PRODUCTION_BOUND_PREFLIGHT_V1.json
+            P2_STAGE2_PRODUCTION_BOUND_PREFLIGHT.log
+            MPSEF_P2_V2_STAGE2_PRODUCTION_BOUND_PIP_FREEZE.txt
+            MPSEF_P2_V2_STAGE2_PRODUCTION_BOUND_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
