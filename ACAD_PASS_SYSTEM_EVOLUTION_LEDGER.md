@@ -2886,3 +2886,48 @@ Single-run authorization must now be treated as consumed once its durable claim 
 
 Classification:
 **IMPROVED STRONGLY / AUTHORIZATION CLOSED PASS / DEVELOPMENT R_JOINT V4.2 IN PROGRESS**
+### 2026-10-02 — Runtime dependency identity hardening before gold
+
+A final pre-execution red-team review discovered that the V4.2 production wrapper froze the dependency-lock file identity but did not independently assert the actual installed numpy/editdistance versions.
+
+This was treated as a real B02 reproducibility gap.
+
+Hardening:
+- production wrapper validates dependency-lock fields;
+- actual Python major/minor is checked;
+- actual Arabic-GEC revision is checked;
+- actual numpy version is checked;
+- actual editdistance version is checked;
+- network-download-during-measurement policy must equal `forbidden`;
+- model-inference-during-measurement policy must equal `forbidden`;
+- runtime dependency identity is embedded in measurement output.
+
+Wrapper preflight expanded:
+- prior: 14/14;
+- new required suite: 16/16;
+- new rejects:
+  - package-version mismatch;
+  - runtime-policy mismatch.
+
+Updated combined pre-gold workflow:
+`f7353bd2693654a78d49a353ba04485683e79f45`
+
+After three sequential status inspections, no status had yet been exposed; polling stopped per protocol.
+
+Because runtime-verifying wrapper identity changed after the prior authorization:
+- prior authorization SHA256 `5bb5727e6fea6d7b89e0180656660713ee1d301f1dcf4134755d47385d1cfc28` was explicitly superseded/fail-closed;
+- prior input-lock SHA256 `3f3e4bd95bbd5d49ad71ec58466573d56a476eefcf0cdc3719c2c732d3de19d0` was explicitly superseded pending re-freeze.
+
+Fail-close commits:
+- authorization: `75b8afcb65831d41ff3e4642c5af708c4a58bf14`
+- input lock: `ec3e7793a9c4286d3928ebeacc8d6269f3bdf7e9`
+
+Verified one-shot consumption guard remains:
+- SHA256 `895128860ba4e03f287b91c56d3505f5df5a9c31292a5555088654aedd468070`
+- no consumption claim issued yet.
+
+No project gold/reference was newly opened.
+No real R_joint was computed.
+
+Classification:
+**MIXED / REPRODUCIBILITY IMPROVED / AUTHORIZATION TEMPORARILY ROLLED BACK FAIL-CLOSED**
