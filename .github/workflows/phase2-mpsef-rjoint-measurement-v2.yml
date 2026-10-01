@@ -1,0 +1,284 @@
+name: Phase 2 MP-SEF R_joint Measurement v2 — One Shot
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/redesign/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2.json"
+
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+
+concurrency:
+  group: mpsef-rjoint-v2-cf1918-20261001-a
+  cancel-in-progress: false
+
+jobs:
+  rjoint-v2-one-shot:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 300
+
+    steps:
+      - name: Checkout authorization trigger commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Read frozen authorization metadata
+        id: auth
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path("phase2/redesign/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2.json")
+          if not p.exists():
+              raise SystemExit("AUTHORIZATION_V2_FILE_MISSING")
+          x=json.loads(p.read_text(encoding="utf-8"))
+          if x.get("record_id")!="MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2":
+              raise SystemExit("AUTHORIZATION_V2_RECORD_ID_INVALID")
+          out=Path(os.environ["GITHUB_OUTPUT"])
+          with out.open("a",encoding="utf-8") as f:
+              f.write(f"code_commit_sha={x['code_commit_sha']}\n")
+              f.write(f"preflight_run_id={x['second_preflight']['run_id']}\n")
+              f.write(f"preflight_summary_sha256={x['second_preflight']['summary_sha256']}\n")
+          Path("/tmp/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2.json").write_text(
+              json.dumps(x,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          print("AUTHORIZATION_V2_METADATA_READ")
+          PY
+
+      - name: Require authorization-only diff after frozen code commit
+        env:
+          CODE_COMMIT_SHA: ${{ steps.auth.outputs.code_commit_sha }}
+        run: |
+          git cat-file -e "$CODE_COMMIT_SHA^{commit}"
+          python - <<'PY'
+          import os,subprocess
+          code=os.environ["CODE_COMMIT_SHA"]
+          trigger=os.environ["GITHUB_SHA"]
+          changed=subprocess.check_output(
+              ["git","diff","--name-only",code,trigger],text=True
+          ).splitlines()
+          allowed={"phase2/redesign/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2.json"}
+          if set(changed)!=allowed:
+              raise SystemExit(f"TRIGGER_DIFF_NOT_AUTHORIZATION_ONLY: {changed}")
+          print("AUTHORIZATION_ONLY_TRIGGER_DIFF_OK")
+          PY
+
+      - name: Checkout exact second-preflight code commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.auth.outputs.code_commit_sha }}
+          fetch-depth: 1
+
+      - name: Download exact second-preflight artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-rjoint-second-preflight-v2
+          path: second_preflight_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: ${{ steps.auth.outputs.preflight_run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate authorization against experiment and second preflight
+        env:
+          EXPECTED_PREFLIGHT_SUMMARY_SHA: ${{ steps.auth.outputs.preflight_summary_sha256 }}
+        run: |
+          test "$(sha256sum second_preflight_artifact/MPSEF_RJOINT_SECOND_PREFLIGHT_V2_SUMMARY.json | awk '{print $1}')" = "$EXPECTED_PREFLIGHT_SUMMARY_SHA"
+          python phase2/redesign/mpsef_measurement_guard_v2.py             --validate             --experiment-file phase2/redesign/MPSEF_RJOINT_EXPERIMENT_ID_V2.json             --authorization-file /tmp/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2.json             --preflight-file second_preflight_artifact/MPSEF_RJOINT_SECOND_PREFLIGHT_V2_SUMMARY.json
+
+      - name: Verify frozen implementation and contract hashes before any gold access
+        env:
+          CODE_COMMIT_SHA: ${{ steps.auth.outputs.code_commit_sha }}
+        run: |
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          s=json.load(open("second_preflight_artifact/MPSEF_RJOINT_SECOND_PREFLIGHT_V2_SUMMARY.json",encoding="utf-8"))
+          assert s["code_commit_sha"]==os.environ["CODE_COMMIT_SHA"]
+          def sha(p):
+              return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          for p,h in s["implementation_hashes"].items():
+              assert sha(p)==h,(p,sha(p),h)
+          for p,h in s["contract_hashes"].items():
+              assert sha(p)==h,(p,sha(p),h)
+          print("PRE_GOLD_CODE_CONTRACT_HASHES_OK")
+          PY
+
+      - name: Download frozen P1/source artifact before gold
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen executable-actions artifact before gold
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-source-only-legalizer-v1
+          path: legalizer_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36808497947
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen diagnostic artifact before gold
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-diagnostic-components-v1
+          path: diagnostic_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36807629220
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify all source-only evidence before consumption claim
+        run: |
+          test "$(sha256sum p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl | awk '{print $1}')" = "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          test "$(sha256sum legalizer_artifact/MPSEF_EXECUTABLE_ACTIONS_V1_ACTION_SETS.jsonl | awk '{print $1}')" = "6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a"
+          test "$(sha256sum legalizer_artifact/MPSEF_EXECUTABLE_ACTIONS_V1_HYPOTHESES.jsonl | awk '{print $1}')" = "b4736383019d017780a8bfe4b076a0cd742e71bccfbb50350da8fa59b7c9ac75"
+          test "$(sha256sum diagnostic_artifact/MPSEF_DIAGNOSTIC_COMPONENTS_V1.jsonl | awk '{print $1}')" = "2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e"
+
+      - name: Clone frozen official text-editing scorer before consumption claim
+        run: |
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git -C upstream/text-editing rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Re-run all non-gold smoke tests before consumption claim
+        run: |
+          python phase2/redesign/mpsef_executable_actions_legalizer_v1.py --self-test
+          python - <<'PY'
+          import sys
+          sys.path.insert(0,"phase2/redesign")
+          from mpsef_rjoint_core_v2 import self_test
+          assert self_test("upstream/text-editing")
+          print("CORE_V2_UPSTREAM_SYNTHETIC_OK")
+          PY
+          python phase2/redesign/mpsef_rjoint_score_v2.py --self-test
+          python phase2/redesign/mpsef_measurement_guard_v2.py --self-test
+          python phase2/redesign/mpsef_cf_gold_projection_v2.py --self-test
+          python phase2/redesign/mpsef_rjoint_measurement_v2.py --self-test
+
+      - name: Claim experiment permanently BEFORE gold access
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CODE_COMMIT_SHA: ${{ steps.auth.outputs.code_commit_sha }}
+        run: |
+          python phase2/redesign/mpsef_measurement_guard_v2.py             --claim             --repo "$GITHUB_REPOSITORY"             --code-commit-sha "$CODE_COMMIT_SHA"             --target-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
+      - name: Write durable authorization evidence after claim
+        env:
+          CODE_COMMIT_SHA: ${{ steps.auth.outputs.code_commit_sha }}
+          PREFLIGHT_RUN_ID: ${{ steps.auth.outputs.preflight_run_id }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          x={
+            "record_id":"MPSEF_RJOINT_V2_AUTHORIZATION_EVIDENCE",
+            "experiment_id":"MPSEF-RJOINT-V2-CF1918-20261001-A",
+            "code_commit_sha":os.environ["CODE_COMMIT_SHA"],
+            "trigger_commit_sha":os.environ["GITHUB_SHA"],
+            "second_preflight_run_id":int(os.environ["PREFLIGHT_RUN_ID"]),
+            "consumption_claimed":True,
+            "gold_access_allowed_after_claim":True,
+            "measurement_authorized":True,
+            "consumption_context":"acad-pass/mpsef-rjoint-v2-consumed"
+          }
+          Path("MPSEF_RJOINT_V2_AUTHORIZATION_EVIDENCE.json").write_text(
+              json.dumps(x,indent=2)+"\n",encoding="utf-8"
+          )
+          print("POST_CLAIM_AUTHORIZATION_EVIDENCE_READY")
+          PY
+
+      # GOLD ACCESS BOUNDARY: no project reference/gold artifact may be downloaded above this line.
+
+      - name: Download frozen CALIBRATION AFTER consumption claim
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-calibration-v1
+          path: calibration_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36654588477
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen official NoPnx M2 gold AFTER consumption claim
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-h1-official-alignment-scoring-continuation-v1
+          path: gold_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36720612925
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build C_F-only gold projection AFTER consumption claim
+        run: |
+          python phase2/redesign/mpsef_cf_gold_projection_v2.py             --authorization-evidence MPSEF_RJOINT_V2_AUTHORIZATION_EVIDENCE.json             --calibration calibration_artifact/M2H_CALIBRATION_V1.jsonl             --source-manifest p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl             --full-gold-m2 gold_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2             --upstream-root upstream/text-editing             --out-prefix MPSEF_CF_GOLD_PROJECTION_V2
+
+      - name: Run one-shot R_joint v2 with watchdog
+        env:
+          PYTHONUNBUFFERED: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python phase2/redesign/run_with_progress_watchdog_v1.py             --state-file MPSEF_RJOINT_MEASUREMENT_V2_PROGRESS.json             --context acad-pass/mpsef-rjoint-v2-progress             --poll-seconds 20             --publish-seconds 60             --stale-seconds 180             --             python phase2/redesign/mpsef_rjoint_measurement_v2.py               --authorization-evidence MPSEF_RJOINT_V2_AUTHORIZATION_EVIDENCE.json               --source-manifest p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl               --action-sets legalizer_artifact/MPSEF_EXECUTABLE_ACTIONS_V1_ACTION_SETS.jsonl               --hypotheses legalizer_artifact/MPSEF_EXECUTABLE_ACTIONS_V1_HYPOTHESES.jsonl               --diagnostic-components diagnostic_artifact/MPSEF_DIAGNOSTIC_COMPONENTS_V1.jsonl               --gold-projection MPSEF_CF_GOLD_PROJECTION_V2.jsonl               --gold-projection-summary MPSEF_CF_GOLD_PROJECTION_V2_SUMMARY.json               --upstream-root upstream/text-editing               --state-file MPSEF_RJOINT_MEASUREMENT_V2_PROGRESS.json               --out-prefix MPSEF_RJOINT_MEASUREMENT_V2
+
+      - name: Validate measurement output contract
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_RJOINT_MEASUREMENT_V2_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="MEASUREMENT_COMPLETE"
+          assert s["experiment_id"]=="MPSEF-RJOINT-V2-CF1918-20261001-A"
+          assert s["cases"]==1918 and s["clusters"]==764
+          assert s["R_joint"]==s["R_pair"]
+          assert s["gate"] in {
+              "PASS_CANDIDATE_AVAILABILITY",
+              "FAIL_CANDIDATE_AVAILABILITY",
+              "INCONCLUSIVE_INTERVAL_CROSSES_GATE",
+              "INCONCLUSIVE_NO_TARGETS",
+          }
+          assert s["source_manifest_sha256"]=="051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          assert s["executable_actions_sha256"]=="6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a"
+          assert s["hypotheses_sha256"]=="b4736383019d017780a8bfe4b076a0cd742e71bccfbb50350da8fa59b7c9ac75"
+          assert s["diagnostic_components_sha256"]=="2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e"
+          assert s["full_gold_m2_sha256"]=="971b6fbb28dc3767193e7a4b0f722c3abebfc8600155a57093ba483dac6491e8"
+          assert s["failure_state_counts"].get("EXECUTION_FAILED")==1918
+          assert s["selector_trained"] is False
+          assert s["internal_evaluation_opened"] is False
+          assert s["stress_diagnostic_opened"] is False
+          assert s["reserved_data_opened"] is False
+          n=sum(1 for x in open("MPSEF_RJOINT_MEASUREMENT_V2_PER_SENTENCE.jsonl",encoding="utf-8") if x.strip())
+          assert n==1918
+          print("MPSEF_RJOINT_V2_OUTPUT_CONTRACT_OK")
+          PY
+
+      - name: Freeze measurement environment and output hashes
+        if: always()
+        run: |
+          python -m pip freeze > MPSEF_RJOINT_MEASUREMENT_V2_PIP_FREEZE.txt
+          sha256sum             phase2/redesign/mpsef_rjoint_core_v2.py             phase2/redesign/mpsef_rjoint_score_v2.py             phase2/redesign/mpsef_rjoint_measurement_v2.py             phase2/redesign/mpsef_cf_gold_projection_v2.py             phase2/redesign/mpsef_measurement_guard_v2.py             .github/workflows/phase2-mpsef-rjoint-measurement-v2.yml             MPSEF_RJOINT_V2_AUTHORIZATION_EVIDENCE.json             MPSEF_CF_GOLD_PROJECTION_V2.jsonl             MPSEF_CF_GOLD_PROJECTION_V2_SUMMARY.json             MPSEF_RJOINT_MEASUREMENT_V2_SUMMARY.json             MPSEF_RJOINT_MEASUREMENT_V2_PER_SENTENCE.jsonl             MPSEF_RJOINT_MEASUREMENT_V2_PROGRESS.json             MPSEF_RJOINT_MEASUREMENT_V2_PIP_FREEZE.txt             > MPSEF_RJOINT_MEASUREMENT_V2_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-rjoint-measurement-v2
+          path: |
+            MPSEF_RJOINT_V2_AUTHORIZATION_EVIDENCE.json
+            MPSEF_CF_GOLD_PROJECTION_V2_SUMMARY.json
+            MPSEF_RJOINT_MEASUREMENT_V2_SUMMARY.json
+            MPSEF_RJOINT_MEASUREMENT_V2_PER_SENTENCE.jsonl
+            MPSEF_RJOINT_MEASUREMENT_V2_PROGRESS.json
+            MPSEF_RJOINT_MEASUREMENT_V2_PIP_FREEZE.txt
+            MPSEF_RJOINT_MEASUREMENT_V2_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
