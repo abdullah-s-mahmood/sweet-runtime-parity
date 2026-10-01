@@ -1,0 +1,120 @@
+name: Phase 2 MP-SEF V4 Stage1 P1 Parity32 Remediation
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - ".github/workflows/phase2-mpsef-v4-stage1-p1-parity32.yml"
+      - "phase2/redesign/mpsef_v4_stage1_p1_parity32_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+
+jobs:
+  p1-parity32:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install frozen P1 runtime
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.12.1+cpu"
+          python -m pip install "transformers==4.30.0" "huggingface_hub==0.16.4" "sentencepiece==0.1.99"
+          python -m pip install "numpy==1.23.5" "pandas==1.5.3" "pyarrow==14.0.2" "datasets==2.14.7" "editdistance==0.8.1"
+
+      - name: Clone frozen text-editing
+        run: |
+          set -euo pipefail
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+
+      - name: Download frozen P1 model
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          snapshot_download(
+              repo_id="CAMeL-Lab/text-editing-qalb14-nopnx",
+              revision="21286e56ce98a86362db540863f91c083b8970f9",
+              local_dir="p1_model",
+              local_dir_use_symlinks=False,
+          )
+          PY
+          test "$(sha256sum p1_model/pytorch_model.bin | awk '{print $1}')" = "9324bd3e8bcbfd5a45d5562979cccd4279f0a7946c25a13abb10aba9cc42364d"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage1-packet-v1
+          path: packet
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36871466394
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage1-parity32-manifest-v1
+          path: parity
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36878829104
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run monitored P1 parity32 remediation
+        env:
+          PYTHONUNBUFFERED: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python phase2/redesign/run_with_progress_watchdog_v1.py             --state-file MPSEF_V4_STAGE1_P1_PARITY32_PROGRESS.json             --context "acad-pass/v4-stage1-p1-parity32"             --poll-seconds 10             --publish-seconds 30             --stale-seconds 600             --kill-on-stale             --             python phase2/redesign/mpsef_v4_stage1_p1_parity32_v1.py               --packet packet/MPSEF_V4_STAGE1_PACKET_V1.jsonl               --parity-manifest parity/MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1.jsonl               --p1-proposals p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl               --model-dir p1_model               --upstream-root upstream/text-editing               --progress-state MPSEF_V4_STAGE1_P1_PARITY32_PROGRESS.json               --out MPSEF_V4_STAGE1_P1_PARITY32_V1.json
+
+      - name: Validate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          r=json.load(open("MPSEF_V4_STAGE1_P1_PARITY32_V1.json",encoding="utf-8"))
+          p=json.load(open("MPSEF_V4_STAGE1_P1_PARITY32_PROGRESS.json",encoding="utf-8"))
+          assert r["status"]=="PASS"
+          assert r["n"]==32
+          for k in ("single_vs_batch_match","single_vs_frozen_pass1_match","single_vs_frozen_pass2_match","single_vs_frozen_final_output_match","reordered_batch_match","repeat_batch_match"):
+              assert r[k]==32
+          assert r["project_gold_loaded"] is False
+          assert r["quality_metric_computed"] is False
+          assert r["proposal_artifact_modified"] is False
+          assert p["status"]=="COMPLETE" and p["processed"]==128==p["total"]
+          print("P1_PARITY32_REMEDIATION_PASS")
+          PY
+
+      - name: Hash
+        if: always()
+        run: |
+          sha256sum             phase2/redesign/mpsef_v4_stage1_p1_parity32_v1.py             .github/workflows/phase2-mpsef-v4-stage1-p1-parity32.yml             MPSEF_V4_STAGE1_P1_PARITY32_V1.json             MPSEF_V4_STAGE1_P1_PARITY32_PROGRESS.json             > MPSEF_V4_STAGE1_P1_PARITY32_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-v4-stage1-p1-parity32-v1
+          path: |
+            MPSEF_V4_STAGE1_P1_PARITY32_V1.json
+            MPSEF_V4_STAGE1_P1_PARITY32_PROGRESS.json
+            MPSEF_V4_STAGE1_P1_PARITY32_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
