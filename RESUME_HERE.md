@@ -3761,3 +3761,49 @@ Exact next sequence:
 
 Hard boundary:
 **GOLD/R_JOINT REMAIN CLOSED UNTIL THE INPUT-LOCK SHA IS BOUND INTO THE AUTHORIZATION RECORD.**
+## 2026-10-02 — V4.2 exact authorization validated; one-shot DEVELOPMENT measurement launched
+
+Input-lock SHA256 publication completed:
+`3f3e4bd95bbd5d49ad71ec58466573d56a476eefcf0cdc3719c2c732d3de19d0`
+
+Single-run authorization:
+`phase2/redesign/MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1.json`
+
+Authorization commit:
+`fd776f286e7f72f0343290b44ad93e94370cec13`
+
+Authorization validation:
+- `acad-pass/v4-2-authorization-valid = success`
+- authorization SHA256:
+  `c9adda76ace40df378ab4c88f193160e1edbdd6256f079e87ee4d2e185008993`
+
+Authorized one-shot workflow:
+`.github/workflows/phase2-mpsef-v4-2-development-rjoint-one-shot.yml`
+
+Workflow trigger commit:
+`f84c94527df487dc0426165737450471d6da3fa4`
+
+Observed GitHub Actions run:
+`36938833412`
+
+Current observed status after three sequential inspections:
+`acad-pass/mpsef-rjoint-v4-2-progress = pending`
+
+The progress context is emitted only by the authorized scoring watchdog after the pre-gold checks, single-run durable consumption claim, and post-claim reference artifact verification steps. Therefore the authorized measurement has entered its scoring phase.
+
+Per the polling protocol, no fourth inspection was performed in this continuation.
+
+Do NOT:
+- launch a second V4.2 measurement;
+- rerun the workflow;
+- modify scorer/core/wrapper/input-lock/authorization while run 36938833412 is active;
+- activate P4, selector, consensus, LLM judge, internal evaluation, stress, or reserved populations.
+
+Exact next action on the next user continuation:
+1. inspect run/commit `f84c94527df487dc0426165737450471d6da3fa4` / run `36938833412`;
+2. if still pending, follow the max-three-polls rule again;
+3. if complete, retrieve and validate the measurement artifact before interpreting any metrics;
+4. preserve any failure before considering a technical rerun; the single-run authorization is considered consumed once the durable claim was made.
+
+Current classification:
+**IMPROVED STRONGLY / EXACT AUTHORIZATION PASS / ONE-SHOT DEVELOPMENT R_JOINT V4.2 RUNNING**
