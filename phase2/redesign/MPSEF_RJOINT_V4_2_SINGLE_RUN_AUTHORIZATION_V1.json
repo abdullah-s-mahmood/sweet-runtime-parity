@@ -1,7 +1,7 @@
 {
   "record_id": "MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1",
   "date": "2026-10-02",
-  "status": "SUPERSEDED_PENDING_RUNTIME_IDENTITY_REFREEZE",
+  "status": "AUTHORIZED_SINGLE_DEVELOPMENT_RUN",
   "experiment_id": "MPSEF-RJOINT-V4_2-CF1918-20261002-A",
   "decision": "AUTHORIZE_DEVELOPMENT_ONLY_RJOINT_V4_2_SINGLE_RUN",
   "measurement_authorized": false,
@@ -9,7 +9,7 @@
   "consumption_claimed_before_gold_access": true,
   "single_run_only": true,
   "input_lock_file": "phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json",
-  "input_lock_sha256": "3f3e4bd95bbd5d49ad71ec58466573d56a476eefcf0cdc3719c2c732d3de19d0",
+  "input_lock_sha256": "f3f40b1425e272f27d2e19a41f45792310102ad7a62ef9037e78868430517ff3",
   "governing_contract": "phase2/redesign/MPSEF_V4_PRE_GOLD_DEVELOPMENT_MEASUREMENT_CONTRACT_V1_AMENDMENT_A1.md",
   "closure_lock": "phase2/redesign/MPSEF_RJOINT_V4_2_PRE_GOLD_CLOSURE_LOCK_V1.md",
   "independent_delta_review": {
@@ -22,15 +22,18 @@
   "verification": {
     "scorer_preflight_passed": 33,
     "scorer_preflight_total": 33,
-    "wrapper_preflight_passed": 14,
-    "wrapper_preflight_total": 14,
+    "wrapper_preflight_passed": 16,
+    "wrapper_preflight_total": 16,
     "combined_status": "acad-pass/v4-2-pre-gold-wrapper = success",
-    "input_lock_identity_status": "acad-pass/v4-2-input-lock-sha256/3f3e4bd95bbd5d49ad71ec58466573d56a476eefcf0cdc3719c2c732d3de19d0 = success"
+    "workflow_run_id": 36940030184,
+    "artifact_id": 11199084513,
+    "artifact_digest": "sha256:5f16c02fdbe8612499c24b6b2209a19ee03f6738d529e78b10f545fe7c430b20",
+    "exact_runtime_verified": true
   },
   "frozen_implementation": {
     "scorer_sha256": "be9cf725b71b8d26a23eff9e9afd4ca434294a4d8f72e0271caa179ca892f2e1",
     "core_sha256": "b9f8c81706c266b75786e04a4363f8af8a5900eb9629acc99dac15ad72389d3c",
-    "wrapper_sha256": "72bf23c9f910c2b203caf11e6e677729fa914d66c2d1e062ac0fd7dfd6da357f",
+    "wrapper_sha256": "251883f11c20b79699d7aac89a39bb11c46b51229ce515eb35d066d9cfda8993",
     "dependency_lock_sha256": "aa66ec3d6fdb4aef1b4fada26a1b6cf794f632139655e22462a7a1c27aab7bc5"
   },
   "frozen_inputs": {
@@ -73,5 +76,21 @@
     "replacement_required": true,
     "gold_opened_under_superseded_authorization": false,
     "real_r_joint_computed_under_superseded_authorization": false
-  }
+  },
+  "frozen_runtime": {
+    "python_major_minor": "3.10",
+    "numpy": "1.23.5",
+    "editdistance": "0.6.2",
+    "arabic_gec_revision": "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf",
+    "network_download_during_measurement": "forbidden",
+    "model_inference_during_measurement": "forbidden"
+  },
+  "measurement_workflow": {
+    "file": ".github/workflows/phase2-mpsef-v4-2-rjoint-one-shot.yml",
+    "commit": "41343523f36cb85784e3ba866f05ba67353b0a5a",
+    "sha256": "7ad25c7207700cca202b3a2727200c7a1d59c409c9ec57bfe013865d63d3f3d8",
+    "state": "DORMANT_NOT_ACTIVATED",
+    "activation_file": "phase2/redesign/MPSEF_RJOINT_V4_2_EXECUTION_ACTIVATION_V1.json"
+  },
+  "authorization_basis": "Independent delta-review repairs closed; exact-runtime scorer 33/33 and wrapper 16/16 PASS; exact input-lock/workflow/consumption-guard identities frozen."
 }
