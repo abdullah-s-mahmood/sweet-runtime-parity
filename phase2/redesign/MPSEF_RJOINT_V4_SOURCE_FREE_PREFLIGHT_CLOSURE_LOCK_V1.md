@@ -30,7 +30,7 @@ Workflow:
 `.github/workflows/phase2-mpsef-v4-rjoint-source-free-preflight.yml`
 
 Observable workflow commit:
-`df097dffee26b155cb013206e71d6594b3734df4`
+`5c280d4cc6abda3e1f5f21c0fbcb6e79c2d6df2d`
 
 ## 3. GitHub execution result
 
@@ -38,9 +38,9 @@ Commit status:
 `acad-pass/v4-rjoint-source-free-preflight = success`
 
 Additional successful identity status contexts:
-- `acad-pass/v4-rjoint-scorer-sha256`
-- `acad-pass/v4-rjoint-test-sha256`
-- `acad-pass/v4-rjoint-result-sha256`
+- `acad-pass/v4-rjoint-scorer-sha256/b9fdbe205e6e00082b51a7ee16c74d0010c4bbe50406ad58d2f6f9e166db7513`
+- `acad-pass/v4-rjoint-test-sha256/cb07b046fbd36f2afd0c27f46efd3f7561a42f2ac90b9f4ac5f477e8dd56b8b3`
+- `acad-pass/v4-rjoint-result-sha256/4eb8c2510fd62b50ff3a557018bc58d52853e53e4625389572308e62b39585d2`
 
 The GitHub connector confirms these contexts as SUCCESS.
 
@@ -49,8 +49,11 @@ The GitHub connector confirms these contexts as SUCCESS.
 Scorer:
 `b9fdbe205e6e00082b51a7ee16c74d0010c4bbe50406ad58d2f6f9e166db7513`
 
-Synthetic preflight:
+Synthetic preflight source:
 `cb07b046fbd36f2afd0c27f46efd3f7561a42f2ac90b9f4ac5f477e8dd56b8b3`
+
+Synthetic preflight result JSON:
+`4eb8c2510fd62b50ff3a557018bc58d52853e53e4625389572308e62b39585d2`
 
 Historical core/matcher helper:
 `phase2/redesign/mpsef_rjoint_core_v2.py`
