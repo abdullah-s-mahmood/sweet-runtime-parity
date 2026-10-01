@@ -104,6 +104,14 @@ Lock:
 
 ### Target/scorer v2
 
+Corrected governing documents:
+- `MPSEF_TARGET_FAMILY_MAP_V2.md`
+- `MPSEF_TARGET_AND_MATCHING_CONTRACT_V2_AMENDMENT.md`
+
+V2 explicitly preserves mixed punctuation+boundary targets and separates:
+source-only execution alignment, source-only diagnostic evidence, and
+gold-aware evaluation-only M2 matching.
+
 Corrected core/scorer must be reviewed for:
 - punctuation-only vs mixed target classification;
 - no a/m/p punctuation bug;
