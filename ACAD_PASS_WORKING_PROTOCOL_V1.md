@@ -41,25 +41,28 @@ When a launched process is still running:
 If progress is measurable:
 - report current `x/total`;
 - state whether actual progress is occurring or a stall is suspected;
-- provide an estimated remaining time for that SAME process, grounded in recent observed progress rate.
+- report remaining work as `total-x` units and, when useful, the recent observed processing rate without converting it into a promised future completion time.
 
 If no new checkpoint occurred:
 - do not repeat unchanged Stage/system completion percentages or unchanged long-term estimates.
 
-## 4. Checkpoint reporting
+## 4. Mandatory checkpoint reporting
 
-After a meaningful stage/gate/phase closes or materially changes, report briefly:
+After EVERY meaningful checkpoint, architecture decision, substantive `أكمل` cycle, or review that changes evidence/state, end with a compact progress report containing ALL of the following unless literally unchanged:
 
-- classification: `IMPROVED`, `WORSENED`, `MIXED`, or `NOT COMPARABLE`;
-- concrete comparable metrics/evidence;
-- approximate engineering improvement if useful, clearly labeled as an estimate;
-- current stage completion estimate;
-- expected remaining time for the current stage;
-- current ACAD_PASS completion estimate;
-- expected remaining time for the full research-grade system;
-- main residual risks.
+- classification versus the previous comparable checkpoint: `IMPROVED`, `WORSENED`, `MIXED`, or `NOT COMPARABLE`;
+- what improved and what worsened/new risks appeared;
+- magnitude of change in exact counts, percentages, percentage points, hashes, gates, or other comparable evidence whenever available;
+- if no defensible numeric delta exists, explicitly say `NOT QUANTIFIABLE FROM COMPARABLE EVIDENCE` rather than inventing a number;
+- engineering completion estimate for the CURRENT STAGE, with the denominator/basis stated (for example, closed gates / total planned gates);
+- engineering completion estimate for ACAD_PASS AS A WHOLE, clearly labeled as approximate and based on the current frozen architecture;
+- remaining gate/work-unit count for the current stage and for the whole system where a meaningful count exists;
+- main blockers, risks, and factors that could increase or reduce the remaining work;
+- realistic next-step forecast in terms of gates/work units and decision dependencies.
 
-Do not report fake precision. Engineering probabilities/percentages are estimates, not scientific/model-quality probabilities.
+Do NOT provide wall-clock hours/days for future work. Use remaining gates/work units instead. For an already-running external process, report observed progress only; do not promise a future delivery time.
+
+Do not report fake precision. Engineering completion percentages are planning estimates, not scientific/model-quality probabilities. If the architecture changes materially, revise the estimate and explain why.
 
 ## 5. Failure handling
 
@@ -87,10 +90,12 @@ Do not report fake precision. Engineering probabilities/percentages are estimate
 
 ## 7. Research and architecture decisions
 
-At substantive architecture gates, and after major phases:
+At the START and END of every substantive phase/iteration, and at substantive architecture gates:
 
 - perform fresh deep research when external evidence can materially improve the decision;
 - perform maximum-effort brainstorming/red-team analysis;
+- explicitly challenge whether the current path should be KEEP / REPAIR / REPLACE / ADD / DEFER;
+- at the end, compare the new evidence against the state at phase start and record what improved, worsened, remained unresolved, and why;
 - compare KEEP / REPAIR / REPLACE / ADD / DEFER where relevant;
 - do not assume an earlier architectural decision remains optimal after new evidence;
 - distinguish literature evidence from project-source evidence and from engineering inference.
