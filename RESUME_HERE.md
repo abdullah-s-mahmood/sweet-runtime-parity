@@ -2229,3 +2229,36 @@ Do not rerun already completed P1/P2 artifacts solely to add monitoring.
 
 Classification:
 **IMPROVED OPERATIONAL OBSERVABILITY / SCIENTIFIC PERFORMANCE UNCHANGED**
+
+
+## CHECKPOINT 2026-10-01 — SOURCE-ONLY LEGALIZER FROZEN
+
+Independent-review remediation status:
+- F01 exposure: machine audit frozen; partial technical scorer execution occurred to 500/1918 in cancelled run; no valid final result; human recollection = UNKNOWN.
+- F09 population precedence: current cycle frozen to C_F=1918/764; historical 317-record amendment does not govern this cycle.
+- P2 GED provenance audit: **1,918/1,918 cases mismatch word-level morphology count vs GED-label count**; P2 frozen hypotheses are therefore source-only `EXECUTION_FAILED` for this cycle.
+- source-only legalizer run: `36807189754` SUCCESS.
+- artifact: `11137763396`, ZIP digest `sha256:a6d265295dfacd623057c6a4c9d5e111145c90e2670eae1c5bf8ee6bfef34152`.
+- P1_OK: 1,806 / 1,918 = 94.16%.
+- P1_PROTECTED_BLOCKED: 112 / 1,918 = 5.84%.
+- P2_EXECUTION_FAILED: 1,918 / 1,918 = 100%.
+- legal action-set SHA256:
+  `6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a`.
+- hypotheses SHA256:
+  `c91195a66a687ba8acf12d1b1e51741183b28992f89681c8510cdac8fddf9e14`.
+- lock:
+  `phase2/redesign/MPSEF_SOURCE_ONLY_LEGALIZER_LOCK_V1.md`.
+- monitoring contract proved operational: watchdog reported live progress and completed 1918/1918.
+
+Scientific classification:
+**IMPROVED METHODOLOGICAL VALIDITY / WORSENED P2 EXECUTABILITY / QUALITY PERFORMANCE STILL UNMEASURED**
+
+Do NOT compute R_joint yet.
+
+Exact next work:
+1. fix scorer F06/F07/F10;
+2. scorer must read frozen legal action sets and never call legality with gold;
+3. freeze target-scope/family rules and evaluation-vs-execution alignment boundary;
+4. strengthen run guards/hashes (F08);
+5. execute synthetic-only second preflight;
+6. explicit authorization review only after all mandatory checks pass.
