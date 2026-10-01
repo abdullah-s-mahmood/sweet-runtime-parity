@@ -3921,3 +3921,43 @@ Exact next sequence:
 8. only then create/freeze/execute the one-shot DEVELOPMENT-only V4.2 measurement workflow.
 
 No gold/reference content was opened and no real R_joint was computed during this hardening.
+## 2026-10-02 — V4.2 exact runtime preflight failure diagnosed and repaired
+
+Commit `500b176475b60ab5207c6715fa28e2c84f76c70e` completed with:
+- scorer preflight: PASS / 33/33
+- install/compile/runtime setup: PASS
+- wrapper preflight step: FAIL
+- all SHA publication steps: completed
+
+Workflow run:
+`36939409747`
+
+Failure localization:
+`Run 16-case wrapper preflight` only.
+
+Root cause:
+the source-free harness accidentally contained duplicate copies of W15 and W16, yielding 18 executed test records while the summary correctly required exactly 16. This was a harness bookkeeping defect only; it did NOT indicate a scorer, wrapper, population, provenance, or runtime-identity semantic failure.
+
+Repair:
+duplicate W15/W16 block removed only.
+
+Repair commit:
+`45187205641612d867a8547305fc37688493eded`
+
+No production semantics changed in this repair.
+
+Three sequential status checks on the repair commit returned no exposed status yet, so polling stopped per protocol.
+
+Current exact next sequence:
+1. inspect commit `45187205641612d867a8547305fc37688493eded`;
+2. require scorer 33/33 + wrapper 16/16 PASS;
+3. capture the new wrapper-test/result SHA256 values;
+4. update production input-lock and republish its exact SHA;
+5. regenerate and validate exact-SHA single-run authorization, including verified consumption guard;
+6. freeze the one-shot measurement workflow;
+7. claim consumption before gold access;
+8. execute one DEVELOPMENT-only R_joint V4.2 run;
+9. analyze/freeze result and perform end-of-phase research/red-team/closure decision.
+
+Gold/reference content remains unopened by this repair.
+Real R_joint remains uncomputed.
