@@ -88,89 +88,210 @@ def protected_signature(spans):
 def boundary_guard(text: str, s: int, e: int):
     left = text[:s]
     right = text[e:]
-    left_token = re.search(r"(\S+)\s*$", left)
-    right_token = re.match(r"^\s*(\S+)", right)
     left_gap = left[len(left.rstrip()):] if left else ""
     right_gap = right[:len(right)-len(right.lstrip())] if right else ""
     return {
-        "left_token": left_token.group(1) if left_token else None,
-        "right_token": right_token.group(1) if right_token else None,
         "left_gap": left_gap,
         "right_gap": right_gap,
+        "left_token_count": len(left.split()),
+        "right_token_count": len(right.split()),
+    }
+
+def _levenshtein_forward(a: str, b: str):
+    n, m = len(a), len(b)
+    d = [[0] * (m + 1) for _ in range(n + 1)]
+    for i in range(n + 1):
+        d[i][0] = i
+    for j in range(m + 1):
+        d[0][j] = j
+    for i in range(1, n + 1):
+        ca = a[i - 1]
+        row = d[i]
+        prev = d[i - 1]
+        for j in range(1, m + 1):
+            row[j] = min(
+                prev[j] + 1,
+                row[j - 1] + 1,
+                prev[j - 1] + (0 if ca == b[j - 1] else 1),
+            )
+    return d
+
+def _levenshtein_backward(a: str, b: str):
+    n, m = len(a), len(b)
+    d = [[0] * (m + 1) for _ in range(n + 1)]
+    for i in range(n, -1, -1):
+        d[i][m] = n - i
+    for j in range(m, -1, -1):
+        d[n][j] = m - j
+    for i in range(n - 1, -1, -1):
+        ca = a[i]
+        row = d[i]
+        nxt = d[i + 1]
+        for j in range(m - 1, -1, -1):
+            row[j] = min(
+                nxt[j] + 1,
+                row[j + 1] + 1,
+                nxt[j + 1] + (0 if ca == b[j] else 1),
+            )
+    return d
+
+def optimal_alignment_protection_audit(source: str, output: str, spans):
+    if not spans:
+        return {
+            "status":"PASS",
+            "optimal_distance":None,
+            "ambiguity_affects_legality":False,
+            "reasons":[],
+            "mapped_spans":[],
+        }
+
+    fwd = _levenshtein_forward(source, output)
+    bwd = _levenshtein_backward(source, output)
+    n, m = len(source), len(output)
+    optimum = fwd[n][m]
+
+    protected_chars = set()
+    insertion_cursors = set()
+    for span in spans:
+        s, e = span["source_start"], span["source_end"]
+        protected_chars.update(range(s, e))
+        insertion_cursors.update(range(s, e + 1))
+
+    possible_match_positions = {i:set() for i in protected_chars}
+    bad_reasons = set()
+    ambiguity_reasons = set()
+
+    def edge_optimal(i, j, ni, nj, cost):
+        return fwd[i][j] + cost + bwd[ni][nj] == optimum
+
+    for i in range(n + 1):
+        for j in range(m + 1):
+            if i < n:
+                if edge_optimal(i, j, i + 1, j, 1) and i in protected_chars:
+                    bad_reasons.add(f"OPTIMAL_PATH_CAN_DELETE_PROTECTED_CHAR:{i}")
+            if j < m:
+                if edge_optimal(i, j, i, j + 1, 1) and i in insertion_cursors:
+                    bad_reasons.add(f"OPTIMAL_PATH_CAN_INSERT_AT_PROTECTED_BOUNDARY:{i}")
+            if i < n and j < m:
+                cost = 0 if source[i] == output[j] else 1
+                if edge_optimal(i, j, i + 1, j + 1, cost) and i in protected_chars:
+                    if cost != 0:
+                        bad_reasons.add(f"OPTIMAL_PATH_CAN_SUBSTITUTE_PROTECTED_CHAR:{i}")
+                    else:
+                        possible_match_positions[i].add(j)
+
+    for i in sorted(protected_chars):
+        poss = possible_match_positions[i]
+        if len(poss) == 0:
+            bad_reasons.add(f"NO_OPTIMAL_EXACT_MATCH_FOR_PROTECTED_CHAR:{i}")
+        elif len(poss) > 1:
+            ambiguity_reasons.add(
+                f"PROTECTED_CHAR_HAS_MULTIPLE_OPTIMAL_OUTPUT_POSITIONS:{i}:{','.join(map(str,sorted(poss)))}"
+            )
+
+    mapped_spans = []
+    for idx, span in enumerate(spans):
+        s, e = span["source_start"], span["source_end"]
+        mapped = []
+        mapping_ok = True
+        for i in range(s, e):
+            poss = possible_match_positions.get(i, set())
+            if len(poss) != 1:
+                mapping_ok = False
+                break
+            mapped.append(next(iter(poss)))
+        if mapping_ok and mapped:
+            expected = list(range(mapped[0], mapped[0] + len(mapped)))
+            if mapped != expected:
+                ambiguity_reasons.add(f"PROTECTED_SPAN_NONCONTIGUOUS_MAPPING:{idx}")
+                mapping_ok = False
+        mapped_spans.append({
+            "source_span_index":idx,
+            "output_start":mapped[0] if mapping_ok and mapped else None,
+            "output_end":mapped[-1] + 1 if mapping_ok and mapped else None,
+            "mapping_unique_contiguous":bool(mapping_ok and mapped),
+        })
+
+    reasons = sorted(bad_reasons | ambiguity_reasons)
+    return {
+        "status":"PASS" if not reasons else "FAIL",
+        "optimal_distance":optimum,
+        "ambiguity_affects_legality":bool(ambiguity_reasons),
+        "reasons":reasons,
+        "mapped_spans":mapped_spans,
     }
 
 def protection_proof(source: str, output: str):
     src = derived_spans(source)
     out = derived_spans(output)
-
     reasons = []
-    # Conservative v1: protected object multiset/order must be identical.
+
+    # Detect deleted, changed, or newly created protected objects.
     if protected_signature(src) != protected_signature(out):
         reasons.append("PROTECTED_SIGNATURE_CHANGED")
 
-    # Require exact one-to-one ordered occurrence plus conservative adjacency guards.
-    pos = 0
-    for idx, sspan in enumerate(src):
-        needle = sspan["text"]
-        j = output.find(needle, pos)
-        if j < 0:
-            reasons.append(f"PROTECTED_OBJECT_NOT_FOUND:{idx}")
-            continue
-        k = j + len(needle)
-        src_guard = boundary_guard(source, sspan["source_start"], sspan["source_end"])
-        out_guard = boundary_guard(output, j, k)
+    alignment = optimal_alignment_protection_audit(source, output, src)
+    reasons.extend(alignment["reasons"])
 
-        # Fail closed on any change in immediate separator around protected object.
-        if src_guard["left_gap"] != out_guard["left_gap"] or src_guard["right_gap"] != out_guard["right_gap"]:
-            reasons.append(f"PROTECTED_SEPARATOR_CHANGED:{idx}")
-
-        # For citations/technical/code/number-unit/percent objects, also freeze nearest token attachment.
-        if sspan["category"] in {
-            "CITATION_DOI","CODE_LATIN_TECHNICAL","NUMBER_UNIT_COUPLED","PERCENT_COUPLED","URL_EMAIL"
-        }:
-            if src_guard["left_token"] != out_guard["left_token"] or src_guard["right_token"] != out_guard["right_token"]:
-                reasons.append(f"PROTECTED_ATTACHMENT_CHANGED:{idx}")
-        pos = k
-
-    return {
-        "status": "PASS" if not reasons else "FAIL",
-        "derived_protection_version": PROTECTION_VERSION,
-        "source_spans": src,
-        "output_spans": out,
-        "reasons": reasons,
+    attachment_categories = {
+        "CITATION_DOI","CODE_LATIN_TECHNICAL","NUMBER_UNIT_COUPLED",
+        "PERCENT_COUPLED","URL_EMAIL","DOCUMENT_STRUCTURE","EQUATION_FORMULA"
     }
 
-def levenshtein_distance(a: str, b: str) -> int:
-    prev = list(range(len(b)+1))
-    for i, ca in enumerate(a, start=1):
-        cur = [i]
-        for j, cb in enumerate(b, start=1):
-            cur.append(min(
-                prev[j] + 1,
-                cur[j-1] + 1,
-                prev[j-1] + (0 if ca == cb else 1),
-            ))
-        prev = cur
-    return prev[-1]
+    # If optimal mapping is unique/contiguous, verify exact text and structural
+    # attachment without freezing the lexical spelling of neighboring words.
+    for idx, span in enumerate(src):
+        mapped = alignment["mapped_spans"][idx] if idx < len(alignment["mapped_spans"]) else None
+        if not mapped or not mapped["mapping_unique_contiguous"]:
+            continue
+        j, k = mapped["output_start"], mapped["output_end"]
+        if output[j:k] != span["text"]:
+            reasons.append(f"PROTECTED_TEXT_CHANGED:{idx}")
+            continue
+
+        sg = boundary_guard(source, span["source_start"], span["source_end"])
+        og = boundary_guard(output, j, k)
+        if sg["left_gap"] != og["left_gap"] or sg["right_gap"] != og["right_gap"]:
+            reasons.append(f"PROTECTED_SEPARATOR_CHANGED:{idx}")
+
+        if span["category"] in attachment_categories:
+            if (
+                sg["left_token_count"] != og["left_token_count"]
+                or sg["right_token_count"] != og["right_token_count"]
+            ):
+                reasons.append(f"PROTECTED_ATTACHMENT_ORDINAL_CHANGED:{idx}")
+
+    reasons = sorted(set(reasons))
+    return {
+        "status":"PASS" if not reasons else "FAIL",
+        "derived_protection_version":PROTECTION_VERSION,
+        "source_spans":src,
+        "output_spans":out,
+        "optimal_alignment_audit":alignment,
+        "reasons":reasons,
+    }
 
 def alignment_ambiguity_status(source: str, output: str, protection):
-    # Whole-hypothesis legality does not depend on an edit decomposition unless
-    # decomposition ambiguity could affect the protection proof.
-    # V1 therefore uses a conservative source-only rule:
-    # if repeated protected objects exist or protection mapping is not unique,
-    # mark ambiguity as affecting legality.
-    src_sig = protected_signature(protection["source_spans"])
-    repeated = any(src_sig.count(x) > 1 for x in src_sig)
-    if repeated:
+    audit = protection.get("optimal_alignment_audit", {})
+    if audit.get("ambiguity_affects_legality"):
         return {
-            "status": "AFFECTS_LEGALITY",
-            "reason": "REPEATED_PROTECTED_OBJECT_MAPPING_NOT_UNIQUE",
-            "edit_distance": levenshtein_distance(source, output),
+            "status":"AFFECTS_LEGALITY",
+            "reason":";".join(
+                x for x in audit.get("reasons", [])
+                if "MULTIPLE_OPTIMAL" in x or "NONCONTIGUOUS" in x
+            ) or "PROTECTION_RELEVANT_OPTIMAL_ALIGNMENT_AMBIGUITY",
+            "edit_distance":audit.get("optimal_distance"),
+        }
+    if protection.get("source_spans") and audit.get("status") == "FAIL":
+        return {
+            "status":"NO_AMBIGUITY_BUT_PROTECTION_UNSAFE",
+            "reason":None,
+            "edit_distance":audit.get("optimal_distance"),
         }
     return {
-        "status": "NO_PROTECTION_RELEVANT_AMBIGUITY_PROVEN",
-        "reason": None,
-        "edit_distance": levenshtein_distance(source, output),
+        "status":"NO_PROTECTION_RELEVANT_AMBIGUITY_PROVEN",
+        "reason":None,
+        "edit_distance":audit.get("optimal_distance"),
     }
 
 def reversibility_proof(source: str, output: str, expected_source_sha: str, expected_output_sha: str):
