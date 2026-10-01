@@ -1,0 +1,20 @@
+{
+  "record_id": "MPSEF_RJOINT_V4_2_EXECUTION_ACTIVATION_V1_TEMPLATE",
+  "status": "TEMPLATE_NOT_ACTIVE",
+  "experiment_id": "MPSEF-RJOINT-V4_2-CF1918-20261002-A",
+  "decision": "EXECUTE_AUTHORIZED_SINGLE_DEVELOPMENT_RUN",
+  "single_use": true,
+  "code_commit_sha": "<FINAL_PREACTIVATION_COMMIT_SHA>",
+  "authorization_sha256": "a91b25d68b2b2fb80e32326e614853026e6b90d1ce3dac4cc00f571be1425ce3",
+  "input_lock_sha256": "f3f40b1425e272f27d2e19a41f45792310102ad7a62ef9037e78868430517ff3",
+  "measurement_workflow_sha256": "7ad25c7207700cca202b3a2727200c7a1d59c409c9ec57bfe013865d63d3f3d8",
+  "consumption_guard_sha256": "895128860ba4e03f287b91c56d3505f5df5a9c31292a5555088654aedd468070",
+  "preconditions": {
+    "authorization_validation_required": "acad-pass/v4-2-authorization-valid = success",
+    "scorer_preflight": "33/33 PASS",
+    "wrapper_preflight": "16/16 PASS",
+    "gold_opened_before_activation": false,
+    "real_r_joint_computed_before_activation": false
+  },
+  "note": "Creating this TEMPLATE does not trigger the measurement workflow. Only creation of MPSEF_RJOINT_V4_2_EXECUTION_ACTIVATION_V1.json may activate the one-shot workflow."
+}
