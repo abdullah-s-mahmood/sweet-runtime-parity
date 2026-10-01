@@ -2769,3 +2769,70 @@ Gold exposure:
 
 Next:
 check only the minimal verification commit in a new continuation turn; do not alter scorer/harness until its result is known.
+### 2026-10-02 — V4.2 delta-review remediation and B02 production hardening
+
+Independent delta-review verdict:
+`MODIFY`
+
+No new BLOCKER/MAJOR finding was reported.
+
+Historical finding state at review:
+- B01 CLOSED
+- B02 PARTIAL
+- M01-M05 CLOSED
+- N01-N02 CLOSED
+
+Mandatory pre-gold repairs were executed without opening project gold.
+
+Scorer repairs:
+- T20 external-source-identity regression repaired;
+- T24 now exercises true SPLIT+MERGE;
+- identity contract is enforced before target construction;
+- incomplete identity contracts fail closed;
+- progress callback added for observable long-running production scoring.
+
+Verification:
+- V4.2 scorer source-free preflight: **33/33 PASS**
+- V4.2 production-wrapper source-free preflight: **14/14 PASS**
+- combined status: `acad-pass/v4-2-pre-gold-wrapper = success`
+
+Production wrapper:
+`phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_v1.py`
+
+Production input lock:
+`phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json`
+
+Pre-gold closure:
+`phase2/redesign/MPSEF_RJOINT_V4_2_PRE_GOLD_CLOSURE_LOCK_V1.md`
+
+Frozen implementation SHA256:
+- scorer: `be9cf725b71b8d26a23eff9e9afd4ca434294a4d8f72e0271caa179ca892f2e1`
+- core: `b9f8c81706c266b75786e04a4363f8af8a5900eb9629acc99dac15ad72389d3c`
+- wrapper: `72bf23c9f910c2b203caf11e6e677729fa914d66c2d1e062ac0fd7dfd6da357f`
+- dependency lock: `aa66ec3d6fdb4aef1b4fada26a1b6cf794f632139655e22462a7a1c27aab7bc5`
+
+Full-C_F identity:
+- 1,918 UIDs / 764 clusters
+- source SHA256: `051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193`
+- action-set SHA256: `e38393abb36734d3882e29a78f3b33c80718791957b9b8c0c6e8a8ab77f6e138`
+- UID SHA256: `51e2e1decf1c7c9efbc31e343eba1c7dfb08d0de314041cb57f5b3118ffd550f`
+- cluster SHA256: `bb2f49c6aaf312cf9c388237090a79861fa6218da15de57d0119efd39327ae3c`
+- UID-cluster map SHA256: `32b89f9dcadefa0f17cb0fddac6099433d611508a01ad96b428e0534c1057c5d`
+- provenance signature map SHA256: `18561c75c397821c34e3dc06214bb4f64cc5ff8d6757f61835cbe9e6808befbd`
+
+Gold identity remained historical/frozen only:
+`971b6fbb28dc3767193e7a4b0f722c3abebfc8600155a57093ba483dac6491e8`
+
+No gold content was newly opened and no real R_joint was computed.
+
+Current authorization state:
+exact input-lock SHA publication workflow committed at
+`c49d572f82e3939ad4461ad0b78ff45655d2ac7b`.
+
+After three sequential status checks, the SHA context was not yet exposed, so polling stopped per protocol.
+
+Next:
+capture the exact input-lock SHA, bind it into a separate single-run authorization record, validate that record, then and only then permit one DEVELOPMENT-only R_joint V4.2 run.
+
+Classification:
+**IMPROVED STRONGLY / B02 IMPLEMENTATION HARDENED / AUTHORIZATION BINDING PENDING**
