@@ -1,7 +1,7 @@
 {
   "record_id": "MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1",
   "date": "2026-10-02",
-  "status": "FROZEN_READY_FOR_SINGLE_RUN_AUTHORIZATION",
+  "status": "SUPERSEDED_PENDING_RUNTIME_IDENTITY_REFREEZE",
   "experiment_id": "MPSEF-RJOINT-V4_2-CF1918-20261002-A",
   "claim_scope": "DEVELOPMENT / ADAPTIVELY_CONSUMED / REFERENCE_RELATIVE / NOT_INDEPENDENT_GENERALIZATION",
   "governing_contract": "phase2/redesign/MPSEF_V4_PRE_GOLD_DEVELOPMENT_MEASUREMENT_CONTRACT_V1_AMENDMENT_A1.md",
@@ -80,5 +80,13 @@
     "llm_judge_authorized": false,
     "reserved_sets_authorized": false,
     "single_run_authorization_required": true
+  },
+  "supersession": {
+    "date": "2026-10-02",
+    "reason": "Production wrapper hardened to validate actual installed dependency versions and runtime policy before gold access.",
+    "previous_input_lock_sha256": "3f3e4bd95bbd5d49ad71ec58466573d56a476eefcf0cdc3719c2c732d3de19d0",
+    "replacement_required": true,
+    "gold_opened_under_superseded_lock": false,
+    "real_r_joint_computed_under_superseded_lock": false
   }
 }
