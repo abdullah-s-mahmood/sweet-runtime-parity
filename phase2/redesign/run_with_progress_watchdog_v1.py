@@ -97,7 +97,10 @@ def main():
             print("WATCHDOG_PROGRESS " + json.dumps({
                 "alive": alive, "processed": processed, "total": total,
                 "percent": pct, "stale_seconds": stale_for,
-                "stage": st.get("stage"), "heartbeat_at": st.get("heartbeat_at")
+                "stage": st.get("stage"), "heartbeat_at": st.get("heartbeat_at"),
+                "eta_seconds": st.get("eta_seconds"),
+                "estimated_finish_at_utc": st.get("estimated_finish_at_utc"),
+                "eta_confidence": st.get("eta_confidence")
             }, ensure_ascii=False), flush=True)
             last_seen_processed = processed
 
@@ -106,7 +109,18 @@ def main():
                 desc = "alive; waiting for first progress update"
             else:
                 stale_txt = "unknown" if stale_for is None else str(stale_for)
-                desc = f"alive {processed}/{total} ({pct}%), no-progress={stale_txt}s"
+                eta = st.get("eta_seconds")
+                finish = st.get("estimated_finish_at_utc")
+                conf = st.get("eta_confidence")
+                eta_txt = "ETA=unknown"
+                if isinstance(eta, (int, float)):
+                    eta_min = eta / 60.0
+                    eta_txt = f"ETA={eta_min:.1f}m"
+                if finish:
+                    eta_txt += f" finish={finish}"
+                if conf:
+                    eta_txt += f" conf={conf}"
+                desc = f"alive {processed}/{total} ({pct}%), no-progress={stale_txt}s; {eta_txt}"
             publish_status("pending", desc, args.context, target_url)
             last_publish = now
 
