@@ -1,0 +1,119 @@
+name: Phase 2 MP-SEF V4 Stage2 Input Lock V1
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/mpsef_v4_stage2_input_lock_v1.py"
+      - "phase2/redesign/mpsef_p2_v2_stage2_production_adapter_v1.py"
+      - "phase2/redesign/mpsef_p3_v1_stage2_production_adapter_v1.py"
+      - "phase2/redesign/run_with_progress_watchdog_v2.py"
+      - "phase2/redesign/mpsef_stageb_change_domain_classifier_v1.py"
+      - "phase2/redesign/mpsef_executable_actions_legalizer_v1.py"
+      - "phase2/redesign/mpsef_v4_b02_m01_m03_stage0.py"
+      - "phase2/redesign/mpsef_build_cf_source_manifest_v1.py"
+      - "phase2/redesign/MPSEF_V4_CANDIDATE_REGISTRY_ACTIONSET_CONTRACT_V2.md"
+      - "phase2/redesign/MPSEF_V4_STAGE2_SOURCE_ONLY_FULL_CF_EXECUTION_CONTRACT_V1.md"
+      - "phase2/redesign/MPSEF_V4_STAGE2_SOURCE_ONLY_FULL_CF_EXECUTION_CONTRACT_V1_AMENDMENT_A1.md"
+      - "phase2/redesign/MPSEF_PROTECTED_INVARIANTS_CONTRACT_V1.md"
+      - "phase2/redesign/MPSEF_SOURCE_ONLY_LEGALIZER_LOCK_V1R1.md"
+      - "phase2/redesign/MPSEF_SHADOW_PROTECTION_DIAGNOSTICS_CONTRACT_V1.md"
+      - "phase2/redesign/MPSEF_P2_V2_STAGE2_M01_PRODUCTION_BOUND_REPLAY_CLOSURE_LOCK_V1.md"
+      - "phase2/redesign/MPSEF_P3_V1_STAGE2_PRODUCTION_BOUND_REPLAY_CLOSURE_LOCK_V1.md"
+      - ".github/workflows/phase2-mpsef-v4-stage2-input-lock-v1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  input-lock:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Download frozen P1/C_F artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download P2 production-bound replay artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-v2-stage2-production-bound-parity32-v1
+          path: p2_replay
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36894512600
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download P3 production-bound replay artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p3-v1-stage2-production-bound-parity32-v1
+          path: p3_replay
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36897419883
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify frozen artifacts exist
+        run: |
+          set -euo pipefail
+          test -f p1/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl
+          test -f p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl
+          test -f p2_replay/P2_STAGE2_PARITY32_PIP_FREEZE.txt
+          test -f p2_replay/MPSEF_P2_V2_STAGE2_PRODUCTION_BOUND_PARITY32_V1.json
+          test -f p3_replay/P3_STAGE2_PARITY32_PIP_FREEZE.txt
+          test -f p3_replay/MPSEF_P3_V1_STAGE2_PRODUCTION_BOUND_PARITY32_V1.json
+          test "$(sha256sum p1/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl | awk '{print $1}')" = "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          test "$(sha256sum p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl | awk '{print $1}')" = "2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+
+      - name: Materialize Stage2 Input Lock
+        run: |
+          set -euo pipefail
+          python phase2/redesign/mpsef_v4_stage2_input_lock_v1.py             --cf-manifest p1/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl             --p1-proposals p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl             --p2-runtime-freeze p2_replay/P2_STAGE2_PARITY32_PIP_FREEZE.txt             --p3-runtime-freeze p3_replay/P3_STAGE2_PARITY32_PIP_FREEZE.txt             --p2-replay-json p2_replay/MPSEF_P2_V2_STAGE2_PRODUCTION_BOUND_PARITY32_V1.json             --p3-replay-json p3_replay/MPSEF_P3_V1_STAGE2_PRODUCTION_BOUND_PARITY32_V1.json             --repo-root .             --out-json MPSEF_V4_STAGE2_INPUT_LOCK_V1.json             --out-md MPSEF_V4_STAGE2_INPUT_LOCK_V1.md             | tee MPSEF_V4_STAGE2_INPUT_LOCK_V1.log
+
+      - name: Validate Input Lock
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          x=json.load(open("MPSEF_V4_STAGE2_INPUT_LOCK_V1.json",encoding="utf-8"))
+          assert x["status"]=="PASS"
+          assert x["population"]["cases"]==1918
+          assert x["population"]["clusters"]==764
+          assert x["population"]["manifest_sha256"]=="051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          assert x["frozen_p1"]["proposal_sha256"]=="2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          assert x["registry"]["sha256"]=="b448650c571f6c93dffe4825417e4f65d6a8cd02e33bd9551728ceac2b242b1a"
+          assert x["p2"]["replay_counts"]=={"fresh_vs_repeat":32,"fresh_vs_reordered":32,"fresh_vs_frozen_trace_output":32}
+          assert all(v==32 for v in x["p3"]["replay_counts"].values())
+          assert x["p3"]["p1_rerun"] is False
+          assert x["p3"]["exact_frozen_p1_parent_reused"] is True
+          assert x["scientific_boundary"]["gold_reference_allowed"] is False
+          assert x["full_cf_execution_authorized_by_this_record"] is True
+          print("MPSEF_V4_STAGE2_INPUT_LOCK_V1_PASS")
+          PY
+
+      - name: Freeze lock hashes
+        if: always()
+        run: |
+          sha256sum             phase2/redesign/mpsef_v4_stage2_input_lock_v1.py             MPSEF_V4_STAGE2_INPUT_LOCK_V1.json             MPSEF_V4_STAGE2_INPUT_LOCK_V1.md             MPSEF_V4_STAGE2_INPUT_LOCK_V1.log             > MPSEF_V4_STAGE2_INPUT_LOCK_V1_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-v4-stage2-input-lock-v1
+          path: |
+            MPSEF_V4_STAGE2_INPUT_LOCK_V1.json
+            MPSEF_V4_STAGE2_INPUT_LOCK_V1.md
+            MPSEF_V4_STAGE2_INPUT_LOCK_V1.log
+            MPSEF_V4_STAGE2_INPUT_LOCK_V1_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
