@@ -1,0 +1,69 @@
+name: Phase 2 MP-SEF P3 Pnx Identity Freeze
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-p3-pnx-identity-freeze.yml"
+      - "phase2/redesign/mpsef_p3_pnx_identity_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freeze:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install identity runtime
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade "pip<25"
+          python -m pip install "huggingface_hub==0.16.4" "transformers==4.30.0" "torch==2.1.2"
+
+      - name: Freeze Pnx identity
+        run: |
+          set -euo pipefail
+          python phase2/redesign/mpsef_p3_pnx_identity_v1.py             --out MPSEF_P3_PNX_IDENTITY_V1.json
+
+      - name: Validate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          x=json.load(open("MPSEF_P3_PNX_IDENTITY_V1.json",encoding="utf-8"))
+          assert x["status"]=="PASS"
+          assert x["repo_id"]=="CAMeL-Lab/text-editing-qalb14-pnx"
+          assert len(x["resolved_revision"])==40
+          assert len(x["weight_sha256"])==64
+          assert x["project_source_loaded"] is False
+          assert x["project_gold_loaded"] is False
+          assert x["quality_metric_computed"] is False
+          assert x["model_inference_run"] is False
+          print("P3_PNX_IDENTITY_FREEZE_PASS")
+          PY
+
+      - name: Hash
+        run: |
+          set -euo pipefail
+          python -m pip freeze > MPSEF_P3_PNX_IDENTITY_V1_PIP_FREEZE.txt
+          sha256sum             phase2/redesign/mpsef_p3_pnx_identity_v1.py             .github/workflows/phase2-mpsef-p3-pnx-identity-freeze.yml             pnx_model/pytorch_model.bin             MPSEF_P3_PNX_IDENTITY_V1.json             MPSEF_P3_PNX_IDENTITY_V1_PIP_FREEZE.txt             > MPSEF_P3_PNX_IDENTITY_V1_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-p3-pnx-identity-v1
+          path: |
+            MPSEF_P3_PNX_IDENTITY_V1.json
+            MPSEF_P3_PNX_IDENTITY_V1_PIP_FREEZE.txt
+            MPSEF_P3_PNX_IDENTITY_V1_SHA256.txt
+          retention-days: 90
