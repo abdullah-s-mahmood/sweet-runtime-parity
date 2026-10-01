@@ -3141,3 +3141,26 @@ P1 and P3 remain one SWEET family for future family-support logic.
 
 Next:
 freeze Stage2 source-only full-C_F execution contract before any execution.
+
+
+## 2026-10-01 — Stage2 contract frozen for adversarial review
+
+New frozen-for-review contract:
+`phase2/redesign/MPSEF_V4_STAGE2_SOURCE_ONLY_FULL_CF_EXECUTION_CONTRACT_V1.md`
+
+Higher-model review packet:
+`phase2/redesign/ACAD_PASS_STAGE2_HIGHER_MODEL_REVIEW_PACKET_V1.md`
+
+Stage2 has NOT started.
+
+New preregistered additions:
+- reuse exact frozen P1 full-C_F artifact; do not rerun P1;
+- Stage2 P2/P3 runner must replay exact frozen Parity32 before 1,918-case execution;
+- family-aware source-only diagnostics;
+- P1+P3 count as one SWEET family;
+- P2 240-minute CPU budget based on Stage1 scaling;
+- P4 review mandatory after Stage2;
+- gold/R_joint/selector/LLM-judge remain forbidden.
+
+Current state:
+**STAGE2 CONTRACT FROZEN / AWAITING ADVERSARIAL HIGHER-MODEL REVIEW / NO FULL-C_F EXECUTION YET**
