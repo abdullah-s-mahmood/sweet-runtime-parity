@@ -218,6 +218,34 @@ def p1_truncation_status(prop):
             return {"status":"FAIL","reason":f"TOKEN_LABEL_MISMATCH_{name.upper()}"}
     return {"status":"PASS","reason":"GENERATION_FREE_NO_SILENT_TRUNCATION_ARGUMENT"}
 
+def p2_ged_word_alignment_status(prop):
+    morph = prop.get("morph_preprocessed_text")
+    labels = prop.get("ged_labels")
+    if not isinstance(morph, str) or not isinstance(labels, list):
+        return {
+            "status":"FAIL",
+            "reason":"MISSING_P2_GED_PROVENANCE_FIELDS",
+            "morph_word_count":None,
+            "ged_label_count":None,
+        }
+    mw = len(morph.split())
+    gl = len(labels)
+    if mw != gl:
+        return {
+            "status":"FAIL",
+            "reason":"GED_WORD_ALIGNMENT_MISMATCH",
+            "morph_word_count":mw,
+            "ged_label_count":gl,
+            "excess_labels":gl-mw,
+        }
+    return {
+        "status":"PASS",
+        "reason":"GED_WORD_COUNT_MATCH",
+        "morph_word_count":mw,
+        "ged_label_count":gl,
+        "excess_labels":0,
+    }
+
 def p2_truncation_status(prop, trace):
     # P2 requires independent generation metadata because decoded text alone
     # cannot prove natural termination before max_length=100.
@@ -296,6 +324,12 @@ def legalize_one(man, prop, proposer, p2_trace=None):
     if reversible["status"] != "PASS":
         reasons.append("NONREVERSIBLE:"+str(reversible["reason"]))
 
+    ged_alignment = None
+    if proposer == "P2":
+        ged_alignment = p2_ged_word_alignment_status(prop)
+        if ged_alignment["status"] != "PASS":
+            reasons.append("EXECUTION_FAILED:"+str(ged_alignment["reason"]))
+
     trunc = p1_truncation_status(prop) if proposer == "P1" else p2_truncation_status(prop, p2_trace)
     if trunc["status"] in {"FAIL","UNKNOWN"}:
         reasons.append("TRUNCATED:"+str(trunc["reason"]))
@@ -319,6 +353,7 @@ def legalize_one(man, prop, proposer, p2_trace=None):
         "alignment_status": ambiguity,
         "protection_status": protection,
         "truncation_status": trunc,
+        "ged_word_alignment_status": ged_alignment,
         "reversibility_status": reversible,
         "legalizer_version": POLICY_VERSION,
         "gold_reference_consulted": False,
@@ -344,6 +379,18 @@ def self_test():
     s, o = "النص 5 mg", "النص الصحيح 5 mg"
     r = reversibility_proof(s, o, sha_text(s), sha_text(o))
     assert r["status"] == "PASS"
+
+    # P2 frozen inference requires one GED label per morphology word.
+    bad_prop = {
+        "morph_preprocessed_text":"كلمة أخرى",
+        "ged_labels":["UC","UC","UC"],
+    }
+    good_prop = {
+        "morph_preprocessed_text":"كلمة أخرى",
+        "ged_labels":["UC","UC"],
+    }
+    assert p2_ged_word_alignment_status(bad_prop)["status"] == "FAIL"
+    assert p2_ged_word_alignment_status(good_prop)["status"] == "PASS"
 
     # P2 decoder prefix == EOS must ignore the prefix.
     prop = {
