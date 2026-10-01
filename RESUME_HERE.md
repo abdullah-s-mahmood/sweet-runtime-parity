@@ -3318,3 +3318,17 @@ Stage2 full-population source-only proposer execution has now completed for both
 
 Current classification:
 **IMPROVED STRONGLY / FULL-C_F PROPOSER EXECUTION COMPLETE / LINGUISTIC QUALITY STILL UNMEASURED**
+
+
+## 2026-10-01 — Cross-chat working protocol frozen
+
+Persistent working-style agreement:
+`ACAD_PASS_WORKING_PROTOCOL_V1.md`
+
+Any new ACAD_PASS conversation must read, in order:
+1. `RESUME_HERE.md`
+2. `ACAD_PASS_SYSTEM_EVOLUTION_LEDGER.md`
+3. `ACAD_PASS_WORKING_PROTOCOL_V1.md`
+4. latest relevant locks/artifacts/runs
+
+This freezes the user's execution preferences across chats, including sequential-only operations, max-3 polling with ~20 s spacing for long runs, ETA reporting from actual progress, non-repetition of unchanged estimates, failure-first diagnosis, fresh research/brainstorming gates, higher-model consultation rules, scientific-boundary discipline, and meaningful checkpoint updates.
