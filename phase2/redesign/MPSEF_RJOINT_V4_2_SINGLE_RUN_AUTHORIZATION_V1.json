@@ -1,11 +1,11 @@
 {
   "record_id": "MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1",
   "date": "2026-10-02",
-  "status": "AUTHORIZED_SINGLE_DEVELOPMENT_RUN",
+  "status": "SUPERSEDED_PENDING_RUNTIME_IDENTITY_REFREEZE",
   "experiment_id": "MPSEF-RJOINT-V4_2-CF1918-20261002-A",
   "decision": "AUTHORIZE_DEVELOPMENT_ONLY_RJOINT_V4_2_SINGLE_RUN",
-  "measurement_authorized": true,
-  "gold_access_allowed_after_claim": true,
+  "measurement_authorized": false,
+  "gold_access_allowed_after_claim": false,
   "consumption_claimed_before_gold_access": true,
   "single_run_only": true,
   "input_lock_file": "phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json",
@@ -65,5 +65,13 @@
     "consumed_context": "acad-pass/v4-2-rjoint-consumed",
     "claim_before_gold_access": true,
     "rerun_after_consumption_forbidden": true
+  },
+  "supersession": {
+    "date": "2026-10-02",
+    "reason": "Production wrapper hardened after authorization to verify actual installed numpy/editdistance versions and measurement runtime policy before gold access.",
+    "previous_authorization_sha256": "5bb5727e6fea6d7b89e0180656660713ee1d301f1dcf4134755d47385d1cfc28",
+    "replacement_required": true,
+    "gold_opened_under_superseded_authorization": false,
+    "real_r_joint_computed_under_superseded_authorization": false
   }
 }
