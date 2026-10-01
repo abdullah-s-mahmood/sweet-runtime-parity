@@ -1,0 +1,95 @@
+name: Phase 2 MP-SEF V4 Stage1 Packet Freeze
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-v4-stage1-packet-freeze.yml"
+      - "phase2/redesign/mpsef_v4_build_stage1_packet_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  freeze-stage1-packet:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Download frozen P1 artifact carrying the source-only C_F manifest
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_cf_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify frozen C_F source manifest identity
+        run: |
+          set -euo pipefail
+          test -f p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl
+          ACTUAL="$(sha256sum p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl | awk '{print $1}')"
+          test "$ACTUAL" = "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          echo "CF_SOURCE_MANIFEST_IDENTITY_OK"
+
+      - name: Build deterministic source-only Stage1 packet
+        run: |
+          set -euo pipefail
+          python phase2/redesign/mpsef_v4_build_stage1_packet_v1.py             --source-manifest p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl             --registry-sha256 b448650c571f6c93dffe4825417e4f65d6a8cd02e33bd9551728ceac2b242b1a             --out-prefix MPSEF_V4_STAGE1_PACKET_V1             | tee MPSEF_V4_STAGE1_PACKET_BUILD_STDOUT.json
+
+      - name: Validate frozen Stage1 packet
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib
+          rows=[json.loads(x) for x in pathlib.Path("MPSEF_V4_STAGE1_PACKET_V1.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+          s=json.loads(pathlib.Path("MPSEF_V4_STAGE1_PACKET_V1_SUMMARY.json").read_text(encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert len(rows)==128==s["packet_cases"]
+          assert len({x["uid"] for x in rows})==128
+          assert len({x["cluster_id"] for x in rows})==128==s["packet_clusters"]
+          assert s["source_manifest_sha256"]=="051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          assert s["registry_sha256"]=="b448650c571f6c93dffe4825417e4f65d6a8cd02e33bd9551728ceac2b242b1a"
+          assert s["project_source_loaded"] is True
+          assert s["project_gold_loaded"] is False
+          assert s["reference_content_used"] is False
+          assert s["gold_edit_content_used"] is False
+          assert s["quality_metric_computed"] is False
+          assert s["r_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["proposer_output_consulted_for_selection"] is False
+          assert s["internal_evaluation_opened"] is False
+          assert s["stress_diagnostic_opened"] is False
+          assert s["reserved_data_opened"] is False
+          print("V4_STAGE1_PACKET_FREEZE_PASS")
+          PY
+
+      - name: Freeze hashes
+        run: |
+          set -euo pipefail
+          sha256sum             phase2/redesign/mpsef_v4_build_stage1_packet_v1.py             .github/workflows/phase2-mpsef-v4-stage1-packet-freeze.yml             MPSEF_V4_STAGE1_PACKET_V1.jsonl             MPSEF_V4_STAGE1_PACKET_V1_UIDS.txt             MPSEF_V4_STAGE1_PACKET_V1_CLUSTERS.txt             MPSEF_V4_STAGE1_PACKET_V1_SOURCE_ROW_HASHES.json             MPSEF_V4_STAGE1_PACKET_V1_SUMMARY.json             > MPSEF_V4_STAGE1_PACKET_V1_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-v4-stage1-packet-v1
+          path: |
+            MPSEF_V4_STAGE1_PACKET_V1.jsonl
+            MPSEF_V4_STAGE1_PACKET_V1_UIDS.txt
+            MPSEF_V4_STAGE1_PACKET_V1_CLUSTERS.txt
+            MPSEF_V4_STAGE1_PACKET_V1_SOURCE_ROW_HASHES.json
+            MPSEF_V4_STAGE1_PACKET_V1_SUMMARY.json
+            MPSEF_V4_STAGE1_PACKET_BUILD_STDOUT.json
+            MPSEF_V4_STAGE1_PACKET_V1_SHA256.txt
+          retention-days: 90
