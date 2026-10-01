@@ -60,7 +60,7 @@ def validate_experiment(exp):
         raise RuntimeError("experiment identity file must not authorize measurement")
     return True
 
-def validate_authorization(auth, exp, preflight):
+def validate_authorization(auth, exp, preflight, review_bytes=None):
     validate_experiment(exp)
     if auth.get("record_id")!="MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2":
         raise RuntimeError("authorization record_id mismatch")
@@ -105,6 +105,23 @@ def validate_authorization(auth, exp, preflight):
         raise RuntimeError("authorization contract hashes mismatch second preflight")
     if not impl or not contracts:
         raise RuntimeError("implementation/contract hash sets must be non-empty")
+
+    ir=auth.get("independent_review",{})
+    if ir.get("verdict")!="GO TO MEASUREMENT AUTHORIZATION":
+        raise RuntimeError("independent review verdict mismatch")
+    if ir.get("reviewed_code_commit_sha")!=auth.get("code_commit_sha"):
+        raise RuntimeError("independent review/code commit mismatch")
+    if ir.get("reviewed_preflight_run_id")!=sp.get("run_id"):
+        raise RuntimeError("independent review/preflight run mismatch")
+    if not isinstance(ir.get("report_sha256"),str) or not re.fullmatch(r"[0-9a-f]{64}",ir["report_sha256"]):
+        raise RuntimeError("independent review report SHA missing/malformed")
+    if review_bytes is not None:
+        actual=hashlib.sha256(review_bytes).hexdigest()
+        if actual!=ir["report_sha256"]:
+            raise RuntimeError("independent review report SHA mismatch")
+        review_text=review_bytes.decode("utf-8")
+        if "DECISION: GO TO MEASUREMENT AUTHORIZATION" not in review_text:
+            raise RuntimeError("independent review file lacks GO decision")
 
     if auth.get("claim_scope") != (
         "DEVELOPMENT_FEASIBILITY / ADAPTIVELY_CONSUMED QALB-2014 ORIGIN / "
@@ -205,13 +222,21 @@ def self_test():
         "frozen_inputs":dict(EXPECTED),
         "implementation_hashes":{"scorer":"1"*64,"guard":"2"*64},
         "contract_hashes":{"bundle":"3"*64},
+        "independent_review":{
+            "verdict":"GO TO MEASUREMENT AUTHORIZATION",
+            "reviewed_code_commit_sha":"b"*40,
+            "reviewed_preflight_run_id":123,
+            "report_sha256":hashlib.sha256(b"DECISION: GO TO MEASUREMENT AUTHORIZATION\n").hexdigest(),
+        },
         "claim_scope":"DEVELOPMENT_FEASIBILITY / ADAPTIVELY_CONSUMED QALB-2014 ORIGIN / NOT_INDEPENDENT_GENERALIZATION_EVIDENCE",
         "selector_authorized":False,"auto_safe_authorized":False,"reserved_sets_authorized":False,
     }
     pre["code_commit_sha"]="b"*40
     pre["implementation_hashes"]=dict(auth["implementation_hashes"])
     pre["contract_hashes"]=dict(auth["contract_hashes"])
-    assert validate_authorization(auth,exp,pre)
+    assert validate_authorization(
+        auth,exp,pre,b"DECISION: GO TO MEASUREMENT AUTHORIZATION\n"
+    )
     assert consumed_status_present([]) is False
     assert consumed_status_present([{"context":"other"}]) is False
     assert consumed_status_present([{"context":CONSUMED_CONTEXT,"state":"success"}]) is True
@@ -245,6 +270,7 @@ def main():
     ap.add_argument("--experiment-file")
     ap.add_argument("--authorization-file")
     ap.add_argument("--preflight-file")
+    ap.add_argument("--review-file")
     ap.add_argument("--repo")
     ap.add_argument("--code-commit-sha")
     ap.add_argument("--target-url")
@@ -257,10 +283,12 @@ def main():
     if args.validate:
         if not all([args.experiment_file,args.authorization_file,args.preflight_file]):
             raise SystemExit("missing validation input")
+        review_bytes=Path(args.review_file).read_bytes() if args.review_file else None
         validate_authorization(
             load_json(args.authorization_file),
             load_json(args.experiment_file),
             load_json(args.preflight_file),
+            review_bytes,
         )
         print("MPSEF_MEASUREMENT_GUARD_V2_AUTHORIZATION_OK")
         return
