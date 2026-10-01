@@ -1,0 +1,71 @@
+name: Phase 2 MP-SEF V4.2 R_joint Diagnostic Rerun
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - ".github/workflows/phase2-mpsef-v4-2-rjoint-diagnostic.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Run unchanged V4.2 harness diagnostically
+        continue-on-error: true
+        run: |
+          set +e
+          PYTHONPATH=phase2/redesign \
+            python phase2/redesign/mpsef_rjoint_v4_2_synthetic_preflight.py
+          exit 0
+
+      - name: Publish diagnostic statuses
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const p = 'MPSEF_RJOINT_V4_2_SYNTHETIC_PREFLIGHT_V1.json';
+            const s = JSON.parse(fs.readFileSync(p, 'utf8'));
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: 'failure',
+              context: 'acad-pass/v4-2-diagnostic-summary',
+              description: ('passed=' + s.passed + ' failed=' + s.failed + ' count=' + s.test_count).slice(0,140)
+            });
+            let i = 0;
+            for (const t of s.tests.filter(x => x.status !== 'PASS')) {
+              i++;
+              await github.rest.repos.createCommitStatus({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                sha: context.sha,
+                state: 'failure',
+                context: ('acad-pass/v4-2-fail-' + i + '-' + t.name).slice(0,100),
+                description: String(t.error || 'failed').slice(0,140)
+              });
+            }
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-rjoint-v4-2-diagnostic
+          path: MPSEF_RJOINT_V4_2_SYNTHETIC_PREFLIGHT_V1.json
+          if-no-files-found: error
+          retention-days: 30
