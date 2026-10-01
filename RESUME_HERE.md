@@ -2262,3 +2262,42 @@ Exact next work:
 4. strengthen run guards/hashes (F08);
 5. execute synthetic-only second preflight;
 6. explicit authorization review only after all mandatory checks pass.
+
+
+## CHECKPOINT 2026-10-01 — DIAGNOSTIC EVIDENCE FROZEN / SCORER V2 STARTED
+
+Corrected target/evaluation core:
+- `phase2/redesign/mpsef_rjoint_core_v2.py`
+- fixes punctuation set bug (`a/m/p` no longer punctuation);
+- preserves mixed punctuation+linguistic targets;
+- classifies `ياولد -> يا ولد،` as mixed + SPLIT;
+- explicitly labels gold-aware M2 alignment as evaluation-only.
+
+Source-only diagnostic evidence:
+- run: `36807629220` SUCCESS
+- artifact: `11138426729`
+- ZIP digest: `sha256:e27bee3c9690fb1794b413d8a9ab5d5134f4f3d0cd8da5bc3350e525a9c6e33b`
+- records: 3,836
+- components: 43,207
+- diagnostic JSONL SHA256:
+  `2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e`
+- gold/reference: false
+- executable actions created: false
+- R_raw/R_joint: not computed
+- lock:
+  `phase2/redesign/MPSEF_DIAGNOSTIC_COMPONENTS_LOCK_V1.md`
+
+Current frozen source-only inputs for corrected scorer:
+1. C_F source manifest;
+2. P1/P2 proposal artifacts;
+3. executable action sets SHA256
+   `6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a`;
+4. hypothesis-state artifact SHA256
+   `c91195a66a687ba8acf12d1b1e51741183b28992f89681c8510cdac8fddf9e14`;
+5. diagnostic components SHA256
+   `2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e`.
+
+R_joint remains BLOCKED.
+
+Exact next step:
+implement `mpsef_rjoint_score_v2.py` so it consumes frozen action sets and never recomputes legality; implement denominator-safe target construction, scoring-failure INVALID semantics, R_clean/complete-repair accounting, and a diagnostic-only R_raw matcher against the frozen diagnostic artifact; then synthetic-only preflight before any project gold measurement.
