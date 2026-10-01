@@ -2792,3 +2792,54 @@ Next safe sequence:
 2. run Stage 0 until genuine PASS;
 3. materialize and freeze deterministic Stage 1 packet only after Stage 0 PASS;
 4. do not run Stage 1 before that.
+
+
+## 2026-10-01 — P2_V2 B01 source-free Stage0 CLOSED PASS
+
+B01 implementation validation is now closed at source-free Stage0.
+
+Synthetic identity Stage0:
+- run: `36863549449`
+- 20 / 20 tests PASS
+- project source: false
+- project gold: false
+- artifact: `11162862266`
+- digest: `sha256:c6a875b7880db119ea660ea84a47c250f49f624d610b4849419e2fd5aa5893e8`
+
+Historical real-model Stage0 failure:
+- run: `36864163724`
+- cause: non-standard `BertTokenizerFast.cls_token_type_id` assumption
+- class: IMPLEMENTATION / RUNTIME INTERFACE
+- not a linguistic-quality failure
+- triage: `MPSEF_P2_V2_REAL_MODEL_STAGE0_FAILURE_TRIAGE_V1.md`
+
+Repair:
+- commit: `fe49ac916d7534b7178a3f0a87092da8b0dccad5`
+
+Real-model Stage0 after repair:
+- run: `36868057043`
+- PASS
+- synthetic/public sources: 3
+- repeat parity: true
+- project source loaded: false
+- project gold loaded: false
+- project metric computed: false
+- real model inference: true
+- quality claimed: false
+- artifact: `11165486137`
+- digest: `sha256:9cdb16ad4f3606b2af158e296a7e59e24f3718aec18d8cbc174acfa4a2d50918`
+
+Frozen model weights:
+- GED SHA256: `23385ffe560860a8f5e9e46e05b66a31c33a4b0bd58e9a718933fdab8161f50f`
+- GEC SHA256: `5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f`
+
+Closure lock:
+`phase2/redesign/MPSEF_P2_V2_B01_STAGE0_CLOSURE_LOCK_V1.md`
+
+Interpretation:
+- B01 Stage0: PASS
+- original P2_V1 universal GED word-alignment defect is not present in the tested P2_V2 Stage0 path
+- no linguistic/correctness claim is made.
+
+Next:
+B02/M01/M03 source-free Stage0 synthetic closure, then fresh research + architecture brainstorming before any Stage1.
