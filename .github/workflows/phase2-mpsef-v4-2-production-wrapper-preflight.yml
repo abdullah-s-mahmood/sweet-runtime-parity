@@ -30,6 +30,12 @@ jobs:
         with:
           python-version: "3.10"
 
+      - name: Install exact measurement runtime dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade "pip<25"
+          python -m pip install "numpy==1.23.5" "editdistance==0.6.2"
+
       - name: Compile V4.2 scorer wrapper and preflights
         run: |
           set -euo pipefail
@@ -49,7 +55,7 @@ jobs:
           assert s["real_r_joint_computed"] is False
           PY
 
-      - name: Run 14-case wrapper preflight
+      - name: Run 16-case wrapper preflight
         run: |
           set -euo pipefail
           PYTHONPATH=phase2/redesign             python phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_preflight_v1.py
@@ -57,7 +63,7 @@ jobs:
           import json
           s=json.load(open("MPSEF_RJOINT_V4_2_PRODUCTION_WRAPPER_PREFLIGHT_V1.json",encoding="utf-8"))
           assert s["status"]=="PASS"
-          assert s["test_count"]==14 and s["passed"]==14 and s["failed"]==0
+          assert s["test_count"]==16 and s["passed"]==16 and s["failed"]==0
           assert s["project_source_loaded"] is False
           assert s["project_gold_loaded"] is False
           assert s["real_r_joint_computed"] is False
@@ -87,7 +93,7 @@ jobs:
             curl -fsSL -X POST               -H "Authorization: Bearer $GH_TOKEN"               -H "Accept: application/vnd.github+json"               "https://api.github.com/repos/abdullah-s-mahmood/sweet-runtime-parity/statuses/$SHA"               -d "{\"state\":\"$state\",\"context\":\"$context\",\"description\":\"$description\"}"
           }
 
-          post_status "$STATE" "acad-pass/v4-2-pre-gold-wrapper" "V4.2 scorer 33/33 + wrapper 14/14"
+          post_status "$STATE" "acad-pass/v4-2-pre-gold-wrapper" "V4.2 scorer 33/33 + wrapper 16/16"
           post_status success "acad-pass/v4-2-scorer-sha256/$SCORER_SHA" "frozen scorer SHA256"
           post_status success "acad-pass/v4-2-core-sha256/$CORE_SHA" "frozen core SHA256"
           post_status success "acad-pass/v4-2-wrapper-sha256/$WRAPPER_SHA" "frozen wrapper SHA256"
