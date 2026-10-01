@@ -1,0 +1,68 @@
+name: Phase 2 MP-SEF V4.2 R_joint Verification Only
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - ".github/workflows/phase2-mpsef-v4-2-rjoint-verification-only.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Compile unchanged V4.2 scorer and harness
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            phase2/redesign/mpsef_rjoint_score_v4_2.py \
+            phase2/redesign/mpsef_rjoint_v4_2_synthetic_preflight.py
+
+      - name: Execute unchanged 31-case harness
+        run: |
+          set -euo pipefail
+          PYTHONPATH=phase2/redesign \
+            python phase2/redesign/mpsef_rjoint_v4_2_synthetic_preflight.py
+
+      - name: Validate exact 31-of-31 result
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_RJOINT_V4_2_SYNTHETIC_PREFLIGHT_V1.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["test_count"]==31
+          assert s["passed"]==31
+          assert s["failed"]==0
+          assert s["project_source_loaded"] is False
+          assert s["project_gold_loaded"] is False
+          assert s["real_r_joint_computed"] is False
+          print("V4_2_31_OF_31_PASS")
+          PY
+
+      - name: Publish verification success
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: 'success',
+              context: 'acad-pass/v4-2-rjoint-31of31',
+              description: 'Unchanged V4.2 scorer/harness: 31/31 PASS'
+            });
