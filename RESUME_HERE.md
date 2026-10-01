@@ -2748,3 +2748,47 @@ Current exact next work:
 3. add synthetic regressions for both;
 4. version scorer/preflight accordingly;
 5. no Stage1/Stage2/gold until required predecessor gates are satisfied.
+
+
+## 2026-10-01 — Independent architecture review remediation checkpoint: B01/B02/M01/M02/M03 design + M04/M05 synthetic closure
+
+Independent review verdict remains:
+**MODIFY BEFORE IMPLEMENTATION**
+
+Completed source-only design remediation:
+- B01: strict P2_V2 word/wordpiece/label identity contract frozen.
+- B02: new versioned proposer registry/action-set contract frozen; V3 tooling cannot be silently reused.
+- M01: P3 role amended to optional P1-family punctuation/full-correction cascade; not independent support.
+- M02: diversity protocol V2 freezes 128-UID/128-cluster Stage 1 packet design, named denominators, marginal legal contribution, resource accounting, parity and retention semantics.
+- M03: shadow protection diagnostics contract frozen; V3 protection remains authoritative and unchanged.
+
+M04/M05:
+- scorer V3 implementation commit:
+  `7a01d797e5fd630186910e38f5487364639e8165`
+- synthetic preflight run:
+  `36867448366`
+- result: SUCCESS / self_test PASS
+- artifact:
+  `11164975245`
+- artifact digest:
+  `sha256:1ed7076c272e66dfe1b4168568113d76c4294db863418352af210ffaae90bb65`
+- lock:
+  `phase2/redesign/MPSEF_SCORER_V3_M04_M05_SYNTHETIC_LOCK.md`
+
+M04 fix:
+all-actions scoring failure with N targets preserves [0,N], never invented exact [0,0].
+
+M05 fix:
+BOUNDARY SPLIT/MERGE group scoring and additional-target/cluster evidence use one whole action per sentence, never sum maxima from different actions.
+
+Current state:
+- no new project gold;
+- no R_joint;
+- no Stage 1;
+- V3 historical artifacts unchanged.
+
+Next safe sequence:
+1. implement Stage 0 source-only synthetic harness for B01/B02/M01/M03 contracts;
+2. run Stage 0 until genuine PASS;
+3. materialize and freeze deterministic Stage 1 packet only after Stage 0 PASS;
+4. do not run Stage 1 before that.
