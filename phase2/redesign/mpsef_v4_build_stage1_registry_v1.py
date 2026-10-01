@@ -48,10 +48,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--pnx-identity", required=True)
     ap.add_argument("--stage1-workflow", required=True)
+    ap.add_argument("--code-commit", required=True)
     ap.add_argument(
         "--out", default="MPSEF_V4_PROPOSER_REGISTRY_V2.json"
     )
     args = ap.parse_args()
+
+    code_commit = args.code_commit.strip().lower()
+    if len(code_commit) != 40 or any(ch not in "0123456789abcdef" for ch in code_commit):
+        raise RuntimeError("invalid code commit SHA")
 
     pnx = json.loads(
         Path(args.pnx_identity).read_text(encoding="utf-8")
@@ -240,6 +245,7 @@ def main():
         "registry_namespace": REGISTRY_NAMESPACE,
         "status": "STAGE1_REGISTRY_FROZEN",
         "stage": "STAGE1_SOURCE_ONLY",
+        "code_commit_sha": code_commit,
         "workflow_sha256": workflow_sha,
         "proposers": proposers,
         "architecture_family_map": {
