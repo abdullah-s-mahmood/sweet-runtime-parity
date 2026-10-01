@@ -1953,3 +1953,87 @@ Gold exposure:
 **Next**
 
 Implement Stage 0 synthetic source-only harness for B01/B02/M01/M03; only after Stage 0 PASS may the deterministic Stage 1 source packet be materialized and executed.
+
+
+### 2026-10-01 — P2_V2 B01 source-free Stage0 closes after one implementation failure and repair
+
+**Objective**
+
+Prove the repaired P2_V2 word/wordpiece/GED/GEC identity path using synthetic boundary tests and then real frozen models, without project source or gold.
+
+**Synthetic result**
+
+Run `36863549449`:
+- **20/20 PASS**
+- no project source;
+- no gold;
+- no project metric;
+- no real-model inference.
+
+Artifact:
+`11162862266`
+
+Digest:
+`sha256:c6a875b7880db119ea660ea84a47c250f49f624d610b4849419e2fd5aa5893e8`
+
+**Real-model failure**
+
+Run `36864163724` failed before model inference.
+
+Root cause:
+the Stage0 implementation expected `BertTokenizerFast.cls_token_type_id`, a non-required tokenizer attribute.
+
+Classification:
+**IMPLEMENTATION / RUNTIME INTERFACE**
+
+Repairability:
+**CURRENT_CYCLE_PRE_GOLD**
+
+The failure did not imply poor GED/GEC quality.
+
+**Repair**
+
+Commit:
+`fe49ac916d7534b7178a3f0a87092da8b0dccad5`
+
+Used explicit zero token-type IDs for the single BERT sequence and added segment-field length assertions.
+
+**Real-model rerun**
+
+Run:
+`36868057043`
+
+Result:
+**PASS**
+
+- 3 synthetic/public inputs;
+- repeat parity: true;
+- real models executed;
+- project source loaded: false;
+- project gold loaded: false;
+- project metric computed: false;
+- quality claimed: false.
+
+Model weight identities:
+- GED: `23385ffe560860a8f5e9e46e05b66a31c33a4b0bd58e9a718933fdab8161f50f`
+- GEC: `5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f`
+
+Artifact:
+`11165486137`
+
+Digest:
+`sha256:9cdb16ad4f3606b2af158e296a7e59e24f3718aec18d8cbc174acfa4a2d50918`
+
+**Comparison**
+
+Implementation/provenance confidence:
+**IMPROVED STRONGLY**
+
+The earlier universal P2_V1 word-alignment defect is no longer present in the tested Stage0 route.
+
+Linguistic quality:
+**NOT MEASURED**
+
+**Next**
+
+Close B02/M01/M03 with source-free Stage0 synthetic tests. After the complete Stage0 gate, perform fresh deep research and maximum-effort architecture brainstorming before materializing Stage1.
