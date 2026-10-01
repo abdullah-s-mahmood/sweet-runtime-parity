@@ -2620,3 +2620,49 @@ Current exact next sequence:
 4. independent higher-model architecture review;
 5. implement only after review unless review says MODIFY/STOP;
 6. no new R_joint before the redesign decision is frozen.
+
+
+## 2026-10-01 — Proposer redesign specs frozen / higher-model review required
+
+Architecture re-baseline has now been translated into source-only implementation specs.
+
+P2_V2:
+- spec: `phase2/redesign/MPSEF_P2_V2_IMPLEMENTATION_SPEC.md`
+- commit: `5e34e8e75dd3ef1e930d3d2b6528e7f79b709932`
+- new-version repair only;
+- first-wordpiece/ignore-index GED word alignment;
+- no zip truncation;
+- no gold.
+
+P3_V1:
+- spec: `phase2/redesign/MPSEF_P3_V1_SWEET_PNX_CASCADE_SPEC.md`
+- commit: `73ae1bee99c866dec8b91affd7f50c5465f36082`
+- current P1 is already SWEET NoPnx ×2;
+- P3 therefore adds exactly one SWEET-Pnx pass:
+  `NoPnx×2 -> Pnx×1`.
+
+Source-only diversity protocol:
+- `phase2/redesign/MPSEF_SOURCE_ONLY_PROPOSER_DIVERSITY_PROTOCOL_V1.md`
+- commit: `5e0ad432b513bd65daa567cdc2e046c9d18996dd`
+
+Independent architecture review package:
+- `phase2/redesign/ACAD_PASS_ARABIC_ARCHITECTURE_INDEPENDENT_REVIEW_PACKAGE_V1.md`
+- commit: `43c8a4ad27b76f3715e723e77a80f737ba330829`
+
+Higher-model prompt:
+- `phase2/redesign/ACAD_PASS_HIGHER_MODEL_ARCHITECTURE_REVIEW_PROMPT_V1.md`
+- commit: `f091590971954bedb3efaaaf27627ee344f86878`
+
+Review target architecture snapshot:
+`5e0ad432b513bd65daa567cdc2e046c9d18996dd`
+
+Current exact state:
+- advanced Second Preflight = 22/22 PASS;
+- frozen V3 remains immutable control;
+- current P2 remains non-executable;
+- no new R_joint;
+- no new project gold;
+- no proposer prototype should advance beyond synthetic/source-only design until independent architecture review.
+
+Next action:
+obtain independent higher-model architecture review using the prepared package/prompt.
