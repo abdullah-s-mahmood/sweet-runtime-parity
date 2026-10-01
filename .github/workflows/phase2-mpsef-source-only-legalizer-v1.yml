@@ -1,0 +1,118 @@
+name: Phase 2 MP-SEF Source-Only Executable Actions Legalizer v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-source-only-legalizer-v1.yml"
+      - "phase2/redesign/mpsef_executable_actions_legalizer_v1.py"
+      - "phase2/redesign/process_progress_v1.py"
+      - "phase2/redesign/run_with_progress_watchdog_v1.py"
+
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+
+jobs:
+  source-only-legalizer:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run legalizer synthetic self-test
+        run: |
+          python phase2/redesign/mpsef_executable_actions_legalizer_v1.py --self-test
+
+      - name: Download frozen P1 C_F artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_cf_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2 C_F artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-cf-proposals-v1
+          path: p2_cf_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36768378938
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate frozen source and proposer identities
+        run: |
+          test "$(sha256sum p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl | awk '{print $1}')" = "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          test "$(sha256sum p1_cf_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl | awk '{print $1}')" = "2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          test "$(sha256sum p2_cf_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl | awk '{print $1}')" = "f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b"
+
+      - name: Run gold-blind legalizer with watchdog
+        env:
+          PYTHONUNBUFFERED: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python phase2/redesign/run_with_progress_watchdog_v1.py             --state-file MPSEF_EXECUTABLE_ACTIONS_V1_PROGRESS.json             --context acad-pass/mpsef-legalizer             --poll-seconds 20             --publish-seconds 60             --stale-seconds 600             --             python phase2/redesign/mpsef_executable_actions_legalizer_v1.py               --source-manifest p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl               --p1-proposals p1_cf_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl               --p2-proposals p2_cf_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl               --state-file MPSEF_EXECUTABLE_ACTIONS_V1_PROGRESS.json               --out-prefix MPSEF_EXECUTABLE_ACTIONS_V1
+
+      - name: Validate source-only legalizer contract
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_EXECUTABLE_ACTIONS_V1_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="LEGALIZER_COMPLETE"
+          assert s["cases"]==1918
+          assert s["clusters"]==764
+          assert s["hypotheses"]==3836
+          assert s["expected_hypotheses"]==3836
+          assert sum(s["state_counts"].values())==3836
+          assert s["state_counts"].get("P2_EXECUTION_FAILED")==1918, s["state_counts"]
+          assert s["action_sets"]==1918
+          assert 1 <= s["action_count_min"] <= s["action_count_max"] <= 2
+          assert s["source_manifest_sha256"]=="051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          assert s["P1_proposal_sha256"]=="2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          assert s["P2_proposal_sha256"]=="f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b"
+          assert s["P2_generation_trace_supplied"] is False
+          assert s["gold_reference_consulted"] is False
+          assert s["reference_content_used"] is False
+          assert s["R_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["internal_evaluation_opened"] is False
+          assert s["stress_diagnostic_opened"] is False
+          assert s["reserved_data_opened"] is False
+          p=json.load(open("MPSEF_EXECUTABLE_ACTIONS_V1_PROGRESS.json",encoding="utf-8"))
+          assert p["status"]=="COMPLETED"
+          assert p["processed"]==1918 and p["total"]==1918
+          print("MPSEF_SOURCE_ONLY_LEGALIZER_OK")
+          print(json.dumps(s["state_counts"],ensure_ascii=False,sort_keys=True))
+          PY
+
+      - name: Record legalizer environment and hashes
+        if: always()
+        run: |
+          python -m pip freeze > MPSEF_EXECUTABLE_ACTIONS_V1_PIP_FREEZE.txt
+          sha256sum             phase2/redesign/mpsef_executable_actions_legalizer_v1.py             phase2/redesign/process_progress_v1.py             phase2/redesign/run_with_progress_watchdog_v1.py             .github/workflows/phase2-mpsef-source-only-legalizer-v1.yml             p1_cf_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl             p1_cf_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl             p2_cf_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl             MPSEF_EXECUTABLE_ACTIONS_V1_HYPOTHESES.jsonl             MPSEF_EXECUTABLE_ACTIONS_V1_ACTION_SETS.jsonl             MPSEF_EXECUTABLE_ACTIONS_V1_SUMMARY.json             MPSEF_EXECUTABLE_ACTIONS_V1_PROGRESS.json             MPSEF_EXECUTABLE_ACTIONS_V1_PIP_FREEZE.txt             > MPSEF_EXECUTABLE_ACTIONS_V1_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-source-only-legalizer-v1
+          path: |
+            MPSEF_EXECUTABLE_ACTIONS_V1_HYPOTHESES.jsonl
+            MPSEF_EXECUTABLE_ACTIONS_V1_ACTION_SETS.jsonl
+            MPSEF_EXECUTABLE_ACTIONS_V1_SUMMARY.json
+            MPSEF_EXECUTABLE_ACTIONS_V1_PROGRESS.json
+            MPSEF_EXECUTABLE_ACTIONS_V1_PIP_FREEZE.txt
+            MPSEF_EXECUTABLE_ACTIONS_V1_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
