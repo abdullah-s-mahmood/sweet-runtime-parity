@@ -2252,3 +2252,46 @@ New architecture risk signal:
 P3's effect is mostly mixed rather than punctuation-only, so protection and legal marginal contribution are now more important than raw distinctness.
 
 No gold/reference was consumed.
+
+
+### 2026-10-01 — V4 Stage1 protocol-complete closure
+
+Stage1 source-only evidence is now protocol-complete.
+
+The post-analysis audit discovered a parity-subset compliance gap:
+the proposer workflows had used local 8-case parity subsets, while the frozen M02 protocol required the exact deterministic 32-UID manifest.
+
+The gap was preserved, triaged, and remediated without regenerating proposal artifacts.
+
+Parity32:
+- P1: 32/32 PASS
+- P2_V2: 32/32 PASS
+- P3_V1: 32/32 PASS
+
+Source-only legality/diversity remains:
+- P1 legal 120/128; unique legal contribution 101
+- P2 legal 122/128; unique legal contribution 115
+- P3 legal 119/128; unique legal contribution 111
+- 123/128 UIDs have a legal non-KEEP candidate
+- 98/128 have all four distinct legal actions including KEEP
+
+P3 remains a same-family SWEET extension and is mostly MIXED relative to P1, so it must not count as an independent architecture-family vote.
+
+**Comparison vs pre-remediation Stage1**
+
+Protocol compliance:
+**IMPROVED STRONGLY**
+
+Proposal outputs:
+**UNCHANGED**
+
+Linguistic quality:
+**NOT MEASURED**
+
+New blockers:
+none for Stage1 closure.
+
+Remaining strategic uncertainty:
+whether to introduce a materially independent P4 before full-population Stage2 and future family-level consensus.
+
+Stage2 remains unauthorized pending fresh post-Stage1 research/brainstorming.
