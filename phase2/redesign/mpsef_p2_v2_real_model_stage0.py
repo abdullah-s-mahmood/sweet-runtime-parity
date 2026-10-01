@@ -81,7 +81,7 @@ def build_ged_segments(words, tokenizer, max_seq_length=GED_MAX_SEQ_LENGTH):
     flattened=[]
     for sid,seg in enumerate(raw_segments):
         tokens=[tokenizer.cls_token]
-        token_type_ids=[tokenizer.cls_token_type_id]
+        token_type_ids=[0]  # single-sequence BERT segment id; tokenizer need not expose cls_token_type_id
         label_mask=[IGNORE_INDEX]
         records=[]
         pos=1
@@ -110,6 +110,8 @@ def build_ged_segments(words, tokenizer, max_seq_length=GED_MAX_SEQ_LENGTH):
         input_ids=tokenizer.convert_tokens_to_ids(tokens)
         attention_mask=[1]*len(input_ids)
 
+        if not (len(input_ids)==len(attention_mask)==len(token_type_ids)==len(label_mask)):
+            raise Stage0Error("GED_SEGMENT_FIELD_LENGTH_MISMATCH")
         if len(input_ids)>max_seq_length:
             raise Stage0Error(f"GED_SEGMENT_OVERFLOW:{len(input_ids)}>{max_seq_length}")
         segments.append({
