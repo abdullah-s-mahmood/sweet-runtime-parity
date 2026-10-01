@@ -3441,3 +3441,87 @@ Only after review resolution may a separate lock authorize one C_F gold-aware DE
 
 Current classification:
 **IMPROVED STRONGLY / PRE-GOLD MEASUREMENT IMPLEMENTATION READY / LINGUISTIC PERFORMANCE STILL UNMEASURED**
+## 2026-10-02 — Stage2 protocol-complete closure + post-Stage2 rebaseline + V4 R_joint source-free preflight CLOSED
+
+Stage2 protocol-complete lock:
+`phase2/redesign/MPSEF_V4_STAGE2_PROTOCOL_COMPLETION_V2_LOCK.md`
+
+Post-Stage2 fresh research / architecture rebaseline:
+`phase2/redesign/ACAD_PASS_POST_STAGE2_FRESH_RESEARCH_REBASELINE_V1.md`
+
+Frozen Stage2 source-only evidence:
+- C_F: 1,918 UIDs / 764 clusters
+- legal non-KEEP from at least one family: 1,843 / 1,918 = 96.09%
+- BOTH independent families: 1,736 / 1,918 = 90.51%
+- SWEET_ONLY: 67
+- SEQ2SEQ_GED_MORPH_ONLY: 40
+- NONE: 75
+- cross-family exact legal non-KEEP agreement: 167 UIDs / 144 clusters
+- P2 full-C_F execution failures: 22 / 1,918, all fail-closed at GENERATION after earlier stages passed
+- P3 Stage-B MIXED_FROM_P1: 1,800 / 1,918 = 93.85%
+
+Frozen architecture decision after fresh research:
+- P1: KEEP
+- P2_V2: KEEP
+- P3_V1: KEEP AS SAME-FAMILY ALTERNATE
+- P4 primary/gold-eligible: DEFER
+- P4 Gemma source-only probe: RESERVED ONLY / NOT GOLD-ELIGIBLE
+- learned selector: DEFER
+- family consensus: DEFER
+- generic LLM judge: DEFER FROM PRIMARY EVIDENCE
+- authoritative protection: KEEP
+- exact whole-action semantics: KEEP
+
+Critical scorer finding:
+historical `mpsef_rjoint_score_v3.py` is NOT valid for V4 because it assumes P1/P2/PAIR and action-set size <=3. V4 can contain KEEP+P1+P2+P3 = 4 actions and requires P1+P3 to remain one SWEET family.
+
+Frozen pre-gold contract:
+`phase2/redesign/MPSEF_V4_PRE_GOLD_DEVELOPMENT_MEASUREMENT_CONTRACT_V1.md`
+commit:
+`2a749a5a41d5f8e8fd57b596d5c6d25a23c7f986`
+
+New scorer:
+`phase2/redesign/mpsef_rjoint_score_v4.py`
+commit:
+`3edee5e48c96c2930246c35783312686cf894e8b`
+
+Synthetic preflight:
+`phase2/redesign/mpsef_rjoint_v4_synthetic_preflight.py`
+commit:
+`cf55653873c561018b5e0102c582d74510cc008c`
+
+Final observable workflow commit:
+`5c280d4cc6abda3e1f5f21c0fbcb6e79c2d6df2d`
+
+Closure lock:
+`phase2/redesign/MPSEF_RJOINT_V4_SOURCE_FREE_PREFLIGHT_CLOSURE_LOCK_V1.md`
+final lock commit:
+`544e4059af4fd891c504492faf2b876bad8fca76`
+
+GitHub status:
+`acad-pass/v4-rjoint-source-free-preflight = success`
+
+Frozen SHA256:
+- scorer: `b9fdbe205e6e00082b51a7ee16c74d0010c4bbe50406ad58d2f6f9e166db7513`
+- synthetic test source: `cb07b046fbd36f2afd0c27f46efd3f7561a42f2ac90b9f4ac5f477e8dd56b8b3`
+- synthetic result JSON: `4eb8c2510fd62b50ff3a557018bc58d52853e53e4625389572308e62b39585d2`
+- inherited core: `b9f8c81706c266b75786e04a4363f8af8a5900eb9629acc99dac15ad72389d3c`
+
+Synthetic result:
+- 20/20 PASS
+- source-free
+- no project gold
+- no real R_joint
+- no selector
+- no consensus
+- no P4
+
+Current exact next sequence:
+1. prepare/freeze focused adversarial higher-model review packet for the V4 pre-gold contract/scorer;
+2. obtain review verdict PROCEED / MODIFY / BLOCK;
+3. resolve every BLOCKER/semantics-changing MAJOR and rerun synthetic preflight if required;
+4. only after explicit review-resolution authorization may C_F gold/reference be loaded;
+5. real R_joint V4 remains BLOCKED now.
+
+Current classification:
+**IMPROVED STRONGLY / PRE-GOLD V4 SCORER READY FOR ADVERSARIAL REVIEW / LINGUISTIC PERFORMANCE STILL UNMEASURED**
