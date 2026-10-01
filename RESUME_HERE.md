@@ -2526,3 +2526,28 @@ Higher-model independent review is recommended:
 3. after any future material metric failure before patch-vs-rebaseline decision.
 
 All future FAIL/BLOCKED/PARTIAL outcomes require root-cause and repairability analysis rather than result-only interpretation.
+
+
+## 2026-10-01 — Canonical system-evolution ledger created
+
+A permanent historical/scientific ledger now exists:
+
+`ACAD_PASS_SYSTEM_EVOLUTION_LEDGER.md`
+
+Creation commit:
+`3826bd27f4a22716330e981334bffa2ae023393c`
+
+Purpose:
+- preserve the full ACAD_PASS evolution, including successful and failed paths, quantitative metrics, decision rationales, root causes, repairability, superseded conclusions, architecture pivots, and frozen evidence;
+- support future system-wide re-baselining when stronger methods/models become available;
+- preserve a research-grade history that can later support paper/thesis/dissertation assessment.
+
+Permanent maintenance rule:
+- after every meaningful checkpoint, update BOTH:
+  1. `RESUME_HERE.md` for current operational truth and exact next step;
+  2. `ACAD_PASS_SYSTEM_EVOLUTION_LEDGER.md` for historical/scientific chronology.
+- never erase historical negative evidence; supersede it explicitly.
+- record percentages only when measured/computable; otherwise write NOT QUANTIFIED.
+- include WHY a path was chosen, WHY it failed/succeeded, and whether it is repairable/current-cycle-safe.
+
+The ledger also contains a dedicated Research / Doctoral-Dissertation Conversion Map.
