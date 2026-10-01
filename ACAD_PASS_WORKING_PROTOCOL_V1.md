@@ -128,6 +128,29 @@ The ledger preserves evolution, rationale, failures, repairs, and comparative in
 - If a required external/file artifact is genuinely unavailable and blocks correctness, request only the exact missing item.
 - Do not promise background/asynchronous delivery or future work outside the current tool execution.
 
+## 10. Protocol self-maintenance
+
+This file is a living cross-chat working agreement.
+
+Whenever the user and assistant establish, refine, or replace a working-style rule that may materially affect future ACAD_PASS execution, this file MUST be updated at the same meaningful checkpoint.
+
+Examples include:
+- execution ordering;
+- polling cadence or limits;
+- ETA/reporting rules;
+- what information should or should not be repeated;
+- failure-handling procedure;
+- research/brainstorming gates;
+- higher-model consultation rules;
+- resume/ledger discipline;
+- user-preferred communication behavior.
+
+Rules:
+- do not rely only on chat memory for a new persistent agreement;
+- preserve superseded rules in Git history rather than silently erasing the historical record;
+- the latest committed version of this file is authoritative for working-style behavior unless the user explicitly changes a rule in the current conversation;
+- if the user changes a rule, apply it immediately in the current conversation and update this file at the next meaningful repository checkpoint.
+
 ## 10. Current ACAD_PASS execution philosophy
 
 The system vision remains:
