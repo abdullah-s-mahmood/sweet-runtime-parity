@@ -19,6 +19,7 @@ EXPECTED_P2_SHA = "f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf
 
 POLICY_VERSION = "MPSEF_EXECUTABLE_ACTION_LEGALIZER_V1"
 PROTECTION_VERSION = "MPSEF_DERIVED_PROTECTION_V2"
+MAX_OPTIMAL_ALIGNMENT_CELLS = 500000
 
 DIGITS = "0-9٠-٩۰-۹"
 NUMBER_CORE = rf"[+\-−]?[{DIGITS}]+(?:[.,٫٬][{DIGITS}]+)*(?:[eE][+\-]?[{DIGITS}]+)?"
@@ -147,9 +148,19 @@ def optimal_alignment_protection_audit(source: str, output: str, spans):
             "mapped_spans":[],
         }
 
+    n, m = len(source), len(output)
+    cells = (n + 1) * (m + 1)
+    if cells > MAX_OPTIMAL_ALIGNMENT_CELLS:
+        return {
+            "status":"ERROR",
+            "optimal_distance":None,
+            "ambiguity_affects_legality":False,
+            "reasons":[f"ALIGNMENT_WORK_BUDGET_EXCEEDED:{cells}>{MAX_OPTIMAL_ALIGNMENT_CELLS}"],
+            "mapped_spans":[],
+        }
+
     fwd = _levenshtein_forward(source, output)
     bwd = _levenshtein_backward(source, output)
-    n, m = len(source), len(output)
     optimum = fwd[n][m]
 
     protected_chars = set()
@@ -448,6 +459,10 @@ def legalize_one(man, prop, proposer, p2_trace=None):
     if protection["status"] != "PASS":
         reasons.append("PROTECTED_BLOCKED:"+",".join(protection["reasons"]))
 
+    alignment_audit = protection.get("optimal_alignment_audit", {})
+    if alignment_audit.get("status") == "ERROR":
+        reasons.append("ALIGNMENT_FAILED:"+",".join(alignment_audit.get("reasons", [])))
+
     ambiguity = alignment_ambiguity_status(source, output, protection)
     if ambiguity["status"] == "AFFECTS_LEGALITY":
         reasons.append("ALIGNMENT_AMBIGUOUS:"+str(ambiguity["reason"]))
@@ -513,10 +528,33 @@ def self_test():
         p = protection_proof(src, out)
         assert p["status"] == "FAIL", (src, out, p)
 
+    # Protection-relevant optimal-alignment ambiguity / failure budget.
+    synthetic_span = [{
+        "protected_id":"SYNTH",
+        "category":"NUMBER",
+        "source_start":0,
+        "source_end":1,
+        "text":"1",
+        "hard_protected":True,
+    }]
+    amb = optimal_alignment_protection_audit("11", "1", synthetic_span)
+    assert amb["status"] == "FAIL"
+    assert any("DELETE_PROTECTED_CHAR" in x or "MULTIPLE_OPTIMAL" in x for x in amb["reasons"])
+
+    huge = optimal_alignment_protection_audit(
+        "1" + ("a"*800),
+        "1" + ("b"*800),
+        synthetic_span,
+    )
+    assert huge["status"] == "ERROR"
+    assert any("ALIGNMENT_WORK_BUDGET_EXCEEDED" in x for x in huge["reasons"])
+
     # Round-trip proof.
     s, o = "النص 5 mg", "النص الصحيح 5 mg"
     r = reversibility_proof(s, o, sha_text(s), sha_text(o))
     assert r["status"] == "PASS"
+    # Wrong expected hash must fail reversibility rather than being repaired.
+    assert reversibility_proof(s, o, "0"*64, sha_text(o))["status"] == "FAIL"
 
     # P2 frozen inference requires one GED label per morphology word.
     bad_prop = {
