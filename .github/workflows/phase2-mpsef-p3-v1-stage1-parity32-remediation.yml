@@ -1,0 +1,134 @@
+name: Phase 2 MP-SEF P3 V1 Stage1 Parity32 Remediation
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - ".github/workflows/phase2-mpsef-p3-v1-stage1-parity32-remediation.yml"
+      - "phase2/redesign/mpsef_p3_v1_stage1_parity32_remediation_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 50
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Download parity32 manifest
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage1-parity32-manifest-v1
+          path: parity32
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36878829104
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P1 proposals
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P3 Stage1 proposals
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p3-v1-stage1-v1
+          path: p3
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36877195995
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify frozen identities
+        run: |
+          set -euo pipefail
+          test "$(sha256sum parity32/MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1.jsonl | awk '{print $1}')" = "384f1a6d08f79c6a9d73dc4298f1a1fac245d9f43bed2e77a5395cc1a2f4711e"
+          test "$(sha256sum p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl | awk '{print $1}')" = "2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          test "$(sha256sum p3/MPSEF_P3_V1_STAGE1_V1.jsonl | awk '{print $1}')" = "69720287154071611a0e0d0af2a6689ef6ed5242acf374fb945de70013a16083"
+          echo "P3_PARITY32_INPUT_IDENTITIES_OK"
+
+      - name: Install frozen SWEET runtime
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.12.1+cpu"
+          python -m pip install "transformers==4.30.0" "huggingface_hub==0.16.4" "sentencepiece==0.1.99"
+          python -m pip install "numpy==1.23.5" "pandas==1.5.3" "pyarrow==14.0.2" "datasets==2.14.7" "editdistance==0.8.1"
+
+      - name: Clone frozen text-editing implementation
+        run: |
+          set -euo pipefail
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git -C upstream/text-editing rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Download exact frozen Pnx revision
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          snapshot_download(
+              repo_id="CAMeL-Lab/text-editing-qalb14-pnx",
+              revision="a162d77269ab6ff556d2c58c5dff8b967c1f649e",
+              local_dir="pnx_model",
+              local_dir_use_symlinks=False,
+          )
+          PY
+          test "$(sha256sum pnx_model/pytorch_model.bin | awk '{print $1}')" = "d98d683f9ef1738c27f5031c99483d93e9f73c4116c158a97a678270c84fd262"
+
+      - name: Run P3 parity32 remediation
+        env:
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONUNBUFFERED: "1"
+        run: |
+          set -euo pipefail
+          python phase2/redesign/mpsef_p3_v1_stage1_parity32_remediation_v1.py             --manifest parity32/MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1.jsonl             --p1-proposals p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl             --p3-proposals p3/MPSEF_P3_V1_STAGE1_V1.jsonl             --pnx-model-dir pnx_model             --upstream-root upstream/text-editing             --out MPSEF_P3_V1_STAGE1_PARITY32_REMEDIATION_V1.json
+
+      - name: Validate remediation result
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          x=json.load(open("MPSEF_P3_V1_STAGE1_PARITY32_REMEDIATION_V1.json",encoding="utf-8"))
+          assert x["status"]=="PASS"
+          assert x["n"]==32
+          for k,v in x["counts"].items():
+              assert v==32,(k,v)
+          assert x["project_gold_loaded"] is False
+          assert x["gold_reference_consulted"] is False
+          assert x["quality_metric_computed"] is False
+          assert x["r_joint_computed"] is False
+          assert x["proposal_artifact_modified"] is False
+          assert x["p1_rerun"] is False
+          assert x["exact_frozen_p1_parent_reused"] is True
+          print("P3_V1_STAGE1_PARITY32_REMEDIATION_PASS")
+          PY
+
+      - name: Freeze hashes
+        run: |
+          set -euo pipefail
+          python -m pip freeze > MPSEF_P3_V1_STAGE1_PARITY32_REMEDIATION_V1_PIP_FREEZE.txt
+          sha256sum             phase2/redesign/mpsef_p3_v1_stage1_parity32_remediation_v1.py             .github/workflows/phase2-mpsef-p3-v1-stage1-parity32-remediation.yml             parity32/MPSEF_V4_STAGE1_PARITY32_MANIFEST_V1.jsonl             p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl             p3/MPSEF_P3_V1_STAGE1_V1.jsonl             pnx_model/pytorch_model.bin             MPSEF_P3_V1_STAGE1_PARITY32_REMEDIATION_V1.json             MPSEF_P3_V1_STAGE1_PARITY32_REMEDIATION_V1_PIP_FREEZE.txt             > MPSEF_P3_V1_STAGE1_PARITY32_REMEDIATION_V1_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-p3-v1-stage1-parity32-remediation-v1
+          path: |
+            MPSEF_P3_V1_STAGE1_PARITY32_REMEDIATION_V1.json
+            MPSEF_P3_V1_STAGE1_PARITY32_REMEDIATION_V1_PIP_FREEZE.txt
+            MPSEF_P3_V1_STAGE1_PARITY32_REMEDIATION_V1_SHA256.txt
+          retention-days: 90
