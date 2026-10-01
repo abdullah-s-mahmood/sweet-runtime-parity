@@ -97,10 +97,10 @@ def update_state(path: Path, process_id: str, stage: str, processed: int, total:
         ).isoformat().replace("+00:00", "Z")
 
         progress_fraction = processed / max(total, 1)
-        if processed >= 100 and progress_fraction >= 0.25:
-            eta_confidence = "MEDIUM"
         if processed >= 500 and progress_fraction >= 0.50:
             eta_confidence = "HIGH"
+        elif processed >= 100 and progress_fraction >= 0.25:
+            eta_confidence = "MEDIUM"
         elif processed >= 20:
             eta_confidence = "LOW"
     elif total <= processed and total > 0:
