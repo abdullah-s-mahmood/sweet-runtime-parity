@@ -1896,3 +1896,60 @@ Next critical work:
 - fix M05 BOUNDARY whole-action aggregation;
 - add synthetic regressions;
 - version scorer/preflight before any future gold-aware measurement.
+
+
+### 2026-10-01 — Independent-review remediation: design blockers closed; scorer M04/M05 synthetic PASS
+
+**Independent verdict**
+
+The external architecture review returned:
+**MODIFY BEFORE IMPLEMENTATION**, with 2 BLOCKER, 5 MAJOR, 2 MINOR findings.
+
+**Design remediation completed**
+
+- B01: P2_V2 identity strengthened from count equality to explicit UID→word→segment→first-wordpiece→GED label→GEC subword bijection, including zero-token and single-word-over-budget failures.
+- B02: a new V4 proposer registry/action-set contract separates new proposer IDs, ancestry, literal dedup with provenance, variable action count, artifact identity, and future experiment authorization from frozen V3.
+- M01: P3 is optional P1-family cascade extension, not an independent vote.
+- M02: source-only diversity protocol V2 defines Stage 1 as 128 UIDs from 128 clusters, explicit denominators, legal marginal contribution, KEEP-only reduction, source-only leave-one-out, parity, resource accounting and pre-Stage2 retention rules.
+- M03: shadow protection diagnostics isolate global-ordinal-only blocking without weakening or rewriting V3 protection.
+
+**M04/M05 implementation**
+
+Historical scorer V2 was preserved.
+
+New scorer:
+`phase2/redesign/mpsef_rjoint_score_v3.py`
+
+Commit:
+`7a01d797e5fd630186910e38f5487364639e8165`
+
+Synthetic workflow:
+`36867448366`
+
+Result:
+**PASS**
+
+Artifact:
+`11164975245`
+
+Digest:
+`sha256:1ed7076c272e66dfe1b4168568113d76c4294db863418352af210ffaae90bb65`
+
+M04 now keeps the independently frozen target count even if every action scorer fails; N>0 produces conservative [0,N] uncertainty.
+
+M05 now computes BOUNDARY={SPLIT,MERGE} using one whole action over the union and applies the same whole-action semantics to additional-target/cluster evidence.
+
+**Comparison**
+
+Methodological robustness:
+**IMPROVED**
+
+Performance quality:
+**NOT MEASURED**
+
+Gold exposure:
+**UNCHANGED / NO NEW GOLD**
+
+**Next**
+
+Implement Stage 0 synthetic source-only harness for B01/B02/M01/M03; only after Stage 0 PASS may the deterministic Stage 1 source packet be materialized and executed.
