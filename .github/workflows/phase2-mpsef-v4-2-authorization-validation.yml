@@ -63,6 +63,24 @@ jobs:
           assert a["frozen_inputs"]["clusters"]==l["population_clusters"]==764
           assert a["claim_scope"]==l["claim_scope"]
 
+          mw=a["measurement_workflow"]
+          assert mw["file"]==".github/workflows/phase2-mpsef-v4-2-rjoint-one-shot.yml"
+          assert mw["sha256"]==sha256_file(mw["file"])
+          assert mw["sha256"]=="7ad25c7207700cca202b3a2727200c7a1d59c409c9ec57bfe013865d63d3f3d8"
+          assert mw["state"]=="DORMANT_NOT_ACTIVATED"
+
+          rt=a["frozen_runtime"]
+          assert rt["python_major_minor"]=="3.10"
+          assert rt["numpy"]=="1.23.5"
+          assert rt["editdistance"]=="0.6.2"
+          assert rt["arabic_gec_revision"]=="8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+          assert rt["network_download_during_measurement"]=="forbidden"
+          assert rt["model_inference_during_measurement"]=="forbidden"
+
+          assert a["verification"]["scorer_preflight_passed"]==33
+          assert a["verification"]["wrapper_preflight_passed"]==16
+          assert a["verification"]["exact_runtime_verified"] is True
+
           g=a["consumption_guard"]
           assert g["file"]=="phase2/redesign/mpsef_rjoint_v4_2_consumption_guard_v1.py"
           assert g["sha256"]==sha256_file(g["file"])
