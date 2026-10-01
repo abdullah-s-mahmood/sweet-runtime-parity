@@ -1,0 +1,60 @@
+{
+  "record_id": "MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1",
+  "date": "2026-10-02",
+  "status": "AUTHORIZED_SINGLE_DEVELOPMENT_RUN",
+  "experiment_id": "MPSEF-RJOINT-V4_2-CF1918-20261002-A",
+  "decision": "AUTHORIZE_DEVELOPMENT_ONLY_RJOINT_V4_2_SINGLE_RUN",
+  "measurement_authorized": true,
+  "gold_access_allowed_after_claim": true,
+  "consumption_claimed_before_gold_access": true,
+  "single_run_only": true,
+  "input_lock_file": "phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json",
+  "input_lock_sha256": "3f3e4bd95bbd5d49ad71ec58466573d56a476eefcf0cdc3719c2c732d3de19d0",
+  "governing_contract": "phase2/redesign/MPSEF_V4_PRE_GOLD_DEVELOPMENT_MEASUREMENT_CONTRACT_V1_AMENDMENT_A1.md",
+  "closure_lock": "phase2/redesign/MPSEF_RJOINT_V4_2_PRE_GOLD_CLOSURE_LOCK_V1.md",
+  "independent_delta_review": {
+    "verdict": "MODIFY",
+    "new_blocker_major_findings": "NONE",
+    "required_fixes_completed": true,
+    "review_gold_authorization_at_review_time": "DO NOT AUTHORIZE YET",
+    "authorization_basis_now": "all specified preconditions completed and exact input-lock SHA frozen"
+  },
+  "verification": {
+    "scorer_preflight_passed": 33,
+    "scorer_preflight_total": 33,
+    "wrapper_preflight_passed": 14,
+    "wrapper_preflight_total": 14,
+    "combined_status": "acad-pass/v4-2-pre-gold-wrapper = success",
+    "input_lock_identity_status": "acad-pass/v4-2-input-lock-sha256/3f3e4bd95bbd5d49ad71ec58466573d56a476eefcf0cdc3719c2c732d3de19d0 = success"
+  },
+  "frozen_implementation": {
+    "scorer_sha256": "be9cf725b71b8d26a23eff9e9afd4ca434294a4d8f72e0271caa179ca892f2e1",
+    "core_sha256": "b9f8c81706c266b75786e04a4363f8af8a5900eb9629acc99dac15ad72389d3c",
+    "wrapper_sha256": "72bf23c9f910c2b203caf11e6e677729fa914d66c2d1e062ac0fd7dfd6da357f",
+    "dependency_lock_sha256": "aa66ec3d6fdb4aef1b4fada26a1b6cf794f632139655e22462a7a1c27aab7bc5"
+  },
+  "frozen_inputs": {
+    "cases": 1918,
+    "clusters": 764,
+    "source_manifest_sha256": "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193",
+    "action_set_sha256": "e38393abb36734d3882e29a78f3b33c80718791957b9b8c0c6e8a8ab77f6e138",
+    "population_uid_sha256": "51e2e1decf1c7c9efbc31e343eba1c7dfb08d0de314041cb57f5b3118ffd550f",
+    "population_cluster_sha256": "bb2f49c6aaf312cf9c388237090a79861fa6218da15de57d0119efd39327ae3c",
+    "uid_cluster_map_sha256": "32b89f9dcadefa0f17cb0fddac6099433d611508a01ad96b428e0534c1057c5d",
+    "provenance_signature_map_sha256": "18561c75c397821c34e3dc06214bb4f64cc5ff8d6757f61835cbe9e6808befbd",
+    "gold_m2_sha256": "971b6fbb28dc3767193e7a4b0f722c3abebfc8600155a57093ba483dac6491e8"
+  },
+  "claim_scope": "DEVELOPMENT / ADAPTIVELY_CONSUMED / REFERENCE_RELATIVE / NOT_INDEPENDENT_GENERALIZATION",
+  "forbidden_during_or_after_this_authorized_run": {
+    "p4_execution": true,
+    "selector_training": true,
+    "family_consensus_activation": true,
+    "llm_judge": true,
+    "internal_evaluation_opening": true,
+    "stress_diagnostic_opening": true,
+    "reserved_population_opening": true,
+    "clean_holdout_claim": true,
+    "independent_generalization_claim": true
+  },
+  "authorization_consumption_rule": "This record authorizes exactly one development-only V4.2 R_joint execution. Any rerun after a metric-producing run requires a new explicit authorization record. Technical reruns before any metric require a separate documented stop-rule decision."
+}
