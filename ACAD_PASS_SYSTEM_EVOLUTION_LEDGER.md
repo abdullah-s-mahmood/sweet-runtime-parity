@@ -2177,3 +2177,42 @@ Linguistic performance:
 
 Next:
 P2_V2 and P3 source-only proposal generation on the exact frozen packet, followed by V4 legal action/dedup/diversity diagnostics.
+
+
+### 2026-10-01 — P2_V2 reaches project-source Stage1 with 127/128 executable rows
+
+Run:
+`36872617551`
+
+Result:
+**SOURCE-ONLY STAGE1 COMPLETE**
+
+Engineering observations:
+- 127/128 OK (99.21875%)
+- 1/128 fail-closed generation-completeness boundary
+- 126/128 changed outputs (98.4375% activity; no correctness meaning)
+- repeat parity 8/8
+- reversed-order parity 8/8
+- no empty outputs
+- main pass ~9.69 min
+- median ~4.54 s/case
+- p95 ~5.53 s/case
+- peak RSS ~2.51 GiB
+
+The one non-executable row reached the frozen generation ceiling with EOS at the boundary. The row remains failed in V1 and may only be addressed in a future version with a preregistered length policy.
+
+**Comparison**
+
+Implementation/provenance readiness:
+**IMPROVED**
+
+Coverage:
+high on the frozen Stage1 packet, with one explicit fail-closed edge.
+
+Linguistic performance:
+**NOT MEASURED**
+
+New risk signal:
+very high output activity (98.44%) means later safety/legal-diversity analysis is important before any correctness interpretation.
+
+No new gold/reference was consumed.
