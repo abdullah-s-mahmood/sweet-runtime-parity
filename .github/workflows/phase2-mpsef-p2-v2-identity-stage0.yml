@@ -1,0 +1,56 @@
+name: Phase 2 MP-SEF P2 V2 Identity Stage0
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-p2-v2-identity-stage0.yml"
+      - "phase2/redesign/mpsef_p2_v2_identity_stage0.py"
+      - "phase2/redesign/MPSEF_P2_V2_WORD_IDENTITY_CONTRACT_V1.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  p2-v2-stage0:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Run P2_V2 source-free identity Stage0
+        run: |
+          python phase2/redesign/mpsef_p2_v2_identity_stage0.py --self-test             > MPSEF_P2_V2_IDENTITY_STAGE0_RESULT.json
+          cat MPSEF_P2_V2_IDENTITY_STAGE0_RESULT.json
+          python - <<'PY'
+          import json
+          x=json.load(open("MPSEF_P2_V2_IDENTITY_STAGE0_RESULT.json",encoding="utf-8"))
+          assert x["status"]=="PASS"
+          assert x["project_source_loaded"] is False
+          assert x["project_gold_loaded"] is False
+          assert x["project_metric_computed"] is False
+          assert x["model_inference_run"] is False
+          assert x["test_count"]>=19
+          print("P2_V2_STAGE0_SOURCE_FREE_PASS")
+          PY
+
+      - name: Freeze hashes
+        run: |
+          sha256sum             phase2/redesign/mpsef_p2_v2_identity_stage0.py             phase2/redesign/MPSEF_P2_V2_WORD_IDENTITY_CONTRACT_V1.md             MPSEF_P2_V2_IDENTITY_STAGE0_RESULT.json             > MPSEF_P2_V2_IDENTITY_STAGE0_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-p2-v2-identity-stage0
+          path: |
+            MPSEF_P2_V2_IDENTITY_STAGE0_RESULT.json
+            MPSEF_P2_V2_IDENTITY_STAGE0_SHA256.txt
+          retention-days: 90
