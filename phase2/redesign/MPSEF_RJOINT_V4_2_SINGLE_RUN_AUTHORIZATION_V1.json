@@ -4,12 +4,12 @@
   "status": "AUTHORIZED_SINGLE_DEVELOPMENT_RUN",
   "experiment_id": "MPSEF-RJOINT-V4_2-CF1918-20261002-A",
   "decision": "AUTHORIZE_DEVELOPMENT_ONLY_RJOINT_V4_2_SINGLE_RUN",
-  "measurement_authorized": false,
-  "gold_access_allowed_after_claim": false,
+  "measurement_authorized": true,
+  "gold_access_allowed_after_claim": true,
   "consumption_claimed_before_gold_access": true,
   "single_run_only": true,
   "input_lock_file": "phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json",
-  "input_lock_sha256": "f3f40b1425e272f27d2e19a41f45792310102ad7a62ef9037e78868430517ff3",
+  "input_lock_sha256": "6ac8656226c64b64e8fc6a408475dbff1e231ec3d87b7afa3da464b1dee25132",
   "governing_contract": "phase2/redesign/MPSEF_V4_PRE_GOLD_DEVELOPMENT_MEASUREMENT_CONTRACT_V1_AMENDMENT_A1.md",
   "closure_lock": "phase2/redesign/MPSEF_RJOINT_V4_2_PRE_GOLD_CLOSURE_LOCK_V1.md",
   "independent_delta_review": {
@@ -28,7 +28,8 @@
     "workflow_run_id": 36940030184,
     "artifact_id": 11199084513,
     "artifact_digest": "sha256:5f16c02fdbe8612499c24b6b2209a19ee03f6738d529e78b10f545fe7c430b20",
-    "exact_runtime_verified": true
+    "exact_runtime_verified": true,
+    "input_lock_identity_status": "acad-pass/v4-2-input-lock-sha256/6ac8656226c64b64e8fc6a408475dbff1e231ec3d87b7afa3da464b1dee25132 = success"
   },
   "frozen_implementation": {
     "scorer_sha256": "be9cf725b71b8d26a23eff9e9afd4ca434294a4d8f72e0271caa179ca892f2e1",
@@ -73,9 +74,10 @@
     "date": "2026-10-02",
     "reason": "Production wrapper hardened after authorization to verify actual installed numpy/editdistance versions and measurement runtime policy before gold access.",
     "previous_authorization_sha256": "5bb5727e6fea6d7b89e0180656660713ee1d301f1dcf4134755d47385d1cfc28",
-    "replacement_required": true,
+    "replacement_required": false,
     "gold_opened_under_superseded_authorization": false,
-    "real_r_joint_computed_under_superseded_authorization": false
+    "real_r_joint_computed_under_superseded_authorization": false,
+    "resolution": "Replacement authorization rebound to refrozen exact-runtime input lock SHA256 6ac8656226c64b64e8fc6a408475dbff1e231ec3d87b7afa3da464b1dee25132."
   },
   "frozen_runtime": {
     "python_major_minor": "3.10",
@@ -92,5 +94,5 @@
     "state": "DORMANT_NOT_ACTIVATED",
     "activation_file": "phase2/redesign/MPSEF_RJOINT_V4_2_EXECUTION_ACTIVATION_V1.json"
   },
-  "authorization_basis": "Independent delta-review repairs closed; exact-runtime scorer 33/33 and wrapper 16/16 PASS; exact input-lock/workflow/consumption-guard identities frozen."
+  "authorization_basis": "Independent delta-review repairs closed; exact-runtime scorer 33/33 and wrapper 16/16 PASS; refrozen input-lock SHA, dormant workflow identity, and consumption guard identity bound."
 }
