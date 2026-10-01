@@ -2551,3 +2551,40 @@ Permanent maintenance rule:
 - include WHY a path was chosen, WHY it failed/succeeded, and whether it is repairable/current-cycle-safe.
 
 The ledger also contains a dedicated Research / Doctoral-Dissertation Conversion Map.
+
+
+## 2026-10-01 — Advanced Second Preflight V2 revalidation PASS
+
+Current hardened HEAD was revalidated with the advanced machine-checkable C01-C22 suite.
+
+Workflow:
+- `Phase 2 MP-SEF R_joint Second Premeasurement Preflight v2`
+- run: `36825797396`
+- code commit: `7c31da92a75495f11e1faac10ecc4e84685845c3`
+- artifact: `11145072418`
+- artifact digest:
+  `sha256:fcd653251e4e6870adfdcfb26d71e2bfa8f11f14e6f15b040f054077cb008896`
+
+Result:
+- C01-C22: **22 / 22 PASS = 100%**
+- checklist SHA256:
+  `3103089eaa04576816509b8f2940c721ed8a931c1f4a7a6802b1e86a0b301eb8`
+- project gold loaded: false
+- project metric computed: false
+- measurement authorized by preflight: false
+- next gate:
+  `INDEPENDENT_CORRECTED_PREAUTH_REVIEW`
+
+Historical baseline:
+- earlier simplified second-preflight baseline: strict PASS 36.36%, weighted remediation 65.91%.
+- that baseline is now SUPERSEDED for current readiness by the advanced 22/22 suite, but remains preserved as historical evidence of remediation progress.
+
+Current interpretation:
+**IMPROVED SUBSTANTIALLY IN PREAUTHORIZATION READINESS / 100% C01-C22 SOURCE-ONLY PREFLIGHT PASS / PERFORMANCE STILL UNMEASURED**
+
+Do NOT run R_joint automatically.
+Per the Maximum-Quality Reassessment Contract, the next work is:
+1. architecture re-baseline using frozen evidence, especially current P2=0 executable;
+2. prepare independent higher-model corrected preauthorization/architecture review;
+3. decide KEEP / REPAIR P2_V2 / REPLACE / ADD COMPLEMENT;
+4. only after that decision consider any gold-aware authorization.
