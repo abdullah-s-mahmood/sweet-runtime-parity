@@ -2875,3 +2875,66 @@ Mandatory next gate:
 fresh deep research + maximum-effort architecture brainstorming before Stage1.
 The research must reassess P1/P2_V2/P3/V4 and may recommend KEEP/REPAIR/REPLACE/ADD/DEFER.
 Stage1 is forbidden until that decision is frozen.
+
+
+## 2026-10-01 — Fresh pre-Stage1 research re-baseline V2 frozen
+
+Research document:
+`phase2/redesign/ACAD_PASS_PRE_STAGE1_FRESH_RESEARCH_REBASELINE_V2.md`
+
+Commit:
+`b2dd28366c3810af845831e976e8270b62c93439`
+
+Fresh 2025-2026 research + maximum-effort architecture brainstorming completed after full source-free Stage0 PASS.
+
+Frozen decisions:
+
+- P1_CONTROL: KEEP.
+- P2_V2: KEEP / PROCEED TO STAGE1.
+- P3_V1: KEEP AS OPTIONAL / PROCEED TO STAGE1.
+- P1 and P3 remain one SWEET family for future support-count interpretation.
+- P4: DEFER before Stage1; reopen if source-only diversity proves a third independent family is needed.
+- V4 consensus: DEFER until after Stage1.
+- learned selector: DEFER.
+- general LLM proposer: DEFER from primary roster; diagnostic/reviewer role only.
+- protection: KEEP authoritative current policy + source-only shadow diagnostics.
+- future evaluation: keep whole-action R_joint primary; newer metrics may be supplemental only.
+
+Key architecture insight:
+the current roster has only TWO materially independent families:
+1. SWEET;
+2. Seq2Seq+GED/morphology.
+
+Therefore P1+P3 MUST NOT be counted as two votes in any future consensus.
+A meaningful family-majority consensus may require a third independent family later.
+
+Stage1 is now justified because it can answer source-only questions that external literature cannot:
+- P2_V2 legal marginal diversity vs P1;
+- P3 marginal value vs redundancy;
+- candidate-set-size gain;
+- protection burden;
+- global-ordinal-only shadow blocking;
+- runtime/provenance cost.
+
+Current classification:
+**IMPROVED ARCHITECTURALLY / LINGUISTIC PERFORMANCE STILL UNMEASURED**
+
+Engineering forecast:
+- ~90% optimism that a scientifically defensible architecture can be reached;
+- ~10% residual architecture/implementation risk.
+These are engineering estimates, not statistical/model-quality probabilities.
+
+Main current risks:
+- P2_V2 may add little legal diversity;
+- P3 may be mostly redundant;
+- current roster may need P4 before consensus;
+- protection may constrain useful availability;
+- Stage1 may expose runtime/provenance defects.
+
+Next exact sequence:
+1. freeze deterministic 128-UID / 128-cluster Stage1 source-only packet;
+2. inspect/implement P2_V2 Stage1 runner;
+3. inspect/implement P3 Stage1 runner using exact P1 parent outputs;
+4. freeze generic V4 action builder;
+5. integrate M03 shadow diagnostics + progress/resource monitoring;
+6. run Stage1 source-only only.
