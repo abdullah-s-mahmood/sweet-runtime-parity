@@ -2295,3 +2295,51 @@ Remaining strategic uncertainty:
 whether to introduce a materially independent P4 before full-population Stage2 and future family-level consensus.
 
 Stage2 remains unauthorized pending fresh post-Stage1 research/brainstorming.
+
+
+### 2026-10-01 — Stage2 full-C_F proposer execution closes for P2_V2 and P3_V1
+
+**P2_V2 full population**
+
+Run `36899056538` completed successfully on all 1,918 C_F UIDs / 764 clusters using the exact production adapter under Watchdog V2.
+
+- completed: 1918
+- aborted: 0
+- not attempted: 0
+- completion claim: allowed
+- output SHA256: `87dd3600293b215172f5a75dc7485915013963aa3e661310ea1adac08b9ddba7`
+- artifact: `11186450279`
+- digest: `sha256:c5c5d32c99ce216a5b93362748cfefa67de4ec1f5b2b1174c8d3caf0fcd914af`
+
+**P3_V1 full population**
+
+Run `36920015935` completed successfully on all 1,918 C_F UIDs / 764 clusters using the exact production adapter under Watchdog V2.
+
+- completed: 1918
+- aborted: 0
+- not attempted: 0
+- completion claim: allowed
+- P1 rerun: false
+- exact frozen P1 parent reused: true
+- Stage-B classifier: `MPSEF_STAGEB_CHANGE_DOMAIN_CLASSIFIER_V1`
+- output SHA256: `02f9bd2555b1b9f350665179dcd96dd6accf532355a269b38ef4d099ea25d4ec`
+- artifact: `11192760024`
+- digest: `sha256:9a31de6dcff43efb903212a7fe2e2ad378f24e177faba0ecbd46ba4dd05e4253`
+
+**Comparison**
+
+Engineering/provenance completeness:
+**IMPROVED STRONGLY**
+
+Full-C_F proposer coverage:
+**COMPLETE FOR P2 AND P3**
+
+Linguistic correctness:
+**NOT YET MEASURED**
+
+Gold/reference exposure:
+**UNCHANGED / NONE ADDED**
+
+**Next gate**
+
+Full-population source-only legalizer/action-set/family analysis. P1+P3 remain one SWEET family. No R_joint, learned selector, gold-aware scoring, or family-consensus activation is authorized yet.
