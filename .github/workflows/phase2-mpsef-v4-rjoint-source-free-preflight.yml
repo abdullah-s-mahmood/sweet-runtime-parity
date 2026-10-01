@@ -78,7 +78,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 90
 
-      - name: Publish observable commit status
+      - name: Publish observable commit status and frozen SHA256 identities
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -87,8 +87,20 @@ jobs:
         run: |
           set -euo pipefail
           if [ "$JOB_STATUS" = "success" ]; then STATE=success; else STATE=failure; fi
-          curl -fsSL -X POST \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/abdullah-s-mahmood/sweet-runtime-parity/statuses/$SHA" \
-            -d "{\"state\":\"$STATE\",\"context\":\"acad-pass/v4-rjoint-source-free-preflight\",\"description\":\"V4 R_joint source-free 20-case preflight\"}"
+          SCORER_SHA="$(sha256sum phase2/redesign/mpsef_rjoint_score_v4.py | awk '{print $1}')"
+          TEST_SHA="$(sha256sum phase2/redesign/mpsef_rjoint_v4_synthetic_preflight.py | awk '{print $1}')"
+          RESULT_SHA="$(sha256sum MPSEF_RJOINT_V4_SYNTHETIC_PREFLIGHT_V1.json | awk '{print $1}')"
+
+          post_status () {
+            local state="$1" context="$2" description="$3"
+            curl -fsSL -X POST \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/abdullah-s-mahmood/sweet-runtime-parity/statuses/$SHA" \
+              -d "{\"state\":\"$state\",\"context\":\"$context\",\"description\":\"$description\"}"
+          }
+
+          post_status "$STATE" "acad-pass/v4-rjoint-source-free-preflight" "V4 R_joint source-free 20-case preflight"
+          post_status success "acad-pass/v4-rjoint-scorer-sha256" "$SCORER_SHA"
+          post_status success "acad-pass/v4-rjoint-test-sha256" "$TEST_SHA"
+          post_status success "acad-pass/v4-rjoint-result-sha256" "$RESULT_SHA"
