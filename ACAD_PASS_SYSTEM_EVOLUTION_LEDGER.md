@@ -1427,3 +1427,71 @@ If they conflict:
 6. decide whether to continue P1-only, build P2_V2, replace P2, or add complementary proposal generation;
 7. only after that decision should a new measurement-authorization path be considered.
 
+
+
+### 2026-10-01 — Advanced Second Preflight V2 revalidation
+
+**Objective**
+
+Re-run the stronger C01-C22 second-premeasurement preflight against the current hardened code after scorer denominator/gate changes and governance hardening.
+
+**Why this route**
+
+A previous advanced run had already passed 22/22, but code changed afterward. Scientific validity required revalidation on the current exact commit rather than inheriting an old PASS.
+
+**Execution**
+
+- run: `36825797396`
+- code commit: `7c31da92a75495f11e1faac10ecc4e84685845c3`
+- artifact: `11145072418`
+- artifact digest:
+  `sha256:fcd653251e4e6870adfdcfb26d71e2bfa8f11f14e6f15b040f054077cb008896`
+- checklist SHA256:
+  `3103089eaa04576816509b8f2940c721ed8a931c1f4a7a6802b1e86a0b301eb8`
+
+**Result**
+
+- status: PASS
+- C01-C22: **22 / 22 = 100% PASS**
+- FAIL: **0 / 22 = 0%**
+- PARTIAL: **0 / 22 = 0%**
+- BLOCKED: **0 / 22 = 0%**
+- project gold loaded: false
+- project metric computed: false
+- measurement authorization: false
+
+**Comparison with previous checkpoint**
+
+Previous simplified baseline:
+- strict PASS: **36.36%**
+- weighted remediation: **65.91%**
+- PASS/PARTIAL/BLOCKED: 8/13/1
+
+Current advanced suite:
+- strict PASS: **100%**
+- change in strict PASS: **+63.64 percentage points**
+- change versus weighted remediation reference: **+34.09 percentage points**
+
+The earlier baseline is **SUPERSEDED FOR CURRENT READINESS**, not deleted. It remains historical evidence of how remediation progressed.
+
+**Failure analysis**
+
+No checklist failure remained in the advanced suite.
+
+This does not imply model/candidate quality success. It establishes preauthorization engineering/methodological readiness only.
+
+**Architecture consequence**
+
+The successful preflight does NOT automatically authorize measurement.
+
+Because frozen P2 contributes zero executable actions, the Maximum-Quality Reassessment Contract requires an architecture re-baseline before spending additional gold-aware measurement exposure.
+
+**Research significance**
+
+This checkpoint demonstrates a complete source-only preauthorization acceptance suite after an earlier independent review found 5 BLOCKER and 5 MAJOR issues.
+
+It is potentially valuable future reproducibility/methodology evidence, but is not itself a performance result.
+
+**Next authorized step**
+
+Architecture re-baseline + independent higher-model review before any new R_joint authorization.
