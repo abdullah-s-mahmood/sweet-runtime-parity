@@ -1,0 +1,86 @@
+name: Phase 2 MP-SEF V4 Stage1 Tooling Preflight
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-v4-stage1-tooling-preflight.yml"
+      - "phase2/redesign/mpsef_v4_build_stage1_packet_v1.py"
+      - "phase2/redesign/mpsef_p2_v2_stage1_proposals_v1.py"
+      - "phase2/redesign/mpsef_p3_v1_stage1_proposals_v1.py"
+      - "phase2/redesign/mpsef_v4_stage1_legalizer_actions_v1.py"
+      - "phase2/redesign/mpsef_v4_stage1_diversity_v1.py"
+      - "phase2/redesign/mpsef_v4_build_stage1_registry_v1.py"
+      - "phase2/redesign/mpsef_v4_stage1_tooling_selftest_v1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tooling-preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Compile Stage1 tooling
+        run: |
+          python -m py_compile \
+            phase2/redesign/mpsef_v4_build_stage1_packet_v1.py \
+            phase2/redesign/mpsef_p2_v2_stage1_proposals_v1.py \
+            phase2/redesign/mpsef_p3_v1_stage1_proposals_v1.py \
+            phase2/redesign/mpsef_v4_stage1_legalizer_actions_v1.py \
+            phase2/redesign/mpsef_v4_stage1_diversity_v1.py \
+            phase2/redesign/mpsef_v4_build_stage1_registry_v1.py \
+            phase2/redesign/mpsef_v4_stage1_tooling_selftest_v1.py
+
+      - name: Run source-free integration self-test
+        run: |
+          set -o pipefail
+          python phase2/redesign/mpsef_v4_stage1_tooling_selftest_v1.py \
+            | tee MPSEF_V4_STAGE1_TOOLING_PREFLIGHT_RESULT.json
+
+      - name: Validate source-free result
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("MPSEF_V4_STAGE1_TOOLING_PREFLIGHT_RESULT.json",encoding="utf-8"))
+          assert x["status"]=="PASS"
+          assert x["test_count"]>=6
+          assert x["project_source_loaded"] is False
+          assert x["project_gold_loaded"] is False
+          assert x["quality_metric_computed"] is False
+          assert x["r_joint_computed"] is False
+          print("V4_STAGE1_TOOLING_PREFLIGHT_PASS")
+          PY
+
+      - name: Freeze hashes
+        run: |
+          sha256sum \
+            phase2/redesign/mpsef_v4_build_stage1_packet_v1.py \
+            phase2/redesign/mpsef_p2_v2_stage1_proposals_v1.py \
+            phase2/redesign/mpsef_p3_v1_stage1_proposals_v1.py \
+            phase2/redesign/mpsef_v4_stage1_legalizer_actions_v1.py \
+            phase2/redesign/mpsef_v4_stage1_diversity_v1.py \
+            phase2/redesign/mpsef_v4_build_stage1_registry_v1.py \
+            phase2/redesign/mpsef_v4_stage1_tooling_selftest_v1.py \
+            .github/workflows/phase2-mpsef-v4-stage1-tooling-preflight.yml \
+            MPSEF_V4_STAGE1_TOOLING_PREFLIGHT_RESULT.json \
+            > MPSEF_V4_STAGE1_TOOLING_PREFLIGHT_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-v4-stage1-tooling-preflight
+          path: |
+            MPSEF_V4_STAGE1_TOOLING_PREFLIGHT_RESULT.json
+            MPSEF_V4_STAGE1_TOOLING_PREFLIGHT_SHA256.txt
+          retention-days: 90
