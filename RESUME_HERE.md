@@ -4021,3 +4021,68 @@ Exact next sequence:
 6. open only the authorized CALIBRATION/M2 gold;
 7. run one DEVELOPMENT-only R_joint V4.2;
 8. freeze/analyze result and execute end-of-phase research/red-team/closure decision.
+## 2026-10-02 — V4.2 one-shot measurement activated; run in progress
+
+Exact-runtime closure achieved:
+- scorer preflight: 33/33 PASS
+- wrapper preflight: 16/16 PASS
+- successful verification run: 36940030184
+- verification artifact: 11199084513
+- artifact digest: sha256:5f16c02fdbe8612499c24b6b2209a19ee03f6738d529e78b10f545fe7c430b20
+
+Refrozen production input lock:
+- refreeze commit: 280a192712e6ab346d87b2f63a852875aa709152
+- validator commit: cf48d89677d9235e9c064965d7671544f7d54058
+- exact input-lock SHA256:
+  `6ac8656226c64b64e8fc6a408475dbff1e231ec3d87b7afa3da464b1dee25132`
+- status context: success
+
+Replacement exact-SHA authorization:
+- authorization update commit: f798180cd661cd8405a0ab1e69b7e911d5413303
+- validation commit: 679e0d73ea3f1ce936911c4b74eae3d6ead56363
+- authorization status: success
+- exact authorization SHA256:
+  `7b8a4ebd8216bd2fd06c42d919bbe16d219b6cbc0b46cfad07f286f08651fb49`
+
+Dormant one-shot workflow:
+`.github/workflows/phase2-mpsef-v4-2-rjoint-one-shot.yml`
+Exact workflow SHA256 bound in authorization:
+`7ad25c7207700cca202b3a2727200c7a1d59c409c9ec57bfe013865d63d3f3d8`
+
+Activation:
+- file: `phase2/redesign/MPSEF_RJOINT_V4_2_EXECUTION_ACTIVATION_V1.json`
+- activation commit: `eabbd984744d3c5551e19b537d2b5b89d9cb5d8a`
+- decision: EXECUTE_AUTHORIZED_SINGLE_DEVELOPMENT_RUN
+
+Live workflow run:
+- run id: `36940844664`
+- name: Phase 2 MP-SEF V4.2 One-Shot Development R_joint
+- last observed status: IN_PROGRESS
+
+Last observed completed gates:
+1. checkout activation trigger — PASS
+2. activation record read/preserved — PASS
+3. activation-only diff — PASS
+4. authorization/input-lock preservation — PASS
+5. trigger identity validation — PASS
+6. exact authorized code checkout — PASS
+7. Python setup — PASS
+8. exact authorization artifacts restored — PASS
+
+At last observation:
+- runtime dependency installation was in progress;
+- consumption claim step had NOT yet executed;
+- no `acad-pass/v4-2-rjoint-consumed` status was present;
+- therefore gold/reference access was NOT yet evidenced as opened at that checkpoint.
+
+Polling discipline:
+three sequential inspections were used; polling stopped per protocol.
+
+Exact next action on next continuation:
+1. inspect workflow run `36940844664`;
+2. if completed before consumption claim, diagnose and apply stop-rule;
+3. if consumption claim succeeded, preserve that fact and inspect whether gold identity verification and R_joint execution completed;
+4. if measurement completed, freeze outputs/hashes before interpretation;
+5. then perform result analysis + fresh end-of-phase research/red-team before any architecture decision.
+
+No selector, P4, family consensus, LLM judge, internal evaluation, stress diagnostic, or reserved population is authorized.
