@@ -2588,3 +2588,35 @@ Per the Maximum-Quality Reassessment Contract, the next work is:
 2. prepare independent higher-model corrected preauthorization/architecture review;
 3. decide KEEP / REPAIR P2_V2 / REPLACE / ADD COMPLEMENT;
 4. only after that decision consider any gold-aware authorization.
+
+
+## 2026-10-01 — Arabic correction architecture re-baseline V1
+
+Fresh literature + implementation review completed before any new gold-aware measurement.
+
+Decision:
+- keep frozen V3 as immutable control;
+- do NOT spend new gold merely to finish the current effective P1-only cycle;
+- build a new versioned redesign lane;
+- P2 is NOT abandoned;
+- implement P2_V2 with corrected wordpiece→word GED alignment and full source-only provenance;
+- add P3_V1 using a strong reproducible iterative/cascaded SWEET variant;
+- consider MP-SEF V4 source-only consensus/edit voting only as a NEW architecture, never as a retroactive modification to V3;
+- general LLMs remain diagnostic/optional diversity candidates, not sole primary corrector/verifier.
+
+Re-baseline document:
+`phase2/redesign/ACAD_PASS_ARABIC_ARCHITECTURE_REBASELINE_V1.md`
+
+Commit:
+`2204718b51f9580a6d4d8ddaa33a903f686eb262`
+
+Scientific classification:
+**IMPROVED STRATEGICALLY / PERFORMANCE NOT YET MEASURED**
+
+Current exact next sequence:
+1. freeze P2_V2 implementation specification;
+2. freeze P3_V1 SWEET iterative/cascade specification;
+3. freeze source-only proposer-diversity protocol;
+4. independent higher-model architecture review;
+5. implement only after review unless review says MODIFY/STOP;
+6. no new R_joint before the redesign decision is frozen.
