@@ -1,0 +1,142 @@
+name: Phase 2 MP-SEF Second Preflight V2
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-second-preflight-v2.yml"
+      - "phase2/redesign/mpsef_second_preflight_v2.py"
+      - "phase2/redesign/mpsef_rjoint_core_v2.py"
+      - "phase2/redesign/mpsef_rjoint_score_v2.py"
+      - "phase2/redesign/MPSEF_TARGET_SCOPE_FAMILY_MAP_V2.md"
+      - "phase2/redesign/ACAD_PASS_FAILURE_TRIAGE_CONTRACT_V1.md"
+
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+
+jobs:
+  second-preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Download frozen P1/source artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-cf-proposals-v1
+          path: p2
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36768378938
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2 trace
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-generation-trace-v1
+          path: p2trace
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36807862693
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen executable actions
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-executable-actions-v1
+          path: legal
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36818173661
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run source-only second preflight with watchdog and ETA
+        env:
+          PYTHONUNBUFFERED: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python phase2/redesign/run_with_progress_watchdog_v1.py \
+            --state-file MPSEF_SECOND_PREFLIGHT_V2_PROGRESS.json \
+            --context acad-pass/mpsef-second-preflight-v2 \
+            --poll-seconds 5 \
+            --publish-seconds 10 \
+            --stale-seconds 300 \
+            -- \
+            python phase2/redesign/mpsef_second_preflight_v2.py \
+              --source p1/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl \
+              --p1 p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl \
+              --p2 p2/MPSEF_P2_CF_PROPOSALS_V1.jsonl \
+              --hypotheses legal/MPSEF_EXECUTABLE_ACTIONS_V1_HYPOTHESES.jsonl \
+              --actions legal/MPSEF_EXECUTABLE_ACTIONS_V1_ACTION_SETS.jsonl \
+              --p2-trace p2trace/MPSEF_P2_GENERATION_TRACE_V1.jsonl \
+              --legalizer phase2/redesign/mpsef_executable_actions_legalizer_v1.py \
+              --core-v2 phase2/redesign/mpsef_rjoint_core_v2.py \
+              --scorer-v2 phase2/redesign/mpsef_rjoint_score_v2.py \
+              --exposure-audit phase2/redesign/MPSEF_MEASUREMENT_EXPOSURE_AUDIT_V1.md \
+              --population-decision phase2/redesign/MPSEF_POPULATION_PRECEDENCE_DECISION_V1.md \
+              --operator-attestation phase2/redesign/MPSEF_OPERATOR_EXPOSURE_ATTESTATION_V1.md \
+              --family-map-v2 phase2/redesign/MPSEF_TARGET_SCOPE_FAMILY_MAP_V2.md \
+              --state-file MPSEF_SECOND_PREFLIGHT_V2_PROGRESS.json \
+              --out MPSEF_SECOND_PREFLIGHT_V2_RESULTS.json
+
+      - name: Verify no measurement output was produced
+        run: |
+          test -f MPSEF_SECOND_PREFLIGHT_V2_RESULTS.json
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_SECOND_PREFLIGHT_V2_RESULTS.json",encoding="utf-8"))
+          assert s["measurement_authorized"] is False
+          assert s["gold_loaded"] is False
+          assert s["R_joint_computed"] is False
+          assert s["checks_total"]==22
+          print("SECOND_PREFLIGHT_SOURCE_ONLY_OUTPUT_OK")
+          print(json.dumps({
+              "status":s["status"],
+              "status_counts":s["status_counts"],
+              "strict_pass_percent":s["strict_pass_percent"],
+              "weighted_remediation_percent":s["weighted_remediation_percent"],
+          },sort_keys=True))
+          PY
+
+      - name: Record hashes
+        if: always()
+        run: |
+          sha256sum \
+            phase2/redesign/mpsef_second_preflight_v2.py \
+            phase2/redesign/mpsef_rjoint_core_v2.py \
+            phase2/redesign/mpsef_rjoint_score_v2.py \
+            phase2/redesign/mpsef_executable_actions_legalizer_v1.py \
+            phase2/redesign/MPSEF_TARGET_SCOPE_FAMILY_MAP_V2.md \
+            phase2/redesign/ACAD_PASS_FAILURE_TRIAGE_CONTRACT_V1.md \
+            MPSEF_SECOND_PREFLIGHT_V2_RESULTS.json \
+            MPSEF_SECOND_PREFLIGHT_V2_PROGRESS.json \
+            > MPSEF_SECOND_PREFLIGHT_V2_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-second-preflight-v2
+          path: |
+            MPSEF_SECOND_PREFLIGHT_V2_RESULTS.json
+            MPSEF_SECOND_PREFLIGHT_V2_PROGRESS.json
+            MPSEF_SECOND_PREFLIGHT_V2_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
