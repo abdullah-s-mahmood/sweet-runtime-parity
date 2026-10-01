@@ -3876,3 +3876,48 @@ Exact next sequence:
 
 Classification:
 **MIXED BUT SCIENTIFICALLY IMPROVED / RUNTIME REPRODUCIBILITY HARDENED / TEMPORARY AUTHORIZATION ROLLBACK / GOLD REMAINS CLOSED**
+## 2026-10-02 — V4.2 runtime environment identity hardening
+
+Before opening gold, an additional governance gap was identified:
+the production wrapper verified the dependency-lock file hash and Python/Arabic-GEC identities, but did not independently verify the actually installed runtime package versions.
+
+Source-free hardening applied:
+- production wrapper now parses and enforces the dependency lock before any gold access;
+- exact runtime package checks added for:
+  - numpy = 1.23.5
+  - editdistance = 0.6.2
+- runtime policies are also enforced:
+  - network_download_during_measurement = forbidden
+  - model_inference_during_measurement = forbidden
+- wrapper preflight expanded from 14 to 16 tests with explicit rejection tests for package-version and runtime-policy mismatch.
+
+Wrapper hardening commit:
+`07bed9062757e96ce40c531e772f18d70ffe8303`
+
+Extended wrapper-preflight commit:
+`d5543b72d139248423bfbf94a905ee02d1d8dbc4`
+
+Verification workflow updated to install the exact frozen measurement dependencies and require:
+- scorer: 33/33 PASS
+- wrapper: 16/16 PASS
+
+Workflow commit:
+`500b176475b60ab5207c6715fa28e2c84f76c70e`
+
+Polling state:
+three sequential status checks returned no exposed status yet. Per protocol, polling stopped.
+
+IMPORTANT:
+The previously frozen wrapper/input-lock/authorization hashes are now superseded by this source-free hardening and MUST NOT be used to open gold. Gold remains closed.
+
+Exact next sequence:
+1. inspect commit `500b176475b60ab5207c6715fa28e2c84f76c70e`;
+2. require combined scorer 33/33 + wrapper 16/16 PASS;
+3. capture new wrapper/test/result SHA256 values;
+4. regenerate/update the production input-lock with the new wrapper identity;
+5. republish input-lock SHA;
+6. regenerate exact-SHA single-run authorization;
+7. revalidate authorization + consumption guard binding;
+8. only then create/freeze/execute the one-shot DEVELOPMENT-only V4.2 measurement workflow.
+
+No gold/reference content was opened and no real R_joint was computed during this hardening.
