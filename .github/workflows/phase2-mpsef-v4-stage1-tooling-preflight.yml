@@ -6,6 +6,7 @@ on:
       - phase2-arabic-eval
     paths:
       - ".github/workflows/phase2-mpsef-v4-stage1-tooling-preflight.yml"
+      - ".github/workflows/phase2-mpsef-v4-stage1-v1.yml"
       - "phase2/redesign/mpsef_v4_build_stage1_packet_v1.py"
       - "phase2/redesign/mpsef_p2_v2_stage1_proposals_v1.py"
       - "phase2/redesign/mpsef_p3_v1_stage1_proposals_v1.py"
@@ -31,6 +32,33 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+
+      - name: Install YAML parser
+        run: |
+          python -m pip install "PyYAML==6.0.2"
+
+      - name: Validate Stage1 workflow orchestration
+        run: |
+          python - <<'PY'
+          import yaml
+          from pathlib import Path
+          p=Path(".github/workflows/phase2-mpsef-v4-stage1-v1.yml")
+          d=yaml.load(p.read_text(encoding="utf-8"),Loader=yaml.BaseLoader)
+          assert isinstance(d,dict) and "jobs" in d and "on" in d
+          jobs=d["jobs"]
+          assert list(jobs)==["freeze","p2","p3","finalize"], list(jobs)
+          assert jobs["p2"]["needs"]=="freeze"
+          assert jobs["p3"]["needs"]=="p2"
+          assert jobs["finalize"]["needs"]=="p3"
+          trigger=d["on"]
+          assert "push" in trigger and "workflow_dispatch" in trigger
+          paths=trigger["push"]["paths"]
+          assert paths==["phase2/redesign/MPSEF_V4_STAGE1_EXECUTION_AUTHORIZATION_V1.md"],paths
+          text=p.read_text(encoding="utf-8")
+          assert "project_gold_loaded" in text
+          assert "r_joint_computed" in text
+          print("V4_STAGE1_WORKFLOW_ORCHESTRATION_PASS")
+          PY
 
       - name: Compile Stage1 tooling
         run: |
@@ -74,6 +102,7 @@ jobs:
             phase2/redesign/mpsef_v4_build_stage1_registry_v1.py \
             phase2/redesign/mpsef_v4_stage1_tooling_selftest_v1.py \
             .github/workflows/phase2-mpsef-v4-stage1-tooling-preflight.yml \
+            .github/workflows/phase2-mpsef-v4-stage1-v1.yml \
             MPSEF_V4_STAGE1_TOOLING_PREFLIGHT_RESULT.json \
             > MPSEF_V4_STAGE1_TOOLING_PREFLIGHT_SHA256.txt
 
