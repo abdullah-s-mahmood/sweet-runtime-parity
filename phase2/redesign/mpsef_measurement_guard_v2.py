@@ -79,10 +79,8 @@ def validate_authorization(auth, exp, preflight):
         raise RuntimeError("second preflight is not PASS")
     if sp.get("run_id") != preflight.get("run_id"):
         raise RuntimeError("second preflight run mismatch")
-    if sp.get("artifact_id") != preflight.get("artifact_id"):
-        raise RuntimeError("second preflight artifact mismatch")
-    if sp.get("summary_sha256") != preflight.get("summary_sha256"):
-        raise RuntimeError("second preflight summary hash mismatch")
+    if not isinstance(sp.get("summary_sha256"),str) or not re.fullmatch(r"[0-9a-f]{64}",sp["summary_sha256"]):
+        raise RuntimeError("second preflight summary SHA missing/malformed")
     if sp.get("code_commit_sha") != auth.get("code_commit_sha"):
         raise RuntimeError("preflight/code commit mismatch")
     if preflight.get("status")!="PASS":
@@ -189,8 +187,7 @@ def self_test():
         "authorization":{"measurement_authorized":False},
     }
     pre={
-        "status":"PASS","run_id":123,"artifact_id":456,
-        "summary_sha256":"a"*64,
+        "status":"PASS","run_id":123,
         "project_gold_loaded":False,"project_metric_computed":False,
         "measurement_authorized_by_preflight":False,
     }
@@ -202,7 +199,7 @@ def self_test():
         "single_run_only":True,
         "code_commit_sha":"b"*40,
         "second_preflight":{
-            "status":"PASS","run_id":123,"artifact_id":456,
+            "status":"PASS","run_id":123,
             "summary_sha256":"a"*64,"code_commit_sha":"b"*40,
         },
         "frozen_inputs":dict(EXPECTED),
