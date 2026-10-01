@@ -2843,3 +2843,35 @@ Interpretation:
 
 Next:
 B02/M01/M03 source-free Stage0 synthetic closure, then fresh research + architecture brainstorming before any Stage1.
+
+
+## 2026-10-01 — V4 source-free Stage0 COMPLETE PASS / research gate before Stage1
+
+Canonical closure:
+`phase2/redesign/MPSEF_V4_PRE_STAGE1_STAGE0_CLOSURE_LOCK_V1.md`
+
+Current evidence:
+- B01 synthetic: 20/20 PASS.
+- B01 real-model source-free: PASS.
+- B02: 17/17 PASS.
+- M01: 4/4 PASS.
+- M03: 10/10 PASS.
+- M04/M05 scorer-v3 synthetic preflight: PASS.
+- final B02/M01/M03 fail-closed run: `36869672029`.
+- artifact: `11164888387`.
+- digest:
+  `sha256:7efc253149097073929baeec7a6b69f05eb94dcfb9405dfb7033083a83d8ba4f`.
+
+No project source was loaded by these Stage0 gates.
+No new project gold/reference.
+No R_joint.
+No Stage1 packet materialized.
+No Stage1 execution.
+
+Current classification:
+**IMPROVED STRONGLY IN IMPLEMENTATION/PROVENANCE READINESS / PERFORMANCE UNMEASURED**
+
+Mandatory next gate:
+fresh deep research + maximum-effort architecture brainstorming before Stage1.
+The research must reassess P1/P2_V2/P3/V4 and may recommend KEEP/REPAIR/REPLACE/ADD/DEFER.
+Stage1 is forbidden until that decision is frozen.
