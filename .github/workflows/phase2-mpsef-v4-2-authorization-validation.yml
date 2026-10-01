@@ -50,7 +50,7 @@ jobs:
           assert a["consumption_claimed_before_gold_access"] is True
           assert a["single_run_only"] is True
           assert a["input_lock_sha256"]==sha256_file(lockp)
-          assert a["input_lock_sha256"]=="3f3e4bd95bbd5d49ad71ec58466573d56a476eefcf0cdc3719c2c732d3de19d0"
+          assert a["input_lock_sha256"]=="6ac8656226c64b64e8fc6a408475dbff1e231ec3d87b7afa3da464b1dee25132"
 
           for k in ("scorer_sha256","core_sha256","wrapper_sha256","dependency_lock_sha256"):
               assert a["frozen_implementation"][k]==l[k]
@@ -80,6 +80,8 @@ jobs:
           assert a["verification"]["scorer_preflight_passed"]==33
           assert a["verification"]["wrapper_preflight_passed"]==16
           assert a["verification"]["exact_runtime_verified"] is True
+          assert a["supersession"]["replacement_required"] is False
+          assert l["status"]=="FROZEN_READY_FOR_SINGLE_RUN_AUTHORIZATION"
 
           g=a["consumption_guard"]
           assert g["file"]=="phase2/redesign/mpsef_rjoint_v4_2_consumption_guard_v1.py"
