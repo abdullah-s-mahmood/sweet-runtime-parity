@@ -37,7 +37,7 @@ jobs:
           set -euo pipefail
           python phase2/redesign/test_mpsef_p2_v2_stage2_production_adapter_v1.py | tee P2_STAGE2_ADAPTER_UNIT.log
           grep -q '"status": "PASS"' P2_STAGE2_ADAPTER_UNIT.log
-          grep -q '"test_count": 4' P2_STAGE2_ADAPTER_UNIT.log
+          grep -q '"test_count": 5' P2_STAGE2_ADAPTER_UNIT.log
 
       - name: Freeze hashes
         if: always()
