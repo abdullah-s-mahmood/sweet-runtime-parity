@@ -1,0 +1,13 @@
+MPSEF_RJOINT_V4_2_DEPENDENCY_LOCK_V1
+status=FROZEN_PRE_GOLD
+python_major_minor=3.10
+arabic_gec_repository=CAMeL-Lab/arabic-gec
+arabic_gec_revision=8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+m2_scorer_module=gec.utils.m2scorer.m2scorer
+m2_levenshtein_module=gec.utils.m2scorer.levenshtein
+numpy=1.23.5
+editdistance=0.6.2
+project_requirements_file=requirements.txt
+project_requirements_policy=measurement_path_uses_only_pinned_M2_runtime_dependencies_above
+network_download_during_measurement=forbidden
+model_inference_during_measurement=forbidden
