@@ -3258,3 +3258,63 @@ Current state:
 
 Next mandatory step:
 materialize and freeze Stage2 Input Lock, then bind P3 production path + classifier/test prerequisites before any 1,918-case execution.
+
+
+## 2026-10-01 — Stage2 full-C_F proposer production COMPLETE (P2 + P3)
+
+Stage2 full-population source-only proposer execution has now completed for both P2_V2 and P3_V1 on the exact frozen C_F population.
+
+### Frozen Stage2 Input Lock
+- run: `36898163047`
+- status: PASS
+- C_F: 1918 UIDs / 764 clusters
+- artifact: `11180920946`
+- digest: `sha256:239395994cdf22bc7c6353de19601caab650dba7e24eedac91795ff453d87b2a`
+
+### P2_V2 full C_F
+- run: `36899056538`
+- status: SUCCESS / COMPLETE
+- terminal durable records: 1918/1918
+- aborted: 0
+- not attempted: 0
+- completion claim allowed: true
+- output SHA256: `87dd3600293b215172f5a75dc7485915013963aa3e661310ea1adac08b9ddba7`
+- artifact: `11186450279`
+- digest: `sha256:c5c5d32c99ce216a5b93362748cfefa67de4ec1f5b2b1174c8d3caf0fcd914af`
+- closure lock: `phase2/redesign/MPSEF_P2_V2_STAGE2_FULL_CF_CLOSURE_LOCK_V1.md`
+- closure commit: `6d925741f4e1acf2405c71cd1492ebb1c8f6b953`
+
+### P3_V1 full C_F
+- run: `36920015935`
+- status: SUCCESS / COMPLETE
+- terminal durable records: 1918/1918
+- aborted: 0
+- not attempted: 0
+- completion claim allowed: true
+- exact frozen P1 parent reused: true
+- P1 rerun: false
+- Stage-B classifier: `MPSEF_STAGEB_CHANGE_DOMAIN_CLASSIFIER_V1`
+- output SHA256: `02f9bd2555b1b9f350665179dcd96dd6accf532355a269b38ef4d099ea25d4ec`
+- artifact: `11192760024`
+- digest: `sha256:9a31de6dcff43efb903212a7fe2e2ad378f24e177faba0ecbd46ba4dd05e4253`
+- closure lock: `phase2/redesign/MPSEF_P3_V1_STAGE2_FULL_CF_CLOSURE_LOCK_V1.md`
+- closure commit: `24016096c29b45b969f5402aab8d0bffedb14566`
+
+### Scientific boundary
+- source-only: true
+- new gold/reference consulted: false
+- quality metric computed: false
+- R_joint computed: false
+- selector trained: false
+- family-consensus activated: false
+
+### Current exact next sequence
+1. build/run full-C_F V4 source-only legalizer/action-set analysis over frozen P1 + Stage2 P2 + Stage2 P3;
+2. apply family leave-one-out with P1+P3 = one SWEET family;
+3. report Stage-B V1 domain counts, legal coverage, protection burden, dedup/candidate-set size, family-marginal contribution, runtime eligibility and overlapping cluster-presence histograms;
+4. no gold/R_joint/selector yet;
+5. fresh post-Stage2 research + maximum-effort brainstorming after source-only analysis;
+6. freeze Stage2 closure and decide next architecture gate.
+
+Current classification:
+**IMPROVED STRONGLY / FULL-C_F PROPOSER EXECUTION COMPLETE / LINGUISTIC QUALITY STILL UNMEASURED**
