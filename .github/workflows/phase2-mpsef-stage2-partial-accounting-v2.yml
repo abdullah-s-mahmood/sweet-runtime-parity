@@ -1,0 +1,44 @@
+name: Phase 2 MP-SEF Stage2 Partial Accounting V2 Synthetic
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/mpsef_stage2_partial_accounting_v2.py"
+      - "phase2/redesign/test_mpsef_stage2_partial_accounting_v2.py"
+      - ".github/workflows/phase2-mpsef-stage2-partial-accounting-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Run V2 accounting synthetic tests
+        run: |
+          set -euo pipefail
+          python phase2/redesign/test_mpsef_stage2_partial_accounting_v2.py             | tee MPSEF_STAGE2_PARTIAL_ACCOUNTING_V2_TEST.log
+          grep -q '"status": "PASS"' MPSEF_STAGE2_PARTIAL_ACCOUNTING_V2_TEST.log
+          grep -q '"test_count": 6' MPSEF_STAGE2_PARTIAL_ACCOUNTING_V2_TEST.log
+      - name: Freeze hashes
+        if: always()
+        run: |
+          sha256sum             phase2/redesign/mpsef_stage2_partial_accounting_v2.py             phase2/redesign/test_mpsef_stage2_partial_accounting_v2.py             .github/workflows/phase2-mpsef-stage2-partial-accounting-v2.yml             MPSEF_STAGE2_PARTIAL_ACCOUNTING_V2_TEST.log             > MPSEF_STAGE2_PARTIAL_ACCOUNTING_V2_SHA256.txt || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-stage2-partial-accounting-v2
+          path: |
+            MPSEF_STAGE2_PARTIAL_ACCOUNTING_V2_TEST.log
+            MPSEF_STAGE2_PARTIAL_ACCOUNTING_V2_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
