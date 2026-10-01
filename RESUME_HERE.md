@@ -3192,3 +3192,34 @@ P3 budget remains 90 min.
 
 Stage2 full-C_F execution is still BLOCKED until:
 production adapters + watchdog V2 + P2 partial-evidence schema + Stage-B classifier tests + input lock + production-bound Parity32 replay + P2 B01 adapter replay all PASS.
+
+
+## 2026-10-01 — P2 Stage2 production adapter unit preflight closed
+
+Historical validator mismatch:
+- run 36891298148
+- adapter tests actually PASS 5/5
+- workflow failed because it expected test_count=4
+- artifact 11176273946
+- digest sha256:f36397efb9c067e2d6f2d89e5c626975ba8ca45e8ef30da5d9bbc3f278212e8b
+
+Validator-only fix:
+`7601cb9cb2cc32ccc6cb462b6bdba856f9846fe2`
+
+Successful rerun:
+- run 36892236163
+- result 5/5 PASS
+- artifact 11177590463
+- digest sha256:adc4740ec6fe8f627169e083191451e22ede400df1c86184551c9cb509d0a203
+
+Closure lock:
+`phase2/redesign/MPSEF_P2_V2_STAGE2_PRODUCTION_ADAPTER_UNIT_CLOSURE_LOCK_V1.md`
+
+Current state:
+- M02 source-free adapter evidence: PASS
+- M04 durable-record primitives: PASS
+- M01 production-bound replay: OPEN
+- full-C_F Stage2: still BLOCKED
+
+Next:
+production-bound B01 + real-model adapter validation + frozen Parity32 through the exact Stage2 production adapter.
