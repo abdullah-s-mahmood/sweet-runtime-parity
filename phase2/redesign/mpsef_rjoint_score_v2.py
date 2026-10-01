@@ -254,6 +254,57 @@ def index_records(rows, key_fields):
         out[key]=r
     return out
 
+def difference_interval(a, b):
+    if a["denominator"] != b["denominator"]:
+        raise RuntimeError("interval denominator mismatch")
+    if a["denominator"] == 0:
+        return {"lower":None,"upper":None,"exact":None,"denominator":0}
+    lo=max(0.0, a["lower"] - b["upper"])
+    hi=max(0.0, a["upper"] - b["lower"])
+    return {
+        "lower":lo,
+        "upper":hi,
+        "exact":lo if abs(lo-hi)<1e-15 else None,
+        "denominator":a["denominator"],
+    }
+
+def diagnostic_components_overlap(d1, d2):
+    def spans(rec):
+        out=[]
+        for comp in rec["components"]:
+            s,e=comp["source_start"],comp["source_end"]
+            out.append((s,e))
+        return out
+    a,b=spans(d1),spans(d2)
+    for s1,e1 in a:
+        for s2,e2 in b:
+            if s1==e1 and s2==e2 and s1==s2:
+                return True
+            if s1==e1 and s2<=s1<=e2:
+                return True
+            if s2==e2 and s1<=s2<=e1:
+                return True
+            if s1<e2 and e1>s2:
+                return True
+    return False
+
+def route_status(gain_interval, add_lo, add_hi, clusters_lo, clusters_hi):
+    if (
+        gain_interval["lower"] is not None
+        and gain_interval["lower"] >= 0.05
+        and add_lo >= 10
+        and clusters_lo >= 10
+    ):
+        return "PASS"
+    if (
+        gain_interval["upper"] is None
+        or gain_interval["upper"] < 0.05
+        or add_hi < 10
+        or clusters_hi < 10
+    ):
+        return "FAIL"
+    return "INCONCLUSIVE"
+
 def score_population(
     lev,
     source_rows,
@@ -279,6 +330,8 @@ def score_population(
     nums={k:[0,0] for k in ("P1","P2","PAIR","CLEAN")}
     scope_counts=Counter()
     family_den=Counter()
+    family_sent=defaultdict(set)
+    family_cluster=defaultdict(set)
     family_bounds={p:defaultdict(lambda:[0,0]) for p in ("P1","P2","PAIR")}
     raw_bounds=[0,0]
     raw_family=defaultdict(lambda:[0,0])
@@ -292,19 +345,45 @@ def score_population(
     before_sizes=[]
     after_sizes=[]
     failure_states=Counter(r["final_state"] for r in hypothesis_rows)
+    sentence_records=[]
 
-    for uid in uids:
+    full_output_difference=0
+    diagnostic_overlap_count=0
+    different_and_overlap=0
+    different_without_overlap=0
+
+    weak_names={"INSERT":{"INSERT"},"BOUNDARY":{"SPLIT","MERGE"}}
+    weak_add_lower={p:{w:set() for w in weak_names} for p in ("P1","P2")}
+    weak_add_upper={p:{w:set() for w in weak_names} for p in ("P1","P2")}
+    weak_cluster_lower={p:{w:set() for w in weak_names} for p in ("P1","P2")}
+    weak_cluster_upper={p:{w:set() for w in weak_names} for p in ("P1","P2")}
+
+    for ordinal,uid in enumerate(uids,start=1):
         src=source[uid]["source"]
         aset=actions[uid]
+        cluster_id=source[uid]["cluster_id"]
         if aset["source_sha256"]!=source[uid]["source_sha256"]:
             raise RuntimeError(f"{uid}: action/source hash mismatch")
         if not any(a["type"]=="KEEP" and a["output"]==src for a in aset["actions"]):
             raise RuntimeError(f"{uid}: KEEP missing")
+        if aset.get("unique_action_count") != len(aset["actions"]):
+            raise RuntimeError(f"{uid}: action count field mismatch")
+        if len(aset["actions"])<1 or len(aset["actions"])>3:
+            raise RuntimeError(f"{uid}: action-set size violation")
 
         p1h=hypotheses[(uid,"P1")]
         p2h=hypotheses[(uid,"P2")]
         before_sizes.append(1+int(p1h["executable"])+int(p2h["executable"]))
         after_sizes.append(aset["unique_action_count"])
+
+        d1=diagnostic[(uid,"P1")]
+        d2=diagnostic[(uid,"P2")]
+        diff=(d1["output"]!=d2["output"])
+        overlap=diagnostic_components_overlap(d1,d2)
+        full_output_difference+=int(diff)
+        diagnostic_overlap_count+=int(overlap)
+        different_and_overlap+=int(diff and overlap)
+        different_without_overlap+=int(diff and not overlap)
 
         all_gold=gold_by_uid[uid]
         all_targets=build_targets(uid,all_gold)
@@ -320,33 +399,35 @@ def score_population(
             erroneous+=1
         else:
             clean_sentences+=1
-            for p in ("P1","P2"):
-                d=diagnostic[(uid,p)]
-                clean_activity[p]+=int(d["output"]!=src)
-            clean_activity["EITHER"]+=int(
-                diagnostic[(uid,"P1")]["output"]!=src or diagnostic[(uid,"P2")]["output"]!=src
-            )
+            clean_activity["P1"]+=int(d1["output"]!=src)
+            clean_activity["P2"]+=int(d2["output"]!=src)
+            clean_activity["EITHER"]+=int(d1["output"]!=src or d2["output"]!=src)
 
         for t in targets:
             family_den[t["family"]]+=1
+            family_sent[t["family"]].add(uid)
+            family_cluster[t["family"]].add(cluster_id)
 
         ev=evaluate_sentence(lev,src,primary_gold,aset,evaluate_fn)
+        sentence_failure_ids=set()
         for p in ("P1","P2","PAIR"):
             nums[p][0]+=ev[p]["lower"]
             nums[p][1]+=ev[p]["upper"]
             for a in ev[p]["failures"]:
                 scoring_failures.append({"uid":uid,"group":p,"action_id":a["action_id"]})
+                sentence_failure_ids.add(a["action_id"])
 
         clo,chi=best_clean_bounds(ev["PAIR"],len(targets))
         nums["CLEAN"][0]+=clo
         nums["CLEAN"][1]+=chi
 
         repair_known=any(
-            r["correct"]==len(targets) and r["extra"]==0
-            for _,r in ev["PAIR"]["successful"]
+            rr["correct"]==len(targets) and rr["extra"]==0
+            for _,rr in ev["PAIR"]["successful"]
         ) if targets else False
+        repair_possible=bool(repair_known or (targets and ev["PAIR"]["failures"]))
         complete_lo+=int(repair_known)
-        complete_hi+=int(repair_known or (targets and bool(ev["PAIR"]["failures"])))
+        complete_hi+=int(repair_possible)
 
         fam_indices=defaultdict(list)
         for i,t in enumerate(targets):
@@ -357,14 +438,17 @@ def score_population(
                 family_bounds[p][fam][0]+=lo
                 family_bounds[p][fam][1]+=hi
 
-        # Diagnostic-only R_raw. Unknown attribution becomes an interval.
+        raw_sent_lo=0
+        raw_sent_hi=0
         for i,t in enumerate(targets):
-            s1=diagnostic_target_status(src,t,diagnostic[(uid,"P1")])
-            s2=diagnostic_target_status(src,t,diagnostic[(uid,"P2")])
+            s1=diagnostic_target_status(src,t,d1)
+            s2=diagnostic_target_status(src,t,d2)
             definite=(s1=="TRUE" or s2=="TRUE")
             possible=definite or s1=="UNKNOWN" or s2=="UNKNOWN"
             raw_bounds[0]+=int(definite)
             raw_bounds[1]+=int(possible)
+            raw_sent_lo+=int(definite)
+            raw_sent_hi+=int(possible)
             raw_family[t["family"]][0]+=int(definite)
             raw_family[t["family"]][1]+=int(possible)
 
@@ -384,18 +468,53 @@ def score_population(
             if p2h["final_state"]=="PROTECTED_BLOCKED" and s2=="TRUE":
                 protected_target_ids.add(tid)
 
-            # If diagnostic evidence reaches a target only through blocked actions
-            # and no successful legal action achieved it, report it as potentially
-            # protection-unreachable. Scoring failures leave this unknown.
+            known={}
+            possible_group={}
+            for p in ("P1","P2"):
+                known[p]=any(i in set(rr["matched_indices"]) for _,rr in ev[p]["successful"])
+                possible_group[p]=known[p] or bool(ev[p]["failures"])
+
+            for weak,members in weak_names.items():
+                if t["family"] not in members:
+                    continue
+                for p,other in (("P1","P2"),("P2","P1")):
+                    if known[p] and not known[other] and not ev[other]["failures"]:
+                        weak_add_lower[p][weak].add(tid)
+                        weak_cluster_lower[p][weak].add(cluster_id)
+                    if possible_group[p] and not known[other]:
+                        weak_add_upper[p][weak].add(tid)
+                        weak_cluster_upper[p][weak].add(cluster_id)
+
             legal_known_reach=any(
-                i in set(r["matched_indices"])
-                for _,r in ev["PAIR"]["successful"]
+                i in set(rr["matched_indices"])
+                for _,rr in ev["PAIR"]["successful"]
             )
             if tid in protected_target_ids and not legal_known_reach and not ev["PAIR"]["failures"]:
                 protected_unreachable_ids.add(tid)
 
+        sentence_records.append({
+            "uid":uid,
+            "case_id":source[uid]["case_id"],
+            "cluster_id":cluster_id,
+            "target_count":len(targets),
+            "punctuation_only_excluded":len(all_targets)-len(targets),
+            "action_count":aset["unique_action_count"],
+            "P1_final_state":p1h["final_state"],
+            "P2_final_state":p2h["final_state"],
+            "P1_bounds":{"lower":ev["P1"]["lower"],"upper":ev["P1"]["upper"]},
+            "P2_bounds":{"lower":ev["P2"]["lower"],"upper":ev["P2"]["upper"]},
+            "PAIR_bounds":{"lower":ev["PAIR"]["lower"],"upper":ev["PAIR"]["upper"]},
+            "R_clean_bounds":{"lower":clo,"upper":chi},
+            "R_raw_bounds":{"lower":raw_sent_lo,"upper":raw_sent_hi},
+            "complete_repair_lower":bool(repair_known),
+            "complete_repair_upper":bool(repair_possible),
+            "scoring_failure_action_ids":sorted(sentence_failure_ids),
+            "P1_P2_full_output_different":diff,
+            "P1_P2_diagnostic_source_span_overlap":overlap,
+        })
+
         if progress_callback is not None:
-            progress_callback(len(before_sizes), len(uids), uid)
+            progress_callback(ordinal,len(uids),uid)
 
     intervals={k:ratio_interval(v[0],v[1],den) for k,v in nums.items()}
     raw_interval=ratio_interval(raw_bounds[0],raw_bounds[1],den)
@@ -405,24 +524,90 @@ def score_population(
         raise RuntimeError("R_raw upper bound below R_joint lower bound")
 
     families={}
+    macro_lo=[]
+    macro_hi=[]
     for fam in FAMILIES:
         d=family_den[fam]
         if d==0:
             families[fam]={
-                "targets":0,
+                "targets":0,"sentences":0,"clusters":0,
                 "P1":ratio_interval(0,0,0),
                 "P2":ratio_interval(0,0,0),
                 "PAIR":ratio_interval(0,0,0),
                 "R_raw":ratio_interval(0,0,0),
             }
             continue
+        fam_pair=ratio_interval(*family_bounds["PAIR"][fam],d)
         families[fam]={
             "targets":d,
+            "sentences":len(family_sent[fam]),
+            "clusters":len(family_cluster[fam]),
             "P1":ratio_interval(*family_bounds["P1"][fam],d),
             "P2":ratio_interval(*family_bounds["P2"][fam],d),
-            "PAIR":ratio_interval(*family_bounds["PAIR"][fam],d),
+            "PAIR":fam_pair,
             "R_raw":ratio_interval(*raw_family[fam],d),
         }
+        macro_lo.append(fam_pair["lower"])
+        macro_hi.append(fam_pair["upper"])
+
+    macro={
+        "nonempty_families":len(macro_lo),
+        "lower":None if not macro_lo else sum(macro_lo)/len(macro_lo),
+        "upper":None if not macro_hi else sum(macro_hi)/len(macro_hi),
+    }
+    macro["exact"]=macro["lower"] if macro["lower"] is not None and abs(macro["lower"]-macro["upper"])<1e-15 else None
+
+    delta_p1=difference_interval(pair,intervals["P2"])
+    delta_p2=difference_interval(pair,intervals["P1"])
+
+    weak_routes={}
+    for weak,members in weak_names.items():
+        d=sum(family_den[x] for x in members)
+        if d==0:
+            weak_routes[weak]={"targets":0,"P1":{"status":"N/A"},"P2":{"status":"N/A"}}
+            continue
+        p1_pair=ratio_interval(
+            sum(family_bounds["PAIR"][x][0] for x in members),
+            sum(family_bounds["PAIR"][x][1] for x in members),d)
+        p2_only=ratio_interval(
+            sum(family_bounds["P2"][x][0] for x in members),
+            sum(family_bounds["P2"][x][1] for x in members),d)
+        p1_only=ratio_interval(
+            sum(family_bounds["P1"][x][0] for x in members),
+            sum(family_bounds["P1"][x][1] for x in members),d)
+        gain_p1=difference_interval(p1_pair,p2_only)
+        gain_p2=difference_interval(p1_pair,p1_only)
+        weak_routes[weak]={
+            "targets":d,
+            "P1":{
+                "gain_vs_P2":gain_p1,
+                "additional_targets_lower":len(weak_add_lower["P1"][weak]),
+                "additional_targets_upper":len(weak_add_upper["P1"][weak]),
+                "additional_clusters_lower":len(weak_cluster_lower["P1"][weak]),
+                "additional_clusters_upper":len(weak_cluster_upper["P1"][weak]),
+            },
+            "P2":{
+                "gain_vs_P1":gain_p2,
+                "additional_targets_lower":len(weak_add_lower["P2"][weak]),
+                "additional_targets_upper":len(weak_add_upper["P2"][weak]),
+                "additional_clusters_lower":len(weak_cluster_lower["P2"][weak]),
+                "additional_clusters_upper":len(weak_cluster_upper["P2"][weak]),
+            },
+        }
+        weak_routes[weak]["P1"]["status"]=route_status(
+            gain_p1,
+            weak_routes[weak]["P1"]["additional_targets_lower"],
+            weak_routes[weak]["P1"]["additional_targets_upper"],
+            weak_routes[weak]["P1"]["additional_clusters_lower"],
+            weak_routes[weak]["P1"]["additional_clusters_upper"],
+        )
+        weak_routes[weak]["P2"]["status"]=route_status(
+            gain_p2,
+            weak_routes[weak]["P2"]["additional_targets_lower"],
+            weak_routes[weak]["P2"]["additional_targets_upper"],
+            weak_routes[weak]["P2"]["additional_clusters_lower"],
+            weak_routes[weak]["P2"]["additional_clusters_upper"],
+        )
 
     exact_pair=pair["exact"]
     exact_raw=raw_interval["exact"]
@@ -442,6 +627,8 @@ def score_population(
         "R_clean":intervals["CLEAN"],
         "R_raw":raw_interval,
         "R_raw_minus_R_joint_exact":raw_gap,
+        "Delta_P1":delta_p1,
+        "Delta_P2":delta_p2,
         "gate":gate_from_interval(pair),
         "complete_sentence_repair":{
             "erroneous_sentences":erroneous,
@@ -462,9 +649,17 @@ def score_population(
         },
         "four_way_reachability":dict(four),
         "families":families,
+        "family_macro_R_pair":macro,
+        "weak_family_retention":weak_routes,
         "candidate_set_size":{
             "before_exact_text_dedup":size_stats(before_sizes),
             "after_exact_text_dedup":size_stats(after_sizes),
+        },
+        "proposal_relationships":{
+            "P1_P2_full_output_different_sentences":full_output_difference,
+            "P1_P2_diagnostic_source_span_overlap_sentences":diagnostic_overlap_count,
+            "different_outputs_with_diagnostic_overlap":different_and_overlap,
+            "different_outputs_without_diagnostic_overlap":different_without_overlap,
         },
         "failure_state_counts":dict(failure_states),
         "scoring_failures":scoring_failures,
@@ -474,6 +669,7 @@ def score_population(
             "known_legally_unreachable_targets_due_to_protection":len(protected_unreachable_ids),
         },
         "exact_metric_available":pair["exact"] is not None,
+        "per_sentence":sentence_records,
     }
     return result
 
@@ -539,6 +735,17 @@ def self_test():
     # Candidate-size statistics use the frozen nearest-rank definition.
     st=size_stats([1,1,2,2,3])
     assert st["mean"]==1.8 and st["median"]==2 and st["p95"]==3 and st["max"]==3
+
+    # Weak-route status must require all three preregistered conditions.
+    assert route_status(
+        {"lower":0.05,"upper":0.06},10,10,10,10
+    )=="PASS"
+    assert route_status(
+        {"lower":0.04,"upper":0.06},10,20,10,20
+    )=="INCONCLUSIVE"
+    assert route_status(
+        {"lower":0.01,"upper":0.04},100,100,100,100
+    )=="FAIL"
 
     # Frozen 95% interval gate semantics.
     assert gate_from_interval(ratio_interval(19,19,20))=="PASS_CANDIDATE_AVAILABILITY"
