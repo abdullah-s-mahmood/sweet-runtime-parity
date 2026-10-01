@@ -528,3 +528,103 @@ Forbidden in Stage 0/1/2 source-only diversity:
 - gold-aware proposer retention;
 - human correctness selection;
 - INTERNAL/STRESS/reserved opening.
+
+
+## 27. Independent-review closure amendment for M02
+
+This section closes the remaining executable-definition gaps identified by the independent architecture review.
+
+### 27.1 Quantile definition
+
+Whenever p95 is reported over a finite list of n values:
+
+- sort ascending;
+- use nearest-rank;
+- rank = ceil(0.95 * n);
+- use 1-based indexing;
+- if n=0, report N/A rather than zero.
+
+The same quantile rule applies to runtime, length burden, candidate-set size, and component-count summaries.
+
+### 27.2 Raw-valid versus executable versus legal denominators
+
+Every summary row MUST state one of:
+
+- D_all;
+- D_raw_valid_j;
+- D_exec_j;
+- D_legal_j;
+- D_joint_raw_valid_jk;
+- D_joint_exec_jk.
+
+No pairwise percentage may be printed without numerator and named denominator.
+
+A failed proposer row never becomes an empty string for similarity/agreement purposes.
+
+### 27.3 Resource-budget decision semantics
+
+The Stage 1 timeout/resource budget is an engineering budget only.
+
+If a proposer exceeds it:
+- classify as ENGINEERING_FAIL_PENDING_TRIAGE;
+- investigate load time, batching, memory, pathological source length, and alignment-budget causes;
+- do not infer poor linguistic quality;
+- any increased budget requires a protocol-version change before rerun.
+
+### 27.4 Stage 1 retention semantics
+
+Stage 1 may automatically reject a proposer only for a hard engineering/provenance failure.
+
+Stage 1 descriptive diversity cannot by itself produce:
+- BEST;
+- WORST;
+- HIGH_QUALITY;
+- LOW_QUALITY;
+- linguistically useful/useless.
+
+A proposer with low or zero marginal contribution on Stage 1 remains DESCRIPTIVE_INCONCLUSIVE unless a hard engineering gate fails.
+
+### 27.5 Full-population redundancy rule
+
+Behavioral redundancy may justify source-only dropping only after an authorized full source-only population shows:
+
+1. zero unique legal whole-output contribution;
+2. no distinct legal failure profile needed by the architecture;
+3. another proposer supplies the same legal behavior;
+4. the retained proposer is equal or cheaper under the frozen resource accounting.
+
+This is redundancy elimination, not a correctness judgment.
+
+### 27.6 Cluster accounting
+
+All marginal-contribution, KEEP-only reduction, and leave-one-proposer-out results MUST report both:
+- UID count;
+- distinct cluster count.
+
+No UID-level percentage may be described as cluster coverage.
+
+### 27.7 Stage 1 packet freeze artifact
+
+Before any proposer runs, create and freeze:
+
+- ordered 128 UID list;
+- ordered 128 cluster list;
+- source row hashes for all 128 rows;
+- packet JSON SHA256;
+- UID-list SHA256;
+- cluster-list SHA256;
+- source-manifest SHA256;
+- registry SHA256.
+
+Changing any of these requires a new Stage 1 packet version.
+
+### 27.8 M02 closure status
+
+M02 DESIGN is considered CLOSED when this protocol version is frozen together with the proposer registry/action-set contract.
+
+Execution closure still requires:
+- Stage 0 synthetic PASS;
+- packet materialization;
+- Stage 1 runtime/provenance execution.
+
+No project gold/reference is required for M02 closure.
