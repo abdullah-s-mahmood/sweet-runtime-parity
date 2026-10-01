@@ -16,7 +16,7 @@ from mpsef_rjoint_core_v2 import (
     safe_div,
 )
 
-SCORER_VERSION = "MPSEF_RJOINT_SCORER_V2"
+SCORER_VERSION = "MPSEF_RJOINT_SCORER_V3_M04_M05"
 CLAIM_SCOPE = (
     "DEVELOPMENT_FEASIBILITY / ADAPTIVELY_CONSUMED QALB-2014 ORIGIN / "
     "NOT_INDEPENDENT_GENERALIZATION_EVIDENCE"
@@ -263,6 +263,50 @@ def best_family_bounds(group, family_indices):
     upper=len(family_indices) if group["failures"] else lower
     return lower,upper
 
+def whole_action_additional_target_bounds(group, other_group, family_indices):
+    """M05: bounds on proposer-exclusive family targets using ONE whole action.
+
+    Returns (lower_set, upper_set) of target indices for one sentence.
+    Lower is guaranteed additional reachability; upper is conservative possible
+    additional reachability under scoring failures. We never union target hits
+    from multiple successful actions to manufacture one action's contribution.
+    """
+    fam=set(family_indices)
+    if not fam:
+        return set(),set()
+
+    other_known=set()
+    for _,r in other_group["successful"]:
+        other_known |= (set(r["matched_indices"]) & fam)
+
+    def best_successful_exclusive(g):
+        candidates=[]
+        for a,r in g["successful"]:
+            s=(set(r["matched_indices"]) & fam) - other_known
+            candidates.append((len(s),str(a.get("action_id","")),s))
+        if not candidates:
+            return set()
+        # deterministic: greatest cardinality, then lexicographically smallest id
+        candidates.sort(key=lambda x:(-x[0],x[1]))
+        return set(candidates[0][2])
+
+    # Any failed action in the other group could remove apparent exclusivity,
+    # so no positive lower bound is claimed in that case.
+    lower=set() if other_group["failures"] else best_successful_exclusive(group)
+
+    # For an upper bound, failed actions in this group may in principle reach
+    # any still-not-known-reached family target. Failed actions in the other
+    # group are ignored for the upper bound because they can only reduce
+    # exclusivity if they eventually score successfully.
+    if group["failures"]:
+        upper=fam-other_known
+    else:
+        upper=best_successful_exclusive(group)
+
+    if not lower.issubset(upper):
+        raise RuntimeError("additional-target lower bound not subset of upper")
+    return lower,upper
+
 def index_records(rows, key_fields):
     out={}
     for r in rows:
@@ -496,6 +540,21 @@ def score_population(
                 weak_group_bounds[p][weak][0]+=lo
                 weak_group_bounds[p][weak][1]+=hi
 
+            # M05: additional-target and cluster gates obey the same
+            # one-whole-action semantics as the weak-family ratio.
+            for p,other in (("P1","P2"),("P2","P1")):
+                lo_set,hi_set=whole_action_additional_target_bounds(
+                    ev[p],ev[other],weak_idxs
+                )
+                for i in lo_set:
+                    weak_add_lower[p][weak].add(targets[i]["target_id"])
+                for i in hi_set:
+                    weak_add_upper[p][weak].add(targets[i]["target_id"])
+                if lo_set:
+                    weak_cluster_lower[p][weak].add(cluster_id)
+                if hi_set:
+                    weak_cluster_upper[p][weak].add(cluster_id)
+
         raw_sent_lo=0
         raw_sent_hi=0
         for i,t in enumerate(targets):
@@ -525,23 +584,6 @@ def score_population(
                 protected_target_ids.add(tid)
             if p2h["final_state"]=="PROTECTED_BLOCKED" and s2=="TRUE":
                 protected_target_ids.add(tid)
-
-            known={}
-            possible_group={}
-            for p in ("P1","P2"):
-                known[p]=any(i in set(rr["matched_indices"]) for _,rr in ev[p]["successful"])
-                possible_group[p]=known[p] or bool(ev[p]["failures"])
-
-            for weak,members in weak_names.items():
-                if t["family"] not in members:
-                    continue
-                for p,other in (("P1","P2"),("P2","P1")):
-                    if known[p] and not known[other] and not ev[other]["failures"]:
-                        weak_add_lower[p][weak].add(tid)
-                        weak_cluster_lower[p][weak].add(cluster_id)
-                    if possible_group[p] and not known[other]:
-                        weak_add_upper[p][weak].add(tid)
-                        weak_cluster_upper[p][weak].add(cluster_id)
 
             legal_known_reach=any(
                 i in set(rr["matched_indices"])
@@ -810,6 +852,30 @@ def self_test():
     merge_only=best_family_bounds(ev["PAIR"],[1])[0]
     assert split_only + merge_only == 2
 
+    # M05 additional-target regression: P1 has two successful whole actions,
+    # each reaching a different boundary target. Additional lower/upper count
+    # must be one whole action (=1), never unioned to 2.
+    p1_group={
+        "successful":[
+            ({"action_id":"A"},{"matched_indices":[0],"correct":1,"proposed":1,"gold":2,"extra":0}),
+            ({"action_id":"B"},{"matched_indices":[1],"correct":1,"proposed":1,"gold":2,"extra":0}),
+        ],
+        "failures":[],
+    }
+    p2_group={
+        "successful":[
+            ({"action_id":"K"},{"matched_indices":[],"correct":0,"proposed":0,"gold":2,"extra":0}),
+        ],
+        "failures":[],
+    }
+    add_lo,add_hi=whole_action_additional_target_bounds(p1_group,p2_group,[0,1])
+    assert len(add_lo)==1 and len(add_hi)==1
+    # If the competing group has a failed score, exclusivity is uncertain:
+    # lower becomes empty while upper stays conservative.
+    p2_uncertain={"successful":p2_group["successful"],"failures":[{"action_id":"X"}]}
+    ulo,uhi=whole_action_additional_target_bounds(p1_group,p2_uncertain,[0,1])
+    assert ulo==set() and len(uhi)==1
+
     # R_clean must exclude known extra edits.
     clean_group={
         "successful":[
@@ -851,7 +917,7 @@ def main():
     args=ap.parse_args()
     if not args.self_test:
         raise SystemExit(
-            "PROJECT_MEASUREMENT_DISABLED_IN_SCORER_V2_LIBRARY; "
+            "PROJECT_MEASUREMENT_DISABLED_IN_SCORER_V3_LIBRARY; "
             "run --self-test only until a separately frozen measurement wrapper is authorized"
         )
     self_test()
