@@ -1,0 +1,111 @@
+name: Phase 2 MP-SEF V4 Stage2 Full C_F Source-Only Analysis
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/mpsef_v4_stage2_full_cf_source_only_analysis_v1.py"
+      - ".github/workflows/phase2-mpsef-v4-stage2-full-cf-source-only-analysis.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+
+jobs:
+  full-cf-analysis:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Download frozen P1/C_F
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2 full-C_F
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-v2-stage2-full-cf-v1
+          path: p2
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36899056538
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P3 full-C_F
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p3-v1-stage2-full-cf-v1
+          path: p3
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36920015935
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify frozen input identities
+        run: |
+          set -euo pipefail
+          test "$(sha256sum p1/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl | awk '{print $1}')" = "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          test "$(sha256sum p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl | awk '{print $1}')" = "2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          test "$(sha256sum p2/MPSEF_P2_V2_STAGE2_FULL_CF_V1.jsonl | awk '{print $1}')" = "87dd3600293b215172f5a75dc7485915013963aa3e661310ea1adac08b9ddba7"
+          test "$(sha256sum p3/MPSEF_P3_V1_STAGE2_FULL_CF_V1.jsonl | awk '{print $1}')" = "02f9bd2555b1b9f350665179dcd96dd6accf532355a269b38ef4d099ea25d4ec"
+
+      - name: Run full-C_F source-only legalizer/family analysis
+        env:
+          PYTHONUNBUFFERED: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python phase2/redesign/run_with_progress_watchdog_v2.py             --state-file MPSEF_V4_STAGE2_FULL_CF_ANALYSIS_PROGRESS.json             --watchdog-state-file MPSEF_V4_STAGE2_FULL_CF_ANALYSIS_WATCHDOG.json             --context "acad-pass/stage2-full-cf-source-only-analysis"             --poll-seconds 20 --publish-seconds 60 --stale-seconds 600             --term-grace-seconds 30 --kill-on-stale --             python phase2/redesign/mpsef_v4_stage2_full_cf_source_only_analysis_v1.py               --packet p1/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl               --p1 p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl               --p2 p2/MPSEF_P2_V2_STAGE2_FULL_CF_V1.jsonl               --p3 p3/MPSEF_P3_V1_STAGE2_FULL_CF_V1.jsonl               --out-prefix MPSEF_V4_STAGE2_FULL_CF               --progress-state MPSEF_V4_STAGE2_FULL_CF_ANALYSIS_PROGRESS.json
+
+      - name: Validate source-only analysis
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_V4_STAGE2_FULL_CF_DIVERSITY_SUMMARY_V1.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["cases"]==1918
+          assert s["clusters"]==764
+          assert set(s["source_only_leave_one_family_out"])=={"SWEET_QALB14","SEQ2SEQ_GED_MORPH"}
+          assert s["p3_specific"]["stage_b_classifier_version"]=="MPSEF_STAGEB_CHANGE_DOMAIN_CLASSIFIER_V1"
+          assert s["gold_reference_consulted"] is False
+          assert s["project_gold_loaded"] is False
+          assert s["quality_metric_computed"] is False
+          assert s["r_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["quality_claimed"] is False
+          print("STAGE2_FULL_CF_SOURCE_ONLY_ANALYSIS_PASS")
+          PY
+
+      - name: Freeze identities
+        if: always()
+        run: |
+          sha256sum             phase2/redesign/mpsef_v4_stage2_full_cf_source_only_analysis_v1.py             phase2/redesign/mpsef_executable_actions_legalizer_v1.py             phase2/redesign/mpsef_v4_b02_m01_m03_stage0.py             phase2/redesign/run_with_progress_watchdog_v2.py             p1/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl             p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl             p2/MPSEF_P2_V2_STAGE2_FULL_CF_V1.jsonl             p3/MPSEF_P3_V1_STAGE2_FULL_CF_V1.jsonl             MPSEF_V4_STAGE2_FULL_CF_PROPOSER_ROWS_V2.jsonl             MPSEF_V4_STAGE2_FULL_CF_SOURCE_ONLY_ACTION_SETS_V2.jsonl             MPSEF_V4_STAGE2_FULL_CF_FAILURES_V1.jsonl             MPSEF_V4_STAGE2_FULL_CF_DIVERSITY_SUMMARY_V1.json             MPSEF_V4_STAGE2_FULL_CF_RUNTIME_V1.json             > MPSEF_V4_STAGE2_FULL_CF_ANALYSIS_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-v4-stage2-full-cf-source-only-analysis-v1
+          path: |
+            MPSEF_V4_STAGE2_FULL_CF_PROPOSER_ROWS_V2.jsonl
+            MPSEF_V4_STAGE2_FULL_CF_SOURCE_ONLY_ACTION_SETS_V2.jsonl
+            MPSEF_V4_STAGE2_FULL_CF_FAILURES_V1.jsonl
+            MPSEF_V4_STAGE2_FULL_CF_DIVERSITY_SUMMARY_V1.json
+            MPSEF_V4_STAGE2_FULL_CF_RUNTIME_V1.json
+            MPSEF_V4_STAGE2_FULL_CF_ANALYSIS_PROGRESS.json
+            MPSEF_V4_STAGE2_FULL_CF_ANALYSIS_WATCHDOG.json
+            MPSEF_V4_STAGE2_FULL_CF_ANALYSIS_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
