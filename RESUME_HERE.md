@@ -3559,3 +3559,29 @@ Current exact next action:
 
 Hard boundary now:
 **REAL GOLD/R_JOINT REMAINS BLOCKED PENDING INDEPENDENT REVIEW RESOLUTION.**
+## 2026-10-02 — Reporting protocol strengthened + compact higher-model prompt frozen
+
+Working protocol update:
+`ACAD_PASS_WORKING_PROTOCOL_V1.md`
+commit:
+`09ee7ecc40e7bb855ca01c5e81f012bb71ba6033`
+
+Mandatory checkpoint reporting now explicitly requires:
+- IMPROVED / WORSENED / MIXED / NOT COMPARABLE;
+- exact delta where comparable;
+- what improved and what worsened/new risks;
+- current-stage completion estimate with stated gate/work-unit basis;
+- approximate whole-ACAD_PASS completion estimate;
+- remaining gate/work units;
+- blockers and realistic next-step forecast;
+- fresh deep research + maximum-effort brainstorming/red-team at START and END of every substantive phase/iteration.
+
+Future wall-clock completion promises are not used; remaining work is reported as gates/work units.
+
+Compact higher-model prompt:
+`phase2/redesign/ACAD_PASS_V4_HIGHER_MODEL_PROMPT_COMPACT_V1.md`
+commit:
+`38f393771b1fee7fc42048bb25776ce9d7f5060f`
+
+Exact next action:
+use the compact prompt with the independent higher model; return its verdict/review to this branch/chat; then resolve BLOCKER/MAJOR findings before any real C_F gold load.
