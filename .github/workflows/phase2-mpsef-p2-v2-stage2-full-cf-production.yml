@@ -1,0 +1,201 @@
+name: Phase 2 MP-SEF P2 V2 Stage2 Full C_F Production
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/MPSEF_V4_STAGE2_P2_FULL_CF_AUTH_V1.json"
+
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+
+jobs:
+  p2-full-cf:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 250
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Download Stage2 Input Lock
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage2-input-lock-v1
+          path: input_lock
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36898163047
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen C_F and P1
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2 replay runtime lock
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-v2-stage2-production-bound-parity32-v1
+          path: p2_replay
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36894512600
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate execution authorization and locked files
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          auth=json.load(open("phase2/redesign/MPSEF_V4_STAGE2_P2_FULL_CF_AUTH_V1.json",encoding="utf-8"))
+          lock=json.load(open("input_lock/MPSEF_V4_STAGE2_INPUT_LOCK_V1.json",encoding="utf-8"))
+          assert auth["status"]=="AUTHORIZED"
+          assert auth["input_lock_run_id"]==36898163047
+          assert auth["input_lock_artifact_id"]==11180920946
+          assert auth["input_lock_artifact_digest"]=="sha256:239395994cdf22bc7c6353de19601caab650dba7e24eedac91795ff453d87b2a"
+          assert lock["status"]=="PASS" and lock["full_cf_execution_authorized_by_this_record"] is True
+          assert "P2_V2_FULL_CF_SOURCE_ONLY_PROPOSALS" in lock["authorization_scope"]
+          def sha(p):
+              h=hashlib.sha256()
+              with open(p,"rb") as f:
+                  for c in iter(lambda:f.read(1024*1024),b""): h.update(c)
+              return h.hexdigest()
+          wf=".github/workflows/phase2-mpsef-p2-v2-stage2-full-cf-production.yml"
+          assert sha(wf)==auth["workflow_sha256"]
+          assert sha("phase2/redesign/mpsef_stage2_partial_accounting_v1.py")==auth["partial_accounting_sha256"]
+          for p,expected in lock["authoritative_file_sha256"].items():
+              assert sha(p)==expected,(p,sha(p),expected)
+          assert sha("p1/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl")==lock["population"]["manifest_sha256"]
+          assert sha("p1/MPSEF_P1_CF_PROPOSALS_V1.jsonl")==lock["frozen_p1"]["proposal_sha256"]
+          print("P2_FULL_CF_AUTH_AND_INPUT_LOCK_OK")
+          PY
+
+      - name: Clone frozen Arabic-GEC implementation
+        run: |
+          set -euo pipefail
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+
+      - name: Install exact frozen P2 runtime
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "numpy==1.23.5" "camel-tools==1.4.1" "datasets==2.5.1" "sentencepiece==0.1.99" "protobuf==3.20.3"
+          python -m pip install "huggingface-hub==0.10.1" "tokenizers==0.12.1"
+          python -m pip install --force-reinstall --no-deps ./upstream/arabic-gec/transformers
+          python - <<'PY'
+          import transformers
+          assert transformers.__version__=="4.22.2"
+          from transformers import DataCollatorForSeq2SeqGEC
+          print("P2_FULL_CF_RUNTIME_IMPORT_OK")
+          PY
+
+      - name: Verify byte-identical runtime lock
+        run: |
+          set -euo pipefail
+          python -m pip freeze > P2_STAGE2_FULL_CF_PIP_FREEZE.txt
+          test "$(sha256sum P2_STAGE2_FULL_CF_PIP_FREEZE.txt | awk '{print $1}')" = "cbd42c8a3296eb59e933b04f83c70f34d78b98160f09a069fea32fcfc142fe38"
+
+      - name: Install frozen CAMeL resources
+        run: |
+          set -euo pipefail
+          camel_data -i disambig-bert-unfactored-msa
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          root=Path.home()/".camel_tools"
+          morph=[hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob("morphology.db")]
+          models=[hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob("pytorch_model.bin")]
+          assert "195bc25a333237a2126470da888d7936b59ed3729f9210e0a4194ba43497dd70" in morph
+          assert "a1a22431cdc0934151e4039abbd7890f06ba7c1f914ca71a90eba218401ae539" in models
+          PY
+
+      - name: Download exact frozen GED/GEC revisions
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import shutil
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+          ged=Path(snapshot_download(repo_id="CAMeL-Lab/camelbert-msa-qalb14-ged-13",revision="447179dc63d186e4bff09a993e90e73ad622d571",cache_dir="hf_cache"))
+          gec=Path(snapshot_download(repo_id="CAMeL-Lab/arabart-qalb14-gec-ged-13",revision="410588a318d988cdcfdbf64cf5745ed4adea0f6a",cache_dir="hf_cache"))
+          shutil.copytree(ged,"p2v2_ged_model",symlinks=False)
+          shutil.copytree(gec,"p2v2_gec_model",symlinks=False)
+          PY
+          test "$(sha256sum p2v2_ged_model/pytorch_model.bin | awk '{print $1}')" = "23385ffe560860a8f5e9e46e05b66a31c33a4b0bd58e9a718933fdab8161f50f"
+          test "$(sha256sum p2v2_gec_model/pytorch_model.bin | awk '{print $1}')" = "5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f"
+
+      - name: Run P2 full C_F through exact production CLI + Watchdog V2
+        env:
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONUNBUFFERED: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python phase2/redesign/run_with_progress_watchdog_v2.py             --state-file P2_STAGE2_FULL_CF_PROGRESS.json             --watchdog-state-file P2_STAGE2_FULL_CF_WATCHDOG.json             --context "acad-pass/p2-stage2-full-cf"             --poll-seconds 20 --publish-seconds 60 --stale-seconds 600             --term-grace-seconds 30 --kill-on-stale --             python phase2/redesign/mpsef_p2_v2_stage2_production_adapter_v1.py               --input-jsonl p1/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl               --expected-count 1918               --expected-input-sha256 051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193               --ged-model-dir p2v2_ged_model --gec-model-dir p2v2_gec_model               --out-jsonl MPSEF_P2_V2_STAGE2_FULL_CF_V1.jsonl               --run-state MPSEF_P2_V2_STAGE2_FULL_CF_RUN_STATE.json               --progress-state P2_STAGE2_FULL_CF_PROGRESS.json               --summary MPSEF_P2_V2_STAGE2_FULL_CF_V1_SUMMARY.json
+
+      - name: Derive completed/aborted/not-attempted accounting
+        if: always()
+        run: |
+          python phase2/redesign/mpsef_stage2_partial_accounting_v1.py             --input-jsonl p1/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl             --output-jsonl MPSEF_P2_V2_STAGE2_FULL_CF_V1.jsonl             --run-state MPSEF_P2_V2_STAGE2_FULL_CF_RUN_STATE.json             --expected-count 1918             --out MPSEF_P2_V2_STAGE2_FULL_CF_ACCOUNTING_V1.json             | tee P2_STAGE2_FULL_CF_ACCOUNTING.log
+
+      - name: Validate complete full-C_F result
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          rows=[json.loads(x) for x in open("MPSEF_P2_V2_STAGE2_FULL_CF_V1.jsonl",encoding="utf-8") if x.strip()]
+          s=json.load(open("MPSEF_P2_V2_STAGE2_FULL_CF_V1_SUMMARY.json",encoding="utf-8"))
+          a=json.load(open("MPSEF_P2_V2_STAGE2_FULL_CF_ACCOUNTING_V1.json",encoding="utf-8"))
+          r=json.load(open("MPSEF_P2_V2_STAGE2_FULL_CF_RUN_STATE.json",encoding="utf-8"))
+          assert len(rows)==1918==s["cases"]
+          assert len({x["uid"] for x in rows})==1918
+          assert len({x["cluster_id"] for x in rows})==764==s["clusters"]
+          assert s["status"]=="COMPLETE"
+          assert r["status"]=="COMPLETE"
+          assert r["aborted_count"]==0 and r["not_attempted_count"]==0
+          assert a["status"]=="COMPLETE"
+          assert a["completed_count"]==1918 and a["aborted_count"]==0 and a["not_attempted_count"]==0
+          assert a["completion_claim_allowed"] is True
+          assert s["gold_reference_consulted"] is False
+          assert s["project_gold_loaded"] is False
+          assert s["quality_metric_computed"] is False
+          assert s["r_joint_computed"] is False
+          assert s["selector_trained"] is False
+          print("P2_STAGE2_FULL_CF_COMPLETE_PASS")
+          PY
+
+      - name: Freeze final identities
+        if: always()
+        run: |
+          sha256sum             phase2/redesign/mpsef_p2_v2_stage2_production_adapter_v1.py             phase2/redesign/run_with_progress_watchdog_v2.py             phase2/redesign/mpsef_stage2_partial_accounting_v1.py             .github/workflows/phase2-mpsef-p2-v2-stage2-full-cf-production.yml             phase2/redesign/MPSEF_V4_STAGE2_P2_FULL_CF_AUTH_V1.json             input_lock/MPSEF_V4_STAGE2_INPUT_LOCK_V1.json             p1/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl             P2_STAGE2_FULL_CF_PIP_FREEZE.txt             MPSEF_P2_V2_STAGE2_FULL_CF_V1.jsonl             MPSEF_P2_V2_STAGE2_FULL_CF_V1_SUMMARY.json             MPSEF_P2_V2_STAGE2_FULL_CF_RUN_STATE.json             MPSEF_P2_V2_STAGE2_FULL_CF_ACCOUNTING_V1.json             > MPSEF_P2_V2_STAGE2_FULL_CF_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-p2-v2-stage2-full-cf-v1
+          path: |
+            MPSEF_P2_V2_STAGE2_FULL_CF_V1.jsonl
+            MPSEF_P2_V2_STAGE2_FULL_CF_V1_SUMMARY.json
+            MPSEF_P2_V2_STAGE2_FULL_CF_RUN_STATE.json
+            MPSEF_P2_V2_STAGE2_FULL_CF_ACCOUNTING_V1.json
+            P2_STAGE2_FULL_CF_PROGRESS.json
+            P2_STAGE2_FULL_CF_WATCHDOG.json
+            P2_STAGE2_FULL_CF_ACCOUNTING.log
+            P2_STAGE2_FULL_CF_PIP_FREEZE.txt
+            MPSEF_P2_V2_STAGE2_FULL_CF_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
