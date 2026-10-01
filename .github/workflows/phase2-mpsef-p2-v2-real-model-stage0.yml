@@ -1,0 +1,129 @@
+name: Phase 2 MP-SEF P2 V2 Real Model Stage0
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-p2-v2-real-model-stage0.yml"
+      - "phase2/redesign/mpsef_p2_v2_real_model_stage0.py"
+      - "phase2/redesign/MPSEF_P2_V2_WORD_IDENTITY_CONTRACT_V1.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  p2-v2-real-model-stage0:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Clone frozen Arabic-GEC implementation
+        run: |
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+          grep -q "self.embed_ged_tags = nn.Embedding" upstream/arabic-gec/transformers/src/transformers/models/mbart/modeling_mbart.py
+          grep -q "hidden_states = inputs_embeds + embed_pos + ged_tags_embed" upstream/arabic-gec/transformers/src/transformers/models/mbart/modeling_mbart.py
+          echo "UPSTREAM_GED_CONDITIONING_SOURCE_OK"
+
+      - name: Install frozen P2 runtime stack
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "numpy==1.23.5" "camel-tools==1.4.1" "datasets==2.5.1" "sentencepiece==0.1.99" "protobuf==3.20.3"
+          python -m pip install "huggingface-hub==0.10.1" "tokenizers==0.12.1"
+          python -m pip install --force-reinstall --no-deps ./upstream/arabic-gec/transformers
+          python - <<'PY'
+          import transformers
+          assert transformers.__version__ == "4.22.2"
+          from transformers import DataCollatorForSeq2SeqGEC
+          print("MODIFIED_TRANSFORMERS_GED_SUPPORT_OK")
+          PY
+
+      - name: Install frozen CAMeL morphology/disambiguation resources
+        run: |
+          camel_data -i disambig-bert-unfactored-msa
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          expected_morph="195bc25a333237a2126470da888d7936b59ed3729f9210e0a4194ba43497dd70"
+          expected_disambig="a1a22431cdc0934151e4039abbd7890f06ba7c1f914ca71a90eba218401ae539"
+          root=Path.home()/".camel_tools"
+          morph=[hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob("morphology.db")]
+          models=[hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob("pytorch_model.bin")]
+          assert expected_morph in morph,(expected_morph,morph)
+          assert expected_disambig in models,(expected_disambig,models)
+          print("CAMEL_REAL_STAGE0_RESOURCES_HASH_OK")
+          PY
+
+      - name: Download exact frozen GED/GEC model revisions
+        run: |
+          python - <<'PY'
+          import shutil
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+          ged_rev="447179dc63d186e4bff09a993e90e73ad622d571"
+          gec_rev="410588a318d988cdcfdbf64cf5745ed4adea0f6a"
+          ged_src=Path(snapshot_download(repo_id="CAMeL-Lab/camelbert-msa-qalb14-ged-13",revision=ged_rev,cache_dir="hf_cache"))
+          gec_src=Path(snapshot_download(repo_id="CAMeL-Lab/arabart-qalb14-gec-ged-13",revision=gec_rev,cache_dir="hf_cache"))
+          shutil.copytree(ged_src,"p2v2_ged_model",symlinks=False)
+          shutil.copytree(gec_src,"p2v2_gec_model",symlinks=False)
+          print("P2_V2_REAL_MODELS_READY")
+          PY
+          test "$(sha256sum p2v2_ged_model/pytorch_model.bin | awk '{print $1}')" = "23385ffe560860a8f5e9e46e05b66a31c33a4b0bd58e9a718933fdab8161f50f"
+          test "$(sha256sum p2v2_gec_model/pytorch_model.bin | awk '{print $1}')" = "5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f"
+
+      - name: Run real-model source-free P2_V2 Stage0
+        env:
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONUNBUFFERED: "1"
+        run: |
+          python phase2/redesign/mpsef_p2_v2_real_model_stage0.py             --ged-model-dir p2v2_ged_model             --gec-model-dir p2v2_gec_model             --out MPSEF_P2_V2_REAL_MODEL_STAGE0_RESULT.json
+
+      - name: Validate source-free result
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("MPSEF_P2_V2_REAL_MODEL_STAGE0_RESULT.json",encoding="utf-8"))
+          assert x["status"]=="PASS"
+          assert x["synthetic_sources"]==3
+          assert x["repeat_parity_first_source"] is True
+          assert x["project_source_loaded"] is False
+          assert x["project_gold_loaded"] is False
+          assert x["project_metric_computed"] is False
+          assert x["real_model_inference_run"] is True
+          assert x["quality_claimed"] is False
+          assert x["identities"]["gec_has_embed_ged_tags"] is True
+          for row in x["rows"]:
+              assert row["morph_word_count"]==row["ged_label_count"]
+              assert row["gec_input_length"]==row["gec_label_length"]
+              assert row["generation"]["ged_embedding_hook_calls"]
+          print("P2_V2_REAL_MODEL_STAGE0_PASS")
+          PY
+
+      - name: Freeze environment and hashes
+        if: always()
+        run: |
+          python -m pip freeze > MPSEF_P2_V2_REAL_MODEL_STAGE0_PIP_FREEZE.txt
+          sha256sum             phase2/redesign/mpsef_p2_v2_real_model_stage0.py             phase2/redesign/MPSEF_P2_V2_WORD_IDENTITY_CONTRACT_V1.md             upstream/arabic-gec/transformers/src/transformers/models/mbart/modeling_mbart.py             p2v2_ged_model/pytorch_model.bin             p2v2_gec_model/pytorch_model.bin             MPSEF_P2_V2_REAL_MODEL_STAGE0_RESULT.json             MPSEF_P2_V2_REAL_MODEL_STAGE0_PIP_FREEZE.txt             > MPSEF_P2_V2_REAL_MODEL_STAGE0_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-p2-v2-real-model-stage0
+          path: |
+            MPSEF_P2_V2_REAL_MODEL_STAGE0_RESULT.json
+            MPSEF_P2_V2_REAL_MODEL_STAGE0_PIP_FREEZE.txt
+            MPSEF_P2_V2_REAL_MODEL_STAGE0_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
