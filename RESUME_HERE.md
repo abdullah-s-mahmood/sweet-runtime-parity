@@ -3961,3 +3961,63 @@ Current exact next sequence:
 
 Gold/reference content remains unopened by this repair.
 Real R_joint remains uncomputed.
+## 2026-10-02 — Exact-runtime V4.2 pre-gold verification PASS; final authorization validation pending
+
+Exact-runtime verification is now closed PASS.
+
+Successful workflow:
+- commit: `705129dc9f319d835321a47a2530d48bd18ac468`
+- run: `36940030184`
+- conclusion: SUCCESS
+- scorer preflight: **33/33 PASS**
+- wrapper preflight: **16/16 PASS**
+- artifact id: `11199084513`
+- artifact digest: `sha256:5f16c02fdbe8612499c24b6b2209a19ee03f6738d529e78b10f545fe7c430b20`
+
+Runtime identity hardening is therefore closed:
+- Python 3.10
+- numpy 1.23.5
+- editdistance 0.6.2
+- Arabic-GEC revision `8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf`
+- network download during scoring forbidden
+- model inference during scoring forbidden
+
+Production input lock refreshed:
+- commit: `0983e315603a8ffba28695f84f41069bd3ae4d58`
+- SHA256: `f3f40b1425e272f27d2e19a41f45792310102ad7a62ef9037e78868430517ff3`
+
+Dormant one-shot measurement workflow frozen:
+- file: `.github/workflows/phase2-mpsef-v4-2-rjoint-one-shot.yml`
+- latest binding commit: `41343523f36cb85784e3ba866f05ba67353b0a5a`
+- SHA256: `7ad25c7207700cca202b3a2727200c7a1d59c409c9ec57bfe013865d63d3f3d8`
+- state: DORMANT / NOT ACTIVATED
+
+Authorization refreshed against the final runtime/input/workflow identities:
+- authorization content commit: `c11dcd03f3bb5215e133c1c4221f38ee977a2960`
+- authorization SHA256: `a91b25d68b2b2fb80e32326e614853026e6b90d1ce3dac4cc00f571be1425ce3`
+- consumption guard SHA256: `895128860ba4e03f287b91c56d3505f5df5a9c31292a5555088654aedd468070`
+
+Final authorization-validation workflow hardened and launched:
+- commit: `8aba3486fc85c473e0c67ef4333f5ab4a8c305e8`
+
+Three sequential status inspections returned no exposed status yet; polling stopped per protocol.
+
+Non-triggering activation template prepared:
+- file: `phase2/redesign/MPSEF_RJOINT_V4_2_EXECUTION_ACTIVATION_V1_TEMPLATE.json`
+- commit: `153bf902b2082a99304b799d476daef4626742b3`
+
+Hard boundary:
+- project gold newly opened: false
+- real R_joint computed: false
+- activation record created: false
+- measurement workflow triggered: false
+
+Exact next sequence:
+1. inspect commit `8aba3486fc85c473e0c67ef4333f5ab4a8c305e8`;
+2. require `acad-pass/v4-2-authorization-valid = success`;
+3. capture authorization SHA context and confirm it matches `a91b25d68b2b2fb80e32326e614853026e6b90d1ce3dac4cc00f571be1425ce3`;
+4. create the real activation file with the latest preactivation code commit;
+5. one-shot workflow claims consumption BEFORE gold;
+6. open only the authorized CALIBRATION/M2 gold;
+7. run one DEVELOPMENT-only R_joint V4.2;
+8. freeze/analyze result and execute end-of-phase research/red-team/closure decision.
