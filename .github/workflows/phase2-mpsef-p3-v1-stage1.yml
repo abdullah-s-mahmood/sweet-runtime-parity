@@ -63,6 +63,15 @@ jobs:
           python -m pip install --upgrade "pip<25"
           python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.12.1+cpu"
           python -m pip install "transformers==4.30.0" "huggingface_hub==0.16.4" "sentencepiece==0.1.99"
+          python -m pip install "numpy==1.23.5" "pandas==1.5.3" "pyarrow==14.0.2" "datasets==2.14.7" "editdistance==0.8.1"
+          python - <<'PY'
+          import datasets, editdistance, numpy, pandas, pyarrow
+          assert numpy.__version__=="1.23.5"
+          assert pandas.__version__=="1.5.3"
+          assert pyarrow.__version__=="14.0.2"
+          assert datasets.__version__=="2.14.7"
+          print("P3_STAGE1_FROZEN_P1_RUNTIME_PARITY_OK")
+          PY
 
       - name: Clone frozen text-editing implementation
         run: |
