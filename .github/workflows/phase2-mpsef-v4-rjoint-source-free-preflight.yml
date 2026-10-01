@@ -101,6 +101,6 @@ jobs:
           }
 
           post_status "$STATE" "acad-pass/v4-rjoint-source-free-preflight" "V4 R_joint source-free 20-case preflight"
-          post_status success "acad-pass/v4-rjoint-scorer-sha256" "$SCORER_SHA"
-          post_status success "acad-pass/v4-rjoint-test-sha256" "$TEST_SHA"
-          post_status success "acad-pass/v4-rjoint-result-sha256" "$RESULT_SHA"
+          post_status success "acad-pass/v4-rjoint-scorer-sha256/$SCORER_SHA" "frozen scorer SHA256"
+          post_status success "acad-pass/v4-rjoint-test-sha256/$TEST_SHA" "frozen synthetic test SHA256"
+          post_status success "acad-pass/v4-rjoint-result-sha256/$RESULT_SHA" "frozen synthetic result SHA256"
