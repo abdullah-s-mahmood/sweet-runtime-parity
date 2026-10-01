@@ -1827,3 +1827,72 @@ No new R_joint has been computed.
 **Next gate**
 
 A focused independent closure review is required for B01/B02/M01/M02 and the Stage 0 evidence before Stage 1 project-source execution.
+
+
+### 2026-10-01 — Independent architecture review remediation started
+
+Independent verdict:
+**MODIFY BEFORE IMPLEMENTATION**
+
+Frozen review lock:
+`phase2/redesign/ACAD_PASS_ARABIC_ARCHITECTURE_INDEPENDENT_REVIEW_LOCK_V1.md`
+commit:
+`ab142dd90e0c600fa11de5650b2ab15eeb5fcc7b`
+
+Review findings:
+- BLOCKER: 2
+- MAJOR: 5
+- MINOR: 2
+
+No project gold/R_joint/model population run was used by the review.
+
+Remediation completed so far:
+
+1. **B01 design closed**
+   - `MPSEF_P2_V2_WORD_IDENTITY_CONTRACT_V1.md`
+   - commit `0d32f7ff4fb75aa98ec67c92b291597ebb406faa`
+   - explicit UID→word→segment→first-wordpiece→GED label→GEC subword bijection;
+   - zero-token/over-budget words fail explicitly;
+   - label vocab/config/generation identity frozen;
+   - no count-only proof.
+
+2. **B02 design closed**
+   - `MPSEF_V4_PROPOSER_REGISTRY_ACTION_SET_CONTRACT_V1.md`
+   - commit `5466e6b9e64235c34db44355d57b638206b9a939`
+   - new proposer registry/action-set lane;
+   - variable 1+N action capacity before dedup;
+   - exact literal dedup retaining all provenance;
+   - new artifact/experiment identities;
+   - V3 guard/authorization explicitly invalid for V4.
+
+3. **M01 design closed**
+   - `MPSEF_P3_V1_ROLE_AMENDMENT_V2.md`
+   - commit `b2f56fee86666100ce5e9690a8fe6057228cfde0`
+   - P3 is optional SWEET-family cascade extension;
+   - P1/P3 never count as independent support;
+   - protection reruns on original source→final P3 output.
+
+4. **M02 design closed**
+   - `MPSEF_SOURCE_ONLY_PROPOSER_DIVERSITY_PROTOCOL_V2.md`
+   - commit `88077f47090041a61dfab8caf1df459b5bf3cc68`
+   - Stage1 packet=128 UIDs/128 clusters;
+   - explicit denominators/formulas;
+   - legal marginal contribution/KEEP-only reduction/source-only leave-one-out;
+   - parity/resource/failure accounting;
+   - no invented linguistic diversity threshold.
+
+5. **M03 diagnostic contract added**
+   - `MPSEF_PROTECTION_SHADOW_DIAGNOSTIC_CONTRACT_V1.md`
+   - commit `fb4cf91396e1ef584b60177a6ad870862df05105`
+   - diagnostic decomposition of global-ordinal overblocking;
+   - authoritative current legalizer remains unchanged;
+   - no historical V3 rescue.
+
+Current interpretation:
+**IMPROVED STRONGLY IN IMPLEMENTATION CONTRACT QUALITY / PERFORMANCE STILL UNMEASURED**
+
+Next critical work:
+- fix M04 scorer all-actions-fail interval semantics;
+- fix M05 BOUNDARY whole-action aggregation;
+- add synthetic regressions;
+- version scorer/preflight before any future gold-aware measurement.
