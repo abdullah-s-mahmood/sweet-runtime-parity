@@ -1,0 +1,112 @@
+name: Phase 2 MP-SEF V4.2 Production Wrapper Pre-Gold Verification
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - ".github/workflows/phase2-mpsef-v4-2-production-wrapper-preflight.yml"
+      - "phase2/redesign/mpsef_rjoint_score_v4_2.py"
+      - "phase2/redesign/mpsef_rjoint_v4_2_synthetic_preflight.py"
+      - "phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_v1.py"
+      - "phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_preflight_v1.py"
+      - "phase2/redesign/MPSEF_RJOINT_V4_2_DEPENDENCY_LOCK_V1.txt"
+      - "phase2/redesign/mpsef_rjoint_core_v2.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Compile V4.2 scorer wrapper and preflights
+        run: |
+          set -euo pipefail
+          python -m py_compile             phase2/redesign/mpsef_rjoint_core_v2.py             phase2/redesign/mpsef_rjoint_score_v4_2.py             phase2/redesign/mpsef_rjoint_v4_2_synthetic_preflight.py             phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_v1.py             phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_preflight_v1.py
+
+      - name: Run 33-case scorer preflight
+        run: |
+          set -euo pipefail
+          PYTHONPATH=phase2/redesign             python phase2/redesign/mpsef_rjoint_v4_2_synthetic_preflight.py
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_RJOINT_V4_2_SYNTHETIC_PREFLIGHT_V2.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["test_count"]==33 and s["passed"]==33 and s["failed"]==0
+          assert s["project_source_loaded"] is False
+          assert s["project_gold_loaded"] is False
+          assert s["real_r_joint_computed"] is False
+          PY
+
+      - name: Run 14-case wrapper preflight
+        run: |
+          set -euo pipefail
+          PYTHONPATH=phase2/redesign             python phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_preflight_v1.py
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_RJOINT_V4_2_PRODUCTION_WRAPPER_PREFLIGHT_V1.json",encoding="utf-8"))
+          assert s["status"]=="PASS"
+          assert s["test_count"]==14 and s["passed"]==14 and s["failed"]==0
+          assert s["project_source_loaded"] is False
+          assert s["project_gold_loaded"] is False
+          assert s["real_r_joint_computed"] is False
+          PY
+
+      - name: Publish observable verification and exact SHA256 identities
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ github.sha }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          set -euo pipefail
+          if [ "$JOB_STATUS" = "success" ]; then STATE=success; else STATE=failure; fi
+
+          SCORER_SHA="$(sha256sum phase2/redesign/mpsef_rjoint_score_v4_2.py | awk '{print $1}')"
+          CORE_SHA="$(sha256sum phase2/redesign/mpsef_rjoint_core_v2.py | awk '{print $1}')"
+          WRAPPER_SHA="$(sha256sum phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_v1.py | awk '{print $1}')"
+          HARNESS_SHA="$(sha256sum phase2/redesign/mpsef_rjoint_v4_2_synthetic_preflight.py | awk '{print $1}')"
+          WRAPPER_TEST_SHA="$(sha256sum phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_preflight_v1.py | awk '{print $1}')"
+          DEP_SHA="$(sha256sum phase2/redesign/MPSEF_RJOINT_V4_2_DEPENDENCY_LOCK_V1.txt | awk '{print $1}')"
+          SCORE_RESULT_SHA="$(sha256sum MPSEF_RJOINT_V4_2_SYNTHETIC_PREFLIGHT_V2.json | awk '{print $1}' 2>/dev/null || true)"
+          WRAPPER_RESULT_SHA="$(sha256sum MPSEF_RJOINT_V4_2_PRODUCTION_WRAPPER_PREFLIGHT_V1.json | awk '{print $1}' 2>/dev/null || true)"
+
+          post_status () {
+            local state="$1" context="$2" description="$3"
+            curl -fsSL -X POST               -H "Authorization: Bearer $GH_TOKEN"               -H "Accept: application/vnd.github+json"               "https://api.github.com/repos/abdullah-s-mahmood/sweet-runtime-parity/statuses/$SHA"               -d "{\"state\":\"$state\",\"context\":\"$context\",\"description\":\"$description\"}"
+          }
+
+          post_status "$STATE" "acad-pass/v4-2-pre-gold-wrapper" "V4.2 scorer 33/33 + wrapper 14/14"
+          post_status success "acad-pass/v4-2-scorer-sha256/$SCORER_SHA" "frozen scorer SHA256"
+          post_status success "acad-pass/v4-2-core-sha256/$CORE_SHA" "frozen core SHA256"
+          post_status success "acad-pass/v4-2-wrapper-sha256/$WRAPPER_SHA" "frozen wrapper SHA256"
+          post_status success "acad-pass/v4-2-harness-sha256/$HARNESS_SHA" "frozen scorer harness SHA256"
+          post_status success "acad-pass/v4-2-wrapper-test-sha256/$WRAPPER_TEST_SHA" "frozen wrapper test SHA256"
+          post_status success "acad-pass/v4-2-dependency-sha256/$DEP_SHA" "frozen dependency lock SHA256"
+          if [ -n "$SCORE_RESULT_SHA" ]; then
+            post_status success "acad-pass/v4-2-score-result-sha256/$SCORE_RESULT_SHA" "scorer preflight result SHA256"
+          fi
+          if [ -n "$WRAPPER_RESULT_SHA" ]; then
+            post_status success "acad-pass/v4-2-wrapper-result-sha256/$WRAPPER_RESULT_SHA" "wrapper preflight result SHA256"
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-rjoint-v4-2-pre-gold-wrapper-verification
+          path: |
+            MPSEF_RJOINT_V4_2_SYNTHETIC_PREFLIGHT_V2.json
+            MPSEF_RJOINT_V4_2_PRODUCTION_WRAPPER_PREFLIGHT_V1.json
+          if-no-files-found: error
+          retention-days: 30
