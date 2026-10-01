@@ -17,7 +17,7 @@
   },
   "primary_action_contract": "KEEP + frozen whole P1_FINAL/P2_FINAL only if present in frozen executable-action artifact",
   "frozen_executable_actions_sha256": "6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a",
-  "frozen_hypotheses_sha256": "c91195a66a687ba8acf12d1b1e51741183b28992f89681c8510cdac8fddf9e14",
+  "frozen_hypotheses_sha256": "b4736383019d017780a8bfe4b076a0cd742e71bccfbb50350da8fa59b7c9ac75",
   "frozen_diagnostic_components_sha256": "2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e",
   "p1_proposal_sha256": "2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d",
   "p2_proposal_sha256": "f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b",
@@ -37,5 +37,13 @@
     "selector_authorized": false,
     "auto_safe_authorized": false,
     "reserved_sets_authorized": false
+  },
+  "source_only_artifact_revision": {
+    "revision": "LEGALIZER_V1R1",
+    "supersedes_hypotheses_sha256": "c91195a66a687ba8acf12d1b1e51741183b28992f89681c8510cdac8fddf9e14",
+    "reason": "Mandatory pre-authorization alignment-proof work-budget hardening and negative tests; executable action-set SHA and state counts unchanged",
+    "corrected_run_id": 36808497947,
+    "executable_action_set_sha256_unchanged": "6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a",
+    "metric_evidence_used": false
   }
 }
