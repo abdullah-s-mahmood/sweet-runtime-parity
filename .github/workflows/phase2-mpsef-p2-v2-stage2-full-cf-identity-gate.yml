@@ -1,0 +1,60 @@
+name: Phase 2 MP-SEF P2 Full C_F Execution Identity Gate
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/mpsef_stage2_partial_accounting_v1.py"
+      - "phase2/redesign/mpsef_p2_v2_stage2_full_cf_identity_gate_v1.py"
+      - ".github/workflows/phase2-mpsef-p2-v2-stage2-full-cf-production.yml"
+      - ".github/workflows/phase2-mpsef-p2-v2-stage2-full-cf-identity-gate.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  identity-gate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - name: Download frozen Stage2 Input Lock
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage2-input-lock-v1
+          path: input_lock
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36898163047
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run execution identity gate
+        run: |
+          set -euo pipefail
+          python phase2/redesign/mpsef_p2_v2_stage2_full_cf_identity_gate_v1.py             --input-lock input_lock/MPSEF_V4_STAGE2_INPUT_LOCK_V1.json             --out MPSEF_P2_V2_STAGE2_FULL_CF_EXECUTION_IDENTITY_GATE_V1.json             | tee P2_FULL_CF_EXECUTION_IDENTITY_GATE.log
+      - name: Validate gate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          x=json.load(open("MPSEF_P2_V2_STAGE2_FULL_CF_EXECUTION_IDENTITY_GATE_V1.json",encoding="utf-8"))
+          assert x["status"]=="PASS"
+          assert x["cf_manifest_sha256"]=="051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          assert x["p1_proposal_sha256"]=="2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          assert x["p2_runtime_freeze_sha256"]=="cbd42c8a3296eb59e933b04f83c70f34d78b98160f09a069fea32fcfc142fe38"
+          assert x["gold_reference_allowed"] is False
+          print("P2_FULL_CF_EXECUTION_IDENTITY_GATE_PASS")
+          PY
+      - name: Freeze gate hashes
+        run: |
+          sha256sum             phase2/redesign/mpsef_p2_v2_stage2_full_cf_identity_gate_v1.py             phase2/redesign/mpsef_stage2_partial_accounting_v1.py             .github/workflows/phase2-mpsef-p2-v2-stage2-full-cf-production.yml             .github/workflows/phase2-mpsef-p2-v2-stage2-full-cf-identity-gate.yml             MPSEF_P2_V2_STAGE2_FULL_CF_EXECUTION_IDENTITY_GATE_V1.json             > MPSEF_P2_V2_STAGE2_FULL_CF_EXECUTION_IDENTITY_GATE_SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-p2-v2-stage2-full-cf-execution-identity-gate-v1
+          path: |
+            MPSEF_P2_V2_STAGE2_FULL_CF_EXECUTION_IDENTITY_GATE_V1.json
+            MPSEF_P2_V2_STAGE2_FULL_CF_EXECUTION_IDENTITY_GATE_SHA256.txt
+            P2_FULL_CF_EXECUTION_IDENTITY_GATE.log
+          retention-days: 90
