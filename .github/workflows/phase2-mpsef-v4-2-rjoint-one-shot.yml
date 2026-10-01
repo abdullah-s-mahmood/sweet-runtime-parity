@@ -1,0 +1,266 @@
+name: Phase 2 MP-SEF V4.2 One-Shot Development R_joint
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/redesign/MPSEF_RJOINT_V4_2_EXECUTION_ACTIVATION_V1.json"
+
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+
+concurrency:
+  group: mpsef-rjoint-v4-2-cf1918-20261002-a
+  cancel-in-progress: false
+
+jobs:
+  rjoint-v4-2-one-shot:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 300
+
+    steps:
+      - name: Checkout activation trigger
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Read and preserve activation record
+        id: activation
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path("phase2/redesign/MPSEF_RJOINT_V4_2_EXECUTION_ACTIVATION_V1.json")
+          x=json.loads(p.read_text(encoding="utf-8"))
+          assert x["record_id"]=="MPSEF_RJOINT_V4_2_EXECUTION_ACTIVATION_V1"
+          assert x["experiment_id"]=="MPSEF-RJOINT-V4_2-CF1918-20261002-A"
+          assert x["decision"]=="EXECUTE_AUTHORIZED_SINGLE_DEVELOPMENT_RUN"
+          assert x["single_use"] is True
+          out=Path(os.environ["GITHUB_OUTPUT"])
+          with out.open("a",encoding="utf-8") as f:
+              f.write(f"code_commit_sha={x['code_commit_sha']}\n")
+              f.write(f"authorization_sha256={x['authorization_sha256']}\n")
+              f.write(f"input_lock_sha256={x['input_lock_sha256']}\n")
+              f.write(f"workflow_sha256={x['measurement_workflow_sha256']}\n")
+          Path("/tmp/MPSEF_RJOINT_V4_2_EXECUTION_ACTIVATION_V1.json").write_bytes(p.read_bytes())
+          PY
+
+      - name: Require activation-only diff
+        env:
+          CODE_COMMIT_SHA: ${{ steps.activation.outputs.code_commit_sha }}
+        run: |
+          set -euo pipefail
+          git cat-file -e "$CODE_COMMIT_SHA^{commit}"
+          python - <<'PY'
+          import os, subprocess
+          code=os.environ["CODE_COMMIT_SHA"]
+          trigger=os.environ["GITHUB_SHA"]
+          changed=subprocess.check_output(["git","diff","--name-only",code,trigger],text=True).splitlines()
+          expected=["phase2/redesign/MPSEF_RJOINT_V4_2_EXECUTION_ACTIVATION_V1.json"]
+          if changed != expected:
+              raise SystemExit(f"ACTIVATION_DIFF_NOT_SINGLE_FILE:{changed}")
+          PY
+
+      - name: Preserve authorization and input lock from authorized code commit
+        run: |
+          set -euo pipefail
+          cp phase2/redesign/MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1.json /tmp/AUTH.json
+          cp phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json /tmp/INPUT_LOCK.json
+          cp .github/workflows/phase2-mpsef-v4-2-rjoint-one-shot.yml /tmp/MEASUREMENT_WORKFLOW.yml
+
+      - name: Validate trigger identities before code checkout
+        env:
+          EXPECTED_AUTH_SHA: ${{ steps.activation.outputs.authorization_sha256 }}
+          EXPECTED_LOCK_SHA: ${{ steps.activation.outputs.input_lock_sha256 }}
+          EXPECTED_WORKFLOW_SHA: ${{ steps.activation.outputs.workflow_sha256 }}
+        run: |
+          set -euo pipefail
+          test "$(sha256sum /tmp/AUTH.json | awk '{print $1}')" = "$EXPECTED_AUTH_SHA"
+          test "$(sha256sum /tmp/INPUT_LOCK.json | awk '{print $1}')" = "$EXPECTED_LOCK_SHA"
+          test "$(sha256sum /tmp/MEASUREMENT_WORKFLOW.yml | awk '{print $1}')" = "$EXPECTED_WORKFLOW_SHA"
+
+      - name: Checkout exact authorized code commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.activation.outputs.code_commit_sha }}
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Restore exact authorization artifacts
+        run: |
+          set -euo pipefail
+          cp /tmp/AUTH.json phase2/redesign/MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1.json
+          cp /tmp/INPUT_LOCK.json phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json
+
+      - name: Install exact measurement runtime dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade "pip<25"
+          python -m pip install "numpy==1.23.5" "editdistance==0.6.2"
+
+      - name: Clone exact Arabic-GEC revision
+        run: |
+          set -euo pipefail
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+
+      - name: Download frozen source manifest before gold
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: source_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen V4 action-set artifact before gold
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage2-full-cf-source-only-analysis-v1
+          path: action_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36923877787
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify all pre-gold identities
+        run: |
+          set -euo pipefail
+          test "$(sha256sum source_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl | awk '{print $1}')" = "051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          test "$(sha256sum action_artifact/MPSEF_V4_STAGE2_FULL_CF_SOURCE_ONLY_ACTION_SETS_V2.jsonl | awk '{print $1}')" = "e38393abb36734d3882e29a78f3b33c80718791957b9b8c0c6e8a8ab77f6e138"
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          def sha(p):
+              return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          lock=json.load(open("phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json",encoding="utf-8"))
+          auth=json.load(open("phase2/redesign/MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1.json",encoding="utf-8"))
+          assert lock["source_manifest_sha256"]==sha("source_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl")
+          assert lock["action_set_sha256"]==sha("action_artifact/MPSEF_V4_STAGE2_FULL_CF_SOURCE_ONLY_ACTION_SETS_V2.jsonl")
+          assert lock["scorer_sha256"]==sha("phase2/redesign/mpsef_rjoint_score_v4_2.py")
+          assert lock["core_sha256"]==sha("phase2/redesign/mpsef_rjoint_core_v2.py")
+          assert lock["wrapper_sha256"]==sha("phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_v1.py")
+          assert lock["dependency_lock_sha256"]==sha("phase2/redesign/MPSEF_RJOINT_V4_2_DEPENDENCY_LOCK_V1.txt")
+          assert auth["input_lock_sha256"]==sha("phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json")
+          assert auth["measurement_authorized"] is True
+          assert auth["single_run_only"] is True
+          assert auth["consumption_guard"]["claim_before_gold_access"] is True
+          assert auth["consumption_guard"]["rerun_after_consumption_forbidden"] is True
+          PY
+
+      - name: Run source-free self-tests before consumption
+        run: |
+          set -euo pipefail
+          PYTHONPATH=phase2/redesign python phase2/redesign/mpsef_rjoint_v4_2_synthetic_preflight.py
+          PYTHONPATH=phase2/redesign python phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_preflight_v1.py
+          PYTHONPATH=phase2/redesign python phase2/redesign/mpsef_rjoint_v4_2_consumption_guard_v1.py --self-test
+          python - <<'PY'
+          import json
+          a=json.load(open("MPSEF_RJOINT_V4_2_SYNTHETIC_PREFLIGHT_V2.json",encoding="utf-8"))
+          b=json.load(open("MPSEF_RJOINT_V4_2_PRODUCTION_WRAPPER_PREFLIGHT_V1.json",encoding="utf-8"))
+          assert a["status"]=="PASS" and a["passed"]==33 and a["test_count"]==33
+          assert b["status"]=="PASS" and b["passed"]==16 and b["test_count"]==16
+          PY
+
+      - name: Claim one-shot experiment BEFORE gold access
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CODE_COMMIT_SHA: ${{ steps.activation.outputs.code_commit_sha }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=phase2/redesign           python phase2/redesign/mpsef_rjoint_v4_2_consumption_guard_v1.py             --claim             --repo "$GITHUB_REPOSITORY"             --code-commit-sha "$CODE_COMMIT_SHA"             --target-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
+      # GOLD ACCESS BOUNDARY. No project reference/gold artifact is downloaded above this line.
+
+      - name: Download frozen CALIBRATION after consumption claim
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-calibration-v1
+          path: calibration_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36654588477
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen official M2 gold after consumption claim
+        uses: actions/download-artifact@v4
+        with:
+          name: m2h-h1-official-alignment-scoring-continuation-v1
+          path: gold_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36720612925
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify post-claim gold identities
+        run: |
+          set -euo pipefail
+          test "$(sha256sum gold_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2 | awk '{print $1}')" = "971b6fbb28dc3767193e7a4b0f722c3abebfc8600155a57093ba483dac6491e8"
+          python - <<'PY'
+          import hashlib, json
+          rows=[json.loads(x) for x in open("calibration_artifact/M2H_CALIBRATION_V1.jsonl",encoding="utf-8") if x.strip()]
+          h=hashlib.sha256(("\n".join(r["uid"] for r in rows)+"\n").encode()).hexdigest()
+          assert h=="3b6c1128f412531223b3c2e5346082d3290f40daac706eb13bbafa1db10a09c9"
+          assert len(rows)==6888
+          PY
+
+      - name: Run one-shot DEVELOPMENT-only R_joint V4.2
+        env:
+          PYTHONUNBUFFERED: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PIP_NO_INDEX: "1"
+        run: |
+          set -euo pipefail
+          python phase2/redesign/run_with_progress_watchdog_v2.py             --state-file MPSEF_RJOINT_V4_2_PRODUCTION_PROGRESS.json             --watchdog-state-file MPSEF_RJOINT_V4_2_PRODUCTION_WATCHDOG.json             --context "acad-pass/v4-2-rjoint-progress"             --poll-seconds 20 --publish-seconds 60 --stale-seconds 900             --term-grace-seconds 30 --kill-on-stale --             python phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_v1.py               --authorization phase2/redesign/MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1.json               --input-lock phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json               --dependency-lock phase2/redesign/MPSEF_RJOINT_V4_2_DEPENDENCY_LOCK_V1.txt               --source-manifest source_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl               --action-sets action_artifact/MPSEF_V4_STAGE2_FULL_CF_SOURCE_ONLY_ACTION_SETS_V2.jsonl               --calibration calibration_artifact/M2H_CALIBRATION_V1.jsonl               --full-gold-m2 gold_artifact/M2H_H1_OFFICIAL_ALIGNMENT_AUDIT_V1_NOPNX_GOLD.m2               --upstream-root upstream/arabic-gec               --state-file MPSEF_RJOINT_V4_2_PRODUCTION_PROGRESS.json               --out-prefix MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_V1
+
+      - name: Validate measurement output boundary
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_V1_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="MEASUREMENT_COMPLETE"
+          assert s["experiment_id"]=="MPSEF-RJOINT-V4_2-CF1918-20261002-A"
+          assert s["population_cases"]==1918
+          assert s["population_clusters"]==764
+          assert s["claim_scope"]=="DEVELOPMENT / ADAPTIVELY_CONSUMED / REFERENCE_RELATIVE / NOT_INDEPENDENT_GENERALIZATION"
+          assert s["consumption_claimed_before_gold_access"] is True
+          assert s["single_run_only"] is True
+          assert s["measurement_authorized"] is True
+          assert s["selector_trained"] is False
+          assert s["family_consensus_activated"] is False
+          assert s["p4_used"] is False
+          assert s["llm_judge_used"] is False
+          assert s["reserved_sets_opened"] is False
+          assert s["internal_evaluation_opened"] is False
+          assert s["stress_diagnostic_opened"] is False
+          n=sum(1 for x in open("MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_V1_PER_SENTENCE.jsonl",encoding="utf-8") if x.strip())
+          assert n==1918
+          PY
+
+      - name: Freeze measurement environment and hashes
+        if: always()
+        run: |
+          python -m pip freeze > MPSEF_RJOINT_V4_2_PIP_FREEZE.txt
+          sha256sum             phase2/redesign/mpsef_rjoint_score_v4_2.py             phase2/redesign/mpsef_rjoint_core_v2.py             phase2/redesign/mpsef_rjoint_v4_2_production_wrapper_v1.py             phase2/redesign/mpsef_rjoint_v4_2_consumption_guard_v1.py             phase2/redesign/MPSEF_RJOINT_V4_2_DEPENDENCY_LOCK_V1.txt             phase2/redesign/MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1.json             phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json             /tmp/MEASUREMENT_WORKFLOW.yml             MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_V1_SUMMARY.json             MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_V1_PER_SENTENCE.jsonl             MPSEF_RJOINT_V4_2_PRODUCTION_PROGRESS.json             MPSEF_RJOINT_V4_2_PRODUCTION_WATCHDOG.json             MPSEF_RJOINT_V4_2_PIP_FREEZE.txt             > MPSEF_RJOINT_V4_2_MEASUREMENT_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-rjoint-v4-2-development-measurement-v1
+          path: |
+            MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_V1_SUMMARY.json
+            MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_V1_PER_SENTENCE.jsonl
+            MPSEF_RJOINT_V4_2_PRODUCTION_PROGRESS.json
+            MPSEF_RJOINT_V4_2_PRODUCTION_WATCHDOG.json
+            MPSEF_RJOINT_V4_2_PIP_FREEZE.txt
+            MPSEF_RJOINT_V4_2_MEASUREMENT_SHA256.txt
+            MPSEF_RJOINT_V4_2_SYNTHETIC_PREFLIGHT_V2.json
+            MPSEF_RJOINT_V4_2_PRODUCTION_WRAPPER_PREFLIGHT_V1.json
+          if-no-files-found: warn
+          retention-days: 90
