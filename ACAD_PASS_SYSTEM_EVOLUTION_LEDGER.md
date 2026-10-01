@@ -2968,3 +2968,36 @@ Scientific boundary unchanged:
 
 Classification:
 **IMPROVED IN PRE-GOLD REPRODUCIBILITY HARDENING / AUTHORIZATION TEMPORARILY RE-LOCKED PENDING 16/16 VERIFICATION**
+### 2026-10-02 — Runtime preflight bookkeeping defect isolated and repaired
+
+The exact-runtime V4.2 verification run at commit
+`500b176475b60ab5207c6715fa28e2c84f76c70e`
+failed only at the 16-case wrapper preflight step.
+
+Run:
+`36939409747`
+
+All of the following passed:
+- exact dependency installation;
+- compilation;
+- scorer preflight 33/33;
+- SHA publication.
+
+Root cause:
+W15 and W16 were accidentally duplicated in the source-free harness, producing 18 test records while the pass condition correctly required 16. This was a harness accounting defect, not a production-semantic failure.
+
+Repair:
+duplicate test block removed with no scorer/wrapper semantic change.
+
+Repair commit:
+`45187205641612d867a8547305fc37688493eded`
+
+After three sequential status inspections, the repair-run status was not yet exposed; polling stopped per protocol.
+
+Scientific boundary unchanged:
+- new gold access: false
+- real R_joint: false
+- selector/consensus/P4/LLM judge: false
+
+Classification:
+**MIXED TEMPORARILY / ROOT CAUSE IDENTIFIED / NO SCIENTIFIC REGRESSION / REPAIRED VERIFICATION PENDING**
