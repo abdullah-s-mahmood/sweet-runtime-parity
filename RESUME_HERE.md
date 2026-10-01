@@ -2938,3 +2938,44 @@ Next exact sequence:
 4. freeze generic V4 action builder;
 5. integrate M03 shadow diagnostics + progress/resource monitoring;
 6. run Stage1 source-only only.
+
+
+## 2026-10-01 — V4 Stage1 packet frozen
+
+Workflow run:
+`36871466394`
+
+Packet:
+- 128 UIDs
+- 128 clusters
+- exactly one selected UID per cluster
+
+Frozen identities:
+- source manifest:
+  `051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193`
+- registry:
+  `b448650c571f6c93dffe4825417e4f65d6a8cd02e33bd9551728ceac2b242b1a`
+- packet:
+  `8460900d88656ff25fe4da05d156ba0b31980188e3d1135052ed1825f10087b1`
+- UID list:
+  `e32b468f27653a1bbabfa5c355483c34ffe9b6e4cb2425c36e6c10b714c104ac`
+- cluster list:
+  `95b895d424d404d80a70b5acb8ac8b98fe8b461f8b03c2532a7535853f9a25ca`
+- source-row hashes:
+  `5b7f9abc05d4bbfb9a6a336aca1fadd6767fc0dc3a597fdcaed1ad01244a2b29`
+
+Artifact:
+- `11167360791`
+- digest:
+  `sha256:64284a4187b1bda2e61dd1a2a5a20752f6791c14b8709a5ffb2aeee2e53dcaac`
+
+No proposer output influenced selection.
+No reference/gold.
+No quality metric/R_joint.
+No selector training.
+
+Lock:
+`phase2/redesign/MPSEF_V4_STAGE1_PACKET_LOCK_V1.md`
+
+Next:
+build/freeze P2_V2 Stage1 source-only runner from the source-free real-model PASS path.
