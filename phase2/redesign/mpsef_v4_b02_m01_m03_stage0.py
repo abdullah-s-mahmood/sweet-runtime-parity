@@ -405,6 +405,29 @@ def shadow_protection_diagnostic(source: str, output: str):
         result["shadow_status"] = "SHADOW_INCONCLUSIVE"
         return result
 
+    src_spans = proof["source_spans"]
+    out_spans = proof["output_spans"]
+    signature_changed = protected_signature(src_spans) != protected_signature(out_spans)
+
+    # A material protected-signature change is directly observable and is
+    # stronger than alignment-only uncertainty for shadow-policy purposes.
+    # Keep alignment uncertainty as secondary evidence, but never let it turn
+    # a known protected-entity mutation into a local-pass/inconclusive case.
+    if signature_changed:
+        result["causes"].append("ENTITY_TEXT_CHANGED")
+        if any(
+            ("MULTIPLE_OPTIMAL" in x)
+            or ("NONCONTIGUOUS" in x)
+            or ("NO_OPTIMAL_EXACT_MATCH" in x)
+            for x in reasons
+        ):
+            result["causes"].append("ALIGNMENT_AMBIGUOUS")
+        result["causes"] = sorted(set(result["causes"]))
+        if len(result["causes"]) > 1:
+            result["causes"].append("MULTIPLE_CAUSES")
+        result["shadow_status"] = "V3_BLOCKED_SHADOW_BLOCKED"
+        return result
+
     if any(
         ("MULTIPLE_OPTIMAL" in x)
         or ("NONCONTIGUOUS" in x)
@@ -414,11 +437,6 @@ def shadow_protection_diagnostic(source: str, output: str):
         result["causes"] = ["ALIGNMENT_AMBIGUOUS"]
         result["shadow_status"] = "SHADOW_INCONCLUSIVE"
         return result
-
-    src_spans = proof["source_spans"]
-    out_spans = proof["output_spans"]
-    if protected_signature(src_spans) != protected_signature(out_spans):
-        result["causes"].append("ENTITY_TEXT_CHANGED")
 
     audit = proof["optimal_alignment_audit"]
     attachment_categories = {
