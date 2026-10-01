@@ -2086,3 +2086,60 @@ Stage0 completion is not automatic Stage1 authorization.
 A fresh 2025–2026 research review and maximum-effort architecture brainstorming gate is mandatory before materializing the deterministic Stage1 packet.
 
 The next decision must explicitly evaluate KEEP / REPAIR / REPLACE / ADD COMPLEMENT / DEFER for P1, P2_V2, P3 and possible V4 consensus.
+
+
+### 2026-10-01 — Fresh 2025-2026 research re-baseline after full Stage0 PASS
+
+**Objective**
+
+Challenge the proposed Stage1 roster after implementation/provenance Stage0 succeeded, using fresh current research rather than assuming the earlier architecture remained optimal.
+
+**Fresh evidence consequence**
+
+Current Arabic evidence continues to support SWEET/text editing as a strong, maintained architecture and Seq2Seq+GED/morphology as a heterogeneous complementary family.
+
+Newer evidence on edit-level majority voting and minimal-edit GEC increases the plausibility of future consensus, but does not justify implementing consensus before source-only diversity is observed.
+
+Newer Arabic ensemble/preprint work supports multi-family combination but introduces selector/conflict-resolution leakage risks.
+
+Arabic LLM evidence remains mixed enough that general LLMs are not promoted to the primary proposer roster.
+
+**Frozen decisions**
+
+- P1: KEEP.
+- P2_V2: KEEP / PROCEED TO STAGE1.
+- P3: KEEP OPTIONAL / PROCEED TO STAGE1.
+- P4: DEFER.
+- V4 consensus: DEFER.
+- learned selector: DEFER.
+- general LLM primary proposer: DEFER.
+- protection: KEEP + shadow diagnostics.
+- whole-action R_joint remains future primary construct.
+
+**Architecture insight**
+
+P1 and P3 are one SWEET family.
+Current roster has only two materially independent families: SWEET and Seq2Seq+GED/morphology.
+
+Any future family-majority consensus may require a third independent family.
+
+**Comparison**
+
+Methodological/architecture readiness:
+**IMPROVED**
+
+Linguistic performance:
+**NOT MEASURED**
+
+**Forecast**
+
+Engineering estimate:
+- ~90% optimism for reaching a scientifically defensible architecture;
+- ~10% architecture/implementation risk.
+
+Primary next risks:
+candidate diversity, protection burden, and whether a third independent family becomes necessary.
+
+**Next**
+
+Freeze deterministic Stage1 source-only packet and implement/freeze Stage1 proposer/action tooling before execution.
