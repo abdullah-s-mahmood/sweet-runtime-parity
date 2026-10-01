@@ -2499,3 +2499,30 @@ Next sequence:
 4. Only then allow any gold-aware measurement.
 
 Long-process monitoring now includes adaptive ETA, predicted finish timestamp, EWMA rate, confidence, and stale detection for future runs.
+
+
+## 2026-10-01 — Maximum-quality reassessment rule
+
+Permanent governance rule frozen in:
+`phase2/redesign/ACAD_PASS_MAXIMUM_QUALITY_REASSESSMENT_CONTRACT_V1.md`
+commit:
+`06637217759810726adead618bf5b199743913dd`
+
+Project objective is the strongest scientifically defensible ACAD_PASS system, not preservation of the current architecture.
+
+Earlier phases/processes/models may be revisited, repaired, replaced, removed, or redesigned whenever new evidence justifies it, but frozen evidence must remain immutable and redesign must occur in a new explicit versioned lane.
+
+Current strategic implication:
+- frozen P2 remains blocked in the current cycle;
+- P2 failure is implementation/provenance, not proven linguistic-quality failure;
+- P2_V2 or a replacement/complementary proposer is allowed and should be evaluated before spending additional gold-aware measurement exposure if it can materially strengthen candidate coverage;
+- completing Second Preflight remains useful as a clean baseline and engineering proof;
+- SECOND_PREFLIGHT_PASS must NOT automatically authorize R_joint;
+- before any new gold-aware measurement, perform an architecture re-baseline decision using the frozen evidence and P2 repair/replacement alternatives.
+
+Higher-model independent review is recommended:
+1. after Second Preflight remediation is stable and before gold-aware authorization;
+2. before committing to major P2_V2/replacement architecture;
+3. after any future material metric failure before patch-vs-rebaseline decision.
+
+All future FAIL/BLOCKED/PARTIAL outcomes require root-cause and repairability analysis rather than result-only interpretation.
