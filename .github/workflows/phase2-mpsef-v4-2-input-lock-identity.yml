@@ -1,0 +1,52 @@
+name: Phase 2 MP-SEF V4.2 Production Input Lock Identity
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - ".github/workflows/phase2-mpsef-v4-2-input-lock-identity.yml"
+      - "phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Validate frozen production input lock
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          p="phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json"
+          x=json.load(open(p,encoding="utf-8"))
+          assert x["record_id"]=="MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1"
+          assert x["status"]=="FROZEN_READY_FOR_SINGLE_RUN_AUTHORIZATION"
+          assert x["experiment_id"]=="MPSEF-RJOINT-V4_2-CF1918-20261002-A"
+          assert x["population_cases"]==1918
+          assert x["population_clusters"]==764
+          assert x["source_manifest_sha256"]=="051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          assert x["action_set_sha256"]=="e38393abb36734d3882e29a78f3b33c80718791957b9b8c0c6e8a8ab77f6e138"
+          assert x["gold_sha256"]=="971b6fbb28dc3767193e7a4b0f722c3abebfc8600155a57093ba483dac6491e8"
+          assert x["authorization_boundary"]["gold_content_opened_by_this_lock"] is False
+          assert x["authorization_boundary"]["real_r_joint_computed"] is False
+          assert x["pre_gold_verification"]["scorer_preflight"]["passed"]==33
+          assert x["pre_gold_verification"]["wrapper_preflight"]["passed"]==14
+          PY
+
+      - name: Publish exact input-lock SHA256
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          LOCK_SHA="$(sha256sum phase2/redesign/MPSEF_RJOINT_V4_2_PRODUCTION_INPUT_LOCK_V1.json | awk '{print $1}')"
+          curl -fsSL -X POST             -H "Authorization: Bearer $GH_TOKEN"             -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/abdullah-s-mahmood/sweet-runtime-parity/statuses/$SHA"             -d "{\"state\":\"success\",\"context\":\"acad-pass/v4-2-input-lock-sha256/$LOCK_SHA\",\"description\":\"frozen V4.2 production input lock SHA256\"}"
