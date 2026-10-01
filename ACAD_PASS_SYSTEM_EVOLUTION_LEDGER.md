@@ -2836,3 +2836,53 @@ capture the exact input-lock SHA, bind it into a separate single-run authorizati
 
 Classification:
 **IMPROVED STRONGLY / B02 IMPLEMENTATION HARDENED / AUTHORIZATION BINDING PENDING**
+### 2026-10-02 — Exact-SHA V4.2 authorization validated and one-shot DEVELOPMENT measurement started
+
+Input-lock SHA256:
+`3f3e4bd95bbd5d49ad71ec58466573d56a476eefcf0cdc3719c2c732d3de19d0`
+
+Authorization record:
+`phase2/redesign/MPSEF_RJOINT_V4_2_SINGLE_RUN_AUTHORIZATION_V1.json`
+
+Authorization SHA256:
+`c9adda76ace40df378ab4c88f193160e1edbdd6256f079e87ee4d2e185008993`
+
+Authorization validation:
+`acad-pass/v4-2-authorization-valid = success`
+
+Authorized one-shot workflow:
+`.github/workflows/phase2-mpsef-v4-2-development-rjoint-one-shot.yml`
+
+Trigger commit:
+`f84c94527df487dc0426165737450471d6da3fa4`
+
+Observed run:
+`36938833412`
+
+Observed after three sequential checks:
+`acad-pass/mpsef-rjoint-v4-2-progress = pending`
+
+The progress context is created only after:
+- exact authorization/input-lock/code identity validation;
+- source-free 47/47 regression verification on the production runner;
+- full 1,918-row source/action identity and provenance verification;
+- durable single-run consumption claim;
+- post-claim CALIBRATION/gold identity verification;
+- entry into the scoring watchdog.
+
+No fourth poll was performed.
+
+Scientific boundary while run is active:
+- result not yet interpreted;
+- no selector;
+- no family consensus;
+- no P4;
+- no LLM judge;
+- no internal evaluation;
+- no stress diagnostic;
+- no reserved population.
+
+Single-run authorization must now be treated as consumed once its durable claim step has executed. Any future retry after failure requires an explicit documented stop-rule decision and a new authorization record.
+
+Classification:
+**IMPROVED STRONGLY / AUTHORIZATION CLOSED PASS / DEVELOPMENT R_JOINT V4.2 IN PROGRESS**
