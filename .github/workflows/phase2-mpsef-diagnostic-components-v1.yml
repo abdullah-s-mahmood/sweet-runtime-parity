@@ -1,0 +1,90 @@
+name: Phase 2 MP-SEF Source-Only Diagnostic Components v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/phase2-mpsef-diagnostic-components-v1.yml"
+      - "phase2/redesign/mpsef_build_diagnostic_components_v1.py"
+      - "phase2/redesign/mpsef_rjoint_core_v2.py"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  diagnostic-components:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run scorer-core v2 synthetic scope tests
+        run: |
+          python phase2/redesign/mpsef_rjoint_core_v2.py
+
+      - name: Download frozen P1 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_cf_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download frozen P2 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p2-cf-proposals-v1
+          path: p2_cf_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36768378938
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build source-only diagnostic components
+        run: |
+          python phase2/redesign/mpsef_build_diagnostic_components_v1.py             --p1-proposals p1_cf_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl             --p2-proposals p2_cf_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl             --out-prefix MPSEF_DIAGNOSTIC_COMPONENTS_V1
+
+      - name: Validate diagnostic artifact
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_DIAGNOSTIC_COMPONENTS_V1_SUMMARY.json",encoding="utf-8"))
+          assert s["status"]=="DIAGNOSTIC_COMPONENTS_FROZEN"
+          assert s["records"]==3836
+          assert s["expected_records"]==3836
+          assert s["cases"]==1918
+          assert s["P1_proposal_sha256"]=="2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          assert s["P2_proposal_sha256"]=="f91ab2be10909851d16bc8139fcf6987259de627447c948c45c31c33449cf99b"
+          assert s["gold_reference_consulted"] is False
+          assert s["reference_content_used"] is False
+          assert s["executable_actions_created"] is False
+          assert s["R_joint_computed"] is False
+          assert s["R_raw_computed"] is False
+          print("MPSEF_DIAGNOSTIC_COMPONENTS_SOURCE_ONLY_OK")
+          PY
+
+      - name: Record hashes
+        if: always()
+        run: |
+          sha256sum             phase2/redesign/mpsef_rjoint_core_v2.py             phase2/redesign/mpsef_build_diagnostic_components_v1.py             .github/workflows/phase2-mpsef-diagnostic-components-v1.yml             p1_cf_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl             p2_cf_artifact/MPSEF_P2_CF_PROPOSALS_V1.jsonl             MPSEF_DIAGNOSTIC_COMPONENTS_V1.jsonl             MPSEF_DIAGNOSTIC_COMPONENTS_V1_SUMMARY.json             > MPSEF_DIAGNOSTIC_COMPONENTS_V1_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-diagnostic-components-v1
+          path: |
+            MPSEF_DIAGNOSTIC_COMPONENTS_V1.jsonl
+            MPSEF_DIAGNOSTIC_COMPONENTS_V1_SUMMARY.json
+            MPSEF_DIAGNOSTIC_COMPONENTS_V1_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
