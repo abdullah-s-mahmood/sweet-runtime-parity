@@ -2301,3 +2301,143 @@ R_joint remains BLOCKED.
 
 Exact next step:
 implement `mpsef_rjoint_score_v2.py` so it consumes frozen action sets and never recomputes legality; implement denominator-safe target construction, scoring-failure INVALID semantics, R_clean/complete-repair accounting, and a diagnostic-only R_raw matcher against the frozen diagnostic artifact; then synthetic-only preflight before any project gold measurement.
+
+
+## CHECKPOINT 2026-10-01 — CORRECTED MP-SEF PRE-AUTHORIZATION STACK READY
+
+Independent review remediation has progressed from `MODIFY BEFORE SECOND PREFLIGHT` to a corrected stack ready for the actual Second Premeasurement Preflight V2.
+
+### Exposure / population
+
+- V1 measurement attempt history is frozen in:
+  `phase2/redesign/MPSEF_MEASUREMENT_EXPOSURE_AUDIT_V1.md`
+- cancelled technical attempt reached scorer progress 500/1918; no valid final result exists.
+- operator exposure recollection is explicitly UNKNOWN:
+  `phase2/redesign/MPSEF_OPERATOR_EXPOSURE_ATTESTATION_V1.md`
+- governing population remains C_F=1918/764:
+  `phase2/redesign/MPSEF_POPULATION_PRECEDENCE_DECISION_V1.md`
+
+### P2 provenance
+
+Frozen P2 is non-executable in the corrected cycle:
+- 1918/1918 rows have morphology-word / GED-label count mismatch;
+- all P2 hypotheses are source-only `EXECUTION_FAILED:GED_WORD_ALIGNMENT_MISMATCH`;
+- P2 frozen output text is retained historically and is NOT regenerated/rescued.
+
+Audit:
+`phase2/redesign/MPSEF_P2_GED_WORD_ALIGNMENT_PROVENANCE_AUDIT_V1.md`
+
+### Final source-only executable actions
+
+Legalizer V1R1:
+- run: `36808497947`
+- artifact: `11138269108`
+- digest: `sha256:97f60f7d8147dd8cc5378df94a2b506d790086146395720e631c771d0db4fee1`
+- P1_OK=1806
+- P1_PROTECTED_BLOCKED=112
+- P2_EXECUTION_FAILED=1918
+- executable action-set SHA256:
+  `6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a`
+- hypothesis audit SHA256:
+  `b4736383019d017780a8bfe4b076a0cd742e71bccfbb50350da8fa59b7c9ac75`
+- legalizer code SHA256:
+  `f17af03343490f6edba59693babed9ec65c992309eec5a3b32dd68d9b9969686`
+
+Lock:
+`phase2/redesign/MPSEF_SOURCE_ONLY_LEGALIZER_LOCK_V1R1.md`
+
+### Frozen diagnostic evidence
+
+- diagnostic components SHA256:
+  `2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e`
+- records: 3836
+- components: 43207
+- executable=false
+- gold=false
+
+Lock:
+`phase2/redesign/MPSEF_DIAGNOSTIC_COMPONENTS_LOCK_V1.md`
+
+### Corrected scorer stack
+
+Final synthetic preflight:
+- run: `36809271706`
+- artifact: `11138601773`
+- digest: `sha256:245cab3d87e2f2960fcc4ce72b1a3575b31687b6397b3046558a79c7939c388c`
+
+Final hashes:
+- `mpsef_rjoint_core_v2.py`:
+  `b9f8c81706c266b75786e04a4363f8af8a5900eb9629acc99dac15ad72389d3c`
+- `mpsef_rjoint_score_v2.py`:
+  `948e7db182237b2af93b08f31ba9677b2c7cff83f284072d0ed2697039e41ead`
+
+Scorer V2:
+- rejects punctuation-classifier bug;
+- rejects no-op and multiple-reference targets;
+- rejects duplicate target credit;
+- uses whole-action oracle only;
+- scoring failures produce [L,U], not known zero;
+- reports R_clean, complete repair, family/macro intervals, weak-family routes, per-sentence audit, candidate-size stats;
+- R_raw remains diagnostic-only;
+- project measurement CLI is disabled.
+
+Lock:
+`phase2/redesign/MPSEF_SCORER_V2_FINAL_SYNTHETIC_PREFLIGHT_LOCK.md`
+
+### One-shot measurement guard architecture
+
+Frozen experiment ID:
+`MPSEF-RJOINT-V2-CF1918-20261001-A`
+
+Files:
+- `phase2/redesign/MPSEF_RJOINT_EXPERIMENT_ID_V2.json`
+- `phase2/redesign/mpsef_measurement_guard_v2.py`
+- `phase2/redesign/mpsef_cf_gold_projection_v2.py`
+- `phase2/redesign/mpsef_rjoint_measurement_v2.py`
+- `.github/workflows/phase2-mpsef-rjoint-measurement-v2.yml`
+
+One-shot sequence:
+1. read authorization + independent review from trigger commit;
+2. require diff from frozen code commit to contain exactly corrected review + authorization;
+3. checkout exact second-preflight code commit;
+4. validate second-preflight summary SHA;
+5. validate implementation/contract hashes;
+6. verify source-only artifacts;
+7. rerun all non-gold smoke tests;
+8. write durable `acad-pass/mpsef-rjoint-v2-consumed` status;
+9. only then permit project gold download;
+10. cancelled/failed after claim = permanently consumed; no rerun.
+
+Measurement runner has a frozen 60-second per-action scorer timeout.
+A timeout becomes scoring uncertainty and [L,U], not known-zero.
+Long-process progress is published without metric values.
+
+### Corrected independent review gate
+
+Prepared BEFORE second preflight:
+- `phase2/redesign/MPSEF_CORRECTED_PREAUTH_REVIEW_PACKAGE_V2.md`
+- `phase2/redesign/MPSEF_HIGHER_MODEL_CORRECTED_REVIEW_PROMPT_V2.md`
+- `phase2/redesign/MPSEF_RJOINT_MEASUREMENT_AUTHORIZATION_V2_TEMPLATE.json`
+
+Required independent-review GO line:
+`DECISION: GO TO MEASUREMENT AUTHORIZATION`
+
+Actual authorization remains nonexistent and measurement remains unauthorized.
+
+### C01-C22
+
+Machine-checkable implementation:
+`phase2/redesign/mpsef_second_preflight_checks_v2.py`
+
+The next and only authorized execution is:
+**Second Premeasurement Preflight V2, synthetic/source-only, with no project gold and no metric.**
+
+After a PASS:
+- make NO repository code/doc changes;
+- give exact code commit + run ID to the higher model;
+- if verdict is MODIFY/STOP, do not authorize;
+- if and only if verdict is GO, commit the exact review report, then create the active authorization as the only other diff;
+- measurement still occurs only through the one-shot guarded workflow.
+
+Current classification:
+**IMPROVED METHODOLOGICAL VALIDITY / P2 EXECUTABILITY WORSENED TO ZERO / CORRECTED QUALITY PERFORMANCE STILL UNMEASURED**
