@@ -3021,3 +3021,49 @@ Lock:
 
 Next:
 P3 source-only Stage1 using exact P1 parent outputs on the same frozen 128-case packet.
+
+
+## 2026-10-01 — P3_V1 Stage1 source-only COMPLETE
+
+Successful run:
+`36877195995`
+
+Artifact:
+`11169788003`
+
+Artifact digest:
+`sha256:57dc36332f24df3e3bf09367f8ca0a1a99e998dd4c6939fe6bc7bbbb3093ab5e`
+
+Results:
+- monitored work: 144/144 = 100%
+- execution OK: 128/128 = 100%
+- batch-vs-single parity: 8/8
+- exact frozen P1 parent reused: true
+- P1 rerun: false
+- identical to P1: 6/128 = 4.6875%
+- changed from P1: 122/128 = 95.3125%
+
+Stage-B domain relative to P1:
+- MIXED_FROM_P1: 118/128 = 92.1875%
+- PUNCTUATION_ONLY_FROM_P1: 4/128 = 3.125%
+- NO_CHANGE_FROM_P1: 6/128 = 4.6875%
+
+Main 128-case Pnx pass:
+- 22.186 s total
+- ~0.157 s/case allocated median
+- p95 ~0.166 s
+- peak RSS ~1.30 GiB
+
+Historical failed attempt:
+- run `36876431628`
+- 0/144 inference
+- runtime dependency parity defect
+- repaired by restoring frozen P1 dependency stack.
+
+No gold/reference, no quality metric, no R_joint, no selector training.
+
+Architecture signal:
+P3 is mostly MIXED relative to P1 rather than punctuation-only on this packet. This is not a correctness judgment; it makes legal/protection/marginal-diversity analysis mandatory before retention.
+
+Next:
+V4 source-only legal/dedup/diversity analysis over P1/P2_V2/P3.
