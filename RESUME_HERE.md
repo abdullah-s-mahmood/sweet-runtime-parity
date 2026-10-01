@@ -3807,3 +3807,72 @@ Exact next action on the next user continuation:
 
 Current classification:
 **IMPROVED STRONGLY / EXACT AUTHORIZATION PASS / ONE-SHOT DEVELOPMENT R_JOINT V4.2 RUNNING**
+## 2026-10-02 — Runtime environment identity hardening discovered before gold; prior authorization fail-closed
+
+During final measurement-workflow design, an additional B02 reproducibility gap was found BEFORE any gold access:
+
+The V4.2 production wrapper verified:
+- dependency-lock file SHA256;
+- Python major/minor;
+- Arabic-GEC git revision;
+
+but did not independently verify the ACTUAL installed versions of:
+- numpy;
+- editdistance;
+
+despite those versions being frozen in the dependency lock.
+
+This was treated as a genuine environment-identity gap, not ignored.
+
+Repairs committed:
+- production wrapper now parses the dependency contract and verifies actual installed package versions and runtime policies before any gold access;
+- wrapper result records runtime dependency identity;
+- wrapper preflight expanded from 14 to 16 cases:
+  - runtime package-version mismatch must fail closed;
+  - runtime measurement-policy mismatch must fail closed.
+- combined pre-gold workflow updated to install exact:
+  - numpy==1.23.5
+  - editdistance==0.6.2
+
+Commits:
+- wrapper runtime enforcement: `07bed9062757e96ce40c531e772f18d70ffe8303`
+- wrapper preflight expansion: `fce41376558f7c53240b906608836759fafcbd21`
+- combined preflight workflow update: `f7353bd2693654a78d49a353ba04485683e79f45`
+
+The updated combined preflight was inspected three times in this continuation; no status was exposed yet. Polling stopped per protocol.
+
+Because wrapper semantics/identity changed AFTER the earlier input-lock/authorization:
+- previous single-run authorization SHA `5bb5727e6fea6d7b89e0180656660713ee1d301f1dcf4134755d47385d1cfc28` is now SUPERSEDED and fail-closed;
+- previous input-lock SHA `3f3e4bd95bbd5d49ad71ec58466573d56a476eefcf0cdc3719c2c732d3de19d0` is now SUPERSEDED pending re-freeze.
+
+Fail-close commits:
+- authorization superseded: `75b8afcb65831d41ff3e4642c5af708c4a58bf14`
+- input lock superseded: `ec3e7793a9c4286d3928ebeacc8d6269f3bdf7e9`
+
+Consumption guard remains verified:
+- status: PASS
+- SHA256: `895128860ba4e03f287b91c56d3505f5df5a9c31292a5555088654aedd468070`
+- consumed context: `acad-pass/v4-2-rjoint-consumed`
+- no consumption claim has been made yet.
+
+Scientific boundary remains:
+- project gold newly opened: false
+- real R_joint computed: false
+- P4 used: false
+- selector trained: false
+- family consensus activated: false
+- LLM judge used: false
+- internal/stress/reserved populations opened: false
+
+Exact next sequence:
+1. inspect updated pre-gold workflow commit `f7353bd2693654a78d49a353ba04485683e79f45` once on next continuation;
+2. if scorer 33/33 and wrapper 16/16 PASS, capture new wrapper/test/result SHA256;
+3. re-freeze production input-lock with the new runtime-verifying wrapper identity;
+4. publish/capture new input-lock SHA256;
+5. issue and validate a new exact-SHA-bound single-run authorization;
+6. freeze measurement workflow + one-shot execution manifest;
+7. claim consumption BEFORE gold access;
+8. only then execute one DEVELOPMENT-only V4.2 R_joint run.
+
+Classification:
+**MIXED BUT SCIENTIFICALLY IMPROVED / RUNTIME REPRODUCIBILITY HARDENED / TEMPORARY AUTHORIZATION ROLLBACK / GOLD REMAINS CLOSED**
