@@ -4129,3 +4129,91 @@ Exact next action:
 2. if measurement completed, freeze summary/per-sentence/environment/hash outputs before interpretation;
 3. if failed after consumption, DO NOT rerun automatically — apply the documented technical stop-rule and preserve the failure;
 4. after frozen result exists, perform result analysis and the required end-of-phase fresh research/red-team before architecture closure.
+## 2026-10-02 — V4.2 DEVELOPMENT measurement completed and formally closed
+
+One-shot workflow:
+`36940844664`
+
+Conclusion:
+`success`
+
+Consumed status:
+`acad-pass/v4-2-rjoint-consumed = success`
+
+Frozen artifact:
+- id: 11200024879
+- digest: `sha256:10ecdb75b5d80540d2c9ddf5e94672e8d64bbe3eb685ca3f53d63789c3d308af`
+
+Frozen result files:
+- summary SHA256:
+  `5a649c5e050b34679e27958814201d49a948e039c38961032ced263bdacddc91`
+- per-sentence SHA256:
+  `0e6c51435e978c1c917b9a37a361fad1a5fe4f65da6e18b17759ad2ecb67cc50`
+
+Evidence lock:
+`phase2/redesign/MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_EVIDENCE_LOCK_V1.md`
+commit:
+`fdad9788e152f1747a2a695973eb04a594e7b3cf`
+
+Result analysis:
+`phase2/redesign/MPSEF_RJOINT_V4_2_DEVELOPMENT_RESULT_ANALYSIS_V1.md`
+commit:
+`fe130325130f073f5e97704a5f7eecd7b040c165`
+
+Closure lock:
+`phase2/redesign/MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_CLOSURE_LOCK_V1.md`
+commit:
+`fa1cee35f3fdaa5aaade3efdc7e2c4621c5f928c`
+
+Frozen result:
+- primary target denominator: 9,679
+- ROSTER primary recovery: 72.2285–72.2699%
+- SWEET: 66.9284–66.9697%
+- SEQ2SEQ: 58.6941%
+- ROSTER over SWEET: +5.26 to +5.34 pp / +509 to +517 targets
+- 95% candidate-availability gate: FAIL
+- 95% requirement: 9,196 targets
+- ROSTER upper: 6,995
+- deficit: 2,201 targets / 22.7301 pp
+- ROSTER clean whole-action recovery: 23.6491–23.6905%
+- ROSTER primary complete repair: 21.8884–21.9421%
+- scoring failures: 12 group records across only 2 UIDs
+
+Architecture disposition:
+- P1 KEEP
+- P2 KEEP
+- P3 KEEP as same-family diagnostic alternate / DEFER as primary product route
+- current whole-sentence ROSTER: DO NOT TRAIN SELECTOR YET
+- selector: DEFER
+- family consensus: DEFER
+- generic LLM judge: DEFER as primary
+- prior specific P4: DEFER pending provenance/overlap audit
+- candidate representation: REPAIR / REDESIGN
+
+Reason:
+current candidate union fails the frozen 95% candidate-availability gate by 2,201 targets. A selector cannot recover absent candidates.
+
+Fresh end-gate research reviewed:
+- ArbESC+ (2025) — Arabic edit-selection/system combination
+- STAGEET (2026) — staged typed edit tagging
+- JELV (AAAI 2026) — limited-reference edit validity
+- CLEME2.0 (ACL 2025) — edit-disentangled evaluation
+
+C_F is now permanently:
+`ADAPTIVELY_CONSUMED DEVELOPMENT / NOT CLEAN HOLDOUT`
+
+No silent V4.2 rerun is authorized.
+
+Current formal next gate:
+`POST-V4.2 CANDIDATE ARCHITECTURE REDESIGN GATE`
+
+Required next order:
+1. source-only brainstorming/red-team;
+2. provenance audit for new candidate families;
+3. edit-level representation/conflict contract;
+4. freeze a new untouched future evaluation population before gold-aware tuning;
+5. source-free preflight;
+6. independent review before opening any new references.
+
+Phase status:
+**V4.2 DEVELOPMENT MEASUREMENT STAGE = 100% CLOSED.**
