@@ -9,7 +9,6 @@ on:
       - ".github/workflows/phase2-mpsef-scorer-v2-synthetic-preflight.yml"
       - "phase2/redesign/mpsef_rjoint_core_v2.py"
       - "phase2/redesign/mpsef_rjoint_score_v2.py"
-      - "phase2/redesign/mpsef_executable_actions_legalizer_v1.py"
 
 permissions:
   contents: read
@@ -57,7 +56,7 @@ jobs:
           name: mpsef-source-only-legalizer-v1
           path: legalizer_artifact
           repository: abdullah-s-mahmood/sweet-runtime-parity
-          run-id: 36807189754
+          run-id: 36808497947
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download frozen diagnostic artifact
@@ -72,7 +71,7 @@ jobs:
       - name: Validate frozen source-only evidence hashes
         run: |
           test "$(sha256sum legalizer_artifact/MPSEF_EXECUTABLE_ACTIONS_V1_ACTION_SETS.jsonl | awk '{print $1}')" = "6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a"
-          test "$(sha256sum legalizer_artifact/MPSEF_EXECUTABLE_ACTIONS_V1_HYPOTHESES.jsonl | awk '{print $1}')" = "c91195a66a687ba8acf12d1b1e51741183b28992f89681c8510cdac8fddf9e14"
+          test "$(sha256sum legalizer_artifact/MPSEF_EXECUTABLE_ACTIONS_V1_HYPOTHESES.jsonl | awk '{print $1}')" = "b4736383019d017780a8bfe4b076a0cd742e71bccfbb50350da8fa59b7c9ac75"
           test "$(sha256sum diagnostic_artifact/MPSEF_DIAGNOSTIC_COMPONENTS_V1.jsonl | awk '{print $1}')" = "2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e"
           python - <<'PY'
           import json
@@ -100,7 +99,7 @@ jobs:
             "project_metric_computed":False,
             "scorer_project_cli_enabled":False,
             "executable_actions_sha256":"6831756520ea346d08203572831b4ac948fdf3ef4487daf18945cf6ac01ef37a",
-            "hypotheses_sha256":"c91195a66a687ba8acf12d1b1e51741183b28992f89681c8510cdac8fddf9e14",
+            "hypotheses_sha256":"b4736383019d017780a8bfe4b076a0cd742e71bccfbb50350da8fa59b7c9ac75",
             "diagnostic_components_sha256":"2490a6f924d06cbc8240c1396763151d9cbbc4ed172a1de7f4876e56842f491e",
             "core_v2_sha256":sha("phase2/redesign/mpsef_rjoint_core_v2.py"),
             "scorer_v2_sha256":sha("phase2/redesign/mpsef_rjoint_score_v2.py"),
