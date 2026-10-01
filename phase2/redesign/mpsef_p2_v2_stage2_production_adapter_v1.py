@@ -132,49 +132,79 @@ def infer_ged_with_preserved_segments(words, tokenizer, model, segments):
     trace = []
     logits_shapes = []
 
-    with torch.no_grad():
-        for seg in segments:
-            ids = torch.tensor([seg["input_ids"]], dtype=torch.long)
-            mask = torch.tensor([seg["attention_mask"]], dtype=torch.long)
-            types = torch.tensor([seg["token_type_ids"]], dtype=torch.long)
-            logits = model(
-                input_ids=ids,
-                attention_mask=mask,
-                token_type_ids=types,
-            ).logits[0]
-            logits_shapes.append(list(logits.shape))
-            pred_ids = logits.argmax(dim=-1).tolist()
-            if len(pred_ids) != len(seg["input_ids"]):
-                raise Stage0Error("GED_LOGIT_LENGTH_MISMATCH")
+    def attach_and_raise(exc):
+        evidence = {
+            "partial_ged_word_identity_trace": sorted(
+                trace, key=lambda x: x["morph_word_index"]
+            ),
+            "partial_ged_logits_shapes": list(logits_shapes),
+            "partial_ged_word_labels_by_index": {
+                str(k): v for k, v in sorted(by_word.items())
+            },
+        }
+        setattr(exc, "p2_stage2_ged_evidence", evidence)
+        raise exc
 
-            for wr in seg["word_records"]:
-                wi = wr["morph_word_index"]
-                if wi in by_word:
-                    raise Stage0Error(f"GED_DUPLICATE_WORD_INDEX:{wi}")
-                p = wr["ged_first_wordpiece_index"]
-                if seg["label_mask"][p] == -100:
-                    raise Stage0Error("GED_FIRST_WORDPIECE_MASKED")
-                for q in range(
-                    wr["ged_wordpiece_start"] + 1,
-                    wr["ged_wordpiece_end"],
-                ):
-                    if seg["label_mask"][q] != -100:
-                        raise Stage0Error(
-                            "GED_NONFIRST_WORDPIECE_UNMASKED"
+    try:
+        with torch.no_grad():
+            for seg in segments:
+                ids = torch.tensor([seg["input_ids"]], dtype=torch.long)
+                mask = torch.tensor([seg["attention_mask"]], dtype=torch.long)
+                types = torch.tensor([seg["token_type_ids"]], dtype=torch.long)
+                logits = model(
+                    input_ids=ids,
+                    attention_mask=mask,
+                    token_type_ids=types,
+                ).logits[0]
+                logits_shapes.append(list(logits.shape))
+                pred_ids = logits.argmax(dim=-1).tolist()
+                if len(pred_ids) != len(seg["input_ids"]):
+                    attach_and_raise(
+                        Stage0Error("GED_LOGIT_LENGTH_MISMATCH")
+                    )
+
+                for wr in seg["word_records"]:
+                    wi = wr["morph_word_index"]
+                    if wi in by_word:
+                        attach_and_raise(
+                            Stage0Error(
+                                f"GED_DUPLICATE_WORD_INDEX:{wi}"
+                            )
                         )
-                pid = int(pred_ids[p])
-                label = model.config.id2label[pid]
-                by_word[wi] = label
-                trace.append({
-                    **wr,
-                    "ged_prediction_position": p,
-                    "ged_label_id": pid,
-                    "ged_label_name": label,
-                })
+                    p = wr["ged_first_wordpiece_index"]
+                    if seg["label_mask"][p] == -100:
+                        attach_and_raise(
+                            Stage0Error("GED_FIRST_WORDPIECE_MASKED")
+                        )
+                    for q in range(
+                        wr["ged_wordpiece_start"] + 1,
+                        wr["ged_wordpiece_end"],
+                    ):
+                        if seg["label_mask"][q] != -100:
+                            attach_and_raise(
+                                Stage0Error(
+                                    "GED_NONFIRST_WORDPIECE_UNMASKED"
+                                )
+                            )
+                    pid = int(pred_ids[p])
+                    label = model.config.id2label[pid]
+                    by_word[wi] = label
+                    trace.append({
+                        **wr,
+                        "ged_prediction_position": p,
+                        "ged_label_id": pid,
+                        "ged_label_name": label,
+                    })
+    except Stage0Error:
+        raise
+    except Exception as exc:
+        attach_and_raise(exc)
 
     if set(by_word) != set(range(len(words))):
-        raise Stage0Error(
-            f"GED_WORD_COVERAGE_FAILED:{sorted(by_word)}"
+        attach_and_raise(
+            Stage0Error(
+                f"GED_WORD_COVERAGE_FAILED:{sorted(by_word)}"
+            )
         )
 
     labels = [by_word[i] for i in range(len(words))]
@@ -184,8 +214,10 @@ def infer_ged_with_preserved_segments(words, tokenizer, model, segments):
             rec["morph_word_index"] != i
             or rec["morph_word_text"] != words[i]
         ):
-            raise Stage0Error(
-                "GED_WORD_IDENTITY_ORDER_OR_TEXT_MISMATCH"
+            attach_and_raise(
+                Stage0Error(
+                    "GED_WORD_IDENTITY_ORDER_OR_TEXT_MISMATCH"
+                )
             )
 
     return labels, trace, logits_shapes
@@ -349,6 +381,7 @@ def base_record(row):
         "gold_reference_consulted": False,
         "quality_scored": False,
         "morph_words": None,
+        "morph_word_count": None,
         "morphology_sha256": None,
         "ged_segments": None,
         "ged_segment_count": None,
@@ -368,6 +401,10 @@ def base_record(row):
         "generation_hit_ceiling": None,
         "decoder_prefix_equals_eos": None,
         "ged_embedding_hook_calls": None,
+        "ged_embedding_hook_call_count": None,
+        "partial_ged_word_identity_trace": None,
+        "partial_ged_logits_shapes": None,
+        "partial_ged_word_labels_by_index": None,
         "runtime_seconds": None,
     }
 
@@ -386,6 +423,10 @@ def apply_generation_evidence(rec, evidence):
     ):
         if key in evidence:
             rec[key] = evidence[key]
+    if isinstance(rec.get("ged_embedding_hook_calls"), list):
+        rec["ged_embedding_hook_call_count"] = len(
+            rec["ged_embedding_hook_calls"]
+        )
 
 
 def run_one(row, models):
@@ -410,6 +451,7 @@ def run_one(row, models):
         current_stage = "MORPH_ANALYSIS"
         words = morph_words(disambig, row["source"])
         rec["morph_words"] = words
+        rec["morph_word_count"] = len(words)
         rec["morphology_sha256"] = sha_json(words)
         stage_pass(rec["stage_status"], "MORPH_ANALYSIS")
 
@@ -475,6 +517,19 @@ def run_one(row, models):
         stage_pass(rec["stage_status"], "OUTPUT_DECODE")
 
     except Exception as exc:
+        ged_evidence = getattr(
+            exc, "p2_stage2_ged_evidence", None
+        )
+        if isinstance(ged_evidence, dict):
+            rec["partial_ged_word_identity_trace"] = (
+                ged_evidence.get("partial_ged_word_identity_trace")
+            )
+            rec["partial_ged_logits_shapes"] = (
+                ged_evidence.get("partial_ged_logits_shapes")
+            )
+            rec["partial_ged_word_labels_by_index"] = (
+                ged_evidence.get("partial_ged_word_labels_by_index")
+            )
         evidence = getattr(
             exc, "p2_stage2_generation_evidence", None
         )
