@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.metadata
 import json
 import platform
 import signal
@@ -110,6 +111,67 @@ def git_revision(root):
     ).strip()
 
 
+def parse_dependency_lock(path):
+    out = {}
+    for raw in Path(path).read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        out[key.strip()] = value.strip()
+    return out
+
+
+def validate_runtime_dependency_contract(path, upstream_root, input_lock):
+    dep = parse_dependency_lock(path)
+    required = {
+        "python_major_minor",
+        "arabic_gec_revision",
+        "numpy",
+        "editdistance",
+        "network_download_during_measurement",
+        "model_inference_during_measurement",
+    }
+    missing = sorted(required - set(dep))
+    if missing:
+        raise RuntimeError("DEPENDENCY_LOCK_FIELDS_MISSING:" + ",".join(missing))
+
+    actual_python = f"{sys.version_info.major}.{sys.version_info.minor}"
+    if dep["python_major_minor"] != actual_python:
+        raise RuntimeError("DEPENDENCY_VERSION_MISMATCH:python")
+    if dep["python_major_minor"] != input_lock.get("python_version"):
+        raise RuntimeError("DEPENDENCY_INPUT_LOCK_MISMATCH:python")
+
+    actual_rev = git_revision(upstream_root)
+    if dep["arabic_gec_revision"] != actual_rev:
+        raise RuntimeError("DEPENDENCY_REVISION_MISMATCH:arabic_gec")
+    if dep["arabic_gec_revision"] != input_lock.get("arabic_gec_revision"):
+        raise RuntimeError("DEPENDENCY_INPUT_LOCK_MISMATCH:arabic_gec")
+
+    versions = {}
+    for pkg in ("numpy", "editdistance"):
+        try:
+            actual = importlib.metadata.version(pkg)
+        except importlib.metadata.PackageNotFoundError as exc:
+            raise RuntimeError(f"DEPENDENCY_PACKAGE_MISSING:{pkg}") from exc
+        if actual != dep[pkg]:
+            raise RuntimeError(f"DEPENDENCY_VERSION_MISMATCH:{pkg}")
+        versions[pkg] = actual
+
+    if dep["network_download_during_measurement"] != "forbidden":
+        raise RuntimeError("DEPENDENCY_POLICY_MISMATCH:network_download")
+    if dep["model_inference_during_measurement"] != "forbidden":
+        raise RuntimeError("DEPENDENCY_POLICY_MISMATCH:model_inference")
+
+    return {
+        "python_major_minor": actual_python,
+        "arabic_gec_revision": actual_rev,
+        "package_versions": versions,
+        "network_download_during_measurement": "forbidden",
+        "model_inference_during_measurement": "forbidden",
+    }
+
+
 def require_authorization(auth_path, input_lock_path):
     auth = read_json(auth_path)
     if auth.get("record_id") != AUTH_RECORD_ID:
@@ -213,6 +275,10 @@ def validate_pre_gold_inputs(
     wrapper_path,
     upstream_root,
 ):
+    runtime_dependency_identity = validate_runtime_dependency_contract(
+        dependency_lock, upstream_root, input_lock
+    )
+
     checks = {
         "source_manifest_sha256": sha256_file(source_manifest),
         "action_set_sha256": sha256_file(action_sets),
@@ -221,7 +287,9 @@ def validate_pre_gold_inputs(
         "core_sha256": sha256_file(core_path),
         "wrapper_sha256": sha256_file(wrapper_path),
         "python_version": f"{sys.version_info.major}.{sys.version_info.minor}",
-        "arabic_gec_revision": git_revision(upstream_root),
+        "arabic_gec_revision": runtime_dependency_identity["arabic_gec_revision"],
+        "numpy_version": runtime_dependency_identity["package_versions"]["numpy"],
+        "editdistance_version": runtime_dependency_identity["package_versions"]["editdistance"],
     }
     for key, actual in checks.items():
         expected = input_lock.get(key)
@@ -245,6 +313,7 @@ def validate_pre_gold_inputs(
     if EXPECTED_CAL_UID_SHA != input_lock["calibration_uid_sha256"]:
         raise RuntimeError("CALIBRATION_UID_LOCK_MISMATCH")
 
+    checks["runtime_dependency_identity"] = runtime_dependency_identity
     return source_rows, action_rows, pop, checks
 
 
@@ -405,6 +474,7 @@ def main():
         "provenance_signature_map_sha256":
             pop["provenance_signature_map_sha256"],
         "wrapper_sha256": checks["wrapper_sha256"],
+        "runtime_dependency_identity": checks["runtime_dependency_identity"],
         "gold_projection_version": GOLD_PROJECTION_VERSION,
         "gold_projection_in_memory_sha256": projection_sha,
         "consumption_claimed_before_gold_access": True,
