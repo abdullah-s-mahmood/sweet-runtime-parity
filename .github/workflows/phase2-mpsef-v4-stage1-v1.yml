@@ -1,0 +1,602 @@
+name: Phase 2 MP-SEF V4 Stage1 Source-Only
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/redesign/MPSEF_V4_STAGE1_EXECUTION_AUTHORIZATION_V1.md"
+
+permissions:
+  contents: read
+  actions: read
+  statuses: write
+
+jobs:
+  freeze:
+    name: Freeze identities registry and Stage1 packet
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install identity-freeze tooling
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install "huggingface_hub==0.16.4"
+
+      - name: Freeze exact Pnx model identity without project source
+        env:
+          HF_HUB_DISABLE_TELEMETRY: "1"
+        run: |
+          python - <<'PY'
+          import hashlib, json, shutil
+          from pathlib import Path
+          from huggingface_hub import HfApi, snapshot_download
+
+          repo_id="CAMeL-Lab/text-editing-qalb14-pnx"
+          info=HfApi().model_info(repo_id=repo_id)
+          rev=info.sha
+          if not isinstance(rev,str) or len(rev)!=40:
+              raise RuntimeError(f"invalid Hugging Face revision: {rev!r}")
+
+          src=Path(snapshot_download(
+              repo_id=repo_id,
+              revision=rev,
+              local_dir="pnx_identity_model",
+              local_dir_use_symlinks=False,
+          ))
+          weight=src/"pytorch_model.bin"
+          config=src/"config.json"
+          if not weight.exists() or not config.exists():
+              raise RuntimeError("expected Pnx pytorch_model.bin/config.json missing")
+
+          def sha_file(p):
+              h=hashlib.sha256()
+              with p.open("rb") as f:
+                  for chunk in iter(lambda:f.read(1024*1024),b""):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          tok_names=[
+              "vocab.txt","tokenizer.json","tokenizer_config.json",
+              "special_tokens_map.json","added_tokens.json"
+          ]
+          tok_files=[src/x for x in tok_names if (src/x).exists()]
+          if not tok_files:
+              raise RuntimeError("no tokenizer identity files found")
+          h=hashlib.sha256()
+          for p in sorted(tok_files,key=lambda x:x.name):
+              h.update(p.name.encode())
+              h.update(b"\0")
+              h.update(p.read_bytes())
+              h.update(b"\0")
+
+          out={
+              "record_id":"MPSEF_V4_P3_PNX_IDENTITY_V1",
+              "repo_id":repo_id,
+              "revision":rev,
+              "weight_sha256":sha_file(weight),
+              "config_sha256":sha_file(config),
+              "tokenizer_identity_sha256":h.hexdigest(),
+              "tokenizer_files":[p.name for p in sorted(tok_files,key=lambda x:x.name)],
+              "project_source_loaded":False,
+              "project_gold_loaded":False,
+              "quality_metric_computed":False,
+          }
+          Path("MPSEF_V4_P3_PNX_IDENTITY_V1.json").write_text(
+              json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Download frozen historical P1 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate frozen P1/source manifest identities
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          src=Path("p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl")
+          prop=Path("p1_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl")
+          s=json.load(open("p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1_SUMMARY.json",encoding="utf-8"))
+          p=json.load(open("p1_artifact/MPSEF_P1_CF_PROPOSALS_V1_SUMMARY.json",encoding="utf-8"))
+          assert hashlib.sha256(src.read_bytes()).hexdigest()=="051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          assert p["proposal_artifact_sha256"]=="2ff2ff6ed837e902eeea93856ce4753966e9ecec6b497b681ecc185b260e300d"
+          assert hashlib.sha256(prop.read_bytes()).hexdigest()==p["proposal_artifact_sha256"]
+          assert s["cases"]==1918 and s["clusters"]==764
+          assert s["reference_content_used"] is False
+          assert s["gold_edit_content_used"] is False
+          assert p["gold_reference_consulted"] is False
+          assert p["feasibility_metric_computed"] is False
+          print("FROZEN_P1_AND_SOURCE_MANIFEST_IDENTITY_PASS")
+          PY
+
+      - name: Build canonical Stage1 registry
+        run: |
+          python phase2/redesign/mpsef_v4_build_stage1_registry_v1.py \
+            --pnx-identity MPSEF_V4_P3_PNX_IDENTITY_V1.json \
+            --stage1-workflow .github/workflows/phase2-mpsef-v4-stage1-v1.yml \
+            --code-commit "${GITHUB_SHA}" \
+            --out MPSEF_V4_PROPOSER_REGISTRY_V2.json
+
+      - name: Build deterministic 128 UID / 128 cluster packet
+        run: |
+          REG_SHA="$(sha256sum MPSEF_V4_PROPOSER_REGISTRY_V2.json | awk '{print $1}')"
+          python phase2/redesign/mpsef_v4_build_stage1_packet_v1.py \
+            --source-manifest p1_artifact/MPSEF_CF_SOURCE_MANIFEST_V1.jsonl \
+            --registry-sha256 "$REG_SHA" \
+            --out-prefix MPSEF_V4_STAGE1_PACKET_V1
+
+      - name: Validate frozen Stage1 packet
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          s=json.load(open("MPSEF_V4_STAGE1_PACKET_V1_SUMMARY.json",encoding="utf-8"))
+          rows=[json.loads(x) for x in open("MPSEF_V4_STAGE1_PACKET_V1.jsonl",encoding="utf-8") if x.strip()]
+          reg_sha=hashlib.sha256(Path("MPSEF_V4_PROPOSER_REGISTRY_V2.json").read_bytes()).hexdigest()
+          assert s["status"]=="PASS"
+          assert len(rows)==128==s["packet_cases"]
+          assert len({x["cluster_id"] for x in rows})==128==s["packet_clusters"]
+          assert s["registry_sha256"]==reg_sha
+          assert s["source_manifest_sha256"]=="051516cdce384c5fe50afb2ce80fe12d8cd8fb65b06ba31c3209301f91a7e193"
+          assert s["project_gold_loaded"] is False
+          assert s["quality_metric_computed"] is False
+          assert s["r_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["proposer_output_consulted_for_selection"] is False
+          assert s["internal_evaluation_opened"] is False
+          assert s["stress_diagnostic_opened"] is False
+          assert s["reserved_data_opened"] is False
+          print("V4_STAGE1_PACKET_FREEZE_PASS")
+          PY
+
+      - name: Freeze identity and packet hashes
+        run: |
+          sha256sum \
+            MPSEF_V4_P3_PNX_IDENTITY_V1.json \
+            MPSEF_V4_PROPOSER_REGISTRY_V2.json \
+            MPSEF_V4_STAGE1_PACKET_V1.jsonl \
+            MPSEF_V4_STAGE1_PACKET_V1_SUMMARY.json \
+            MPSEF_V4_STAGE1_PACKET_V1_UIDS.txt \
+            MPSEF_V4_STAGE1_PACKET_V1_CLUSTERS.txt \
+            MPSEF_V4_STAGE1_PACKET_V1_SOURCE_ROW_HASHES.json \
+            phase2/redesign/mpsef_v4_build_stage1_registry_v1.py \
+            phase2/redesign/mpsef_v4_build_stage1_packet_v1.py \
+            .github/workflows/phase2-mpsef-v4-stage1-v1.yml \
+            > MPSEF_V4_STAGE1_FREEZE_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-v4-stage1-freeze-v1
+          path: |
+            MPSEF_V4_P3_PNX_IDENTITY_V1.json
+            MPSEF_V4_PROPOSER_REGISTRY_V2.json
+            MPSEF_V4_STAGE1_PACKET_V1.jsonl
+            MPSEF_V4_STAGE1_PACKET_V1_SUMMARY.json
+            MPSEF_V4_STAGE1_PACKET_V1_UIDS.txt
+            MPSEF_V4_STAGE1_PACKET_V1_CLUSTERS.txt
+            MPSEF_V4_STAGE1_PACKET_V1_SOURCE_ROW_HASHES.json
+            MPSEF_V4_STAGE1_FREEZE_SHA256.txt
+          retention-days: 90
+
+  p2:
+    name: Run P2_V2 Stage1 source-only proposals
+    needs: freeze
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage1-freeze-v1
+          path: freeze
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Clone frozen Arabic-GEC implementation
+        run: |
+          git clone https://github.com/CAMeL-Lab/arabic-gec.git upstream/arabic-gec
+          git -C upstream/arabic-gec checkout 8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf
+          test "$(git -C upstream/arabic-gec rev-parse HEAD)" = "8c7fb84f3ed84d1d30beb7080b02d0f6bfe1c5bf"
+          grep -q "self.embed_ged_tags = nn.Embedding" upstream/arabic-gec/transformers/src/transformers/models/mbart/modeling_mbart.py
+          grep -q "hidden_states = inputs_embeds + embed_pos + ged_tags_embed" upstream/arabic-gec/transformers/src/transformers/models/mbart/modeling_mbart.py
+
+      - name: Install frozen P2 runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.11.0+cpu"
+          python -m pip install "numpy==1.23.5" "camel-tools==1.4.1" "datasets==2.5.1" "sentencepiece==0.1.99" "protobuf==3.20.3"
+          python -m pip install "huggingface-hub==0.10.1" "tokenizers==0.12.1"
+          python -m pip install --force-reinstall --no-deps ./upstream/arabic-gec/transformers
+          python - <<'PY'
+          import transformers
+          assert transformers.__version__=="4.22.2"
+          from transformers import DataCollatorForSeq2SeqGEC
+          print("P2_MODIFIED_TRANSFORMERS_PASS")
+          PY
+
+      - name: Install frozen morphology resources
+        run: |
+          camel_data -i disambig-bert-unfactored-msa
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          root=Path.home()/".camel_tools"
+          morph=[hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob("morphology.db")]
+          models=[hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob("pytorch_model.bin")]
+          assert "195bc25a333237a2126470da888d7936b59ed3729f9210e0a4194ba43497dd70" in morph
+          assert "a1a22431cdc0934151e4039abbd7890f06ba7c1f914ca71a90eba218401ae539" in models
+          print("P2_MORPH_RESOURCE_PASS")
+          PY
+
+      - name: Download exact frozen GED/GEC revisions
+        run: |
+          python - <<'PY'
+          import shutil
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+          pairs=[
+              ("CAMeL-Lab/camelbert-msa-qalb14-ged-13","447179dc63d186e4bff09a993e90e73ad622d571","p2v2_ged_model"),
+              ("CAMeL-Lab/arabart-qalb14-gec-ged-13","410588a318d988cdcfdbf64cf5745ed4adea0f6a","p2v2_gec_model"),
+          ]
+          for repo,rev,out in pairs:
+              src=Path(snapshot_download(repo_id=repo,revision=rev,cache_dir="hf_cache"))
+              shutil.copytree(src,out,symlinks=False)
+          PY
+          test "$(sha256sum p2v2_ged_model/pytorch_model.bin | awk '{print $1}')" = "23385ffe560860a8f5e9e46e05b66a31c33a4b0bd58e9a718933fdab8161f50f"
+          test "$(sha256sum p2v2_gec_model/pytorch_model.bin | awk '{print $1}')" = "5eadbd894d7ba21e18ca53e118af20858b2e87a4d0b02f41d75e91e33919bb5f"
+
+      - name: Run monitored P2_V2 Stage1 source-only proposals
+        env:
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONUNBUFFERED: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          /usr/bin/time -v -o MPSEF_V4_P2_V2_STAGE1_TIME.txt \
+          python phase2/redesign/run_with_progress_watchdog_v1.py \
+            --state-file MPSEF_V4_P2_V2_STAGE1_PROGRESS.json \
+            --context "mpsef-v4-p2-v2-stage1" \
+            --poll-seconds 20 \
+            --publish-seconds 60 \
+            --stale-seconds 600 \
+            --kill-on-stale \
+            -- \
+            python phase2/redesign/mpsef_p2_v2_stage1_proposals_v1.py \
+              --packet freeze/MPSEF_V4_STAGE1_PACKET_V1.jsonl \
+              --ged-model-dir p2v2_ged_model \
+              --gec-model-dir p2v2_gec_model \
+              --out-prefix MPSEF_V4_P2_V2_STAGE1_PROPOSALS_V1 \
+              --progress-state MPSEF_V4_P2_V2_STAGE1_PROGRESS.json
+
+      - name: Validate P2_V2 Stage1 artifact
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_V4_P2_V2_STAGE1_PROPOSALS_V1_SUMMARY.json",encoding="utf-8"))
+          rows=[json.loads(x) for x in open("MPSEF_V4_P2_V2_STAGE1_PROPOSALS_V1.jsonl",encoding="utf-8") if x.strip()]
+          assert s["status"]=="SOURCE_ONLY_PROPOSALS_READY"
+          assert len(rows)==128==s["cases"]
+          assert len({x["uid"] for x in rows})==128
+          assert len({x["cluster_id"] for x in rows})==128
+          assert sum(s["state_counts"].values())==128
+          assert s["project_gold_loaded"] is False
+          assert s["quality_metric_computed"] is False
+          assert s["r_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["legalizer_run"] is False
+          print("P2_V2_STAGE1_SOURCE_ONLY_PASS")
+          PY
+
+      - name: Freeze P2 environment and hashes
+        if: always()
+        run: |
+          python -m pip freeze > MPSEF_V4_P2_V2_STAGE1_PIP_FREEZE.txt
+          sha256sum \
+            phase2/redesign/mpsef_p2_v2_stage1_proposals_v1.py \
+            phase2/redesign/mpsef_p2_v2_real_model_stage0.py \
+            freeze/MPSEF_V4_STAGE1_PACKET_V1.jsonl \
+            freeze/MPSEF_V4_PROPOSER_REGISTRY_V2.json \
+            MPSEF_V4_P2_V2_STAGE1_PROPOSALS_V1.jsonl \
+            MPSEF_V4_P2_V2_STAGE1_PROPOSALS_V1_SUMMARY.json \
+            MPSEF_V4_P2_V2_STAGE1_PROGRESS.json \
+            MPSEF_V4_P2_V2_STAGE1_TIME.txt \
+            MPSEF_V4_P2_V2_STAGE1_PIP_FREEZE.txt \
+            > MPSEF_V4_P2_V2_STAGE1_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-v4-p2-v2-stage1-v1
+          path: |
+            MPSEF_V4_P2_V2_STAGE1_PROPOSALS_V1.jsonl
+            MPSEF_V4_P2_V2_STAGE1_PROPOSALS_V1_SUMMARY.json
+            MPSEF_V4_P2_V2_STAGE1_PROGRESS.json
+            MPSEF_V4_P2_V2_STAGE1_TIME.txt
+            MPSEF_V4_P2_V2_STAGE1_PIP_FREEZE.txt
+            MPSEF_V4_P2_V2_STAGE1_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
+
+  p3:
+    name: Run P3_V1 parent-bound Stage1 source-only proposals
+    needs: p2
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage1-freeze-v1
+          path: freeze
+
+      - name: Download frozen historical P1 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install frozen SWEET/Pnx runtime
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install --extra-index-url https://download.pytorch.org/whl/cpu "torch==1.12.1+cpu"
+          python -m pip install "transformers==4.30.0" "huggingface_hub==0.16.4" "sentencepiece==0.1.99" "numpy==1.23.5"
+
+      - name: Clone frozen text-editing implementation
+        run: |
+          git clone https://github.com/CAMeL-Lab/text-editing.git upstream/text-editing
+          git -C upstream/text-editing checkout 4d552ca3ae98029550f27fc52aa1b22883e16e61
+          test "$(git -C upstream/text-editing rev-parse HEAD)" = "4d552ca3ae98029550f27fc52aa1b22883e16e61"
+
+      - name: Read frozen Pnx identity and download exact revision
+        run: |
+          python - <<'PY'
+          import json,os
+          r=json.load(open("freeze/MPSEF_V4_PROPOSER_REGISTRY_V2.json",encoding="utf-8"))
+          p=next(x for x in r["proposers"] if x["proposer_id"]=="P3_V1_SWEET_NOPNX2_PNX1")
+          m=p["model_identities"]
+          with open(os.environ["GITHUB_ENV"],"a",encoding="utf-8") as f:
+              f.write("PNX_REV="+m["revision"]+"\n")
+              f.write("PNX_WEIGHT_SHA="+m["weight_sha256"]+"\n")
+          print("PNX_IDENTITY_LOADED",m["revision"],m["weight_sha256"])
+          PY
+          python - <<'PY'
+          import os
+          from huggingface_hub import snapshot_download
+          snapshot_download(
+              repo_id="CAMeL-Lab/text-editing-qalb14-pnx",
+              revision=os.environ["PNX_REV"],
+              local_dir="p3_pnx_model",
+              local_dir_use_symlinks=False,
+          )
+          PY
+          test "$(sha256sum p3_pnx_model/pytorch_model.bin | awk '{print $1}')" = "$PNX_WEIGHT_SHA"
+
+      - name: Run monitored P3_V1 Stage1 source-only proposals
+        env:
+          PYTHONUNBUFFERED: "1"
+          TOKENIZERS_PARALLELISM: "false"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          /usr/bin/time -v -o MPSEF_V4_P3_V1_STAGE1_TIME.txt \
+          python phase2/redesign/run_with_progress_watchdog_v1.py \
+            --state-file MPSEF_V4_P3_V1_STAGE1_PROGRESS.json \
+            --context "mpsef-v4-p3-v1-stage1" \
+            --poll-seconds 20 \
+            --publish-seconds 60 \
+            --stale-seconds 600 \
+            --kill-on-stale \
+            -- \
+            python phase2/redesign/mpsef_p3_v1_stage1_proposals_v1.py \
+              --packet freeze/MPSEF_V4_STAGE1_PACKET_V1.jsonl \
+              --p1-proposals p1_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl \
+              --pnx-model-dir p3_pnx_model \
+              --upstream-root upstream/text-editing \
+              --expected-pnx-revision "$PNX_REV" \
+              --expected-pnx-weight-sha "$PNX_WEIGHT_SHA" \
+              --expected-upstream-revision "4d552ca3ae98029550f27fc52aa1b22883e16e61" \
+              --out-prefix MPSEF_V4_P3_V1_STAGE1_PROPOSALS_V1 \
+              --progress-state MPSEF_V4_P3_V1_STAGE1_PROGRESS.json
+
+      - name: Validate P3_V1 Stage1 artifact
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_V4_P3_V1_STAGE1_PROPOSALS_V1_SUMMARY.json",encoding="utf-8"))
+          rows=[json.loads(x) for x in open("MPSEF_V4_P3_V1_STAGE1_PROPOSALS_V1.jsonl",encoding="utf-8") if x.strip()]
+          assert s["status"]=="SOURCE_ONLY_PROPOSALS_READY"
+          assert len(rows)==128==s["cases"]
+          assert sum(s["state_counts"].values())==128
+          assert s["parity_n"]==32 and s["parity_match"]==32
+          assert s["project_gold_loaded"] is False
+          assert s["quality_metric_computed"] is False
+          assert s["r_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["legalizer_run"] is False
+          print("P3_V1_STAGE1_SOURCE_ONLY_PASS")
+          PY
+
+      - name: Freeze P3 environment and hashes
+        if: always()
+        run: |
+          python -m pip freeze > MPSEF_V4_P3_V1_STAGE1_PIP_FREEZE.txt
+          sha256sum \
+            phase2/redesign/mpsef_p3_v1_stage1_proposals_v1.py \
+            freeze/MPSEF_V4_STAGE1_PACKET_V1.jsonl \
+            freeze/MPSEF_V4_PROPOSER_REGISTRY_V2.json \
+            p1_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl \
+            MPSEF_V4_P3_V1_STAGE1_PROPOSALS_V1.jsonl \
+            MPSEF_V4_P3_V1_STAGE1_PROPOSALS_V1_SUMMARY.json \
+            MPSEF_V4_P3_V1_STAGE1_PROGRESS.json \
+            MPSEF_V4_P3_V1_STAGE1_TIME.txt \
+            MPSEF_V4_P3_V1_STAGE1_PIP_FREEZE.txt \
+            > MPSEF_V4_P3_V1_STAGE1_SHA256.txt || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mpsef-v4-p3-v1-stage1-v1
+          path: |
+            MPSEF_V4_P3_V1_STAGE1_PROPOSALS_V1.jsonl
+            MPSEF_V4_P3_V1_STAGE1_PROPOSALS_V1_SUMMARY.json
+            MPSEF_V4_P3_V1_STAGE1_PROGRESS.json
+            MPSEF_V4_P3_V1_STAGE1_TIME.txt
+            MPSEF_V4_P3_V1_STAGE1_PIP_FREEZE.txt
+            MPSEF_V4_P3_V1_STAGE1_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 90
+
+  finalize:
+    name: Legalize build actions and analyze source-only diversity
+    needs: p3
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-stage1-freeze-v1
+          path: freeze
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-p2-v2-stage1-v1
+          path: p2_artifact
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: mpsef-v4-p3-v1-stage1-v1
+          path: p3_artifact
+
+      - name: Download frozen historical P1 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mpsef-p1-cf-proposals-v1
+          path: p1_artifact
+          repository: abdullah-s-mahmood/sweet-runtime-parity
+          run-id: 36765798233
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build source-only legalized proposer rows and whole actions
+        run: |
+          python phase2/redesign/mpsef_v4_stage1_legalizer_actions_v1.py \
+            --packet freeze/MPSEF_V4_STAGE1_PACKET_V1.jsonl \
+            --registry freeze/MPSEF_V4_PROPOSER_REGISTRY_V2.json \
+            --p1-proposals p1_artifact/MPSEF_P1_CF_PROPOSALS_V1.jsonl \
+            --p2-proposals p2_artifact/MPSEF_V4_P2_V2_STAGE1_PROPOSALS_V1.jsonl \
+            --p3-proposals p3_artifact/MPSEF_V4_P3_V1_STAGE1_PROPOSALS_V1.jsonl \
+            --out-prefix MPSEF_V4_STAGE1_LEGAL_ACTIONS_V1
+
+      - name: Validate source-only legal action artifacts
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open("MPSEF_V4_STAGE1_LEGAL_ACTIONS_V1_SUMMARY.json",encoding="utf-8"))
+          actions=[json.loads(x) for x in open("MPSEF_V4_STAGE1_LEGAL_ACTIONS_V1_ACTION_SETS.jsonl",encoding="utf-8") if x.strip()]
+          props=[json.loads(x) for x in open("MPSEF_V4_STAGE1_LEGAL_ACTIONS_V1_PROPOSERS.jsonl",encoding="utf-8") if x.strip()]
+          assert s["status"]=="SOURCE_ONLY_LEGAL_ACTIONS_READY"
+          assert len(actions)==128==s["cases"]
+          assert len(props)==384==s["legalized_proposer_rows"]
+          assert all(any(a["keep_semantics"] for a in x["actions"]) for x in actions)
+          assert s["project_gold_loaded"] is False
+          assert s["quality_metric_computed"] is False
+          assert s["r_joint_computed"] is False
+          assert s["selector_trained"] is False
+          assert s["v3_artifacts_modified"] is False
+          print("V4_STAGE1_LEGAL_ACTIONS_PASS")
+          PY
+
+      - name: Analyze Stage1 source-only diversity
+        run: |
+          python phase2/redesign/mpsef_v4_stage1_diversity_v1.py \
+            --packet freeze/MPSEF_V4_STAGE1_PACKET_V1.jsonl \
+            --legalized-proposers MPSEF_V4_STAGE1_LEGAL_ACTIONS_V1_PROPOSERS.jsonl \
+            --action-sets MPSEF_V4_STAGE1_LEGAL_ACTIONS_V1_ACTION_SETS.jsonl \
+            --p2-summary p2_artifact/MPSEF_V4_P2_V2_STAGE1_PROPOSALS_V1_SUMMARY.json \
+            --p3-summary p3_artifact/MPSEF_V4_P3_V1_STAGE1_PROPOSALS_V1_SUMMARY.json \
+            --out MPSEF_V4_STAGE1_DIVERSITY_SUMMARY_V1.json
+
+      - name: Validate Stage1 is descriptive source-only only
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open("MPSEF_V4_STAGE1_DIVERSITY_SUMMARY_V1.json",encoding="utf-8"))
+          assert x["status"]=="SOURCE_ONLY_DIVERSITY_READY"
+          assert x["denominators"]["D_all_uids"]==128
+          assert x["denominators"]["D_all_clusters"]==128
+          assert x["architecture_families"]["independent_family_count"]==2
+          assert x["project_gold_loaded"] is False
+          assert x["reference_content_used"] is False
+          assert x["quality_metric_computed"] is False
+          assert x["r_joint_computed"] is False
+          assert x["selector_trained"] is False
+          assert x["v4_consensus_generated"] is False
+          assert x["retention_decision_made"] is False
+          print("V4_STAGE1_SOURCE_ONLY_DIVERSITY_PASS")
+          PY
+
+      - name: Freeze final Stage1 hashes
+        run: |
+          sha256sum \
+            freeze/MPSEF_V4_P3_PNX_IDENTITY_V1.json \
+            freeze/MPSEF_V4_PROPOSER_REGISTRY_V2.json \
+            freeze/MPSEF_V4_STAGE1_PACKET_V1.jsonl \
+            p2_artifact/MPSEF_V4_P2_V2_STAGE1_PROPOSALS_V1.jsonl \
+            p3_artifact/MPSEF_V4_P3_V1_STAGE1_PROPOSALS_V1.jsonl \
+            MPSEF_V4_STAGE1_LEGAL_ACTIONS_V1_PROPOSERS.jsonl \
+            MPSEF_V4_STAGE1_LEGAL_ACTIONS_V1_ACTION_SETS.jsonl \
+            MPSEF_V4_STAGE1_LEGAL_ACTIONS_V1_SUMMARY.json \
+            MPSEF_V4_STAGE1_DIVERSITY_SUMMARY_V1.json \
+            > MPSEF_V4_STAGE1_FINAL_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mpsef-v4-stage1-source-only-v1
+          path: |
+            MPSEF_V4_STAGE1_LEGAL_ACTIONS_V1_PROPOSERS.jsonl
+            MPSEF_V4_STAGE1_LEGAL_ACTIONS_V1_ACTION_SETS.jsonl
+            MPSEF_V4_STAGE1_LEGAL_ACTIONS_V1_SUMMARY.json
+            MPSEF_V4_STAGE1_DIVERSITY_SUMMARY_V1.json
+            MPSEF_V4_STAGE1_FINAL_SHA256.txt
+          retention-days: 90
