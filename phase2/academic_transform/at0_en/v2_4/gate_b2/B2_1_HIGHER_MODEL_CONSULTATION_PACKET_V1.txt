@@ -1,0 +1,117 @@
+AT0-EN V2.4 B2.1 — HIGHER-MODEL EXTRACTION-REPRESENTATION REPAIR CONSULTATION
+
+ROLE
+Act only as an independent Chief Architect / Research Reviewer.
+
+BUDGET RULE
+Do NOT implement.
+Do NOT write code.
+Do NOT modify repositories.
+Do NOT rerun experiments.
+Do NOT propose broad new experiments unless strictly necessary.
+The implementation agent will execute all repairs.
+
+FILES TO REVIEW
+1. phase2/academic_transform/at0_en/v2_4/gate_b2/B2_1_DIAGNOSIS_V1.md
+2. phase2/academic_transform/at0_en/v2_4/gate_b2/B2_FIRST_SCORE_CLOSURE.md
+3. phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A4_CLOSURE.md
+
+CURRENT EVIDENCE
+
+Human-correct alignment:
+- B1.1 = 100% on all hard gates
+
+Extracted-graph B2:
+- GG 100%
+- GE 41.67%
+- EG 50%
+- EE 33.33%
+- EE safe acceptance 0%
+- EE adversarial acceptance 0%
+- EE REVIEW preservation 100%
+- result: MIXED_B2_REPAIR_REQUIRED
+
+Primary causes across 8 wrong EE pairs:
+- predicate/paraphrase/scope/decomposition: 4/8
+- split/merge ownership binding: 2/8
+- missing explicit relation extraction: 1/8
+- equation/symbol structured ownership missing: 1/8
+
+The bridge has 0 invalid records.
+The aligner remains 100% on gold graphs.
+
+IMPLEMENTATION AGENT PRELIMINARY RECOMMENDATION
+
+HYBRID_RELATION_AWARE_EXTRACTION_REPAIR
+
+Concept:
+- keep deterministic anchors and provenance;
+- add deterministic high-precision relation construction when syntax is explicit;
+- add normalized scientific predicates/operators;
+- add canonical owner-to-value/meaning facts;
+- use abstaining semantic extraction only where relation meaning is not deterministic;
+- preserve uncertainty and evidence traces;
+- do not patch consumed pair IDs.
+
+PROJECT STRONG-ADOPTION TARGETS
+
+Safety:
+- adversarial automatic acceptance = 0%
+- critical silent scientific errors = 0
+- critical uncertainty promotion = 0
+- ambiguity preservation = 100%
+
+Quality/usability:
+- automatic-PASS selective precision >=99%
+- authentic in-domain safe automatic acceptance >=90%
+- extracted-graph pair decision accuracy >=95%
+- controlled critical relation/ownership correctness = 100%
+
+These are project-defined targets, not universal standards.
+
+QUESTIONS
+
+Q1. Choose one architecture direction:
+A. PATCH_CURRENT_RULES
+B. HYBRID_RELATION_AWARE_EXTRACTION_REPAIR
+C. REPLACE_WITH_BROAD_SEMANTIC_PARSER
+D. OTHER
+
+Q2. Which capabilities are BLOCKING before B2 can become useful?
+Choose only those genuinely required:
+- predicate/paraphrase normalization
+- negation/scope operator ownership
+- owner/value split-merge binding
+- citation relation extraction
+- equation-symbol binding
+- procedural order/dependency
+- local coreference
+- candidate/source extraction symmetry
+
+Q3. Which of those should be deterministic high-precision rules, and which justify an abstaining semantic model/judge?
+
+Q4. Is it scientifically preferable to keep the frozen rule-based A2 assertion extractor and add a relation-aware layer, or to replace A2 assertion extraction itself?
+
+Q5. Should authentic academic text be introduced:
+- immediately after the relation-aware repair prototype,
+- only after B2 synthetic revalidation passes,
+- or another point?
+
+Q6. What is the MINIMUM revalidation needed before moving beyond B2?
+Do not weaken the frozen B2 safety gates.
+State whether passing the existing B2 development gates is sufficient for progression, while the stronger >=95%/>=90% targets remain later adoption targets.
+
+OUTPUT FORMAT
+
+1. VERDICT
+2. BLOCKING CAPABILITIES — maximum 6
+3. DETERMINISTIC VS SEMANTIC BOUNDARY
+4. KEEP_OR_REPLACE_A2
+5. MINIMUM REPAIR SCOPE — maximum 6 items
+6. MINIMUM REVALIDATION GATE
+7. AUTHENTIC-TEXT TIMING
+8. FINAL RATIONALE — concise
+
+No code.
+No implementation.
+No repository edits.
