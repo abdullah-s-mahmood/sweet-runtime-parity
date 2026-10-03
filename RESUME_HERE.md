@@ -4284,3 +4284,28 @@ Exact next authorized action:
 - no V4.2 rerun and no reserved-data opening.
 
 Higher-model operating rule remains: use the higher model only for architecture, difficult research synthesis/brainstorming, experiment design, frozen-result review, and strategic decisions; routine execution remains with the implementation agent.
+
+
+## 2026-10-03 — AT0-EN V2.1 open-weight backend frozen
+
+Higher-model amendment accepted: commercial API access is no longer required for AT0-EN. The access clause is replaced by: two distinct real model configurations, authorized for use, with auditable execution and bounded resources.
+
+Frozen implementation state:
+- amendment: `docs/architecture/ACAD_PASS_AT0_EN_EXECUTION_BACKEND_AMENDMENT_V2_1.md`;
+- MODEL_A: Qwen3-4B-Instruct-2507 Q4_K_M, artifact SHA-256 `2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e`;
+- MODEL_B: SmolLM3-3B Q4_K_M, artifact SHA-256 `8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e`;
+- runtime: `llama.cpp` commit `b92761a515ea31e852e7fbc1fad5f874b46f3718`;
+- target environment: public-repository GitHub-hosted `ubuntu-24.04`, one job, strictly sequential, USD 0 additional monetary cost;
+- workflow: `.github/workflows/at0_en_v2_1_open_weight.yml`;
+- backend runner: `phase2/academic_transform/at0_en/src/at0_backend_runner.py`;
+- live inference has NOT started yet.
+
+Relevant commits:
+- V2.1 amendment: `7d23fc436388d6bcc07e9a5919cbae7aff194e81`;
+- model/runtime freeze: `04c982dfa52eb6b6f9e91b268574daedd4aecc23`;
+- backend runner initial: `08602efa193fead7ab98a39ea4bc222a2314415f`;
+- runner hardening/fix: `36f17e879faf991869093af7b6db7323cfbe346d`;
+- workflow: `a376a6b7df93a5ca8c303072362d3eb97b54839c`;
+- README state: `f2d8c96ac68c58c2b3b8d4f05a0186a0e2dd1e68`.
+
+Exact next action: manually dispatch the frozen workflow once. The current ChatGPT GitHub connector cannot create a new workflow_dispatch run. After a run exists, the implementation agent can inspect jobs/logs/artifacts and continue. Do not modify the models, cases, prompts, arms, or resource policy before results.
