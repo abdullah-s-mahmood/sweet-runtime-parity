@@ -4259,3 +4259,28 @@ Independent statuses:
 Next allowed action: complete the authorized AT0-EN 48-slot live matrix when model access and budget are explicitly available, or return the compact `HIGHER_MODEL_REVIEW_PACKET.md` to the higher-model architect for a blocker decision. Do NOT begin HW1-EN, DR, Arabic resumption, reserved-data opening, V4.2 rerun, selector/consensus work, voice fitting, DOCX/Word integration, or paid launch before that review gate.
 
 Operating rule: routine implementation/research is delegated to the implementation agent. The higher model is reserved for architecture, difficult research synthesis, brainstorming, frozen-result review, and high-stakes scientific/strategic decisions. Tool operations in this project are executed strictly sequentially; no parallel tool orchestration.
+
+## 2026-10-03 — AT0-EN higher-model ACCEPT_BLOCKED_CHECKPOINT
+
+Higher-model decision: `KEEP / ACCEPT_BLOCKED_CHECKPOINT`.
+
+Evidence accepted:
+- critical preservation PASS;
+- frozen engineering fixtures `30/30 PASS`;
+- language portability audit `10/10 PASS`;
+- live matrix `0/48` because auditable two-model access and budget authorization are unavailable;
+- F07 `authorized_scope` repair accepted as an implementation correction inside the frozen contract; no architecture redesign required.
+
+Repository decision commits:
+- review packet refresh: `e9df057407f99f25f3b8097aed80c8f1b96b9920`
+- config records accepted blocked checkpoint: `460cabfbe17f83c0aee941f8e41f27a460959624`
+- model manifest records accepted blocked checkpoint: `f74777e291bc70c472f04e137468e8ea71b4358b`
+
+Exact next authorized action:
+- unblock AT0-EN access only if two distinct auditable model identities plus explicit `authorized_cost_ceiling` and `max_total_tokens` are available;
+- otherwise retain blocked checkpoint;
+- `HW1-EN` and `DR` remain NOT AUTHORIZED;
+- Arabic active research remains FROZEN;
+- no V4.2 rerun and no reserved-data opening.
+
+Higher-model operating rule remains: use the higher model only for architecture, difficult research synthesis/brainstorming, experiment design, frozen-result review, and strategic decisions; routine execution remains with the implementation agent.
