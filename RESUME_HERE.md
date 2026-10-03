@@ -4670,3 +4670,57 @@ User-approved permanent operating rule:
 9. At the end of each checkpoint, update this canonical handoff when the state materially changed.
 
 This rule supplements the existing strictly-sequential execution rule and overrides any previous tendency to continue through many separable stages in one response.
+
+
+## 2026-10-03 — AT0-EN V2.3 known-external assertion-graph gate CLOSED
+
+This checkpoint is offline-only. No new model inference occurred.
+
+Frozen execution:
+- workflow: `AT0-EN V2.3 Assertion-Graph Offline Gate`
+- run: `37134559401`
+- run number: `5`
+- trigger commit: `e7671e833a2177beaf56f21a74907d3613bc346c`
+- conclusion: **SUCCESS**
+- artifact id: `11278485956`
+- artifact SHA-256: `f9a5858791ebeacf918b990a7eccf52d9690b5955c3cb65da00001a8279f4c9f`
+
+Artifact-internal hashes:
+- verifier: `d82af97d276131477ab2f8c452f24e3302703f54b856a8ad46547af59d7ec0da`
+- test harness: `62e904874a0120bca5dcc69bf4ae099024c0c88e0bf7d9a6051edd742987235a`
+- result JSON: `e1eddea894f504094520d2ac9d738ffb9444a357b0f7ef6b940fd144b620be6c`
+
+Gate result:
+- total: **36/36 PASS**
+- valid safe controls: **11/11 PASS_CANDIDATE**
+- `SAFE_EN09`: intentionally NOT PASS because that control omits a scientific relation present in source_text; the frozen EN09 content_units also omit that relation
+- known adversarial attacks: **24/24 NOT PASS**
+
+Important provenance:
+- this is **NOT an untouched independent validation**;
+- the 24 attacks came from the earlier V2.2 independent red-team that exposed 21/24 escapes (87.5%);
+- V2.3 was redesigned in response to those attacks;
+- therefore 36/36 is a **known-failure regression pass**, not unseen-generalization evidence.
+
+Frozen closure report:
+`phase2/academic_transform/at0_en/v2_3/AT0_EN_V2_3_KNOWN_EXTERNAL_GATE_CLOSURE.md`
+
+Closure commit:
+`76521dd148b47e712b3019c98f96827a7946f44b`
+
+Scientific classification:
+**IMPROVED METHODOLOGICALLY / KNOWN-FAILURE REGRESSION PASS / GENERALIZATION NOT ESTABLISHED**
+
+Exact next authorized stage:
+1. create and freeze a **second unseen adversarial holdout** independently from the V2.3 implementation;
+2. freeze its labels before scoring;
+3. do not modify V2.3 after opening/scoring that holdout;
+4. run the frozen V2.3 verifier once against that holdout;
+5. preserve failures and return for redesign if the holdout exposes escapes;
+6. do not tune on the same holdout and then reuse it as untouched evidence.
+
+No new model inference is authorized yet.
+HW1-EN remains blocked.
+Arabic active research remains FROZEN.
+Arabic V4.2 remains CLOSED.
+Reserved Arabic populations remain CLOSED.
