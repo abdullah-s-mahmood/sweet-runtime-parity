@@ -168,5 +168,16 @@
     "HAS_VALUE": "CRITICAL when quantitative claim meaning depends on it",
     "HAS_UNIT": "CRITICAL when quantitative claim meaning depends on it",
     "RELATIVE_TO": "CRITICAL for baseline/reference comparisons"
+  },
+  "representation_consistency": {
+    "policy": "FRAME_AND_GRAPH_MUST_AGREE",
+    "frame_role": "local assertion semantics and extracted slots",
+    "graph_role": "explicit ownership, dependency, and cross-assertion/context relations",
+    "rules": [
+      "If the same critical fact is represented in both frame slots and graph relations, the normalized meanings must agree.",
+      "Graph edges may add explicit ownership/dependency structure but may not silently contradict frame slots.",
+      "A critical frame-graph disagreement is INVALID_VERIFICATION, not a tie resolved by confidence or semantic voting.",
+      "Derived convenience fields must retain a normalization trace to their canonical evidence."
+    ]
   }
 }
