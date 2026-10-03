@@ -107,8 +107,7 @@
       "object",
       "conditions",
       "temporal_context",
-      "exclusions",
-      "procedure_order"
+      "exclusions"
     ],
     "SCOPE": [
       "subject",
@@ -158,5 +157,16 @@
       "if": "uncertainty concerns only style/format and has no path to a critical assertion",
       "then": "NON_MATERIAL"
     }
-  ]
+  ],
+  "relation_level_criticality": {
+    "PRECEDES": "CRITICAL when source procedure order is explicit and scientifically/reproducibly material",
+    "DEPENDS_ON": "CRITICAL when dependency affects method meaning or reproducibility",
+    "FIXED_BEFORE": "CRITICAL",
+    "UNCHANGED_DURING": "CRITICAL when constancy is part of interpretation/reproducibility",
+    "CITES": "CRITICAL when citation attribution supports a scientific claim",
+    "DEFINES": "CRITICAL for equation/symbol/metric definitions",
+    "HAS_VALUE": "CRITICAL when quantitative claim meaning depends on it",
+    "HAS_UNIT": "CRITICAL when quantitative claim meaning depends on it",
+    "RELATIVE_TO": "CRITICAL for baseline/reference comparisons"
+  }
 }
