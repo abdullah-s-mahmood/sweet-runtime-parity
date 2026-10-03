@@ -1,0 +1,2 @@
+Trigger SECOND_UNSEEN_HOLDOUT_V1 freeze-integrity workflow only.
+No verifier, inputs, labels, or scoring semantics changed.
