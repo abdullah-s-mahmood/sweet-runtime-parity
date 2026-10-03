@@ -3252,3 +3252,35 @@ Decision commits:
 Next allowed work is the AT0-EN ACCESS UNBLOCK packet only: verify an auditable environment with two distinct already-authorized model identities, freeze exact model/provider identities plus pricing observation, obtain explicit cost and token ceilings, and then execute the unchanged 48-slot matrix. If access/authorization remains unavailable, retain this checkpoint.
 
 `HW1-EN`, detector robustness, voice fitting, Arabic restart, V4.2 rerun, selector/consensus work and reserved-data opening remain blocked.
+
+
+## 2026-10-03 — AT0-EN V2.1 open-weight smoke gate
+
+Higher-model amendment V2.1 removed the unnecessary paid/commercial API constraint and replaced it with two distinct real model configurations, auditable execution, and bounded resources.
+
+Zero-extra-cost public GitHub Actions backend was frozen with:
+- Qwen3-4B-Instruct-2507 Q4_K_M, SHA-256 `2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e`
+- SmolLM3-3B Q4_K_M, SHA-256 `8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e`
+- llama.cpp `b92761a515ea31e852e7fbc1fad5f874b46f3718`
+- CPU, sequential model/request execution, additional monetary cost USD 0.
+
+Three smoke attempts were preserved:
+- attempt 1 `37118121815`: Qwen PASS; SmolLM default extended thinking exhausted the bounded completion. Model-documented `/no_think` was frozen as a runtime/chat-template control.
+- attempt 2 `37118533029`: Qwen PASS; SmolLM generated valid visible JSON but copied an ambiguous smoke-only enum example literally. The smoke fixture was clarified before evaluation; DIRECT/PLAN/REALIZE prompts were unchanged.
+- attempt 3 `37118961886`: Qwen PASS; SmolLM hash/runtime/inference PASS and preserved all smoke facts, but wrapped its valid JSON object in a Markdown JSON code fence. Strict raw JSON parsing rejected the framing.
+
+Current state:
+- engineering fixtures: `30/30 PASS`
+- language portability: PASS
+- full AT0-EN evaluation matrix: `0/48 NOT_RUN`
+- blocker: `BLOCKED_STRUCTURED_OUTPUT_CONFORMANCE`
+- no fourth smoke attempt authorized
+- no model substitution, matrix reduction, HW1-EN, DR or Arabic restart authorized.
+
+The remaining decision is the structured-output acceptance boundary: strict raw JSON vs narrowly specified deterministic outer-fence normalization vs runtime-constrained JSON grammar. This is escalated because fixture F28 requires malformed JSON/schema responses to be preserved and rejected, so the project must explicitly classify whether one standard Markdown JSON fence is transport framing or malformed model content.
+
+Evidence:
+- `phase2/academic_transform/at0_en/results/AT0_EN_V2_1_SMOKE_GATE_REPORT.md`
+- `phase2/academic_transform/at0_en/results/offline-preflight/HIGHER_MODEL_REVIEW_PACKET.md`
+- escalation commit `fff49b26892f553c5e8e386ad7b4cd100d899720`
+- continuity commit `d83fd375e63e3fbab860d1a89ca81c16550ce131`
