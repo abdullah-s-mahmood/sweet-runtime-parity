@@ -1,0 +1,50 @@
+name: AT0-EN V2.3 Frozen V2.2-Pass Adjudication
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/academic_transform/at0_en/v2_3/REPLAY_TRIGGER.txt"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Download frozen hardened V2.2 replay
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/v22
+          gh api /repos/${{ github.repository }}/actions/artifacts/11276398612/zip > /tmp/v22.zip
+          echo "1e520e9b479854689c662dd2eef09eab0312716416b8df1958afde202a41b200  /tmp/v22.zip" | sha256sum -c -
+          unzip -q /tmp/v22.zip -d /tmp/v22
+          test -f /tmp/v22/AT0_EN_V2_2_CURRENT_VALIDATOR_REPLAY.jsonl
+      - name: Adjudicate exact 30 V2.2 pass candidates with V2.3
+        run: |
+          set -euo pipefail
+          OUT=phase2/academic_transform/at0_en/v2_3/V2_3_V22_PASS_REPLAY.jsonl
+          python phase2/academic_transform/at0_en/v2_3/replay_v2_2_passes.py /tmp/v22/AT0_EN_V2_2_CURRENT_VALIDATOR_REPLAY.jsonl "$OUT"
+          sha256sum "$OUT" phase2/academic_transform/at0_en/v2_3/V2_3_V22_PASS_REPLAY.summary.json phase2/academic_transform/at0_en/v2_3/SOURCE_RELATION_LEDGER.json phase2/academic_transform/at0_en/v2_3/at0_v2_3_relation_verifier.py > phase2/academic_transform/at0_en/v2_3/V2_3_V22_PASS_REPLAY_SHA256.txt
+          cat phase2/academic_transform/at0_en/v2_3/V2_3_V22_PASS_REPLAY.summary.json
+          cat phase2/academic_transform/at0_en/v2_3/V2_3_V22_PASS_REPLAY_SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-3-v22-pass-replay-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_3/V2_3_V22_PASS_REPLAY.jsonl
+            phase2/academic_transform/at0_en/v2_3/V2_3_V22_PASS_REPLAY.summary.json
+            phase2/academic_transform/at0_en/v2_3/V2_3_V22_PASS_REPLAY_SHA256.txt
+          if-no-files-found: error
+          retention-days: 30
