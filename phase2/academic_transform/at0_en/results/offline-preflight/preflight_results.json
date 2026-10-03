@@ -1,0 +1,127 @@
+{
+  "total": 30,
+  "passed": 30,
+  "failed": 0,
+  "results": [
+    {
+      "fixture_id": "F01",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F02",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F03",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F04",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F05",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F06",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F07",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F08",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F09",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F10",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F11",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F12",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F13",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F14",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F15",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F16",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F17",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F18",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F19",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F20",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F21",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F22",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F23",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F24",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F25",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F26",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F27",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F28",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F29",
+      "status": "PASS"
+    },
+    {
+      "fixture_id": "F30",
+      "status": "PASS"
+    }
+  ]
+}

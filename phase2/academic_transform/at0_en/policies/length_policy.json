@@ -1,0 +1,16 @@
+{
+  "policy_id": "LANG_EN_LENGTH_V1",
+  "mode": "ACADEMIC_REWRITE",
+  "soft_band": [
+    0.85,
+    1.15
+  ],
+  "priority": [
+    "scientific_meaning",
+    "semantic_meaning",
+    "required_information",
+    "academic_quality",
+    "length_preservation"
+  ],
+  "hard_truncation_or_padding": false
+}

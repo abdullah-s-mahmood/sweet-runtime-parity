@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "phase": "AT0-EN",
+  "frozen_on": "2026-10-03",
+  "case_sha256": "0601de5f583659816f9276d37bd1bc64c92e1fb8d13036ba701d24ac50b070d4",
+  "config_sha256": "a8074942b4f8affdf3dfd787bc079f58ebc1a9502c26580fc6f9d5e012967d57",
+  "length_policy_sha256": "60a1d4beecfa976bf26db3988c1239098ca9e23a51719f4191cc75c7290dd247",
+  "prompts": {
+    "DIRECT.md": "ff1f4366523c419e08b8822ad73de39bcb6f1d1ddfaff45f17ffe896de938792",
+    "PLAN.md": "50c21ba9fa2d6504f1d2d399e8ff5423648280cb1afb6a9396f369dc80330a0f",
+    "REALIZE.md": "6354ce0d3104764f80c0a9bc22e02e38ad398f793f7a627ff5ea663ee2449832"
+  },
+  "live_models": "NOT_FROZEN_BLOCKED_MODEL_ACCESS",
+  "cost_ceiling": "NOT_AUTHORIZED"
+}

@@ -1,0 +1,28 @@
+{
+  "status": "PASS_CRITICAL_EVIDENCE_BYTE_VERIFIED",
+  "critical_artifacts": [
+    {
+      "label": "P1 source freeze",
+      "path": "/mnt/data/p1-full-cf.zip",
+      "sha256": "e4020418ca2f2793d4bb79bc766e26838398fb9affba6d0f1c704255cd5aed46"
+    },
+    {
+      "label": "P2 V2 Stage2",
+      "path": "/mnt/data/p2-stage2-full-cf.zip",
+      "sha256": "c5c5d32c99ce216a5b93362748cfefa67de4ec1f5b2b1174c8d3caf0fcd914af"
+    },
+    {
+      "label": "P3 V1 Stage2",
+      "path": "/mnt/data/p3-stage2-full-cf.zip",
+      "sha256": "9a31de6dcff43efb903212a7fe2e2ad378f24e177faba0ecbd46ba4dd05e4253"
+    },
+    {
+      "label": "V4.2 final measurement",
+      "path": "/mnt/data/mpsef-rjoint-v4-2-development-measurement-v1.zip",
+      "sha256": "10ecdb75b5d80540d2c9ddf5e94672e8d64bbe3eb685ca3f53d63789c3d308af"
+    }
+  ],
+  "reserved_data_opened": false,
+  "arabic_experiment_rerun": false,
+  "note": "Paths are execution-environment evidence locations; repository manifest stores identities, not these local absolute paths."
+}

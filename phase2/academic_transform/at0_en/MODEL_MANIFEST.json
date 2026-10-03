@@ -1,0 +1,5 @@
+{
+  "status": "BLOCKED_MODEL_ACCESS",
+  "models": [],
+  "requirement": "Two already-authorized distinct model identities; exact provider identifiers and cost cap required before live calls."
+}

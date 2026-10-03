@@ -1,0 +1,10 @@
+{
+  "status": "NOT_RUN",
+  "logical_calls": 0,
+  "transport_attempts": 0,
+  "billable_tokens": 0,
+  "known_cost": 0,
+  "latency_ms": null,
+  "blocker": "MODEL_ACCESS_AND_BUDGET_AUTHORIZATION",
+  "note": "No live model request was made in this checkpoint."
+}

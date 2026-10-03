@@ -1,0 +1,211 @@
+{
+  "generated_on": "2026-10-03",
+  "file_count": 41,
+  "files": [
+    {
+      "path": "docs/architecture/ACAD_PASS_ARABIC_RESEARCH_PRESERVATION_SNAPSHOT.md",
+      "sha256": "cf2ffa6d11247d0bca6423ebdded8f3bb3a64a246ae075dcbbf0e1a67a485bbf",
+      "bytes": 25266
+    },
+    {
+      "path": "docs/architecture/ACAD_PASS_ARCHITECTURE_CHANGELOG.md",
+      "sha256": "8a858634a48f4f3962ffa09c86685784bf3edf216207cc3da22c11be467c1e2c",
+      "bytes": 7731
+    },
+    {
+      "path": "docs/architecture/ACAD_PASS_EVIDENCE_MANIFEST.json",
+      "sha256": "d1c337b29e718225b6c3654a823a7a65fcb0ac7959b57e8d6fa656e05c08c271",
+      "bytes": 15919
+    },
+    {
+      "path": "docs/architecture/ACAD_PASS_HIGHER_MODEL_DELEGATION_PROTOCOL.md",
+      "sha256": "891c2a25d7a3c118fad7a539c8c356e8b43b95821690dbca39f8109a38e65a89",
+      "bytes": 3536
+    },
+    {
+      "path": "docs/architecture/ACAD_PASS_LANGUAGE_EXTENSION_CONTRACT.md",
+      "sha256": "0f4e482a1d5451b437fd2af512073e1cde06d84dab975ce88004835c9d311524",
+      "bytes": 17776
+    },
+    {
+      "path": "docs/architecture/ACAD_PASS_MASTER_PRODUCT_ARCHITECTURE.md",
+      "sha256": "adad83d28b3695b00a4daa6e7d689f20c2f08d9a91c64ec9d4714a81fcf9d58b",
+      "bytes": 18418
+    },
+    {
+      "path": "docs/architecture/evidence/2026-10-03/ACAD_PASS_EDIT_CONTRACT_V1.md",
+      "sha256": "1534859b4e23e840cb0457583e2a572d05e133eb98db3d7bc99ebe59e6d887fb",
+      "bytes": 5268
+    },
+    {
+      "path": "docs/architecture/evidence/2026-10-03/ACAD_PASS_SYSTEM_EVOLUTION_LEDGER.md",
+      "sha256": "c7eea67ceeb16336b0e54b705d26f032143ee2994bbc32640eeab9648f55ca40",
+      "bytes": 91722
+    },
+    {
+      "path": "docs/architecture/evidence/2026-10-03/M2H_H1_OFFICIAL_ALIGNMENT_TATWEEL_CHARALIGN_AMENDMENT_V1.md",
+      "sha256": "d0b0c6a4033d0a04b1c5780aecb9bb046b9dd57f0924b7edb18a79279146ef3e",
+      "bytes": 2512
+    },
+    {
+      "path": "docs/architecture/evidence/2026-10-03/MPSEF_P3_V1_SWEET_PNX_CASCADE_SPEC.md",
+      "sha256": "9da3930bfb7899eda57aeca6e6230b3a3405378044087bd1f43eae5d4478b18a",
+      "bytes": 6308
+    },
+    {
+      "path": "docs/architecture/evidence/2026-10-03/MPSEF_PROPOSER_IDENTITY_FREEZE_V1.md",
+      "sha256": "26093e289d48cefcf1e9c1a76f886dbf86bed02a4f72f94c1bf9e9a147b61d7d",
+      "bytes": 5013
+    },
+    {
+      "path": "docs/architecture/evidence/2026-10-03/MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_CLOSURE_LOCK_V1.md",
+      "sha256": "d058822309eb3e5df7652319f029e91d16978f576d1052f21f54a0af29da0e6a",
+      "bytes": 3638
+    },
+    {
+      "path": "docs/architecture/evidence/2026-10-03/MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_EVIDENCE_LOCK_V1.md",
+      "sha256": "3c551836da4db7868464917bd5e6e0638b1d885fc403ce197298ddb36abcd6fe",
+      "bytes": 2211
+    },
+    {
+      "path": "docs/architecture/evidence/2026-10-03/MPSEF_RJOINT_V4_2_DEVELOPMENT_RESULT_ANALYSIS_V1.md",
+      "sha256": "3fd6a15d760a7dc9853dec5790f4b11379f902ee7292c711390306ca2c626ef0",
+      "bytes": 11606
+    },
+    {
+      "path": "docs/architecture/evidence/2026-10-03/RESUME_HERE.md",
+      "sha256": "d368dc797e29f9c7cd2ed96e528d3a88d2f13d2a9347c719d5cae2d67ad045b3",
+      "bytes": 142333
+    },
+    {
+      "path": "docs/architecture/evidence/2026-10-03/metadata_index.json",
+      "sha256": "95aa89a6f7fd05ee68de3191f9df5ebf0a40e718af9ba64d71a4a1ae68cc971e",
+      "bytes": 118663
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/MODEL_MANIFEST.json",
+      "sha256": "6c28dd2eeab9a2c08e532c453cad0e54886db36a7e61183ad0774238813b97de",
+      "bytes": 192
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/PROMPT_CASE_POLICY_MANIFEST.json",
+      "sha256": "385764b7b581ce2717307b6de460f23a7c292b71cd6aaeb2828c91ef0876a0af",
+      "bytes": 708
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/README.md",
+      "sha256": "93a306c564b5a4a25cc24303a37cd9a335297792366ddef76799fe6be3875d8a",
+      "bytes": 895
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/cases.jsonl",
+      "sha256": "0601de5f583659816f9276d37bd1bc64c92e1fb8d13036ba701d24ac50b070d4",
+      "bytes": 10703
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/config.json",
+      "sha256": "a8074942b4f8affdf3dfd787bc079f58ebc1a9502c26580fc6f9d5e012967d57",
+      "bytes": 531
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/fixtures/preflight.json",
+      "sha256": "f6da6f554966d0e9b34579604f0877dff6ddd781f29083ddbff45df4da619e6a",
+      "bytes": 1592
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/policies/length_policy.json",
+      "sha256": "60a1d4beecfa976bf26db3988c1239098ca9e23a51719f4191cc75c7290dd247",
+      "bytes": 297
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/prompts/DIRECT.md",
+      "sha256": "ff1f4366523c419e08b8822ad73de39bcb6f1d1ddfaff45f17ffe896de938792",
+      "bytes": 962
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/prompts/PLAN.md",
+      "sha256": "50c21ba9fa2d6504f1d2d399e8ff5423648280cb1afb6a9396f369dc80330a0f",
+      "bytes": 647
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/prompts/REALIZE.md",
+      "sha256": "6354ce0d3104764f80c0a9bc22e02e38ad398f793f7a627ff5ea663ee2449832",
+      "bytes": 837
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/results/offline-preflight/HIGHER_MODEL_REVIEW_PACKET.md",
+      "sha256": "0c13a6924e0d02d654320e501d2743718d0d1472c52a09a5f07007f99ab3f9c1",
+      "bytes": 1763
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/results/offline-preflight/OFFLINE_VERIFICATION.md",
+      "sha256": "2e6d62185f338ba22a6d31c077cd2f105f00289afba11bc28a63eea65305e873",
+      "bytes": 661
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/results/offline-preflight/PRESERVATION_REPORT.json",
+      "sha256": "b268152b890c1d8487574cbb0a70b25e6d70e0a630fe275de923b8ff0f76f159",
+      "bytes": 1027
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/results/offline-preflight/PRESERVATION_REPORT.md",
+      "sha256": "3417f55e4da9b7241964de27f31b299a485717210c7a15efb34c1043124db780",
+      "bytes": 854
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/results/offline-preflight/REPORT.md",
+      "sha256": "bff3c601d3beb65ce6521a9746e76ca590b1093ce41a450bf01c1a668ce5b5d5",
+      "bytes": 2003
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/results/offline-preflight/diagnostics.jsonl",
+      "sha256": "0e64b18c4a16756b58265bef24203559d7f50ff455f5e4112deca4ada1ca5865",
+      "bytes": 20736
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/results/offline-preflight/portability_audit.json",
+      "sha256": "2045c6bf925c0ac0ea12975740eaf73111cba5cf6e921f3caea4065b9fdf5ba8",
+      "bytes": 1077
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/results/offline-preflight/preflight_results.json",
+      "sha256": "f7b0859a9f70269defaade06919fb70e646bc0ac1b341a2a51335ea813f8e161",
+      "bytes": 1957
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/results/offline-preflight/requests.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/results/offline-preflight/slots.jsonl",
+      "sha256": "609944032b7a125264e192e5ef53e227140ee62724aac4c625cd7d931a79a48d",
+      "bytes": 12864
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/results/offline-preflight/transactions.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/src/__pycache__/at0_core.cpython-313.pyc",
+      "sha256": "b5dd24233836d175d49fd47edc9762444755f76367107f8776b9e1eeefc904d0",
+      "bytes": 9980
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/src/at0_core.py",
+      "sha256": "f8b12d1c2829e685db0544faded62e230cbb20957c75a3f2e74e7352a223ff02",
+      "bytes": 5214
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/tests/run_portability_audit.py",
+      "sha256": "3fabde6791507443bbbb7c0b00ba5551210dbac59b2ff0e231ab64ec131d325e",
+      "bytes": 1590
+    },
+    {
+      "path": "phase2/academic_transform/at0_en/tests/run_preflight.py",
+      "sha256": "3fbff511091e38b1af4cc61e1ca6dd1493af9b7ce169b31e84bdb7398943eb49",
+      "bytes": 5664
+    }
+  ]
+}

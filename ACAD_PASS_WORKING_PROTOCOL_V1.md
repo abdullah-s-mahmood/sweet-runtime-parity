@@ -175,3 +175,14 @@ Scientific defensibility, reproducibility, provenance, fail-closed behavior, and
 - To reduce UI/runtime recovery issues, prefer shorter tool batches and shorter progress messages.
 - Avoid very long chains of repository/tool operations in one response when the task can be safely checkpointed.
 - Preserve the existing max-3 polling rule for long-running processes.
+
+
+## 2026-10-03 amendment — English-first, delegation, and serialized execution
+
+1. Active product R&D is English-first. Shared Core must remain language-independent; Arabic active research is frozen and preserved for a future Language Pack.
+2. Human-quality academic transformation is the primary product objective. GEC is supporting Verify/Repair.
+3. The higher model is a scarce strategic resource. Use it for architecture, benchmark/experiment design, difficult synthesis, red-team brainstorming, frozen-result review, and major strategic/scientific decisions. Delegate routine research collection, coding, GitHub changes, tests, experiment execution under frozen contracts, metrics, and documentation to the implementation agent.
+4. After a higher-model execution packet is issued, the higher model waits for returned evidence rather than implementing routine work itself.
+5. Escalate early only for architecture changes, scientific-contract changes, evaluation-population changes, safety-gate changes, protected-data boundary changes, critical evidence loss, or unexpected results that threaten inference validity.
+6. Tool/process orchestration must be strictly sequential. Do not run independent tool operations in parallel. Multiple operations are allowed only when awaited in deterministic sequence. This rule is permanent for ACAD_PASS continuity and is intended to reduce recovery/stream interruption problems as well as preserve auditability.
+7. Never infer human-writing quality, scientific fidelity, detector robustness, document fidelity, or commercial usefulness from engineering pass rates.
