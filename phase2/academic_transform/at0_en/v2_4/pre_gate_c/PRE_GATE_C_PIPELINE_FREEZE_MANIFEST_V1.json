@@ -1,0 +1,61 @@
+{
+  "gate": "AT0_EN_V2_4_PRE_GATE_C_PIPELINE_FREEZE",
+  "status": "CANDIDATE_FREEZE_PENDING_INTEGRITY_RUN",
+  "date": "2026-10-03",
+  "branch": "phase2-arabic-eval",
+  "freeze_base_commit": "b0aedc2c3719a77d860a72913fe1696b869bf093",
+  "runtime": {
+    "os": "ubuntu-24.04",
+    "python": "3.11",
+    "model_inference": false,
+    "external_runtime_packages_required": false
+  },
+  "components": [
+    {
+      "role": "frozen architecture",
+      "path": "phase2/academic_transform/at0_en/v2_4/AT0_EN_V2_4_FROZEN_ARCHITECTURE_V2.md",
+      "sha256_mode": "record_at_freeze"
+    },
+    {
+      "role": "scientific assertion graph schema",
+      "path": "phase2/academic_transform/at0_en/v2_4/gate0/SCIENTIFIC_ASSERTION_GRAPH_SCHEMA_V1.json",
+      "expected_sha256": "df986f759a114bd86525b84f00f8d2f362d71bb31546441992291d21c5ebd69f"
+    },
+    {
+      "role": "criticality rules",
+      "path": "phase2/academic_transform/at0_en/v2_4/gate0/CRITICALITY_RULES_V1.json",
+      "expected_sha256": "1599bf6bdb10afd462ba45a422b3e276a4ddbb47656d3d6047a0ff9b39acc48d"
+    },
+    {
+      "role": "outcome contract",
+      "path": "phase2/academic_transform/at0_en/v2_4/gate0/OUTCOME_CONTRACT_V1.json",
+      "expected_sha256": "aeff55ec0d5c10a949afc2f86a5eae46e610043f3885497643561b17aa669905"
+    },
+    {
+      "role": "deterministic anchor/provenance extractor",
+      "path": "phase2/academic_transform/at0_en/v2_4/gate_a/source_anchor_extractor.py",
+      "expected_sha256": "65d0da4b32b8297dd58ba6108fb2a49e0cb96dfa726ce270f0382318919e20db"
+    },
+    {
+      "role": "frozen A2 assertion extractor",
+      "path": "phase2/academic_transform/at0_en/v2_4/gate_a/source_assertion_extractor.py",
+      "expected_sha256": "32c68926de1bb20d03f7033d30319862102fe344a3a41f784bff7e648306c0f1"
+    },
+    {
+      "role": "B2.2 hybrid relation-aware extraction layer",
+      "path": "phase2/academic_transform/at0_en/v2_4/gate_b2/b2_2_relation_aware_extractor.py",
+      "expected_sha256": "f44a4de5536dae62b8a65a4370d186c8f0087a6bf24e5e4f2d37d25ca3600478"
+    },
+    {
+      "role": "B1.1 frozen aligner/outcome engine",
+      "path": "phase2/academic_transform/at0_en/v2_4/gate_b1/b1_aligner.py",
+      "expected_sha256": "289d2898c89850f691d52313a1d2a2b12b37cef6b674549215579caedf84cd42"
+    },
+    {
+      "role": "final B2 development closure",
+      "path": "phase2/academic_transform/at0_en/v2_4/gate_b2/B2_FINAL_CLOSURE.md",
+      "sha256_mode": "record_at_freeze"
+    }
+  ],
+  "freeze_rule": "Any change to a frozen runtime component after Gate C protocol freeze creates a new pipeline version and invalidates comparison with the old Gate C predictions."
+}
