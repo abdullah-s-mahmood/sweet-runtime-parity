@@ -4797,3 +4797,65 @@ Rules:
 9. If the same chat becomes operationally unstable or excessively long, a new chat may continue by reading `RESUME_HERE.md`; no scientific phase should be restarted solely because the conversation changed.
 10. UI/network errors are not themselves evidence of scientific or workflow failure; verify the external run/repository state before taking corrective action.
 
+
+
+## 2026-10-03 — SECOND_UNSEEN_HOLDOUT_V1 freeze checkpoint CLOSED
+
+This stage is **100% COMPLETE**.
+
+No V2.3 scoring and no model inference occurred.
+
+Frozen identities:
+- inputs SHA-256: `b1633df5e0418082a990945dfc92a267f6cdc8c943b385d7edc2d8b9181f551c`
+- labels SHA-256: `9936377336708dbeaf88b7ee83a8ae5fb4272013129041332094dfa625345a9b`
+- V2.3 verifier SHA-256: `d82af97d276131477ab2f8c452f24e3302703f54b856a8ad46547af59d7ec0da`
+- source cases SHA-256: `d91fae326afbca4a82b7b84e99bca0e817947d964fc4b676e3faebd28a1868f7`
+
+Integrity:
+- total inputs: 36
+- total labels: 36
+- unique IDs: 36
+- SAFE_CONTROL: 12
+- ADVERSARIAL: 24
+- 2 adversarial cases per EN01–EN12
+- input/label ID order alignment: PASS
+- all recorded hashes match manifest: PASS
+
+Freeze lock:
+`phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_FREEZE_LOCK.md`
+
+Freeze-lock commit:
+`7bf208d1824596b0e50e235f1d14e90a748d0ef0`
+
+Operational note:
+a dedicated GitHub Actions integrity workflow exists, but no workflow run was exposed after a non-semantic trigger. This was recorded as an operational tooling issue only. Repository-level hash/count/ID integrity verification passed. Do not claim an Actions PASS for that workflow.
+
+End-stage research supports the current design:
+- scientific revision evaluation needs correctness-sensitive/task-specific evaluation;
+- dynamic/temporally refreshed benchmarks reduce contamination/staleness risk;
+- factuality metrics can be unstable under meaning-preserving paraphrases, supporting 12 SAFE_CONTROL paraphrases alongside adversarial cases.
+
+Quality delta:
+- methodological status: **IMPROVED**
+- scientific performance delta: **NOT YET MEASURED**
+- last comparable robustness evidence remains V2.2 21/24 attack escapes (87.5%) versus V2.3 0/24 escapes on the same known attacks, i.e. -87.5 percentage points on known attacks only.
+
+Whole ACAD_PASS completion estimate:
+**approximately 20% ±5%**, planning estimate only.
+
+Exact next authorized stage:
+`SECOND_UNSEEN_HOLDOUT_V1 ONE-SHOT SCORE`
+
+Only after explicit `أكمل`:
+1. bind frozen verifier SHA;
+2. bind frozen input/label hashes;
+3. produce predictions before evaluation;
+4. score once;
+5. freeze all errors;
+6. do not tune V2.3 and reuse this holdout as untouched evidence.
+
+No model inference is required for this score.
+HW1-EN remains blocked.
+Arabic active research remains FROZEN.
+Arabic V4.2 remains CLOSED.
+Reserved Arabic populations remain CLOSED.
