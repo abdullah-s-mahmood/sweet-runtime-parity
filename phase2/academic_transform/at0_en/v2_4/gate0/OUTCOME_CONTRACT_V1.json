@@ -1,0 +1,76 @@
+{
+  "schema_version": "2.4-gate0-outcomes-v1",
+  "outcomes": [
+    "PASS_CANDIDATE",
+    "REJECT",
+    "REVIEW",
+    "INVALID_VERIFICATION"
+  ],
+  "precedence": [
+    "INVALID_VERIFICATION",
+    "REJECT",
+    "REVIEW",
+    "PASS_CANDIDATE"
+  ],
+  "rules": {
+    "INVALID_VERIFICATION": {
+      "definition": "The verification transaction is not valid enough to produce a scientific preservation judgment.",
+      "triggers": [
+        "source identity/version/hash mismatch",
+        "broken or missing provenance for critical source evidence",
+        "corrupt or structurally invalid assertion graph",
+        "claim-bearing source text with critical extraction coverage failure",
+        "critical unresolved source coreference/context needed to define the proposition",
+        "unauthorized source/candidate scope",
+        "missing required protected container or evidence dependency"
+      ],
+      "meaning": "No judgment that the candidate is scientifically wrong."
+    },
+    "REJECT": {
+      "definition": "A material scientific change is supported by traceable evidence in an otherwise valid verification transaction.",
+      "triggers": [
+        "deterministic critical invariant contradiction",
+        "critical subject/object/value/unit/metric/group/time/baseline/condition rebinding",
+        "critical direction/comparator change",
+        "material negation or polarity change",
+        "association-causation change",
+        "material modality or evidential-strength change",
+        "critical scope expansion/restriction not licensed by source",
+        "critical citation/equation/symbol binding change",
+        "critical procedure order/dependency change",
+        "material source assertion omitted",
+        "unsupported material candidate assertion added"
+      ]
+    },
+    "REVIEW": {
+      "definition": "The transaction is valid, but material uncertainty prevents automatic PASS and evidence is insufficient for REJECT.",
+      "triggers": [
+        "critical candidate extraction uncertainty",
+        "critical relation alignment uncertainty",
+        "multiple plausible alignments with materially different meaning",
+        "unresolved but bounded decontextualization ambiguity",
+        "plausible new information whose source support cannot be established",
+        "uncertain split/merge preservation affecting a critical assertion"
+      ]
+    },
+    "PASS_CANDIDATE": {
+      "definition": "Meaning is preserved relative to the source and verified scope; this is not a claim of external scientific truth.",
+      "requirements": [
+        "verification transaction is valid",
+        "critical source coverage is complete",
+        "no deterministic critical contradiction",
+        "no material source assertion omitted",
+        "no unsupported material candidate assertion",
+        "all critical source-to-candidate alignments are preserved",
+        "all critical candidate-to-source alignments are supported",
+        "no critical uncertainty remains",
+        "every critical decision dependency has a minimal traceable evidence path"
+      ]
+    }
+  },
+  "non_compensation": [
+    "Many correct relations cannot compensate for one critical wrong relation.",
+    "Similarity, NLI, embedding, model agreement, or aggregate score cannot override a critical deterministic failure.",
+    "A high acceptance score cannot compensate for any observed dangerous escape in a safety gate."
+  ]
+}
