@@ -12,8 +12,11 @@ SMOKE_PROMPT = f"""You are performing a mechanical smoke test for an academic re
 
 Rewrite the paragraph for concise academic English while preserving the number 14, the two-hour duration, the exploratory status, and the statement that improved accuracy is NOT established. Do not add facts.
 
-Return JSON only with exactly these keys:
-{{\"status\":\"REVISE|KEEP|REVIEW\",\"revised_paragraph\":\"string|null\",\"uncertainty\":[]}}
+Return JSON only with exactly these keys.
+The status value MUST be exactly one of these three strings: REVISE, KEEP, or REVIEW.
+Do not copy the list or the | separator characters as the status value.
+If status is REVISE, revised_paragraph must contain the revision. If status is KEEP or REVIEW, revised_paragraph may be null.
+{{\"status\":\"REVISE\",\"revised_paragraph\":\"string or null\",\"uncertainty\":[]}}
 
 SOURCE:
 {SMOKE_SOURCE}"""
