@@ -1354,3 +1354,94 @@ Audit tasks:
 8. decide whether new human adjudication can be removed entirely or reduced to a small residual study.
 
 No V2.4 runtime changes.
+
+
+---
+
+# 29. EXTERNAL HUMAN-GOLD COMPOSITE FEASIBILITY AUDIT — CLOSED
+
+Date: 2026-10-04
+
+Audit:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/EXTERNAL_HUMAN_GOLD_COMPOSITE_FEASIBILITY_AUDIT_V1.md`
+
+Commit:
+`609d9ca39d5fbb333887c6f09b85a36b8d554b9d`
+
+Verdict:
+`FEASIBLE_WITHOUT_NEW_HUMAN_ADJUDICATORS_FOR_RESEARCH_PROGRESSION`
+
+Primary core tracks identified:
+- DeFacto
+- PLABA
+- CLEF SimpleText 2025 manually annotated real scientific simplifications if accessible
+- SciFact
+- QASemConsistency
+- USB
+- PlainFact positive biomedical fidelity track
+
+Secondary/diagnostic:
+- QASPER
+- TRUE
+- AggreFact
+- FENICE
+- optional non-overlapping SciFact-Open
+- Cochrane-auto
+- small 2026 expert-edited scientific simplification corpus
+
+Important new discoveries:
+- DeFacto official Microsoft repo is MIT licensed and contains 2561 examples, 1821 with errors, with human evidence/explanation/correction.
+- QASemConsistency public repo is Apache-2.0 and includes raw multi-annotator predicate-argument support annotations.
+- USB Hugging Face dataset is Apache-2.0 and includes evidence, factual accuracy, unsubstantiated spans and correction.
+- PlainFact is CC BY-SA 3.0, 200 summary/abstract pairs and 2740 sentences.
+- PLABA provides 750 PubMed abstracts and 7643 expert adaptation sentence pairs.
+- TREC PLABA includes professional references and biomedical-expert manual faithfulness/completeness evaluations.
+- CLEF SimpleText 2025 is extremely close to ACAD_PASS: scientific simplification + hallucination/information-distortion tasks, including manually annotated real system submissions; synthetic training distortions must not be counted as external human gold.
+- CLEF 2026 explicitly reuses 2025 manual annotations as ground truth for distortion classification.
+
+Proposed new structure:
+- Gate C-EXT-1: direct scientific transformation fidelity
+- Gate C-EXT-2: scientific claim/evidence fidelity
+- Gate C-EXT-3: fine-grained relation fidelity
+- Gate C-EXT-4: human correction/repair
+- Gate C-EXT-5: biomedical stress
+- Gate C-EXT-6: cross-domain transfer
+- Gate C-META: deterministic ACAD_PASS-specific metamorphic relation testing
+
+Adapter rule:
+Do not force all datasets into PASS/REJECT/REVIEW.
+Retain native labels unless an exact semantic adapter is preregistered.
+
+Overlap control:
+- SciFact-Open vs SciFact
+- TRUE vs its component datasets
+- AggreFact vs original components
+- QASemConsistency underlying source datasets
+- DeFacto derivatives
+- PLABA/TREC source identity
+must be deduplicated by source IDs/hashes.
+
+Research progression:
+new human adjudication is NOT currently judged necessary.
+
+Strong-adoption boundary:
+external composite can support non-provisional external-human-gold validation for represented constructs, but does not establish deployment prevalence, universal academic-domain coverage, or <1% production error.
+
+High-stakes next decision:
+final independent construct-validity review is required before replacing the already-frozen custom Gate C protocol.
+
+Consultation packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/NO_NEW_HUMAN_HIGHER_MODEL_CONSULTATION_PACKET_V1.txt`
+
+Commit:
+`9d015241f52244448f7ccb9800e0a473f8a7f213`
+
+Exact next action:
+USER MEDIATES higher-model consultation.
+
+Until response:
+- do not recruit human reviewers;
+- do not open custom 80-study holdout;
+- do not execute external datasets;
+- do not modify V2.4 runtime.
+
