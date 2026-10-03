@@ -5551,3 +5551,124 @@ Not authorized:
 - new untouched holdout.
 
 Higher-model consultation is not required before A3 unless scoring exposes a new architecture/construct-validity problem.
+
+
+## 2026-10-03 — AT0-EN V2.4 Gate A3 CLOSED
+
+Checkpoint status:
+**100% COMPLETE**
+
+Canonical workflow:
+`AT0-EN V2.4 Gate A3 Extractor Validation`
+
+Canonical run:
+`37143729167`
+
+Trigger commit:
+`8afeac02f465c462d015204aebe536366663bfdf`
+
+Artifact:
+- id: `11281706053`
+- SHA-256: `d96fb79a65834f79b80c4b597a59092f73d6f795efbb5de12f0f418c8639671d`
+
+Extractor remained frozen:
+`32c68926de1bb20d03f7033d30319862102fe344a3a41f784bff7e648306c0f1`
+
+Canonical A3 result:
+`PASS_DEVELOPMENT`
+
+Metrics:
+- gold assertion coverage: 28/28 = 100%
+- critical gold coverage: 27/27 = 100%
+- false additions: 0/25 = 0%
+- atomic one-to-one: 22/25 = 88%
+- overmerged predictions: 3/25 = 12%
+- certain precision: 13/14 = 92.86%
+- error-abstention recall: 87.5%
+- unnecessary abstention: 23.53%
+- context-dependency detection recall: 100%
+- context false-alarm rate: 6.25%
+- critical silent semantic errors: 0
+
+Field diagnostics:
+- assertion type: 19/22 = 86.36%
+- predicate: 21/22 = 95.45%
+- subject concepts: 20/22 = 90.91%
+- object concepts: 22/22 = 100%
+- polarity: 22/22 = 100%
+- modality: 22/22 = 100%
+- causality: 22/22 = 100%
+- measured population/baseline/scope checks: 100%
+
+Pre-registered threshold margins:
+- overall coverage: +10 pp above minimum
+- critical coverage: +5 pp
+- false additions: 10 pp better than maximum
+- atomicity: +13 pp
+- certain precision: +2.86 pp
+- error-abstention recall: +7.5 pp
+- critical silent errors: exactly meets hard gate at 0
+
+Important evaluator negative evidence:
+First A3 run `37143592151`, artifact `11281531213`, initially reported `FAIL_CRITICAL_SILENT_ERROR` because the V1 scorer treated assertion-type mismatch alone as a critical silent scientific error.
+
+That classification exceeded the preregistered A3 construct. The first score was preserved. Extractor, gold, alignment logic, and thresholds were not changed.
+
+Evaluator repair:
+`phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A3_EVALUATOR_REPAIR_ADDENDUM_V1.md`
+
+The canonical rerun reports 0 critical silent semantic errors.
+This change is an evaluator-contract correction, NOT extractor improvement.
+
+Frozen first-score summary:
+`phase2/academic_transform/at0_en/v2_4/gate_a/results/GATE_A3_FIRST_SCORE_V1_FROZEN.json`
+commit:
+`674aaf2131ecef25870e91fe249f7dffa7035db6`
+
+Canonical frozen summary:
+`phase2/academic_transform/at0_en/v2_4/gate_a/results/GATE_A3_EXTRACTOR_SUMMARY_FROZEN.json`
+commit:
+`8c18a94bc197be9c984e4a370038b3b93912b134`
+
+A3 closure:
+`phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A3_CLOSURE.md`
+commit:
+`202395a973db9af6fc09f06017d5600df8e4e821`
+
+Remaining A3 weaknesses:
+- 12% overmerge
+- 86.36% assertion-type accuracy
+- 23.53% unnecessary abstention
+- embedded-proposition wrapper errors
+- unresolved source coreference in development examples
+
+Interpretation:
+The source extractor is development-viable under the current small synthetic reference, with high coverage and no observed critical silent semantic error, but atomicity, typing, and abstention efficiency remain imperfect.
+
+A3 is DEVELOPMENT-ONLY and NOT blind:
+A2 outputs were qualitatively inspected before the slot-reference supplement was frozen.
+
+Fresh end-stage research reinforces separate evaluation of atomicity, faithfulness, decontextualization, coverage/focus, and claim-set alignment; benchmark/reference revisions should remain versioned and auditable.
+
+Quality delta:
+- end-to-end scientific-fidelity performance: UNCHANGED
+- last full verifier evidence remains 37.5% adversarial escape and 25% safe acceptance, BOTH_FAIL
+- no directly comparable prior A3 semantic baseline exists
+- methodological status: IMPROVED
+
+Completion:
+- Gate A3: 100%
+- Gate A overall: approximately 85%
+- whole ACAD_PASS planning estimate: approximately 25% ±5%
+
+Exact next authorized checkpoint:
+`AT0-EN V2.4 GATE A4 — SOURCE-EXTRACTOR READINESS / REPAIR DECISION`
+
+A4 must decide:
+- ACCEPT current extractor for progression;
+- REPAIR development weaknesses first;
+- or REDESIGN source extraction.
+
+No candidate alignment implementation starts before A4 closes.
+
+Higher-model consultation is likely justified at A4 because it is a high-value go/no-go readiness decision. Consultation must remain review-only and budget-conscious; all implementation remains with the current agent.
