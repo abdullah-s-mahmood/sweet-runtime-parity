@@ -3213,3 +3213,7 @@ The higher model is reserved for architecture, difficult cross-source synthesis,
 
 ### Next gate
 Complete the authorized 48-slot AT0-EN live matrix only after exact model identities and an explicit cost ceiling are available, then return the compact higher-model review packet. Otherwise return the current blocker packet for architectural review. No HW1-EN or Detector Robustness execution is authorized yet.
+
+
+### Repository adoption identity — 2026-10-03
+The English-first architecture package, AT0-EN offline harness, frozen results, evidence mirrors, and delegation protocol were adopted in commit `bca3a32791c6f2c1832403cbd751ea8c78cd6a43`. This commit is the implementation checkpoint for the 30/30 fixture and 10/10 portability evidence; it does not contain a live transformation result.

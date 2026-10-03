@@ -4,13 +4,13 @@
   "date": "2026-10-03",
   "repository": "abdullah-s-mahmood/sweet-runtime-parity",
   "inspected_ref": "phase2-arabic-eval",
-  "repository_head_sha": "4f5befb03762aa6403cc51ca80a28bb9f482a0a2",
-  "repository_head_note": "Verified at AT0-EN execution start before repository adoption.",
+  "repository_head_sha": "bca3a32791c6f2c1832403cbd751ea8c78cd6a43",
+  "repository_head_note": "English-first architecture and AT0-EN offline gate adopted in this commit; live matrix remains not run.",
   "authority": "Companion index. Scientific scope and exposure are governed by the four master Markdown documents.",
   "arabic_active_research": "FROZEN",
   "new_arabic_data_opened": false,
   "new_experiments_run": false,
-  "repository_adoption": "OFFLINE_READY_PENDING_GITHUB_COMMIT",
+  "repository_adoption": "ADOPTED_OFFLINE_GATE",
   "preservation_scope": "Supplied continuity files and selected Git document contents mirrored locally; remote Actions archives, model weights, complete repository backup and reserved data containers NOT mirrored here.",
   "source_documents": [
     {
@@ -340,5 +340,15 @@
     "P3 punctuation checkpoint revision, tokenizer/config/weight hashes must be recovered from existing runtime locks.",
     "M1-A historical counts do not reconcile by subtraction; preserve ledger values and resolve scope using metadata without rerunning data.",
     "Other historical artifact availability/expiry not checked; see full continuity documents and lexical index."
-  ]
+  ],
+  "repository_adoption_commit": "bca3a32791c6f2c1832403cbd751ea8c78cd6a43",
+  "at0_en_offline": {
+    "fixtures_passed": 30,
+    "fixtures_total": 30,
+    "portability_passed": 10,
+    "portability_total": 10,
+    "live_slots_total": 48,
+    "live_slots_run": 0,
+    "blocker": "MODEL_ACCESS_AND_BUDGET_AUTHORIZATION"
+  }
 }

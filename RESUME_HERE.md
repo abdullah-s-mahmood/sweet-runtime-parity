@@ -1,11 +1,11 @@
-# RESUME HERE — ACAD_PASS / Phase 2 Arabic / M2-H
+# RESUME HERE — ACAD_PASS / English-First / AT0-EN
 
 ## 0. Resume maintenance policy
 
 This file is the canonical live handoff. Update it after every meaningful checkpoint: successful workflow, scientifically relevant failure, architecture/gate decision, frozen hash/manifest, or change in the exact next authorized step. Do not update it for trivial status polls that add no new state.
 
 
-**Canonical handoff state date:** 2026-09-30  
+**Canonical handoff state date:** 2026-10-03  
 **Repository:** `abdullah-s-mahmood/sweet-runtime-parity`  
 **Branch:** `phase2-arabic-eval`  
 **State before this handoff commit:** `90eb4e3dd0b36106493376efc7221422aa91a067`
@@ -4233,6 +4233,7 @@ Permanent architecture records:
 
 AT0-EN offline implementation checkpoint:
 - base branch HEAD inspected before adoption: `4f5befb03762aa6403cc51ca80a28bb9f482a0a2`
+- architecture/AT0-EN repository adoption commit: `bca3a32791c6f2c1832403cbd751ea8c78cd6a43`
 - critical artifact bytes verified against recorded SHA-256 for P1, P2 V2 Stage2, P3 V1 Stage2, and V4.2 final measurement;
 - no new Arabic dataset opened; no Arabic/V4.2 experiment rerun;
 - first frozen preflight: 29/30; F07 exposed missing independent authorized-scope enforcement;

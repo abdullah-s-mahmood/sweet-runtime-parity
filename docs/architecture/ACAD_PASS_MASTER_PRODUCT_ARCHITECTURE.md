@@ -2,7 +2,7 @@
 
 Version: 2.0.0 · Decision date: 2026-10-03 · Strategy: ENGLISH_FIRST / MULTILINGUAL_READY_CORE
 
-Status: architecture baseline authored; repository adoption, implementation and validation are separate events. This document records no new experiment. It supersedes the active bilingual roadmap in the 2026-10-02 study and V1.1 amendment, while retaining their non-conflicting reasoning and historical evidence.
+Status: architecture baseline adopted in repository commit `bca3a32791c6f2c1832403cbd751ea8c78cd6a43`; the AT0-EN offline engineering gate passed, while the live transformation matrix remains NOT_RUN. This document records no human-writing or scientific-quality experiment. It supersedes the active bilingual roadmap in the 2026-10-02 study and V1.1 amendment, while retaining their non-conflicting reasoning and historical evidence.
 
 ## 1. Product and governing priorities
 
@@ -120,15 +120,15 @@ Insert `LANG_AR PORT` after a scoped English maturity gate and an explicit decis
 
 ## 12. Current state and release reporting
 
-As of this architecture record: four master documents and the next packet are authored; repository promotion and AT0-EN execution are not reported complete. Existing Arabic engineering/evaluation closures remain Arabic development evidence. No English quality claim follows from them. Remote evidence inventory does not equal an independently verified backup.
+As of the 2026-10-03 implementation checkpoint: the architecture package is adopted in repository commit `bca3a32791c6f2c1832403cbd751ea8c78cd6a43`; critical Arabic evidence bytes are verified; AT0-EN offline engineering fixtures passed 30/30 and the language portability audit passed 10/10. The 48-slot live transformation matrix remains NOT_RUN because two exact authorized model identities and an explicit cost ceiling are not available in the current execution environment. Existing Arabic engineering/evaluation closures remain Arabic development evidence. No English quality claim follows from them. Remote evidence inventory does not equal an independently verified backup.
 
 | Required status | Current English state | Required independent evidence |
 |---|---|---|
-| ENGINEERING_STATUS | NOT_RUN for AT0-EN | Transaction/harness/portability closure |
+| ENGINEERING_STATUS | PASS_OFFLINE (30/30 fixtures; 10/10 portability) | Authorized live transformation matrix still required |
 | HUMAN_WRITING_STATUS | NOT_ASSESSED | Blinded qualified human preference/rubric |
 | SCIENTIFIC_FIDELITY_STATUS | NOT_ASSESSED | Claim, quantity, citation and semantic assessment |
 | VOICE_STATUS | NOT_ASSESSED | Authorized author corpus and isolated voice evaluation |
-| LENGTH_PRESERVATION_STATUS | POLICY_DEFINED / NOT_MEASURED | Versioned counts and information retention |
+| LENGTH_PRESERVATION_STATUS | POLICY_DEFINED / OFFLINE_DIAGNOSTICS_READY | Live output counts and information retention still required |
 | DETECTOR_ROBUSTNESS_STATUS | NOT_RUN | Frozen-output DR report |
 | DOCUMENT_FIDELITY_STATUS | NOT_RUN | Supported-format round-trip fixtures and user documents |
 | COMMERCIAL_USEFULNESS_STATUS | NOT_ASSESSED | User acceptance, revision burden, repeat use and viable cost |

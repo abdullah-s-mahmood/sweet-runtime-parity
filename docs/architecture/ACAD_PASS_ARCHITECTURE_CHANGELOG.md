@@ -70,3 +70,9 @@ Date / architecture version / decision ID / authoring or execution state / prior
 - **Risk:** Under-escalation could miss a high-level issue.
 - **Mitigation:** Mandatory escalation for architecture changes, experiment-contract changes, safety-gate changes, protected-data boundary changes, critical evidence loss, or unexpected results threatening inference validity.
 - **Arabic portability impact:** None directly; protocol applies to all future language packs.
+
+## 2026-10-03 — Repository adoption recorded
+
+- **Adoption commit:** `bca3a32791c6f2c1832403cbd751ea8c78cd6a43`
+- **Scope:** English-first master records, Arabic preservation snapshot/evidence mirrors, higher-model delegation protocol, AT0-EN offline harness, 30/30 fixture result, 10/10 portability audit, and explicit 48-slot NOT_RUN accounting.
+- **Live-model status:** no live model call; blocker remains authorized two-model access plus explicit cost ceiling.
