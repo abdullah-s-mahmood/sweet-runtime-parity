@@ -1,0 +1,61 @@
+name: AT0-EN V2.2 Independent Offline Red-Team
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_2/redteam/at0_v2_2_independent_redteam.py"
+      - ".github/workflows/at0_en_v2_2_independent_redteam.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  redteam:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact trigger state
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile frozen validator and independent red-team
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            phase2/academic_transform/at0_en/v2_2/at0_v2_2_validator.py \
+            phase2/academic_transform/at0_en/v2_2/redteam/at0_v2_2_independent_redteam.py
+
+      - name: Run independent offline red-team
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_2/redteam/at0_v2_2_independent_redteam.py
+
+      - name: Record hashes
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_2
+          sha256sum \
+            at0_v2_2_validator.py \
+            redteam/at0_v2_2_independent_redteam.py \
+            results/AT0_EN_V2_2_INDEPENDENT_REDTEAM_V1.jsonl \
+            results/AT0_EN_V2_2_INDEPENDENT_REDTEAM_V1_SUMMARY.json \
+            > results/AT0_EN_V2_2_INDEPENDENT_REDTEAM_V1_SHA256.txt
+          cat results/AT0_EN_V2_2_INDEPENDENT_REDTEAM_V1_SHA256.txt
+
+      - name: Upload red-team evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-2-independent-redteam-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_2/results/AT0_EN_V2_2_INDEPENDENT_REDTEAM_V1.jsonl
+            phase2/academic_transform/at0_en/v2_2/results/AT0_EN_V2_2_INDEPENDENT_REDTEAM_V1_SUMMARY.json
+            phase2/academic_transform/at0_en/v2_2/results/AT0_EN_V2_2_INDEPENDENT_REDTEAM_V1_SHA256.txt
+          if-no-files-found: error
+          retention-days: 30
