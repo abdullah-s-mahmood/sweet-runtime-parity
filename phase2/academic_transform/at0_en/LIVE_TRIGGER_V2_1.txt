@@ -1,0 +1,6 @@
+Trigger AT0-EN V2.1 frozen 48-slot live matrix.
+Attempt: 1
+Date: 2026-10-03
+Precondition: Smoke Gate run 37123265137 PASS for Qwen and SmolLM3.
+Models, hashes, prompts, cases, arms, resource ceilings, and success accounting remain frozen.
+Execution must remain strictly sequential: MODEL_A then delete, MODEL_B then delete.
