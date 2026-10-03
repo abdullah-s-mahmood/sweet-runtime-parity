@@ -7072,3 +7072,132 @@ Exact next action:
 WAIT for user-mediated higher-model consultation response.
 
 No untouched holdout may be opened before final protocol freeze.
+
+
+## 2026-10-03 — PRE-GATE-C final protocol freeze CLOSED
+
+Status:
+- final-protocol freeze checkpoint: 100% COMPLETE
+- PRE-GATE-C overall: approximately 85%
+- whole ACAD_PASS planning estimate: approximately 35% ±5%
+
+Higher-model verdict:
+`ACCEPT_WITH_ESSENTIAL_PROTOCOL_AMENDMENTS`
+
+Final Gate C protocol:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_PROTOCOL_FINAL_V1.md`
+commit:
+`2f9286614741c8168c6e45b8f9fb7a7366e4a18a`
+SHA-256:
+`f41fdc9aa6c574447779858cdbd5a2dec83a9851c81408cc415be58c8eda1d1e`
+
+Higher-model response record:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/PRE_GATE_C_HIGHER_MODEL_RESPONSE_V1.md`
+commit:
+`dfe4b76ebd48ec73ef9321226f91653748cbad3b`
+
+Final protocol integrity:
+- run: `37153113766`
+- trigger commit: `830d53d6a7fe6fc04df032c432c6244c60b5b67e`
+- artifact id: `11284443202`
+- artifact digest: `7a1bfbdd09cf51c5d8ad0e71bff7db0853d26eff47b6742558005ca3e70b5a3f`
+- status: PASS
+- protocol checks: 19
+- pipeline component checks: 9
+- holdout opened: false
+- source sampling authorized: false
+
+Final Gate C design:
+- 80 independent original studies
+- five domains x 16 studies
+- target temporal mix per domain: 8 first publicly available in 2026 + 8 older unseen
+- PASS transactions: 80
+- REJECT transactions: 80
+- REVIEW transactions: 40
+- total transactions: 200
+- primary inferential independence unit: original source study/paper
+
+Final progression gates:
+Safety:
+- REJECT -> automatic PASS = 0/80
+- REVIEW -> automatic PASS = 0/40
+- critical silent scientific errors = 0
+- unsupported critical evidence used for auto PASS/REJECT = 0
+
+Usability:
+- faithful safe automatic acceptance >=60/80 =75%
+- decisive material-drift REJECT >=60/80 =75%
+- REVIEW preservation >=36/40 =90%
+
+Evidence:
+- critical evidence reference completeness =100%
+- critical evidence semantic support =100%
+- decision-path linkage =100% where runtime records it
+
+INVALID_VERIFICATION:
+- separate outcome
+- never success
+- remains in denominators/reporting
+
+Human gold:
+- two qualified independent initial reviewers
+- third qualified reviewer only for unresolved material disagreement
+- blind to prediction, construction class, constructor rationale and each other's initial judgments
+- without qualified independent human adjudication Gate C is PROVISIONAL only
+
+Statistical plan:
+- source study is primary independence unit
+- cluster bootstrap whole source clusters within domain for non-boundary metrics
+- exact one-sided binomial bounds for zero-event safety
+- 0/80 zero events ~3.68% one-sided 95% upper bound under simple independent Bernoulli assumptions
+- Gate C does not establish <1% error or >=99% reliability
+- later simple zero-error <1% claim needs >=299 appropriately independent decisions for the relevant claim
+
+Strong-adoption targets unchanged:
+- adversarial automatic acceptance 0%
+- critical silent scientific errors 0
+- automatic-PASS selective precision >=99%
+- authentic in-domain safe automatic acceptance >=90%
+- end-to-end decision accuracy >=95%
+- critical relation/ownership correctness 100%
+- critical evidence/provenance completeness 100%
+
+Eight holdout-opening conditions:
+1. scope/context freeze
+2. sampling/temporal/de-duplication/exposure freeze
+3. family/REVIEW/replacement policy freeze
+4. qualified adjudicators + guide
+5. role/access separation + neutral IDs
+6. full pipeline/runtime/settings verification
+7. metrics/statistics/evidence audit/report weights freeze
+8. one-shot failure/exclusion/gold-correction/full-reporting policy freeze
+
+Current opening readiness:
+- conditions 1,2,3,6,7,8 substantially specified in final protocol
+- still require operational confirmation:
+  4. qualified independent adjudicators
+  5. actual role/access separation and sealed-gold mechanism
+
+Therefore:
+`SOURCE_SAMPLING_NOT_YET_AUTHORIZED`
+
+Final-protocol closure:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/PRE_GATE_C_FINAL_PROTOCOL_FREEZE_CLOSURE.md`
+commit:
+`f8d81e4618a6e30203084a44f7c290c6ac9875c1`
+
+Permanent metric-reporting format:
+`Metric | Current measured result | Strong-adoption target | Gap`
+
+Current key metric ledger:
+- development EE extracted-graph accuracy: 100% | target >=95% | exceeded development-only
+- authentic safe auto acceptance: NOT YET MEASURED | target >=90%
+- end-to-end automatic-PASS selective precision: NOT YET MEASURED | target >=99%
+- adversarial automatic acceptance: 0% development | target 0%
+- critical silent scientific errors: 0 observed development | target 0
+- ambiguity preservation: 100% development | target 100%
+
+Exact next authorized checkpoint:
+`AT0-EN V2.4 PRE-GATE-C — HOLDOUT-OPENING READINESS SETUP`
+
+Do not select/open Gate C sources until this checkpoint verifies all eight opening conditions.
