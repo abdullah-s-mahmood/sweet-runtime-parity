@@ -1,0 +1,159 @@
+name: AT0-EN V2.4 Semantic Identity Hash-Only Preflight
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/at0_en_v2_4_hash_only.yml"
+      - "phase2/academic_transform/at0_en/v2_4/HASH_TRIGGER_V1.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: at0-en-v2-4-hash-only
+  cancel-in-progress: false
+
+jobs:
+  hash_only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      HHEM_REV: c9ccea35f0e37e02422eb49b798e09ed82be5a20
+      HHEM_MODEL_SHA: 634de18a38cf1e991c1acd0f7a9e0d30f7ea187fba42bb4798f862d3edd31e72
+      FLAN_REV: 7bcac572ce56db69c1ea7c8af255c5d7c9672fc2
+      FLAN_SPIECE_SHA: d60acb128cf7b7f2536e8f38a5b18a05535c9e14c7a355904270e15b0945ea86
+      DEBERTA_REV: 6f5cf0a2b59cabb106aca4c287eed12e357e90eb
+      DEBERTA_MODEL_SHA: 06d6fd89edd4f97816831626daafbdb0b029cf63bae8edc0bccab1d64e2e7707
+
+    steps:
+      - name: Checkout exact trigger state
+        uses: actions/checkout@v4
+
+      - name: Set up exact Python candidate
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.16"
+
+      - name: Run source-free pre-inference contract tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_4
+          python -m py_compile v2_4_hybrid_core.py run_preinference.py
+          python run_preinference.py
+
+      - name: Record environment and initialize hash ledger
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$GITHUB_WORKSPACE/phase2/academic_transform/at0_en/v2_4/results/hash-only-v1"
+          CACHE="/tmp/acad-pass-v24"
+          mkdir -p "$OUT" "$CACHE/hhem" "$CACHE/flan" "$CACHE/deberta"
+          {
+            echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "github_sha=$GITHUB_SHA"
+            echo "github_run_id=$GITHUB_RUN_ID"
+            echo "python=$(python --version 2>&1)"
+            echo "runner_os=$RUNNER_OS"
+            echo "runner_arch=$RUNNER_ARCH"
+            df -h .
+          } > "$OUT/environment.txt"
+          : > "$OUT/observed_sha256.txt"
+          : > "$OUT/observed_sizes.txt"
+
+      - name: Download and hash HHEM pinned repository files sequentially
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$GITHUB_WORKSPACE/phase2/academic_transform/at0_en/v2_4/results/hash-only-v1"
+          D="/tmp/acad-pass-v24/hhem"
+          BASE="https://huggingface.co/vectara/hallucination_evaluation_model/resolve/$HHEM_REV"
+          for f in config.json configuration_hhem_v2.py modeling_hhem_v2.py model.safetensors; do
+            curl --fail --location --retry 3 --retry-delay 3 "$BASE/$f" -o "$D/$f"
+            sha256sum "$D/$f" >> "$OUT/observed_sha256.txt"
+            stat -c "%n %s" "$D/$f" >> "$OUT/observed_sizes.txt"
+          done
+          echo "$HHEM_MODEL_SHA  $D/model.safetensors" | sha256sum -c -
+          rm -f "$D/model.safetensors"
+
+      - name: Download and hash pinned FLAN-T5 runtime dependency sequentially
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$GITHUB_WORKSPACE/phase2/academic_transform/at0_en/v2_4/results/hash-only-v1"
+          D="/tmp/acad-pass-v24/flan"
+          BASE="https://huggingface.co/google/flan-t5-base/resolve/$FLAN_REV"
+          for f in config.json tokenizer_config.json special_tokens_map.json spiece.model tokenizer.json; do
+            curl --fail --location --retry 3 --retry-delay 3 "$BASE/$f" -o "$D/$f"
+            sha256sum "$D/$f" >> "$OUT/observed_sha256.txt"
+            stat -c "%n %s" "$D/$f" >> "$OUT/observed_sizes.txt"
+          done
+          echo "$FLAN_SPIECE_SHA  $D/spiece.model" | sha256sum -c -
+
+      - name: Download and hash pinned DeBERTa files sequentially
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$GITHUB_WORKSPACE/phase2/academic_transform/at0_en/v2_4/results/hash-only-v1"
+          D="/tmp/acad-pass-v24/deberta"
+          BASE="https://huggingface.co/MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli/resolve/$DEBERTA_REV"
+          for f in config.json tokenizer_config.json special_tokens_map.json spm.model tokenizer.json added_tokens.json model.safetensors; do
+            curl --fail --location --retry 3 --retry-delay 3 "$BASE/$f" -o "$D/$f"
+            sha256sum "$D/$f" >> "$OUT/observed_sha256.txt"
+            stat -c "%n %s" "$D/$f" >> "$OUT/observed_sizes.txt"
+          done
+          echo "$DEBERTA_MODEL_SHA  $D/model.safetensors" | sha256sum -c -
+          rm -f "$D/model.safetensors"
+
+      - name: Assert no inference path and write summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$GITHUB_WORKSPACE/phase2/academic_transform/at0_en/v2_4/results/hash-only-v1"
+          python - <<'PY'
+          import json, os, pathlib
+          out=pathlib.Path(os.environ["GITHUB_WORKSPACE"])/"phase2/academic_transform/at0_en/v2_4/results/hash-only-v1"
+          lines=[x for x in (out/"observed_sha256.txt").read_text().splitlines() if x.strip()]
+          summary={
+            "gate":"AT0_EN_V2_4_HASH_ONLY_PREFLIGHT_V1",
+            "status":"PASS",
+            "files_hashed":len(lines),
+            "semantic_model_inference_performed":False,
+            "model_forward_pass_performed":False,
+            "model_import_performed":False,
+            "threshold_calibration_performed":False,
+            "new_generator_inference_performed":False,
+            "additional_monetary_cost_usd":0.0,
+            "hhem_revision":os.environ["HHEM_REV"],
+            "flan_revision":os.environ["FLAN_REV"],
+            "deberta_revision":os.environ["DEBERTA_REV"],
+          }
+          (out/"HASH_ONLY_PREFLIGHT_SUMMARY.json").write_text(json.dumps(summary,indent=2)+"\n")
+          print(json.dumps(summary,indent=2))
+          PY
+
+      - name: Record final disk state
+        if: always()
+        shell: bash
+        run: |
+          OUT="$GITHUB_WORKSPACE/phase2/academic_transform/at0_en/v2_4/results/hash-only-v1"
+          df -h . >> "$OUT/environment.txt" || true
+
+      - name: Delete downloaded third-party files
+        if: always()
+        shell: bash
+        run: rm -rf /tmp/acad-pass-v24 || true
+
+      - name: Upload hash-only evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-hash-only-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_4/results/V2_4_PREINFERENCE_RESULTS.json
+            phase2/academic_transform/at0_en/v2_4/results/hash-only-v1/
+          if-no-files-found: error
+          retention-days: 30
