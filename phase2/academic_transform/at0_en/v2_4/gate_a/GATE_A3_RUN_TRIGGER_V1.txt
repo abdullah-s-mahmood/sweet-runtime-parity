@@ -1,2 +1,3 @@
 Trigger the first AT0-EN V2.4 Gate A3 extractor development score.
 Frozen extractor. No pre-score tuning. No candidate alignment. No model inference.
+Canonical rerun after evaluator-contract repair; extractor and thresholds unchanged.
