@@ -43,6 +43,8 @@ def validate(case_id, source, out):
         req(fs, has(t,r'traffic',r'real[- ]?time'),'EN01_MONITOR','traffic real-time monitoring not clearly preserved')
         req(fs, has(t,r'roadside',r'(collect|observation)'),'EN01_ROADSIDE','roadside collection claim missing')
         req(fs, has(t,r'congestion',r'(faster|rapid|quick)'),'EN01_CONGESTION','faster congestion identification claim missing')
+        if not re.search(r'\b(can|may|could|potentially)\b.{0,70}(?:support|facilitat|identif)|(?:support|facilitat|identif).{0,70}\b(can|may|could|potentially)\b',t):
+            fs.append(finding('EN01_SUPPORT_MODALITY','HARD','source states observations can support faster identification; output removes the modal limitation'))
         req(fs, has(t,r'arterial roads',r'weekday peak') and anyp(t,[r'\bonly\b',r'\blimit(?:ed|s)?\b',r'\brestrict(?:ed|s)?\b',r'\bfocus\b',r'\bexclusive(?:ly)?\b']),'EN01_SCOPE','restricted evaluation scope not clearly preserved')
     elif case_id=='EN02':
         req(fs, anyp(t,[r'15\s*(?:minutes?|min\b)']),'EN02_INTERVAL','15-minute interval missing')
@@ -75,6 +77,8 @@ def validate(case_id, source, out):
         req(fs, bool(s1) and bool(re.search(r'queue length',s1)) and bool(re.search(r'(reduc|lower)',s1)),'EN04_CIT1_LINK','CIT_SYN_01 not linked to queue-length reduction')
         req(fs, bool(s2) and bool(re.search(r'packet loss',s2)) and bool(re.search(r'(increase|higher)',s2)),'EN04_CIT2_LINK','CIT_SYN_02 not linked to packet-loss increase')
         req(fs, anyp(t,[r'different subsystems?',r'distinct subsystems?']),'EN04_DISTINCT','different-subsystem distinction missing','REVIEW')
+        if re.search(r'adaptive signal timing.{0,80}(?:associated with|association)',t):
+            fs.append(finding('EN04_CLAIM_STRENGTH_CHANGED','HARD','source states signal timing reduced queue length; output weakens this to association'))
     elif case_id=='EN05':
         req(fs,'evening' in t,'EN05_POP','evening-window restriction missing')
         req(fs, has(t,r'beacon density',r'(associat|correlat)',r'(shorter|reduc)\w* discovery'),'EN05_ASSOC','association claim missing or strengthened')
@@ -105,12 +109,19 @@ def validate(case_id, source, out):
         req(fs, has(t,r'(not|did not)',r'(manipulat|controlled?)',r'occupancy'),'EN08_MANIP','non-manipulation condition missing')
         req(fs, anyp(t,[r'does not (?:demonstrate|establish|prove)',r'cannot (?:demonstrate|establish|prove|conclude)',r'not.*causal']),'EN08_NOCAUSE','no-causal-conclusion statement missing')
         req(fs, anyp(t,[r'other networks?',r'generaliz']),'EN08_GENERAL','other-network/generalization restriction missing','REVIEW')
+        if re.search(r'\bor allow for generaliz|\band (?:does not|cannot) allow for generaliz|(?:do not|does not|cannot|can not).{0,40}(?:allow for )?generaliz|not generaliz',t):
+            if not re.search(r'does not (?:demonstrate|establish|prove).{0,90}(?:cause|lead).{0,90}other network|cannot (?:demonstrate|establish|prove).{0,90}(?:cause|lead).{0,90}other network',t):
+                fs.append(finding('EN08_SCOPE_OF_NEGATION','REVIEW','output broadens a causal-generalization limitation into a blanket non-generalizability claim'))
+            elif re.search(r'\bor allow for generaliz',t):
+                fs.append(finding('EN08_SCOPE_OF_NEGATION','REVIEW','output adds a blanket non-generalizability clause beyond the source causal limitation'))
     elif case_id=='EN09':
         for token in ['p_i','w_1','u_i','w_2','d_i']:
             req(fs,token in t,f'EN09_EQ_{token}',f'equation token {token} missing')
         req(fs,bool(re.search(r'u_i\s+(?:is|represents?|denotes?)\s+utilization|u_i\s*,?\s*(?:which\s+)?(?:represents?|denotes?)\s+utilization|utilization\s*\(\s*u_i\s*\)',t)),'EN09_U','U_i meaning missing or misbound')
         req(fs,bool(re.search(r'd_i\s+(?:is|represents?|denotes?)\s+normalized deadline pressure|d_i\s*,?\s*(?:which\s+)?(?:represents?|denotes?)\s+normalized deadline pressure|normalized deadline pressure\s*\(\s*d_i\s*\)',t)),'EN09_D','D_i meaning missing or misbound')
         req(fs,bool(re.search(r'weights?.{0,80}fixed (?:before|prior to)',t)),'EN09_WEIGHTS','pre-fixed weights missing')
+        if re.search(r'weights?.{0,100}(?:remain|stays?|are) constant throughout',t):
+            fs.append(finding('EN09_WEIGHT_STABILITY_INFERENCE','REVIEW','output adds an explicit throughout-run weight-stability claim beyond fixed-before-run wording'))
         req(fs,anyp(t,[r'equation.{0,80}(?:not changed|unchanged|not modified|remains unchanged)',r'(?:not changed|unchanged|not modified|remains unchanged).{0,80}equation']),'EN09_UNCHANGED','equation unchanged during adaptation missing')
     elif case_id=='EN10':
         req(fs, anyp(t,[r'one measurement every 30\s*(?:s|seconds?)',r'every 30\s*(?:s|seconds?)']),'EN10_RATE','30-second measurement rate missing')
