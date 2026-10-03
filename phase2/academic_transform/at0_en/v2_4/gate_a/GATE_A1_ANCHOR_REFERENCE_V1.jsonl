@@ -1,0 +1,6 @@
+{"case_id":"EN04","expected":[{"anchor_type":"CITATION","raw":"[CIT_SYN_01]","count":1},{"anchor_type":"CITATION","raw":"[CIT_SYN_02]","count":1}]}
+{"case_id":"EN05","expected":[]}
+{"case_id":"EN06","expected":[{"anchor_type":"TIME","raw":"08:00","count":2},{"anchor_type":"TIME","raw":"14:00","count":1},{"anchor_type":"GROUP","raw":"Group A","count":3},{"anchor_type":"GROUP","raw":"Group B","count":2},{"anchor_type":"VALUE","raw":"42.0","count":1},{"anchor_type":"VALUE","raw":"51.5","count":1},{"anchor_type":"VALUE","raw":"46.2","count":1},{"anchor_type":"VALUE","raw":"49.8","count":1},{"anchor_type":"VALUE","raw":"4.2","count":1},{"anchor_type":"UNIT","raw":"s","count":5}]}
+{"case_id":"EN07","expected":[{"anchor_type":"VALUE","raw":"60","count":1},{"anchor_type":"UNIT","raw":"s","count":1},{"anchor_type":"COUNT","raw":"200 iterations","count":1},{"anchor_type":"SEED","raw":"seed 17","count":1}]}
+{"case_id":"EN09","expected":[{"anchor_type":"EQUATION","raw":"P_i = w_1U_i + w_2D_i","count":1},{"anchor_type":"SYMBOL","raw":"P_i","count":1},{"anchor_type":"SYMBOL","raw":"w_1","count":2},{"anchor_type":"SYMBOL","raw":"U_i","count":2},{"anchor_type":"SYMBOL","raw":"w_2","count":2},{"anchor_type":"SYMBOL","raw":"D_i","count":2}]}
+{"case_id":"EN12","expected":[{"anchor_type":"COUNT","raw":"three traffic densities","count":1}]}
