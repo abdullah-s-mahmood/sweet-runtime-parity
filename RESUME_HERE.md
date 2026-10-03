@@ -6014,3 +6014,63 @@ Not authorized:
 - production claims
 
 Higher-model consultation is not required at aligner implementation start unless a new construct-validity issue appears.
+
+
+## 2026-10-03 — Permanent cumulative success-ledger reporting rule
+
+User requires every substantive progress update and checkpoint report to include a cumulative success ledger from the beginning of the current V2.4 research track through the present checkpoint.
+
+The ledger must always distinguish:
+1. component/gate metrics;
+2. current checkpoint completion percentage;
+3. whole-ACAD_PASS planning completion estimate;
+4. latest true end-to-end verifier result.
+
+Never present a component-level 100% result as system-level success.
+
+Default cumulative ledger baseline/history to carry forward:
+- historical pre-V2.4 end-to-end baseline from V2.3 unseen holdout:
+  - adversarial escape: 37.5%
+  - safe automatic acceptance: 25%
+  - BOTH_FAIL
+- V2.4 Gate 0 contract integrity:
+  - 326/326 PASS after A1 contract repairs
+  - contract integrity only, not verifier accuracy
+- Gate A1 deterministic anchors:
+  - precision 100%
+  - recall 100%
+  - exact provenance 35/35
+  - narrow development scope
+- Gate A2 source structural prototype:
+  - structural sentence representation 100%
+  - 5 observed decimal-boundary defects repaired to 0 under regression guard
+  - semantic accuracy not established in A2
+- Gate A3 source extractor development validation:
+  - gold coverage 100%
+  - critical coverage 100%
+  - false additions 0%
+  - atomic one-to-one 88%
+  - certain precision 92.86%
+  - error-abstention recall 87.5%
+  - unnecessary abstention 23.53%
+  - critical silent semantic errors 0
+  - PASS_DEVELOPMENT
+- Gate A4:
+  - GO_ALIGNMENT_RESEARCH_DEVELOPMENT_ONLY
+  - readiness decision, not performance gain
+- Gate B1 human-correct reference integrity:
+  - 363/363 integrity checks PASS
+  - 12 graph pairs
+  - aligner performance NOT YET MEASURED at time of this rule
+
+When a later stage produces new comparable metrics:
+- add them to the cumulative ledger;
+- report improvement/worsening in percentage points or counts where valid;
+- explicitly state when no directly comparable baseline exists;
+- preserve negative evidence and historical failures.
+
+Time estimates:
+- do not provide unreliable wall-clock promises;
+- report remaining checkpoints/units and observed runtime/throughput when available.
+
+This reporting rule is permanent unless the user explicitly changes it.
