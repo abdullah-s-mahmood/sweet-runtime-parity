@@ -4764,3 +4764,17 @@ For every meaningful checkpoint, progress update, phase closure, or result revie
 
 7. These quantitative/progress reports are in addition to the existing staged-execution rule: complete one coherent checkpoint, freeze evidence, report, then stop for explicit `أكمل` when the remaining work is separable.
 
+
+
+## 2026-10-03 — Stream/timeout mitigation rule
+
+To reduce repeated ChatGPT stream-recovery / prolonged-thinking UI failures:
+
+1. Prefer **micro-checkpoints** for long ACAD_PASS work.
+2. For a long or tool-heavy stage, default to roughly **2–4 sequential tool operations per response**, then report and stop for explicit `أكمل`, unless an atomic/one-shot operation requires finishing in the same response.
+3. Do not perform repeated long polling loops in one response. If a remote workflow is still running after one meaningful status inspection, report its exact state/progress and stop; continue polling only after the user's next `أكمل`.
+4. Preserve the last verified checkpoint before every stop so a UI/stream failure never causes a restart.
+5. If the conversation itself becomes very long and UI failures recur, prefer a **new chat inside the same ACAD_PASS project**, beginning by reading the canonical `RESUME_HERE.md`, rather than continuing an unstable very-long thread.
+6. A UI/stream timeout is not evidence that GitHub/experiment execution failed. Verify the external run before taking any recovery action.
+7. Do not duplicate triggers, rerun consumed experiments, or restart irreversible work because of a ChatGPT UI timeout.
+
