@@ -147,9 +147,13 @@
         "id": "EN02_R4",
         "type": "METRIC_DEFINITION",
         "metrics": [
-          "travel distance",
-          "missed-overflow events",
-          "missed overflow events"
+          [
+            "travel distance"
+          ],
+          [
+            "missed-overflow events",
+            "missed overflow events"
+          ]
         ],
         "predicate": [
           "measure",
