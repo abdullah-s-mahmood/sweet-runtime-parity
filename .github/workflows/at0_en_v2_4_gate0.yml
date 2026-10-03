@@ -1,0 +1,51 @@
+name: AT0-EN V2.4 Gate 0 Contract
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/gate0/GATE0_RUN_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  gate0:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact trigger state
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile Gate 0 contract test
+        run: |
+          set -euo pipefail
+          python -m py_compile phase2/academic_transform/at0_en/v2_4/gate0/check_gate0_contract.py
+
+      - name: Run Gate 0 contract test
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_4/gate0/check_gate0_contract.py
+
+      - name: Freeze Gate 0 evidence hashes
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_4/gate0
+          sha256sum             SCIENTIFIC_ASSERTION_GRAPH_SCHEMA_V1.json             CRITICALITY_RULES_V1.json             OUTCOME_CONTRACT_V1.json             GATE0_DEV_REFERENCE_V1.jsonl             check_gate0_contract.py             GATE0_CONTRACT_TEST_SUMMARY.json             > GATE0_CONTRACT_SHA256.txt
+          cat GATE0_CONTRACT_SHA256.txt
+
+      - name: Upload Gate 0 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-gate0-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_4/gate0/GATE0_CONTRACT_TEST_SUMMARY.json
+            phase2/academic_transform/at0_en/v2_4/gate0/GATE0_CONTRACT_SHA256.txt
+          retention-days: 30
+          if-no-files-found: error
