@@ -1,0 +1,2 @@
+Trigger V2.4 B1.1 revalidation after principle-based owner-first and canonical-binding repair.
+Frozen B1 reference and thresholds unchanged.
