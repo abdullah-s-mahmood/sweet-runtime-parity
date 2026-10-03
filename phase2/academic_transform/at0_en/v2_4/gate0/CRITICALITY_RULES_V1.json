@@ -188,5 +188,14 @@
       "Ownership is expressed by graph relations; assertion anchor_refs are convenience references only.",
       "Unowned critical anchors must be surfaced by coverage checks and cannot silently disappear."
     ]
+  },
+  "provenance_inventory_policy": {
+    "policy": "GLOBAL_EVIDENCE_SPANS_ARE_CANONICAL",
+    "rules": [
+      "Evidence spans are inventoried globally before assertion extraction.",
+      "Anchors and assertions reference evidence spans by ID; they do not own duplicate span objects.",
+      "Every critical anchor and critical assertion must resolve to at least one valid evidence span.",
+      "Broken or missing critical provenance is INVALID_VERIFICATION."
+    ]
   }
 }
