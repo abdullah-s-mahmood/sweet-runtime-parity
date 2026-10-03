@@ -9,3 +9,6 @@ Reason: harness-only cases.jsonl path correction; validator and frozen artifact 
 \nRetry: 3\nReason: evidence-path bookkeeping correction only; validator, tests, and frozen artifact unchanged.\n
 Retry: 4
 Reason: shell newline serialization fix only; scientific validator/results unchanged.
+
+Retry: PINNED_FINAL
+Reason: exact-trigger-SHA checkout to eliminate branch-race ambiguity; run latest validator/tests against immutable V2.1 artifact.
