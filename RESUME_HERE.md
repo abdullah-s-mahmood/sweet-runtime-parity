@@ -7337,3 +7337,70 @@ Master continuity updated:
 `ACAD_PASS_MASTER_CONTINUITY.md`
 commit:
 `1a30755f0ef2c8af43367ad0142eaa9d4ceb5e0e`
+
+
+## 2026-10-04 — External Human-Gold Composite feasibility audit CLOSED
+
+Audit:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/EXTERNAL_HUMAN_GOLD_COMPOSITE_FEASIBILITY_AUDIT_V1.md`
+commit:
+`609d9ca39d5fbb333887c6f09b85a36b8d554b9d`
+
+Verdict:
+`FEASIBLE_WITHOUT_NEW_HUMAN_ADJUDICATORS_FOR_RESEARCH_PROGRESSION`
+
+Core external tracks:
+- DeFacto
+- PLABA
+- CLEF SimpleText 2025 human-annotated real scientific simplifications if accessible
+- SciFact
+- QASemConsistency
+- USB
+- PlainFact positive biomedical track
+
+Secondary/diagnostic:
+- QASPER
+- TRUE
+- AggreFact
+- FENICE
+- optional non-overlapping SciFact-Open
+- Cochrane-auto
+- 2026 expert-edited scientific simplification corpus
+
+Proposed replacement:
+- `Gate C-EXT` = multiple independent published human/expert-gold tracks
+- `Gate C-META` = deterministic ACAD_PASS-specific metamorphic relation tests
+
+Critical mapping rule:
+never force every external dataset into PASS/REJECT/REVIEW.
+Use native labels unless an exact adapter is frozen.
+
+Key overlap risks:
+- SciFact/SciFact-Open
+- TRUE/components
+- AggreFact/components
+- QASemConsistency underlying datasets
+- DeFacto derivatives
+- PLABA/TREC shared sources
+
+High-stakes protocol replacement has NOT been approved yet.
+Current custom 80-study Gate C protocol remains preserved and unopened.
+
+Higher-model consultation packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/NO_NEW_HUMAN_HIGHER_MODEL_CONSULTATION_PACKET_V1.txt`
+commit:
+`9d015241f52244448f7ccb9800e0a473f8a7f213`
+
+Master continuity updated:
+`ACAD_PASS_MASTER_CONTINUITY.md`
+commit:
+`180ba1e2c141d2346b6156e78564bfa4962c7385`
+
+Exact next action:
+user-mediated higher-model construct-validity consultation.
+
+Until consultation response:
+- do not recruit reviewers
+- do not open custom Gate C
+- do not execute external suite
+- do not modify frozen V2.4 runtime
