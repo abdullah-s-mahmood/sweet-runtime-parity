@@ -1,0 +1,2 @@
+Trigger AT0-EN V2.1 open-weight smoke gate after backend freeze.
+Date: 2026-10-03
