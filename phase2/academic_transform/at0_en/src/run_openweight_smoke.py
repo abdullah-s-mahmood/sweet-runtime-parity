@@ -69,7 +69,18 @@ def extract_content(response: dict) -> str:
 
 
 def parse_json_text(text: str) -> dict:
-    obj = json.loads(text)
+    s = text.strip()
+    # Accept a JSON object returned either raw or inside one Markdown code fence.
+    # This changes transport parsing only; it does not relax the JSON schema.
+    if s.startswith("~~~"):
+        parts = s.split("\n", 1)
+        if len(parts) == 2 and "~~~" in parts[1]:
+            s = parts[1].rsplit("~~~", 1)[0].strip()
+    elif s.startswith("```"):
+        parts = s.split("\n", 1)
+        if len(parts) == 2 and "```" in parts[1]:
+            s = parts[1].rsplit("```", 1)[0].strip()
+    obj = json.loads(s)
     if not isinstance(obj, dict):
         raise ValueError("TOP_LEVEL_NOT_OBJECT")
     return obj
