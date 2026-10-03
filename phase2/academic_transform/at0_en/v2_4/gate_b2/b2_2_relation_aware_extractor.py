@@ -250,6 +250,40 @@ def parse_measured_as(sentence:str, idx:int):
         return [mk_assertion(idx,m.group("subject"),"MEASURE_AS",m.group("object"),sentence)]
     return None
 
+
+def parse_explicit_scientific_predicate(sentence:str, idx:int):
+    s=sentence.rstrip(".").strip()
+
+    # Explicit scientific definitions: "We define X as Y" / "X is defined as Y".
+    m=re.fullmatch(r"We\s+define\s+(?P<subject>.+?)\s+as\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(idx,m.group("subject"),"DEFINE",m.group("object"),sentence)]
+    m=re.fullmatch(r"(?P<subject>.+?)\s+is\s+defined\s+as\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(idx,m.group("subject"),"DEFINE",m.group("object"),sentence)]
+
+    # Explicit purpose relation: "X aims to ..."
+    m=re.fullmatch(r"(?P<subject>.+?)\s+aims?\s+to\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(idx,m.group("subject"),"AIM_TO",m.group("object"),sentence)]
+
+    # Explicit treatment relation.
+    m=re.fullmatch(r"(?P<subject>.+?)\s+(?:typically\s+)?treats?\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(idx,m.group("subject"),"TREAT",m.group("object"),sentence)]
+
+    # Explicit passive use relation.
+    m=re.fullmatch(r"(?P<subject>.+?)\s+(?:are|is)\s+(?:widely\s+)?used\s+for\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(idx,m.group("subject"),"USE_FOR",m.group("object"),sentence)]
+
+    # Explicit introduction relation. Preserve authorship as attribution in the subject.
+    m=re.fullmatch(r"(?P<subject>We|The authors?)\s+introduce(?:s)?\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(idx,m.group("subject"),"INTRODUCE",m.group("object"),sentence)]
+
+    return None
+
 def is_citation_relation(sentence:str)->bool:
     s=sentence.rstrip(".").strip()
     return bool(re.fullmatch(rf".+?\s+(?:cites|->)\s*{CIT}",s,re.I))
@@ -355,6 +389,7 @@ def relation_aware_extract(text:str, case_id:str)->dict:
             lambda s,i: parse_reduce(s,i),
             lambda s,i: parse_distinct_mechanism(s,i),
             lambda s,i: parse_measured_as(s,i),
+            lambda s,i: parse_explicit_scientific_predicate(s,i),
         ]:
             parsed=parser(sentence,idx)
             if parsed:
