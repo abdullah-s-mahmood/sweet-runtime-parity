@@ -59,4 +59,19 @@ g1=graph("The result may reflect improved neighbor awareness.","R6S")
 g2=graph("This outcome may reflect better neighbor awareness.","R6C")
 assert outcome(g1,g2)=="REVIEW",(g1,g2,outcome(g1,g2))
 
-print("B2.2 relation-aware principle regressions: 8/8 PASS")
+# 7-11. Explicit scientific predicate normalization on generic, non-benchmark sentences.
+cases=[
+    ("We define throughput as delivered packets per second.","DEFINE"),
+    ("The scheduler aims to reduce deadline misses.","AIM_TO"),
+    ("The analysis treats latency and throughput independently.","TREAT"),
+    ("These measurements are used for estimating packet loss.","USE_FOR"),
+    ("We introduce RouteGuard, a framework for validating paths.","INTRODUCE"),
+]
+for i,(text,pred) in enumerate(cases,7):
+    g=graph(text,f"RX{i}")
+    assert len(g["assertions"])==1,(text,g)
+    a=g["assertions"][0]
+    assert a["predicate"]==pred,(text,a)
+    assert a["confidence_status"]=="CERTAIN",(text,a)
+
+print("B2.2 relation-aware principle regressions: 13/13 PASS")
