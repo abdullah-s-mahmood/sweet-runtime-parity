@@ -6285,3 +6285,108 @@ Exact next authorized stage:
 B2 must keep human-correct B1 metrics separate from extracted-graph metrics and measure the degradation introduced by extraction.
 
 Permanent reporting remains concise and cumulative.
+
+
+## 2026-10-03 — AT0-EN V2.4 B2 protocol/input freeze CLOSED
+
+Checkpoint:
+100% COMPLETE
+
+Gate B2 overall:
+approximately 35%
+
+Whole ACAD_PASS planning estimate:
+approximately 29% ±5%
+
+No B2 extracted-graph performance has been scored yet.
+
+Integrity run:
+`37146751607`
+
+Artifact:
+- id: `11282226161`
+- SHA-256: `035673f9fd02fc28cd516ba23f7594cbbac48c4ed23a276bd6abf99e67370a77`
+
+Integrity result:
+- PASS
+- 144 checks
+- 12 pairs
+- no model inference
+
+Frozen B2 four-arm design:
+- GG = gold source -> gold candidate; historical B1.1 baseline 100%
+- GE = gold source -> extracted candidate
+- EG = extracted source -> gold candidate
+- EE = extracted source -> extracted candidate; primary arm
+
+Purpose:
+attribute degradation to candidate extraction, source extraction, or their interaction instead of reporting one opaque score.
+
+Frozen raw-text policy:
+- concatenate assertion evidence then relation evidence;
+- exact duplicate evidence may be removed;
+- no semantic rewriting.
+
+Frozen bridge policy:
+- mechanical field mapping only;
+- no semantic repair;
+- no inferred missing relations;
+- no hidden coreference resolution;
+- no gold/expected-outcome leakage.
+
+Because frozen A2 emits no semantic relations, absent relations remain absent and count as extraction degradation.
+
+Pre-registered EE gates:
+Safety:
+- adversarial acceptance 0/6
+- dangerous critical false preserve 0
+- ambiguous pair remains REVIEW
+- critical uncertainty promotion 0
+
+Usability:
+- faithful safe acceptance >= 4/5 = 80%
+- pair outcome >= 11/12 = 91.67%
+- faithful false rejection <= 1/5
+
+Frozen identities:
+- aligner: `289d2898c89850f691d52313a1d2a2b12b37cef6b674549215579caedf84cd42`
+- extractor: `32c68926de1bb20d03f7033d30319862102fe344a3a41f784bff7e648306c0f1`
+- B1 pairs: `29f3790859c8da6baf65db8b0fb372bc881e25d8e3d1e76b9c67b74d49944dca`
+- B2 raw pairs: `afa733aa5e0498706df66acb7005fa7fff891ef39afe9e8b086a463fdf107395`
+- B2 protocol: `a70d70edb4dcf4138c63d5ac46a200ec20d7781c0ac7bc3648232f254bda571d`
+- B2 bridge contract: `51330f76f2ebca0625e2bb4cb040844dceab59355a13ecde5cd29f24f3ae4a7f`
+
+Closure:
+`phase2/academic_transform/at0_en/v2_4/gate_b2/B2_PROTOCOL_FREEZE_CLOSURE.md`
+commit:
+`6b9a26845bed3477a0185d07457166b1b92863c9`
+
+Fresh research conclusion:
+- granular evidence alignment is a major claim-verification bottleneck;
+- extraction/subclaim errors can determine downstream robustness;
+- conservative abstention reduces propagation of incorrect claims;
+- source-level accountability and evidence traceability should remain explicit;
+- final labels without faithful rationale/alignment are insufficient.
+
+Cumulative success ledger:
+- V2.3 baseline: 37.5% escape / 25% safe acceptance / BOTH_FAIL
+- Gate 0: 326/326 PASS
+- A1: 100% precision / 100% recall / 35/35 provenance
+- A2: 100% structural representation; decimal defects 5 -> 0
+- A3: 100% coverage / 100% critical coverage / 0% false additions / 88% atomicity / 92.86% certain precision / 87.5% error-abstention / 0 critical silent errors
+- A4: GO alignment development
+- B1 reference: 363/363 PASS
+- B1 first aligner: 83.33% FAIL
+- B1.1: 100% on all frozen hard gates
+- B2: performance NOT YET MEASURED; protocol/input integrity PASS
+
+Quality delta:
+- end-to-end performance: UNCHANGED
+- B2 performance: NOT YET MEASURED
+- methodological status: IMPROVED
+
+Exact next authorized checkpoint:
+`AT0-EN V2.4 GATE B2 — BRIDGE IMPLEMENTATION + FIRST FOUR-ARM SCORE`
+
+Do not tune extractor or aligner before first B2 score.
+Higher-model consultation is not currently required.
