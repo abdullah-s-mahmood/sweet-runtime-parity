@@ -321,15 +321,20 @@ def relation_delta(rel,text):
 def relation_mechanism(rel,text):
     t=norm(text)
     if rel.get("must_not_globalize"):
-        # if a lead/general sentence names mechanism A while grouping B subjects, reject
         for u in split_units(text):
             if norm(rel["mechanism_a"]) in u and any(norm(x) in u for x in rel["subjects_b"]):
-                if not is_decoy(u): return finding(rel,"VIOLATED","MECHANISM_CONFLATED","mechanism generalized to wrong study/entity",u)
+                if not is_decoy(u):
+                    return finding(rel,"VIOLATED","MECHANISM_CONFLATED","mechanism generalized to wrong study/entity",u)
         return finding(rel,"VERIFIED","MECHANISM_DISTINCTION_VERIFIED","no cross-mechanism conflation detected")
     if rel.get("must_be_distinct"):
-        if re.search(r"\b(?:same mechanism|evidence for the same mechanism)\b",t) and not re.search(r"\b(?:not|should not)\b.{0,30}same mechanism",t):
+        neg_same=re.search(r"\b(?:not|should not|cannot|can not)\b.{0,120}(?:the\s+)?same mechanism",t)
+        distinct=re.search(r"\b(?:different|distinct) subsystems?\b",t)
+        same=re.search(r"\b(?:same mechanism|evidence for (?:the\s+)?same mechanism)\b",t)
+        if neg_same and distinct:
+            return finding(rel,"VERIFIED","MECHANISM_DISTINCTION_VERIFIED","explicit subsystem distinction and non-equivalence retained")
+        if same and not neg_same:
             return finding(rel,"VIOLATED","MECHANISM_COLLAPSED","distinct mechanisms collapsed")
-        if re.search(r"\b(?:different|distinct) subsystems?\b",t) or re.search(r"\bshould not\b.{0,50}same mechanism",t):
+        if distinct or neg_same:
             return finding(rel,"VERIFIED","MECHANISM_DISTINCTION_VERIFIED","distinction retained")
         return finding(rel,"UNRESOLVED","MECHANISM_DISTINCTION_UNRESOLVED","distinction not reconstructed")
     return finding(rel,"UNRESOLVED","MECHANISM_UNRESOLVED","mechanism relation unresolved")
