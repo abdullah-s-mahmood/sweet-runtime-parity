@@ -62,6 +62,9 @@ def coverage(a:set[str],b:set[str])->float:
 def owner_tokens(x)->set[str]:
     raw=str(x or "")
     out=set(tokens(raw))
+    for m in re.finditer(r"\bgroups?\s+([A-Za-z0-9]+)\s+and\s+([A-Za-z0-9]+)\b",raw,re.I):
+        out.add("group:"+m.group(1).lower())
+        out.add("group:"+m.group(2).lower())
     for m in re.finditer(r"\bgroup\s+([A-Za-z0-9]+)\b",raw,re.I):
         out.add("group:"+m.group(1).lower())
     for m in re.finditer(r"\b([A-Za-z]_[A-Za-z0-9]+)\b",raw):
