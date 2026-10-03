@@ -6486,3 +6486,28 @@ Higher-model consultation is justified at B2.1 because the repair boundary is ar
 predicate normalization vs explicit relation extraction vs ownership representation vs split/merge binding vs candidate symmetry vs authentic-text timing.
 
 Do NOT modify extractor, bridge, or aligner before the B2.1 decision is frozen.
+
+
+### B2 duplicate verification note after UI stream-recovery interruption
+
+A later duplicate verification run occurred after the ChatGPT UI displayed the recurring long-thinking/stream-recovery behavior:
+
+- duplicate run: `37147337174`
+- trigger commit: `b7de15338f347077659835f49e3d02c7ce6b4479`
+- artifact id: `11283300924`
+- artifact SHA-256: `c49af9203c60497944f48a1398045bdc4a3799a98b6872571e5dd1ed9de8557d`
+
+It reproduced the same four-arm scientific result:
+- GG 100%
+- GE 41.67%
+- EG 50%
+- EE 33.33%
+- EE safe acceptance 0%
+- adversarial acceptance 0%
+- result `MIXED_B2_REPAIR_REQUIRED`
+
+This duplicate run is NOT a new scientific experiment, does NOT replace the canonical first B2 run `37147162271`, and does NOT change any metric, readiness decision, or project completion estimate.
+
+Canonical B2 first-score provenance remains the earlier frozen result and closure.
+
+This note exists only to preserve operational continuity and prevent accidental double-counting after UI interruption.
