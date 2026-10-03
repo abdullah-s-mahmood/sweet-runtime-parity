@@ -4778,3 +4778,22 @@ To reduce repeated ChatGPT stream-recovery / prolonged-thinking UI failures:
 6. A UI/stream timeout is not evidence that GitHub/experiment execution failed. Verify the external run before taking any recovery action.
 7. Do not duplicate triggers, rerun consumed experiments, or restart irreversible work because of a ChatGPT UI timeout.
 
+
+
+## 2026-10-03 — Permanent error-resilient execution mode
+
+Because the user repeatedly encounters ChatGPT UI/stream errors such as `Our systems are thinking a bit more about this request before responding`, stream-recovery timeouts, and `A network error occurred. Please check your connection and try again.`, ACAD_PASS uses an error-resilient execution mode by default.
+
+Rules:
+
+1. Prefer shorter coherent execution stages over long uninterrupted tool chains.
+2. For tool-heavy work, freeze a repository/evidence checkpoint as early as scientifically safe before continuing to optional analysis.
+3. After a meaningful checkpoint is complete, report and stop for explicit `أكمل` when the next work is separable.
+4. Avoid unnecessary polling, duplicate fetches, or long user-visible streaming responses.
+5. Keep tool calls strictly sequential and avoid very large single responses when a compact checkpoint report is sufficient.
+6. Before any irreversible/one-shot/consumed operation, ensure the current state is durably recorded so a UI/network interruption cannot force a restart.
+7. If a ChatGPT stream/network error interrupts the conversation, resume from the last verified repository/run/hash checkpoint. Never repeat completed one-shot work merely because the UI response failed.
+8. When a long external workflow is running, progress updates should use coarse milestones and measured step counts rather than repeated rapid polling.
+9. If the same chat becomes operationally unstable or excessively long, a new chat may continue by reading `RESUME_HERE.md`; no scientific phase should be restarted solely because the conversation changed.
+10. UI/network errors are not themselves evidence of scientific or workflow failure; verify the external run/repository state before taking corrective action.
+
