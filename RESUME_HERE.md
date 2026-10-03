@@ -7274,3 +7274,66 @@ Immediate scope:
 - define neutral reviewer IDs and assignments
 - define gold access separation
 - verify all 8 holdout-opening conditions
+
+
+## 2026-10-03 — Deep research: no-new-human Gate C alternative
+
+User explicitly requested a serious attempt to eliminate the need for newly recruited human reviewers.
+
+New researched direction:
+`EXTERNAL_HUMAN_GOLD_COMPOSITE_VALIDATION`
+
+Plan:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_NO_NEW_HUMAN_ALTERNATIVE_RESEARCH_V1.md`
+commit:
+`a8a613f28988046ccd37411760cbf8aa4c66a0cb`
+
+Research found multiple independent published human/expert-labeled resources suitable for triangulated validation:
+- SciFact
+- SciFact-Open
+- QASPER
+- DeFacto
+- TRUE
+- SummaC
+- AGGREFACT
+- FRANK
+- FENICE long-form annotations
+- QASemConsistency 2026
+- clinical-study summarization factuality annotations
+- PlainFact / PlainQAFact
+- USB
+
+Complement with deterministic ACAD_PASS-specific metamorphic tests.
+
+Important scientific boundary:
+- no single dataset fully matches ACAD_PASS transformation fidelity;
+- a frozen composite suite can yield non-provisional external-benchmark validation for the represented constructs;
+- this must not be mislabeled as fresh bespoke human-adjudicated Gate C;
+- dataset-specific label-to-ACAD_PASS mapping contracts must be frozen before execution.
+
+Potential revised Gate C:
+- `Gate C-EXT` = external published human-gold validation
+- `Gate C-META` = deterministic metamorphic relation validation
+
+Immediate decision:
+- do NOT recruit reviewers yet;
+- do NOT open custom 80-study holdout yet;
+- current frozen custom Gate C protocol remains preserved, not deleted.
+
+Exact next recommended checkpoint:
+`PRE-GATE-C — EXTERNAL HUMAN-GOLD COMPOSITE FEASIBILITY AUDIT`
+
+Scope:
+1. dataset inventory;
+2. licenses/downloadability;
+3. label schemas;
+4. usable labeled counts;
+5. overlap/deduplication;
+6. adapter contracts;
+7. construct-coverage map;
+8. decide whether fresh human adjudication can be eliminated entirely or reduced to a small residual study.
+
+Master continuity updated:
+`ACAD_PASS_MASTER_CONTINUITY.md`
+commit:
+`1a30755f0ef2c8af43367ad0142eaa9d4ceb5e0e`
