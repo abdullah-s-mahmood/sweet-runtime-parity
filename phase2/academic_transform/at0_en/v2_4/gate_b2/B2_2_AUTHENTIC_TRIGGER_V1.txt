@@ -1,1 +1,2 @@
 Run authentic qualitative check.
+Rerun after explicit scientific predicate normalization.
