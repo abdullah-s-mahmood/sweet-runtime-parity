@@ -6,3 +6,4 @@ Purpose: rerun patched validator + adversarial tests on frozen V2.1 evidence.
 
 Retry: 2
 Reason: harness-only cases.jsonl path correction; validator and frozen artifact unchanged.
+\nRetry: 3\nReason: evidence-path bookkeeping correction only; validator, tests, and frozen artifact unchanged.\n
