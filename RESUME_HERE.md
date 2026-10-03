@@ -5885,3 +5885,132 @@ Not authorized:
 - authentic-document integrated validation before a diagnosable alignment prototype
 
 Higher-model consultation is not required at B1 start unless a new construct-validity or architecture issue appears.
+
+
+## 2026-10-03 — AT0-EN V2.4 Gate B1 human-correct reference freeze CLOSED
+
+Checkpoint status:
+**100% COMPLETE**
+
+Purpose:
+freeze the human-correct graph reference and B1 scoring contract before any aligner implementation.
+
+No model inference occurred.
+No extractor output was used.
+No aligner has been implemented or scored yet.
+
+Workflow:
+`AT0-EN V2.4 B1 Reference Integrity`
+
+Run:
+`37145151369`
+
+Trigger commit:
+`ff4173729d94bf90217ac05d986846cd58eeaacd`
+
+Artifact:
+- id: `11281568714`
+- SHA-256: `ba404b99186582a259f683736f0018832bf09f34a71f6dc247cd8ef2a4bfcaaf`
+
+Integrity:
+- 363 checks PASS
+- 12 graph pairs
+- outcomes: 5 PASS_CANDIDATE / 6 REJECT / 1 REVIEW
+- mapping shapes: 7 ONE_TO_ONE / 2 ONE_TO_MANY / 2 MANY_TO_ONE / 1 MIXED
+- source assertions: 19
+- candidate assertions: 19
+- source relations: 6
+- candidate relations: 6
+
+Gold assertion-alignment statuses:
+- PRESERVED: 7
+- ALTERED: 8
+- CONTRADICTORY: 1
+- UNCERTAIN: 1
+
+Gold relation-alignment statuses:
+- PRESERVED: 3
+- ALTERED: 2
+- CONTRADICTORY: 1
+
+Uncertain review pair:
+`B1-P10`
+
+Frozen hashes:
+- alignment schema: `49935f5ea0de2e972c7bb7b557f4b477dbd72caed6cd7dd066117da6761f5a3a`
+- scoring contract: `385581867da42c6e0a13f1031ccf96787740bc2233cd25ec7b98c484fcbc42e1`
+- human-correct pair set: `29f3790859c8da6baf65db8b0fb372bc881e25d8e3d1e76b9c67b74d49944dca`
+- integrity checker: `1d4b9e68760cc07790283ae7dcf148c424baa5438d58f63e79e1a55acee0e539`
+- integrity summary: `6e91b9f98ea549994929e6988d1b3f2bc75daa3fcdc3987c784f702eccb9568d`
+
+Important repair before freeze:
+the initial B1 schema represented only assertion-level gold alignment.
+This was insufficient for citation/procedure/relation failures.
+`gold_relation_alignment` was added before the pair set was frozen.
+
+Scenario coverage:
+- faithful paraphrase
+- faithful split
+- faithful merge
+- relation/value rebinding
+- scope/negation reversal
+- citation-binding change
+- equation/symbol binding change
+- procedural-order reversal
+- metric-definition change
+- ambiguity/uncertainty propagation
+
+Pre-registered future aligner hard gates:
+- critical dangerous false-preserve: 0
+- pair-level expected outcome: 100%
+- critical gold alignment coverage: 100%
+- critical alignment-status accuracy: 100%
+- faithful safe-pair rejection: 0
+- material adversarial pair acceptance: 0
+- critical uncertainty preservation: 100%
+
+Fresh end-stage research:
+- decomposition/verifier quality can be misaligned, so alignment must be tested directly;
+- event relations such as coreference, temporal, causal, and hierarchy/subsumption remain difficult;
+- uncertainty must remain tied to evidence rather than being silently erased;
+- graph structure alone does not guarantee correct semantic alignment.
+
+Quality delta:
+- end-to-end scientific-fidelity performance: UNCHANGED
+- last full verifier evidence remains 37.5% adversarial escape and 25% safe automatic acceptance, BOTH_FAIL
+- B1 aligner performance: NOT YET MEASURED
+- methodological status: IMPROVED
+
+Completion:
+- B1 reference-freeze checkpoint: 100%
+- Gate B1 overall: approximately 45%
+- whole ACAD_PASS planning estimate: approximately 27% ±5%
+
+Reference-freeze closure:
+`phase2/academic_transform/at0_en/v2_4/gate_b1/B1_REFERENCE_FREEZE_CLOSURE.md`
+commit:
+`796aba0418702d5c8113ff62ed21bc6ca61d1c8e`
+
+Exact next authorized checkpoint:
+`AT0-EN V2.4 GATE B1 — ALIGNER IMPLEMENTATION + FIRST HUMAN-CORRECT GRAPH SCORE`
+
+Next checkpoint scope:
+- implement alignment mechanics only;
+- use frozen human-correct graphs;
+- no model inference initially;
+- support 1:1 / 1:N / N:1 / mixed;
+- score assertion and relation alignment separately;
+- preserve uncertainty;
+- produce traceable evidence for every critical alignment;
+- run one first score against the frozen B1 contract;
+- freeze all failures before any repair.
+
+Not authorized:
+- extracted-graph alignment
+- candidate extraction
+- live generation
+- HW1-EN
+- untouched holdout
+- production claims
+
+Higher-model consultation is not required at aligner implementation start unless a new construct-validity issue appears.
