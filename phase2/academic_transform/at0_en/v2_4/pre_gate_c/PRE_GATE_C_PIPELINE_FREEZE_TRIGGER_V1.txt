@@ -1,0 +1,2 @@
+Trigger pre-Gate-C pipeline identity freeze verification only.
+No holdout data creation or opening.
