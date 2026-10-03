@@ -1,0 +1,2 @@
+Trigger first AT0-EN V2.4 B1 human-correct graph alignment score.
+Frozen reference and scoring contract. No model inference. Freeze failures before repair.
