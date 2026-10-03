@@ -6206,3 +6206,82 @@ Not authorized:
 - production claims
 
 Higher-model consultation is not required at B1.1 start unless repair exposes a new construct-validity issue.
+
+
+## 2026-10-03 — AT0-EN V2.4 B1.1 CLOSED / Gate B1 COMPLETE
+
+Status:
+- B1.1: 100% COMPLETE
+- Gate B1: 100% COMPLETE
+- whole ACAD_PASS planning estimate: approximately 28% ±5%
+
+Final B1.1 run:
+`37146333162`
+
+Artifact:
+- id: `11282215627`
+- SHA-256: `cae7f304bf6ff6ac78b6dacd6c624be1a14fc74221032e2d59ee217b768c73ea`
+
+Result:
+`PASS_B1_HUMAN_CORRECT`
+
+Final hard-gate metrics:
+- pair outcomes: 12/12 = 100%
+- critical alignment coverage: 22/22 = 100%
+- critical alignment-status accuracy: 100%
+- dangerous false-preserve: 0
+- faithful false rejection: 0
+- material adversarial acceptance: 0
+- critical uncertainty preservation: 100%
+- critical evidence-trace completeness: 100%
+- repair regressions: 3/3 PASS
+
+Improvement vs first B1 score:
+- pair outcome accuracy: 83.33% -> 100% = +16.67 pp
+- critical coverage: 90.91% -> 100% = +9.09 pp
+- critical status accuracy: 95% -> 100% = +5 pp
+- adversarial acceptance: 1 -> 0
+- faithful false rejection: 1 -> 0
+
+Repair principles:
+- owner/entity-first matching
+- canonical owner-to-value/meaning binding facts
+- symbolic-key normalization
+- scalar+unit canonicalization
+- coordinated-owner normalization
+
+Preserved negative evidence:
+- first B1 run `37145678669`: FAIL at 83.33%
+- first B1.1 regression run `37146262703`: regression failure before score due coordinated-group normalization defect
+
+Frozen B1.1 result:
+`phase2/academic_transform/at0_en/v2_4/gate_b1/results/B1_1_REVALIDATION_FROZEN.json`
+commit:
+`6bc34bb1591804c8b497f46f29c85dd9f954be57`
+
+Closure:
+`phase2/academic_transform/at0_en/v2_4/gate_b1/B1_1_REVALIDATION_CLOSURE.md`
+commit:
+`c170e2053158d7cdb3032be1ab7f4faff1102ed8`
+
+Cumulative success ledger:
+- V2.3 baseline: 37.5% escape / 25% safe acceptance / BOTH_FAIL
+- Gate 0: 326/326 PASS
+- A1: 100% precision / 100% recall / 35/35 provenance
+- A2: 100% structural representation; known decimal defects 5 -> 0
+- A3: 100% coverage / 100% critical coverage / 0% false additions / 88% atomicity / 92.86% certain precision / 87.5% error-abstention / 0 critical silent errors
+- A4: GO alignment research
+- B1 reference: 363/363 PASS
+- B1 first aligner: 83.33% FAIL
+- B1.1 repaired aligner: 100% on all frozen B1 hard gates
+
+Important interpretation:
+B1 is now mechanically successful only on 12 human-correct development graph pairs.
+This is NOT an end-to-end V2.4 success claim.
+
+Exact next authorized stage:
+`AT0-EN V2.4 GATE B2 — EXTRACTED-GRAPH ALIGNMENT DEGRADATION TEST`
+
+B2 must keep human-correct B1 metrics separate from extracted-graph metrics and measure the degradation introduced by extraction.
+
+Permanent reporting remains concise and cumulative.
