@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "phase": "AT0-EN-V2.4-PRE-INFERENCE",
-  "status": "IDENTITY_DISCOVERY_PENDING_HASH_PREFLIGHT",
+  "status": "IDENTITIES_FROZEN_HASH_VERIFICATION_PENDING",
   "semantic_inference_authorized": false,
   "new_generator_inference_authorized": false,
   "thresholds": {
@@ -9,10 +9,12 @@
     "values": null
   },
   "runtime": {
-    "python": "3.11",
-    "transformers": "4.46.3",
-    "torch": "2.5.1",
-    "safetensors": "0.4.5",
+    "status": "FROZEN_CANDIDATE_PENDING_LOAD_COMPATIBILITY_SMOKE",
+    "python": "3.11.16",
+    "torch": "2.2.2",
+    "transformers": "4.39.3",
+    "safetensors": "0.4.3",
+    "sentencepiece": "0.2.0",
     "execution": "github-actions-ubuntu-24.04-cpu-sequential",
     "additional_monetary_cost_usd": 0
   },
@@ -76,10 +78,16 @@
       ]
     }
   ],
-  "hash_prefight_required": true,
   "source_evidence": {
     "hhem_model_sha_source": "Hugging Face model.safetensors metadata",
     "deberta_model_sha_source": "Hugging Face model.safetensors metadata",
     "flan_spiece_sha_source": "Hugging Face LFS/Xet metadata"
+  },
+  "hash_preflight_required": true,
+  "security": {
+    "hhem_remote_code_policy": "PIN_REVISION_AND_HASH_EVERY_EXECUTED_PYTHON_FILE_BEFORE_LOAD",
+    "pickle_weights_allowed": false,
+    "safetensors_only": true,
+    "network_during_future_inference": "FORBIDDEN_AFTER_ARTIFACT_ACQUISITION"
   }
 }
