@@ -48,16 +48,35 @@ PREDICATES=[
 PRED_RE=[(re.compile(r"\b"+p+r"\b",re.I),n) for p,n in PREDICATES]
 
 def sentence_spans(text:str):
+    """Sentence splitter that never treats decimal points (e.g. 42.0) as sentence boundaries."""
     out=[]
-    for m in SENT_RE.finditer(text):
-        raw=m.group(0)
+    start=0
+    i=0
+    n=len(text)
+    while i<n:
+        ch=text[i]
+        boundary=False
+        if ch in "!?":
+            boundary=True
+        elif ch==".":
+            is_decimal=(i>0 and i+1<n and text[i-1].isdigit() and text[i+1].isdigit())
+            boundary=not is_decimal
+        if boundary:
+            raw=text[start:i+1]
+            lead=len(raw)-len(raw.lstrip())
+            quote=raw.strip()
+            if quote:
+                s=start+lead
+                out.append((s,s+len(quote),quote))
+            start=i+1
+        i+=1
+    if start<n:
+        raw=text[start:]
         lead=len(raw)-len(raw.lstrip())
         quote=raw.strip()
-        if not quote:
-            continue
-        start=m.start()+lead
-        end=start+len(quote)
-        out.append((start,end,quote))
+        if quote:
+            s=start+lead
+            out.append((s,s+len(quote),quote))
     return out
 
 def safe_clause_spans(text:str, start:int, end:int):
@@ -215,9 +234,10 @@ def assertion_from_clause(case_id:str,idx:int,clause:str,span_id:str,anchors:lis
         unresolved.append("shared_context_after_clause_split")
     if any(x in l for x in [", while "," compared with "," after which "]):
         unresolved.append("multi_relation_atomicity")
-    if " and " in l and not re.match(r"^[A-Za-z]_[A-Za-z0-9]+\s+is\b",clause):
-        # Do not assume a coordination is safely atomic.
-        unresolved.append("coordination_scope")
+    if re.search(r"\b(?:found|reported|observed|showed|shows|indicates?|demonstrates?)\s+that\b",l):
+        unresolved.append("embedded_proposition")
+    if " whether " in f" {l} " or " rather than " in f" {l} ":
+        unresolved.append("embedded_scope")
 
     anchor_types={a["anchor_type"] for a in anchors}
     a_type=classify(clause,pred_norm if pred else None,anchor_types)
