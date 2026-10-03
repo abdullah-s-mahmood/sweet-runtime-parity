@@ -1,5 +1,5 @@
 Trigger AT0-EN V2.1 open-weight smoke gate.
-Attempt: 2
+Attempt: 3
 Date: 2026-10-03
-Reason: documented SmolLM3 /no_think runtime control after attempt 1 consumed the full bounded completion in extended-thinking mode.
-No model, sample, prompt, matrix, protection gate, or generation ceiling change.
+Reason: repair ambiguous smoke-only status schema that allowed literal "REVISE|KEEP|REVIEW"; explicitly require one enum value.
+SmolLM3 /no_think remains frozen. No model, evaluation case, DIRECT/PLANNED prompt, matrix, protection gate, or generation ceiling change.
