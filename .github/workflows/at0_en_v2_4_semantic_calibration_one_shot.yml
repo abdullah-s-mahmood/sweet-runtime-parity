@@ -1,0 +1,187 @@
+name: AT0-EN V2.4 One-Shot Development Semantic Calibration
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/at0_en_v2_4_semantic_calibration_one_shot.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: at0-en-v2-4-semantic-calibration-one-shot
+  cancel-in-progress: false
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      PYTHONUNBUFFERED: "1"
+      HHEM_REV: "c9ccea35f0e37e02422eb49b798e09ed82be5a20"
+      FLAN_REV: "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2"
+      DEBERTA_REV: "6f5cf0a2b59cabb106aca4c287eed12e357e90eb"
+      CAL_SHA: "40f6c7aa6293b374d4d12d837ed96342d0a8e72d08cc014a115b0be3a54e5a65"
+      ASSERT_SHA: "ca1ead1c2aa385ffe6aed605f4142eea8c732223efeed620c7108f73c127c210"
+      PAIR_SHA: "27eaeb6bd6ab1a2b9ef3ff477cfa767c6e8c5526a85dcf9c491f32d8f9ac0460"
+
+    steps:
+      - name: Checkout exact authorized trigger state
+        uses: actions/checkout@v4
+
+      - name: Set up frozen Python runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.16"
+
+      - name: Install frozen semantic runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.2.2
+          python -m pip install transformers==4.39.3 safetensors==0.4.3 sentencepiece==0.2.0
+          OUT="phase2/academic_transform/at0_en/v2_4/results/semantic-calibration-v1"
+          mkdir -p "$OUT"
+          python -m pip freeze > "$OUT/pip_freeze.txt"
+
+      - name: Rebuild and verify frozen DEVELOPMENT calibration and pair manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="phase2/academic_transform/at0_en/v2_4"
+          python "$ROOT/build_semantic_pairs_v1.py"
+          echo "$CAL_SHA  $ROOT/calibration/V2_4_SEMANTIC_CALIBRATION_V1.jsonl" | sha256sum -c -
+          echo "$ASSERT_SHA  $ROOT/SOURCE_ASSERTIONS_V1.json" | sha256sum -c -
+          echo "$PAIR_SHA  $ROOT/calibration/V2_4_SEMANTIC_PAIR_MANIFEST_V1.jsonl" | sha256sum -c -
+          python - <<'PY'
+          import json, pathlib
+          root=pathlib.Path("phase2/academic_transform/at0_en/v2_4")
+          freeze=json.loads((root/"calibration/V2_4_SEMANTIC_PAIR_FREEZE_V1.json").read_text())
+          assert freeze["semantic_scores_observed"] is False
+          assert freeze["thresholds_observed"] is False
+          assert freeze["pairs"] == 462
+          assert freeze["paragraphs"] == 58
+          print("FROZEN_INPUTS_OK")
+          PY
+
+      - name: Record one-shot run identity before model access
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="phase2/academic_transform/at0_en/v2_4/results/semantic-calibration-v1"
+          {
+            echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "github_sha=$GITHUB_SHA"
+            echo "github_run_id=$GITHUB_RUN_ID"
+            echo "python=$(python --version 2>&1)"
+            echo "calibration_sha=$CAL_SHA"
+            echo "assertion_sha=$ASSERT_SHA"
+            echo "pair_sha=$PAIR_SHA"
+            echo "confirmation_accessed=false"
+            lscpu || true
+            free -h || true
+            df -h . || true
+          } > "$OUT/RUN_IDENTITY.txt"
+
+      - name: Acquire exact HHEM and FLAN artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          D="/tmp/acad-v24-cal"
+          mkdir -p "$D/hhem" "$D/flan"
+          H="https://huggingface.co/vectara/hallucination_evaluation_model/resolve/$HHEM_REV"
+          for f in config.json configuration_hhem_v2.py modeling_hhem_v2.py model.safetensors; do
+            curl --fail --location --retry 3 --retry-delay 3 "$H/$f" -o "$D/hhem/$f"
+          done
+          F="https://huggingface.co/google/flan-t5-base/resolve/$FLAN_REV"
+          for f in config.json tokenizer_config.json special_tokens_map.json spiece.model tokenizer.json; do
+            curl --fail --location --retry 3 --retry-delay 3 "$F/$f" -o "$D/flan/$f"
+          done
+
+      - name: Score all frozen pairs with HHEM and persist raw scores
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="phase2/academic_transform/at0_en/v2_4"
+          OUT="$ROOT/results/semantic-calibration-v1"
+          python "$ROOT/score_semantic_pairs_v1.py"             --witness HHEM             --pairs "$ROOT/calibration/V2_4_SEMANTIC_PAIR_MANIFEST_V1.jsonl"             --hash-lock "$ROOT/SEMANTIC_MODEL_FILE_HASH_LOCK_V1.json"             --hhem /tmp/acad-v24-cal/hhem             --flan /tmp/acad-v24-cal/flan             --output "$OUT/HHEM_RAW_SCORES_V1.jsonl"             --batch-size 8
+          test "$(wc -l < "$OUT/HHEM_RAW_SCORES_V1.jsonl")" -eq 462
+          sha256sum "$OUT/HHEM_RAW_SCORES_V1.jsonl" > "$OUT/HHEM_RAW_SCORES_V1_SHA256.txt"
+
+      - name: Remove HHEM and FLAN before DeBERTa
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/acad-v24-cal/hhem /tmp/acad-v24-cal/flan
+          sync
+          free -h || true
+          df -h . || true
+
+      - name: Acquire exact DeBERTa artifact set
+        shell: bash
+        run: |
+          set -euo pipefail
+          D="/tmp/acad-v24-cal/deberta"
+          mkdir -p "$D"
+          B="https://huggingface.co/MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli/resolve/$DEBERTA_REV"
+          for f in config.json tokenizer_config.json special_tokens_map.json spm.model tokenizer.json added_tokens.json model.safetensors; do
+            curl --fail --location --retry 3 --retry-delay 3 "$B/$f" -o "$D/$f"
+          done
+
+      - name: Score same frozen pairs with DeBERTa and persist raw probabilities
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="phase2/academic_transform/at0_en/v2_4"
+          OUT="$ROOT/results/semantic-calibration-v1"
+          python "$ROOT/score_semantic_pairs_v1.py"             --witness DEBERTA             --pairs "$ROOT/calibration/V2_4_SEMANTIC_PAIR_MANIFEST_V1.jsonl"             --hash-lock "$ROOT/SEMANTIC_MODEL_FILE_HASH_LOCK_V1.json"             --deberta /tmp/acad-v24-cal/deberta             --output "$OUT/DEBERTA_RAW_SCORES_V1.jsonl"             --batch-size 8
+          test "$(wc -l < "$OUT/DEBERTA_RAW_SCORES_V1.jsonl")" -eq 462
+          sha256sum "$OUT/DEBERTA_RAW_SCORES_V1.jsonl" > "$OUT/DEBERTA_RAW_SCORES_V1_SHA256.txt"
+
+      - name: Remove DeBERTa before threshold selection
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/acad-v24-cal/deberta
+          sync
+
+      - name: Apply frozen threshold-selection protocol
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="phase2/academic_transform/at0_en/v2_4"
+          OUT="$ROOT/results/semantic-calibration-v1"
+          python "$ROOT/select_semantic_thresholds_v1.py"             --pairs "$ROOT/calibration/V2_4_SEMANTIC_PAIR_MANIFEST_V1.jsonl"             --calibration "$ROOT/calibration/V2_4_SEMANTIC_CALIBRATION_V1.jsonl"             --hhem "$OUT/HHEM_RAW_SCORES_V1.jsonl"             --deberta "$OUT/DEBERTA_RAW_SCORES_V1.jsonl"             --output-dir "$OUT"
+
+      - name: Freeze complete calibration evidence hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="phase2/academic_transform/at0_en/v2_4"
+          OUT="$ROOT/results/semantic-calibration-v1"
+          sha256sum             "$ROOT/FINAL_PRE_SCORING_AUTHORIZATION_V1.md"             "$ROOT/SEMANTIC_CALIBRATION_PROTOCOL_V1.md"             "$ROOT/SEMANTIC_MODEL_FILE_HASH_LOCK_V1.json"             "$ROOT/SOURCE_ASSERTIONS_V1.json"             "$ROOT/calibration/V2_4_SEMANTIC_CALIBRATION_V1.jsonl"             "$ROOT/calibration/V2_4_SEMANTIC_PAIR_MANIFEST_V1.jsonl"             "$OUT/HHEM_RAW_SCORES_V1.jsonl"             "$OUT/DEBERTA_RAW_SCORES_V1.jsonl"             "$OUT/PARAGRAPH_SEMANTIC_FEATURES_V1.jsonl"             "$OUT/THRESHOLD_SEARCH_V1.json"             "$OUT/SEMANTIC_CALIBRATION_SUMMARY_V1.json"             > "$OUT/FINAL_EVIDENCE_SHA256.txt"
+          {
+            echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            free -h || true
+            df -h . || true
+          } > "$OUT/POST_RUN_RESOURCES.txt"
+
+      - name: Delete any remaining downloaded model files
+        if: always()
+        shell: bash
+        run: rm -rf /tmp/acad-v24-cal || true
+
+      - name: Upload one-shot DEVELOPMENT semantic calibration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-semantic-calibration-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_4/results/semantic-calibration-v1/
+            phase2/academic_transform/at0_en/v2_4/calibration/V2_4_SEMANTIC_CALIBRATION_MANIFEST_V1.json
+            phase2/academic_transform/at0_en/v2_4/calibration/V2_4_SEMANTIC_PAIR_FREEZE_V1.json
+          if-no-files-found: warn
+          retention-days: 30
