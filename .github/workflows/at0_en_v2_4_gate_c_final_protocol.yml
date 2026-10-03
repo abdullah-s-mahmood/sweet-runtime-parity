@@ -1,0 +1,39 @@
+name: AT0-EN V2.4 Gate C Final Protocol Integrity
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_FINAL_PROTOCOL_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  integrity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate final Gate C protocol against frozen pipeline
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_4/pre_gate_c/check_gate_c_final_protocol_integrity.py
+      - name: Freeze protocol hashes
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_4/pre_gate_c
+          sha256sum             GATE_C_PROTOCOL_FINAL_V1.md             PRE_GATE_C_PIPELINE_FREEZE_MANIFEST_V1.json             PRE_GATE_C_HIGHER_MODEL_RESPONSE_V1.md             check_gate_c_final_protocol_integrity.py             GATE_C_PROTOCOL_FINAL_INTEGRITY_SUMMARY.json             > GATE_C_PROTOCOL_FINAL_SHA256.txt
+          cat GATE_C_PROTOCOL_FINAL_SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-gate-c-final-protocol-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_PROTOCOL_FINAL_INTEGRITY_SUMMARY.json
+            phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_PROTOCOL_FINAL_SHA256.txt
+          retention-days: 30
+          if-no-files-found: error
