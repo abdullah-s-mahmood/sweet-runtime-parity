@@ -6,6 +6,7 @@
   "required": [
     "schema_version",
     "source_identity",
+    "anchors",
     "assertions",
     "relations",
     "coverage"
@@ -66,6 +67,13 @@
     },
     "coverage": {
       "$ref": "#/$defs/coverage"
+    },
+    "anchors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/anchor"
+      },
+      "minItems": 0
     }
   },
   "additionalProperties": false,
@@ -234,7 +242,6 @@
         "criticality",
         "extraction_status",
         "evidence",
-        "anchors",
         "unresolved_slots"
       ],
       "properties": {
@@ -422,12 +429,6 @@
           },
           "minItems": 1
         },
-        "anchors": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/anchor"
-          }
-        },
         "unresolved_slots": {
           "type": "array",
           "items": {
@@ -499,6 +500,14 @@
             ]
           },
           "uniqueItems": true
+        },
+        "anchor_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "description": "Non-authoritative convenience references to top-level anchors; semantic ownership is expressed by graph relations."
         }
       },
       "additionalProperties": false
