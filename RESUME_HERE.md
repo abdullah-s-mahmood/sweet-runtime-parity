@@ -6847,3 +6847,99 @@ Not authorized:
 - HW1-EN
 - untouched holdout
 - production claims
+
+
+## 2026-10-03 — AT0-EN V2.4 Gate B2 CLOSED / PASS
+
+Status:
+- Gate B2: 100% COMPLETE
+- Gate B overall: 100% COMPLETE
+- whole ACAD_PASS planning estimate: approximately 33% ±5%
+
+Canonical repaired revalidation:
+- run: `37150199075`
+- trigger commit: `6d8a38c9befb8729c093efaeca1feb7a67e47942`
+- artifact id: `11283159352`
+- artifact SHA-256: `08b9d7a31a611b4fe0d6e8cd25deaffc8f254950c7173cc68666164ed0c23aec`
+
+Result:
+`PASS_B2_EXTRACTED_DEVELOPMENT`
+
+Frozen result:
+`phase2/academic_transform/at0_en/v2_4/gate_b2/results/B2_2_REVALIDATION_FROZEN.json`
+commit:
+`d39108f7f375124ef7b6fa03d18c2a8e496de91c`
+
+Final closure:
+`phase2/academic_transform/at0_en/v2_4/gate_b2/B2_FINAL_CLOSURE.md`
+commit:
+`ff56323d1c9a75211eaf33dc753d2a6a642166f9`
+
+Four-arm repaired result:
+- GG: pair accuracy 100%; safe acceptance 100%; adversarial acceptance 0%
+- GE: pair accuracy 91.67%; safe acceptance 80%; adversarial acceptance 0%
+- EG: pair accuracy 91.67%; safe acceptance 80%; adversarial acceptance 0%
+- EE: pair accuracy 100%; safe acceptance 100%; adversarial acceptance 0%; REVIEW preservation 100%
+
+Representation audit:
+- 24 sides
+- 102 checks
+- 0 failures
+
+Improvement vs canonical first B2:
+- EE pair accuracy: 33.33% -> 100% = +66.67 pp
+- EE safe acceptance: 0% -> 100% = +100 pp
+- GE pair accuracy: 41.67% -> 91.67% = +50 pp
+- EG pair accuracy: 50% -> 91.67% = +41.67 pp
+- no adversarial-acceptance regression
+
+Shared-error safeguard:
+EE=100% while GE/EG=91.67% triggered mandatory review.
+
+Review:
+`phase2/academic_transform/at0_en/v2_4/gate_b2/B2_2_SHARED_ERROR_REVIEW_P01.md`
+commit:
+`4e0ec1001487dbf7375429e562b793f7d78ea9c3`
+
+Finding:
+`CANONICALIZATION_FIXTURE_MISMATCH / NOT_SHARED_SEMANTIC_ERROR`
+
+Reason:
+B2 raw fixture appends relation evidence as standalone text. For B1-P01, the extractor legitimately emits an additional MATERIAL assertion from the supported relation-evidence sentence. Gold represents the same material only as relation evidence. EE therefore uses the same redundant-but-supported representation on both sides; GE/EG compare gold-vs-extracted representation shapes and miss the pair.
+
+No repair was made after this review.
+GE/EG remain visibly reported at 91.67%.
+
+Strong-adoption reporting:
+- extracted-graph pair accuracy: current synthetic development EE 100% | target >=95% | target exceeded on this development set only
+- authentic in-domain safe automatic acceptance: NOT YET MEASURED as benchmark | target >=90%
+- automatic-PASS selective precision end-to-end: NOT YET MEASURED | target >=99%
+- adversarial automatic acceptance: current B2 0% | target 0%
+- critical silent scientific errors: 0 observed on measured development evidence | target 0
+- human-correct alignment: 100% | target 100%
+- ambiguity preservation: 100% | target 100%
+
+Important interpretation:
+B2 is a DEVELOPMENT PASS only.
+Do not convert synthetic-development 100% into a generalization or production claim.
+
+Recent research review at B2 close:
+- scientific full-text relation extraction remains difficult;
+- high intra-dataset scores do not guarantee cross-dataset transfer;
+- correct final labels without aligned evidence/rationales can hide unfaithful reasoning.
+
+Exact next authorized checkpoint:
+`AT0-EN V2.4 PRE-GATE-C — PIPELINE FREEZE + END-TO-END HOLDOUT PROTOCOL`
+
+Purpose:
+- freeze complete verifier pipeline identity
+- freeze Gate C denominators/outcomes/metrics/audit rules
+- design authentic end-to-end untouched evaluation without opening it before pipeline freeze
+- preserve predictions-first / labels-second
+- perform focused higher-model consultation because Gate C benchmark design is high-stakes construct-validity work
+
+Not authorized yet:
+- opening/running a new untouched holdout
+- live transformation generation
+- HW1-EN
+- production readiness claims
