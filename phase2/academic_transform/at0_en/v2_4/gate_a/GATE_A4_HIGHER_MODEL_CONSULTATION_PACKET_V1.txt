@@ -1,0 +1,93 @@
+AT0-EN V2.4 GATE A4 — HIGHER-MODEL READINESS CONSULTATION
+
+ROLE
+Act only as an independent Chief Architect / Research Reviewer.
+
+BUDGET RULE
+Do NOT implement.
+Do NOT write code.
+Do NOT modify repositories.
+Do NOT design workflows.
+Do NOT rerun experiments.
+Do NOT propose broad new experiments unless strictly necessary for the decision.
+The implementation agent will perform all routine work.
+
+QUESTION
+The source extractor has passed its small development gate, but it still has measurable weaknesses. Should ACAD_PASS:
+A. ACCEPT_AND_PROCEED_TO_ALIGNMENT
+B. REPAIR_TARGETED_FIRST
+C. REDESIGN_SOURCE_EXTRACTION
+
+FILES
+Review only:
+1. phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A4_PRECONSULT_READINESS_ASSESSMENT.md
+2. phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A3_CLOSURE.md
+
+KEY EVIDENCE
+A3 development result:
+- coverage 100%
+- critical coverage 100%
+- false additions 0%
+- atomic one-to-one 88%
+- overmerge 12%
+- certain precision 92.86%
+- error-abstention recall 87.5%
+- unnecessary abstention 23.53%
+- context-dependency detection 100%
+- critical silent semantic errors 0
+- assertion type 86.36%
+- predicate 95.45%
+- subject concepts 90.91%
+- object/polarity/modality/causality 100% on scored one-to-one alignments
+
+LIMITATIONS
+- only six synthetic development cases;
+- development-only and not blind;
+- no authentic academic documents;
+- no candidate extraction;
+- no alignment;
+- no end-to-end V2.4 result.
+
+IMPLEMENTATION AGENT'S PRELIMINARY DECISION
+REPAIR_TARGETED_FIRST, not redesign.
+
+RATIONALE
+The architecture appears sound because material observed errors were mostly routed to abstention and there were zero observed critical silent semantic errors. However, 12% overmerge, 23.53% unnecessary abstention, and only a +2.86 pp margin on certain precision may contaminate alignment evaluation and obscure whether future failures originate in extraction or alignment.
+
+QUESTIONS
+
+Q1. Choose exactly one:
+- ACCEPT_AND_PROCEED_TO_ALIGNMENT
+- REPAIR_TARGETED_FIRST
+- REDESIGN_SOURCE_EXTRACTION
+
+Q2. If REPAIR_TARGETED_FIRST, which weaknesses are genuinely blocking alignment and which should be deferred to avoid overfitting the six development cases?
+
+Consider:
+- comparative/procedural overmerge;
+- embedded propositions such as "found that";
+- local coreference handling;
+- assertion-type classification;
+- unnecessary abstention.
+
+Q3. Should the 12% overmerge be treated as blocking when the frozen V2.4 architecture already supports one-to-many/many-to-one alignment, or is it still important to reduce source-side overmerge before testing alignment?
+
+Q4. Is 92.86% certain precision with zero observed critical silent errors sufficient to begin alignment research on development data, given only 14 CERTAIN predictions and six synthetic cases?
+
+Q5. If repairs are required, what is the MINIMUM post-repair development evidence needed before alignment implementation starts?
+Do not ask for an untouched holdout at this point unless it is scientifically necessary.
+
+Q6. Should authentic academic source text be introduced before alignment, or can that wait until after source/candidate alignment mechanics are proven on synthetic development data?
+
+OUTPUT FORMAT
+Return only:
+
+1. VERDICT
+2. BLOCKING ISSUES — maximum 4
+3. NON-BLOCKING ISSUES — maximum 4
+4. MINIMUM REQUIRED REPAIRS — maximum 5
+5. MINIMUM REVALIDATION GATE — concise
+6. AUTHENTIC-TEXT TIMING — BEFORE_ALIGNMENT / AFTER_ALIGNMENT_PROTOTYPE / OTHER
+7. FINAL GO/NO-GO RATIONALE — concise
+
+Do not provide code or implementation steps beyond conceptual requirements.
