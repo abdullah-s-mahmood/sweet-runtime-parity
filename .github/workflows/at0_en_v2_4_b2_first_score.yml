@@ -1,0 +1,51 @@
+name: AT0-EN V2.4 B2 First Four-Arm Score
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/gate_b2/B2_FIRST_SCORE_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  score:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile frozen extractor, bridge, aligner and scorer
+        run: |
+          set -euo pipefail
+          python -m py_compile             phase2/academic_transform/at0_en/v2_4/gate_a/source_anchor_extractor.py             phase2/academic_transform/at0_en/v2_4/gate_a/source_assertion_extractor.py             phase2/academic_transform/at0_en/v2_4/gate_b1/b1_aligner.py             phase2/academic_transform/at0_en/v2_4/gate_b2/b2_extraction_bridge.py             phase2/academic_transform/at0_en/v2_4/gate_b2/check_b2_bridge_contract.py             phase2/academic_transform/at0_en/v2_4/gate_b2/score_b2_four_arm.py
+
+      - name: Verify bridge contract
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_4/gate_b2/check_b2_bridge_contract.py
+
+      - name: Run first four-arm B2 score
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_4/gate_b2/score_b2_four_arm.py
+
+      - name: Freeze B2 evidence hashes
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_4/gate_b2
+          sha256sum             b2_extraction_bridge.py             check_b2_bridge_contract.py             score_b2_four_arm.py             B2_DEGRADATION_PROTOCOL_V1.md             B2_BRIDGE_CONTRACT_V1.md             B2_RAW_TEXT_PAIRS_V1.jsonl             results/B2_FIRST_EXTRACTED_GRAPHS.jsonl             results/B2_FIRST_FOUR_ARM_DETAIL.jsonl             results/B2_FIRST_FOUR_ARM_SUMMARY.json             > results/B2_FIRST_SCORE_SHA256.txt
+          cat results/B2_FIRST_SCORE_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-b2-first-score-${{ github.run_id }}
+          path: phase2/academic_transform/at0_en/v2_4/gate_b2/results/
+          retention-days: 30
+          if-no-files-found: error
