@@ -4859,3 +4859,106 @@ HW1-EN remains blocked.
 Arabic active research remains FROZEN.
 Arabic V4.2 remains CLOSED.
 Reserved Arabic populations remain CLOSED.
+
+
+## 2026-10-03 — SECOND_UNSEEN_HOLDOUT_V1 one-shot score CLOSED
+
+This stage is **100% COMPLETE** and the holdout is now consumed development evidence.
+
+One-shot workflow:
+- run: `37136722184`
+- trigger commit: `44728dfb5fcf3e1bf211ba330b618741c2d382de`
+- conclusion: SUCCESS (execution only)
+- artifact id: `11278888488`
+- artifact SHA-256: `8b66dbf18b0b7f0939f66754c803b3753f1bc9a1cc912051129ecbeca77f5ae9`
+
+Frozen evidence:
+- verifier SHA-256: `d82af97d276131477ab2f8c452f24e3302703f54b856a8ad46547af59d7ec0da`
+- inputs SHA-256: `b1633df5e0418082a990945dfc92a267f6cdc8c943b385d7edc2d8b9181f551c`
+- labels SHA-256: `9936377336708dbeaf88b7ee83a8ae5fb4272013129041332094dfa625345a9b`
+- source cases SHA-256: `d91fae326afbca4a82b7b84e99bca0e817947d964fc4b676e3faebd28a1868f7`
+- predictions SHA-256: `e36a99873e7f7d87a63cc77c928109bf844a718ca20f5b09d5287378be081c25`
+- score detail SHA-256: `2eea29e5f6e3e738484c2a3d723d649e2777c1aeff5f956902700092b2d23e4c`
+- score summary SHA-256: `854b6ebbe9c3491d0d8957bde9b4f1d13d4327c5ca82e36616dc9b92114c7955`
+
+Pre-registered result:
+- Safety gate: **FAIL**
+- Usability gate: **FAIL**
+- combined: **BOTH_FAIL**
+
+Metrics:
+- adversarial caught: 15/24 = **62.5%**
+- adversarial escaped: 9/24 = **37.5%**
+- safe controls accepted: 3/12 = **25%**
+- safe controls non-pass: 9/12 = **75%**
+- exact binary accuracy: 18/36 = **50%**
+- balanced accuracy: **43.75%**
+
+Escaped adversarial IDs:
+- H2-EN01-A1 scope binding shift
+- H2-EN02-A2 deployment-status invention
+- H2-EN03-A1 percentage/metric rebinding
+- H2-EN04-A2 density-direction shift
+- H2-EN10-A1 grouping-interval rebinding
+- H2-EN10-A2 metadata-scope reduction
+- H2-EN11-A1 forwarding-scope expansion
+- H2-EN11-A2 timestamp substitution
+- H2-EN12-A1 metric-label swap
+
+Dominant failure:
+**relation rebinding under lexical preservation**.
+
+Safe-control failures show the opposite problem:
+**lexical/paraphrase brittleness, regex-window contamination, and negation-scope errors**.
+
+Quality delta:
+- versus V2.3 known-failure regression: escape 0% -> 37.5%, **+37.5 pp worse on a new population**; valid safe acceptance 100% -> 25%, **-75 pp descriptively**. These are not same-population comparisons and quantify a generalization gap rather than a within-population regression.
+- versus V2.2 independent red-team: escape 87.5% -> 37.5%, **-50 pp descriptively**, but attack populations differ, so this is not a valid causal/same-population improvement estimate.
+
+Frozen score summary:
+`phase2/academic_transform/at0_en/v2_3/holdout/results/SECOND_UNSEEN_HOLDOUT_V1_SCORE_SUMMARY_FROZEN.json`
+commit:
+`c12f60e694c3d2fc3c849f1295d3c07197de70dd`
+
+Closure report:
+`phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_SCORE_CLOSURE.md`
+commit:
+`46aeaad40804cd48f89bf9ba44f3afb6327042d7`
+
+Scientific disposition:
+**WORSENED ON UNSEEN GENERALIZATION / BOTH_FAIL**
+
+The holdout is now:
+`CONSUMED DEVELOPMENT EVIDENCE / NOT UNTOUCHED HOLDOUT`
+
+Do NOT:
+- rerun this holdout for quality;
+- patch V2.3 case-by-case and reuse this holdout as untouched;
+- start HW1-EN;
+- infer general scientific fidelity.
+
+Fresh end-stage research supports moving from handcrafted lexical assertions toward atomic claim decomposition + explicit relation verification while warning that decomposition itself can introduce noise and must be calibrated.
+
+Separate stronger-model consultation is not available as a tool in this chat environment; no external higher-model review is claimed.
+
+Exact next authorized stage:
+`AT0-EN V2.4 — GENERALIZED SCIENTIFIC ASSERTION REPRESENTATION`
+
+V2.4 must be offline first and target:
+- source-derived atomic assertions;
+- subject/predicate/object/value/unit/qualifier/modality/polarity/scope/temporal/population/citation/equation binding;
+- explicit extraction uncertainty;
+- contradiction and addition detection on normalized relations;
+- paraphrase-tolerant semantic matching separated from deterministic scientific invariants;
+- no sole dependence on regex, LLM, NLI, or self-reported mappings.
+
+Current stage completion:
+**100%**
+
+Whole ACAD_PASS planning completion estimate:
+**approximately 20% ±5%**
+
+Major unfinished blocks:
+V2.4 redesign, future new untouched validation, verifier readiness review, HW1-EN, cross-domain scientific fidelity, DOCX fidelity, voice, detector robustness, long-document evaluation, product/commercial validation.
+
+No reliable wall-clock completion promise is available because V2.4 can expose further redesign needs.
