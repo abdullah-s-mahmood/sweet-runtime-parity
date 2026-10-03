@@ -39,7 +39,9 @@ def tokens(x)->set[str]:
     if isinstance(x,dict):
         out=set()
         for k,v in x.items():
-            out |= tokens(k); out |= tokens(v)
+            if str(k).lower() not in {"value","unit"}:
+                out |= tokens(str(k).replace("_"," "))
+            out |= tokens(v)
         return out
     if isinstance(x,(list,tuple,set)):
         out=set()
@@ -131,7 +133,15 @@ def mapping_status(source:list[dict],candidate:list[dict])->tuple[str,str]:
         if s[field]!=c[field]:
             return "ALTERED",f"Material {label} binding differs."
 
-    # Binding atoms are strong ownership constraints when present.
+    # In 1:1 mappings, explicit binding dictionaries encode ownership and must not be
+    # reduced to a bag of tokens (e.g., w_1->U_i vs w_1->D_i).
+    if len(source)==1 and len(candidate)==1:
+        sb=source[0].get("bindings",{})
+        cb=candidate[0].get("bindings",{})
+        if (sb or cb) and sb!=cb:
+            return "ALTERED","Explicit key-to-value binding differs."
+
+    # In split/merge mappings, binding atoms may be redistributed across nodes.
     if s["bindings"] or c["bindings"]:
         if s["bindings"]!=c["bindings"]:
             # Allow faithful split/merge if the source binding atoms are fully represented in
@@ -195,11 +205,14 @@ def align_relations(source:list[dict],candidate:list[dict],assertion_alignments:
         for cr in candidate:
             if cr["id"] in used or cr["type"]!=sr["type"]:
                 continue
-            direct=endpoint_matches(sr["from"],cr["from"],assertion_alignments) and endpoint_matches(sr["to"],cr["to"],assertion_alignments)
+            from_match=endpoint_matches(sr["from"],cr["from"],assertion_alignments)
+            to_match=endpoint_matches(sr["to"],cr["to"],assertion_alignments)
+            direct=from_match and to_match
             reverse=endpoint_matches(sr["from"],cr["to"],assertion_alignments) and endpoint_matches(sr["to"],cr["from"],assertion_alignments)
-            rank=2 if direct else (1 if reverse else 0)
+            partial=(from_match or to_match)
+            rank=3 if direct else (2 if reverse else (1 if partial else 0))
             if best is None or rank>best[0]:
-                best=(rank,cr,direct,reverse)
+                best=(rank,cr,direct,reverse,partial)
         if best is None or best[0]==0:
             out.append({
                 "alignment_id":f"R{i:03d}","source_relation_ids":[sr["id"]],"candidate_relation_ids":[],
@@ -208,16 +221,16 @@ def align_relations(source:list[dict],candidate:list[dict],assertion_alignments:
                 "source_evidence":[sr["evidence"]],"candidate_evidence":[]
             })
             continue
-        _,cr,direct,reverse=best
+        _,cr,direct,reverse,partial=best
         used.add(cr["id"])
         if sr["confidence_status"]!="CERTAIN" or cr["confidence_status"]!="CERTAIN":
             status="UNCERTAIN"; reason="Relation uncertainty is preserved."
-        elif reverse and sr["type"] in {"PRECEDES"}:
-            status="CONTRADICTORY"; reason="Directed relation is reversed."
         elif direct:
             status="PRESERVED"; reason="Relation type and endpoints are preserved."
+        elif reverse and sr["type"] in {"PRECEDES"}:
+            status="CONTRADICTORY"; reason="Directed relation is reversed."
         else:
-            status="ALTERED"; reason="Relation endpoints/binding differ."
+            status="ALTERED"; reason="Relation endpoint ownership/binding differs."
         out.append({
             "alignment_id":f"R{i:03d}","source_relation_ids":[sr["id"]],"candidate_relation_ids":[cr["id"]],
             "status":status,"criticality":sr["criticality"],
