@@ -1,55 +1,95 @@
-# HIGHER-MODEL REVIEW PACKET — AT0-EN V2
+# HIGHER-MODEL REVIEW PACKET — AT0-EN V2.1 SMOKE GATE
 
-## Repository
-- Repo: `abdullah-s-mahmood/sweet-runtime-parity`
+## Repository state
+- Repository: `abdullah-s-mahmood/sweet-runtime-parity`
 - Branch: `phase2-arabic-eval`
-- Architecture/offline adoption: `bca3a32791c6f2c1832403cbd751ea8c78cd6a43`
-- Continuity finalization: `3658a38728dd717f7bf4977a07a49f3c48d7bfac`
+- V2.1 backend amendment aligned with frozen models: `1f13ab5668ed0639d6b62b49824eafa2d704670f`
+- Frozen model/runtime manifest commit: `04c982dfa52eb6b6f9e91b268574daedd4aecc23`
+- Smoke gate blocker report: `fe62dab3af7d044d605c818c405c9bc2d451b3ab`
+- Config blocker freeze: `17d3dc57169cab9f198ea3b8c5ab3b95bd633955`
 
-## Result
-- Critical preservation: PASS; P1/P2_V2/P3/V4.2 byte-verified.
-- Offline harness: PASS.
-- Frozen fixtures: initial 29/30; F07 exposed scope expansion into read-only context. Added independent `authorized_scope` invariant. Final: 30/30 PASS.
-- Portability audit: 10/10 PASS.
-- Live matrix: 0/48 run; all slots are `NOT_RUN_MODEL_ACCESS`.
-- No Arabic reserved data opened; no V4.2 rerun.
+## Stable evidence
+- Critical Arabic evidence preservation remains PASS.
+- Frozen engineering fixtures: `30/30 PASS`.
+- Language portability audit: PASS.
+- F07 `authorized_scope` invariant retained.
+- Additional monetary cost: USD 0.
+- Arabic active research: FROZEN.
+- AT0-EN live evaluation matrix: `0/48 NOT_RUN`.
 
-## Critical SHA-256
-- P1: `e4020418ca2f2793d4bb79bc766e26838398fb9affba6d0f1c704255cd5aed46`
-- P2_V2: `c5c5d32c99ce216a5b93362748cfefa67de4ec1f5b2b1174c8d3caf0fcd914af`
-- P3: `9a31de6dcff43efb903212a7fe2e2ad378f24e177faba0ecbd46ba4dd05e4253`
-- V4.2: `10ecdb75b5d80540d2c9ddf5e94672e8d64bbe3eb685ca3f53d63789c3d308af`
+## V2.1 backend
+Model A:
+- Qwen3-4B-Instruct-2507 Q4_K_M
+- SHA-256 `2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e`
 
-## Status
+Model B:
+- SmolLM3-3B Q4_K_M
+- SHA-256 `8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e`
+
+Runtime:
+- pinned llama.cpp `b92761a515ea31e852e7fbc1fad5f874b46f3718`
+- public GitHub Actions CPU runner
+- models and requests strictly sequential
+- no commercial API
+
+## Smoke history
+
+### Attempt 1
+Run `37118121815`, artifact `11271932734`.
+- Qwen PASS.
+- SmolLM exhausted 400 output tokens in default extended-thinking mode and returned empty visible content.
+- The model's documented `/no_think` control was then frozen as a runtime/chat-template control.
+
+### Attempt 2
+Run `37118533029`, artifact `11272313001`.
+- Qwen PASS.
+- SmolLM generated concise visible JSON preserving the smoke facts.
+- It returned literal status `REVISE|KEEP|REVIEW` because the smoke-only example itself encoded the choices inside one quoted string.
+- The smoke fixture was clarified before evaluation; no DIRECT/PLAN/REALIZE prompt changed.
+
+### Attempt 3 — current frozen result
+Run `37118961886`, artifact `11272597605`.
+- Qwen PASS.
+- SmolLM artifact/hash/runtime PASS.
+- SmolLM generated in ~11.57 s using 240 prompt + 57 completion tokens.
+- Its visible revision preserved 14 observations, two-hour duration, exploratory status, and the negation that improved accuracy was not established.
+- Its returned object is valid JSON *inside a Markdown json code fence*.
+- The frozen smoke parser applies `json.loads(raw_text)` directly, so the outer fence yields JSONDecodeError.
+- Classification: `BLOCKED_STRUCTURED_OUTPUT_CONFORMANCE`.
+- No fourth attempt was started.
+
+Full report:
+`phase2/academic_transform/at0_en/results/AT0_EN_V2_1_SMOKE_GATE_REPORT.md`
+
+## Independent statuses
 ```text
 ENGINEERING_STATUS: PASS_OFFLINE
+OPEN_WEIGHT_BACKEND_STATUS: PARTIAL_SMOKE_PASS
+QWEN_SMOKE_STATUS: PASS
+SMOLLM3_SMOKE_STATUS: FAIL_STRICT_RAW_JSON_CONFORMANCE
+EXPERIMENT_STATUS: NOT_RUN
+LIVE_MATRIX: 0/48
 HUMAN_WRITING_STATUS: NOT_ASSESSED
 SCIENTIFIC_FIDELITY_STATUS: NOT_ESTABLISHED
-VOICE_STATUS: NOT_ASSESSED
-LENGTH_PRESERVATION_STATUS: POLICY_DEFINED / OFFLINE_DIAGNOSTICS_READY
 DETECTOR_ROBUSTNESS_STATUS: NOT_RUN
+VOICE_STATUS: NOT_ASSESSED
 DOCUMENT_FIDELITY_STATUS: NOT_RUN
 COMMERCIAL_USEFULNESS_STATUS: NOT_ASSESSED
 ```
 
-## Blocker
-`MODEL_MANIFEST.json` contains no authorized models. `config.json` has `authorized_cost_ceiling = null` and `max_total_tokens = null`. The current execution environment has no auditable endpoint for two distinct authorized model identities, so live generation was not started.
+## Decision required
 
-## Evidence
-- `phase2/academic_transform/at0_en/results/offline-preflight/REPORT.md`
-- `.../preflight_results.json`
-- `.../portability_audit.json`
-- `.../PRESERVATION_REPORT.json`
-- `.../slots.jsonl`
-- `.../diagnostics.jsonl`
+The remaining issue is no longer model access, compute, licensing, hashes, or apparent English instruction-following on the smoke prompt. It is the exact structured-output boundary.
+
+Please decide one of these approaches, or provide a better one:
+
+1. **KEEP strict raw JSON.** Treat fenced JSON as smoke failure; SmolLM3 is unsuitable for this frozen backend and any model replacement requires an explicit amendment.
+2. **Narrow deterministic fence normalization.** Permit the transport/parser layer to remove exactly one outer Markdown JSON code fence, then run the same strict JSON/schema validation. All other malformed JSON remains rejected.
+3. **Runtime-constrained JSON.** Apply an identical llama.cpp JSON grammar/schema constraint to both models if you judge this a transport mechanism rather than a material change to model behavior.
+
+Important conflict to resolve: frozen fixture F28 requires malformed JSON/schema responses to be preserved and rejected without a retry. If option 2 is accepted, state explicitly whether a syntactically valid JSON object wrapped in one standard Markdown JSON fence is classified as transport framing rather than malformed model content.
 
 ## Implementation-agent recommendation
-KEEP the repaired harness and architecture. Do not redesign AT0-EN for an access-only blocker. Do not start HW1-EN or DR yet.
+Do not change models yet. Attempt 3 shows SmolLM3 can perform the smoke transformation and preserve the requested facts; the failure is only outer Markdown framing. A narrowly specified, versioned handling policy may be more scientifically defensible than replacing the model, but this changes the structured-output acceptance boundary and therefore is escalated rather than applied unilaterally.
 
-## Higher-model decisions requested
-1. Complete the frozen live matrix here if auditable access becomes available, move it to another auditable environment, or formally accept the blocked checkpoint?
-2. If live execution proceeds, what minimal model-identity/version/pricing evidence is required?
-3. Does the repaired F07 invariant require any architecture change?
-4. If live access remains unavailable, should HW1-EN stay blocked exactly as frozen?
-
-No later phase is authorized.
+No fourth smoke attempt, full matrix, HW1-EN, DR, Arabic restart, or model substitution is authorized until this decision is returned.
