@@ -262,10 +262,11 @@ def parse_explicit_scientific_predicate(sentence:str, idx:int):
     if m:
         return [mk_assertion(idx,m.group("subject"),"DEFINE",m.group("object"),sentence)]
 
-    # Explicit purpose relation: "X aims to ..."
-    m=re.fullmatch(r"(?P<subject>.+?)\s+aims?\s+to\s+(?P<object>.+)",s,re.I)
+    # Explicit purpose relation: "X aims to ..." with explicit modal preserved.
+    m=re.fullmatch(r"(?P<subject>.+?)\s+(?:(?P<modal>may|can|could)\s+)?aims?\s+to\s+(?P<object>.+)",s,re.I)
     if m:
-        return [mk_assertion(idx,m.group("subject"),"AIM_TO",m.group("object"),sentence)]
+        mod={"may":"MAY","can":"CAN","could":"COULD"}.get((m.group("modal") or "").lower(),"ASSERTED")
+        return [mk_assertion(idx,m.group("subject"),"AIM_TO",m.group("object"),sentence,modality=mod)]
 
     # Explicit treatment relation.
     m=re.fullmatch(r"(?P<subject>.+?)\s+(?:typically\s+)?treats?\s+(?P<object>.+)",s,re.I)
