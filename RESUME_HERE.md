@@ -6639,3 +6639,99 @@ Then:
 - only then implement a versioned repair.
 
 No routine higher-model implementation is requested.
+
+
+## 2026-10-03 — AT0-EN V2.4 B2.1 CLOSED
+
+Status:
+- B2.1: 100% COMPLETE
+- Gate B2 overall: approximately 85%
+- whole ACAD_PASS planning estimate: approximately 30% ±5%
+
+Final verdict:
+`HYBRID_RELATION_AWARE_EXTRACTION_REPAIR`
+
+Higher-model response:
+`phase2/academic_transform/at0_en/v2_4/gate_b2/B2_1_HIGHER_MODEL_RESPONSE_V1.md`
+commit:
+`1633f704a60e79d46a2e095242f55cc8972b70b1`
+
+Final repair boundary:
+`phase2/academic_transform/at0_en/v2_4/gate_b2/B2_1_FINAL_REPAIR_BOUNDARY_V1.md`
+commit:
+`21fbdc8cf40b934a89cfdfc10b43924d1564d882`
+
+Closure:
+`phase2/academic_transform/at0_en/v2_4/gate_b2/B2_1_CLOSURE.md`
+commit:
+`d52e1b53c377277c1d710747a54488e4711740d2`
+
+Canonical B2 baseline entering repair:
+- GG pair accuracy: 100%
+- GE: 41.67%
+- EG: 50%
+- EE: 33.33%
+- EE safe acceptance: 0%
+- EE adversarial acceptance: 0%
+- REVIEW preservation: 100%
+- result: MIXED_B2_REPAIR_REQUIRED
+
+Mandatory B2.2 repair capabilities:
+1. predicate/paraphrase normalization
+2. negation/scope ownership
+3. owner/value and owner/meaning split-merge binding
+4. citation-to-claim binding
+5. equation/symbol/coefficient binding
+
+Deferred unless new evidence makes them blocking:
+- generic procedural-order parser
+- generic local-coreference resolver
+- broad semantic-parser replacement
+- general mathematical equivalence
+
+Architecture:
+- keep frozen A2 anchors/provenance/assertion proposals
+- add relation-aware structured layer with access to original text, allowed local context, evidence and anchors
+- keep B1.1 aligner frozen
+- no pair-ID-specific repair
+- no threshold weakening
+
+Frozen B2.2 progression gates:
+- adversarial acceptance 0/6
+- dangerous critical false preserve 0
+- critical uncertainty promotion 0
+- ambiguous pair remains REVIEW
+- safe acceptance >=4/5 = 80%
+- pair accuracy >=11/12 = 91.67%
+- faithful false rejection <=1/5
+- GG remains 100%
+- deterministic anchor/provenance behavior does not regress
+- critical relation representation auditable independently per side
+
+Strong-adoption targets:
+- adversarial automatic acceptance: 0%
+- critical silent scientific errors: 0
+- automatic-PASS selective precision: >=99%
+- authentic in-domain safe automatic acceptance: >=90%
+- extracted-graph pair accuracy: >=95%
+- controlled critical relation/ownership correctness: 100%
+- deterministic anchor precision/recall: 100% / 100%
+- critical evidence/provenance completeness: 100%
+
+Current key gap ledger:
+- extracted-graph pair accuracy: 33.33% | target >=95% | gap 61.67 pp
+- safe automatic acceptance: 0% | target >=90% | gap 90 pp
+- adversarial automatic acceptance: 0% | target 0% | gap 0
+- REVIEW preservation: 100% | target 100% | gap 0
+- selective precision end-to-end: NOT YET MEASURED | target >=99%
+
+Authentic academic text:
+- introduce immediately after first B2.2 repair prototype
+- before synthetic B2 revalidation
+- qualitative development-only check
+- not a benchmark and not a numeric gate
+
+Exact next authorized stage:
+`AT0-EN V2.4 B2.2 — HYBRID RELATION-AWARE EXTRACTION REPAIR PROTOTYPE`
+
+Do not start live generation, HW1-EN, untouched holdout, or production claims.
