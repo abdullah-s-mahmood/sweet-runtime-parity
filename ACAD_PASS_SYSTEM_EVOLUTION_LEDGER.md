@@ -3217,3 +3217,38 @@ Complete the authorized 48-slot AT0-EN live matrix only after exact model identi
 
 ### Repository adoption identity — 2026-10-03
 The English-first architecture package, AT0-EN offline harness, frozen results, evidence mirrors, and delegation protocol were adopted in commit `bca3a32791c6f2c1832403cbd751ea8c78cd6a43`. This commit is the implementation checkpoint for the 30/30 fixture and 10/10 portability evidence; it does not contain a live transformation result.
+
+## 2026-10-03 — AT0-EN accepted blocked checkpoint after higher-model review
+
+Higher-model disposition: `KEEP / ACCEPT_BLOCKED_CHECKPOINT`.
+
+Accepted evidence:
+- critical Arabic evidence preservation: PASS for byte-verified P1, P2_V2, P3 and V4.2 artifacts;
+- AT0-EN frozen engineering fixtures: `30/30 PASS`;
+- language portability audit: `10/10 PASS`;
+- live matrix: `0/48`, therefore transformation feasibility remains NOT_RUN;
+- F07 exposed a scope-protection defect and was repaired by making `authorized_scope` an independent invariant sourced from pre-generation authorization; the proposal cannot widen or replace it;
+- higher-model review judged F07 an implementation repair inside the frozen contract, not an architecture change.
+
+Blocker classification:
+`MODEL_ACCESS_AND_BUDGET_AUTHORIZATION` only. No architecture redesign is authorized or justified by the blocker.
+
+Independent statuses remain:
+- `ENGINEERING_STATUS = PASS_OFFLINE`
+- `HUMAN_WRITING_STATUS = NOT_ASSESSED`
+- `SCIENTIFIC_FIDELITY_STATUS = NOT_ESTABLISHED`
+- `VOICE_STATUS = NOT_ASSESSED`
+- `LENGTH_PRESERVATION_STATUS = POLICY_DEFINED / OFFLINE_DIAGNOSTICS_READY`
+- `DETECTOR_ROBUSTNESS_STATUS = NOT_RUN`
+- `DOCUMENT_FIDELITY_STATUS = NOT_RUN`
+- `COMMERCIAL_USEFULNESS_STATUS = NOT_ASSESSED`
+
+Decision commits:
+- higher-model review packet: `e9df057407f99f25f3b8097aed80c8f1b96b9920`
+- config decision record: `460cabfbe17f83c0aee941f8e41f27a460959624`
+- model manifest decision record: `f74777e291bc70c472f04e137468e8ea71b4358b`
+- continuity handoff update: `fa9c10d0fbc933ddc4d434b70b2f432807dd3f49`
+
+Next allowed work is the AT0-EN ACCESS UNBLOCK packet only: verify an auditable environment with two distinct already-authorized model identities, freeze exact model/provider identities plus pricing observation, obtain explicit cost and token ceilings, and then execute the unchanged 48-slot matrix. If access/authorization remains unavailable, retain this checkpoint.
+
+`HW1-EN`, detector robustness, voice fitting, Arabic restart, V4.2 rerun, selector/consensus work and reserved-data opening remain blocked.
