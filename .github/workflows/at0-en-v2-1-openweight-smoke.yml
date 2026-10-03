@@ -1,0 +1,171 @@
+name: AT0-EN V2.1 Open-Weight Smoke Gate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      PYTHONUNBUFFERED: "1"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      LLAMA_CPP_COMMIT: "b92761a515ea31e852e7fbc1fad5f874b46f3718"
+      QWEN_URL: "https://huggingface.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF/resolve/d3037fec123e6fcf1b894f42ff01bd83d4622955/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
+      QWEN_SHA256: "2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e"
+      SMOL_URL: "https://huggingface.co/ggml-org/SmolLM3-3B-GGUF/resolve/4965cb60b150737b68a0408c36aeefb65078f894/SmolLM3-Q4_K_M.gguf"
+      SMOL_SHA256: "8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e"
+
+    steps:
+      - name: Checkout frozen branch state
+        uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Record runner identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="phase2/academic_transform/at0_en/results/v2_1-smoke"
+          mkdir -p "$OUT"
+          {
+            echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "repo_commit=$(git rev-parse HEAD)"
+            echo "runner_os=${RUNNER_OS:-unknown}"
+            echo "runner_arch=${RUNNER_ARCH:-unknown}"
+            echo "image_os=${ImageOS:-unknown}"
+            echo "image_version=${ImageVersion:-unknown}"
+            echo "python=$(python --version 2>&1)"
+            echo "cpu_count=$(nproc)"
+            echo "--- lscpu ---"
+            lscpu || true
+            echo "--- memory ---"
+            cat /proc/meminfo || true
+            echo "--- disk ---"
+            df -h . || true
+          } > "$OUT/RUNNER_IDENTITY.txt"
+
+      - name: Re-run frozen 30 fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/tests/run_preflight.py
+
+      - name: Re-run language portability audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/tests/run_portability_audit.py
+
+      - name: Build pinned llama.cpp CPU runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p upstream
+          git clone --filter=blob:none https://github.com/ggml-org/llama.cpp.git upstream/llama.cpp
+          git -C upstream/llama.cpp checkout "$LLAMA_CPP_COMMIT"
+          cmake -S upstream/llama.cpp -B upstream/llama.cpp/build             -DCMAKE_BUILD_TYPE=Release             -DGGML_NATIVE=OFF             -DGGML_OPENMP=ON
+          cmake --build upstream/llama.cpp/build --config Release -j 4 --target llama-server
+          upstream/llama.cpp/build/bin/llama-server --version             > phase2/academic_transform/at0_en/results/v2_1-smoke/LLAMA_CPP_VERSION.txt 2>&1 || true
+          git -C upstream/llama.cpp rev-parse HEAD             >> phase2/academic_transform/at0_en/results/v2_1-smoke/LLAMA_CPP_VERSION.txt
+
+      - name: Download and verify frozen Qwen artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p model-cache
+          curl --fail --location --retry 3 --retry-delay 5             "$QWEN_URL"             --output model-cache/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf
+          echo "$QWEN_SHA256  model-cache/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf" | sha256sum -c -
+          sha256sum model-cache/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf             > phase2/academic_transform/at0_en/results/v2_1-smoke/QWEN_ARTIFACT_SHA256.txt
+
+      - name: Run Qwen smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/src/run_openweight_smoke.py             --model-path model-cache/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf             --model-key QWEN3_4B_INSTRUCT_2507_Q4_K_M             --expected-sha256 "$QWEN_SHA256"             --llama-server upstream/llama.cpp/build/bin/llama-server             --output-dir phase2/academic_transform/at0_en/results/v2_1-smoke             --context 4096             --seed 20261003
+
+      - name: Remove Qwen before second model
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f model-cache/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf
+          sync
+          df -h .
+
+      - name: Download and verify frozen SmolLM artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --retry-delay 5             "$SMOL_URL"             --output model-cache/SmolLM3-Q4_K_M.gguf
+          echo "$SMOL_SHA256  model-cache/SmolLM3-Q4_K_M.gguf" | sha256sum -c -
+          sha256sum model-cache/SmolLM3-Q4_K_M.gguf             > phase2/academic_transform/at0_en/results/v2_1-smoke/SMOL_ARTIFACT_SHA256.txt
+
+      - name: Run SmolLM smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/src/run_openweight_smoke.py             --model-path model-cache/SmolLM3-Q4_K_M.gguf             --model-key SMOLLM3_3B_Q4_K_M             --expected-sha256 "$SMOL_SHA256"             --llama-server upstream/llama.cpp/build/bin/llama-server             --output-dir phase2/academic_transform/at0_en/results/v2_1-smoke             --context 4096             --seed 20261003
+
+      - name: Summarize smoke gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          out=Path("phase2/academic_transform/at0_en/results/v2_1-smoke")
+          models=[
+              ("QWEN3_4B_INSTRUCT_2507_Q4_K_M", out/"QWEN3_4B_INSTRUCT_2507_Q4_K_M_smoke.json"),
+              ("SMOLLM3_3B_Q4_K_M", out/"SMOLLM3_3B_Q4_K_M_smoke.json"),
+          ]
+          rows=[]
+          for key,path in models:
+              data=json.loads(path.read_text(encoding="utf-8"))
+              rows.append({
+                  "model_key":key,
+                  "status":data["status"],
+                  "artifact_sha256":data["artifact_sha256"],
+                  "latency_seconds":data["latency_seconds"],
+                  "usage":data.get("usage"),
+                  "validation_errors":data["validation_errors"],
+              })
+          summary={
+              "gate":"AT0_EN_V2_1_OPEN_WEIGHT_SMOKE",
+              "status":"PASS" if all(x["status"]=="PASS" for x in rows) else "FAIL",
+              "models":rows,
+              "full_matrix_started":False,
+              "additional_monetary_cost_usd":0.0,
+          }
+          (out/"SMOKE_GATE_SUMMARY.json").write_text(
+              json.dumps(summary,indent=2,ensure_ascii=False)+"\n",encoding="utf-8"
+          )
+          print(json.dumps(summary,indent=2))
+          if summary["status"]!="PASS":
+              raise SystemExit(2)
+          PY
+
+      - name: Remove second model
+        if: always()
+        shell: bash
+        run: |
+          rm -f model-cache/SmolLM3-Q4_K_M.gguf || true
+
+      - name: Upload smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-1-openweight-smoke
+          path: |
+            phase2/academic_transform/at0_en/results/v2_1-smoke/
+            phase2/academic_transform/at0_en/results/offline-preflight/preflight_results.json
+            phase2/academic_transform/at0_en/results/offline-preflight/portability_audit.json
+          if-no-files-found: warn
+          retention-days: 30
