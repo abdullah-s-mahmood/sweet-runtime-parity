@@ -1,0 +1,108 @@
+{
+  "gate": "AT0_EN_V2_4_B2_2_RELATION_AWARE_REVALIDATION",
+  "status": "PASS_B2_EXTRACTED_DEVELOPMENT",
+  "run_id": 37150199075,
+  "trigger_commit": "6d8a38c9befb8729c093efaeca1feb7a67e47942",
+  "artifact_id": 11283159352,
+  "artifact_sha256": "08b9d7a31a611b4fe0d6e8cd25deaffc8f254950c7173cc68666164ed0c23aec",
+  "development_only": true,
+  "model_inference": false,
+  "representation_audit": {
+    "side_count": 24,
+    "checks": 102,
+    "failures": 0,
+    "all_sides_pass": true
+  },
+  "arms": {
+    "GG": {
+      "pair_accuracy": 1,
+      "safe_accept_rate": 1,
+      "adversarial_acceptance_rate": 0,
+      "review_preservation_rate": 1,
+      "wrong_pair_ids": []
+    },
+    "GE": {
+      "pair_accuracy": 0.9166666666666666,
+      "safe_accept_rate": 0.8,
+      "adversarial_acceptance_rate": 0,
+      "review_preservation_rate": 1,
+      "wrong_pair_ids": [
+        "B1-P01"
+      ]
+    },
+    "EG": {
+      "pair_accuracy": 0.9166666666666666,
+      "safe_accept_rate": 0.8,
+      "adversarial_acceptance_rate": 0,
+      "review_preservation_rate": 1,
+      "wrong_pair_ids": [
+        "B1-P01"
+      ]
+    },
+    "EE": {
+      "pair_accuracy": 1,
+      "safe_accept_rate": 1,
+      "adversarial_acceptance_rate": 0,
+      "review_preservation_rate": 1,
+      "faithful_false_rejection_count": 0,
+      "wrong_pair_ids": []
+    }
+  },
+  "delta_vs_canonical_b2_pp": {
+    "GG": {
+      "pair_accuracy": 0,
+      "safe_accept_rate": 0,
+      "adversarial_acceptance": 0
+    },
+    "GE": {
+      "pair_accuracy": 50,
+      "safe_accept_rate": 80,
+      "adversarial_acceptance": 0
+    },
+    "EG": {
+      "pair_accuracy": 41.6666666667,
+      "safe_accept_rate": 60,
+      "adversarial_acceptance": 0
+    },
+    "EE": {
+      "pair_accuracy": 66.6666666667,
+      "safe_accept_rate": 100,
+      "adversarial_acceptance": 0
+    }
+  },
+  "progression_gates": {
+    "adversarial_acceptance_zero": true,
+    "dangerous_critical_false_preserve_zero": true,
+    "critical_uncertainty_promotion_zero": true,
+    "ambiguous_pair_review_preserved": true,
+    "safe_acceptance_min_80": true,
+    "pair_accuracy_min_11_of_12": true,
+    "faithful_false_rejection_max_1": true,
+    "gg_hard_gates_100": true,
+    "representation_audit_clean": true
+  },
+  "strong_adoption_interpretation": {
+    "extracted_graph_pair_accuracy_current_development": 1,
+    "extracted_graph_pair_accuracy_target": 0.95,
+    "authentic_safe_acceptance": "NOT_YET_MEASURED",
+    "authentic_safe_acceptance_target": 0.9,
+    "automatic_pass_selective_precision_end_to_end": "NOT_YET_MEASURED",
+    "automatic_pass_selective_precision_target": 0.99,
+    "adversarial_automatic_acceptance_current_development": 0,
+    "adversarial_automatic_acceptance_target": 0,
+    "critical_silent_errors_current_measured_development": 0,
+    "critical_silent_errors_target": 0
+  },
+  "hashes": {
+    "a2_sha256": "32c68926de1bb20d03f7033d30319862102fe344a3a41f784bff7e648306c0f1",
+    "aligner_sha256": "289d2898c89850f691d52313a1d2a2b12b37cef6b674549215579caedf84cd42",
+    "relation_aware_extractor_sha256": "f44a4de5536dae62b8a65a4370d186c8f0087a6bf24e5e4f2d37d25ca3600478",
+    "audit_sha256": "d5bc02bbd680d798cd70c58cd2dc527cbd3ed088351c8f50016a4d51e02948e8",
+    "detail_sha256": "57fd4fece1d9027e5e0ac581ebdf1252022b75918e3551bcb95ad945139a0758",
+    "graphs_sha256": "1e6d06d8ed6f88b4f2e185689796e05ce8e8caca3214e5c9c7f7e6b79e2a65a6",
+    "raw_pairs_sha256": "afa733aa5e0498706df66acb7005fa7fff891ef39afe9e8b086a463fdf107395",
+    "pairs_sha256": "29f3790859c8da6baf65db8b0fb372bc881e25d8e3d1e76b9c67b74d49944dca",
+    "protocol_sha256": "a70d70edb4dcf4138c63d5ac46a200ec20d7781c0ac7bc3648232f254bda571d",
+    "repair_boundary_sha256": "2d05569e1286c66dda8b881af77458405a4db1bd0ac269d6d5437095a9d3294d"
+  }
+}
