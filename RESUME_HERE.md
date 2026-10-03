@@ -4349,3 +4349,75 @@ Escalation commit:
 `fff49b26892f553c5e8e386ad7b4cd100d899720`
 
 Exact next action: higher model must decide whether to keep strict raw JSON, authorize one narrowly defined outer-fence normalization in the transport layer, or authorize identical runtime JSON grammar/schema constraints. Do not change the parser/model or rerun smoke before this decision.
+
+
+## 2026-10-03 — AT0-EN V2.1 live matrix CLOSED; V2.2 offline redesign authorized
+
+The frozen 48-slot live matrix has completed and is now consumed/closed.
+
+Run:
+- workflow: `AT0-EN V2.1 Open-Weight Live Matrix`
+- run id: `37123963805`
+- trigger commit: `82e612adf16922e408954119e587c80a420721a0`
+- conclusion: **SUCCESS**
+- artifact id: `11275534001`
+- artifact SHA-256: `842a9ff304c3ed9c854790ac8f205bfe156289b007b556cd06fa4aa19b609326`
+- additional monetary cost: USD 0.00
+
+Execution accounting:
+- slots: 48/48
+- logical calls: 71/72
+- COMPLETE_RAW: 36
+- FAILED_PARSE_OUTPUT: 3
+- FAILED_PARSE_PLAN: 1
+- FAILED_SCHEMA_OUTPUT: 8
+- valid REVISE proposals among complete slots: 35
+- one complete slot returned REVIEW without a revision
+
+Structural completion:
+- MODEL_A DIRECT: 11/12
+- MODEL_A PLANNED: 12/12
+- MODEL_B DIRECT: 3/12
+- MODEL_B PLANNED: 10/12
+
+Important interpretation:
+- workflow execution PASS does not mean scientific/human-writing PASS;
+- planning substantially improved MODEL_B structural adherence, but did not eliminate scientific drift;
+- material drift examples were observed in claim strength, causality, scope/restriction, attribution and unsupported additions;
+- only 18/35 structurally valid REVISE outputs were inside the experimental 0.85–1.15 word-count band; the band remains diagnostic, not a quality gate;
+- two REVISE outputs were identical to source text;
+- generator-declared content-unit mapping/protected status are not independent evidence;
+- post-run replay found that permissive brace extraction did not rescue any actual V2.1 cell, but this parser behavior is still design debt for the next contract.
+
+Frozen closure:
+- `phase2/academic_transform/at0_en/results/AT0_EN_V2_1_LIVE_MATRIX_CLOSURE_LOCK.md`
+- closure commit: `57eb18a49fd405c2ffa74cd5d482e629480f7553`
+
+Frozen analysis / higher-model decision:
+- `phase2/academic_transform/at0_en/results/AT0_EN_V2_1_RESULT_ANALYSIS.md`
+- analysis commit: `1b38f64236f0b8e009dfc676273d64987db05b20`
+
+Higher-model decision:
+- KEEP English-first transaction architecture;
+- REPAIR generation/output boundary and independent scientific verification;
+- DO NOT rerun V2.1;
+- DO NOT start HW1-EN yet;
+- constrained JSON or generic planning must not be treated as scientific-safety mechanisms.
+
+### Exact next authorized phase
+
+`AT0-EN V2.2 OFFLINE CONTRACT REDESIGN`
+
+No new model inference is authorized yet.
+
+Required order:
+1. define a minimal generation envelope (`status`, `revised_paragraph`, uncertainty);
+2. move content-unit mapping, provenance packaging and protected-status decisions outside the generator;
+3. add independent relation-level checks for numbers/units/groups/times/baselines, citations, negation/scope, hedge/modality, association-vs-causation, comparison direction, equation identity, restrictions/exclusions and new-information candidates;
+4. narrow transport acceptance to versioned raw JSON / explicitly allowed single outer fence; remove first/last-brace salvage from the future acceptance contract;
+5. keep DIRECT and PLANNED separate; plan is advisory and must itself pass checks;
+6. keep length metrics diagnostic and make information-unit retention primary;
+7. replay the frozen V2.1 outputs through V2.2 validators **offline only**, with no model calls;
+8. freeze the V2.2 audit and return to higher-model review before any new inference or HW1-EN.
+
+Arabic active research remains FROZEN. V4.2 Arabic remains closed and must not be rerun. Reserved Arabic populations remain closed.
