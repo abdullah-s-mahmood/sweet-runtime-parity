@@ -126,8 +126,8 @@ def find_predicate(text:str):
     best=None
     for rgx,norm in PRED_RE:
         m=rgx.search(text)
-        if m and (best is None or m.start()<best[0] or (m.start()==best[0] and len(m.group(0))>best[2]-best[1])):
-            best=(m.start(),m.end(),m.end(),m.group(0),norm)
+        if m and (best is None or m.start()<best[0] or (m.start()==best[0] and len(m.group(0))>best[2])):
+            best=(m.start(),m.end(),len(m.group(0)),m.group(0),norm)
     if best is None:
         return None
     return best[0],best[1],best[3],best[4]
@@ -199,6 +199,7 @@ def assertion_from_clause(case_id:str,idx:int,clause:str,span_id:str,anchors:lis
     else:
         ps,pe,praw,pnorm=pred
         subject=working[:ps].strip(" ,")
+        subject=re.sub(r"\b(may|can|could|likely|possibly)\s*$","",subject,flags=re.I).strip()
         obj=working[pe:].strip(" ,") or None
         pred_raw=praw
         pred_norm=pnorm
