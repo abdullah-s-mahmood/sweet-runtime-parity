@@ -152,9 +152,19 @@ def run_smoke(
         proc = subprocess.Popen(cmd, stdout=log, stderr=subprocess.STDOUT)
         try:
             wait_server(f"http://127.0.0.1:{port}", proc)
+            messages = [{"role": "user", "content": SMOKE_PROMPT}]
+            if model_key.startswith("SMOLLM3"):
+                # SmolLM3 enables extended thinking by default. The model's
+                # documented /no_think control prevents the fixed output cap
+                # from being consumed by hidden reasoning during this bounded
+                # structured-output feasibility test.
+                messages = [
+                    {"role": "system", "content": "/no_think"},
+                    {"role": "user", "content": SMOKE_PROMPT},
+                ]
             payload = {
                 "model": model_key,
-                "messages": [{"role": "user", "content": SMOKE_PROMPT}],
+                "messages": messages,
                 "temperature": 0.0,
                 "seed": seed,
                 "max_tokens": 400,
