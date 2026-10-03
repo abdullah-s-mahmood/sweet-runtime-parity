@@ -12,7 +12,16 @@
   "max_logical_calls": 72,
   "authorized_cost_ceiling": null,
   "max_total_tokens": null,
-  "live_execution_status": "BLOCKED_PENDING_AUTHORIZED_MODEL_ACCESS_AND_BUDGET",
+  "live_execution_status": "ACCEPT_BLOCKED_CHECKPOINT",
+  "blocker": "MODEL_ACCESS_AND_BUDGET_AUTHORIZATION",
+  "architect_decision": {
+    "decision": "KEEP / ACCEPT_BLOCKED_CHECKPOINT",
+    "decision_date": "2026-10-03",
+    "architecture_change_required": false,
+    "f07_repair_status": "ACCEPTED_WITHIN_FROZEN_CONTRACT",
+    "hw1_en_authorized": false,
+    "detector_robustness_authorized": false
+  },
   "length_policy": {
     "mode": "ACADEMIC_REWRITE",
     "soft_min_ratio": 0.85,
