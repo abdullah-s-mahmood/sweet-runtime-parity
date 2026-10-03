@@ -5091,3 +5091,97 @@ Then:
 - freeze V2.4 architecture decision;
 - only after that authorize a small offline implementation prototype.
 
+
+
+## 2026-10-03 — V2.4 higher-model review integrated / architecture frozen
+
+Checkpoint status:
+**100% COMPLETE**
+
+Higher-model verdict:
+`PROCEED_WITH_CHANGES`
+
+Project integration:
+- 8/8 required architecture changes ACCEPTED
+- 5/5 top risks accepted as active risks
+- validation plan ACCEPTED
+- do-not-do list ACCEPTED
+- no recommendation rejected outright
+
+Clarifications:
+1. `INVALID_VERIFICATION` is transaction-level and does not mean the candidate is scientifically false.
+2. deterministic anchor/token presence does not make semantic ownership deterministic.
+
+Final frozen architecture:
+`phase2/academic_transform/at0_en/v2_4/AT0_EN_V2_4_FROZEN_ARCHITECTURE_V2.md`
+
+Final architecture commit:
+`14db09677fb6df90e6aa688601cfe071e8138ee6`
+
+Consultation response:
+`phase2/academic_transform/at0_en/v2_4/HIGHER_MODEL_CONSULTATION_RESPONSE_V1.md`
+commit:
+`758efae6af159a5fa9e9f50021357db1c069724c`
+
+Consultation decision matrix:
+`phase2/academic_transform/at0_en/v2_4/CONSULTATION_DECISION_MATRIX_V1.md`
+commit:
+`046f5aca0f4af85eb725c1bedf9f73dc31fc6245`
+
+Architecture review closure:
+`phase2/academic_transform/at0_en/v2_4/AT0_EN_V2_4_ARCHITECTURE_REVIEW_CLOSURE.md`
+commit:
+`4063174aa6919f0072189193203819aef6b7feb2`
+
+Important final architecture rules:
+- small task-specific Scientific Assertion Frame + Assertion Relation Graph;
+- explicit ownership relations for values, units, conditions, time, population, baseline, citations, equations and symbols;
+- explicit scope/operators including negation, modality, evidence strength, causality, exceptions, quantifiers, AND/OR, proposed/implemented/observed/hypothetical status;
+- deterministic and semantic lanes separated;
+- deterministic failure cannot be overridden by semantic evidence;
+- source extraction frozen once per source version before candidate extraction;
+- candidate extracted independently;
+- joint-context alignment allowed only after both extractions are frozen;
+- independent coverage checks;
+- bidirectional one-to-one / one-to-many / many-to-one alignment;
+- four outcomes: PASS_CANDIDATE / REJECT / REVIEW / INVALID_VERIFICATION;
+- critical uncertainty blocks automatic PASS;
+- every critical PASS/REJECT dependency requires a traceable minimal evidence rationale;
+- future document context may reference table cells, captions, titles, footnotes and equation blocks as explicit evidence nodes;
+- no ID-specific patching against consumed V2.3 holdout;
+- no untouched benchmark until V2.4 pipeline freeze.
+
+Fresh end-stage research reinforced:
+- correct final labels are insufficient without faithful rationale/evidence alignment;
+- coreference, temporal and causal event relations remain difficult for current models;
+- paraphrase robustness remains a major factuality failure mode.
+
+Performance delta:
+- experimental performance: UNCHANGED
+- adversarial escape remains 9/24 = 37.5%
+- safe automatic acceptance remains 3/12 = 25%
+- no V2.4 performance claim yet
+
+Methodological delta:
+**IMPROVED**
+
+Current-stage completion:
+**100%**
+
+Whole ACAD_PASS planning completion estimate:
+**approximately 20% ±5%**
+
+Next authorized stage:
+`AT0-EN V2.4 GATE 0 — OFFLINE SCHEMA / CRITICALITY / OUTCOME CONTRACT PROTOTYPE`
+
+Gate 0 scope:
+- machine-readable schema;
+- criticality rules;
+- four outcome rules;
+- small fixed development reference material;
+- initially no model inference;
+- no new generation;
+- no HW1-EN;
+- no untouched holdout.
+
+Higher-model budget rule remains active: consult only for genuinely high-value architecture/validity decisions; routine implementation stays with the implementation agent.
