@@ -1,2 +1,3 @@
 Run authentic qualitative check.
 Rerun after explicit scientific predicate normalization.
+Final authentic qualitative check after negation/modality hardening.
