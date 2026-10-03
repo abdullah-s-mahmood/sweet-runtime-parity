@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "phase": "AT0-EN-V2.4-PRE-INFERENCE",
+  "lock": "SEMANTIC_MODEL_FILE_HASH_LOCK_V1",
+  "status": "PASS",
+  "run_id": 37133900590,
+  "trigger_commit": "d1db30b5d30560f96b80c1ac5844acea981a98bb",
+  "artifact_id": 11277806000,
+  "artifact_digest": "sha256:789388dfd4305933741895162e708bf9cc6501a2756297eae64a9216cf1381a1",
+  "artifact_zip_sha256_local_verified": "789388dfd4305933741895162e708bf9cc6501a2756297eae64a9216cf1381a1",
+  "files_hashed": 16,
+  "semantic_model_inference_performed": false,
+  "model_import_performed": false,
+  "model_forward_pass_performed": false,
+  "threshold_calibration_performed": false,
+  "new_generator_inference_performed": false,
+  "additional_monetary_cost_usd": 0.0,
+  "hhem": {
+    "repo": "vectara/hallucination_evaluation_model",
+    "revision": "c9ccea35f0e37e02422eb49b798e09ed82be5a20",
+    "license": "apache-2.0",
+    "files": {
+      "config.json": "773139fe764fe20e146ab14e627b188ccafae35f93cf6f5258dc6c237016b870",
+      "configuration_hhem_v2.py": "ec57fe344e3104d0d4a99b13d893529aac1e2bd69e83c2814235baf37cdcacc7",
+      "modeling_hhem_v2.py": "fcc9cfcee513cc08eb46eac21f1acb498b122572fb35a7dec4d85fae45cb9bba",
+      "model.safetensors": "634de18a38cf1e991c1acd0f7a9e0d30f7ea187fba42bb4798f862d3edd31e72"
+    }
+  },
+  "flan_runtime_dependency": {
+    "repo": "google/flan-t5-base",
+    "revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+    "license": "apache-2.0",
+    "files": {
+      "config.json": "7c1853dbfa0e4aac093eb109a358b6ab25fe86b7c15185a91322f0ed26f0f940",
+      "tokenizer_config.json": "4c55124402e4ce48c7125d04b9af152a125eda9e7c80829f8f99f2ec69f3f68d",
+      "special_tokens_map.json": "5c87151ef0f72a99d1f766a4c418bd2a1f90aaa30a8e22fe5eca9641daebb64f",
+      "spiece.model": "d60acb128cf7b7f2536e8f38a5b18a05535c9e14c7a355904270e15b0945ea86",
+      "tokenizer.json": "fe2ebbbbde2985be723e0ce18217853e4020c5e9d35bd07be2c27ab9d3ead57a"
+    }
+  },
+  "deberta_nli": {
+    "repo": "MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli",
+    "revision": "6f5cf0a2b59cabb106aca4c287eed12e357e90eb",
+    "license": "mit",
+    "files": {
+      "config.json": "a6c616d6dabeacf90fd0e776c741d3f0f30a05533ccf0bd3b5b62e94cfaa8d57",
+      "tokenizer_config.json": "557b3d33d3f41b81ad769244e506549e98a1857d41dd58160aacd4d98d710b5a",
+      "special_tokens_map.json": "9463f61e1b109a8eb4688b829260d7c6b1e6dff04c98ff7269bb89e2b92369b9",
+      "spm.model": "c679fbf93643d19aab7ee10c0b99e460bdbc02fedf34b92b05af343b4af586fd",
+      "tokenizer.json": "05402ffae6dd382a8491b1d29bfc139bec5d332662e86a026f433ce54c25c202",
+      "added_tokens.json": "dc046d04c9b0ada7ae6f1dc89c465801799acdf0c9a6aab8c15a1b2d5ca4e91f",
+      "model.safetensors": "06d6fd89edd4f97816831626daafbdb0b029cf63bae8edc0bccab1d64e2e7707"
+    }
+  }
+}
