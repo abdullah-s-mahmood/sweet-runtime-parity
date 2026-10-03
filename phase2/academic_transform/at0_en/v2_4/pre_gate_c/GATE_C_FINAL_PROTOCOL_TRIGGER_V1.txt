@@ -1,0 +1,2 @@
+Trigger final Gate C protocol integrity validation only.
+No source sampling. No holdout opening. No predictions.
