@@ -129,8 +129,21 @@ def relation_quantity(rel,text,cardinality=False):
         if rel.get("qualifiers") and not contains_any(u,rel["qualifiers"]): continue
         if is_decoy(u): continue
         nums=_numbers_with_pos(u)
+        # For measured quantities, only numbers locally paired with an allowed unit are binding candidates.
+        if rel.get("unit") and not cardinality:
+            unit_aliases=rel["unit"] if isinstance(rel["unit"],list) else [rel["unit"]]
+            filtered=[]
+            for n,pos in nums:
+                for ua in unit_aliases:
+                    ua=norm(ua)
+                    if re.search(r"\b"+re.escape(n)+r"\s*"+re.escape(ua)+r"\b",u[max(0,pos-2):pos+30]):
+                        filtered.append((n,pos)); break
+            nums=filtered
         subjects=_alias_positions(u,subj)
         if not nums or not subjects: continue
+        if expected_time and "baseline" in u and expected not in [n for n,_ in nums]:
+            # A later delta sentence may mention the protected time only as the baseline.
+            continue
         # bind each subject mention to its nearest numeric mention.
         for _,ss,se in subjects:
             ranked=sorted(nums,key=lambda x:min(abs(x[1]-ss),abs(x[1]-se)))
@@ -321,6 +334,23 @@ def relation_mechanism(rel,text):
         return finding(rel,"UNRESOLVED","MECHANISM_DISTINCTION_UNRESOLVED","distinction not reconstructed")
     return finding(rel,"UNRESOLVED","MECHANISM_UNRESOLVED","mechanism relation unresolved")
 
+def relation_directional(rel,text):
+    t=norm(text)
+    subj=rel.get("subject")
+    obj=rel.get("object")
+    units=[u for u in split_units(text) if contains_any(u,subj) and contains_any(u,obj)]
+    if not units:
+        return finding(rel,"UNRESOLVED","DIRECTIONAL_RELATION_UNRESOLVED","directional relation not reconstructed")
+    expected=rel.get("expected")
+    for u in units:
+        if is_decoy(u): continue
+        if expected=="LARGER_WHEN_LARGER":
+            bad=re.search(r"(?:larger|higher).{0,45}(?:priority).{0,70}(?:smaller|lower)|(?:priority).{0,80}(?:larger|higher).{0,80}(?:smaller|lower)",u)
+            good=re.search(r"(?:larger|higher).{0,45}(?:priority).{0,90}(?:larger|higher)|(?:priority).{0,80}(?:larger|higher).{0,80}(?:combination).{0,40}(?:larger|higher)",u)
+            if bad: return finding(rel,"VIOLATED","DIRECTION_REVERSED","protected monotonic direction reversed",u)
+            if good: return finding(rel,"VERIFIED","DIRECTION_VERIFIED","protected monotonic direction retained",u)
+    return finding(rel,"UNRESOLVED","DIRECTIONAL_RELATION_UNRESOLVED","directional relation present but comparator binding unresolved")
+
 def relation_parameter(rel,text):
     t=norm(text)
     if rel["status"]=="FIXED_BEFORE_RUN":
@@ -353,6 +383,7 @@ HANDLERS={
  "DELTA_DIRECTION":relation_delta,
  "MECHANISM_DISTINCTION":relation_mechanism,
  "PARAMETER_STABILITY":relation_parameter,
+ "DIRECTIONAL_RELATION":relation_directional,
 }
 
 def verify_case(case_id,text,ledger):
