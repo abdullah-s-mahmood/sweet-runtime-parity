@@ -1,0 +1,58 @@
+name: AT0-EN V2.4 Gate A3 Extractor Validation
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A3_RUN_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  a3:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact trigger state
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile frozen extractor and A3 scorer
+        run: |
+          set -euo pipefail
+          python -m py_compile             phase2/academic_transform/at0_en/v2_4/gate_a/source_anchor_extractor.py             phase2/academic_transform/at0_en/v2_4/gate_a/source_assertion_extractor.py             phase2/academic_transform/at0_en/v2_4/gate_a/score_gate_a3_extractor.py
+
+      - name: Verify frozen extractor hash
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_4/gate_a
+          echo "32c68926de1bb20d03f7033d30319862102fe344a3a41f784bff7e648306c0f1  source_assertion_extractor.py" | sha256sum -c -
+
+      - name: Run first A3 development score
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_4/gate_a/score_gate_a3_extractor.py
+
+      - name: Freeze A3 hashes
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_4/gate_a
+          sha256sum             GATE_A3_SCORING_CONTRACT_V1.md             GATE_A3_SLOT_REFERENCE_V1.jsonl             score_gate_a3_extractor.py             results/GATE_A3_EXTRACTOR_DETAIL.jsonl             results/GATE_A3_EXTRACTOR_SUMMARY.json             > results/GATE_A3_SHA256.txt
+          cat results/GATE_A3_SHA256.txt
+
+      - name: Upload A3 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-gate-a3-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_4/gate_a/results/GATE_A3_EXTRACTOR_DETAIL.jsonl
+            phase2/academic_transform/at0_en/v2_4/gate_a/results/GATE_A3_EXTRACTOR_SUMMARY.json
+            phase2/academic_transform/at0_en/v2_4/gate_a/results/GATE_A3_SHA256.txt
+          retention-days: 30
+          if-no-files-found: error
