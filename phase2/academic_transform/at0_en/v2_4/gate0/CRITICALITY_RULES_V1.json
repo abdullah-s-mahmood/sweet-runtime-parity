@@ -179,5 +179,14 @@
       "A critical frame-graph disagreement is INVALID_VERIFICATION, not a tie resolved by confidence or semantic voting.",
       "Derived convenience fields must retain a normalization trace to their canonical evidence."
     ]
+  },
+  "anchor_inventory_policy": {
+    "policy": "EXTRACT_BEFORE_OWNERSHIP",
+    "rules": [
+      "Deterministic anchors are inventoried at top level before assertion ownership is assigned.",
+      "Anchor presence/span can be deterministic while ownership remains semantic.",
+      "Ownership is expressed by graph relations; assertion anchor_refs are convenience references only.",
+      "Unowned critical anchors must be surfaced by coverage checks and cannot silently disappear."
+    ]
   }
 }
