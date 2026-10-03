@@ -49,7 +49,7 @@ def relation_text_assertion(rel,text):
         return finding(rel,"UNRESOLVED","ASSERTION_NOT_RECONSTRUCTED","required assertion not reconstructed")
     good=[]
     for u in units:
-        if rel.get("qualifiers") and not all(contains_any(u,[q]) for q in rel["qualifiers"]):
+        if rel.get("qualifiers") and not contains_any(u,rel["qualifiers"]):
             continue
         if rel.get("forbid_weaker") and contains_any(u,rel["forbid_weaker"]):
             return finding(rel,"VIOLATED","ASSERTION_STRENGTH_CHANGED","forbidden weaker relation cue detected",u)
@@ -89,49 +89,78 @@ def relation_scope(rel,text):
             return finding(rel,"VERIFIED","SCOPE_VERIFIED","scope retained",u)
     return finding(rel,"UNRESOLVED","SCOPE_EXCLUSIVITY_UNRESOLVED","scope terms present but exclusivity unresolved")
 
+def _strip_times(s):
+    return re.sub(r"\b\d{1,2}:\d{2}\b"," ",s)
+
+NUM_WORDS={"zero":"0","one":"1","two":"2","three":"3","four":"4","five":"5","six":"6","seven":"7","eight":"8","nine":"9","ten":"10"}
+
+def _numbers_with_pos(s):
+    z=_strip_times(s)
+    out=[]
+    for m in re.finditer(r"(?<![\w.])\d+(?:\.\d+)?%?",z):
+        out.append((m.group(0).rstrip("%"),m.start()))
+    for w,v in NUM_WORDS.items():
+        for m in re.finditer(r"\b"+w+r"\b",z):
+            out.append((v,m.start()))
+    return out
+
+def _alias_positions(s,aliases):
+    if isinstance(aliases,str): aliases=[aliases]
+    out=[]
+    for a in aliases or []:
+        a=norm(a)
+        for m in re.finditer(re.escape(a),s): out.append((a,m.start(),m.end()))
+    return out
+
 def relation_quantity(rel,text,cardinality=False):
     subj=rel.get("subject")
     pred=rel.get("predicate")
-    groups=[subj,pred] if pred else [subj]
-    units=candidate_units(text,groups)
     expected=str(rel["value"])
-    time=norm(rel.get("time",""))
-    quals=[norm(x) for x in rel.get("qualifiers",[])]
-    correct=[]
+    expected_time=norm(rel.get("time",""))
+    qualifier_numbers=set()
+    for q in rel.get("qualifiers",[]):
+        qualifier_numbers.update(x[0] for x in _numbers_with_pos(norm(q)))
+    best=[]
     contradictions=[]
-    for u in units:
-        nums=number_tokens(u)
-        if time and time not in u: continue
-        if quals and not all(q in u for q in quals): continue
-        if expected in [n.rstrip("%") for n in nums] and not has_neg(u) and not is_decoy(u):
-            correct.append(u)
-        # competing numeric binding to same subject/predicate is a violation
-        other=[n for n in nums if n.rstrip("%")!=expected and (not time or n!=time.replace(":",""))]
-        if other and not is_decoy(u):
-            contradictions.append(u)
+    for u in split_units(text):
+        if not contains_any(u,subj): continue
+        if pred and not contains_any(u,pred): continue
+        if expected_time and expected_time not in u: continue
+        if rel.get("qualifiers") and not contains_any(u,rel["qualifiers"]): continue
+        if is_decoy(u): continue
+        nums=_numbers_with_pos(u)
+        subjects=_alias_positions(u,subj)
+        if not nums or not subjects: continue
+        # bind each subject mention to its nearest numeric mention.
+        for _,ss,se in subjects:
+            ranked=sorted(nums,key=lambda x:min(abs(x[1]-ss),abs(x[1]-se)))
+            if not ranked: continue
+            nearest,dist=ranked[0]
+            if dist>70: continue
+            if nearest==expected:
+                best.append(u)
+            elif nearest not in qualifier_numbers:
+                contradictions.append(u)
     if contradictions:
-        return finding(rel,"VIOLATED","QUANTITY_REBOUND","different quantity/cardinality bound to protected relation",contradictions[0])
-    if correct:
-        return finding(rel,"VERIFIED","QUANTITY_VERIFIED","quantity/cardinality binding retained",correct[0])
-    # proximity fallback catches '51.5 s to Group A'
-    t=norm(text)
-    for m in re.finditer("|".join(re.escape(norm(x)) for x in (subj if isinstance(subj,list) else [subj])),t):
-        win=t[max(0,m.start()-60):m.end()+60]
-        nums=number_tokens(win)
-        if nums:
-            nearest_expected=expected in [n.rstrip("%") for n in nums]
-            if nearest_expected and not has_neg(win) and not is_decoy(win):
-                return finding(rel,"VERIFIED","QUANTITY_VERIFIED_PROXIMITY","quantity retained near entity",win)
-    return finding(rel,"UNRESOLVED","QUANTITY_BINDING_UNRESOLVED","expected quantity/cardinality not safely rebound")
+        return finding(rel,"VIOLATED","QUANTITY_REBOUND","different quantity/cardinality is more tightly bound to protected entity/relation",contradictions[0])
+    if best:
+        return finding(rel,"VERIFIED","QUANTITY_VERIFIED","quantity/cardinality binding retained",best[0])
+    # No proximity-only verification when the protected predicate/qualifier is absent.
+    return finding(rel,"UNRESOLVED","QUANTITY_BINDING_UNRESOLVED","expected quantity/cardinality not safely reconstructed")
 
 def relation_metric(rel,text):
     t=norm(text)
     if rel.get("metrics"):
-        for metric in rel["metrics"]:
-            if norm(metric) not in t: return finding(rel,"UNRESOLVED","METRIC_MISSING",f"metric missing: {metric}")
+        metrics=rel["metrics"]
+        groups=[]
+        for x in metrics:
+            groups.append(x if isinstance(x,list) else [x])
+        for group in groups:
+            if not contains_any(t,group):
+                return finding(rel,"UNRESOLVED","METRIC_MISSING","required metric missing: "+" / ".join(group))
             for u in split_units(text):
-                if norm(metric) in u and has_neg(u):
-                    return finding(rel,"VIOLATED","METRIC_NEGATED",f"metric negated: {metric}",u)
+                if contains_any(u,group) and has_neg(u):
+                    return finding(rel,"VIOLATED","METRIC_NEGATED","required metric negated",u)
         return finding(rel,"VERIFIED","METRICS_VERIFIED","required metrics retained")
     metric=norm(rel["metric"]); definition=norm(rel["definition"])
     units=[u for u in split_units(text) if metric in u and definition in u]
@@ -147,13 +176,15 @@ def relation_polarity(rel,text):
     expected=rel["polarity"]
     active=[u for u in units if not is_decoy(u)]
     if not active: return finding(rel,"UNRESOLVED","POLAR_RELATION_DECOY_ONLY","relation appears only in decoy context")
+    def negative_semantics(u):
+        return has_neg(u) or bool(re.search(r"\b(?:unchanged|unmodified|excluded from|no imputation)\b",u))
     # explicit contradiction dominates any correct-looking clause
     if expected=="POSITIVE":
-        bad=[u for u in active if has_neg(u)]
-        good=[u for u in active if not has_neg(u)]
+        bad=[u for u in active if negative_semantics(u)]
+        good=[u for u in active if not negative_semantics(u)]
     else:
-        bad=[u for u in active if not has_neg(u)]
-        good=[u for u in active if has_neg(u)]
+        bad=[u for u in active if not negative_semantics(u)]
+        good=[u for u in active if negative_semantics(u)]
     if bad: return finding(rel,"VIOLATED","POLARITY_REVERSED","protected polarity contradicted",bad[0])
     if good: return finding(rel,"VERIFIED","POLARITY_VERIFIED","protected polarity retained",good[0])
     return finding(rel,"UNRESOLVED","POLARITY_UNRESOLVED","polarity unresolved")
@@ -178,10 +209,18 @@ def relation_causality(rel,text):
     strong=r"\b(?:cause|causes|caused|causal|demonstrates?|establishes?|proves?|will cause|leads? to)\b"
     negcausal=r"\b(?:does not|did not|cannot|can not|not)\b.{0,80}\b(?:cause|causal|demonstrat|establish|prove)"
     if rel["status"]=="NOT_ESTABLISHED":
-        # Any positive causal assertion anywhere dominates a negative decoy.
+        # A contrastive sentence containing both a disclaimer and a later positive causal assertion is a contradiction.
+        for u in units:
+            if re.search(negcausal,u) and re.search(r"\b(?:contrary|however|but|although)\b.{0,180}\b(?:establishes?|demonstrates?|proves?|causal relationship|will cause)\b",u):
+                return finding(rel,"VIOLATED","CAUSALITY_CONTRADICTION","negative causal bound followed by positive causal assertion",u)
         bad=[u for u in units if re.search(strong,u) and not re.search(negcausal,u) and not is_decoy(u)]
         if bad: return finding(rel,"VIOLATED","CAUSALITY_STRENGTHENED","non-causal source relation strengthened",bad[0])
         good=[u for u in units if re.search(negcausal,u)]
+        if not good:
+            # discourse-level negative causal cue may omit repeated subject/object.
+            for u in split_units(text):
+                if re.search(r"\b(?:does not|cannot|can not)\b.{0,80}\b(?:causal|cause|establish|demonstrat|prove)\b",u):
+                    good.append(u)
         if good: return finding(rel,"VERIFIED","CAUSALITY_BOUND_RETAINED","non-causality bound retained",good[0])
     if rel["status"]=="PURPOSE_DISTINGUISH_FROM":
         alt=rel.get("alternative",[])
