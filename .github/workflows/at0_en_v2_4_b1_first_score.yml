@@ -1,0 +1,49 @@
+name: AT0-EN V2.4 B1 First Human-Correct Alignment Score
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/gate_b1/B1_FIRST_SCORE_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  score:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact trigger state
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile aligner and scorer
+        run: |
+          set -euo pipefail
+          python -m py_compile             phase2/academic_transform/at0_en/v2_4/gate_b1/b1_aligner.py             phase2/academic_transform/at0_en/v2_4/gate_b1/score_b1_aligner.py
+
+      - name: Run first B1 score
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_4/gate_b1/score_b1_aligner.py
+
+      - name: Freeze evidence hashes
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_4/gate_b1
+          sha256sum             b1_aligner.py             score_b1_aligner.py             B1_HUMAN_CORRECT_GRAPH_PAIRS_V1.jsonl             B1_SCORING_CONTRACT_V1.md             results/B1_FIRST_SCORE_DETAIL.jsonl             results/B1_FIRST_SCORE_SUMMARY.json             > results/B1_FIRST_SCORE_SHA256.txt
+          cat results/B1_FIRST_SCORE_SHA256.txt
+
+      - name: Upload B1 first-score evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-b1-first-score-${{ github.run_id }}
+          path: phase2/academic_transform/at0_en/v2_4/gate_b1/results/
+          retention-days: 30
+          if-no-files-found: error
