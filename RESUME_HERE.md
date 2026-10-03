@@ -7201,3 +7201,76 @@ Exact next authorized checkpoint:
 `AT0-EN V2.4 PRE-GATE-C — HOLDOUT-OPENING READINESS SETUP`
 
 Do not select/open Gate C sources until this checkpoint verifies all eight opening conditions.
+
+
+## 2026-10-03 — Canonical cross-conversation continuity + reviewer acquisition solution
+
+New canonical continuity file:
+`ACAD_PASS_MASTER_CONTINUITY.md`
+
+Commit:
+`e83bdd99cfa3046a1e66c90b2c35f6d45f20e3ce`
+
+Permanent continuity rule:
+- new conversations must read `ACAD_PASS_MASTER_CONTINUITY.md` first;
+- then read the latest end of `RESUME_HERE.md`;
+- verify branch HEAD;
+- continue only the exact authorized next checkpoint;
+- never restart completed stages or consumed one-shot experiments;
+- update both files after every material result, failure, decision, agreement, or exact-next-step change.
+
+User output preference:
+- concise responses;
+- concise output likely reduces context consumption and may help extend conversation longevity, though no exact conversation-length guarantee is possible.
+
+Human reviewer problem:
+- user has no pre-existing human reviewers.
+
+Preferred solution:
+`INTERNET_RECRUITED_QUALIFIED_HUMAN_ADJUDICATION`
+
+Plan:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_INTERNET_EXPERT_ADJUDICATION_PLAN_V1.md`
+
+Plan commit:
+`710367d45b5cb2b8b2138da29ad1118230e851d1`
+
+Primary reviewer-acquisition routes:
+1. Kolabtree — domain-specific scientists/peer-review consultants.
+2. Prolific Domain Experts — verified specialist recruitment.
+
+Reviewer design:
+- 2 independent primary reviewers/domain
+- reserve/adjudicator for unresolved material disagreement
+- target 10 primary reviewers total + up to 5 reserve/adjudicators
+
+Reviewer qualification:
+- frozen qualification pack
+- domain credentials
+- scientific-fidelity task
+- evidence-span task
+- ambiguity-vs-difficulty task
+- critical-relation task
+- public expert-annotated scientific datasets such as SciFact may be used only for qualification/calibration
+
+SciFact does NOT replace Gate C because its construct is scientific claim verification, not full source-candidate academic transformation fidelity.
+
+Low-budget fallback:
+- Gate C may proceed only as `PROVISIONAL_RESEARCH_EVIDENCE`
+- multiple independent model judges + deterministic checks + expert-labeled public calibration
+- never call this independent human gold
+- never use it for non-provisional Gate C / Strong-Adoption claims
+
+Current Gate C opening state:
+`SOURCE_SAMPLING_NOT_YET_AUTHORIZED`
+
+Exact next authorized checkpoint remains:
+`AT0-EN V2.4 PRE-GATE-C — HOLDOUT-OPENING READINESS SETUP`
+
+Immediate scope:
+- freeze reviewer qualification pack and thresholds
+- freeze recruitment briefs
+- determine Kolabtree/Prolific/hybrid operational route
+- define neutral reviewer IDs and assignments
+- define gold access separation
+- verify all 8 holdout-opening conditions
