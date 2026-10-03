@@ -1,0 +1,489 @@
+ACAD_PASS — PRE-GATE-C NO-NEW-HUMAN PROTOCOL REPLACEMENT CONSULTATION
+
+ROLE
+
+Act as an independent Chief Architect, Research Methodologist, Benchmark Designer, and Adversarial Reviewer.
+
+Your job is to decide whether the proposed no-new-human validation architecture is scientifically strong enough to REPLACE the current custom 80-study / newly-adjudicated-human Gate C for RESEARCH PROGRESSION.
+
+This is a construct-validity decision, not an implementation task.
+
+DEEP RESEARCH + BRAINSTORMING REQUIRED
+
+Before deciding:
+1. perform current deep web/literature research if available;
+2. prioritize 2024-2026 peer-reviewed/official benchmark sources where relevant;
+3. investigate scientific text simplification, factual consistency, scientific claim verification, external benchmark triangulation, metamorphic testing, benchmark overlap/contamination, and evidence-faithfulness evaluation;
+4. independently brainstorm alternatives;
+5. red-team both the current custom-human Gate C and the proposed external-human-gold composite;
+6. do not merely agree with the implementation agent;
+7. if web access is unavailable, state that explicitly.
+
+Do NOT:
+- implement;
+- write code;
+- modify the repository;
+- download/run datasets;
+- execute the verifier;
+- open the custom 80-study holdout;
+- recruit annotators.
+
+FILES TO REVIEW
+
+1. `ACAD_PASS_MASTER_CONTINUITY.md`
+2. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_PROTOCOL_FINAL_V1.md`
+3. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/EXTERNAL_HUMAN_GOLD_COMPOSITE_FEASIBILITY_AUDIT_V1.md`
+4. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_NO_NEW_HUMAN_ALTERNATIVE_RESEARCH_V1.md`
+5. `phase2/academic_transform/at0_en/v2_4/gate_b2/B2_FINAL_CLOSURE.md`
+
+PROJECT STATE
+
+The V2.4 verifier is frozen.
+
+Development evidence:
+- A1 anchor precision/recall = 100% / 100%
+- B1.1 human-correct alignment = 100%
+- B2.2 EE = 100% on synthetic development
+- GE = 91.67%
+- EG = 91.67%
+- adversarial automatic acceptance = 0% on B2 development
+- REVIEW preservation = 100%
+- representation audit = 102/102 checks PASS
+
+These are DEVELOPMENT results only.
+
+The current custom Gate C protocol is frozen but UNOPENED.
+
+Its original design requires:
+- 80 independent studies
+- 200 transactions
+- newly recruited qualified human adjudicators
+- prediction-first / label-second execution
+
+The project owner has no existing human reviewer pool and asked whether new human adjudication can be avoided scientifically.
+
+IMPLEMENTATION AGENT'S DEEP-RESEARCH RESULT
+
+The agent found a plausible alternative:
+
+`EXTERNAL_HUMAN_GOLD_COMPOSITE_VALIDATION`
+
+plus:
+
+`ACAD_PASS-SPECIFIC DETERMINISTIC METAMORPHIC VALIDATION`
+
+The claim is NOT that one public dataset replaces Gate C.
+
+The proposed replacement triangulates multiple independent, previously human/expert-labeled datasets and keeps dataset-native semantics where necessary.
+
+PRIMARY CANDIDATE TRACKS
+
+A. DeFacto
+Official Microsoft dataset.
+
+Size:
+- total 2561
+- with errors 1821
+
+Contains per example:
+- source article
+- generated candidate
+- factual consistency decision
+- intrinsic/extrinsic error
+- human explanation
+- selected evidence
+- corrective instruction
+- human-corrected summary
+
+License:
+MIT.
+
+Construct fit:
+very high for:
+VERIFY -> RISK -> REPAIR -> RE-VERIFY
+
+Limitation:
+news summarization, not academic prose.
+
+B. PLABA
+
+Scientific biomedical plain-language adaptation.
+
+Published evidence:
+- 750 PubMed abstracts
+- 7643 sentence pairs
+- expert-created adaptations
+- designed as sentence- and document-level gold simplification
+- TREC PLABA later used professionally written references and biomedical-expert manual evaluations
+- human faithfulness explicitly asks whether output points match source points
+- completeness explicitly measures information loss
+
+Construct fit:
+very high for authentic scientific transformation.
+
+C. CLEF SimpleText 2025 Task 2
+
+Official scientific simplification/hallucination track.
+
+Task 2.1:
+source-grounded hallucination detection.
+
+Task 2.2:
+information-distortion classification in scientific simplifications.
+
+Published official/track information:
+- 14 distortion categories
+- 42,392 train entries / 35,621 unique simplified sentences
+- 2,659 test entries
+- real CLEF submissions manually annotated and reused as ground truth in later work
+- 2026 track explicitly states that manual annotations from 2025 submissions are reusable as information-distortion ground truth
+
+Caveat:
+large synthetic training set is not independent human gold.
+Only manually annotated real-submission material should count as external human-gold.
+
+Access:
+track/Codabench registration may be needed.
+
+Construct fit:
+extremely high.
+
+D. SciFact
+
+Scientific claim verification.
+
+~1.4K expert-written scientific claims with:
+- SUPPORT/CONTRADICT
+- evidence abstracts
+- evidence rationales
+
+Official repository license:
+- claims/evidence annotations: CC BY 4.0
+- abstracts: ODC-By 1.0
+- code: Apache 2.0
+
+Public test labels are not available, but public labeled train/dev exist.
+
+Construct fit:
+high for scientific assertion/evidence verification.
+
+Proposed adapter:
+specified evidence abstract + SUPPORT -> PASS-like support
+CONTRADICT -> REJECT-like contradiction
+
+Do NOT force no-evidence cases to REVIEW without separate justification.
+
+E. QASemConsistency
+
+TACL 2026.
+
+>3K human-annotated instances.
+Predicate-argument QA decomposition.
+Raw multiple human annotations at QA/span level.
+Supported vs hallucinated relations.
+Apache-2.0 repository/data.
+
+Construct fit:
+extremely high for SAF/ARG relation verification and localized unsupported relations.
+
+Important:
+underlying tasks include CLIFF / FactScore / verifiability.
+Potential source overlap must be controlled.
+
+F. USB — Unified Summarization Benchmark
+
+Human-labeled benchmark across six domains.
+
+Tasks include:
+- evidence for summary sentence
+- factual accuracy
+- unsubstantiated span identification
+- factual error correction
+
+License:
+Apache-2.0.
+
+Construct fit:
+high for VERIFY/RISK/REPAIR.
+
+G. PlainFact
+
+Biomedical factuality / plain-language summarization.
+
+Public:
+- 200 summary-abstract pairs
+- 2740 sentences
+- factual sentence
+- contrastive non-factual sentence
+- original scientific abstract
+- external-information flag
+
+License:
+CC BY-SA 3.0.
+
+Caveat:
+non-factual contrasts were generated using GPT-4o perturbations.
+Do not call them human-gold negatives unless exact human validation is established.
+
+Use factual side as human-gold positive.
+Negative side conditional.
+
+SECONDARY TRACKS
+
+QASPER
+- 5049 questions
+- 1585 research papers
+- practitioner answers + supporting evidence
+- CC BY 4.0
+Use for evidence-grounding/context diagnostics.
+Do not force QA labels into PASS/REJECT.
+
+TRUE
+- 11 manually annotated factual-consistency datasets standardized to grounding/generated_text/binary label.
+Use as secondary transfer validation.
+
+AggreFact
+- aggregation of 9 human factuality datasets.
+Use only as a canonical aggregate OR original datasets, never double-count.
+
+FENICE story-summeval
+- 319 long-form story-summary human factuality pairs
+- CC BY-NC-SA 4.0
+Use as secondary long-form transfer.
+
+OPTIONAL DIRECT SCIENTIFIC TRACK
+
+2026 Human-in-the-Loop Scientific Text Simplification Corpus:
+- original expert scientific summaries
+- GPT simplifications
+- 47-passage human study
+- expert-edited gold simplifications
+- intended CC BY 4.0
+Small but highly direct.
+
+Cochrane-auto:
+aligned biomedical abstracts/lay summaries.
+Useful but strict claim-preservation adapter requires caution because audience simplification can intentionally omit/reframe.
+
+REJECTED AS PRIMARY GOLD
+
+- raw author-revision corpora such as ARXIVEDITS: author edits are not guaranteed semantic equivalence;
+- synthetic-only distortions: useful for metamorphic stress but not independent human-gold;
+- LLM consensus: not independent human-gold.
+
+PROPOSED METAMORPHIC TRACK
+
+Use authentic academic/scientific source text and deterministic mutations.
+
+PASS-preserving examples:
+- sentence split/merge preserving propositions
+- safe clause reorder
+- frozen safe synonym substitution
+- format-only changes
+- citation-style change preserving ownership
+
+REJECT-guaranteed examples:
+- owner/value swap
+- group-label swap
+- explicit negation flip
+- unsupported MAY/CAN -> IS strengthening
+- association -> causation
+- citation-owner swap
+- equation coefficient/variable swap
+- denominator/baseline change
+- temporal-scope change
+- deletion of critical qualifier
+
+REVIEW:
+only transformations with a formally preregistered information-loss condition.
+Do not assume generic truncation means REVIEW.
+
+METAMORPHIC RESEARCH SUPPORT
+
+Recent research supports metamorphic testing as an approach to the oracle problem:
+- metamorphic relations test expected invariants/changes without requiring explicit gold for every case;
+- recent NLP/LLM work applies MT at scale;
+- MT can reveal robustness defects not captured by static accuracy.
+
+PROPOSED REPLACEMENT ARCHITECTURE
+
+Gate C-EXT-1:
+Direct scientific transformation fidelity
+- PLABA
+- CLEF SimpleText manually annotated real submissions if accessible
+- small expert-edited scientific simplification corpus
+
+Gate C-EXT-2:
+Scientific claim/evidence fidelity
+- SciFact
+- optional non-overlapping SciFact-Open
+
+Gate C-EXT-3:
+Fine-grained relation fidelity
+- QASemConsistency
+
+Gate C-EXT-4:
+Human correction/repair
+- DeFacto
+- USB
+
+Gate C-EXT-5:
+Biomedical stress
+- PLABA
+- PlainFact
+- optionally public TREC PLABA human judgments
+
+Gate C-EXT-6:
+Cross-domain transfer
+- USB
+- TRUE OR AggreFact, deduplicated
+- FENICE long-form
+
+Gate C-META:
+deterministic relation-stress validation.
+
+IMPORTANT ADAPTER PRINCIPLE
+
+Do NOT force every dataset into PASS/REJECT/REVIEW.
+
+Retain native labels unless an exact semantic adapter exists.
+
+Examples:
+- SciFact SUPPORT/CONTRADICT can map only under a specified claim-evidence pair.
+- DeFacto original erroneous candidate -> REJECT-like.
+- DeFacto human-corrected summary -> PASS-like.
+- QASemConsistency should primarily be relation-level.
+- QASPER stays evidence/QA diagnostic.
+- human disagreement never automatically means REVIEW.
+
+OVERLAP CONTROL
+
+Must deduplicate underlying examples.
+
+Examples:
+- SciFact-Open includes SciFact original material.
+- TRUE contains component factuality datasets also appearing elsewhere.
+- AggreFact aggregates prior datasets.
+- QASemConsistency is built on existing attributable-generation datasets.
+- DeFacto-derived localization benchmarks are not independent of DeFacto.
+- PLABA references/judgments sharing one PubMed abstract remain one source cluster.
+
+Use source DOI/PMID/arXiv/S2ORC/native ID/normalized source SHA to build overlap manifest.
+
+IMPLEMENTATION AGENT'S CURRENT VERDICT
+
+`FEASIBLE_WITHOUT_NEW_HUMAN_ADJUDICATORS_FOR_RESEARCH_PROGRESSION`
+
+The agent proposes that newly recruited human adjudication becomes:
+`DEFERRED / OPTIONAL TARGETED RESIDUAL VALIDATION`
+
+rather than mandatory for the next research stage.
+
+The strongest defensible claim if this replacement passes is:
+
+`NON_PROVISIONAL_EXTERNAL_HUMAN_GOLD VALIDATION ACROSS MULTIPLE INDEPENDENT PUBLISHED BENCHMARKS PLUS DETERMINISTIC ACAD_PASS-SPECIFIC METAMORPHIC TESTING`
+
+Do NOT call it:
+`fresh bespoke human-adjudicated Gate C`.
+
+KEY RED-TEAM RISKS
+
+1. Construct mismatch:
+factual consistency is narrower than full academic transformation fidelity.
+
+2. Hidden benchmark duplication:
+large N may be fake if wrappers repeat the same source/candidate pairs.
+
+3. Public benchmark familiarity:
+although frozen verifier has no model inference, implementation researchers may have inspected examples.
+
+4. Label-adapter errors:
+naive SUPPORT=PASS or unanswerable=REVIEW can create invalid ground truth.
+
+5. Domain skew:
+many resources are biomedical/news/NLP, not all academic domains.
+
+6. REVIEW undercoverage:
+external datasets often emphasize binary factuality.
+
+7. Full-document gap:
+many tracks operate at sentence/claim/abstract level.
+
+8. Prevalence mismatch:
+benchmark class balance cannot be interpreted as deployment prevalence.
+
+QUESTIONS
+
+Q1. Can the proposed Gate C-EXT + Gate C-META scientifically REPLACE the custom newly-human-adjudicated 80-study Gate C for research progression?
+
+Choose exactly:
+A. YES_REPLACE
+B. YES_WITH_ESSENTIAL_CHANGES
+C. NO_KEEP_NEW_HUMAN_GATE_C
+D. HYBRID_RESIDUAL_HUMAN_REQUIRED
+
+Q2. If D:
+specify the MINIMUM residual human study genuinely required.
+Do not recommend humans merely by convention.
+
+Q3. Which tracks should be HARD progression gates versus DIAGNOSTIC only?
+
+Q4. Which datasets are redundant/overlapping enough that one should be dropped from hard-gate aggregation?
+
+Q5. Is PLABA + CLEF SimpleText + SciFact + QASemConsistency + DeFacto + USB sufficient construct triangulation for research progression?
+
+Q6. Is PlainFact useful enough to be core, or should it remain biomedical secondary because negatives are generated?
+
+Q7. How should REVIEW be tested without inventing invalid mappings?
+Can Gate C-META carry most REVIEW testing?
+
+Q8. Is it methodologically acceptable that different Gate C-EXT tracks retain native metrics rather than collapsing to one global accuracy?
+
+Q9. Should any global PASS/FAIL exist across tracks?
+If yes, define a non-compensatory rule.
+
+Q10. What minimum dataset/split freezing and dedup evidence is required before execution?
+
+Q11. What claims are scientifically allowed if the composite passes?
+State precise wording.
+
+Q12. What claims remain prohibited?
+
+Q13. Red-team the replacement.
+Maximum 8 additional failure modes not already listed.
+
+Q14. Research:
+Look for any stronger or closer 2024-2026 published benchmark we have missed, especially:
+- human-labeled scientific rewriting faithfulness;
+- scientific simplification distortion;
+- expert academic editing;
+- relation-preserving scholarly paraphrase;
+- document-level scientific faithfulness.
+
+Q15. Final decision:
+Should ACAD_PASS spend money/time recruiting new human reviewers NOW?
+
+OUTPUT FORMAT
+
+Return exactly:
+
+1. VERDICT
+2. DEEP-RESEARCH FINDINGS
+3. REQUIRED COMPOSITE TRACKS
+4. HARD GATES VS DIAGNOSTICS
+5. DATASET OVERLAP / DEDUP RULES
+6. REVIEW STRATEGY
+7. GLOBAL PASS/FAIL RULE
+8. RESIDUAL HUMAN REQUIREMENT
+9. ALLOWED CLAIMS
+10. PROHIBITED CLAIMS
+11. RED-TEAM RISKS — max 8
+12. MISSED STRONGER BENCHMARKS
+13. CONDITIONS BEFORE EXTERNAL SUITE EXECUTION — max 10
+14. FINAL RECOMMENDATION
+
+No code.
+No implementation.
+No dataset download.
+No benchmark execution.
+No verifier changes.
