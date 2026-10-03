@@ -6943,3 +6943,132 @@ Not authorized yet:
 - live transformation generation
 - HW1-EN
 - production readiness claims
+
+
+## 2026-10-03 — AT0-EN V2.4 PRE-GATE-C pre-consultation checkpoint CLOSED
+
+Status:
+- PRE-GATE-C: approximately 65% complete
+- whole ACAD_PASS planning estimate: approximately 34% ±5%
+
+Pipeline freeze:
+- canonical run: `37150864483`
+- trigger commit: `c0193aa3f578cc32b454a031ead73ff7e56c8918`
+- artifact id: `11284520199`
+- artifact SHA-256: `74f765f614b616da2eb101c30d669de0c0931b304a377944be2a4039fe5a844c`
+- result: PASS
+
+Frozen core runtime identities:
+- schema: `df986f759a114bd86525b84f00f8d2f362d71bb31546441992291d21c5ebd69f`
+- criticality rules: `1599bf6bdb10afd462ba45a422b3e276a4ddbb47656d3d6047a0ff9b39acc48d`
+- outcome contract: `aeff55ec0d5c10a949afc2f86a5eae46e610043f3885497643561b17aa669905`
+- A1 anchor/provenance: `65d0da4b32b8297dd58ba6108fb2a49e0cb96dfa726ce270f0382318919e20db`
+- A2 assertion extractor: `32c68926de1bb20d03f7033d30319862102fe344a3a41f784bff7e648306c0f1`
+- B2.2 relation-aware layer: `f44a4de5536dae62b8a65a4370d186c8f0087a6bf24e5e4f2d37d25ca3600478`
+- B1.1 aligner: `289d2898c89850f691d52313a1d2a2b12b37cef6b674549215579caedf84cd42`
+
+Freeze rule:
+any runtime modification after Gate C protocol freeze creates a new pipeline version and invalidates direct comparison with old Gate C predictions.
+
+Operational negative evidence:
+- first freeze run `37150815799` failed because checker repository-root path was one directory too high
+- checker path only was repaired
+- runtime components did not change
+- canonical second run passed
+
+Holdout status:
+- no Gate C source sampled
+- no Gate C candidate constructed
+- no Gate C gold created/opened
+- no Gate C predictions generated
+
+Pre-consultation protocol:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_PROTOCOL_PRECONSULT_V1.md`
+commit:
+`d3d57fd45741b8d20114ced9a865b1d705f46057`
+
+Proposed Gate C design pending consultation:
+- 80 independent authentic source clusters
+- 5 domains x 16 sources
+- 80 faithful PASS transactions
+- 80 material-drift REJECT transactions
+- 40 ambiguity REVIEW transactions
+- total 200 transactions
+- primary statistical independence unit = source cluster
+
+Proposed gold:
+- two independent qualified reviewers
+- blind to verifier prediction and each other
+- third-reviewer disagreement adjudication
+- critical source/candidate evidence spans recorded
+- without this, Gate C can only be provisional
+
+Proposed sealed execution:
+1. freeze unlabeled inputs
+2. freeze/seal gold
+3. hash both
+4. run predictions
+5. hash predictions
+6. reveal frozen gold
+7. score once
+8. preserve failures
+
+Frozen-architecture Gate C minimum:
+- dangerous adversarial automatic PASS = 0
+- safe automatic acceptance >=75%
+
+Pre-consultation proposed additional gates:
+- REJECT -> auto PASS = 0/80
+- REVIEW -> auto PASS = 0/40
+- critical silent errors = 0
+- unsupported critical evidence for auto decision = 0
+- safe acceptance >=60/80
+- decisive REJECT >=60/80 (pending consultation)
+- exact REVIEW preservation >=36/40 (pending consultation)
+- critical evidence-trace completeness =100%
+
+Strong-adoption targets remain:
+- adversarial automatic acceptance 0%
+- critical silent scientific errors 0
+- automatic-PASS selective precision >=99%
+- authentic safe automatic acceptance >=90%
+- end-to-end decision accuracy >=95%
+- critical relation/ownership correctness 100%
+- critical evidence/provenance completeness 100%
+
+Statistical boundary:
+Gate C with 80 independent source clusters is not sufficient by itself to establish <1% true error.
+Under a simple independent one-sided 95% binomial calculation, about 299 zero-error independent decisions are needed for an upper error bound below 1%.
+Transactions clustered under one source cannot be naively treated as independent.
+
+Fresh research at PRE-GATE-C:
+- benchmark leakage/contamination can inflate evaluation results
+- recent/dynamic/decontaminated evaluation improves credibility
+- abstention must be evaluated separately from correctness
+- final labels without faithful evidence/rationale alignment can hide unfaithful reasoning
+
+Higher-model consultation packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/PRE_GATE_C_HIGHER_MODEL_CONSULTATION_PACKET_V1.txt`
+commit:
+`28450f6d2c81e2c71a7edd5ccd4b8bcfe1ba4836`
+
+Pre-consult closure:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/PRE_GATE_C_PRECONSULT_CLOSURE.md`
+commit:
+`ebffda51c87878a067f833717273b590cf7eb830`
+
+Permanent metric reporting format:
+`Metric | Current measured result | Strong-adoption target | Gap`
+
+Current key metric ledger:
+- development EE extracted-graph accuracy: 100% | strong target >=95% | exceeded on synthetic development only
+- authentic safe auto acceptance: NOT YET MEASURED | strong target >=90%
+- end-to-end automatic-PASS selective precision: NOT YET MEASURED | strong target >=99%
+- adversarial automatic acceptance: 0% development | strong target 0%
+- critical silent scientific errors: 0 observed development | strong target 0
+- ambiguity preservation: 100% development | strong target 100%
+
+Exact next action:
+WAIT for user-mediated higher-model consultation response.
+
+No untouched holdout may be opened before final protocol freeze.
