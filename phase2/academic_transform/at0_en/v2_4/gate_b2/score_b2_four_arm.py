@@ -52,6 +52,15 @@ assert set(pairs)==set(raws) and len(pairs)==12
 
 ARM_NAMES=["GG","GE","EG","EE"]
 
+def has_critical_uncertainty(graph):
+    return any(
+        a["criticality"]=="CRITICAL" and a["confidence_status"]!="CERTAIN"
+        for a in graph["assertions"]
+    ) or any(
+        r["criticality"]=="CRITICAL" and r["confidence_status"]!="CERTAIN"
+        for r in graph["relations"]
+    )
+
 def score_arm(records):
     total=len(records)
     correct=sum(x["predicted_outcome"]==x["expected_outcome"] for x in records)
@@ -63,7 +72,10 @@ def score_arm(records):
     false_reject=sum(x["predicted_outcome"]=="REJECT" for x in safe)
     adv_accept=sum(x["predicted_outcome"]=="PASS_CANDIDATE" for x in adv)
     review_preserved=sum(x["predicted_outcome"]=="REVIEW" for x in rev)
-    uncertainty_promoted=sum(x["predicted_outcome"]=="PASS_CANDIDATE" for x in rev)
+    uncertainty_promoted=sum(
+        x["predicted_outcome"]=="PASS_CANDIDATE" and x["has_critical_input_uncertainty"]
+        for x in records
+    )
 
     by_shape=collections.defaultdict(lambda:{"correct":0,"total":0})
     by_family=collections.defaultdict(lambda:{"correct":0,"total":0})
@@ -139,6 +151,7 @@ for pid in sorted(pairs):
             "mapping_shape":p["mapping_shape"],
             "expected_outcome":p["expected_outcome"],
             "predicted_outcome":pred["predicted_outcome"],
+            "has_critical_input_uncertainty":has_critical_uncertainty(sg) or has_critical_uncertainty(cg),
         }
         arm_records[arm].append(rec)
         per_pair["arms"][arm]={
@@ -156,24 +169,33 @@ if invalid:
     metrics={arm:score_arm(arm_records[arm]) if arm_records[arm] else None for arm in ARM_NAMES}
 else:
     metrics={arm:score_arm(arm_records[arm]) for arm in ARM_NAMES}
-    ee=metrics["EE"]
-    safety_ok=(
-        ee["material_adversarial_acceptance_count"]==0
-        and ee["dangerous_critical_false_preserve_count"]==0
-        and ee["review_preservation_rate"]==1.0
-        and ee["critical_uncertainty_promotion_count"]==0
-    )
-    usability_ok=(
-        ee["safe_accept_rate"]>=0.80
-        and ee["pair_accuracy"]>=11/12
-        and ee["faithful_false_rejection_count"]<=1
-    )
-    if not safety_ok:
-        status="FAIL_B2_SAFETY"
-    elif not usability_ok:
-        status="MIXED_B2_REPAIR_REQUIRED"
+    gg=metrics["GG"]
+    if not (
+        gg["pair_accuracy"]==1.0
+        and gg["safe_accept_rate"]==1.0
+        and gg["material_adversarial_acceptance_count"]==0
+        and gg["review_preservation_rate"]==1.0
+    ):
+        status="INVALID_B2_EVALUATION"
     else:
-        status="PASS_B2_EXTRACTED_DEVELOPMENT"
+        ee=metrics["EE"]
+        safety_ok=(
+            ee["material_adversarial_acceptance_count"]==0
+            and ee["dangerous_critical_false_preserve_count"]==0
+            and ee["review_preservation_rate"]==1.0
+            and ee["critical_uncertainty_promotion_count"]==0
+        )
+        usability_ok=(
+            ee["safe_accept_rate"]>=0.80
+            and ee["pair_accuracy"]>=11/12
+            and ee["faithful_false_rejection_count"]<=1
+        )
+        if not safety_ok:
+            status="FAIL_B2_SAFETY"
+        elif not usability_ok:
+            status="MIXED_B2_REPAIR_REQUIRED"
+        else:
+            status="PASS_B2_EXTRACTED_DEVELOPMENT"
 
 def pp(a,b):
     return 100.0*(a-b)
