@@ -434,6 +434,71 @@
             "type": "string"
           },
           "uniqueItems": true
+        },
+        "exclusions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "citation_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "equation_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "symbol_bindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "symbol",
+              "meaning"
+            ],
+            "properties": {
+              "symbol": {
+                "type": "string",
+                "minLength": 1
+              },
+              "meaning": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence_span_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "quantifiers": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "ALL",
+              "SOME",
+              "NONE",
+              "ONLY",
+              "AT_LEAST",
+              "AT_MOST",
+              "EXACTLY",
+              "OTHER"
+            ]
+          },
+          "uniqueItems": true
         }
       },
       "additionalProperties": false
@@ -479,7 +544,14 @@
             "UNCHANGED_DURING",
             "HAS_STATE",
             "HAS_QUANTIFIER",
-            "OTHER"
+            "OTHER",
+            "HAS_MODALITY",
+            "HAS_CAUSALITY",
+            "DISTINCT_FROM",
+            "SUPPORTS",
+            "HAS_DENOMINATOR",
+            "HAS_PRECISION",
+            "HAS_UNCERTAINTY"
           ]
         },
         "from_id": {
