@@ -1,0 +1,67 @@
+name: AT0-EN V2.3 Second Unseen Holdout One-Shot Score
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_3/holdout/ONE_SHOT_SCORE_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  score:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact trigger state
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile frozen verifier and one-shot scorer
+        run: |
+          set -euo pipefail
+          python -m py_compile             phase2/academic_transform/at0_en/v2_3/at0_v2_3_assertion_graph.py             phase2/academic_transform/at0_en/v2_3/holdout/predict_second_unseen_holdout_v1.py             phase2/academic_transform/at0_en/v2_3/holdout/evaluate_second_unseen_holdout_v1.py
+
+      - name: Produce label-blind predictions
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_3/holdout/predict_second_unseen_holdout_v1.py
+
+      - name: Freeze prediction hash before label evaluation
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_3/holdout
+          sha256sum             SECOND_UNSEEN_HOLDOUT_V1_PREDICTIONS.jsonl             SECOND_UNSEEN_HOLDOUT_V1_PREDICTIONS_META.json             > SECOND_UNSEEN_HOLDOUT_V1_PREDICTION_SHA256.txt
+          cat SECOND_UNSEEN_HOLDOUT_V1_PREDICTION_SHA256.txt
+
+      - name: Evaluate against frozen labels
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_3/holdout/evaluate_second_unseen_holdout_v1.py
+
+      - name: Freeze final evidence hashes
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_3/holdout
+          sha256sum             SECOND_UNSEEN_HOLDOUT_V1_PREDICTIONS.jsonl             SECOND_UNSEEN_HOLDOUT_V1_PREDICTIONS_META.json             SECOND_UNSEEN_HOLDOUT_V1_PREDICTION_SHA256.txt             SECOND_UNSEEN_HOLDOUT_V1_SCORE_DETAIL.jsonl             SECOND_UNSEEN_HOLDOUT_V1_SCORE_SUMMARY.json             > SECOND_UNSEEN_HOLDOUT_V1_SCORE_SHA256.txt
+          cat SECOND_UNSEEN_HOLDOUT_V1_SCORE_SHA256.txt
+
+      - name: Upload one-shot score evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-3-second-unseen-one-shot-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_PREDICTIONS.jsonl
+            phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_PREDICTIONS_META.json
+            phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_PREDICTION_SHA256.txt
+            phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_SCORE_DETAIL.jsonl
+            phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_SCORE_SUMMARY.json
+            phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_SCORE_SHA256.txt
+          retention-days: 30
+          if-no-files-found: error
