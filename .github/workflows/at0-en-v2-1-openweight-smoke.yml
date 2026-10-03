@@ -2,6 +2,11 @@ name: AT0-EN V2.1 Open-Weight Smoke Gate
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/SMOKE_TRIGGER_V2_1.txt"
 
 permissions:
   contents: read
