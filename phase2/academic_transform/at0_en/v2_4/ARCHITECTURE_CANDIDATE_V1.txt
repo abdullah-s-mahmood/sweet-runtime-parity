@@ -1,0 +1,30 @@
+AT0-EN V2.4 Architecture Candidate V1
+
+Status: PRE-IMPLEMENTATION / CONSULTATION CANDIDATE.
+
+V2.3 failed the frozen second holdout: 9/24 adversarial escapes (37.5%) and 3/12 safe automatic acceptance (25%). Dominant unsafe failure: relation rebinding under lexical preservation. Dominant usability failure: paraphrase brittleness.
+
+Selected design: Hybrid Scientific Assertion Frame + Assertion Relation Graph.
+
+Scientific Assertion Frame fields:
+assertion id; exact source provenance; discourse role; assertion type; subject; normalized predicate; object; value; comparator; direction; unit; arguments; conditions; time; population; baseline; modality; evidential strength; polarity; causality class; scope; exclusions; citation refs; equation refs; symbol bindings; extraction confidence/status; unresolved slots.
+
+Assertion Relation Graph nodes:
+assertions, entities, quantities, units, times, populations, conditions, metrics, citations, equations/symbols and methods.
+
+Verification:
+Lane A deterministic invariants for exact quantities, units, symbols, equations, citations, counts, timestamps, seeds and identifiers.
+Lane B semantic relation verification for paraphrase, role alignment, scope, modality, evidential strength, causality/association, negation scope and relation rebinding.
+Semantic outputs: MATCH / MISMATCH / UNCERTAIN. Critical UNCERTAIN -> REVIEW.
+
+Source and candidate are extracted independently. Alignment classifies source assertions as PRESERVED / ALTERED / OMITTED / UNCERTAIN and candidate assertions as ALIGNED_EXISTING / NEW_INFORMATION / CONTRADICTORY / UNCERTAIN.
+
+Automatic PASS requires no deterministic contradiction, no material omission, no unsupported new information, all critical relation matches, no critical uncertainty, and correct ownership of deterministic anchors.
+
+Do not patch against individual consumed V2.3 holdout IDs. A new untouched holdout is allowed only after V2.4 is frozen.
+
+Before implementation, source extraction itself must be evaluated for coverage, atomicity, decontextualization, role binding, anchor ownership, modality/polarity, citation/equation ownership and abstention quality.
+
+Research basis: Claimify (ACL 2025), Optimizing Decomposition (ACL 2025), DnDScore (EMNLP 2025), SciEvent (EMNLP 2025), Verify-in-the-Graph (NAACL 2025), factuality stress testing (ACL 2026), Verify with Caution (ACL Findings 2025).
+
+Recommendation: proceed with this architecture only after higher-model consultation. No implementation authorized yet.
