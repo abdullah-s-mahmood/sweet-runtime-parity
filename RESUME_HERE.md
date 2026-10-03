@@ -4524,3 +4524,64 @@ Pre-live minimum gates include:
 - no new inference until higher-model review after these offline gates.
 
 Do NOT continue patching V2.2 case-specific regex as the primary architecture. Arabic remains FROZEN; Arabic V4.2 remains CLOSED; reserved data remain CLOSED.
+
+
+## 2026-10-03 — AT0-EN V2.3 graph-driven scientific constraint gate CLOSED
+
+V2.3 introduced a declarative `ScientificConstraintGraph` and one generic validator with no case-id-specific scientific branches.
+
+Frozen files:
+- `phase2/academic_transform/at0_en/v2_3/SCIENTIFIC_CONSTRAINT_GRAPH_V0_1.json`
+- `phase2/academic_transform/at0_en/v2_3/at0_v2_3_graph_validator.py`
+- `phase2/academic_transform/at0_en/v2_3/AT0_EN_V2_3_GATE_CLOSURE.md`
+
+Repository commits:
+- graph: `315958e469449a694beb2956b0feaf249245c28d`
+- validator: `3d626a41c080345c5c01e7a90b0fabfae3c25b2c`
+- gate closure: `e177577841d4203b56c8e1a25ec77dc54cb96444`
+
+Frozen local identities:
+- graph SHA-256: `840a94f067e44c852c92e5727345594877f96886e5889d5a24aaaa6ba444443f`
+- generic validator SHA-256: `afee3852a1430d66990480b63623114682d0d79ef7f9aa0c2959315d52e1d2ef`
+- V2.3 replay JSONL SHA-256: `917ad5eb60cb29ba44ad5f68e41bd634282cfb1c880e24bfeefb20acb4593ecf`
+
+V2.3 replay remained exactly identical to final red-teamed V2.2:
+- PASS_CANDIDATE: 26
+- REJECT: 7
+- REVIEW: 10
+- REVIEW_ESCALATED: 1
+- UNAVAILABLE: 4
+
+Regression:
+- 12/12 source self-checks PASS
+- 19/19 known adversarial mutations NOT PASS
+- total 31/31 PASS
+
+Fresh counterfactual holdouts:
+- holdout 1: 10/12; exposed EN04 density-direction and EN09 equation-operator gaps
+- holdout 2: 11/12; exposed EN08 direction-binding gap
+- after repairs, fresh holdout 3: 12/12
+- holdout 3 SHA-256: `e51e0fe68d9afc990e3f37143d9994ffc5a9b4a89d267eae8eca2185a3336d70`
+
+Important interpretation:
+- the failure history is preserved; 12/12 is not presented without the preceding 10/12 and 11/12 failures;
+- V2.3 improves architectural generality but does NOT establish general scientific fidelity;
+- the original 12 English cases and V2.1 outputs are now development-consumed and must not be used to claim new independent improvement.
+
+Higher-model decision:
+- KEEP V2.3 architecture;
+- DO NOT rerun the consumed 12-case live matrix;
+- DO NOT authorize HW1-EN yet.
+
+Exact next authorized gate:
+`AT0-EN V2.4 — FRESH DEVELOPMENT POPULATION FREEZE`
+
+Before any new inference:
+1. create a fresh synthetic development population not derived from V2.1 outputs;
+2. cover multiple academic domains and new semantic-risk classes;
+3. freeze source text, content units, protected relations and constraint graph before model calls;
+4. freeze the minimal generation envelope and transport policy;
+5. run graph/mutation preflight before inference;
+6. preregister transport, scientific-preservation, information-retention, unsupported-addition, usefulness/no-op, latency and cost metrics separately.
+
+No new model inference is authorized until V2.4 population/protocol freeze is complete.
