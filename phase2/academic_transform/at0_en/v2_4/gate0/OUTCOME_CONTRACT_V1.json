@@ -22,7 +22,8 @@
         "claim-bearing source text with critical extraction coverage failure",
         "critical unresolved source coreference/context needed to define the proposition",
         "unauthorized source/candidate scope",
-        "missing required protected container or evidence dependency"
+        "missing required protected container or evidence dependency",
+        "critical disagreement between duplicated frame slots and graph relations"
       ],
       "meaning": "No judgment that the candidate is scientifically wrong."
     },
