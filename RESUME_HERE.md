@@ -4309,3 +4309,43 @@ Relevant commits:
 - README state: `f2d8c96ac68c58c2b3b8d4f05a0186a0e2dd1e68`.
 
 Exact next action: manually dispatch the frozen workflow once. The current ChatGPT GitHub connector cannot create a new workflow_dispatch run. After a run exists, the implementation agent can inspect jobs/logs/artifacts and continue. Do not modify the models, cases, prompts, arms, or resource policy before results.
+
+
+## 2026-10-03 — AT0-EN V2.1 open-weight smoke gate blocker
+
+Higher-model V2.1 removed the commercial/API requirement and authorized two distinct real model configurations with auditable execution and bounded resources. The preferred zero-extra-cost backend was implemented on public GitHub Actions with pinned open-weight GGUF models and pinned llama.cpp.
+
+Frozen backend:
+- Model A: Qwen3-4B-Instruct-2507 Q4_K_M, SHA-256 `2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e`
+- Model B: SmolLM3-3B Q4_K_M, SHA-256 `8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e`
+- llama.cpp commit: `b92761a515ea31e852e7fbc1fad5f874b46f3718`
+- execution: public GitHub Actions CPU, sequential model/request execution, additional monetary cost USD 0
+
+Smoke attempts:
+1. run `37118121815`: Qwen PASS; SmolLM exhausted fixed completion budget in default extended-thinking mode. Frozen model-documented `/no_think` control.
+2. run `37118533029`: Qwen PASS; SmolLM returned valid content but copied ambiguous smoke-only status union literally. Smoke-only fixture clarified; no AT0 evaluation prompt changed.
+3. run `37118961886`: Qwen PASS; SmolLM generated semantically correct constrained revision, but wrapped valid JSON in one Markdown `json` fence. Strict raw `json.loads` parser rejected it.
+
+Current frozen state:
+- `30/30 PASS`
+- language portability PASS
+- Qwen smoke PASS
+- SmolLM inference/hash/runtime PASS, strict raw-JSON conformance FAIL
+- AT0 live evaluation matrix remains `0/48 NOT_RUN`
+- no fourth attempt authorized
+- `HW1-EN` and `DR` remain blocked
+- Arabic remains frozen
+
+Current blocker:
+`BLOCKED_STRUCTURED_OUTPUT_CONFORMANCE`
+
+Smoke report:
+`phase2/academic_transform/at0_en/results/AT0_EN_V2_1_SMOKE_GATE_REPORT.md`
+
+Higher-model review packet:
+`phase2/academic_transform/at0_en/results/offline-preflight/HIGHER_MODEL_REVIEW_PACKET.md`
+
+Escalation commit:
+`fff49b26892f553c5e8e386ad7b4cd100d899720`
+
+Exact next action: higher model must decide whether to keep strict raw JSON, authorize one narrowly defined outer-fence normalization in the transport layer, or authorize identical runtime JSON grammar/schema constraints. Do not change the parser/model or rerun smoke before this decision.
