@@ -1,11 +1,74 @@
 {
-  "status": "ACCEPT_BLOCKED_CHECKPOINT",
-  "architect_decision": "KEEP",
-  "models": [],
+  "schema_version": "2.1.0",
+  "status": "BACKEND_FROZEN_READY_FOR_SMOKE_TEST",
+  "architect_decision": "KEEP / V2.1 EXECUTION BACKEND AMENDMENT",
   "models_required": 2,
-  "requirement": "Two already-authorized distinct model identities with exact provider identifiers, auditable execution environment, and frozen cost/token ceilings before any live call.",
-  "live_execution_authorized": false,
+  "models": [
+    {
+      "slot": "MODEL_A",
+      "family": "Qwen3",
+      "upstream_repo": "Qwen/Qwen3-4B-Instruct-2507",
+      "upstream_revision_observed": "e7974da369bd887ad4f10a072ec4f933ac5391bf",
+      "license": "Apache-2.0",
+      "quant_repo": "bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF",
+      "quant_revision": "d3037fec123e6fcf1b894f42ff01bd83d4622955",
+      "artifact": "Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+      "artifact_sha256": "2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e",
+      "artifact_size_bytes_approx": 2500000000,
+      "quantization": "Q4_K_M",
+      "parameter_scale": "4B",
+      "intended_role": "English instruction-following academic rewrite/planning"
+    },
+    {
+      "slot": "MODEL_B",
+      "family": "SmolLM3",
+      "upstream_repo": "HuggingFaceTB/SmolLM3-3B",
+      "upstream_revision_observed": "c8598251715c17cb277a6ff01523b7703925b9c8",
+      "license": "Apache-2.0",
+      "quant_repo": "ggml-org/SmolLM3-3B-GGUF",
+      "quant_revision": "4965cb60b150737b68a0408c36aeefb65078f894",
+      "artifact": "SmolLM3-Q4_K_M.gguf",
+      "artifact_sha256": "8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e",
+      "artifact_size_bytes_approx": 1920000000,
+      "quantization": "Q4_K_M",
+      "parameter_scale": "3B",
+      "intended_role": "English instruction-following academic rewrite/planning"
+    }
+  ],
+  "runtime": {
+    "name": "llama.cpp",
+    "repo": "ggml-org/llama.cpp",
+    "commit": "b92761a515ea31e852e7fbc1fad5f874b46f3718",
+    "backend": "CPU",
+    "execution_order": "STRICTLY_SEQUENTIAL_ONE_MODEL_AT_A_TIME"
+  },
+  "execution_environment_target": {
+    "type": "GitHub-hosted Actions public-repository runner",
+    "label": "ubuntu-24.04",
+    "expected_cpu": 4,
+    "expected_ram_gb": 16,
+    "expected_storage_gb": 14,
+    "additional_monetary_cost_ceiling_usd": 0.0
+  },
+  "generation_policy": {
+    "temperature": 0.0,
+    "seed": 20261003,
+    "context_tokens": 4096,
+    "direct_max_output_tokens": 800,
+    "plan_max_output_tokens": 400,
+    "realize_max_output_tokens": 800,
+    "max_logical_generations": 72,
+    "best_of_n": 1,
+    "quality_retry": false
+  },
+  "live_execution_authorized": true,
+  "authorization_basis": "Higher-model V2.1 amendment permits real open-weight inference on already-available/free compute with bounded resources and no purchase.",
   "hw1_en_authorized": false,
   "detector_robustness_authorized": false,
-  "note": "The blocker is operational (model access and budget authorization), not architectural. Do not substitute an untracked assistant/model identity."
+  "arabic_active_research": "FROZEN",
+  "notes": [
+    "The GGUF artifact revision plus SHA-256 is the executable weight identity.",
+    "Upstream revisions are recorded as the observed source revisions used for provenance; the quantized artifact hash is authoritative for exact execution.",
+    "No commercial API, paid GPU, training, fine-tuning, model substitution, or extra generation is authorized."
+  ]
 }
