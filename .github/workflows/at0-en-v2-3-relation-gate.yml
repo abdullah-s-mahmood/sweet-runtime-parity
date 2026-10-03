@@ -1,0 +1,44 @@
+name: AT0-EN V2.3 Offline Relation-Graph Development Gate
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/academic_transform/at0_en/v2_3/TRIGGER.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile and run V2.3 development gate
+        run: |
+          set -euo pipefail
+          python -m py_compile phase2/academic_transform/at0_en/v2_3/at0_v2_3_relation_verifier.py
+          python phase2/academic_transform/at0_en/v2_3/test_v2_3_relation_verifier.py
+      - name: Record identities
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_3
+          sha256sum SOURCE_RELATION_LEDGER.json at0_v2_3_relation_verifier.py test_v2_3_relation_verifier.py V2_3_DEVELOPMENT_GATE_DETAIL.json V2_3_DEVELOPMENT_GATE_SUMMARY.json > V2_3_DEVELOPMENT_GATE_SHA256.txt
+          cat V2_3_DEVELOPMENT_GATE_SUMMARY.json
+          cat V2_3_DEVELOPMENT_GATE_SHA256.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: at0-en-v2-3-development-gate-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_3/V2_3_DEVELOPMENT_GATE_DETAIL.json
+            phase2/academic_transform/at0_en/v2_3/V2_3_DEVELOPMENT_GATE_SUMMARY.json
+            phase2/academic_transform/at0_en/v2_3/V2_3_DEVELOPMENT_GATE_SHA256.txt
+          if-no-files-found: warn
+          retention-days: 30
