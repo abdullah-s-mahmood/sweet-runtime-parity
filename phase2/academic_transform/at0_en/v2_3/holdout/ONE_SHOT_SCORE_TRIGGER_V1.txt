@@ -1,0 +1,2 @@
+Authorize exactly one SECOND_UNSEEN_HOLDOUT_V1 score using the frozen V2.3 verifier and frozen holdout identities.
+No model inference. No verifier or holdout modification.
