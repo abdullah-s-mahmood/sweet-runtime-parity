@@ -1,2 +1,3 @@
 Trigger AT0-EN V2.4 Gate A2 source assertion decomposition structural validation only.
 No gold scoring. No candidate alignment. No model inference.
+Rerun after decimal-safe segmentation and composite-claim abstention repair.
