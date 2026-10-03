@@ -1,0 +1,2 @@
+Run first frozen B2.2 relation-aware four-arm revalidation.
+No tuning before freeze.
