@@ -6735,3 +6735,115 @@ Exact next authorized stage:
 `AT0-EN V2.4 B2.2 — HYBRID RELATION-AWARE EXTRACTION REPAIR PROTOTYPE`
 
 Do not start live generation, HW1-EN, untouched holdout, or production claims.
+
+
+## 2026-10-03 — AT0-EN V2.4 B2.2 prototype freeze CLOSED
+
+Status:
+- B2.2 prototype checkpoint: 100% COMPLETE
+- Gate B2 overall: approximately 90%
+- whole ACAD_PASS planning estimate: approximately 31% ±5%
+
+Architecture:
+`HYBRID_RELATION_AWARE_EXTRACTION_REPAIR`
+
+Frozen components retained:
+- A2 anchor/provenance/assertion extractor unchanged
+- B1.1 aligner unchanged
+- B2 four-arm protocol and gates unchanged
+
+Versioned B2.2 layer adds:
+- predicate/paraphrase normalization
+- negation/scope ownership
+- owner/value and owner/meaning split-merge binding
+- citation-to-claim binding
+- equation/symbol/coefficient binding
+- explicit-only PRECEDES support
+- deterministic-first behavior with abstention
+
+Final prototype regression run:
+`37149645971`
+Result:
+**17/17 PASS**
+
+Final authentic academic qualitative run:
+`37149698525`
+
+Artifact:
+- id: `11283396807`
+- SHA-256: `63a4bfdfd62ca794a81323b45e295e75355dbbc3b04b57e10d32737ed2eebfb5`
+
+Authentic qualitative check:
+Before explicit scientific predicate repair:
+- CERTAIN 0
+- AMBIGUOUS 5
+- unsupported relations 0
+
+After repair:
+- CERTAIN 5
+- AMBIGUOUS 0
+- UNCERTAIN 0
+- unsupported relations 0
+
+Important:
+This authentic check is qualitative development evidence only.
+It is not a benchmark and is not an adoption metric.
+
+Final red-team:
+- detected incorrect positive parsing of `does not treat`
+- repaired explicit negative DEFINE/TREAT/USE_FOR handling
+- modal AIM_TO now preserves MAY/CAN/COULD
+- final 17/17 regressions ran after this repair
+
+Prototype implementation commits include:
+- initial relation-aware layer: `2ad4934869e9a3dd3a8dfca1d4a111a2b7d34e5c`
+- explicit scientific predicate normalization: `feab5c505c245c6cdd90a628694a5692d7ed3696`
+- modality preservation: `8f2887975542f7c371123463212305cffd2691bb`
+- explicit negation repair: `f3ea3d5d572fea1622418ab8808f8086d7b1119f`
+- prototype closure: `8c7c8d213cd3f5d1fb846a23c4d420f6ee447687`
+
+Canonical B2 performance remains UNCHANGED until repaired four-arm revalidation:
+- GG 100%
+- GE 41.67%
+- EG 50%
+- EE 33.33%
+- EE safe acceptance 0%
+- EE adversarial acceptance 0%
+- REVIEW preservation 100%
+- MIXED_B2_REPAIR_REQUIRED
+
+Permanent metric reporting:
+`Metric | Current measured result | Strong-adoption target | Gap`
+
+Current strong-adoption ledger:
+- adversarial automatic acceptance: 0% | target 0% | gap 0
+- critical silent scientific errors: 0 observed on measured development evidence | target 0 | gap 0 on measured evidence
+- human-correct alignment: 100% | target 100% | gap 0
+- extracted-graph pair accuracy: 33.33% canonical B2 | target >=95% | gap 61.67 pp
+- authentic in-domain safe automatic acceptance: NOT YET MEASURED | target >=90%
+- automatic-PASS selective precision end-to-end: NOT YET MEASURED | target >=99%
+- ambiguity preservation: 100% canonical B2 | target 100% | gap 0
+
+Research conclusion:
+- scientific IE benefits from structured event/argument representations;
+- relation-aware information helps argument-role disambiguation;
+- high-precision syntactic relation constraints reduce false relation candidates;
+- decomposition quality must remain aligned with downstream verifier needs;
+- mathematical-symbol reasoning should remain explicitly structured where possible.
+
+Exact next authorized checkpoint:
+`AT0-EN V2.4 B2.2 — FROZEN FOUR-ARM REVALIDATION WITH RELATION-AWARE PROTOTYPE`
+
+Next checkpoint must:
+- use same frozen B2 raw pairs
+- preserve GG/GE/EG/EE separation
+- keep gates unchanged
+- check A1 anchor/provenance non-regression
+- audit critical relation support per side
+- freeze first repaired B2 result before any further repair
+
+Not authorized:
+- live generation
+- HW1-EN
+- untouched holdout
+- production claims
