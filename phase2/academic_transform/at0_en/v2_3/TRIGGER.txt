@@ -7,3 +7,6 @@ Reason: generic relation-handler repairs only; no case-specific verifier branche
 
 Retry: 3
 Reason: generic unit/baseline/mechanism/directional-relation semantics only; no case-specific branches; no inference.
+
+Retry: 4
+Reason: apply intended generic same-mechanism negation binding; no other semantic change; no inference.
