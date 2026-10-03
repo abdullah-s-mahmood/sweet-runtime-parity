@@ -1,11 +1,11 @@
 from pathlib import Path
 import json, sys
-ROOT=Path(__file__).resolve().parents[1]
+ROOT=Path(__file__).resolve().parent
 sys.path.insert(0,str(ROOT))
 from at0_v2_2_validator import validate
 
 cases={}
-for line in (ROOT/"cases.jsonl").read_text(encoding="utf-8").splitlines():
+for line in (ROOT.parent/"cases.jsonl").read_text(encoding="utf-8").splitlines():
     if line.strip():
         x=json.loads(line); cases[x["case_id"]]=x["source_text"]
 
