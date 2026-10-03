@@ -1,0 +1,35 @@
+name: AT0-EN V2.4 B2.2 Authentic Qualitative Check
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/gate_b2/B2_2_AUTHENTIC_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  authentic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile
+        run: |
+          python -m py_compile phase2/academic_transform/at0_en/v2_4/gate_b2/b2_2_relation_aware_extractor.py
+          python -m py_compile phase2/academic_transform/at0_en/v2_4/gate_b2/run_b2_2_authentic_qualitative_check.py
+      - name: Run authentic qualitative check
+        run: python phase2/academic_transform/at0_en/v2_4/gate_b2/run_b2_2_authentic_qualitative_check.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-b2-2-authentic-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_4/gate_b2/results/B2_2_AUTHENTIC_QUALITATIVE_DETAIL.jsonl
+            phase2/academic_transform/at0_en/v2_4/gate_b2/results/B2_2_AUTHENTIC_QUALITATIVE_SUMMARY.json
+          retention-days: 30
+          if-no-files-found: error
