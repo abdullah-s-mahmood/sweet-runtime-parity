@@ -60,10 +60,16 @@ def validate(case_id, source, out):
         req(fs, anyp(t,[r'not (?:uniformly )?consistent',r'different operating conditions',r'vary across']),'EN03_CONTRAST','non-uniform overall effect missing','REVIEW')
         if re.search(r'study c.{0,100}(demonstrat|due to)',t):
             fs.append(finding('EN03_C_STRENGTHENED','HARD','Study C reporting relation strengthened toward demonstration/causation'))
+        # The source binds edge aggregation only to Study A. A summary that scopes Studies C/D under edge aggregation conflates mechanisms.
+        lead=t.split('study a',1)[0]
+        if 'edge aggregation' in lead and any(x in lead for x in ['study c','study d','studies a, b, c','studies a,b,c']):
+            fs.append(finding('EN03_MECHANISM_CONFLATION','HARD','edge aggregation was generalized to studies whose source mechanism is message batching'))
     elif case_id=='EN04':
         req(fs,'[cit_syn_01]' in t,'EN04_CIT1','CIT_SYN_01 missing')
         req(fs,'[cit_syn_02]' in t,'EN04_CIT2','CIT_SYN_02 missing')
         req(fs, has(t,r'queue length',r'(reduc|lower)'),'EN04_QUEUE','queue-length claim missing')
+        if re.search(r'(?:associated|association|correlated|correlation).{0,60}(?:reduc|lower).{0,50}queue length|queue length.{0,50}(?:associated|association|correlated|correlation)',t):
+            fs.append(finding('EN04_ASSERTION_WEAKENED','HARD','asserted queue-length reduction was weakened to association'))
         req(fs, has(t,r'packet loss',r'(increase|higher)',r'(density|roadside|rsu)'),'EN04_PACKET','packet-loss/density relation missing')
         s1=sentence_with(t,'[cit_syn_01]'); s2=sentence_with(t,'[cit_syn_02]')
         req(fs, bool(s1) and bool(re.search(r'queue length',s1)) and bool(re.search(r'(reduc|lower)',s1)),'EN04_CIT1_LINK','CIT_SYN_01 not linked to queue-length reduction')
