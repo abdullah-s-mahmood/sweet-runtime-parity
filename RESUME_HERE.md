@@ -6390,3 +6390,99 @@ Exact next authorized checkpoint:
 
 Do not tune extractor or aligner before first B2 score.
 Higher-model consultation is not currently required.
+
+
+## 2026-10-03 — AT0-EN V2.4 B2 first four-arm score CLOSED
+
+Checkpoint:
+**100% COMPLETE**
+
+Gate B2 overall:
+**approximately 70%**
+
+Whole ACAD_PASS planning estimate:
+**approximately 29% ±5%**
+
+Run:
+`37147162271`
+
+Artifact:
+- id: `11282800994`
+- SHA-256: `a65a76ccd0fa819e819ff9bf6c94529b0e893ad94261d64e3c14bdb301c43a96`
+
+Result:
+`MIXED_B2_REPAIR_REQUIRED`
+
+Four-arm metrics:
+- GG: 12/12 = 100% pair accuracy; safe acceptance 100%; adversarial acceptance 0%
+- GE: 5/12 = 41.67%; safe acceptance 0%; adversarial acceptance 0%
+- EG: 6/12 = 50%; safe acceptance 20%; adversarial acceptance 0%
+- EE: 4/12 = 33.33%; safe acceptance 0%; adversarial acceptance 0%; REVIEW preservation 100%
+
+EE degradation vs GG:
+- pair accuracy: -66.67 pp
+- safe acceptance: -100 pp
+- adversarial acceptance: unchanged at 0%
+- REVIEW preservation: unchanged at 100%
+
+EE gate result:
+Safety PASS:
+- adversarial acceptance 0/6
+- dangerous critical false preserve 0
+- ambiguous pair remains REVIEW
+- critical uncertainty promotion 0
+
+Usability FAIL:
+- safe acceptance required >=80%; observed 0%
+- pair accuracy required >=91.67%; observed 33.33%
+- faithful false rejection required <=1; observed 2
+
+Primary diagnosis:
+- aligner remains strong on human-correct graphs;
+- extraction representation is the bottleneck;
+- predicate/paraphrase coverage gaps cause conservative uncertainty;
+- semantic relations are absent from A2 extraction, weakening citation/procedure/equation decisions;
+- anchor ownership across split/merge quantitative structures is insufficient;
+- candidate extraction is descriptively weaker than source extraction on the fixed set;
+- joint extraction adds interaction degradation.
+
+Important interpretation:
+`SAFETY-CONSERVATIVE / USABILITY-NOT-READY`
+
+No adversarial pair was automatically accepted.
+The main failure is excessive REVIEW/REJECT on safe content and inability to decisively reject some adversarial relation changes.
+
+Frozen first score:
+`phase2/academic_transform/at0_en/v2_4/gate_b2/results/B2_FIRST_SCORE_FROZEN.json`
+commit:
+`cf15e9bec0d0b45856e1e4172a7bddde1cc48814`
+
+Closure:
+`phase2/academic_transform/at0_en/v2_4/gate_b2/B2_FIRST_SCORE_CLOSURE.md`
+commit:
+`1fa98c09becfafde94fae0bc676d226b605d9d14`
+
+Cumulative success ledger:
+- V2.3 baseline: 37.5% escape / 25% safe acceptance / BOTH_FAIL
+- Gate 0: 326/326 PASS
+- A1: 100% precision / 100% recall / 35/35 provenance
+- A2: 100% structural representation; decimal defects 5 -> 0
+- A3: 100% coverage / 100% critical coverage / 0% false additions / 88% atomicity / 92.86% certain precision / 87.5% error-abstention / 0 critical silent errors
+- A4: GO alignment development
+- B1 reference: 363/363 PASS
+- B1 first aligner: 83.33% FAIL
+- B1.1 repaired aligner: 100% all hard gates
+- B2 EE first score: 33.33% pair accuracy / 0% safe acceptance / 0% adversarial acceptance / MIXED_B2_REPAIR_REQUIRED
+
+Quality delta:
+- extracted-graph usability WORSENED sharply vs B1.1 human-correct baseline
+- safety remained conservative
+- no end-to-end product success claim authorized
+
+Exact next authorized checkpoint:
+`AT0-EN V2.4 B2.1 — EXTRACTION/RELATION REPRESENTATION REPAIR DECISION`
+
+Higher-model consultation is justified at B2.1 because the repair boundary is architectural:
+predicate normalization vs explicit relation extraction vs ownership representation vs split/merge binding vs candidate symmetry vs authentic-text timing.
+
+Do NOT modify extractor, bridge, or aligner before the B2.1 decision is frozen.
