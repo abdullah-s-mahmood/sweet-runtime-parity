@@ -1,0 +1,62 @@
+name: AT0-EN V2.2 Offline Frozen-Artifact Red-Team
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/academic_transform/at0_en/v2_2/OFFLINE_AUDIT_TRIGGER.txt"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase2-arabic-eval
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile and run frozen validator tests
+        run: |
+          set -euo pipefail
+          python -m py_compile phase2/academic_transform/at0_en/v2_2/at0_v2_2_validator.py
+          python phase2/academic_transform/at0_en/v2_2/test_at0_v2_2_validator.py
+
+      - name: Download exact frozen V2.1 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/v21
+          gh api /repos/${{ github.repository }}/actions/artifacts/11275534001/zip > /tmp/v21.zip
+          echo "842a9ff304c3ed9c854790ac8f205bfe156289b007b556cd06fa4aa19b609326  /tmp/v21.zip" | sha256sum -c -
+          unzip -q /tmp/v21.zip -d /tmp/v21
+          find /tmp/v21 -name slots.jsonl -print
+
+      - name: Replay frozen V2.1 outputs through V2.2 validator
+        run: |
+          set -euo pipefail
+          LIVE_DIR="$(dirname "$(find /tmp/v21 -name slots.jsonl | head -n1)")"
+          OUT="phase2/academic_transform/at0_en/v2_2/AT0_EN_V2_2_OFFLINE_AUDIT.jsonl"
+          python phase2/academic_transform/at0_en/v2_2/at0_v2_2_validator.py "$LIVE_DIR" "$OUT"
+          sha256sum "$OUT" "$OUT.summary.json" phase2/academic_transform/at0_en/v2_2/AT0_EN_V2_2_VALIDATOR_TEST_RESULTS.json > phase2/academic_transform/at0_en/v2_2/OFFLINE_AUDIT_SHA256.txt
+          cat "$OUT.summary.json"
+          cat phase2/academic_transform/at0_en/v2_2/OFFLINE_AUDIT_SHA256.txt
+
+      - name: Upload frozen offline audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-2-offline-redteam
+          path: |
+            phase2/academic_transform/at0_en/v2_2/AT0_EN_V2_2_OFFLINE_AUDIT.jsonl
+            phase2/academic_transform/at0_en/v2_2/AT0_EN_V2_2_OFFLINE_AUDIT.summary.json
+            phase2/academic_transform/at0_en/v2_2/AT0_EN_V2_2_VALIDATOR_TEST_RESULTS.json
+            phase2/academic_transform/at0_en/v2_2/OFFLINE_AUDIT_SHA256.txt
+          retention-days: 30
