@@ -6555,3 +6555,87 @@ Permanent concise reporting style:
 - keep updates short;
 - show only the most decision-relevant rows unless a full audit table is requested;
 - always include current stage completion and whole-project planning estimate.
+
+
+## 2026-10-03 — AT0-EN V2.4 B2.1 pre-consultation checkpoint
+
+Status:
+**PAUSED FOR HIGHER-MODEL ARCHITECTURE REVIEW**
+
+Progress:
+- B2.1: approximately 60%
+- Gate B2 overall: approximately 80%
+- whole ACAD_PASS planning estimate: approximately 29% ±5%
+
+No extractor, bridge, or aligner repair has started.
+
+Frozen diagnosis:
+`phase2/academic_transform/at0_en/v2_4/gate_b2/B2_1_DIAGNOSIS_V1.md`
+commit:
+`8558b7c4bb9793a024a5c383a3d0e39589466175`
+
+Focused higher-model consultation packet:
+`phase2/academic_transform/at0_en/v2_4/gate_b2/B2_1_HIGHER_MODEL_CONSULTATION_PACKET_V1.txt`
+commit:
+`32e5c79feae9cd570bbcf5f6965fc9020b13fda0`
+
+Canonical B2 evidence:
+- GG 100%
+- GE 41.67%
+- EG 50%
+- EE 33.33%
+- EE safe acceptance 0%
+- EE adversarial acceptance 0%
+- REVIEW preservation 100%
+- result MIXED_B2_REPAIR_REQUIRED
+
+Primary exclusive diagnosis of 8 wrong EE pairs:
+- predicate/paraphrase/scope/decomposition: 4/8 = 50%
+- split/merge owner/value or owner/meaning binding: 2/8 = 25%
+- missing explicit relation extraction: 1/8 = 12.5%
+- equation/symbol structured ownership missing: 1/8 = 12.5%
+
+Bridge diagnosis:
+- invalid bridge records: 0
+- bridge mechanics are not the primary repair target
+
+Aligner diagnosis:
+- GG remains 100%
+- aligner mechanics are not the primary repair target
+
+Pre-consultation architecture recommendation:
+`HYBRID_RELATION_AWARE_EXTRACTION_REPAIR`
+
+Do not patch consumed pair IDs.
+Do not weaken B2 gates.
+Do not tune the aligner to compensate for missing extraction semantics.
+
+Permanent reporting format now required:
+`Metric | Current result | Strong-adoption target | Gap`
+
+Current key adoption-target ledger:
+- adversarial automatic acceptance: 0% | target 0% | gap 0
+- critical silent scientific errors: 0 observed in A3 | target 0 | gap 0 on measured development evidence
+- human-correct graph alignment: 100% | target 100% | gap 0
+- extracted-graph pair accuracy: 33.33% | target >=95% | gap 61.67 pp
+- extracted safe automatic acceptance: 0% | target >=90% | gap 90 pp
+- ambiguity/REVIEW preservation: 100% | target 100% | gap 0
+- selective precision among automatic PASS decisions: NOT YET MEASURED end-to-end | target >=99%
+
+These targets are ACAD_PASS project-defined strong-adoption criteria, not universal standards.
+
+Fresh research:
+- abstention-aware scientific reasoning supports preserving uncertainty instead of forcing answers;
+- SciEvent supports structured scientific events, triggers and arguments beyond narrow entity extraction;
+- EventRelBench shows event relation understanding remains difficult;
+- claim-verification research continues to identify decomposition/relation/evidence alignment as major error sources.
+
+Exact next action:
+WAIT for user-returned higher-model consultation response.
+
+Then:
+- evaluate recommendations;
+- freeze B2.1 repair boundary;
+- only then implement a versioned repair.
+
+No routine higher-model implementation is requested.
