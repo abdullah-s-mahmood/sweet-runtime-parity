@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0.0",
+  "phase": "AT0-EN V2.3",
+  "holdout": "SECOND_UNSEEN_HOLDOUT_V1",
+  "status": "FROZEN_PRE_SCORE",
+  "frozen_on": "2026-10-03",
+  "new_model_inference": false,
+  "scoring_run": null,
+  "counts": {
+    "total": 36,
+    "safe_controls": 12,
+    "adversarial": 24,
+    "cases": 12,
+    "adversarial_per_case": 2
+  },
+  "frozen_files": {
+    "inputs_path": "phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_INPUTS.jsonl",
+    "inputs_sha256": "b1633df5e0418082a990945dfc92a267f6cdc8c943b385d7edc2d8b9181f551c",
+    "labels_path": "phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_LABELS.jsonl",
+    "labels_sha256": "9936377336708dbeaf88b7ee83a8ae5fb4272013129041332094dfa625345a9b",
+    "protocol_path": "phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_PROTOCOL.md"
+  },
+  "source_identity": {
+    "cases_path": "phase2/academic_transform/at0_en/cases.jsonl",
+    "cases_sha256_recorded": "d91fae326afbca4a82b7b84e99bca0e817947d964fc4b676e3faebd28a1868f7"
+  },
+  "verifier_binding": {
+    "path": "phase2/academic_transform/at0_en/v2_3/at0_v2_3_assertion_graph.py",
+    "sha256": "d82af97d276131477ab2f8c452f24e3302703f54b856a8ad46547af59d7ec0da",
+    "known_external_gate_run": 37134559401,
+    "known_external_gate_artifact": 11278485956,
+    "known_external_gate_artifact_sha256": "f9a5858791ebeacf918b990a7eccf52d9690b5955c3cb65da00001a8279f4c9f"
+  },
+  "construction_commits": {
+    "protocol": "251704410db9e9bc6921910bf775b0a8ea1bc53c",
+    "inputs": "b8fd69277e27d61ad779508604f486db310da5d9",
+    "labels": "d560b47d485afb82fd7e32e37b272242e276885d"
+  },
+  "independence_statement": "Temporally held out from V2.3 scoring and frozen before scoring; not claimed to be fully designer-blind because the same project context had prior knowledge of the V2.3 architecture.",
+  "label_visibility": "Labels are stored in-repository and are not secret. Integrity relies on temporal freezing and hashes, not secrecy.",
+  "next_action": "Integrity-check the frozen files only. Do not score V2.3 on the holdout in this construction stage. The next stage may run one frozen-verifier score after explicit continuation.",
+  "forbidden_before_scoring": [
+    "modify V2.3 verifier",
+    "modify holdout inputs",
+    "modify holdout labels",
+    "probe V2.3 on holdout texts",
+    "tune on holdout"
+  ]
+}
