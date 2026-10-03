@@ -1,0 +1,47 @@
+{
+  "anchor_count": 43,
+  "assertion_count": 50,
+  "assertion_type_counts": {
+    "ASSOCIATIONAL": 2,
+    "COMPARATIVE": 3,
+    "DEFINITIONAL": 9,
+    "EQUATION": 2,
+    "NEGATION": 1,
+    "PROCEDURAL": 6,
+    "QUANTITATIVE": 1,
+    "RELATIONAL": 25,
+    "SCOPE": 1
+  },
+  "case_count": 12,
+  "coverage_status": "UNKNOWN_BY_DESIGN",
+  "discourse_role_counts": {
+    "DEFINITION": 11,
+    "LIMITATION": 4,
+    "METHOD": 2,
+    "OTHER": 18,
+    "PROCEDURE": 6,
+    "RESULT": 9
+  },
+  "evidence_exact_span_checks": 140,
+  "extraction_status_counts": {
+    "AMBIGUOUS": 18,
+    "CERTAIN": 19,
+    "UNCERTAIN": 13
+  },
+  "gate": "AT0_EN_V2_4_GATE_A2_SOURCE_ASSERTION_PROTOTYPE",
+  "gold_reference_read": false,
+  "hashes": {
+    "cases_sha256": "d91fae326afbca4a82b7b84e99bca0e817947d964fc4b676e3faebd28a1868f7",
+    "extractor_sha256": "32c68926de1bb20d03f7033d30319862102fe344a3a41f784bff7e648306c0f1",
+    "predictions_sha256": "12bb579866311320701458afdb826daddd7007cb70a56d032ea0f404e7f1f8c8",
+    "schema_sha256": "df986f759a114bd86525b84f00f8d2f362d71bb31546441992291d21c5ebd69f"
+  },
+  "model_inference": false,
+  "relations_emitted": 0,
+  "represented_sentence_count": 47,
+  "semantic_anchor_ownership_assessed": false,
+  "semantic_coverage_claimed": false,
+  "sentence_count": 47,
+  "status": "PASS",
+  "structural_sentence_representation_rate": 1.0
+}
