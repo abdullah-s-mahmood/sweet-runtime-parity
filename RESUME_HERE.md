@@ -5779,3 +5779,109 @@ Quality delta:
 - end-to-end performance: UNCHANGED
 - readiness status: UNDER REVIEW
 - methodological status: IMPROVED
+
+
+## 2026-10-03 — AT0-EN V2.4 Gate A4 CLOSED / Gate A COMPLETE
+
+Checkpoint status:
+**Gate A4 = 100% COMPLETE**
+**Gate A overall = 100% COMPLETE**
+
+Higher-model verdict:
+`ACCEPT_AND_PROCEED_TO_ALIGNMENT`
+
+Final project disposition:
+`GO_ALIGNMENT_RESEARCH_DEVELOPMENT_ONLY`
+
+The source extractor is accepted only for limited development alignment research.
+It is NOT production-approved and is NOT evidence of end-to-end V2.4 safety.
+
+Evidence entering A4:
+- A1 deterministic anchor precision/recall: 100% / 100%
+- A1 exact provenance: 35/35
+- A3 gold coverage: 100%
+- A3 critical coverage: 100%
+- A3 false additions: 0%
+- A3 atomic one-to-one: 88%
+- A3 overmerge: 12%
+- A3 certain precision: 92.86%
+- A3 error-abstention recall: 87.5%
+- A3 unnecessary abstention: 23.53%
+- A3 context-dependency detection: 100%
+- A3 critical silent semantic errors: 0
+- A3 assertion-type accuracy: 86.36%
+
+Decision change:
+- pre-consultation: `REPAIR_TARGETED_FIRST`
+- final: `ACCEPT_AND_PROCEED_TO_ALIGNMENT`
+
+Reason:
+Overmerge is not itself a blocking safety failure under the frozen 1:N / N:1 architecture.
+It becomes blocking only if a merge loses/rebinds material ownership, scope, negation, relation identity, or other scientific semantics and is then treated as valid/certain.
+No such CERTAIN critical silent failure was observed in A3.
+
+Higher-model response:
+`phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A4_HIGHER_MODEL_RESPONSE_V1.md`
+commit:
+`2d26ba0ea4330d58790ae0757e2ae488b7ed417b`
+
+Final decision matrix:
+`phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A4_DECISION_MATRIX_V1.md`
+commit:
+`77af2cb93f28fcf2e4b4a80f3bbe53d1dd6c7136`
+
+A4 closure:
+`phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A4_CLOSURE.md`
+commit:
+`72fd47a4062734f567f362f9da930ef1eda07a25`
+
+Accepted conditions for next stage:
+1. alignment begins on development data only;
+2. use correct/human-reviewed source and candidate graphs first;
+3. report gold-graph alignment separately from extracted-graph alignment;
+4. uncertainty stays explicit;
+5. uncertain+uncertain agreement cannot become CERTAIN automatically;
+6. keep overmerged and abstained cases in denominators;
+7. do not force zero overmerge;
+8. defer assertion-type optimization unless it affects semantic routing;
+9. defer unnecessary-abstention optimization;
+10. authentic academic source text enters AFTER a diagnosable alignment prototype but BEFORE integrated system freeze/validity claims.
+
+Fresh research conclusion:
+- decomposition atomicity must be considered together with downstream verification;
+- decomposition/verifier alignment is a distinct research bottleneck;
+- coverage, ambiguity and decontextualization remain separate source-extraction safety properties.
+
+Quality delta:
+- end-to-end performance: UNCHANGED
+- last full verifier evidence remains 37.5% adversarial escape, 25% safe automatic acceptance, BOTH_FAIL
+- readiness changed from repair-first to alignment-authorized development research
+- this is a decision/readiness change, not a measured scientific-fidelity improvement
+
+Completion:
+- Gate A4: 100%
+- Gate A: 100%
+- whole ACAD_PASS planning estimate: approximately 26% ±5%
+
+Exact next authorized stage:
+`AT0-EN V2.4 GATE B1 — ALIGNMENT PROTOTYPE WITH HUMAN-CORRECT GRAPHS`
+
+B1 initial scope:
+- development-only;
+- no model inference initially required;
+- build a small fixed human-correct source/candidate graph set;
+- implement alignment mechanics only;
+- support 1:1 / 1:N / N:1;
+- score alignment independent of extractor quality;
+- preserve uncertainty and minimal evidence traces;
+- include faithful paraphrase, split/merge, relation rebinding, scope/negation change and ambiguity;
+- do not use extracted graphs until human-correct graph alignment behavior is understood.
+
+Not authorized:
+- live generation
+- HW1-EN
+- new untouched holdout
+- production claims
+- authentic-document integrated validation before a diagnosable alignment prototype
+
+Higher-model consultation is not required at B1 start unless a new construct-validity or architecture issue appears.
