@@ -1,0 +1,49 @@
+name: AT0-EN V2.4 Gate A1 Deterministic Anchors
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A1_RUN_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  a1:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact trigger state
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile A1 extractor and test
+        run: |
+          set -euo pipefail
+          python -m py_compile             phase2/academic_transform/at0_en/v2_4/gate_a/source_anchor_extractor.py             phase2/academic_transform/at0_en/v2_4/gate_a/check_gate_a1_anchor_extractor.py
+
+      - name: Run deterministic anchor validation
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_4/gate_a/check_gate_a1_anchor_extractor.py
+
+      - name: Freeze A1 hashes
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_4/gate_a
+          sha256sum             source_anchor_extractor.py             GATE_A1_ANCHOR_REFERENCE_V1.jsonl             check_gate_a1_anchor_extractor.py             results/GATE_A1_ANCHOR_PREDICTIONS.jsonl             results/GATE_A1_ANCHOR_SUMMARY.json             > results/GATE_A1_SHA256.txt
+          cat results/GATE_A1_SHA256.txt
+
+      - name: Upload A1 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-gate-a1-${{ github.run_id }}
+          path: phase2/academic_transform/at0_en/v2_4/gate_a/results/
+          retention-days: 30
+          if-no-files-found: error
