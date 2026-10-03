@@ -1,0 +1,51 @@
+name: AT0-EN V2.4 B1 Reference Integrity
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/gate_b1/B1_REFERENCE_RUN_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  reference:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact trigger state
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile B1 integrity checker
+        run: |
+          set -euo pipefail
+          python -m py_compile phase2/academic_transform/at0_en/v2_4/gate_b1/check_b1_reference_integrity.py
+
+      - name: Validate frozen B1 reference
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_4/gate_b1/check_b1_reference_integrity.py
+
+      - name: Freeze B1 reference hashes
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_4/gate_b1
+          sha256sum             B1_ALIGNMENT_GRAPH_SCHEMA_V1.json             B1_SCORING_CONTRACT_V1.md             B1_HUMAN_CORRECT_GRAPH_PAIRS_V1.jsonl             check_b1_reference_integrity.py             B1_REFERENCE_INTEGRITY_SUMMARY.json             > B1_REFERENCE_SHA256.txt
+          cat B1_REFERENCE_SHA256.txt
+
+      - name: Upload B1 reference evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-b1-reference-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_4/gate_b1/B1_REFERENCE_INTEGRITY_SUMMARY.json
+            phase2/academic_transform/at0_en/v2_4/gate_b1/B1_REFERENCE_SHA256.txt
+          retention-days: 30
+          if-no-files-found: error
