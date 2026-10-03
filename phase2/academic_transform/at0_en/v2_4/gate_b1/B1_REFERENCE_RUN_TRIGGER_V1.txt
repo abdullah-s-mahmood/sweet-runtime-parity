@@ -1,0 +1,2 @@
+Trigger AT0-EN V2.4 Gate B1 human-correct reference integrity validation only.
+No aligner implementation. No model inference.
