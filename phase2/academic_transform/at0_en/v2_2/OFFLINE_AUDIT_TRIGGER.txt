@@ -3,3 +3,6 @@ Date: 2026-10-03
 Input artifact: 11275534001
 No model inference authorized or performed.
 Purpose: rerun patched validator + adversarial tests on frozen V2.1 evidence.
+
+Retry: 2
+Reason: harness-only cases.jsonl path correction; validator and frozen artifact unchanged.
