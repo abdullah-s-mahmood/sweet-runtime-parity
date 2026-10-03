@@ -1,0 +1,33 @@
+name: AT0-EN V2.3 Unseen Holdout
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/academic_transform/at0_en/v2_3/holdout/at0_v2_3_holdout_v1.py"
+      - ".github/workflows/at0_en_v2_3_holdout.yml"
+permissions:
+  contents: read
+jobs:
+  holdout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Freeze verifier identity
+        run: sha256sum phase2/academic_transform/at0_en/v2_3/at0_v2_3_assertion_graph.py
+      - name: Compile holdout
+        run: python -m py_compile phase2/academic_transform/at0_en/v2_3/holdout/at0_v2_3_holdout_v1.py
+      - name: Run unseen holdout without modifying verifier
+        run: python phase2/academic_transform/at0_en/v2_3/holdout/at0_v2_3_holdout_v1.py
+      - name: Hash evidence
+        run: |
+          cd phase2/academic_transform/at0_en/v2_3
+          sha256sum at0_v2_3_assertion_graph.py holdout/at0_v2_3_holdout_v1.py results/AT0_EN_V2_3_UNSEEN_HOLDOUT_V1.jsonl results/AT0_EN_V2_3_UNSEEN_HOLDOUT_V1_SUMMARY.json > results/AT0_EN_V2_3_UNSEEN_HOLDOUT_V1_SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-3-unseen-holdout-${{ github.run_id }}
+          path: phase2/academic_transform/at0_en/v2_3/results/AT0_EN_V2_3_UNSEEN_HOLDOUT_V1*
+          retention-days: 30
