@@ -6511,3 +6511,47 @@ This duplicate run is NOT a new scientific experiment, does NOT replace the cano
 Canonical B2 first-score provenance remains the earlier frozen result and closure.
 
 This note exists only to preserve operational continuity and prevent accidental double-counting after UI interruption.
+
+
+## 2026-10-03 — Permanent adoption-target reporting format
+
+User requires all substantive progress reports to present metrics in this fixed form:
+
+`Metric name | Current measured result | Strong-system adoption target | Gap`
+
+The report must distinguish development-component metrics from final end-to-end adoption metrics.
+
+Project-defined strong-adoption targets (not claimed as universal external standards):
+
+### Safety-critical targets
+- end-to-end adversarial automatic acceptance / escape: **0%**
+- critical silent scientific errors: **0**
+- critical uncertainty promotion to automatic PASS: **0**
+- ambiguity preservation when evidence is insufficient: **100%**
+
+### Accepted-decision quality targets
+- selective precision / correctness among automatic PASS decisions: **>=99%**
+- critical relation/ownership correctness on controlled validation: **100%**
+
+### Usability / coverage targets
+- safe automatic acceptance / selective coverage on authentic in-domain validation: **>=90%**
+- extracted-graph pair decision accuracy before advanced system adoption: **>=95%**
+
+### Structural component targets
+- deterministic anchor precision: **100%**
+- deterministic anchor recall: **100%**
+- evidence/provenance completeness for critical decisions: **100%**
+- human-correct graph alignment hard gates: **100%**
+
+These targets are project acceptance criteria chosen to make ACAD_PASS strongly conservative and useful.
+They are not universal scientific standards and must not be represented as such.
+
+Safety targets are non-compensatory:
+high coverage or accuracy can never compensate for a critical silent error or adversarial automatic acceptance.
+
+When a metric has not yet been measured end-to-end, report `NOT YET MEASURED`, never substitute a component metric.
+
+Permanent concise reporting style:
+- keep updates short;
+- show only the most decision-relevant rows unless a full audit table is requested;
+- always include current stage completion and whole-project planning estimate.
