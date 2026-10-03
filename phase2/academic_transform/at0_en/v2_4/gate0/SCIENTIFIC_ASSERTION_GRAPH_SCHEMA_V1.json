@@ -1,0 +1,598 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://acad-pass.local/schemas/v2.4/scientific-assertion-graph-v1.json",
+  "title": "ACAD_PASS V2.4 Scientific Assertion Graph V1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "source_identity",
+    "assertions",
+    "relations",
+    "coverage"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "2.4-gate0-v1"
+    },
+    "source_identity": {
+      "type": "object",
+      "required": [
+        "document_id",
+        "source_version",
+        "source_sha256"
+      ],
+      "properties": {
+        "document_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "paragraph_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "allowed_context_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/assertion"
+      },
+      "minItems": 0
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relation"
+      },
+      "minItems": 0
+    },
+    "coverage": {
+      "$ref": "#/$defs/coverage"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "evidence_span": {
+      "type": "object",
+      "required": [
+        "span_id",
+        "container_type",
+        "container_id",
+        "quote"
+      ],
+      "properties": {
+        "span_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "container_type": {
+          "enum": [
+            "PARAGRAPH",
+            "SENTENCE",
+            "TABLE_CELL",
+            "TABLE_HEADER",
+            "CAPTION",
+            "TITLE",
+            "FOOTNOTE",
+            "EQUATION_BLOCK",
+            "OTHER"
+          ]
+        },
+        "container_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "char_start": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "char_end": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "anchor": {
+      "type": "object",
+      "required": [
+        "anchor_id",
+        "anchor_type",
+        "raw",
+        "normalized",
+        "criticality",
+        "evidence_span_ids"
+      ],
+      "properties": {
+        "anchor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "anchor_type": {
+          "enum": [
+            "ENTITY",
+            "METRIC",
+            "VALUE",
+            "UNIT",
+            "TIME",
+            "POPULATION",
+            "GROUP",
+            "BASELINE",
+            "CONDITION",
+            "CITATION",
+            "EQUATION",
+            "SYMBOL",
+            "IDENTIFIER",
+            "SEED",
+            "COUNT",
+            "OTHER"
+          ]
+        },
+        "raw": {
+          "type": "string",
+          "minLength": 1
+        },
+        "normalized": {
+          "type": [
+            "string",
+            "number",
+            "integer",
+            "boolean",
+            "null"
+          ]
+        },
+        "quantity_kind": {
+          "enum": [
+            "ABSOLUTE",
+            "RELATIVE",
+            "RATIO",
+            "PERCENTAGE",
+            "PERCENTAGE_POINT",
+            "RANGE",
+            "BOUND",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "denominator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "uncertainty": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "precision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "criticality": {
+          "enum": [
+            "CRITICAL",
+            "MATERIAL",
+            "NON_MATERIAL"
+          ]
+        },
+        "evidence_span_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "assertion": {
+      "type": "object",
+      "required": [
+        "assertion_id",
+        "discourse_role",
+        "assertion_type",
+        "subject",
+        "predicate_raw",
+        "predicate_normalized",
+        "polarity",
+        "modality",
+        "evidential_strength",
+        "causality",
+        "state",
+        "criticality",
+        "extraction_status",
+        "evidence",
+        "anchors",
+        "unresolved_slots"
+      ],
+      "properties": {
+        "assertion_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "discourse_role": {
+          "enum": [
+            "BACKGROUND",
+            "METHOD",
+            "RESULT",
+            "CONCLUSION",
+            "DEFINITION",
+            "PROCEDURE",
+            "LIMITATION",
+            "OTHER"
+          ]
+        },
+        "assertion_type": {
+          "enum": [
+            "RELATIONAL",
+            "QUANTITATIVE",
+            "COMPARATIVE",
+            "CAUSAL",
+            "ASSOCIATIONAL",
+            "DEFINITIONAL",
+            "PROCEDURAL",
+            "SCOPE",
+            "NEGATION",
+            "EQUATION",
+            "CITATION_LINK",
+            "OTHER"
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "predicate_raw": {
+          "type": "string",
+          "minLength": 1
+        },
+        "predicate_normalized": {
+          "type": "string",
+          "minLength": 1
+        },
+        "object": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "comparator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "direction": {
+          "enum": [
+            "INCREASE",
+            "DECREASE",
+            "HIGHER",
+            "LOWER",
+            "EQUAL",
+            "UNCHANGED",
+            "NONE",
+            "OTHER"
+          ]
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "temporal_context": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "population": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "baseline": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "scope_operators": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "ONLY",
+              "ALL",
+              "SOME",
+              "NONE",
+              "AND",
+              "OR",
+              "EXCEPT",
+              "OUTSIDE_NOT_EVALUATED",
+              "OTHER"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "modality": {
+          "enum": [
+            "ASSERTED",
+            "MAY",
+            "CAN",
+            "COULD",
+            "LIKELY",
+            "POSSIBLE",
+            "UNCERTAIN",
+            "OTHER"
+          ]
+        },
+        "evidential_strength": {
+          "enum": [
+            "OBSERVED",
+            "REPORTED",
+            "ASSOCIATED",
+            "DEMONSTRATED",
+            "ESTABLISHED",
+            "INFERRED",
+            "HYPOTHESIZED",
+            "DEFINED",
+            "PROCEDURAL",
+            "OTHER"
+          ]
+        },
+        "polarity": {
+          "enum": [
+            "POSITIVE",
+            "NEGATIVE"
+          ]
+        },
+        "causality": {
+          "enum": [
+            "NONE",
+            "ASSOCIATION_ONLY",
+            "CAUSAL",
+            "EXPLICIT_NON_CAUSAL"
+          ]
+        },
+        "state": {
+          "enum": [
+            "PROPOSED",
+            "IMPLEMENTED",
+            "OBSERVED",
+            "HYPOTHETICAL",
+            "DEFINED",
+            "OTHER"
+          ]
+        },
+        "criticality": {
+          "enum": [
+            "CRITICAL",
+            "MATERIAL",
+            "NON_MATERIAL"
+          ]
+        },
+        "extraction_status": {
+          "enum": [
+            "CERTAIN",
+            "UNCERTAIN",
+            "AMBIGUOUS"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence_span"
+          },
+          "minItems": 1
+        },
+        "anchors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/anchor"
+          }
+        },
+        "unresolved_slots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "relation": {
+      "type": "object",
+      "required": [
+        "relation_id",
+        "relation_type",
+        "from_id",
+        "to_id",
+        "criticality",
+        "polarity",
+        "confidence_status",
+        "evidence_span_ids"
+      ],
+      "properties": {
+        "relation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relation_type": {
+          "enum": [
+            "ASSERTS_ABOUT",
+            "HAS_VALUE",
+            "HAS_UNIT",
+            "UNDER_CONDITION",
+            "AT_TIME",
+            "IN_POPULATION",
+            "RELATIVE_TO",
+            "APPLIES_ONLY_TO",
+            "CITES",
+            "DEFINES",
+            "MEASURES",
+            "COMPARES_TO",
+            "ASSOCIATED_WITH",
+            "CAUSAL_RELATION",
+            "NEGATES",
+            "EXCLUDES",
+            "PRECEDES",
+            "DEPENDS_ON",
+            "FIXED_BEFORE",
+            "UNCHANGED_DURING",
+            "HAS_STATE",
+            "HAS_QUANTIFIER",
+            "OTHER"
+          ]
+        },
+        "from_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "criticality": {
+          "enum": [
+            "CRITICAL",
+            "MATERIAL",
+            "NON_MATERIAL"
+          ]
+        },
+        "polarity": {
+          "enum": [
+            "POSITIVE",
+            "NEGATIVE"
+          ]
+        },
+        "scope": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "modality": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidence_status": {
+          "enum": [
+            "CERTAIN",
+            "UNCERTAIN",
+            "AMBIGUOUS"
+          ]
+        },
+        "evidence_span_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "normalization_trace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "coverage": {
+      "type": "object",
+      "required": [
+        "claim_bearing_span_ids",
+        "represented_span_ids",
+        "unrepresented_span_ids",
+        "unowned_anchor_ids",
+        "coverage_status"
+      ],
+      "properties": {
+        "claim_bearing_span_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "represented_span_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "unrepresented_span_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "unowned_anchor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "coverage_status": {
+          "enum": [
+            "COMPLETE",
+            "INCOMPLETE_NONCRITICAL",
+            "INCOMPLETE_CRITICAL",
+            "UNKNOWN"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
