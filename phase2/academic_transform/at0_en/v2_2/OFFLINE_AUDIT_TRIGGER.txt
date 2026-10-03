@@ -1,0 +1,5 @@
+AT0-EN V2.2 offline audit trigger
+Date: 2026-10-03
+Input artifact: 11275534001
+No model inference authorized or performed.
+Purpose: rerun patched validator + adversarial tests on frozen V2.1 evidence.
