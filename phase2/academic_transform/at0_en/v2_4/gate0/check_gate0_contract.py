@@ -2,7 +2,7 @@ from __future__ import annotations
 import hashlib, json, pathlib
 
 GATE0=pathlib.Path(__file__).resolve().parent
-AT0=GATE0.parents[2]
+AT0=GATE0.parents[1]
 SCHEMA=GATE0/"SCIENTIFIC_ASSERTION_GRAPH_SCHEMA_V1.json"
 CRIT=GATE0/"CRITICALITY_RULES_V1.json"
 OUTCOME=GATE0/"OUTCOME_CONTRACT_V1.json"
@@ -55,6 +55,8 @@ for rec in refs:
     ck(cid+"_source_sha_exact",rec["source_sha256"]==cases[cid]["source_sha256"])
     ck(cid+"_source_sha_computed",hashlib.sha256(rec["source_text"].encode("utf-8")).hexdigest()==rec["source_sha256"])
     local_ids=set()
+    allowed_assertion_types=set(schema["$defs"]["assertion"]["properties"]["assertion_type"]["enum"])
+    allowed_relation_types=set(schema["$defs"]["relation"]["properties"]["relation_type"]["enum"])
     for a in rec["gold_assertions"]:
         aid=a["id"]
         ck(cid+"_assertion_id_unique_local_"+aid,aid not in local_ids)
@@ -62,10 +64,12 @@ for rec in refs:
         local_ids.add(aid); seen_assertions.add(aid)
         ck(cid+"_evidence_present_"+aid,a["evidence"] in rec["source_text"],a["evidence"])
         ck(cid+"_criticality_valid_"+aid,a["criticality"] in {"CRITICAL","MATERIAL","NON_MATERIAL"})
+        ck(cid+"_assertion_type_valid_"+aid,a["type"] in allowed_assertion_types,a["type"])
         type_seen.add(a["type"])
     for rel in rec["gold_relations"]:
         ck(cid+"_relation_from_valid_"+rel["from"],rel["from"] in local_ids,rel)
         ck(cid+"_relation_criticality_valid_"+rel["relation"],rel["criticality"] in {"CRITICAL","MATERIAL","NON_MATERIAL"})
+        ck(cid+"_relation_type_valid_"+rel["relation"],rel["relation"] in allowed_relation_types,rel["relation"])
         relation_seen.add(rel["relation"])
 
 for needed in ["RELATIONAL","ASSOCIATIONAL","NEGATION","SCOPE","QUANTITATIVE","COMPARATIVE","PROCEDURAL","EQUATION","DEFINITIONAL"]:
