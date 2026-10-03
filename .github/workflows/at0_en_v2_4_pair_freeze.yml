@@ -1,0 +1,51 @@
+name: AT0-EN V2.4 Semantic Pair Freeze
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/build_semantic_pairs_v1.py"
+      - "phase2/academic_transform/at0_en/v2_4/SEMANTIC_CALIBRATION_PROTOCOL_V1.md"
+      - ".github/workflows/at0_en_v2_4_pair_freeze.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freeze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.16"
+      - name: Rebuild exact calibration and freeze semantic pair manifest
+        run: |
+          set -euo pipefail
+          python -m py_compile phase2/academic_transform/at0_en/v2_4/build_semantic_pairs_v1.py
+          python phase2/academic_transform/at0_en/v2_4/build_semantic_pairs_v1.py
+      - name: Assert no scores or thresholds
+        run: |
+          python - <<'PY'
+          import json,pathlib
+          root=pathlib.Path("phase2/academic_transform/at0_en/v2_4")
+          pairs=[json.loads(x) for x in (root/"calibration/V2_4_SEMANTIC_PAIR_MANIFEST_V1.jsonl").read_text().splitlines() if x.strip()]
+          forbidden={"hhem_score","entailment","neutral","contradiction","semantic_decision"}
+          assert all(not (forbidden & set(x)) for x in pairs)
+          freeze=json.loads((root/"calibration/V2_4_SEMANTIC_PAIR_FREEZE_V1.json").read_text())
+          assert freeze["semantic_scores_observed"] is False
+          assert freeze["thresholds_observed"] is False
+          print("PAIR_FREEZE_NO_SCORES_OK",len(pairs))
+          PY
+      - name: Hash pair freeze
+        run: |
+          cd phase2/academic_transform/at0_en/v2_4
+          sha256sum             SOURCE_ASSERTIONS_V1.json             SEMANTIC_CALIBRATION_PROTOCOL_V1.md             calibration/V2_4_SEMANTIC_CALIBRATION_V1.jsonl             calibration/V2_4_SEMANTIC_PAIR_MANIFEST_V1.jsonl             calibration/V2_4_SEMANTIC_PARAGRAPH_INDEX_V1.json             calibration/V2_4_SEMANTIC_PAIR_FREEZE_V1.json             > calibration/V2_4_SEMANTIC_PAIR_FREEZE_SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-pair-freeze-${{ github.run_id }}
+          path: phase2/academic_transform/at0_en/v2_4/calibration/
+          retention-days: 30
