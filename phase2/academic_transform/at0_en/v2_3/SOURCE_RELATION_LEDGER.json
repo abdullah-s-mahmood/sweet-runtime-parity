@@ -639,18 +639,16 @@
       },
       {
         "id": "EN09_R6",
-        "type": "TEXT_ASSERTION",
+        "type": "DIRECTIONAL_RELATION",
         "subject": [
-          "task",
-          "priority"
-        ],
-        "predicate": [
-          "larger"
+          "priority",
+          "larger priority"
         ],
         "object": [
-          "weighted combination"
+          "weighted combination",
+          "combination"
         ],
-        "direction": "LARGER_WHEN_LARGER"
+        "expected": "LARGER_WHEN_LARGER"
       }
     ],
     "EN10": [
