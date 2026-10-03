@@ -4421,3 +4421,47 @@ Required order:
 8. freeze the V2.2 audit and return to higher-model review before any new inference or HW1-EN.
 
 Arabic active research remains FROZEN. V4.2 Arabic remains closed and must not be rerun. Reserved Arabic populations remain closed.
+
+
+## 2026-10-03 — AT0-EN V2.2 offline contract redesign FROZEN
+
+V2.2 performed no new model inference. It replayed only the frozen V2.1 evidence from run 37123963805 / artifact 11275534001.
+
+Frozen contract and audit:
+phase2/academic_transform/at0_en/v2_2/AT0_EN_V2_2_OFFLINE_CONTRACT_AND_AUDIT.md
+
+Independent validator:
+phase2/academic_transform/at0_en/v2_2/at0_v2_2_validator.py
+
+Core redesign:
+- generation is separated from packaging and verification;
+- future minimal envelope is status + revised_paragraph + uncertainty;
+- model-generated content-unit mapping and protected-status are not safety evidence;
+- relation-level deterministic checks cover quantities, group/value bindings, time/baseline relations, citation linkage, negation, hedges, causality, scope, equations/definitions, exclusions and new-information candidates;
+- future transport contract must remove first/last-brace salvage;
+- planning remains advisory, not a safety mechanism.
+
+Validator calibration:
+- 12/12 frozen source self-checks PASS;
+- 13/13 adversarial mutations correctly fail PASS;
+- total 25/25 PASS.
+
+Frozen V2.2 replay:
+- PASS_CANDIDATE: 32
+- REJECT: 3
+- REVIEW: 8
+- REVIEW_ESCALATED: 1
+- UNAVAILABLE: 4
+
+Packaging diagnostic:
+- 8 V2.1 structurally invalid cells had deterministic candidate text;
+- 7/8 were PASS_CANDIDATE under the bounded V2.2 protection checks;
+- 1/8 was REVIEW;
+- this is diagnostic evidence of packaging burden and does not retroactively validate V2.1 cells.
+
+Classification:
+IMPROVED METHODOLOGICALLY / PERFORMANCE CLAIM UNCHANGED.
+
+No new inference is authorized yet. HW1-EN remains blocked. Exact next action: independent red-team the V2.2 PASS_CANDIDATE false-negative risk and REJECT/REVIEW false-positive risk, then return to higher-model review before defining any new live protocol.
+
+Arabic active research remains FROZEN; Arabic V4.2 remains CLOSED; reserved Arabic data remain CLOSED.
