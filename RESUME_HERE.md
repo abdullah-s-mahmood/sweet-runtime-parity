@@ -5185,3 +5185,106 @@ Gate 0 scope:
 - no untouched holdout.
 
 Higher-model budget rule remains active: consult only for genuinely high-value architecture/validity decisions; routine implementation stays with the implementation agent.
+
+
+## 2026-10-03 — AT0-EN V2.4 Gate 0 CLOSED
+
+Checkpoint status:
+**100% COMPLETE**
+
+Final workflow:
+`AT0-EN V2.4 Gate 0 Contract`
+
+Final run:
+`37141161540`
+
+Trigger commit:
+`61761190dccc191c587896ffb220e8b6cee0c7ce`
+
+Conclusion:
+**SUCCESS**
+
+Artifact:
+- id: `11280860872`
+- SHA-256: `4d34010a29f2cb1d08308d3e2a008d6b42395f6844401f6e1d68175ff7f606f9`
+
+No model inference occurred.
+
+Final contract test:
+- 322/322 checks PASS
+- 6 development-only cases
+- 28 gold assertions
+- 33 gold relations
+- cases: EN04, EN05, EN06, EN07, EN09, EN12
+
+Frozen hashes:
+- schema: `74c20c219e8cc2cc240792b772e6f12ca0c60d79b7d2772e44fd06a3fafaeecf`
+- criticality: `49dfdfc6c0f3226161db0b219d3adc7ecd17e04070a6f5bd0367deb579ddeb1c`
+- outcome contract: `aeff55ec0d5c10a949afc2f86a5eae46e610043f3885497643561b17aa669905`
+- development reference: `c5fc21cf8ea60f0bd4b403b3a6e9220be33c1d390283a71f0365751ea54ed303`
+- contract test: `844ea8fb5ab1ec68ca35460c7ffe5fd982bce5f098dfe4b99126ecad6f7c3199`
+- source cases: `d91fae326afbca4a82b7b84e99bca0e817947d964fc4b676e3faebd28a1868f7`
+
+Final Gate 0 files:
+- `phase2/academic_transform/at0_en/v2_4/gate0/SCIENTIFIC_ASSERTION_GRAPH_SCHEMA_V1.json`
+- `phase2/academic_transform/at0_en/v2_4/gate0/CRITICALITY_RULES_V1.json`
+- `phase2/academic_transform/at0_en/v2_4/gate0/OUTCOME_CONTRACT_V1.json`
+- `phase2/academic_transform/at0_en/v2_4/gate0/GATE0_DEV_REFERENCE_V1.jsonl`
+- `phase2/academic_transform/at0_en/v2_4/gate0/check_gate0_contract.py`
+
+Gate 0 closure:
+`phase2/academic_transform/at0_en/v2_4/gate0/AT0_EN_V2_4_GATE0_CLOSURE.md`
+commit:
+`a59afc1edd28c5f56e049b94540121d13640e8f1`
+
+Important repairs discovered before closure:
+- missing architecture-required assertion fields were added to schema;
+- development reference relation labels were aligned with schema;
+- contract-test source path fixed;
+- frame/graph dual-source-of-truth risk was identified and closed.
+
+Canonicality policy:
+`FRAME_AND_GRAPH_MUST_AGREE`
+
+A critical frame/graph disagreement -> `INVALID_VERIFICATION`.
+
+Frozen outcome precedence:
+1. INVALID_VERIFICATION
+2. REJECT
+3. REVIEW
+4. PASS_CANDIDATE
+
+Development reference is:
+`DEVELOPMENT-ONLY / NOT HOLDOUT / NOT PERFORMANCE EVIDENCE`
+
+Quality delta:
+- experimental performance: **UNCHANGED**
+- last verifier evidence remains V2.3: adversarial escape 37.5%; safe acceptance 25%; BOTH_FAIL
+- methodological status: **IMPROVED**
+- no quantitative V2.4 performance improvement may be claimed
+
+Current-stage completion:
+**100%**
+
+Whole ACAD_PASS planning completion:
+**approximately 22% ±5%**
+
+Exact next authorized stage:
+`AT0-EN V2.4 GATE A — SOURCE/EXTRACTOR PROTOTYPE AND VALIDATION PREPARATION`
+
+Gate A scope:
+- offline source-side extraction only;
+- deterministic anchors + provenance first;
+- output must conform to frozen Gate 0 schema;
+- prepare extractor validation against the 6-case development reference;
+- measure coverage, false additions, atomicity, ownership/role binding, context/decontextualization, polarity/modality and abstention;
+- no end-to-end candidate verification yet unless Gate A later authorizes it.
+
+Not authorized:
+- new live generation
+- HW1-EN
+- new untouched holdout
+- scientific-fidelity performance claims
+- consumed-holdout ID patching
+
+Higher-model consultation not required at Gate A start unless a new architecture/construct-validity issue appears.
