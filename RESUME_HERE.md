@@ -4962,3 +4962,46 @@ Major unfinished blocks:
 V2.4 redesign, future new untouched validation, verifier readiness review, HW1-EN, cross-domain scientific fidelity, DOCX fidelity, voice, detector robustness, long-document evaluation, product/commercial validation.
 
 No reliable wall-clock completion promise is available because V2.4 can expose further redesign needs.
+
+
+## 2026-10-03 — Permanent higher-model consultation budget agreement
+
+This supplements all earlier ACAD_PASS execution rules.
+
+1. Use the higher model **only for genuine consultation**, not for routine execution.
+2. Higher-model consultation is justified only when the current task materially benefits from:
+   - architecture review;
+   - experiment/benchmark design review;
+   - construct-validity review;
+   - frozen-result interpretation;
+   - high-stakes go/no-go or safety-gate decisions;
+   - difficult research synthesis or red-team of a proposed design;
+   - other decisions where an independent stronger reviewer can materially change the direction.
+3. Do **not** delegate implementation work to the higher model when the implementation agent can perform it. This includes:
+   - coding;
+   - repository edits;
+   - ordinary debugging;
+   - running tests;
+   - routine data inspection;
+   - workflow execution;
+   - artifact hashing/freezing;
+   - standard literature collection;
+   - routine metric calculation;
+   - ordinary documentation updates.
+4. Before requesting higher-model consultation, the implementation agent should first complete all work it can reasonably do itself and reduce the consultation to the smallest high-value decision surface.
+5. When higher-model consultation is genuinely needed:
+   - prepare a concise consultation prompt;
+   - provide only the minimum files/evidence required;
+   - clearly state that the higher model is acting as **consultant/reviewer only**;
+   - explicitly instruct it **not to implement**, modify repositories, generate code patches, rerun experiments, or perform work that the implementation agent can do;
+   - ask it to return findings, risks, alternatives, decision criteria, and recommendations that the implementation agent can execute.
+6. The user will manually send the consultation packet to the higher model and return its response to this chat.
+7. Do not repeatedly consult the higher model for the same decision unless new evidence materially changes the question.
+8. Consultation should be budget-aware: use one focused review packet rather than many fragmented prompts whenever possible.
+9. If higher-model consultation is not genuinely necessary, do not request it merely because it is available.
+10. When consultation is requested, record:
+    - why it is needed;
+    - the exact question(s);
+    - the evidence packet supplied;
+    - what remains for the implementation agent to execute afterward.
+
