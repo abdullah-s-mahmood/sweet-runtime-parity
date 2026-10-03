@@ -1,0 +1,372 @@
+{
+  "schema_version": "1.0.0",
+  "authority": "source_text_over_legacy_content_units",
+  "cases": {
+    "EN01": [
+      {
+        "assertion_id": "EN01-A1",
+        "hypothesis": "Urban sensing platforms monitor traffic conditions in real time.",
+        "relation_family": "FUNCTION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN01-A2",
+        "hypothesis": "Roadside devices continuously collect traffic observations.",
+        "relation_family": "FUNCTION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN01-A3",
+        "hypothesis": "Continuous traffic observations can support faster identification of congestion.",
+        "relation_family": "MODAL_EFFECT",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN01-A4",
+        "hypothesis": "The evaluation is restricted to arterial roads during weekday peak periods.",
+        "relation_family": "SCOPE",
+        "critical": true
+      }
+    ],
+    "EN02": [
+      {
+        "assertion_id": "EN02-A1",
+        "hypothesis": "The routing controller receives bin fill estimates every 15 minutes.",
+        "relation_family": "QUANTITY_TIME",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN02-A2",
+        "hypothesis": "The controller dispatches two collection vehicles.",
+        "relation_family": "QUANTITY_ENTITY",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN02-A3",
+        "hypothesis": "The evaluation is conducted in a synthetic district.",
+        "relation_family": "SCOPE",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN02-A4",
+        "hypothesis": "Travel distance is measured.",
+        "relation_family": "METRIC",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN02-A5",
+        "hypothesis": "Missed-overflow events are measured.",
+        "relation_family": "METRIC",
+        "critical": true
+      }
+    ],
+    "EN03": [
+      {
+        "assertion_id": "EN03-A1",
+        "hypothesis": "Study A reported lower latency after edge aggregation.",
+        "relation_family": "STUDY_FINDING",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN03-A2",
+        "hypothesis": "Study B observed no latency reduction under sparse traffic.",
+        "relation_family": "NEGATED_FINDING",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN03-A3",
+        "hypothesis": "Study C reported a 12% decrease in energy consumption when messages were batched.",
+        "relation_family": "QUANTITY_FINDING",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN03-A4",
+        "hypothesis": "Study D found that batching increased delay during emergency bursts.",
+        "relation_family": "DIRECTIONAL_FINDING",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN03-A5",
+        "hypothesis": "The studies examine different operating conditions and should not be summarized as one consistent effect.",
+        "relation_family": "SYNTHESIS_SCOPE",
+        "critical": true
+      }
+    ],
+    "EN04": [
+      {
+        "assertion_id": "EN04-A1",
+        "hypothesis": "Adaptive signal timing reduced mean queue length in the simulated corridor and this claim is linked to CIT_SYN_01.",
+        "relation_family": "CITATION_BINDING",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN04-A2",
+        "hypothesis": "Packet loss increased when roadside-unit density was reduced and this claim is linked to CIT_SYN_02.",
+        "relation_family": "CITATION_BINDING",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN04-A3",
+        "hypothesis": "The two findings concern different subsystems and should not be treated as evidence for the same mechanism.",
+        "relation_family": "MECHANISM_SCOPE",
+        "critical": true
+      }
+    ],
+    "EN05": [
+      {
+        "assertion_id": "EN05-A1",
+        "hypothesis": "The observed population is vehicles in the evening window.",
+        "relation_family": "POPULATION_SCOPE",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN05-A2",
+        "hypothesis": "Higher beacon density was associated with shorter discovery time.",
+        "relation_family": "ASSOCIATION_DIRECTION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN05-A3",
+        "hypothesis": "The result may reflect improved neighbor awareness.",
+        "relation_family": "MODALITY",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN05-A4",
+        "hypothesis": "The experiment does not establish that beacon density causes the reduction.",
+        "relation_family": "CAUSAL_NEGATION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN05-A5",
+        "hypothesis": "The finding was not evaluated outside the evening window.",
+        "relation_family": "SCOPE_NEGATION",
+        "critical": true
+      }
+    ],
+    "EN06": [
+      {
+        "assertion_id": "EN06-A1",
+        "hypothesis": "At 08:00 Group A required 42.0 seconds to complete the route.",
+        "relation_family": "VALUE_BINDING",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN06-A2",
+        "hypothesis": "At 08:00 Group B required 51.5 seconds to complete the route.",
+        "relation_family": "VALUE_BINDING",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN06-A3",
+        "hypothesis": "At 14:00 Group A required 46.2 seconds to complete the route.",
+        "relation_family": "VALUE_BINDING",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN06-A4",
+        "hypothesis": "At 14:00 Group B required 49.8 seconds to complete the route.",
+        "relation_family": "VALUE_BINDING",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN06-A5",
+        "hypothesis": "Relative to the 08:00 baseline, Group A's route time increased by 4.2 seconds.",
+        "relation_family": "BASELINE_DIRECTION",
+        "critical": true
+      }
+    ],
+    "EN07": [
+      {
+        "assertion_id": "EN07-A1",
+        "hypothesis": "Readings older than 60 seconds are discarded first.",
+        "relation_family": "ORDER_CONDITION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN07-A2",
+        "hypothesis": "Valid sensor values are then normalized using parameters fixed before evaluation.",
+        "relation_family": "ORDER_CONDITION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN07-A3",
+        "hypothesis": "Vehicles with missing position data are excluded from route optimization.",
+        "relation_family": "EXCLUSION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN07-A4",
+        "hypothesis": "The optimizer runs for 200 iterations with seed 17.",
+        "relation_family": "REPRODUCIBILITY",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN07-A5",
+        "hypothesis": "The selected route is stored without further tuning.",
+        "relation_family": "NEGATED_ACTION",
+        "critical": true
+      }
+    ],
+    "EN08": [
+      {
+        "assertion_id": "EN08-A1",
+        "hypothesis": "Lower channel occupancy was associated with higher delivery ratio across the tested scenarios.",
+        "relation_family": "ASSOCIATION_DIRECTION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN08-A2",
+        "hypothesis": "The pattern was strongest in medium-density traffic.",
+        "relation_family": "CONDITION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN08-A3",
+        "hypothesis": "Channel occupancy was not manipulated independently.",
+        "relation_family": "METHOD_LIMITATION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN08-A4",
+        "hypothesis": "The experiment does not demonstrate that reducing occupancy will cause higher delivery ratio in other networks.",
+        "relation_family": "CAUSAL_SCOPE_NEGATION",
+        "critical": true
+      }
+    ],
+    "EN09": [
+      {
+        "assertion_id": "EN09-A1",
+        "hypothesis": "The scheduler calculates P_i = w_1U_i + w_2D_i for every task i.",
+        "relation_family": "EQUATION_IDENTITY",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN09-A2",
+        "hypothesis": "U_i is utilization.",
+        "relation_family": "SYMBOL_DEFINITION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN09-A3",
+        "hypothesis": "D_i is normalized deadline pressure.",
+        "relation_family": "SYMBOL_DEFINITION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN09-A4",
+        "hypothesis": "The weights w_1 and w_2 are fixed before the run.",
+        "relation_family": "PARAMETER_CONDITION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN09-A5",
+        "hypothesis": "A task obtains a larger priority only when the weighted combination becomes larger.",
+        "relation_family": "COMPARISON_DIRECTION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN09-A6",
+        "hypothesis": "The equation is not changed during adaptation.",
+        "relation_family": "NEGATED_CHANGE",
+        "critical": true
+      }
+    ],
+    "EN10": [
+      {
+        "assertion_id": "EN10-A1",
+        "hypothesis": "One measurement is collected every 30 seconds from each active node.",
+        "relation_family": "RATE_SCOPE",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN10-A2",
+        "hypothesis": "The timestamp and node identifier are stored with every measurement.",
+        "relation_family": "METADATA_BINDING",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN10-A3",
+        "hypothesis": "The analysis groups measurements by node and by five-minute interval.",
+        "relation_family": "GROUPING",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN10-A4",
+        "hypothesis": "No imputation is performed for missing measurements.",
+        "relation_family": "NEGATED_ACTION",
+        "critical": true
+      }
+    ],
+    "EN11": [
+      {
+        "assertion_id": "EN11-A1",
+        "hypothesis": "The gateway receives each report.",
+        "relation_family": "METHOD_STEP",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN11-A2",
+        "hypothesis": "The gateway checks the report identifier.",
+        "relation_family": "METHOD_STEP",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN11-A3",
+        "hypothesis": "The gateway checks the report timestamp.",
+        "relation_family": "METHOD_STEP",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN11-A4",
+        "hypothesis": "The gateway rejects duplicate reports.",
+        "relation_family": "POLICY",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN11-A5",
+        "hypothesis": "The gateway forwards accepted reports to the storage service.",
+        "relation_family": "METHOD_STEP",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN11-A6",
+        "hypothesis": "The storage service records the original timestamp.",
+        "relation_family": "METADATA_BINDING",
+        "critical": true
+      }
+    ],
+    "EN12": [
+      {
+        "assertion_id": "EN12-A1",
+        "hypothesis": "The evaluation includes three traffic densities.",
+        "relation_family": "QUANTITY_SCOPE",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN12-A2",
+        "hypothesis": "Reliability is measured as delivery ratio.",
+        "relation_family": "METRIC_DEFINITION",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN12-A3",
+        "hypothesis": "Delay is measured.",
+        "relation_family": "METRIC",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN12-A4",
+        "hypothesis": "The controller uses the same parameter values in all traffic densities.",
+        "relation_family": "PARAMETER_INVARIANT",
+        "critical": true
+      },
+      {
+        "assertion_id": "EN12-A5",
+        "hypothesis": "Keeping parameters fixed is intended to determine whether performance changes arise under different loads rather than from retuning the controller.",
+        "relation_family": "PURPOSE_RELATION",
+        "critical": true
+      }
+    ]
+  }
+}
