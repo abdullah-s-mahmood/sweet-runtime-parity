@@ -1,6 +1,6 @@
 {
   "schema_version": "2.1.0",
-  "status": "BACKEND_FROZEN_READY_FOR_SMOKE_TEST",
+  "status": "SMOKE_GATE_PASS_READY_FOR_LIVE_MATRIX",
   "architect_decision": "KEEP / V2.1 EXECUTION BACKEND AMENDMENT",
   "models_required": 2,
   "models": [
@@ -73,5 +73,12 @@
     "Upstream revisions are recorded as the observed source revisions used for provenance; the quantized artifact hash is authoritative for exact execution.",
     "No commercial API, paid GPU, training, fine-tuning, model substitution, or extra generation is authorized.",
     "SmolLM3 extended thinking is disabled with its documented /no_think system control so bounded structured-output generation measures the requested revision rather than hidden reasoning-token consumption."
-  ]
+  ],
+  "smoke_gate": {
+    "status": "PASS",
+    "run_id": 37123265137,
+    "run_commit": "8be6dbe80cdc63c7db73c651fdc96a090ff34d58",
+    "artifact_id": 11273388864,
+    "artifact_digest": "sha256:fdad1dae734c80a91ffdf641842e47851b08a841149ac9f2ea861f25beddced8"
+  }
 }
