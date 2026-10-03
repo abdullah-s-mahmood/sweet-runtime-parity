@@ -5672,3 +5672,110 @@ A4 must decide:
 No candidate alignment implementation starts before A4 closes.
 
 Higher-model consultation is likely justified at A4 because it is a high-value go/no-go readiness decision. Consultation must remain review-only and budget-conscious; all implementation remains with the current agent.
+
+
+## 2026-10-03 — AT0-EN V2.4 Gate A4 pre-consultation checkpoint
+
+Stage status:
+**PAUSED FOR HIGHER-MODEL READINESS CONSULTATION**
+
+Progress:
+- Gate A4: approximately 60%
+- Gate A overall: approximately 92%
+- whole ACAD_PASS planning estimate: approximately 25% ±5%
+
+No extractor repair, candidate extraction, alignment implementation, live generation, HW1-EN, or new holdout has started.
+
+### Evidence entering A4
+
+A3 canonical result:
+`PASS_DEVELOPMENT`
+
+Metrics:
+- gold coverage: 100%
+- critical coverage: 100%
+- false additions: 0%
+- atomic one-to-one: 88%
+- overmerge: 12%
+- certain precision: 92.86%
+- error-abstention recall: 87.5%
+- unnecessary abstention: 23.53%
+- context-dependency detection: 100%
+- critical silent semantic errors: 0
+- assertion type accuracy: 86.36%
+- predicate accuracy: 95.45%
+- subject-concept accuracy: 90.91%
+- object/polarity/modality/causality: 100% on scored one-to-one alignments
+
+Limitations:
+- six synthetic development cases only;
+- development-only, not blind;
+- no authentic academic source texts;
+- no candidate extraction;
+- no alignment;
+- no end-to-end V2.4 verifier result.
+
+### Fresh A4 research synthesis
+
+Current evidence reinforces:
+- claim extraction should be evaluated separately for coverage, atomicity, faithfulness and decontextualization;
+- decomposition and downstream verification interact;
+- evidence/subclaim alignment is a bottleneck;
+- decomposition can degrade verification under noisy or poorly aligned subclaims;
+- conservative abstention can reduce error propagation but excessive abstention harms usability;
+- scientific claim/evidence reasoning remains difficult and extraction failures should not be hidden in alignment.
+
+### Internal red-team
+
+Arguments for ACCEPT:
+- all preregistered A3 thresholds passed;
+- zero observed critical silent semantic errors;
+- architecture already supports one-to-many/many-to-one alignment;
+- repairing every development imperfection risks overfitting.
+
+Arguments for REPAIR:
+- 12% source overmerge can contaminate future alignment diagnostics;
+- certain precision is only +2.86 pp above threshold;
+- unnecessary abstention is 23.53%;
+- source-side error propagation can obscure alignment failure attribution;
+- current reference is too small/synthetic to rely on a narrow pass margin.
+
+Argument for REDESIGN:
+not supported; the representation/abstention architecture behaved directionally as intended.
+
+Implementation-agent preliminary decision:
+**REPAIR_TARGETED_FIRST**
+
+No implementation is authorized before independent readiness review.
+
+Pre-consult assessment:
+`phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A4_PRECONSULT_READINESS_ASSESSMENT.md`
+commit:
+`048bf59904ad93e7e531a4298ab27f4643eda280`
+
+Higher-model consultation packet:
+`phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A4_HIGHER_MODEL_CONSULTATION_PACKET_V1.txt`
+commit:
+`88755b956cf60723f69641c0a4902589cf693d10`
+
+Files to send to higher model:
+1. `phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A4_PRECONSULT_READINESS_ASSESSMENT.md`
+2. `phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A3_CLOSURE.md`
+
+Budget agreement applies:
+- consultant/reviewer only;
+- no coding;
+- no repo edits;
+- no workflows;
+- no reruns;
+- no routine implementation;
+- current agent executes all resulting work.
+
+Exact next action:
+WAIT for the user's returned higher-model consultation response.
+Then evaluate recommendations, freeze A4 readiness decision, and stop before any next implementation checkpoint.
+
+Quality delta:
+- end-to-end performance: UNCHANGED
+- readiness status: UNDER REVIEW
+- methodological status: IMPROVED
