@@ -1,16 +1,14 @@
 {
   "policy_id": "LANG_EN_LENGTH_V1",
   "mode": "ACADEMIC_REWRITE",
-  "soft_band": [
-    0.85,
-    1.15
-  ],
-  "priority": [
+  "soft_min_ratio": 0.85,
+  "soft_max_ratio": 1.15,
+  "precedence": [
     "scientific_meaning",
     "semantic_meaning",
     "required_information",
     "academic_quality",
     "length_preservation"
   ],
-  "hard_truncation_or_padding": false
+  "note": "Diagnostic soft band only; never truncate or pad to fit."
 }

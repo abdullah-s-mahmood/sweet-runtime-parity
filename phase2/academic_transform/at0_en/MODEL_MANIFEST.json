@@ -1,5 +1,5 @@
 {
-  "status": "BLOCKED_MODEL_ACCESS",
+  "status": "BLOCKED_MODEL_ACCESS_BUDGET_PENDING",
   "models": [],
-  "requirement": "Two already-authorized distinct model identities; exact provider identifiers and cost cap required before live calls."
+  "note": "No two authorized model endpoints and no explicit cost ceiling were available in this implementation environment."
 }

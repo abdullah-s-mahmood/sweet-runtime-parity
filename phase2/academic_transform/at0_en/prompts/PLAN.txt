@@ -1,0 +1,1 @@
+Produce a short visible editorial plan for the target paragraph. State allowed reorder/split/merge operations and constraints to preserve. Do not add facts and do not provide private chain-of-thought.
