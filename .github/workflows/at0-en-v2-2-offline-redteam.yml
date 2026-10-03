@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: phase2-arabic-eval
+          ref: ${{ github.sha }}
 
       - uses: actions/setup-python@v5
         with:
