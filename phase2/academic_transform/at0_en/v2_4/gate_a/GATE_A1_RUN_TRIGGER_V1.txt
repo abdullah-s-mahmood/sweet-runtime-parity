@@ -1,0 +1,2 @@
+Trigger AT0-EN V2.4 Gate A1 deterministic source-anchor validation only.
+No model inference. No assertion decomposition. No candidate alignment.
