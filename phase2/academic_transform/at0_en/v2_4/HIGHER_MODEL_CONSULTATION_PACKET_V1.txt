@@ -1,0 +1,90 @@
+AT0-EN V2.4 HIGHER-MODEL CONSULTATION PACKET
+
+ROLE:
+Act only as an independent Chief Architect / Research Reviewer.
+Do NOT implement.
+Do NOT write code.
+Do NOT modify repositories.
+Do NOT design CI workflows.
+Do NOT rerun experiments.
+Do NOT perform routine work that the implementation agent can do.
+Your job is to review the proposed architecture, identify conceptual risks, compare alternatives, and give a focused go/no-go recommendation with required changes.
+
+PROJECT CONTEXT:
+ACAD_PASS is building an English-first academic document transformation and scientific-fidelity verification system.
+
+The immediately preceding verifier, V2.3, passed all 24 previously known adversarial regressions but failed a separately frozen second holdout:
+- adversarial escape: 9/24 = 37.5%
+- safe-control automatic acceptance: 3/12 = 25%
+- exact binary accuracy: 18/36 = 50%
+- balanced accuracy: 43.75%
+- status: BOTH_FAIL
+
+Dominant unsafe failure:
+relation rebinding under lexical preservation — correct terms/numbers remain in the text but attach to the wrong metric, condition, population, timestamp, unit, or output relation.
+
+Dominant usability failure:
+faithful paraphrases are rejected because the verifier is too dependent on lexical/order/negation patterns.
+
+PROPOSED V2.4:
+Hybrid Scientific Assertion Frame + Assertion Relation Graph.
+
+The implementation agent has already performed the routine research and architecture synthesis. Please review only the high-level design.
+
+FILES TO REVIEW:
+1. phase2/academic_transform/at0_en/v2_4/ARCHITECTURE_CANDIDATE_V1.txt
+2. phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_SCORE_CLOSURE.md
+
+QUESTIONS:
+
+Q1. Is Hybrid Scientific Assertion Frame + Assertion Relation Graph the right abstraction for this failure pattern, or would another representation be materially better? Compare specifically against:
+- plain SVO/OpenIE
+- generic AMR/SRL
+- scientific event extraction
+- decompose-then-verify without an explicit graph
+
+Q2. Is the proposed frame missing any scientifically critical field needed to preserve:
+- quantities/units
+- conditions
+- population
+- baseline
+- scope
+- modality/evidential strength
+- association vs causation
+- negation
+- citation/equation/symbol binding
+- procedural order?
+
+Q3. Is the proposed separation between:
+- deterministic invariant checks
+and
+- semantic relation verification
+conceptually sound?
+What must never be delegated to a learned semantic judge?
+
+Q4. What are the three most serious ways this V2.4 design could still overfit or fail generalization even if it passes a new synthetic adversarial benchmark?
+
+Q5. How should extraction uncertainty and abstention be handled so that source-graph extraction errors cannot silently create false PASS decisions?
+
+Q6. Should source and candidate assertion extraction be independent before alignment, as proposed? If not, what safer alternative avoids label leakage while preserving alignment quality?
+
+Q7. What is the minimum offline validation program that should be completed BEFORE any new live generation experiment or HW1-EN human-writing evaluation?
+Please distinguish:
+- extractor validation
+- relation-alignment validation
+- end-to-end verifier validation
+
+Q8. Should V2.4 implementation proceed now, or should the architecture be revised first?
+
+OUTPUT FORMAT:
+Keep the response focused and budget-conscious.
+
+Return only:
+1. VERDICT: PROCEED / PROCEED_WITH_CHANGES / REDESIGN
+2. TOP RISKS: maximum 5
+3. REQUIRED ARCHITECTURE CHANGES: maximum 8
+4. MINIMUM VALIDATION PLAN: concise staged gates
+5. DO-NOT-DO LIST: maximum 6
+6. FINAL GO/NO-GO rationale: concise
+
+Do not provide code or implementation details unless needed to clarify a conceptual requirement.
