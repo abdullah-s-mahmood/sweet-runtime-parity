@@ -19,6 +19,7 @@ for cid,src in sorted(cases.items()):
 
 # Adversarial mutations.
 add("A_EN01_SCOPE","EN01",cases["EN01"].replace("evaluated only for arterial roads during weekday peak periods","evaluated particularly on arterial roads during weekday peak periods"),False)
+add("A_EN01_MODALITY","EN01",cases["EN01"].replace("can support faster identification of congestion","facilitates faster identification of congestion"),False)
 add("A_EN02_INTERVAL","EN02",cases["EN02"].replace("every 15 minutes","every 30 minutes"),False)
 add("A_EN03_CAUSAL","EN03",cases["EN03"].replace("reported a 12% decrease when messages were batched","demonstrated a 12% decrease due to message batching"),False)
 add("A_EN03_MECHANISM_CONFLATION","EN03","Studies A, B, C, and D yielded contrasting findings regarding the impact of edge aggregation on latency and energy consumption. Study A reported lower latency after edge aggregation, whereas Study B observed no latency reduction under sparse traffic. Study C focused on energy consumption and reported a 12% decrease when messages were batched. Study D found that batching increased delay during emergency bursts. Together, these studies examine different operating conditions and should not be summarized as a single consistent effect.",False)
@@ -29,7 +30,10 @@ add("A_EN05_CAUSE","EN05",cases["EN05"].replace("does not establish that beacon 
 add("A_EN06_SWAP","EN06",cases["EN06"].replace("42.0 s","TMP").replace("51.5 s","42.0 s").replace("TMP","51.5 s"),False)
 add("A_EN07_SEED","EN07",cases["EN07"].replace("seed 17","seed 19"),False)
 add("A_EN08_CAUSE","EN08",cases["EN08"].replace("does not demonstrate that reducing occupancy will cause","demonstrates that reducing occupancy will cause"),False)
+add("A_EN08_BLANKET_GENERALIZATION","EN08",cases["EN08"].replace("the result does not demonstrate that reducing occupancy will cause higher delivery ratio in other networks","the findings do not allow for generalization to other networks"),False)
+add("A_EN08_CAUSAL_PLUS_BLANKET","EN08",cases["EN08"].replace("the result does not demonstrate that reducing occupancy will cause higher delivery ratio in other networks","the findings do not establish a causal link or allow for generalization to other network configurations"),False)
 add("A_EN09_BIND","EN09",cases["EN09"].replace("U_i is utilization and D_i is normalized deadline pressure","U_i is normalized deadline pressure and D_i is utilization"),False)
+add("A_EN09_WEIGHT_STABILITY","EN09",cases["EN09"].replace("The weights w_1 and w_2 are fixed before the run.","The weights w_1 and w_2 are fixed before the run and remain constant throughout the scheduling process."),False)
 add("A_EN10_RATE","EN10",cases["EN10"].replace("every 30 s","every 60 s"),False)
 add("A_EN11_DUP","EN11",cases["EN11"].replace("rejects duplicate reports","accepts duplicate reports"),False)
 add("A_EN12_RETUNE","EN12",cases["EN12"].replace("rather than from retuning the controller","because the controller is retuned"),False)
