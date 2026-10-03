@@ -4,3 +4,6 @@ Input: frozen V2.2 SAFE + REDTEAM_V1.
 
 Retry: 2
 Reason: generic relation-handler repairs only; no case-specific verifier branches; no model inference.
+
+Retry: 3
+Reason: generic unit/baseline/mechanism/directional-relation semantics only; no case-specific branches; no inference.
