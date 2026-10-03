@@ -1,0 +1,48 @@
+name: AT0-EN V2.3 Holdout Freeze Integrity
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_3/holdout/**"
+      - ".github/workflows/at0_en_v2_3_holdout_freeze_integrity.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integrity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact frozen state
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify frozen holdout integrity only
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_3/holdout/check_second_unseen_holdout_v1_freeze.py
+
+      - name: Record hashes
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_3/holdout
+          sha256sum             SECOND_UNSEEN_HOLDOUT_V1_INPUTS.jsonl             SECOND_UNSEEN_HOLDOUT_V1_LABELS.jsonl             SECOND_UNSEEN_HOLDOUT_V1_MANIFEST.json             SECOND_UNSEEN_HOLDOUT_V1_PROTOCOL.md             SECOND_UNSEEN_HOLDOUT_V1_FREEZE_INTEGRITY.json             > SECOND_UNSEEN_HOLDOUT_V1_FREEZE_SHA256.txt
+          cat SECOND_UNSEEN_HOLDOUT_V1_FREEZE_SHA256.txt
+
+      - name: Upload freeze evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-3-holdout-freeze-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_FREEZE_INTEGRITY.json
+            phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_FREEZE_SHA256.txt
+          retention-days: 30
+          if-no-files-found: error
