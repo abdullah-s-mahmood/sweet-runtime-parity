@@ -35,12 +35,14 @@ Frozen AT0-EN inputs:
 This is a proposal, not authorization:
 
 - `authorized_cost_ceiling_usd = 5.00`
-- `max_total_tokens = 250000` provider-reported input + output tokens across the full two-model run
+- `max_total_tokens = 450000` provider-reported input + output tokens across the full two-model run
 - retain the existing 72-logical-request ceiling
 - reserve cost before each dispatch;
 - stop before a request if its worst-case reservation would exceed the remaining ceiling.
 
-The USD 5 ceiling intentionally includes a substantial margin above the expected cost for these short paragraphs. Actual cost must be reported from provider usage, not estimated after the fact.
+Measured frozen prompt sizes are small: maximum DIRECT ≈ 2,431 characters, PLAN ≈ 2,193 characters, and REALIZE ≈ 4,313 characters even after reserving 2,000 characters for the generated plan. The runner should reserve at most 5,000 input tokens per logical request, with stage output caps of 800 (DIRECT), 400 (PLAN), and 800 (REALIZE). With 72 logical requests this yields a conservative no-retry reservation bound of about 408,000 tokens; 450,000 leaves margin. Automatic transport retry should remain disabled unless a retry can be proven unambiguous and separately budget-reserved.
+
+The USD 5 ceiling intentionally includes a substantial margin above the expected cost for these short paragraphs. At the observed 2026-10-03 list prices, the conservative 5,000-input-token reservation plus the stage output caps is roughly USD 1.25 for the entire two-model matrix before any exceptional retry. Actual cost must be reported from provider usage, not estimated after the fact.
 
 ## Preferred auditable execution environment
 
