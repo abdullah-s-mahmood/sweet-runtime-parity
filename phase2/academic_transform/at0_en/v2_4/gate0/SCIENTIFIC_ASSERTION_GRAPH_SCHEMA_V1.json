@@ -6,6 +6,7 @@
   "required": [
     "schema_version",
     "source_identity",
+    "evidence_spans",
     "anchors",
     "assertions",
     "relations",
@@ -72,6 +73,13 @@
       "type": "array",
       "items": {
         "$ref": "#/$defs/anchor"
+      },
+      "minItems": 0
+    },
+    "evidence_spans": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence_span"
       },
       "minItems": 0
     }
@@ -241,8 +249,8 @@
         "state",
         "criticality",
         "extraction_status",
-        "evidence",
-        "unresolved_slots"
+        "unresolved_slots",
+        "evidence_span_ids"
       ],
       "properties": {
         "assertion_id": {
@@ -422,13 +430,6 @@
             "AMBIGUOUS"
           ]
         },
-        "evidence": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/evidence_span"
-          },
-          "minItems": 1
-        },
         "unresolved_slots": {
           "type": "array",
           "items": {
@@ -508,6 +509,15 @@
           },
           "uniqueItems": true,
           "description": "Non-authoritative convenience references to top-level anchors; semantic ownership is expressed by graph relations."
+        },
+        "evidence_span_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "References to top-level evidence_spans; source of truth for provenance."
         }
       },
       "additionalProperties": false
