@@ -1,0 +1,162 @@
+{
+  "schema_version": "2.4-gate0-criticality-v1",
+  "principles": [
+    "Criticality is semantic-impact based, not token-type based.",
+    "A deterministic token can have semantically uncertain ownership.",
+    "One critical mismatch is non-compensatory.",
+    "Uncertainty in a critical decision dependency blocks automatic PASS.",
+    "Non-material uncertainty may coexist with PASS only when explicitly outside every decision dependency."
+  ],
+  "levels": {
+    "CRITICAL": {
+      "definition": "A wrong, missing, rebound, or invented value can materially change the scientific proposition, reproducibility, attribution, or protected transaction.",
+      "default_examples": [
+        "subject/object identity when claim meaning depends on them",
+        "metric ownership",
+        "numeric value and unit ownership",
+        "comparison direction",
+        "condition, time, population, group, baseline",
+        "polarity and negation scope",
+        "association versus causation",
+        "material modality/evidential-strength change",
+        "scope restriction or expansion",
+        "citation-to-claim binding",
+        "equation and symbol-definition binding",
+        "procedural order/dependency",
+        "reproducibility anchors such as seed/iterations when present",
+        "source/version/provenance identity"
+      ]
+    },
+    "MATERIAL": {
+      "definition": "Can affect interpretation or verification but is not automatically critical in every assertion; context-specific escalation is required.",
+      "default_examples": [
+        "discourse role",
+        "non-core contextual qualifier",
+        "non-critical temporal/location context",
+        "redundancy/split-merge structure",
+        "secondary evidence wording"
+      ]
+    },
+    "NON_MATERIAL": {
+      "definition": "Stylistic or representational variation proven not to affect scientific meaning or protected dependencies.",
+      "default_examples": [
+        "sentence count",
+        "surface word order",
+        "punctuation",
+        "stylistic connective choice",
+        "non-semantic formatting"
+      ]
+    }
+  },
+  "assertion_type_defaults": {
+    "QUANTITATIVE": [
+      "subject",
+      "predicate_normalized",
+      "value",
+      "unit",
+      "direction",
+      "conditions",
+      "temporal_context",
+      "population",
+      "baseline",
+      "polarity"
+    ],
+    "COMPARATIVE": [
+      "subject",
+      "object",
+      "comparator",
+      "direction",
+      "value",
+      "unit",
+      "conditions",
+      "temporal_context",
+      "population",
+      "baseline"
+    ],
+    "CAUSAL": [
+      "subject",
+      "predicate_normalized",
+      "object",
+      "causality",
+      "polarity",
+      "modality",
+      "conditions",
+      "population",
+      "scope_operators"
+    ],
+    "ASSOCIATIONAL": [
+      "subject",
+      "predicate_normalized",
+      "object",
+      "causality",
+      "polarity",
+      "conditions",
+      "population",
+      "scope_operators"
+    ],
+    "DEFINITIONAL": [
+      "subject",
+      "predicate_normalized",
+      "object",
+      "equation_refs",
+      "symbol_bindings"
+    ],
+    "PROCEDURAL": [
+      "subject",
+      "predicate_normalized",
+      "object",
+      "conditions",
+      "temporal_context",
+      "exclusions",
+      "procedure_order"
+    ],
+    "SCOPE": [
+      "subject",
+      "scope_operators",
+      "population",
+      "conditions",
+      "temporal_context"
+    ],
+    "NEGATION": [
+      "subject",
+      "predicate_normalized",
+      "object",
+      "polarity",
+      "scope_operators"
+    ],
+    "EQUATION": [
+      "equation_refs",
+      "symbol_bindings",
+      "subject",
+      "predicate_normalized"
+    ],
+    "CITATION_LINK": [
+      "citation_refs",
+      "subject",
+      "predicate_normalized",
+      "object"
+    ]
+  },
+  "escalation_rules": [
+    {
+      "if": "field participates in any critical relation edge",
+      "then": "CRITICAL"
+    },
+    {
+      "if": "anchor has multiple plausible owners and ownership changes scientific meaning",
+      "then": "CRITICAL_UNCERTAINTY"
+    },
+    {
+      "if": "source span is scientifically claim-bearing but unrepresented",
+      "then": "CRITICAL unless human/reference rule marks it non-material"
+    },
+    {
+      "if": "candidate adds a scientifically assertive relation with no source alignment",
+      "then": "CRITICAL"
+    },
+    {
+      "if": "uncertainty concerns only style/format and has no path to a critical assertion",
+      "then": "NON_MATERIAL"
+    }
+  ]
+}
