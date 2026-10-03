@@ -1,0 +1,2 @@
+Trigger AT0-EN V2.4 Gate 0 contract validation only.
+No model inference. No extractor/alignment implementation.
