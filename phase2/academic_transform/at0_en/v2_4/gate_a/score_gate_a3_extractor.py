@@ -159,6 +159,8 @@ for p in preds:
         if sr["context_dependent"]:
             context_needed_total+=1
             context_detected+=int(context_flag)
+            if not context_flag:
+                errors.append("MISSED_CONTEXT_DEPENDENCY")
         else:
             context_independent_total+=1
             context_false_alarm+=int(context_flag)
@@ -176,8 +178,24 @@ for p in preds:
         if clean: clean_noncertain+=1
         else: error_noncertain+=1
 
+    critical_semantic_errors={
+        "FALSE_ADDITION",
+        "OVERMERGE",
+        "OVERSPLIT",
+        "SLOT_PREDICATE",
+        "SLOT_POLARITY",
+        "SLOT_MODALITY",
+        "SLOT_CAUSALITY",
+        "SLOT_SUBJECT_TERMS",
+        "SLOT_OBJECT_TERMS",
+        "SLOT_POPULATION",
+        "SLOT_TIME",
+        "SLOT_BASELINE",
+        "SLOT_SCOPE",
+        "MISSED_CONTEXT_DEPENDENCY"
+    }
     silent=False
-    if p["extraction_status"]=="CERTAIN" and errors and (involved_critical or not gids):
+    if p["extraction_status"]=="CERTAIN" and (set(errors) & critical_semantic_errors) and (involved_critical or not gids):
         silent=True
         critical_silent.append(pid)
 
