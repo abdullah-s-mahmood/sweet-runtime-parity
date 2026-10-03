@@ -26,9 +26,9 @@ def ck(name,cond,detail=None):
     if not cond: raise AssertionError(f"{name}: {detail}")
 
 ck("schema_version",schema["properties"]["schema_version"]["const"]=="2.4-gate0-v1")
-ck("schema_has_assertions_relations_coverage",all(x in schema["required"] for x in ["assertions","relations","coverage"]))
+ck("schema_has_anchor_assertion_relation_coverage",all(x in schema["required"] for x in ["anchors","assertions","relations","coverage"]))
 assertion_props=schema["$defs"]["assertion"]["properties"]
-for field in ["subject","predicate_raw","predicate_normalized","exclusions","citation_refs","equation_refs","symbol_bindings","quantifiers","extraction_status","evidence","anchors"]:
+for field in ["subject","predicate_raw","predicate_normalized","exclusions","citation_refs","equation_refs","symbol_bindings","quantifiers","extraction_status","evidence","anchor_refs"]:
     ck("schema_assertion_field_"+field,field in assertion_props)
 relation_types=set(schema["$defs"]["relation"]["properties"]["relation_type"]["enum"])
 for rt in ["HAS_VALUE","HAS_UNIT","AT_TIME","IN_POPULATION","RELATIVE_TO","CITES","DEFINES","MEASURES","PRECEDES","FIXED_BEFORE","UNCHANGED_DURING","HAS_MODALITY","HAS_CAUSALITY","DISTINCT_FROM"]:
@@ -40,6 +40,8 @@ ck("outcome_set",set(outcome["outcomes"])=={"PASS_CANDIDATE","REJECT","REVIEW","
 ck("pass_requires_trace",any("traceable evidence" in x for x in outcome["rules"]["PASS_CANDIDATE"]["requirements"]))
 ck("noncompensation_present",len(outcome["non_compensation"])>=3)
 ck("frame_graph_consistency_policy",crit.get("representation_consistency",{}).get("policy")=="FRAME_AND_GRAPH_MUST_AGREE")
+ck("anchor_inventory_policy",crit.get("anchor_inventory_policy",{}).get("policy")=="EXTRACT_BEFORE_OWNERSHIP")
+ck("top_level_anchor_schema","anchors" in schema["properties"] and schema["properties"]["anchors"]["items"]["$ref"]=="#/$defs/anchor")
 ck("frame_graph_disagreement_invalid",any("frame slots and graph relations" in x for x in outcome["rules"]["INVALID_VERIFICATION"]["triggers"]))
 
 expected={"EN04","EN05","EN06","EN07","EN09","EN12"}
