@@ -1,0 +1,82 @@
+name: AT0-EN V2.4 Load-Only Compatibility Smoke
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/load_only_smoke.py"
+      - ".github/workflows/at0_en_v2_4_load_only.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: at0-en-v2-4-load-only
+  cancel-in-progress: false
+
+jobs:
+  load_only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      HHEM_REV: c9ccea35f0e37e02422eb49b798e09ed82be5a20
+      FLAN_REV: 7bcac572ce56db69c1ea7c8af255c5d7c9672fc2
+      DEBERTA_REV: 6f5cf0a2b59cabb106aca4c287eed12e357e90eb
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.16"
+
+      - name: Install frozen candidate runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.2.2
+          python -m pip install transformers==4.39.3 safetensors==0.4.3 sentencepiece==0.2.0
+
+      - name: Download exact artifacts sequentially
+        shell: bash
+        run: |
+          set -euo pipefail
+          D=/tmp/acad-v24-load
+          mkdir -p "$D/hhem" "$D/flan" "$D/deberta"
+          H="https://huggingface.co/vectara/hallucination_evaluation_model/resolve/$HHEM_REV"
+          for f in config.json configuration_hhem_v2.py modeling_hhem_v2.py model.safetensors; do
+            curl --fail --location --retry 3 --retry-delay 3 "$H/$f" -o "$D/hhem/$f"
+          done
+          F="https://huggingface.co/google/flan-t5-base/resolve/$FLAN_REV"
+          for f in config.json tokenizer_config.json special_tokens_map.json spiece.model tokenizer.json; do
+            curl --fail --location --retry 3 --retry-delay 3 "$F/$f" -o "$D/flan/$f"
+          done
+          B="https://huggingface.co/MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli/resolve/$DEBERTA_REV"
+          for f in config.json tokenizer_config.json special_tokens_map.json spm.model tokenizer.json added_tokens.json model.safetensors; do
+            curl --fail --location --retry 3 --retry-delay 3 "$B/$f" -o "$D/deberta/$f"
+          done
+
+      - name: Run load-only smoke with network and forward blocked
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=phase2/academic_transform/at0_en/v2_4/results/load-only-v1
+          mkdir -p "$OUT"
+          python phase2/academic_transform/at0_en/v2_4/load_only_smoke.py             --hhem /tmp/acad-v24-load/hhem             --flan /tmp/acad-v24-load/flan             --deberta /tmp/acad-v24-load/deberta             --hash-lock phase2/academic_transform/at0_en/v2_4/SEMANTIC_MODEL_FILE_HASH_LOCK_V1.json             --output "$OUT/LOAD_ONLY_COMPATIBILITY_SUMMARY.json"
+          python -m pip freeze > "$OUT/pip_freeze.txt"
+          sha256sum             phase2/academic_transform/at0_en/v2_4/load_only_smoke.py             phase2/academic_transform/at0_en/v2_4/SEMANTIC_MODEL_FILE_HASH_LOCK_V1.json             "$OUT/LOAD_ONLY_COMPATIBILITY_SUMMARY.json"             "$OUT/pip_freeze.txt" > "$OUT/LOAD_ONLY_EVIDENCE_SHA256.txt"
+
+      - name: Delete downloaded model artifacts
+        if: always()
+        run: rm -rf /tmp/acad-v24-load || true
+
+      - name: Upload load-only evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-load-only-${{ github.run_id }}
+          path: phase2/academic_transform/at0_en/v2_4/results/load-only-v1/
+          if-no-files-found: error
+          retention-days: 30
