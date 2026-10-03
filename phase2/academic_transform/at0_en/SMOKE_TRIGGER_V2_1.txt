@@ -1,5 +1,5 @@
 Trigger AT0-EN V2.1 open-weight smoke gate.
-Attempt: 3
+Attempt: 4
 Date: 2026-10-03
-Reason: repair ambiguous smoke-only status schema that allowed literal "REVISE|KEEP|REVIEW"; explicitly require one enum value.
-SmolLM3 /no_think remains frozen. No model, evaluation case, DIRECT/PLANNED prompt, matrix, protection gate, or generation ceiling change.
+Reason: transport-parser repair only. SmolLM3 produced a valid JSON object wrapped in a single Markdown ```json code fence; the previous smoke parser attempted json.loads() on the fence itself and raised PARSE_ERROR. The parser now accepts either raw JSON or one Markdown code fence without relaxing schema validation.
+No model, weights, hash, evaluation case, DIRECT/PLANNED prompt, matrix, protection gate, generation setting, resource ceiling, or success criterion changed.
