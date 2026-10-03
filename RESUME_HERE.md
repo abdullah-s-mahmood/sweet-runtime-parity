@@ -4465,3 +4465,62 @@ IMPROVED METHODOLOGICALLY / PERFORMANCE CLAIM UNCHANGED.
 No new inference is authorized yet. HW1-EN remains blocked. Exact next action: independent red-team the V2.2 PASS_CANDIDATE false-negative risk and REJECT/REVIEW false-positive risk, then return to higher-model review before defining any new live protocol.
 
 Arabic active research remains FROZEN; Arabic V4.2 remains CLOSED; reserved Arabic data remain CLOSED.
+
+
+## 2026-10-03 — V2.2 independent red-team CLOSED; V2.3 offline relation-graph verifier required
+
+A concurrent hardening commit appeared after the original V2.2 freeze and was preserved:
+- `eeb6b2eec68a33e2b91a2d9e5380010ccc4705d0`
+- added EN03 mechanism-conflation and EN04 assertion-weakening checks.
+
+Current hardened validator SHA-256:
+`749aa234e223faaecbb5e434ed4d165f856c6362fb9931ed560f657d77a80c2c`
+
+Current frozen-output replay:
+- run: `37130414885`
+- artifact: `11276398612`
+- artifact digest: `sha256:1e520e9b479854689c662dd2eef09eab0312716416b8df1958afde202a41b200`
+- PASS_CANDIDATE: 30
+- REJECT: 5
+- REVIEW: 8
+- REVIEW_ESCALATED: 1
+- UNAVAILABLE: 4
+
+Independent counterfactual red-team:
+- run: `37130259582`
+- artifact: `11276616582`
+- artifact digest: `sha256:cee42205419c467dbecdeb0111dcc2109b996cb7855b2987693de5e169a2d960`
+- benign paraphrase controls: 12/12 PASS
+- adversarial relation-corruption tests: 24
+- caught: 3/24
+- escaped as PASS_CANDIDATE: 21/24
+- constructed-attack escape rate: 87.5% (diagnostic only; not a population estimate)
+
+Higher-model manual review of the 30 current real PASS_CANDIDATE outputs found one confirmed live false negative:
+- `MODEL_A-EN01-DIRECT`: source `can support faster identification` became assertive `facilitating faster identification`.
+
+Manual overlay:
+- bounded PASS confirmed: 29
+- false-negative → REVIEW: 1
+- all 5 REJECT decisions defensible
+- all 8 REVIEW decisions defensible as conservative escalation; REVIEW does not mean known error.
+
+Frozen closure/decision:
+`phase2/academic_transform/at0_en/v2_2/AT0_EN_V2_2_INDEPENDENT_REDTEAM_AND_ARCHITECT_DECISION.md`
+
+Decision:
+**MODIFY / V2.2 DIAGNOSTIC-ONLY / NO NEW LIVE / NO HW1-EN**
+
+Exact next authorized phase:
+`AT0-EN V2.3 OFFLINE RELATION-GRAPH VERIFIER`
+
+V2.3 must replace lexical-presence proof with typed source relations covering argument binding, polarity, direction, scope, modality/evidential strength, causality, citations, equations, quantities and method order. Unresolved extraction must return REVIEW.
+
+Pre-live minimum gates include:
+- 12/12 benign controls acceptable;
+- V2.2 REDTEAM_V1 catches 24/24 attacks;
+- current 30 V2.2 PASS candidates receive frozen relation-level adjudication and EN01 no longer auto-passes;
+- after V2.3 rules are frozen, create a fresh second counterfactual suite and use it as post-freeze red-team;
+- no new inference until higher-model review after these offline gates.
+
+Do NOT continue patching V2.2 case-specific regex as the primary architecture. Arabic remains FROZEN; Arabic V4.2 remains CLOSED; reserved data remain CLOSED.
