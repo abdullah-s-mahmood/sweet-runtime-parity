@@ -56,6 +56,8 @@ for case in cases:
         a,b=e["char_start"],e["char_end"]
         assert a is not None and b is not None and 0 <= a < b <= len(case["source_text"])
         assert case["source_text"][a:b]==e["quote"]
+        # A decimal point must never be treated as a sentence/claim boundary.
+        assert not (b < len(case["source_text"]) and b >= 2 and case["source_text"][b-1]=="." and case["source_text"][b-2].isdigit() and case["source_text"][b].isdigit())
         evidence_exact_checks+=1
 
     anchor_ids=set()
@@ -78,6 +80,9 @@ for case in cases:
                 assert a[field] in allowed, (case["case_id"],field,a[field])
         if a["unresolved_slots"]:
             assert a["extraction_status"]!="CERTAIN"
+        quote=evidence_map[a["evidence_span_ids"][0]]["quote"].lower()
+        if any(x in quote for x in [" found that "," whether "," rather than "]):
+            assert a["extraction_status"]!="CERTAIN", (case["case_id"],a["assertion_id"],quote)
         if a["subject"]=="UNRESOLVED":
             assert a["extraction_status"]=="AMBIGUOUS"
         status_counts[a["extraction_status"]]+=1
