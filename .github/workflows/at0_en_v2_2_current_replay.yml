@@ -1,0 +1,72 @@
+name: AT0-EN V2.2 Current Validator Frozen Replay
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - ".github/workflows/at0_en_v2_2_current_replay.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout current branch state
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Download frozen V2.1 live artifact
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/v21
+          gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/abdullah-s-mahmood/sweet-runtime-parity/actions/artifacts/11275534001/zip \
+            > /tmp/v21.zip
+          echo "842a9ff304c3ed9c854790ac8f205bfe156289b007b556cd06fa4aa19b609326  /tmp/v21.zip" | sha256sum -c -
+          unzip -q /tmp/v21.zip -d /tmp/v21
+          test -f /tmp/v21/live-v2-1/slots.jsonl
+          test -f /tmp/v21/live-v2-1/requests.jsonl
+
+      - name: Replay frozen outputs through current V2.2 validator
+        run: |
+          set -euo pipefail
+          mkdir -p phase2/academic_transform/at0_en/v2_2/results
+          python phase2/academic_transform/at0_en/v2_2/at0_v2_2_validator.py \
+            /tmp/v21/live-v2-1 \
+            phase2/academic_transform/at0_en/v2_2/results/AT0_EN_V2_2_CURRENT_VALIDATOR_REPLAY.jsonl
+
+      - name: Record replay identities
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_2
+          sha256sum \
+            at0_v2_2_validator.py \
+            results/AT0_EN_V2_2_CURRENT_VALIDATOR_REPLAY.jsonl \
+            results/AT0_EN_V2_2_CURRENT_VALIDATOR_REPLAY.summary.json \
+            > results/AT0_EN_V2_2_CURRENT_VALIDATOR_REPLAY_SHA256.txt
+          cat results/AT0_EN_V2_2_CURRENT_VALIDATOR_REPLAY.summary.json
+          cat results/AT0_EN_V2_2_CURRENT_VALIDATOR_REPLAY_SHA256.txt
+
+      - name: Upload replay evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-2-current-replay-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_2/results/AT0_EN_V2_2_CURRENT_VALIDATOR_REPLAY.jsonl
+            phase2/academic_transform/at0_en/v2_2/results/AT0_EN_V2_2_CURRENT_VALIDATOR_REPLAY.summary.json
+            phase2/academic_transform/at0_en/v2_2/results/AT0_EN_V2_2_CURRENT_VALIDATOR_REPLAY_SHA256.txt
+          if-no-files-found: error
+          retention-days: 30
