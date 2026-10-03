@@ -5005,3 +5005,89 @@ This supplements all earlier ACAD_PASS execution rules.
     - the evidence packet supplied;
     - what remains for the implementation agent to execute afterward.
 
+
+
+## 2026-10-03 — AT0-EN V2.4 architecture kickoff / consultation checkpoint
+
+Stage status:
+**100% COMPLETE FOR ARCHITECTURE-KICKOFF CHECKPOINT**
+Implementation status:
+**NOT STARTED / NOT AUTHORIZED**
+
+Latest evidence remains V2.3 second unseen holdout:
+- adversarial escape: 9/24 = 37.5%
+- safe automatic acceptance: 3/12 = 25%
+- BOTH_FAIL
+- balanced accuracy: 43.75%
+
+V2.4 direction selected for review:
+**Hybrid Scientific Assertion Frame + Assertion Relation Graph**
+
+Rejected as sole architectures:
+- more case-specific regex/templates;
+- plain SVO/OpenIE triples;
+- full generic AMR/SRL as the primary safety contract.
+
+Proposed core:
+- source-derived atomic assertion frames with exact provenance;
+- subject/predicate/object plus value, unit, direction, conditions, time, population, baseline, modality, evidential strength, polarity, causality, scope, exclusions, citations, equations, symbol bindings and extraction uncertainty;
+- assertion relation graph for explicit role ownership and relation binding;
+- deterministic invariant lane for exact scientific anchors;
+- semantic relation lane for paraphrase, role alignment, scope, modality, causality/association and negation;
+- critical uncertainty -> REVIEW;
+- source and candidate extracted independently before alignment;
+- no single LLM/NLI/embedding score as sole safety oracle;
+- source extraction itself must be validated before end-to-end verification.
+
+Architecture candidate:
+`phase2/academic_transform/at0_en/v2_4/ARCHITECTURE_CANDIDATE_V1.txt`
+commit:
+`9b6e1e4f241501b26c298c41f3b4daa641f82072`
+
+Fresh research reviewed:
+- ACL 2025 claim extraction / Claimify: evaluate coverage and decontextualization; abstain under ambiguity;
+- ACL 2025 decomposition: atomicity must align with verifier behavior;
+- EMNLP 2025 DnDScore: decomposition and decontextualization interact;
+- EMNLP 2025 SciEvent: scientific event/argument representation is more appropriate than narrow entity-relation extraction for multi-domain scientific context;
+- NAACL 2025 Verify-in-the-Graph: graph representation plus disambiguation supports complex claim verification;
+- ACL 2026 factuality stress testing: paraphrase and dense claims destabilize existing metrics;
+- Findings ACL 2025 Verify with Caution: factuality evaluators can disagree and bias against paraphrase.
+
+Higher-model consultation:
+**JUSTIFIED NOW** because this is an architecture/construct-validity decision affecting the entire next verifier generation.
+
+Budget rule applies:
+- consultant only;
+- no coding;
+- no repo edits;
+- no experiments;
+- no routine implementation;
+- implementation agent executes all routine work afterward.
+
+Consultation packet:
+`phase2/academic_transform/at0_en/v2_4/HIGHER_MODEL_CONSULTATION_PACKET_V1.txt`
+commit:
+`fd27c9829c62dea22c22bc8951ffc250b9dca519`
+
+Files to give the higher model:
+1. `phase2/academic_transform/at0_en/v2_4/ARCHITECTURE_CANDIDATE_V1.txt`
+2. `phase2/academic_transform/at0_en/v2_3/holdout/SECOND_UNSEEN_HOLDOUT_V1_SCORE_CLOSURE.md`
+
+Do not send unnecessary repository files unless the consultant explicitly identifies a missing dependency.
+
+Quality delta in this checkpoint:
+- experimental result: **NOT CHANGED**
+- architecture status: **IMPROVED METHODOLOGICALLY**
+- no quantitative performance gain may be claimed because V2.4 has not been implemented or scored.
+
+Whole ACAD_PASS planning completion estimate:
+**approximately 20% ±5%**
+
+Exact next action:
+WAIT for the user's returned higher-model consultation response.
+Then:
+- evaluate the review;
+- accept/reject each recommendation;
+- freeze V2.4 architecture decision;
+- only after that authorize a small offline implementation prototype.
+
