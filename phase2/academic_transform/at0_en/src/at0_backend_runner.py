@@ -16,7 +16,7 @@ def dumpjl(p,rows):
  p=Path(p); p.parent.mkdir(parents=True,exist_ok=True); t=p.with_suffix(p.suffix+'.tmp'); t.write_text(''.join(json.dumps(x,ensure_ascii=False,sort_keys=True)+'\n' for x in rows),encoding='utf-8'); os.replace(t,p)
 def cases(): return [json.loads(x) for x in (ROOT/'cases.jsonl').read_text(encoding='utf-8').splitlines() if x.strip()]
 def ctx(c):
- return {'case_id':c['case_id'],'mode':c['mode'],'source_text':c['source_text'],'revision_need':c['revision_need'],'protected_challenge':c['protected_challenge'],'content_units':[{'id':f'CU{i+1}','text':x} for i,x in enumerate(c['content_units'])],'protected_spans':c.get('protected_spans',[]),'adjacent_context':c.get('adjacent_context'),'authorized_scope':{'source_sha256':c['source_sha256'],'scope':'TARGET_PARAGRAPH_ONLY','immutable_adjacent_context':True},'length_policy':{'soft_min_ratio':.85,'soft_max_ratio':1.15}}
+ return {'case_id':c['case_id'],'mode':c['mode'],'source_text':c['source_text'],'revision_need':c['revision_need'],'protected_challenge':c['protected_challenge'],'content_units':[{'id':f'CU{i+1}','text':x} for i,x in enumerate(c['content_units'])],'protected_spans':c.get('protected_spans',[]),'adjacent_context':c.get('adjacent_context'),'authorized_scope':{'source_sha256':c['source_sha256'],'scope':'TARGET_PARAGRAPH_ONLY','immutable_adjacent_context':True},'length_policy':{'soft_min_ratio':.85,'soft_max_ratio':1.15},'required_output':{'status':'REVISE|KEEP|REVIEW','revised_paragraph':'string|null','content_unit_mapping':'array','protected_status':'array','uncertainty':'array'}}
 def prompt(c,stage,plan=None):
  s=(ROOT/'prompts'/f'{stage}.md').read_text(encoding='utf-8')+'\n\nINPUT\n'+json.dumps(ctx(c),ensure_ascii=False,indent=2)
  if stage=='PLAN': s+='\n\nReturn JSON only: {"status":"PLAN|REVIEW","operations":[],"uncertainty":[]}'
@@ -61,7 +61,7 @@ def main():
      for st,p,mx in stages:
       raw,meta=infer(Path(a.llama_cli),mp,p,mx,cfg['generation']['seed']); calls+=1; req.append({'slot_id':sid,'stage':st,'prompt':p}); resp.append({'slot_id':sid,'stage':st,'raw':raw,'runtime':meta}); parse(raw)
      row.update(status='COMPLETE_RAW',logical_calls=1 if arm=='DIRECT' else 2)
-    except Exception as e: row.update(status='FAILED',error=f'{type(e).__name__}:{e}',logical_calls=row.get('logical_calls',0))
+    except Exception as e:\n     row.update(status='FAILED',error=f'{type(e).__name__}:{e}',logical_calls=row.get('logical_calls',0))\n     dumpjl(out/'slots.jsonl',rows); dumpjl(out/'requests.jsonl',req); dumpjl(out/'responses.jsonl',resp)\n     if isinstance(e,(RuntimeError,subprocess.TimeoutExpired)): raise
     dumpjl(out/'slots.jsonl',rows); dumpjl(out/'requests.jsonl',req); dumpjl(out/'responses.jsonl',resp)
     if calls>cfg['max_logical_calls']: raise RuntimeError('CALL_CEILING')
  dump(out/'backend_summary.json',{'logical_calls':calls,'slots':48,'complete_raw':sum(x['status']=='COMPLETE_RAW' for x in rows),'failed':sum(x['status']=='FAILED' for x in rows),'plan_review_or_failed':sum(x['status']=='PLAN_REVIEW_OR_FAILED' for x in rows),'additional_monetary_cost_usd':0.0})
