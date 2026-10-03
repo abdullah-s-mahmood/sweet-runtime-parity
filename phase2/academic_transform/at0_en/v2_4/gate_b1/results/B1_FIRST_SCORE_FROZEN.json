@@ -1,0 +1,61 @@
+{
+  "gate": "AT0_EN_V2_4_B1_HUMAN_CORRECT_ALIGNMENT",
+  "status": "FAIL_B1_HUMAN_CORRECT",
+  "run_id": 37145678669,
+  "trigger_commit": "3c3ccde1637cb819cd20987a224bbcfe2354dea1",
+  "artifact_id": 11281074678,
+  "artifact_sha256": "245593d8e6af433713553e2cd6489f3b68e92015239ad1e7edafa4323b169647",
+  "model_inference": false,
+  "pair_count": 12,
+  "pair_outcome_correct": 10,
+  "pair_outcome_accuracy": 0.8333333333333334,
+  "critical_gold_alignment_total": 22,
+  "critical_gold_alignment_covered": 20,
+  "critical_gold_alignment_coverage": 0.9090909090909091,
+  "critical_alignment_status_accuracy": 0.95,
+  "dangerous_false_preserve_count": 0,
+  "faithful_safe_pair_rejection_count": 1,
+  "material_adversarial_acceptance_count": 1,
+  "critical_uncertainty_preservation": 1,
+  "critical_evidence_trace_completeness": 1,
+  "mapping_shape_performance": {
+    "ONE_TO_ONE": {
+      "correct": 6,
+      "total": 7
+    },
+    "ONE_TO_MANY": {
+      "correct": 2,
+      "total": 2
+    },
+    "MANY_TO_ONE": {
+      "correct": 1,
+      "total": 2
+    },
+    "MIXED": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "failing_pairs": [
+    {
+      "pair_id": "B1-P03",
+      "class": "FAITHFUL_MERGE",
+      "expected": "PASS_CANDIDATE",
+      "predicted": "REJECT",
+      "failure": "False rejection: semantically equivalent merged symbol definitions represented bindings in different structural shapes; aligner treated them as materially different."
+    },
+    {
+      "pair_id": "B1-P04",
+      "class": "RELATION_REBINDING",
+      "expected": "REJECT",
+      "predicted": "PASS_CANDIDATE",
+      "failure": "Material adversarial acceptance: assignment followed value similarity strongly enough to cross-match Group A/B, hiding swapped value ownership."
+    }
+  ],
+  "hashes": {
+    "aligner_sha256": "026dd3bb0a999b86900c36eeb0f85a829653f747b4588ec9b99065a7143a4e42",
+    "contract_sha256": "385581867da42c6e0a13f1031ccf96787740bc2233cd25ec7b98c484fcbc42e1",
+    "pairs_sha256": "29f3790859c8da6baf65db8b0fb372bc881e25d8e3d1e76b9c67b74d49944dca",
+    "detail_sha256": "4e7c11a9c0ad031811d87e8d4f031b06cfb0bedcce4058ebbed45442dfebd9cd"
+  }
+}
