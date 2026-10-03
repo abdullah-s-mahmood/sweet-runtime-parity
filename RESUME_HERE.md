@@ -5288,3 +5288,131 @@ Not authorized:
 - consumed-holdout ID patching
 
 Higher-model consultation not required at Gate A start unless a new architecture/construct-validity issue appears.
+
+
+## 2026-10-03 — AT0-EN V2.4 Gate A1 CLOSED
+
+Checkpoint status:
+**100% COMPLETE**
+
+Scope:
+deterministic source-anchor inventory + exact provenance only.
+No assertion decomposition, semantic ownership, relation alignment, candidate verification, or model inference.
+
+Workflow:
+`AT0-EN V2.4 Gate A1 Deterministic Anchors`
+
+Run:
+`37142176334`
+
+Trigger commit:
+`a55c3bfd83b2131db3b4ab8f1e060a4b09d37cb0`
+
+Artifact:
+- id: `11280995699`
+- SHA-256: `dc8ed8978f09dc80281f386a871a1f7487286493069463b45a08a4cd21d80e5b`
+
+Development reference:
+- cases: EN04, EN05, EN06, EN07, EN09, EN12
+- gold deterministic anchors: 35
+- EN05 is a zero-anchor negative control
+
+Result:
+- predicted: 35
+- TP: 35
+- FP: 0
+- FN: 0
+- precision: 100%
+- recall: 100%
+- F1: 100%
+- exact provenance span checks: 35/35
+- semantic ownership assessed: NO
+
+Frozen A1 hashes:
+- extractor: `65d0da4b32b8297dd58ba6108fb2a49e0cb96dfa726ce270f0382318919e20db`
+- reference: `49e1d4d4029c5f7db0c49242d316ff1e6d3e6e2c0cdba6fff3812ea4d601ed4e`
+- validation script: `5848099971ec594b448e5a7ab72e69daa0cb87c704c4bacaa2fb15eb89d7b9d6`
+- predictions: `436dff2f365b92797f4f401fab97bf94dbba1b04a69ff1f8bf3b212d6fe877f3`
+- summary: `bc7222b85c7cd52e4a40f3055822700e482a1c3d40597b4461f6f947583654ab`
+
+A1 closure:
+`phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A1_CLOSURE.md`
+commit:
+`d6c8d396b19be4b6cfb1768eb86e2ef8bcf3ac01`
+
+### Gate 0 repairs discovered by A1
+
+A1 exposed two contract defects:
+1. no top-level pre-ownership anchor inventory;
+2. no top-level evidence-span provenance inventory.
+
+These were repaired.
+
+Canonical policies now include:
+- `EXTRACT_BEFORE_OWNERSHIP`
+- `GLOBAL_EVIDENCE_SPANS_ARE_CANONICAL`
+- `FRAME_AND_GRAPH_MUST_AGREE`
+
+Canonical Gate 0 repair validation:
+- run: `37142006598`
+- artifact id: `11280702653`
+- artifact SHA-256: `0f97953ed6a5a09b21b24c3578cb9134d29194a413da4fd3e3072a209401e2cb`
+- checks: 326/326 PASS
+
+Canonical Gate 0 hashes after A1 repair:
+- schema: `df986f759a114bd86525b84f00f8d2f362d71bb31546441992291d21c5ebd69f`
+- criticality: `1599bf6bdb10afd462ba45a422b3e276a4ddbb47656d3d6047a0ff9b39acc48d`
+- outcome contract: `aeff55ec0d5c10a949afc2f86a5eae46e610043f3885497643561b17aa669905`
+- development reference: `c5fc21cf8ea60f0bd4b403b3a6e9220be33c1d390283a71f0365751ea54ed303`
+- contract test: `d3315f86490d33c61ce311cf5efa9480fe70b2e79f9c59d8a6b81621935e1c7f`
+
+Repair addendum:
+`phase2/academic_transform/at0_en/v2_4/gate0/GATE0_A1_CONTRACT_REPAIR_ADDENDUM.md`
+commit:
+`2c1fa17219f9b700336c27b3cc586f4044bbb4c5`
+
+The earlier Gate 0 closure remains historical provenance; these hashes supersede its schema/criticality/test identities.
+
+### A1 interpretation
+
+Classification:
+`PASS WITH NARROW DEVELOPMENT SCOPE`
+
+Do NOT treat 100% as general extraction performance.
+
+Known limitations:
+- only 35 hand-annotated deterministic anchors;
+- six already-consumed synthetic development cases;
+- regex catalog is not comprehensive for real academic citation/equation/unit styles;
+- word-number hyphenated durations, implicit/scattered arguments, and semantic role ownership are not established by A1;
+- exact-span scoring is appropriate for explicit deterministic anchors only and must not be the sole semantic-argument metric later.
+
+Fresh end-stage research:
+- Claimify: coverage/decontextualization/ambiguity must be measured independently;
+- Event Pattern-Instance Graph: inter-argument role relations matter;
+- BEMEAE and REGen: exact span match can penalize semantically valid event arguments.
+
+Quality delta:
+- system-level scientific-fidelity performance: UNCHANGED
+- last end-to-end evidence remains V2.3: 37.5% adversarial escape, 25% safe acceptance, BOTH_FAIL
+- A1 component metric: 100% precision / 100% recall, with no directly comparable prior A1 baseline
+- methodological status: IMPROVED
+
+Completion:
+- Gate A1: 100%
+- Gate A overall: approximately 35%
+- whole ACAD_PASS planning estimate: approximately 23% ±5%
+
+Exact next authorized checkpoint:
+`AT0-EN V2.4 GATE A2 — SOURCE ASSERTION DECOMPOSITION + ABSTENTION PROTOTYPE`
+
+A2 scope:
+- source side only;
+- use global evidence and anchor inventories;
+- extract source assertions into frozen schema;
+- preserve provenance;
+- represent UNCERTAIN/AMBIGUOUS explicitly;
+- begin source coverage accounting;
+- no candidate-text alignment or end-to-end verifier claim.
+
+Higher-model consultation is not required at A2 start unless a new architecture/construct-validity issue appears.
