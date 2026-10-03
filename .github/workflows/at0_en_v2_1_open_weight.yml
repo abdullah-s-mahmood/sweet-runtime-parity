@@ -2,6 +2,11 @@ name: AT0-EN V2.1 Open-Weight Live Matrix
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/LIVE_TRIGGER_V2_1.txt"
 
 permissions:
   contents: read
@@ -14,30 +19,44 @@ jobs:
   live:
     runs-on: ubuntu-24.04
     timeout-minutes: 330
+    env:
+      PYTHONUNBUFFERED: "1"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      LLAMA_CPP_COMMIT: "b92761a515ea31e852e7fbc1fad5f874b46f3718"
+      QWEN_URL: "https://huggingface.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF/resolve/d3037fec123e6fcf1b894f42ff01bd83d4622955/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf"
+      QWEN_SHA256: "2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e"
+      SMOL_URL: "https://huggingface.co/ggml-org/SmolLM3-3B-GGUF/resolve/4965cb60b150737b68a0408c36aeefb65078f894/SmolLM3-Q4_K_M.gguf"
+      SMOL_SHA256: "8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e"
+
     steps:
-      - name: Sparse checkout AT0-EN only
+      - name: Checkout frozen branch state
         uses: actions/checkout@v4
         with:
-          sparse-checkout: |
-            phase2/academic_transform/at0_en
-          sparse-checkout-cone-mode: false
-          fetch-depth: 1
+          ref: phase2-arabic-eval
 
-      - name: Record runner resources
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Record runner identity
         shell: bash
         run: |
           set -euo pipefail
-          OUT=phase2/academic_transform/at0_en/results/live-v2-1
+          OUT="phase2/academic_transform/at0_en/results/live-v2-1"
           mkdir -p "$OUT"
           {
-            echo "date_utc=$(date -u +%FT%TZ)"
-            echo "github_sha=$GITHUB_SHA"
-            echo "runner_os=$RUNNER_OS"
-            uname -a
-            lscpu
-            free -h
-            df -h
-            python --version
+            echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "repo_commit=$(git rev-parse HEAD)"
+            echo "runner_os=${RUNNER_OS:-unknown}"
+            echo "runner_arch=${RUNNER_ARCH:-unknown}"
+            echo "image_os=${ImageOS:-unknown}"
+            echo "image_version=${ImageVersion:-unknown}"
+            echo "python=$(python --version 2>&1)"
+            echo "cpu_count=$(nproc)"
+            lscpu || true
+            free -h || true
+            df -h . || true
           } > "$OUT/environment_pre.txt"
 
       - name: Compile backend and rerun frozen offline gates
@@ -49,42 +68,88 @@ jobs:
           python tests/run_preflight.py
           python tests/run_portability_audit.py
 
-      - name: Build frozen llama.cpp runtime
+      - name: Build pinned llama.cpp CPU runtime
         shell: bash
         run: |
           set -euo pipefail
           git clone --filter=blob:none https://github.com/ggml-org/llama.cpp.git /tmp/llama.cpp
-          cd /tmp/llama.cpp
-          git checkout --detach b92761a515ea31e852e7fbc1fad5f874b46f3718
-          cmake -B build -DCMAKE_BUILD_TYPE=Release -DGGML_NATIVE=OFF -DLLAMA_CURL=OFF
-          cmake --build build --config Release -j2 --target llama-cli
-          ./build/bin/llama-cli --version
-          git rev-parse HEAD > "$GITHUB_WORKSPACE/phase2/academic_transform/at0_en/results/live-v2-1/llama_cpp_commit.txt"
+          git -C /tmp/llama.cpp checkout "$LLAMA_CPP_COMMIT"
+          cmake -S /tmp/llama.cpp -B /tmp/llama.cpp/build -DCMAKE_BUILD_TYPE=Release -DGGML_NATIVE=OFF -DGGML_OPENMP=ON
+          cmake --build /tmp/llama.cpp/build --config Release -j 4 --target llama-server
+          /tmp/llama.cpp/build/bin/llama-server --version > phase2/academic_transform/at0_en/results/live-v2-1/LLAMA_CPP_VERSION.txt 2>&1 || true
+          git -C /tmp/llama.cpp rev-parse HEAD >> phase2/academic_transform/at0_en/results/live-v2-1/LLAMA_CPP_VERSION.txt
 
-      - name: Download and verify MODEL_A Qwen3
+      - name: Download and verify frozen MODEL_A Qwen
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p /tmp/models
-          curl -L --fail --retry 3 --retry-delay 5             -o /tmp/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf             https://huggingface.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF/resolve/d3037fec123e6fcf1b894f42ff01bd83d4622955/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf
-          echo "2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e  /tmp/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf" | sha256sum -c -
-          ls -lh /tmp/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf
+          curl --fail --location --retry 3 --retry-delay 5 "$QWEN_URL" -o /tmp/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf
+          echo "$QWEN_SHA256  /tmp/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf" | sha256sum -c -
 
-      - name: Download and verify MODEL_B SmolLM3
-        shell: bash
-        run: |
-          set -euo pipefail
-          curl -L --fail --retry 3 --retry-delay 5             -o /tmp/models/SmolLM3-Q4_K_M.gguf             https://huggingface.co/ggml-org/SmolLM3-3B-GGUF/resolve/4965cb60b150737b68a0408c36aeefb65078f894/SmolLM3-Q4_K_M.gguf
-          echo "8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e  /tmp/models/SmolLM3-Q4_K_M.gguf" | sha256sum -c -
-          ls -lh /tmp/models/SmolLM3-Q4_K_M.gguf
-          df -h
-
-      - name: Execute frozen 48-slot matrix strictly sequentially
+      - name: Execute MODEL_A 24 slots
         shell: bash
         run: |
           set -euo pipefail
           cd phase2/academic_transform/at0_en
-          python src/at0_backend_runner.py             --llama-cli /tmp/llama.cpp/build/bin/llama-cli             --model-a /tmp/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf             --model-b /tmp/models/SmolLM3-Q4_K_M.gguf             --output results/live-v2-1
+          python src/at0_backend_runner.py             --llama-server /tmp/llama.cpp/build/bin/llama-server             --model-path /tmp/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf             --model-slot MODEL_A             --output results/live-v2-1
+
+      - name: Remove MODEL_A before MODEL_B
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f /tmp/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf
+          sync
+          df -h .
+
+      - name: Download and verify frozen MODEL_B SmolLM3
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --retry-delay 5 "$SMOL_URL" -o /tmp/models/SmolLM3-Q4_K_M.gguf
+          echo "$SMOL_SHA256  /tmp/models/SmolLM3-Q4_K_M.gguf" | sha256sum -c -
+
+      - name: Execute MODEL_B 24 slots
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en
+          python src/at0_backend_runner.py             --llama-server /tmp/llama.cpp/build/bin/llama-server             --model-path /tmp/models/SmolLM3-Q4_K_M.gguf             --model-slot MODEL_B             --output results/live-v2-1
+
+      - name: Summarize frozen 48-slot matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from pathlib import Path
+
+          out=Path("phase2/academic_transform/at0_en/results/live-v2-1")
+          rows=[json.loads(x) for x in (out/"slots.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+          counts=Counter(x["status"] for x in rows)
+          logical=sum(int(x.get("logical_calls",0)) for x in rows)
+          summary={
+              "gate":"AT0_EN_V2_1_FROZEN_48_SLOT_MATRIX",
+              "slots_expected":48,
+              "slots_recorded":len(rows),
+              "status_counts":dict(sorted(counts.items())),
+              "logical_calls":logical,
+              "max_logical_calls":72,
+              "not_run":counts.get("NOT_RUN",0),
+              "additional_monetary_cost_usd":0.0,
+              "human_quality_assessed":False,
+              "scientific_fidelity_established":False,
+          }
+          status="EXECUTED"
+          if len(rows)!=48 or counts.get("NOT_RUN",0)!=0 or logical>72:
+              status="INVALID_EXECUTION_ACCOUNTING"
+          summary["execution_status"]=status
+          (out/"MATRIX_EXECUTION_SUMMARY.json").write_text(json.dumps(summary,indent=2)+"\n",encoding="utf-8")
+          print(json.dumps(summary,indent=2))
+          if status!="EXECUTED":
+              raise SystemExit(2)
+          PY
 
       - name: Record post-run resources
         if: always()
@@ -93,16 +158,25 @@ jobs:
           OUT=phase2/academic_transform/at0_en/results/live-v2-1
           mkdir -p "$OUT"
           {
-            echo "date_utc=$(date -u +%FT%TZ)"
-            free -h
-            df -h
+            echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            free -h || true
+            df -h . || true
           } > "$OUT/environment_post.txt"
 
-      - name: Upload AT0-EN evidence artifact
+      - name: Remove MODEL_B
+        if: always()
+        shell: bash
+        run: |
+          rm -f /tmp/models/SmolLM3-Q4_K_M.gguf || true
+
+      - name: Upload AT0-EN live evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: at0-en-v2-1-live-${{ github.run_id }}-${{ github.run_attempt }}
-          path: phase2/academic_transform/at0_en/results/live-v2-1/
+          path: |
+            phase2/academic_transform/at0_en/results/live-v2-1/
+            phase2/academic_transform/at0_en/results/offline-preflight/preflight_results.json
+            phase2/academic_transform/at0_en/results/offline-preflight/portability_audit.json
           if-no-files-found: warn
           retention-days: 30
