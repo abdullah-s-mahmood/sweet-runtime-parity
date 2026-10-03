@@ -10,7 +10,7 @@
   "models_required": 2,
   "live_slots": 48,
   "max_logical_calls": 72,
-  "authorized_cost_ceiling": 0.0,
+  "authorized_cost_ceiling": 0,
   "authorized_cost_currency": "USD",
   "max_total_tokens": 450000,
   "max_total_input_tokens": 360000,
@@ -22,8 +22,8 @@
   },
   "execution_backend": "GITHUB_ACTIONS_OPEN_WEIGHT_GGUF_LLAMA_CPP",
   "execution_concurrency": 1,
-  "live_execution_status": "PENDING_V2_1_OPEN_WEIGHT_SMOKE_GATE",
-  "blocker": null,
+  "live_execution_status": "BLOCKED_STRUCTURED_OUTPUT_CONFORMANCE",
+  "blocker": "SMOLLM3_STRICT_RAW_JSON_CONFORMANCE",
   "architect_decision": {
     "decision": "KEEP / AMEND_EXECUTION_BACKEND",
     "decision_date": "2026-10-03",
@@ -35,7 +35,7 @@
     "detector_robustness_authorized": false
   },
   "generation": {
-    "temperature": 0.0,
+    "temperature": 0,
     "seed": 20261003,
     "context_tokens_min": 4096,
     "automatic_content_retry": false,
@@ -47,5 +47,13 @@
     "soft_max_ratio": 1.15
   },
   "arabic_active_research": "FROZEN",
-  "reserved_data_access": false
+  "reserved_data_access": false,
+  "smoke_gate": {
+    "status": "BLOCKED",
+    "attempts": 3,
+    "qwen": "PASS",
+    "smollm3": "FAIL_STRICT_RAW_JSON_FENCED_JSON",
+    "full_matrix_started": false,
+    "report": "phase2/academic_transform/at0_en/results/AT0_EN_V2_1_SMOKE_GATE_REPORT.md"
+  }
 }
