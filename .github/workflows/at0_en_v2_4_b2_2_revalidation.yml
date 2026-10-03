@@ -1,0 +1,56 @@
+name: AT0-EN V2.4 B2.2 Frozen Four-Arm Revalidation
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/gate_b2/B2_2_REVALIDATION_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  revalidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile frozen B2.2 prototype and scorer
+        run: |
+          set -euo pipefail
+          python -m py_compile             phase2/academic_transform/at0_en/v2_4/gate_b2/b2_2_relation_aware_extractor.py             phase2/academic_transform/at0_en/v2_4/gate_b2/check_b2_2_relation_aware_regressions.py             phase2/academic_transform/at0_en/v2_4/gate_b2/score_b2_2_relation_aware_revalidation.py
+
+      - name: Re-run frozen principle regressions
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_4/gate_b2/check_b2_2_relation_aware_regressions.py
+
+      - name: Run frozen B2.2 four-arm revalidation
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_4/gate_b2/score_b2_2_relation_aware_revalidation.py
+
+      - name: Freeze evidence hashes
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_4/gate_b2
+          sha256sum             b2_2_relation_aware_extractor.py             score_b2_2_relation_aware_revalidation.py             B2_RAW_TEXT_PAIRS_V1.jsonl             results/B2_2_REVALIDATION_GRAPHS.jsonl             results/B2_2_REVALIDATION_DETAIL.jsonl             results/B2_2_REPRESENTATION_AUDIT.jsonl             results/B2_2_REVALIDATION_SUMMARY.json             > results/B2_2_REVALIDATION_SHA256.txt
+          cat results/B2_2_REVALIDATION_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-b2-2-revalidation-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_4/gate_b2/results/B2_2_REVALIDATION_GRAPHS.jsonl
+            phase2/academic_transform/at0_en/v2_4/gate_b2/results/B2_2_REVALIDATION_DETAIL.jsonl
+            phase2/academic_transform/at0_en/v2_4/gate_b2/results/B2_2_REPRESENTATION_AUDIT.jsonl
+            phase2/academic_transform/at0_en/v2_4/gate_b2/results/B2_2_REVALIDATION_SUMMARY.json
+            phase2/academic_transform/at0_en/v2_4/gate_b2/results/B2_2_REVALIDATION_SHA256.txt
+          retention-days: 30
+          if-no-files-found: error
