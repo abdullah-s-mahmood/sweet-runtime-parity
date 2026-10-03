@@ -2,7 +2,7 @@ from __future__ import annotations
 import hashlib, json, pathlib, py_compile
 
 HERE=pathlib.Path(__file__).resolve().parent
-ROOT=HERE.parents[5]
+ROOT=HERE.parents[4]
 MANIFEST=HERE/"PRE_GATE_C_PIPELINE_FREEZE_MANIFEST_V1.json"
 OUT=HERE/"PRE_GATE_C_PIPELINE_FREEZE_INTEGRITY_SUMMARY.json"
 
