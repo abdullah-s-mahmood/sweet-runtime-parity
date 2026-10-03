@@ -133,6 +133,24 @@ def canonical_owner(x)->str:
         return "|".join(special)
     return " ".join(sorted(ot))
 
+def canonical_binding_key(x)->str:
+    raw=str(x)
+    if re.fullmatch(r"[A-Za-z]_[A-Za-z0-9]+",raw):
+        return raw.lower()
+    gm=re.fullmatch(r"group[_\s]+([A-Za-z0-9]+)",raw,re.I)
+    if gm:
+        return "group:"+gm.group(1).lower()
+    return canonical_scalar(raw.replace("_"," "))
+
+def canonical_quantity(value,unit=None)->tuple[str,str]:
+    if unit is not None:
+        return canonical_scalar(value),canonical_scalar(unit)
+    raw=str(value).strip()
+    m=re.fullmatch(r"([-+]?\d+(?:\.\d+)?)\s*([A-Za-z%]+)",raw)
+    if m:
+        return canonical_scalar(m.group(1)),canonical_scalar(m.group(2))
+    return canonical_scalar(value),""
+
 def binding_facts(group:list[dict])->set[tuple]:
     facts=set()
     for a in group:
@@ -144,14 +162,14 @@ def binding_facts(group:list[dict])->set[tuple]:
                 facts.add(("DEFINE",canonical_scalar(b["symbol"]),canonical_scalar(a.get("object"))))
             for k,v in b.items():
                 if k!="symbol":
-                    facts.add(("DEFINE",canonical_scalar(k.replace("_"," ")),canonical_scalar(v)))
+                    facts.add(("DEFINE",canonical_binding_key(k),canonical_scalar(v)))
             if not b and a.get("object") is not None:
                 facts.add(("DEFINE",owner,canonical_scalar(a.get("object"))))
             continue
 
         if "value" in b:
-            unit=canonical_scalar(b.get("unit")) if "unit" in b else ""
-            facts.add(("VALUE",owner,canonical_scalar(b["value"]),unit))
+            value,unit=canonical_quantity(b["value"],b.get("unit") if "unit" in b else None)
+            facts.add(("VALUE",owner,value,unit))
 
         for k,v in b.items():
             kl=str(k).lower()
@@ -159,9 +177,10 @@ def binding_facts(group:list[dict])->set[tuple]:
                 continue
             km=re.fullmatch(r"group[_\s]+([a-z0-9]+)",kl)
             if km:
-                facts.add(("VALUE","group:"+km.group(1),canonical_scalar(v),""))
+                value,unit=canonical_quantity(v)
+                facts.add(("VALUE","group:"+km.group(1),value,unit))
             else:
-                facts.add(("ATTR",owner,canonical_scalar(k.replace("_"," ")),canonical_scalar(v)))
+                facts.add(("ATTR",owner,canonical_binding_key(k),canonical_scalar(v)))
     return facts
 
 def group_semantics(group:list[dict])->dict:
