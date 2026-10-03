@@ -59,10 +59,32 @@ def coverage(a:set[str],b:set[str])->float:
     if not a: return 1.0
     return len(a&b)/len(a)
 
+def owner_tokens(x)->set[str]:
+    raw=str(x or "")
+    out=set(tokens(raw))
+    for m in re.finditer(r"\bgroup\s+([A-Za-z0-9]+)\b",raw,re.I):
+        out.add("group:"+m.group(1).lower())
+    for m in re.finditer(r"\b([A-Za-z]_[A-Za-z0-9]+)\b",raw):
+        out.add("symbol:"+m.group(1).lower())
+    return out
+
+def owner_incompatible(s:dict,c:dict)->bool:
+    so=owner_tokens(s.get("subject"))
+    co=owner_tokens(c.get("subject"))
+    sg={x for x in so if x.startswith("group:")}
+    cg={x for x in co if x.startswith("group:")}
+    if sg and cg and sg.isdisjoint(cg):
+        return True
+    ss={x for x in so if x.startswith("symbol:")}
+    cs={x for x in co if x.startswith("symbol:")}
+    if ss and cs and ss.isdisjoint(cs):
+        return True
+    return False
+
 def assertion_similarity(s:dict,c:dict)->float:
     score=0.0
     if s["predicate"]==c["predicate"]: score+=4.0
-    score+=2.5*jacc(tokens(s["subject"]),tokens(c["subject"]))
+    score+=3.0*jacc(owner_tokens(s["subject"]),owner_tokens(c["subject"]))
     score+=2.5*jacc(tokens(s.get("object")),tokens(c.get("object")))
     score+=2.0*jacc(tokens(s.get("bindings",{})),tokens(c.get("bindings",{})))
     for field in ["time","population","baseline","scope"]:
@@ -75,9 +97,12 @@ def assertion_similarity(s:dict,c:dict)->float:
 def best_one_to_one(source:list[dict],candidate:list[dict])->list[tuple[list[dict],list[dict]]]:
     best=None
     for perm in itertools.permutations(candidate,len(source)):
-        score=sum(assertion_similarity(s,c) for s,c in zip(source,perm))
-        if best is None or score>best[0]:
-            best=(score,perm)
+        hard_owner_mismatches=sum(owner_incompatible(s,c) for s,c in zip(source,perm))
+        owner_score=sum(jacc(owner_tokens(s["subject"]),owner_tokens(c["subject"])) for s,c in zip(source,perm))
+        semantic_score=sum(assertion_similarity(s,c) for s,c in zip(source,perm))
+        objective=(-hard_owner_mismatches,owner_score,semantic_score)
+        if best is None or objective>best[0]:
+            best=(objective,perm)
     return [([s],[c]) for s,c in zip(source,best[1])]
 
 def assertion_groups(source:list[dict],candidate:list[dict]):
@@ -96,12 +121,56 @@ def assertion_groups(source:list[dict],candidate:list[dict]):
         base[-1][1].extend(candidate[n:])
     return base
 
+def canonical_scalar(x)->str:
+    if isinstance(x,float):
+        return format(x,"g")
+    return " ".join(sorted(tokens(x)))
+
+def canonical_owner(x)->str:
+    ot=owner_tokens(x)
+    special=sorted(t for t in ot if t.startswith("group:") or t.startswith("symbol:"))
+    if special:
+        return "|".join(special)
+    return " ".join(sorted(ot))
+
+def binding_facts(group:list[dict])->set[tuple]:
+    facts=set()
+    for a in group:
+        b=a.get("bindings",{}) or {}
+        owner=canonical_owner(a.get("subject"))
+
+        if a.get("predicate")=="DEFINE":
+            if "symbol" in b:
+                facts.add(("DEFINE",canonical_scalar(b["symbol"]),canonical_scalar(a.get("object"))))
+            for k,v in b.items():
+                if k!="symbol":
+                    facts.add(("DEFINE",canonical_scalar(k.replace("_"," ")),canonical_scalar(v)))
+            if not b and a.get("object") is not None:
+                facts.add(("DEFINE",owner,canonical_scalar(a.get("object"))))
+            continue
+
+        if "value" in b:
+            unit=canonical_scalar(b.get("unit")) if "unit" in b else ""
+            facts.add(("VALUE",owner,canonical_scalar(b["value"]),unit))
+
+        for k,v in b.items():
+            kl=str(k).lower()
+            if kl in {"value","unit"}:
+                continue
+            km=re.fullmatch(r"group[_\s]+([a-z0-9]+)",kl)
+            if km:
+                facts.add(("VALUE","group:"+km.group(1),canonical_scalar(v),""))
+            else:
+                facts.add(("ATTR",owner,canonical_scalar(k.replace("_"," ")),canonical_scalar(v)))
+    return facts
+
 def group_semantics(group:list[dict])->dict:
     return {
         "predicates":{a["predicate"] for a in group},
-        "subjects":set().union(*(tokens(a["subject"]) for a in group)),
+        "subjects":set().union(*(owner_tokens(a["subject"]) for a in group)),
         "objects":set().union(*(tokens(a.get("object")) for a in group)),
         "bindings":set().union(*(tokens(a.get("bindings",{})) for a in group)),
+        "binding_facts":binding_facts(group),
         "time":set().union(*(tokens(a.get("time",[])) for a in group)),
         "population":set().union(*(tokens(a.get("population",[])) for a in group)),
         "baseline":set().union(*(tokens(a.get("baseline",[])) for a in group)),
@@ -133,23 +202,11 @@ def mapping_status(source:list[dict],candidate:list[dict])->tuple[str,str]:
         if s[field]!=c[field]:
             return "ALTERED",f"Material {label} binding differs."
 
-    # In 1:1 mappings, explicit binding dictionaries encode ownership and must not be
-    # reduced to a bag of tokens (e.g., w_1->U_i vs w_1->D_i).
-    if len(source)==1 and len(candidate)==1:
-        sb=source[0].get("bindings",{})
-        cb=candidate[0].get("bindings",{})
-        if (sb or cb) and sb!=cb:
-            return "ALTERED","Explicit key-to-value binding differs."
-
-    # In split/merge mappings, binding atoms may be redistributed across nodes.
-    if s["bindings"] or c["bindings"]:
-        if s["bindings"]!=c["bindings"]:
-            # Allow faithful split/merge if the source binding atoms are fully represented in
-            # candidate subject/object/bindings and vice versa.
-            s_all=s["subjects"]|s["objects"]|s["bindings"]
-            c_all=c["subjects"]|c["objects"]|c["bindings"]
-            if coverage(s["bindings"],c_all)<1.0 or coverage(c["bindings"],s_all)<0.75:
-                return "ALTERED","Material value/symbol binding differs."
+    # Canonical ownership facts are the source of truth for explicit bindings.
+    # This supports split/merge equivalence while still rejecting owner/value rebinding.
+    if s["binding_facts"] or c["binding_facts"]:
+        if s["binding_facts"]!=c["binding_facts"]:
+            return "ALTERED","Canonical owner-to-value/meaning binding differs."
 
     # For split/merge, extra predicate detail is allowed if source predicates are retained.
     if not (s["predicates"] <= c["predicates"] or c["predicates"] <= s["predicates"]):
