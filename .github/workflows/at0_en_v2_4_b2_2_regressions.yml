@@ -1,0 +1,32 @@
+name: AT0-EN V2.4 B2.2 Relation-Aware Prototype Regressions
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/gate_b2/B2_2_REGRESSION_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  regress:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile prototype and regression suite
+        run: |
+          set -euo pipefail
+          python -m py_compile             phase2/academic_transform/at0_en/v2_4/gate_b2/b2_2_relation_aware_extractor.py             phase2/academic_transform/at0_en/v2_4/gate_b2/check_b2_2_relation_aware_regressions.py
+
+      - name: Run B2.2 principle regressions
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_4/gate_b2/check_b2_2_relation_aware_regressions.py
