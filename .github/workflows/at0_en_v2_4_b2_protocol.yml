@@ -1,0 +1,42 @@
+name: AT0-EN V2.4 B2 Protocol Integrity
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/gate_b2/B2_PROTOCOL_RUN_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  integrity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile B2 integrity checker
+        run: python -m py_compile phase2/academic_transform/at0_en/v2_4/gate_b2/check_b2_protocol_integrity.py
+
+      - name: Validate B2 protocol and derived inputs
+        run: python phase2/academic_transform/at0_en/v2_4/gate_b2/check_b2_protocol_integrity.py
+
+      - name: Freeze hashes
+        run: |
+          cd phase2/academic_transform/at0_en/v2_4/gate_b2
+          sha256sum             B2_DEGRADATION_PROTOCOL_V1.md             B2_BRIDGE_CONTRACT_V1.md             B2_RAW_TEXT_PAIRS_V1.jsonl             check_b2_protocol_integrity.py             B2_PROTOCOL_INTEGRITY_SUMMARY.json             > B2_PROTOCOL_SHA256.txt
+          cat B2_PROTOCOL_SHA256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-b2-protocol-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_4/gate_b2/B2_PROTOCOL_INTEGRITY_SUMMARY.json
+            phase2/academic_transform/at0_en/v2_4/gate_b2/B2_PROTOCOL_SHA256.txt
+          retention-days: 30
