@@ -1,0 +1,871 @@
+{
+  "schema_version": "3.0.0",
+  "phase": "AT0-EN-V2.3",
+  "semantics": "SOURCE_ASSERTION_LEDGER_NOT_EXTERNAL_TRUTH",
+  "unresolved_policy": "REVIEW",
+  "relations_by_case": {
+    "EN01": [
+      {
+        "id": "EN01_R1",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "platform",
+          "platforms",
+          "urban sensing"
+        ],
+        "predicate": [
+          "monitor"
+        ],
+        "object": [
+          "traffic"
+        ],
+        "qualifiers": [
+          "real time",
+          "real-time"
+        ]
+      },
+      {
+        "id": "EN01_R2",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "roadside devices"
+        ],
+        "predicate": [
+          "collect",
+          "collecting"
+        ],
+        "object": [
+          "observations",
+          "traffic observations"
+        ],
+        "qualifiers": [
+          "continuously",
+          "continuous"
+        ]
+      },
+      {
+        "id": "EN01_R3",
+        "type": "MODALITY",
+        "subject": [
+          "observations",
+          "traffic observations",
+          "continuous data",
+          "data"
+        ],
+        "predicate": [
+          "support",
+          "facilitate",
+          "identify"
+        ],
+        "object": [
+          "faster identification",
+          "faster congestion identification",
+          "congestion"
+        ],
+        "expected_rank": 1,
+        "accepted_modals": [
+          "can",
+          "may",
+          "could",
+          "potentially"
+        ]
+      },
+      {
+        "id": "EN01_R4",
+        "type": "SCOPE",
+        "subject": [
+          "evaluation",
+          "study",
+          "platform"
+        ],
+        "predicate": [
+          "evaluate",
+          "evaluates",
+          "evaluated",
+          "focus",
+          "focused",
+          "limited",
+          "restricted"
+        ],
+        "scope_required": [
+          "arterial roads",
+          "weekday peak"
+        ],
+        "exclusivity": "ONLY"
+      }
+    ],
+    "EN02": [
+      {
+        "id": "EN02_R1",
+        "type": "QUANTITY_BINDING",
+        "subject": [
+          "fill estimates",
+          "bin fill estimates"
+        ],
+        "value": "15",
+        "unit": [
+          "minute",
+          "minutes",
+          "min"
+        ],
+        "predicate": [
+          "receive",
+          "receives",
+          "received"
+        ]
+      },
+      {
+        "id": "EN02_R2",
+        "type": "CARDINALITY",
+        "subject": [
+          "collection vehicles",
+          "vehicles"
+        ],
+        "value": 2,
+        "predicate": [
+          "dispatch",
+          "dispatches",
+          "dispatched"
+        ]
+      },
+      {
+        "id": "EN02_R3",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "study",
+          "controller",
+          "evaluation"
+        ],
+        "predicate": [
+          "synthetic"
+        ],
+        "object": [
+          "district"
+        ]
+      },
+      {
+        "id": "EN02_R4",
+        "type": "METRIC_DEFINITION",
+        "metrics": [
+          "travel distance",
+          "missed-overflow events",
+          "missed overflow events"
+        ],
+        "predicate": [
+          "measure",
+          "measures",
+          "measured"
+        ]
+      }
+    ],
+    "EN03": [
+      {
+        "id": "EN03_R1",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "study a"
+        ],
+        "predicate": [
+          "reported"
+        ],
+        "object": [
+          "lower latency"
+        ],
+        "qualifiers": [
+          "edge aggregation"
+        ]
+      },
+      {
+        "id": "EN03_R2",
+        "type": "POLARITY",
+        "subject": [
+          "study b"
+        ],
+        "predicate": [
+          "latency reduction"
+        ],
+        "polarity": "NEGATIVE",
+        "qualifiers": [
+          "sparse traffic"
+        ]
+      },
+      {
+        "id": "EN03_R3",
+        "type": "QUANTITY_BINDING",
+        "subject": [
+          "study c",
+          "energy consumption"
+        ],
+        "value": "12",
+        "unit": [
+          "%",
+          "percent"
+        ],
+        "predicate": [
+          "decrease",
+          "decreased",
+          "reduction"
+        ],
+        "qualifiers": [
+          "batch",
+          "batched",
+          "batching"
+        ]
+      },
+      {
+        "id": "EN03_R4",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "study d"
+        ],
+        "predicate": [
+          "increase",
+          "increased"
+        ],
+        "object": [
+          "delay"
+        ],
+        "qualifiers": [
+          "batch",
+          "emergency bursts"
+        ]
+      },
+      {
+        "id": "EN03_R5",
+        "type": "MECHANISM_DISTINCTION",
+        "mechanism_a": "edge aggregation",
+        "subjects_a": [
+          "study a"
+        ],
+        "mechanism_b": "batching",
+        "subjects_b": [
+          "study c",
+          "study d"
+        ],
+        "must_not_globalize": true
+      }
+    ],
+    "EN04": [
+      {
+        "id": "EN04_R1",
+        "type": "CITATION_EDGE",
+        "citation": "CIT_SYN_01",
+        "claim_terms": [
+          "adaptive signal timing",
+          "queue length",
+          "reduced"
+        ]
+      },
+      {
+        "id": "EN04_R2",
+        "type": "CITATION_EDGE",
+        "citation": "CIT_SYN_02",
+        "claim_terms": [
+          "packet loss",
+          "increased",
+          "density"
+        ]
+      },
+      {
+        "id": "EN04_R3",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "adaptive signal timing"
+        ],
+        "predicate": [
+          "reduced"
+        ],
+        "object": [
+          "queue length"
+        ],
+        "forbid_weaker": [
+          "associated",
+          "association",
+          "correlated"
+        ]
+      },
+      {
+        "id": "EN04_R4",
+        "type": "MECHANISM_DISTINCTION",
+        "mechanism_a": "queue length",
+        "subjects_a": [
+          "adaptive signal timing"
+        ],
+        "mechanism_b": "packet loss",
+        "subjects_b": [
+          "roadside",
+          "density"
+        ],
+        "must_be_distinct": true
+      }
+    ],
+    "EN05": [
+      {
+        "id": "EN05_R1",
+        "type": "SCOPE",
+        "subject": [
+          "vehicles",
+          "finding",
+          "result"
+        ],
+        "predicate": [
+          "observed",
+          "evaluated"
+        ],
+        "scope_required": [
+          "evening"
+        ],
+        "outside_scope_status": "NOT_EVALUATED"
+      },
+      {
+        "id": "EN05_R2",
+        "type": "ASSOCIATION",
+        "subject": [
+          "higher beacon density",
+          "beacon density"
+        ],
+        "object": [
+          "shorter discovery time",
+          "discovery time"
+        ],
+        "direction": "HIGHER_TO_SHORTER"
+      },
+      {
+        "id": "EN05_R3",
+        "type": "MODALITY",
+        "subject": [
+          "result",
+          "finding"
+        ],
+        "predicate": [
+          "reflect"
+        ],
+        "object": [
+          "neighbor awareness"
+        ],
+        "expected_rank": 1,
+        "accepted_modals": [
+          "may",
+          "might",
+          "could"
+        ]
+      },
+      {
+        "id": "EN05_R4",
+        "type": "CAUSALITY",
+        "subject": [
+          "beacon density"
+        ],
+        "object": [
+          "reduction",
+          "shorter discovery time"
+        ],
+        "status": "NOT_ESTABLISHED"
+      }
+    ],
+    "EN06": [
+      {
+        "id": "EN06_R1",
+        "type": "QUANTITY_BINDING",
+        "subject": [
+          "group a"
+        ],
+        "value": "42.0",
+        "unit": [
+          "s",
+          "seconds"
+        ],
+        "time": "08:00"
+      },
+      {
+        "id": "EN06_R2",
+        "type": "QUANTITY_BINDING",
+        "subject": [
+          "group b"
+        ],
+        "value": "51.5",
+        "unit": [
+          "s",
+          "seconds"
+        ],
+        "time": "08:00"
+      },
+      {
+        "id": "EN06_R3",
+        "type": "QUANTITY_BINDING",
+        "subject": [
+          "group a"
+        ],
+        "value": "46.2",
+        "unit": [
+          "s",
+          "seconds"
+        ],
+        "time": "14:00"
+      },
+      {
+        "id": "EN06_R4",
+        "type": "QUANTITY_BINDING",
+        "subject": [
+          "group b"
+        ],
+        "value": "49.8",
+        "unit": [
+          "s",
+          "seconds"
+        ],
+        "time": "14:00"
+      },
+      {
+        "id": "EN06_R5",
+        "type": "DELTA_DIRECTION",
+        "subject": [
+          "group a"
+        ],
+        "value": "4.2",
+        "unit": [
+          "s",
+          "seconds"
+        ],
+        "direction": "INCREASE",
+        "baseline": "08:00"
+      }
+    ],
+    "EN07": [
+      {
+        "id": "EN07_R1",
+        "type": "METHOD_STEP",
+        "action": [
+          "discard",
+          "discards",
+          "reject",
+          "remove"
+        ],
+        "object": [
+          "readings"
+        ],
+        "condition": [
+          "older than 60 s",
+          "older than 60 seconds",
+          "over 60 s"
+        ],
+        "order": 1
+      },
+      {
+        "id": "EN07_R2",
+        "type": "METHOD_STEP",
+        "action": [
+          "normalize",
+          "normalizes"
+        ],
+        "object": [
+          "sensor values",
+          "valid sensor values",
+          "values"
+        ],
+        "condition": [
+          "fixed before evaluation",
+          "parameters fixed before evaluation"
+        ],
+        "order": 2
+      },
+      {
+        "id": "EN07_R3",
+        "type": "ORDER_BEFORE",
+        "before": "EN07_R1",
+        "after": "EN07_R2"
+      },
+      {
+        "id": "EN07_R4",
+        "type": "EXCLUSION",
+        "entity": [
+          "vehicles"
+        ],
+        "condition": [
+          "missing position data"
+        ],
+        "action": [
+          "route optimization"
+        ],
+        "status": "EXCLUDED"
+      },
+      {
+        "id": "EN07_R5",
+        "type": "QUANTITY_BINDING",
+        "subject": [
+          "optimizer"
+        ],
+        "value": "200",
+        "unit": [
+          "iterations"
+        ],
+        "qualifiers": [
+          "seed 17"
+        ]
+      },
+      {
+        "id": "EN07_R6",
+        "type": "POLARITY",
+        "subject": [
+          "route",
+          "selected route"
+        ],
+        "predicate": [
+          "further tuning",
+          "additional tuning"
+        ],
+        "polarity": "NEGATIVE"
+      }
+    ],
+    "EN08": [
+      {
+        "id": "EN08_R1",
+        "type": "ASSOCIATION",
+        "subject": [
+          "lower channel occupancy",
+          "channel occupancy"
+        ],
+        "object": [
+          "higher delivery ratio",
+          "delivery ratio"
+        ],
+        "direction": "LOWER_TO_HIGHER"
+      },
+      {
+        "id": "EN08_R2",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "pattern",
+          "association"
+        ],
+        "predicate": [
+          "strongest",
+          "most pronounced"
+        ],
+        "object": [
+          "medium-density traffic",
+          "medium density traffic"
+        ]
+      },
+      {
+        "id": "EN08_R3",
+        "type": "POLARITY",
+        "subject": [
+          "channel occupancy",
+          "occupancy"
+        ],
+        "predicate": [
+          "independently manipulated",
+          "manipulated independently"
+        ],
+        "polarity": "NEGATIVE"
+      },
+      {
+        "id": "EN08_R4",
+        "type": "CAUSALITY",
+        "subject": [
+          "reducing occupancy",
+          "channel occupancy"
+        ],
+        "object": [
+          "higher delivery ratio"
+        ],
+        "status": "NOT_ESTABLISHED",
+        "scope": [
+          "other networks"
+        ]
+      }
+    ],
+    "EN09": [
+      {
+        "id": "EN09_R1",
+        "type": "EQUATION_IDENTITY",
+        "canonical": "P_i = w_1U_i + w_2D_i",
+        "required_tokens": [
+          "p_i",
+          "w_1",
+          "u_i",
+          "w_2",
+          "d_i"
+        ],
+        "operator": "+",
+        "forbidden_operator": "-"
+      },
+      {
+        "id": "EN09_R2",
+        "type": "TERM_DEFINITION",
+        "term": "U_i",
+        "definition": [
+          "utilization"
+        ]
+      },
+      {
+        "id": "EN09_R3",
+        "type": "TERM_DEFINITION",
+        "term": "D_i",
+        "definition": [
+          "normalized deadline pressure"
+        ]
+      },
+      {
+        "id": "EN09_R4",
+        "type": "PARAMETER_STABILITY",
+        "entity": [
+          "weights",
+          "w_1",
+          "w_2"
+        ],
+        "status": "FIXED_BEFORE_RUN",
+        "do_not_infer": "CONSTANT_THROUGHOUT"
+      },
+      {
+        "id": "EN09_R5",
+        "type": "POLARITY",
+        "subject": [
+          "equation"
+        ],
+        "predicate": [
+          "changed",
+          "modified"
+        ],
+        "polarity": "NEGATIVE",
+        "scope": [
+          "adaptation"
+        ]
+      },
+      {
+        "id": "EN09_R6",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "task",
+          "priority"
+        ],
+        "predicate": [
+          "larger"
+        ],
+        "object": [
+          "weighted combination"
+        ],
+        "direction": "LARGER_WHEN_LARGER"
+      }
+    ],
+    "EN10": [
+      {
+        "id": "EN10_R1",
+        "type": "QUANTITY_BINDING",
+        "subject": [
+          "measurement",
+          "measurements"
+        ],
+        "value": "30",
+        "unit": [
+          "s",
+          "seconds"
+        ],
+        "predicate": [
+          "collect",
+          "collects"
+        ],
+        "qualifiers": [
+          "active node",
+          "each active node"
+        ]
+      },
+      {
+        "id": "EN10_R2",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "measurement",
+          "measurements"
+        ],
+        "predicate": [
+          "store",
+          "stores"
+        ],
+        "object": [
+          "timestamp",
+          "node identifier"
+        ]
+      },
+      {
+        "id": "EN10_R3",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "analysis"
+        ],
+        "predicate": [
+          "group",
+          "groups"
+        ],
+        "object": [
+          "measurements"
+        ],
+        "qualifiers": [
+          "node",
+          "five-minute interval",
+          "5-minute interval"
+        ]
+      },
+      {
+        "id": "EN10_R4",
+        "type": "POLARITY",
+        "subject": [
+          "imputation"
+        ],
+        "predicate": [
+          "performed",
+          "imputed"
+        ],
+        "polarity": "NEGATIVE",
+        "qualifiers": [
+          "missing measurements"
+        ]
+      }
+    ],
+    "EN11": [
+      {
+        "id": "EN11_R1",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "gateway"
+        ],
+        "predicate": [
+          "receives",
+          "receive"
+        ],
+        "object": [
+          "report",
+          "reports"
+        ]
+      },
+      {
+        "id": "EN11_R2",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "gateway"
+        ],
+        "predicate": [
+          "checks",
+          "check"
+        ],
+        "object": [
+          "identifier",
+          "timestamp"
+        ]
+      },
+      {
+        "id": "EN11_R3",
+        "type": "POLARITY",
+        "subject": [
+          "gateway"
+        ],
+        "predicate": [
+          "rejects",
+          "reject"
+        ],
+        "object": [
+          "duplicate reports",
+          "duplicates"
+        ],
+        "polarity": "POSITIVE"
+      },
+      {
+        "id": "EN11_R4",
+        "type": "TEXT_ASSERTION",
+        "subject": [
+          "gateway"
+        ],
+        "predicate": [
+          "forwards",
+          "forward"
+        ],
+        "object": [
+          "accepted reports",
+          "reports"
+        ],
+        "qualifiers": [
+          "storage"
+        ]
+      },
+      {
+        "id": "EN11_R5",
+        "type": "POLARITY",
+        "subject": [
+          "storage service",
+          "storage"
+        ],
+        "predicate": [
+          "records",
+          "record"
+        ],
+        "object": [
+          "original timestamp"
+        ],
+        "polarity": "POSITIVE"
+      }
+    ],
+    "EN12": [
+      {
+        "id": "EN12_R1",
+        "type": "CARDINALITY",
+        "subject": [
+          "traffic densities",
+          "densities"
+        ],
+        "value": 3,
+        "predicate": [
+          "includes",
+          "include",
+          "evaluation"
+        ]
+      },
+      {
+        "id": "EN12_R2",
+        "type": "METRIC_DEFINITION",
+        "metric": "reliability",
+        "definition": "delivery ratio",
+        "predicate": [
+          "measured as",
+          "is measured as"
+        ]
+      },
+      {
+        "id": "EN12_R3",
+        "type": "POLARITY",
+        "subject": [
+          "delay"
+        ],
+        "predicate": [
+          "measured",
+          "measure"
+        ],
+        "polarity": "POSITIVE"
+      },
+      {
+        "id": "EN12_R4",
+        "type": "PARAMETER_STABILITY",
+        "entity": [
+          "controller",
+          "parameter values",
+          "parameters"
+        ],
+        "status": "SAME_ACROSS_DENSITIES"
+      },
+      {
+        "id": "EN12_R5",
+        "type": "CAUSALITY",
+        "subject": [
+          "performance changes"
+        ],
+        "object": [
+          "different loads"
+        ],
+        "status": "PURPOSE_DISTINGUISH_FROM",
+        "alternative": [
+          "retuning",
+          "controller retuning"
+        ]
+      }
+    ]
+  }
+}
