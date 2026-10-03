@@ -1,0 +1,31 @@
+name: AT0-EN V2.3 Assertion-Graph Offline Gate
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/academic_transform/at0_en/v2_3/**"
+      - ".github/workflows/at0_en_v2_3_assertion_graph.yml"
+permissions:
+  contents: read
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile
+        run: python -m py_compile phase2/academic_transform/at0_en/v2_3/at0_v2_3_assertion_graph.py phase2/academic_transform/at0_en/v2_3/test_known_external_v1.py
+      - name: Run known external red-team gate
+        run: python phase2/academic_transform/at0_en/v2_3/test_known_external_v1.py
+      - name: Hash evidence
+        run: |
+          cd phase2/academic_transform/at0_en/v2_3
+          sha256sum at0_v2_3_assertion_graph.py test_known_external_v1.py results/AT0_EN_V2_3_KNOWN_EXTERNAL_V1.json > results/AT0_EN_V2_3_KNOWN_EXTERNAL_V1_SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-3-assertion-graph-${{ github.run_id }}
+          path: phase2/academic_transform/at0_en/v2_3/results/
+          retention-days: 30
