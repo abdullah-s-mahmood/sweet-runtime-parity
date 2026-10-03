@@ -1,0 +1,44 @@
+name: AT0-EN V2.3 Post-Freeze Red-Team V2
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - "phase2/academic_transform/at0_en/v2_3/POST_FREEZE_TRIGGER.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  redteam:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify frozen rule identities before red-team
+        run: |
+          set -euo pipefail
+          echo "50aa4df116164f2a6eb9ae74cfef4bb7c0254f48fb2fb1dbee1603bb65e71afa  phase2/academic_transform/at0_en/v2_3/SOURCE_RELATION_LEDGER.json" | sha256sum -c -
+          echo "a9e010c38b87ed2e30dfdada13ef8f22626373c8f603d6ed1e5c57d9f98a2725  phase2/academic_transform/at0_en/v2_3/at0_v2_3_relation_verifier.py" | sha256sum -c -
+      - name: Run fresh post-freeze suite
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_3/post_freeze_redteam_v2.py
+          cd phase2/academic_transform/at0_en/v2_3
+          sha256sum post_freeze_redteam_v2.py V2_3_POST_FREEZE_REDTEAM_V2.jsonl V2_3_POST_FREEZE_REDTEAM_V2_SUMMARY.json > V2_3_POST_FREEZE_REDTEAM_V2_SHA256.txt
+          cat V2_3_POST_FREEZE_REDTEAM_V2_SUMMARY.json
+          cat V2_3_POST_FREEZE_REDTEAM_V2_SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-3-post-freeze-redteam-${{ github.run_id }}
+          path: |
+            phase2/academic_transform/at0_en/v2_3/V2_3_POST_FREEZE_REDTEAM_V2.jsonl
+            phase2/academic_transform/at0_en/v2_3/V2_3_POST_FREEZE_REDTEAM_V2_SUMMARY.json
+            phase2/academic_transform/at0_en/v2_3/V2_3_POST_FREEZE_REDTEAM_V2_SHA256.txt
+          if-no-files-found: error
+          retention-days: 30
