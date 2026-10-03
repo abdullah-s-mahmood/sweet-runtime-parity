@@ -46,8 +46,8 @@ jobs:
           LIVE_DIR="$(dirname "$(find /tmp/v21 -name slots.jsonl | head -n1)")"
           OUT="phase2/academic_transform/at0_en/v2_2/AT0_EN_V2_2_OFFLINE_AUDIT.jsonl"
           python phase2/academic_transform/at0_en/v2_2/at0_v2_2_validator.py "$LIVE_DIR" "$OUT"
-          sha256sum "$OUT" "$OUT.summary.json" phase2/academic_transform/at0_en/v2_2/AT0_EN_V2_2_VALIDATOR_TEST_RESULTS.json > phase2/academic_transform/at0_en/v2_2/OFFLINE_AUDIT_SHA256.txt
-          cat "$OUT.summary.json"
+          SUMMARY="phase2/academic_transform/at0_en/v2_2/AT0_EN_V2_2_OFFLINE_AUDIT.summary.json"\n          sha256sum "$OUT" "$SUMMARY" phase2/academic_transform/at0_en/v2_2/AT0_EN_V2_2_VALIDATOR_TEST_RESULTS.json > phase2/academic_transform/at0_en/v2_2/OFFLINE_AUDIT_SHA256.txt
+          cat "$SUMMARY"
           cat phase2/academic_transform/at0_en/v2_2/OFFLINE_AUDIT_SHA256.txt
 
       - name: Upload frozen offline audit evidence
