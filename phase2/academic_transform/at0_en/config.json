@@ -1,5 +1,5 @@
 {
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "phase": "AT0-EN",
   "seed": 20261003,
   "cases": 12,
@@ -10,17 +10,36 @@
   "models_required": 2,
   "live_slots": 48,
   "max_logical_calls": 72,
-  "authorized_cost_ceiling": null,
-  "max_total_tokens": null,
-  "live_execution_status": "ACCEPT_BLOCKED_CHECKPOINT",
-  "blocker": "MODEL_ACCESS_AND_BUDGET_AUTHORIZATION",
+  "authorized_cost_ceiling": 0.0,
+  "authorized_cost_currency": "USD",
+  "max_total_tokens": 450000,
+  "max_total_input_tokens": 360000,
+  "max_total_output_tokens": 48000,
+  "per_request_max_output_tokens": {
+    "DIRECT": 800,
+    "PLAN": 400,
+    "REALIZE": 800
+  },
+  "execution_backend": "GITHUB_ACTIONS_OPEN_WEIGHT_GGUF_LLAMA_CPP",
+  "execution_concurrency": 1,
+  "live_execution_status": "PENDING_V2_1_OPEN_WEIGHT_SMOKE_GATE",
+  "blocker": null,
   "architect_decision": {
-    "decision": "KEEP / ACCEPT_BLOCKED_CHECKPOINT",
+    "decision": "KEEP / AMEND_EXECUTION_BACKEND",
     "decision_date": "2026-10-03",
     "architecture_change_required": false,
+    "commercial_api_required": false,
+    "positive_monetary_budget_required": false,
     "f07_repair_status": "ACCEPTED_WITHIN_FROZEN_CONTRACT",
     "hw1_en_authorized": false,
     "detector_robustness_authorized": false
+  },
+  "generation": {
+    "temperature": 0.0,
+    "seed": 20261003,
+    "context_tokens_min": 4096,
+    "automatic_content_retry": false,
+    "transport_retry_max": 1
   },
   "length_policy": {
     "mode": "ACADEMIC_REWRITE",
