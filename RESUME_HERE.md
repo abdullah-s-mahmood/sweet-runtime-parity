@@ -4647,3 +4647,26 @@ No semantic-model inference or new generator inference is authorized yet. HW1-EN
 
 Exact next action:
 freeze exact semantic-model revisions/artifact hashes/runtime/license/resource manifest and build source-free V2.4 harness/preflight; return to higher-model review before any semantic inference.
+
+
+## 2026-10-03 — Permanent staged-execution and progress-reporting agreement
+
+User-approved permanent operating rule:
+
+1. If a task is likely to be long, fragile, or tool-intensive and can be divided into scientifically valid checkpoints, **do not try to finish the whole workflow in one response**.
+2. Complete one coherent checkpoint/stage, freeze its state/evidence, report the result, then stop and wait for the user's explicit `أكمل` before starting the next stage.
+3. Do not split a stage if splitting would invalidate the experiment, corrupt an atomic operation, or violate a one-shot/consumption contract.
+4. During long-running execution, use strictly sequential status checks only. Never create a second run merely because the first is still running.
+5. Each meaningful progress update should report:
+   - current stage/checkpoint;
+   - approximate completion percentage based on known workflow steps or processed units;
+   - completed work;
+   - remaining work;
+   - whether the run is healthy, blocked, failed, or genuinely stalled;
+   - any new risk or deviation.
+6. Do not claim false precision. If the backend exposes only coarse states, report a coarse percentage/range and explain its basis.
+7. Do not provide an unreliable wall-clock completion promise. Prefer remaining steps/units and observed throughput when available.
+8. If a tool/UI error or stream-recovery error occurs, resume from the last verified checkpoint; do not restart completed work and do not duplicate irreversible/one-shot operations.
+9. At the end of each checkpoint, update this canonical handoff when the state materially changed.
+
+This rule supplements the existing strictly-sequential execution rule and overrides any previous tendency to continue through many separable stages in one response.
