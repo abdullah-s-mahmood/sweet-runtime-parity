@@ -1,0 +1,108 @@
+name: AT0-EN V2.1 Open-Weight Live Matrix
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: at0-en-v2-1-live
+  cancel-in-progress: false
+
+jobs:
+  live:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 330
+    steps:
+      - name: Sparse checkout AT0-EN only
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            phase2/academic_transform/at0_en
+          sparse-checkout-cone-mode: false
+          fetch-depth: 1
+
+      - name: Record runner resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=phase2/academic_transform/at0_en/results/live-v2-1
+          mkdir -p "$OUT"
+          {
+            echo "date_utc=$(date -u +%FT%TZ)"
+            echo "github_sha=$GITHUB_SHA"
+            echo "runner_os=$RUNNER_OS"
+            uname -a
+            lscpu
+            free -h
+            df -h
+            python --version
+          } > "$OUT/environment_pre.txt"
+
+      - name: Compile backend and rerun frozen offline gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en
+          python -m py_compile src/at0_backend_runner.py src/at0_core.py tests/run_preflight.py tests/run_portability_audit.py
+          python tests/run_preflight.py
+          python tests/run_portability_audit.py
+
+      - name: Build frozen llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/ggml-org/llama.cpp.git /tmp/llama.cpp
+          cd /tmp/llama.cpp
+          git checkout --detach b92761a515ea31e852e7fbc1fad5f874b46f3718
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DGGML_NATIVE=OFF -DLLAMA_CURL=OFF
+          cmake --build build --config Release -j2 --target llama-cli
+          ./build/bin/llama-cli --version
+          git rev-parse HEAD > "$GITHUB_WORKSPACE/phase2/academic_transform/at0_en/results/live-v2-1/llama_cpp_commit.txt"
+
+      - name: Download and verify MODEL_A Qwen3
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/models
+          curl -L --fail --retry 3 --retry-delay 5             -o /tmp/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf             https://huggingface.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF/resolve/d3037fec123e6fcf1b894f42ff01bd83d4622955/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf
+          echo "2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e  /tmp/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf" | sha256sum -c -
+          ls -lh /tmp/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf
+
+      - name: Download and verify MODEL_B SmolLM3
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 3 --retry-delay 5             -o /tmp/models/SmolLM3-Q4_K_M.gguf             https://huggingface.co/ggml-org/SmolLM3-3B-GGUF/resolve/4965cb60b150737b68a0408c36aeefb65078f894/SmolLM3-Q4_K_M.gguf
+          echo "8334b850b7bd46238c16b0c550df2138f0889bf433809008cc17a8b05761863e  /tmp/models/SmolLM3-Q4_K_M.gguf" | sha256sum -c -
+          ls -lh /tmp/models/SmolLM3-Q4_K_M.gguf
+          df -h
+
+      - name: Execute frozen 48-slot matrix strictly sequentially
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en
+          python src/at0_backend_runner.py             --llama-cli /tmp/llama.cpp/build/bin/llama-cli             --model-a /tmp/models/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf             --model-b /tmp/models/SmolLM3-Q4_K_M.gguf             --output results/live-v2-1
+
+      - name: Record post-run resources
+        if: always()
+        shell: bash
+        run: |
+          OUT=phase2/academic_transform/at0_en/results/live-v2-1
+          mkdir -p "$OUT"
+          {
+            echo "date_utc=$(date -u +%FT%TZ)"
+            free -h
+            df -h
+          } > "$OUT/environment_post.txt"
+
+      - name: Upload AT0-EN evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-1-live-${{ github.run_id }}-${{ github.run_attempt }}
+          path: phase2/academic_transform/at0_en/results/live-v2-1/
+          if-no-files-found: warn
+          retention-days: 30
