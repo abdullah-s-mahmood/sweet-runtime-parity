@@ -1,0 +1,144 @@
+{
+  "schema_version": "0.1.0",
+  "constraint_kinds": [
+    "REQUIRE_ALL_REGEX",
+    "REQUIRE_ANY_GROUP",
+    "SAME_SENTENCE",
+    "FORBID_REGEX",
+    "REVIEW_REGEX",
+    "ORDERED_REGEX"
+  ],
+  "cases": [
+    {
+      "case_id": "EN01",
+      "constraints": [
+        {"id":"monitor","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["traffic","real[- ]?time"]},
+        {"id":"roadside","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["roadside","(?:collect|observation)"]},
+        {"id":"congestion","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["congestion","(?:faster|rapid|quick)"]},
+        {"id":"modality","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["(?:can|may|could|potentially).{0,70}(?:support|facilitat|identif)|(?:support|facilitat|identif).{0,70}(?:can|may|could|potentially)"]},
+        {"id":"scope","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["arterial roads","weekday peak","(?:only|limit(?:ed|s)?|restrict(?:ed|s)?|focus|exclusive(?:ly)?)"]}
+      ]
+    },
+    {
+      "case_id": "EN02",
+      "constraints": [
+        {"id":"interval","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["15\\s*(?:minutes?|min\\b)"]},
+        {"id":"vehicles","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["(?:two|2)\\s+collection vehicles?"]},
+        {"id":"district","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["synthetic district"]},
+        {"id":"metrics","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["travel distance","missed[- ]overflow"]},
+        {"id":"novelty","kind":"FORBID_REGEX","severity":"HARD","patterns":["\\bnovel\\b|state[- ]of[- ]the[- ]art|\\boutperform"]},
+        {"id":"efficiency","kind":"REVIEW_REGEX","severity":"REVIEW","patterns":["\\befficien(?:t|cy)\\b"]}
+      ]
+    },
+    {
+      "case_id": "EN03",
+      "constraints": [
+        {"id":"A","kind":"SAME_SENTENCE","severity":"HARD","anchor":"study a","patterns":["(?:lower|reduc)\\w* latency","edge aggregation"]},
+        {"id":"B","kind":"SAME_SENTENCE","severity":"HARD","anchor":"study b","patterns":["sparse traffic","(?:no|does not|did not).{0,40}latency.{0,40}(?:reduc|improv)"]},
+        {"id":"C","kind":"SAME_SENTENCE","severity":"HARD","anchor":"study c","patterns":["12\\s*%","(?:energy|consumption)","batch"]},
+        {"id":"D","kind":"SAME_SENTENCE","severity":"HARD","anchor":"study d","patterns":["batch","(?:increase|increased)\\w* delay","emergency"]},
+        {"id":"C_strength","kind":"FORBID_REGEX","severity":"HARD","patterns":["study c.{0,100}(?:demonstrat|due to)"]},
+        {"id":"mechanism_conflation","kind":"FORBID_REGEX","severity":"HARD","patterns":["stud(?:y|ies)\\s+a[^.!?]{0,180}edge aggregation[^.!?]{0,180}energy consumption"]},
+        {"id":"contrast","kind":"REQUIRE_ANY_GROUP","severity":"REVIEW","groups":[["not (?:uniformly )?consistent","different operating conditions","vary across","contrasting findings"]]}
+      ]
+    },
+    {
+      "case_id": "EN04",
+      "constraints": [
+        {"id":"cit1","kind":"SAME_SENTENCE","severity":"HARD","anchor":"\\[cit_syn_01\\]","patterns":["queue length","(?:reduc|lower)"]},
+        {"id":"cit2","kind":"SAME_SENTENCE","severity":"HARD","anchor":"\\[cit_syn_02\\]","patterns":["packet loss","(?:increase|higher)","(?:density|roadside|rsu)"]},
+        {"id":"subsystems","kind":"REQUIRE_ANY_GROUP","severity":"REVIEW","groups":[["different subsystems?","distinct subsystems?"]]},
+        {"id":"strength","kind":"FORBID_REGEX","severity":"HARD","patterns":["adaptive signal timing.{0,80}(?:associated with|association)"]},
+        {"id":"density_direction","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["(?:density.{0,50}reduc|reduc\\w*.{0,50}density)"]}
+      ]
+    },
+    {
+      "case_id": "EN05",
+      "constraints": [
+        {"id":"population","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["evening"]},
+        {"id":"association","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["beacon density","(?:associat|correlat)","(?:shorter|reduc)\\w* discovery"]},
+        {"id":"hedge","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["(?:may.{0,80}(?:awareness|neighbor)|(?:awareness|neighbor).{0,80}may)"]},
+        {"id":"noncausal","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["does not (?:establish|demonstrate|prove).{0,80}caus","cannot (?:establish|demonstrate|prove).{0,80}caus","not.*causal"]]},
+        {"id":"outside","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["not (?:evaluated|assessed|tested) outside","outside the evening window.{0,40}not"]]}
+      ]
+    },
+    {
+      "case_id": "EN06",
+      "constraints": [
+        {"id":"values","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["42\\.0","51\\.5","46\\.2","49\\.8","4\\.2","08:00","14:00","group a","group b"]},
+        {"id":"bind08","kind":"SAME_SENTENCE","severity":"HARD","anchor":"08:00","patterns":["(?:group a.{0,45}42\\.0|42\\.0.{0,25}(?:for )?group a)","(?:group b.{0,45}51\\.5|51\\.5.{0,25}(?:for )?group b)"]},
+        {"id":"bind14","kind":"SAME_SENTENCE","severity":"HARD","anchor":"14:00","patterns":["(?:group a.{0,45}46\\.2|46\\.2.{0,25}(?:for )?group a)","(?:group b.{0,45}49\\.8|49\\.8.{0,25}(?:for )?group b)"]},
+        {"id":"delta","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["(?:increase|increased|rose).{0,50}4\\.2","4\\.2.{0,50}(?:increase|increased|rose)"]]},
+        {"id":"baseline","kind":"REQUIRE_ALL_REGEX","severity":"REVIEW","patterns":["08:00","baseline"]},
+        {"id":"performance_direction","kind":"REVIEW_REGEX","severity":"REVIEW","patterns":["performance (?:increased|improved)"]}
+      ]
+    },
+    {
+      "case_id": "EN07",
+      "constraints": [
+        {"id":"old","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["(?:discard|reject|remove)\\w*.{0,50}(?:older than|over) 60\\s*(?:s|seconds?)","60\\s*(?:s|seconds?).{0,50}(?:discard|reject|remove)"]]},
+        {"id":"normalize","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["normaliz","fixed (?:before|prior to) (?:evaluation|the evaluation|run|the run)"]},
+        {"id":"exclude","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["(?:exclude|excluded).{0,50}(?:missing|lacking) position","(?:missing|lacking) position.{0,50}excluded"]]},
+        {"id":"repro","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["200","seed","17"]},
+        {"id":"notune","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["without (?:further|additional) tuning","no (?:further|additional) tuning","not.*(?:further|additional) tun"]]}
+      ]
+    },
+    {
+      "case_id": "EN08",
+      "constraints": [
+        {"id":"assoc","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["channel occupancy","(?:associat|correlat)","delivery ratio"]},
+        {"id":"medium","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["(?:strongest|most pronounced)","medium[- ]density"]},
+        {"id":"manip","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["(?:not|did not)","(?:manipulat|controlled?)","occupancy"]},
+        {"id":"nocause","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["does not (?:demonstrate|establish|prove)","cannot (?:demonstrate|establish|prove|conclude)","not.*causal"]]},
+        {"id":"other","kind":"REQUIRE_ANY_GROUP","severity":"REVIEW","groups":[["other networks?","generaliz"]]},
+        {"id":"blanket","kind":"REVIEW_REGEX","severity":"REVIEW","patterns":["\\bor allow for generaliz|\\band (?:does not|cannot) allow for generaliz"]},
+        {"id":"direction","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["lower channel occupancy.{0,100}higher delivery ratio","higher delivery ratio.{0,100}lower channel occupancy","negative association.{0,100}channel occupancy.{0,100}delivery ratio","channel occupancy.{0,100}delivery ratio.{0,100}negative association"]]}
+      ]
+    },
+    {
+      "case_id": "EN09",
+      "constraints": [
+        {"id":"symbols","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["p_i","w_1","u_i","w_2","d_i"]},
+        {"id":"U","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["u_i\\s+(?:is|represents?|denotes?)\\s+utilization","u_i\\s*,?\\s*(?:which\\s+)?(?:represents?|denotes?)\\s+utilization","utilization\\s*\\(\\s*u_i\\s*\\)"]]},
+        {"id":"D","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["d_i\\s+(?:is|represents?|denotes?)\\s+normalized deadline pressure","d_i\\s*,?\\s*(?:which\\s+)?(?:represents?|denotes?)\\s+normalized deadline pressure","normalized deadline pressure\\s*\\(\\s*d_i\\s*\\)"]]},
+        {"id":"weights","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["weights?.{0,80}fixed (?:before|prior to)"]},
+        {"id":"stability","kind":"REVIEW_REGEX","severity":"REVIEW","patterns":["weights?.{0,100}(?:remain|stays?|are) constant throughout"]},
+        {"id":"unchanged","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["equation.{0,80}(?:not changed|unchanged|not modified|remains unchanged)","(?:not changed|unchanged|not modified|remains unchanged).{0,80}equation"]]},
+        {"id":"equation_identity","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["p_i\\s*=\\s*w_1u_i\\s*\\+\\s*w_2d_i"]}
+      ]
+    },
+    {
+      "case_id": "EN10",
+      "constraints": [
+        {"id":"rate","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["one measurement every 30\\s*(?:s|seconds?)","every 30\\s*(?:s|seconds?)"]]},
+        {"id":"active","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["active node"]},
+        {"id":"meta","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["timestamp","node identifier"]},
+        {"id":"groups","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["node","(?:five[- ]minute|5[- ]minute)"]},
+        {"id":"impute","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["no imputation","not imputed","imputation is not"]]},
+        {"id":"assertive","kind":"REVIEW_REGEX","severity":"REVIEW","patterns":["\\bcrucial\\b|\\bprecise tracking\\b"]}
+      ]
+    },
+    {
+      "case_id": "EN11",
+      "constraints": [
+        {"id":"receive","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["gateway","receiv","report"]},
+        {"id":"id","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["identifier"]},
+        {"id":"ts","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["timestamp"]},
+        {"id":"dup","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["reject","duplicate"]},
+        {"id":"forward","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["forward","(?:accepted|valid)","storage"]},
+        {"id":"orig","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["storage","original timestamp"]}
+      ]
+    },
+    {
+      "case_id": "EN12",
+      "constraints": [
+        {"id":"dens","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["three traffic densit","3 traffic densit"]]},
+        {"id":"rel","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["reliability","delivery ratio"]},
+        {"id":"delay","kind":"REQUIRE_ALL_REGEX","severity":"HARD","patterns":["delay"]},
+        {"id":"fixed","kind":"REQUIRE_ANY_GROUP","severity":"HARD","groups":[["parameter.{0,50}(?:same|fixed|remain(?:s|ed)? unchanged).{0,60}densit","(?:same|fixed).{0,30}parameter.{0,60}densit"]]},
+        {"id":"retune","kind":"REQUIRE_ANY_GROUP","severity":"REVIEW","groups":[["rather than.{0,60}retun","not.{0,60}retun","distinguish.{0,60}retun","isolate.{0,60}retun"]]},
+        {"id":"attrib","kind":"REVIEW_REGEX","severity":"REVIEW","patterns":["attribut(?:e|ed|able)"]}
+      ]
+    }
+  ]
+}
