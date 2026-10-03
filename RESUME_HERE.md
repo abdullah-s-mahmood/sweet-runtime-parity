@@ -4724,3 +4724,43 @@ HW1-EN remains blocked.
 Arabic active research remains FROZEN.
 Arabic V4.2 remains CLOSED.
 Reserved Arabic populations remain CLOSED.
+
+
+## 2026-10-03 — Permanent quantitative progress / quality-delta reporting agreement
+
+This supplements all earlier ACAD_PASS operating agreements.
+
+For every meaningful checkpoint, progress update, phase closure, or result review, report all of the following when evidence allows:
+
+1. **Result delta versus the nearest valid comparable checkpoint**
+   - state whether the result is `IMPROVED`, `WORSENED`, `MIXED`, or `NOT COMPARABLE`;
+   - report the magnitude numerically (percentage points, relative %, counts, error-rate change, coverage change, escape-rate change, etc.) only when the denominator/construct is comparable;
+   - never manufacture a percentage merely to satisfy reporting.
+
+2. **Current-stage completion**
+   - report an approximate percentage grounded in known workflow steps, processed units, or explicit gates;
+   - state what has completed and what remains;
+   - avoid false precision.
+
+3. **Whole-system completion**
+   - report a coarse architectural/research completion estimate for ACAD_PASS as a whole;
+   - this is a planning estimate, not a scientific metric;
+   - update it only when a meaningful architecture/research milestone changes the estimate;
+   - always list the major unfinished blocks that dominate the remaining work.
+
+4. **Remaining-work outlook**
+   - report remaining phases/gates, principal blockers, and observed throughput where useful;
+   - do **not** give an unreliable wall-clock completion promise or guaranteed hours/days-to-finish estimate;
+   - if a current backend run exposes measured throughput, it may be reported as observed throughput only.
+
+5. **Research / brainstorming**
+   - retain the permanent rule requiring fresh rigorous research and maximum-effort brainstorming at the START and END of substantive phases;
+   - challenge assumptions, alternatives, construct validity, contamination, and negative evidence.
+
+6. **Higher-model consultation**
+   - use higher-model review when architecture, benchmark design, experimental validity, frozen-result interpretation, safety-gate changes, or other high-stakes decisions justify it;
+   - routine implementation remains delegated to the implementation agent;
+   - if no separate stronger-model tool is actually available in the current environment, explicitly record that limitation rather than pretending a consultation occurred.
+
+7. These quantitative/progress reports are in addition to the existing staged-execution rule: complete one coherent checkpoint, freeze evidence, report, then stop for explicit `أكمل` when the remaining work is separable.
+
