@@ -1238,3 +1238,119 @@ Current authorization:
 
 Exact next work:
 **Reviewer qualification + recruitment/access-separation setup.**
+
+
+---
+
+# 28. NO-NEW-HUMAN GATE C ALTERNATIVE — RESEARCH UPDATE
+
+Date: 2026-10-03
+
+User requested aggressive deep research/brainstorming to avoid recruiting new human reviewers if scientifically defensible.
+
+New researched conclusion:
+
+`EXTERNAL_HUMAN_GOLD_COMPOSITE_VALIDATION`
+
+is a plausible replacement for most or all newly-created Gate C human gold.
+
+Research plan:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_NO_NEW_HUMAN_ALTERNATIVE_RESEARCH_V1.md`
+
+Commit:
+`a8a613f28988046ccd37411760cbf8aa4c66a0cb`
+
+Core idea:
+replace bespoke new human adjudication with multiple independent published human/expert-labeled benchmarks + deterministic ACAD_PASS-specific metamorphic tests.
+
+Candidate external human-gold tracks:
+
+1. SciFact
+   - expert-written scientific claims
+   - SUPPORT/CONTRADICT labels
+   - evidence rationales
+
+2. SciFact-Open
+   - open-domain scientific verification
+   - large research-abstract corpus
+   - annotated evidence
+
+3. QASPER
+   - 5,049 questions over 1,585 research papers
+   - practitioner answers
+   - supporting evidence paragraphs
+
+4. DeFacto
+   - human corrective instructions
+   - human-edited corrected summaries
+   - natural-language explanations
+
+5. TRUE
+   - standardized collection of 11 manually annotated factual-consistency datasets
+
+6. SummaC / AGGREFACT / FRANK
+   - multiple human-labeled factual-consistency benchmarks
+   - error typologies and de-duplicated factuality cases
+
+7. FENICE long-form annotations
+   - human factuality annotations for long-form summarization
+
+8. QASemConsistency 2026
+   - >3K fine-grained human factual-consistency annotations
+   - localized error evidence
+
+9. Clinical-study summarization human factuality annotations
+
+10. PlainFact / PlainQAFact
+    - fine-grained human biomedical factual-consistency data
+
+11. USB
+    - six-domain human-labeled benchmark
+    - evidence, factual accuracy, unsubstantiated spans, factual-error correction
+
+12. Deterministic metamorphic ACAD_PASS track
+    - oracle-free relation tests
+    - owner/value swap
+    - negation flip
+    - modality strengthening
+    - association->causation
+    - citation-owner swap
+    - equation coefficient-variable swap
+    - baseline/denominator/time/scope mutations
+    - faithful split/merge transformations
+
+Scientific boundary:
+- no single public dataset fully matches ACAD_PASS academic rewrite fidelity;
+- composite triangulation can provide strong external validation;
+- external labels require preregistered dataset-specific adapter contracts;
+- do not naively map SUPPORT=PASS or NEI=REVIEW without construct validation;
+- the strongest defensible claim would be:
+  `NON_PROVISIONAL_EXTERNAL_BENCHMARK VALIDATION`
+  for constructs represented by the selected benchmarks;
+- do NOT call it `fresh bespoke human-adjudicated Gate C`.
+
+Potential new structure:
+- `Gate C-EXT`: published independent human-gold composite validation
+- `Gate C-META`: deterministic metamorphic relation validation
+
+Only if a journal/reviewer later demands bespoke fresh human labels:
+run a small targeted residual human study instead of 200 new adjudications.
+
+Immediate recommendation:
+DO NOT recruit reviewers yet.
+DO NOT open the custom 80-study holdout yet.
+
+Exact next checkpoint proposed:
+`PRE-GATE-C — EXTERNAL HUMAN-GOLD COMPOSITE FEASIBILITY AUDIT`
+
+Audit tasks:
+1. inventory candidate datasets;
+2. verify licenses/downloadability;
+3. inspect label schemas;
+4. quantify usable public labeled examples;
+5. detect overlap/deduplicate;
+6. freeze dataset-specific ACAD_PASS adapter contracts;
+7. map construct coverage/gaps;
+8. decide whether new human adjudication can be removed entirely or reduced to a small residual study.
+
+No V2.4 runtime changes.
