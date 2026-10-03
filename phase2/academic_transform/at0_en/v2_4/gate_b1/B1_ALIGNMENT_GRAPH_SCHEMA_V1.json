@@ -1,0 +1,336 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://acad-pass.local/schemas/v2.4/b1-alignment-pair-v1.json",
+  "title": "ACAD_PASS V2.4 B1 Human-Correct Alignment Pair",
+  "type": "object",
+  "required": [
+    "pair_id",
+    "source_case_id",
+    "scenario_class",
+    "mapping_shape",
+    "expected_outcome",
+    "source_graph",
+    "candidate_graph",
+    "gold_alignment"
+  ],
+  "properties": {
+    "pair_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_case_id": {
+      "type": "string",
+      "pattern": "^EN\\d{2}$"
+    },
+    "scenario_class": {
+      "enum": [
+        "FAITHFUL_PARAPHRASE",
+        "FAITHFUL_SPLIT",
+        "FAITHFUL_MERGE",
+        "RELATION_REBINDING",
+        "SCOPE_NEGATION_CHANGE",
+        "CITATION_BINDING_CHANGE",
+        "EQUATION_SYMBOL_CHANGE",
+        "PROCEDURAL_ORDER_CHANGE",
+        "METRIC_LABEL_CHANGE",
+        "AMBIGUOUS_ALIGNMENT"
+      ]
+    },
+    "mapping_shape": {
+      "enum": [
+        "ONE_TO_ONE",
+        "ONE_TO_MANY",
+        "MANY_TO_ONE",
+        "MIXED"
+      ]
+    },
+    "expected_outcome": {
+      "enum": [
+        "PASS_CANDIDATE",
+        "REJECT",
+        "REVIEW"
+      ]
+    },
+    "source_graph": {
+      "$ref": "#/$defs/graph"
+    },
+    "candidate_graph": {
+      "$ref": "#/$defs/graph"
+    },
+    "gold_alignment": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_ids",
+          "candidate_ids",
+          "status",
+          "criticality",
+          "reason"
+        ],
+        "properties": {
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "candidate_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "status": {
+            "enum": [
+              "PRESERVED",
+              "ALTERED",
+              "OMITTED",
+              "NEW_INFORMATION",
+              "CONTRADICTORY",
+              "UNCERTAIN"
+            ]
+          },
+          "criticality": {
+            "enum": [
+              "CRITICAL",
+              "MATERIAL",
+              "NON_MATERIAL"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "assertion": {
+      "type": "object",
+      "required": [
+        "id",
+        "criticality",
+        "subject",
+        "predicate",
+        "object",
+        "polarity",
+        "modality",
+        "causality",
+        "scope",
+        "time",
+        "population",
+        "baseline",
+        "bindings",
+        "confidence_status",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "criticality": {
+          "enum": [
+            "CRITICAL",
+            "MATERIAL",
+            "NON_MATERIAL"
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "predicate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "object": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "polarity": {
+          "enum": [
+            "POSITIVE",
+            "NEGATIVE"
+          ]
+        },
+        "modality": {
+          "enum": [
+            "ASSERTED",
+            "MAY",
+            "CAN",
+            "COULD",
+            "LIKELY",
+            "POSSIBLE",
+            "UNCERTAIN",
+            "OTHER"
+          ]
+        },
+        "causality": {
+          "enum": [
+            "NONE",
+            "ASSOCIATION_ONLY",
+            "CAUSAL",
+            "EXPLICIT_NON_CAUSAL"
+          ]
+        },
+        "scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "time": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "population": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "baseline": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "bindings": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          }
+        },
+        "confidence_status": {
+          "enum": [
+            "CERTAIN",
+            "UNCERTAIN",
+            "AMBIGUOUS"
+          ]
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "relation": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "from",
+        "to",
+        "criticality",
+        "confidence_status",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "enum": [
+            "CITES",
+            "DEFINES",
+            "HAS_VALUE",
+            "HAS_UNIT",
+            "AT_TIME",
+            "IN_POPULATION",
+            "RELATIVE_TO",
+            "APPLIES_ONLY_TO",
+            "HAS_MODALITY",
+            "HAS_CAUSALITY",
+            "PRECEDES",
+            "UNCHANGED_DURING",
+            "DISTINCT_FROM",
+            "MEASURES",
+            "COMPARES_TO",
+            "OTHER"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to": {
+          "type": "string",
+          "minLength": 1
+        },
+        "criticality": {
+          "enum": [
+            "CRITICAL",
+            "MATERIAL",
+            "NON_MATERIAL"
+          ]
+        },
+        "confidence_status": {
+          "enum": [
+            "CERTAIN",
+            "UNCERTAIN",
+            "AMBIGUOUS"
+          ]
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "graph": {
+      "type": "object",
+      "required": [
+        "graph_id",
+        "assertions",
+        "relations"
+      ],
+      "properties": {
+        "graph_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assertions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assertion"
+          },
+          "minItems": 1
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relation"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
