@@ -98,6 +98,9 @@ Each edge carries:
 - modality/evidential strength
 - confidence
 - normalization trace
+- minimal evidence trace supporting the relation decision
+
+Evidence traces must identify the smallest sufficient source/candidate spans used for a critical alignment or rejection. When document context later includes tables, captions, titles, footnotes, or equation blocks, these may be explicit evidence nodes/references rather than being flattened into nearby prose.
 
 No graph database or broad ontology is required.
 
@@ -208,11 +211,14 @@ Similarity/embeddings may propose candidate matches only.
 They never confer PASS.
 A critical mismatch is non-compensatory.
 
+Critical alignment classes must explicitly support coreference, temporal, causal, comparison/baseline, and hierarchy/subsumption relations where they affect scientific meaning.
+
 ## 8. Transaction outcomes
 
 ### PASS_CANDIDATE
 Meaning preserved relative to the source and verified scope.
 Does not claim external scientific truth.
+Every critical PASS dependency must have traceable supporting evidence; a correct final label without faithful evidence trace is insufficient for automatic PASS.
 
 ### REJECT
 Material scientific change supported by traceable evidence.
