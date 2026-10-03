@@ -11,7 +11,8 @@
     "expected_outcome",
     "source_graph",
     "candidate_graph",
-    "gold_alignment"
+    "gold_alignment",
+    "gold_relation_alignment"
   ],
   "properties": {
     "pair_id": {
@@ -110,6 +111,57 @@
         "additionalProperties": false
       },
       "minItems": 1
+    },
+    "gold_relation_alignment": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_relation_ids",
+          "candidate_relation_ids",
+          "status",
+          "criticality",
+          "reason"
+        ],
+        "properties": {
+          "source_relation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "candidate_relation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "status": {
+            "enum": [
+              "PRESERVED",
+              "ALTERED",
+              "OMITTED",
+              "NEW_INFORMATION",
+              "CONTRADICTORY",
+              "UNCERTAIN"
+            ]
+          },
+          "criticality": {
+            "enum": [
+              "CRITICAL",
+              "MATERIAL",
+              "NON_MATERIAL"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "additionalProperties": false,
