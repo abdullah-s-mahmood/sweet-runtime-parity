@@ -1,0 +1,49 @@
+name: AT0-EN V2.4 Gate A2 Source Assertions
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/gate_a/GATE_A2_RUN_TRIGGER_V1.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  a2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact trigger state
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile A2 extractor and structural test
+        run: |
+          set -euo pipefail
+          python -m py_compile             phase2/academic_transform/at0_en/v2_4/gate_a/source_anchor_extractor.py             phase2/academic_transform/at0_en/v2_4/gate_a/source_assertion_extractor.py             phase2/academic_transform/at0_en/v2_4/gate_a/check_gate_a2_source_assertions.py
+
+      - name: Run A2 structural validation
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_4/gate_a/check_gate_a2_source_assertions.py
+
+      - name: Freeze A2 evidence hashes
+        run: |
+          set -euo pipefail
+          cd phase2/academic_transform/at0_en/v2_4/gate_a
+          sha256sum             source_assertion_extractor.py             check_gate_a2_source_assertions.py             results/GATE_A2_SOURCE_ASSERTIONS.jsonl             results/GATE_A2_SOURCE_ASSERTION_SUMMARY.json             > results/GATE_A2_SHA256.txt
+          cat results/GATE_A2_SHA256.txt
+
+      - name: Upload A2 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-gate-a2-${{ github.run_id }}
+          path: phase2/academic_transform/at0_en/v2_4/gate_a/results/
+          retention-days: 30
+          if-no-files-found: error
