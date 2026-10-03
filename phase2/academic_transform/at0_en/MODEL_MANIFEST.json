@@ -1,5 +1,11 @@
 {
-  "status": "BLOCKED_MODEL_ACCESS",
+  "status": "ACCEPT_BLOCKED_CHECKPOINT",
+  "architect_decision": "KEEP",
   "models": [],
-  "requirement": "Two already-authorized distinct model identities; exact provider identifiers and cost cap required before live calls."
+  "models_required": 2,
+  "requirement": "Two already-authorized distinct model identities with exact provider identifiers, auditable execution environment, and frozen cost/token ceilings before any live call.",
+  "live_execution_authorized": false,
+  "hw1_en_authorized": false,
+  "detector_robustness_authorized": false,
+  "note": "The blocker is operational (model access and budget authorization), not architectural. Do not substitute an untracked assistant/model identity."
 }
