@@ -254,6 +254,17 @@ def parse_measured_as(sentence:str, idx:int):
 def parse_explicit_scientific_predicate(sentence:str, idx:int):
     s=sentence.rstrip(".").strip()
 
+    # Explicit negated scientific predicates are represented as negation, never folded into the subject.
+    m=re.fullmatch(r"We\s+do\s+not\s+define\s+(?P<subject>.+?)\s+as\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(idx,m.group("subject"),"DEFINE",m.group("object"),sentence,polarity="NEGATIVE")]
+    m=re.fullmatch(r"(?P<subject>.+?)\s+does\s+not\s+treat\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(idx,m.group("subject"),"TREAT",m.group("object"),sentence,polarity="NEGATIVE")]
+    m=re.fullmatch(r"(?P<subject>.+?)\s+(?:are|is)\s+not\s+used\s+for\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(idx,m.group("subject"),"USE_FOR",m.group("object"),sentence,polarity="NEGATIVE")]
+
     # Explicit scientific definitions: "We define X as Y" / "X is defined as Y".
     m=re.fullmatch(r"We\s+define\s+(?P<subject>.+?)\s+as\s+(?P<object>.+)",s,re.I)
     if m:
