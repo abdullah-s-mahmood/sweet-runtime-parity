@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -142,6 +143,36 @@ def runtime_snapshot() -> dict:
         "disk": {"total": disk.total, "used": disk.used, "free": disk.free},
     }
 
+def validate_plan(obj: dict) -> list[str]:
+    errors = []
+    if obj.get("status") not in {"PLAN", "REVIEW"}:
+        errors.append("PLAN_STATUS")
+    if not isinstance(obj.get("operations"), list):
+        errors.append("PLAN_OPERATIONS_TYPE")
+    if not isinstance(obj.get("uncertainty"), list):
+        errors.append("PLAN_UNCERTAINTY_TYPE")
+    return errors
+
+def validate_output(obj: dict) -> list[str]:
+    errors = []
+    required = {"status", "revised_paragraph", "content_unit_mapping", "protected_status", "uncertainty"}
+    if not required.issubset(obj):
+        errors.append("OUTPUT_REQUIRED_KEYS")
+    status = obj.get("status")
+    if status not in {"REVISE", "KEEP", "REVIEW"}:
+        errors.append("OUTPUT_STATUS")
+    if status == "REVISE" and (not isinstance(obj.get("revised_paragraph"), str) or not obj.get("revised_paragraph", "").strip()):
+        errors.append("OUTPUT_REWRITE_REQUIRED")
+    if status in {"KEEP", "REVIEW"} and obj.get("revised_paragraph") is not None and not isinstance(obj.get("revised_paragraph"), str):
+        errors.append("OUTPUT_REWRITE_TYPE")
+    if not isinstance(obj.get("content_unit_mapping"), list):
+        errors.append("OUTPUT_CONTENT_UNIT_MAPPING_TYPE")
+    if not isinstance(obj.get("protected_status"), list):
+        errors.append("OUTPUT_PROTECTED_STATUS_TYPE")
+    if not isinstance(obj.get("uncertainty"), list):
+        errors.append("OUTPUT_UNCERTAINTY_TYPE")
+    return errors
+
 def request_messages(model_slot: str, prompt: str):
     if model_slot == "MODEL_B":
         return [
@@ -262,6 +293,10 @@ def main():
                             stage_specs = [("DIRECT", build_prompt(case, "DIRECT"), cfg["per_request_max_output_tokens"]["DIRECT"])]
                         else:
                             plan_prompt = build_prompt(case, "PLAN")
+                            requests.append({"slot_id": slot_id, "stage": "PLAN", "prompt": plan_prompt, "prompt_sha256": sha256_text(plan_prompt)})
+                            row["logical_calls"] = 1
+                            write_jsonl(out / "requests.jsonl", requests)
+                            write_jsonl(out / "slots.jsonl", slots)
                             plan_text, meta = generate(
                                 f"http://127.0.0.1:{port}",
                                 args.model_slot,
@@ -269,9 +304,7 @@ def main():
                                 cfg["per_request_max_output_tokens"]["PLAN"],
                                 cfg["generation"]["seed"],
                             )
-                            requests.append({"slot_id": slot_id, "stage": "PLAN", "prompt": plan_prompt, "prompt_sha256": sha256_text(plan_prompt)})
                             responses.append({"slot_id": slot_id, "stage": "PLAN", "raw": plan_text, "runtime": meta})
-                            row["logical_calls"] = 1
                             write_jsonl(out / "requests.jsonl", requests)
                             write_jsonl(out / "responses.jsonl", responses)
                             write_jsonl(out / "slots.jsonl", slots)
@@ -282,6 +315,11 @@ def main():
                                 row.update(status="FAILED_PARSE_PLAN", error=f"{type(exc).__name__}:{exc}")
                                 write_jsonl(out / "slots.jsonl", slots)
                                 continue
+                            plan_errors = validate_plan(plan)
+                            if plan_errors:
+                                row.update(status="FAILED_SCHEMA_PLAN", schema_errors=plan_errors)
+                                write_jsonl(out / "slots.jsonl", slots)
+                                continue
                             if plan.get("status") != "PLAN":
                                 row.update(status="PLAN_REVIEW", plan_status=plan.get("status"))
                                 write_jsonl(out / "slots.jsonl", slots)
@@ -289,6 +327,10 @@ def main():
                             stage_specs = [("REALIZE", build_prompt(case, "REALIZE", plan), cfg["per_request_max_output_tokens"]["REALIZE"])]
 
                         for stage, stage_prompt, max_tokens in stage_specs:
+                            requests.append({"slot_id": slot_id, "stage": stage, "prompt": stage_prompt, "prompt_sha256": sha256_text(stage_prompt)})
+                            row["logical_calls"] = 1 if arm == "DIRECT" else 2
+                            write_jsonl(out / "requests.jsonl", requests)
+                            write_jsonl(out / "slots.jsonl", slots)
                             text, meta = generate(
                                 f"http://127.0.0.1:{port}",
                                 args.model_slot,
@@ -296,14 +338,16 @@ def main():
                                 max_tokens,
                                 cfg["generation"]["seed"],
                             )
-                            requests.append({"slot_id": slot_id, "stage": stage, "prompt": stage_prompt, "prompt_sha256": sha256_text(stage_prompt)})
                             responses.append({"slot_id": slot_id, "stage": stage, "raw": text, "runtime": meta})
-                            row["logical_calls"] = 1 if arm == "DIRECT" else 2
                             try:
                                 parsed = parse_json_text(text)
+                                schema_errors = validate_output(parsed)
                                 row["output_status"] = parsed.get("status")
                                 row["parsed_output"] = parsed
-                                row["status"] = "COMPLETE_RAW"
+                                if schema_errors:
+                                    row.update(status="FAILED_SCHEMA_OUTPUT", schema_errors=schema_errors)
+                                else:
+                                    row["status"] = "COMPLETE_RAW"
                             except Exception as exc:
                                 row.update(status="FAILED_PARSE_OUTPUT", error=f"{type(exc).__name__}:{exc}")
 
