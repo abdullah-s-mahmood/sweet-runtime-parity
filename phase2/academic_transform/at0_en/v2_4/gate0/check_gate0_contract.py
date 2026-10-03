@@ -39,6 +39,8 @@ ck("outcome_precedence",outcome["precedence"]==["INVALID_VERIFICATION","REJECT",
 ck("outcome_set",set(outcome["outcomes"])=={"PASS_CANDIDATE","REJECT","REVIEW","INVALID_VERIFICATION"})
 ck("pass_requires_trace",any("traceable evidence" in x for x in outcome["rules"]["PASS_CANDIDATE"]["requirements"]))
 ck("noncompensation_present",len(outcome["non_compensation"])>=3)
+ck("frame_graph_consistency_policy",crit.get("representation_consistency",{}).get("policy")=="FRAME_AND_GRAPH_MUST_AGREE")
+ck("frame_graph_disagreement_invalid",any("frame slots and graph relations" in x for x in outcome["rules"]["INVALID_VERIFICATION"]["triggers"]))
 
 expected={"EN04","EN05","EN06","EN07","EN09","EN12"}
 ck("reference_case_set",{x["case_id"] for x in refs}==expected,{x["case_id"] for x in refs})
