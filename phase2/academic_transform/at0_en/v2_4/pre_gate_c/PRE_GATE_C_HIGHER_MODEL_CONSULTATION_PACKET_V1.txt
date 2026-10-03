@@ -1,0 +1,259 @@
+AT0-EN V2.4 PRE-GATE-C — HIGHER-MODEL HOLDOUT / CONSTRUCT-VALIDITY CONSULTATION
+
+ROLE
+
+Act only as an independent Chief Architect / Research Methodologist.
+
+Do NOT:
+- implement;
+- write code;
+- modify repositories;
+- create the holdout;
+- sample papers;
+- construct candidates;
+- label cases;
+- run predictions;
+- change the frozen verifier.
+
+The implementation agent will perform all execution after the protocol is frozen.
+
+FILES TO REVIEW
+
+1. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_PROTOCOL_PRECONSULT_V1.md`
+
+2. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/PRE_GATE_C_PIPELINE_FREEZE_CLOSURE.md`
+
+3. `phase2/academic_transform/at0_en/v2_4/gate_b2/B2_FINAL_CLOSURE.md`
+
+4. `phase2/academic_transform/at0_en/v2_4/AT0_EN_V2_4_FROZEN_ARCHITECTURE_V2.md`
+
+CURRENT STATE
+
+Gate B is complete.
+
+Development evidence:
+- B1.1 human-correct alignment: 100%
+- B2.2 EE extracted->extracted: 100%
+- B2.2 GE: 91.67%
+- B2.2 EG: 91.67%
+- B2.2 adversarial automatic acceptance: 0%
+- B2.2 REVIEW preservation: 100%
+- representation audit: 102/102 checks PASS
+- 17/17 relation-aware prototype regressions PASS
+
+These are development results only.
+
+The complete verifier pipeline is now frozen.
+
+No Gate C untouched source has been sampled or opened.
+
+PIPELINE FREEZE
+
+Canonical freeze run:
+`37150864483`
+
+Artifact:
+`11284520199`
+
+Artifact SHA-256:
+`74f765f614b616da2eb101c30d669de0c0931b304a377944be2a4039fe5a844c`
+
+Any runtime change after Gate C protocol freeze creates a new pipeline version.
+
+PRE-CONSULTATION GATE C DESIGN
+
+Proposed independent authentic source clusters:
+**80**
+
+Five domains:
+- computer science / engineering
+- biomedical / life sciences
+- physical / materials sciences
+- environmental / earth sciences
+- social / behavioral sciences
+
+16 sources/domain.
+
+Proposed transactions:
+- 80 faithful PASS candidates
+- 80 material-drift REJECT candidates
+- 40 ambiguity REVIEW candidates
+- total 200 transactions
+
+Primary independence unit:
+source cluster, not transaction.
+
+Proposed source rules:
+- English peer-reviewed academic papers;
+- authentic prose with exact provenance;
+- sufficient local context;
+- unseen in ACAD_PASS development;
+- prioritize recent 2026 publications;
+- no source sampling before protocol freeze.
+
+Proposed benchmark-construction separation:
+- constructor does not see verifier predictions;
+- model-assisted candidate construction permitted only if model/prompt/version recorded;
+- construction intent is not gold.
+
+Proposed gold:
+- two independent qualified reviewers;
+- blind to verifier predictions and each other;
+- disagreement adjudicated by third reviewer;
+- minimal source/candidate evidence spans recorded;
+- if human adjudication cannot be met, Gate C can only be PROVISIONAL.
+
+Proposed anti-leakage execution:
+1. freeze unlabeled inputs;
+2. freeze/seal gold;
+3. hash both;
+4. run predictions;
+5. hash predictions;
+6. reveal frozen gold;
+7. score once;
+8. preserve every failure.
+
+CURRENT FROZEN ARCHITECTURE PRELIMINARY GATE C REQUIREMENTS
+
+- observed dangerous adversarial escape: 0
+- safe automatic acceptance: >=75%
+
+PRE-CONSULTATION ADDITIONS
+
+Safety:
+- REJECT -> automatic PASS: 0/80
+- REVIEW -> automatic PASS: 0/40
+- critical silent scientific errors: 0
+- unsupported critical evidence used for auto PASS/REJECT: 0
+
+Usability:
+- safe automatic acceptance >=60/80 =75%
+- proposed material-drift decisive REJECT rate >=60/80 =75%
+
+Ambiguity:
+- proposed exact REVIEW preservation >=36/40 =90%
+
+Evidence:
+- critical automatic-decision evidence-trace completeness =100%
+
+Required reporting:
+- PASS selective precision
+- safe coverage
+- adversarial escape
+- decisive REJECT rate
+- REVIEW recall
+- INVALID rate
+- overall accuracy
+- evidence fidelity
+- by-domain
+- by-relation-family
+- source-cluster-aware 95% intervals
+
+STRONG-ADOPTION TARGETS — LATER THAN GATE C
+
+- adversarial automatic acceptance =0%
+- critical silent scientific errors =0
+- automatic-PASS selective precision >=99%
+- authentic safe automatic acceptance >=90%
+- end-to-end / extracted decision accuracy >=95%
+- critical relation/ownership correctness =100%
+- critical evidence/provenance completeness =100%
+
+The implementation agent proposes NOT claiming >=99% reliability from the 80-source Gate C alone.
+
+Under simple independent-binomial assumptions, about 299 zero-error independent decisions would be needed for a one-sided 95% upper error bound below 1%; clustered transactions cannot be naively counted as independent.
+
+RESEARCH CONSIDERATIONS
+
+Recent work indicates:
+- benchmark leakage can materially inflate evaluation;
+- dynamic/recent or otherwise decontaminated evaluation improves credibility;
+- abstention must be evaluated independently from answer correctness;
+- correct verdicts without faithful evidence/rationale alignment may hide unfaithful reasoning.
+
+QUESTIONS
+
+Q1. Is the separation between:
+- Gate C research progression, and
+- later Strong-Adoption Validation
+methodologically sound?
+
+Q2. Is **80 independent source clusters / 200 transactions** appropriate for Gate C progression?
+Choose one:
+A. ACCEPT
+B. INCREASE
+C. DECREASE
+D. REDESIGN
+
+If not ACCEPT, give a specific revised count and reason.
+
+Q3. Is the proposed five-domain allocation scientifically defensible for an English-first general academic verifier?
+If not, propose the minimum change.
+
+Q4. Should each source produce PASS + REJECT, with REVIEW on half the sources?
+Assess clustering/paired-design benefits and risks.
+
+Q5. Should the proposed:
+`material-drift decisive REJECT >=75%`
+be:
+- a hard Gate C progression gate,
+- a diagnostic only,
+- or removed?
+
+Q6. Should:
+`exact REVIEW preservation >=90%`
+be a hard Gate C gate?
+Remember critical uncertainty may not automatically PASS.
+
+Q7. Is two-reviewer blind adjudication plus third-reviewer disagreement resolution necessary?
+If qualified reviewers are unavailable, is there any scientifically defensible substitute for a non-provisional Gate C?
+
+Q8. Are the sealed-label / prediction-first safeguards sufficient?
+Identify only essential missing safeguards.
+
+Q9. How should source freshness/decontamination be handled?
+Choose:
+- recent 2026 only,
+- mix of recent and older unseen sources,
+- temporal backtesting,
+- another approach.
+
+Q10. Are 95% source-cluster bootstrap intervals plus exact binomial zero-event intervals appropriate?
+State any necessary correction.
+
+Q11. For later Strong-Adoption Validation, is the approximate 299 independent zero-error decisions logic appropriate for supporting an error rate below 1% at one-sided 95% confidence?
+Clarify what the independence unit should be.
+
+Q12. What must be true before opening the untouched Gate C source set?
+Maximum 8 conditions.
+
+OUTPUT FORMAT
+
+Return only:
+
+1. VERDICT
+
+2. GATE-C SAMPLE DESIGN
+
+3. DOMAIN / SOURCE DESIGN
+
+4. TRANSACTION / CLUSTERING DESIGN
+
+5. FINAL GATE-C THRESHOLDS
+
+6. GOLD ADJUDICATION REQUIREMENTS
+
+7. ANTI-LEAKAGE / SEALING REQUIREMENTS
+
+8. STATISTICAL REPORTING
+
+9. STRONG-ADOPTION VALIDATION BOUNDARY
+
+10. CONDITIONS BEFORE HOLDOUT OPENING — maximum 8
+
+11. FINAL RATIONALE — concise
+
+Do not create samples.
+Do not browse candidate papers.
+Do not write code.
+Do not change the frozen pipeline.
