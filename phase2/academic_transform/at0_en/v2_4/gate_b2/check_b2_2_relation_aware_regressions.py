@@ -74,4 +74,19 @@ for i,(text,pred) in enumerate(cases,7):
     assert a["predicate"]==pred,(text,a)
     assert a["confidence_status"]=="CERTAIN",(text,a)
 
-print("B2.2 relation-aware principle regressions: 13/13 PASS")
+# 12-15. Red-team: negation/modality must not be flattened into positive certainty.
+g=graph("The scheduler may aim to reduce deadline misses.","RT12")
+assert len(g["assertions"])==1 and g["assertions"][0]["predicate"]=="AIM_TO",g
+assert g["assertions"][0]["modality"]=="MAY",g
+
+negative_cases=[
+    "We do not define throughput as delivered packets per second.",
+    "Academic citations are not used for evaluating reliability.",
+    "The analysis does not treat latency and throughput independently.",
+]
+for j,text in enumerate(negative_cases,13):
+    g=graph(text,f"RT{j}")
+    for a in g["assertions"]:
+        assert not (a["confidence_status"]=="CERTAIN" and a["polarity"]=="POSITIVE" and a["predicate"] in {"DEFINE","USE_FOR","TREAT"}),(text,a)
+
+print("B2.2 relation-aware principle regressions: 17/17 PASS")
