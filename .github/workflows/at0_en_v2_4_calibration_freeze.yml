@@ -1,0 +1,48 @@
+name: AT0-EN V2.4 Calibration Freeze
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - "phase2/academic_transform/at0_en/v2_4/build_calibration_v1.py"
+      - "phase2/academic_transform/at0_en/v2_4/SOURCE_ASSERTIONS_V1.json"
+      - ".github/workflows/at0_en_v2_4_calibration_freeze.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freeze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.16"
+      - name: Build frozen calibration population without model inference
+        run: |
+          set -euo pipefail
+          python -m py_compile phase2/academic_transform/at0_en/v2_4/build_calibration_v1.py
+          python phase2/academic_transform/at0_en/v2_4/build_calibration_v1.py
+      - name: Assert no semantic score fields exist
+        run: |
+          python - <<'PY'
+          import json,pathlib
+          p=pathlib.Path("phase2/academic_transform/at0_en/v2_4/calibration/V2_4_SEMANTIC_CALIBRATION_V1.jsonl")
+          rows=[json.loads(x) for x in p.read_text().splitlines() if x.strip()]
+          forbidden={"score","hhem_score","entailment_score","neutral_score","contradiction_score","semantic_decision"}
+          assert all(not (forbidden & set(r)) for r in rows)
+          print("NO_SEMANTIC_SCORES_OK",len(rows))
+          PY
+      - name: Hash frozen calibration evidence
+        run: |
+          cd phase2/academic_transform/at0_en/v2_4
+          sha256sum             SOURCE_ASSERTIONS_V1.json             calibration/V2_4_SEMANTIC_CALIBRATION_V1.jsonl             calibration/V2_4_CALIBRATION_EXCLUSIONS_V1.json             calibration/V2_4_SEMANTIC_CALIBRATION_MANIFEST_V1.json             > calibration/V2_4_CALIBRATION_FREEZE_SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-4-calibration-freeze-${{ github.run_id }}
+          path: phase2/academic_transform/at0_en/v2_4/calibration/
+          retention-days: 30
