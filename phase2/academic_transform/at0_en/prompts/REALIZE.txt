@@ -1,1 +1,0 @@
-Implement the supplied visible editorial plan on the original paragraph while preserving all frozen scientific constraints and citation/quantity relationships. Do not add facts. Return a structured transformation proposal.

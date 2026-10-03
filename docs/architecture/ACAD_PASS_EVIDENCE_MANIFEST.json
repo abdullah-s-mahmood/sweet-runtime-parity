@@ -1,26 +1,354 @@
 {
-  "version": "1.0.0",
+  "schema_version": "1.0.0",
+  "baseline": "ENGLISH_FIRST_2.0.0",
   "date": "2026-10-03",
-  "architecture": "ENGLISH_FIRST 2.0.0",
-  "repository": {
-    "name": "abdullah-s-mahmood/sweet-runtime-parity",
-    "branch": "phase2-arabic-eval",
-    "base_head": "3658a38728dd717f7bf4977a07a49f3c48d7bfac"
+  "repository": "abdullah-s-mahmood/sweet-runtime-parity",
+  "inspected_ref": "phase2-arabic-eval",
+  "repository_head_sha": "bca3a32791c6f2c1832403cbd751ea8c78cd6a43",
+  "repository_head_note": "English-first architecture and AT0-EN offline gate adopted in this commit; live matrix remains not run.",
+  "authority": "Companion index. Scientific scope and exposure are governed by the four master Markdown documents.",
+  "arabic_active_research": "FROZEN",
+  "new_arabic_data_opened": false,
+  "new_experiments_run": false,
+  "repository_adoption": "ADOPTED_OFFLINE_GATE",
+  "preservation_scope": "Supplied continuity files and selected Git document contents mirrored locally; remote Actions archives, model weights, complete repository backup and reserved data containers NOT mirrored here.",
+  "source_documents": [
+    {
+      "path": "evidence/2026-10-03/RESUME_HERE.md",
+      "git_blob_sha1": "7a0963f477426e6c711aa747e46dfe1be4e3b989",
+      "expected_local_sha256": "d368dc797e29f9c7cd2ed96e528d3a88d2f13d2a9347c719d5cae2d67ad045b3",
+      "kind": "SUPPLIED_BYTE_COPY",
+      "remote_blob_verified_on": "2026-10-03",
+      "preservation_state": "MIRRORED_VERIFIED",
+      "local_sha256": "d368dc797e29f9c7cd2ed96e528d3a88d2f13d2a9347c719d5cae2d67ad045b3",
+      "local_size_bytes": 142333
+    },
+    {
+      "path": "evidence/2026-10-03/ACAD_PASS_SYSTEM_EVOLUTION_LEDGER.md",
+      "git_blob_sha1": "753fcf49627fe42cde0cf09aa2e2eb32c1c388d7",
+      "expected_local_sha256": "c7eea67ceeb16336b0e54b705d26f032143ee2994bbc32640eeab9648f55ca40",
+      "kind": "SUPPLIED_BYTE_COPY",
+      "remote_blob_verified_on": "2026-10-03",
+      "preservation_state": "MIRRORED_VERIFIED",
+      "local_sha256": "c7eea67ceeb16336b0e54b705d26f032143ee2994bbc32640eeab9648f55ca40",
+      "local_size_bytes": 91722
+    },
+    {
+      "path": "evidence/2026-10-03/ACAD_PASS_EDIT_CONTRACT_V1.md",
+      "git_blob_sha1": "360d7e8033ac707a1692a9de0bb35069dcbf777f",
+      "url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/blob/phase2-arabic-eval/phase2/redesign/ACAD_PASS_EDIT_CONTRACT_V1.md",
+      "kind": "REMOTE_GIT_TEXT_MIRROR",
+      "preservation_state": "MIRRORED_VERIFIED",
+      "local_sha256": "1534859b4e23e840cb0457583e2a572d05e133eb98db3d7bc99ebe59e6d887fb",
+      "local_size_bytes": 5268,
+      "local_git_blob_sha1": "360d7e8033ac707a1692a9de0bb35069dcbf777f"
+    },
+    {
+      "path": "evidence/2026-10-03/MPSEF_RJOINT_V4_2_DEVELOPMENT_RESULT_ANALYSIS_V1.md",
+      "git_blob_sha1": "f100b3450d02efe60b90bc19cf80456c47b7bb1c",
+      "url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/blob/phase2-arabic-eval/phase2/redesign/MPSEF_RJOINT_V4_2_DEVELOPMENT_RESULT_ANALYSIS_V1.md",
+      "kind": "REMOTE_GIT_TEXT_MIRROR",
+      "preservation_state": "MIRRORED_VERIFIED",
+      "local_sha256": "3fd6a15d760a7dc9853dec5790f4b11379f902ee7292c711390306ca2c626ef0",
+      "local_size_bytes": 11606,
+      "local_git_blob_sha1": "f100b3450d02efe60b90bc19cf80456c47b7bb1c"
+    },
+    {
+      "path": "evidence/2026-10-03/MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_CLOSURE_LOCK_V1.md",
+      "git_blob_sha1": "20ff6a980362db316e0de853cc90bd56a6c16fdd",
+      "url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/blob/phase2-arabic-eval/phase2/redesign/MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_CLOSURE_LOCK_V1.md",
+      "kind": "REMOTE_GIT_TEXT_MIRROR",
+      "preservation_state": "MIRRORED_VERIFIED",
+      "local_sha256": "d058822309eb3e5df7652319f029e91d16978f576d1052f21f54a0af29da0e6a",
+      "local_size_bytes": 3638,
+      "local_git_blob_sha1": "20ff6a980362db316e0de853cc90bd56a6c16fdd"
+    },
+    {
+      "path": "evidence/2026-10-03/M2H_H1_OFFICIAL_ALIGNMENT_TATWEEL_CHARALIGN_AMENDMENT_V1.md",
+      "git_blob_sha1": "be50c068faedb18bf5fcc11087f058cd71e9cc6e",
+      "url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/blob/phase2-arabic-eval/phase2/redesign/M2H_H1_OFFICIAL_ALIGNMENT_TATWEEL_CHARALIGN_AMENDMENT_V1.md",
+      "kind": "REMOTE_GIT_TEXT_MIRROR",
+      "preservation_state": "MIRRORED_VERIFIED",
+      "local_sha256": "d0b0c6a4033d0a04b1c5780aecb9bb046b9dd57f0924b7edb18a79279146ef3e",
+      "local_size_bytes": 2512,
+      "local_git_blob_sha1": "be50c068faedb18bf5fcc11087f058cd71e9cc6e"
+    },
+    {
+      "path": "evidence/2026-10-03/MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_EVIDENCE_LOCK_V1.md",
+      "git_blob_sha1": "da08bc06ac82c9fef0e871f776cee6fc54ae2ede",
+      "url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/blob/phase2-arabic-eval/phase2/redesign/MPSEF_RJOINT_V4_2_DEVELOPMENT_MEASUREMENT_EVIDENCE_LOCK_V1.md",
+      "kind": "REMOTE_GIT_TEXT_MIRROR",
+      "preservation_state": "MIRRORED_VERIFIED",
+      "local_sha256": "3c551836da4db7868464917bd5e6e0638b1d885fc403ce197298ddb36abcd6fe",
+      "local_size_bytes": 2211,
+      "local_git_blob_sha1": "da08bc06ac82c9fef0e871f776cee6fc54ae2ede"
+    },
+    {
+      "path": "evidence/2026-10-03/MPSEF_PROPOSER_IDENTITY_FREEZE_V1.md",
+      "git_blob_sha1": "8b7deff8107a90ab8450af3f49bce329211faf34",
+      "url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/blob/phase2-arabic-eval/phase2/redesign/MPSEF_PROPOSER_IDENTITY_FREEZE_V1.md",
+      "kind": "REMOTE_GIT_TEXT_MIRROR",
+      "preservation_state": "MIRRORED_VERIFIED",
+      "local_sha256": "26093e289d48cefcf1e9c1a76f886dbf86bed02a4f72f94c1bf9e9a147b61d7d",
+      "local_size_bytes": 5013,
+      "local_git_blob_sha1": "8b7deff8107a90ab8450af3f49bce329211faf34"
+    },
+    {
+      "path": "evidence/2026-10-03/MPSEF_P3_V1_SWEET_PNX_CASCADE_SPEC.md",
+      "git_blob_sha1": "0f3601c12e317672f83656440dda929acaeb1b98",
+      "url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/blob/phase2-arabic-eval/phase2/redesign/MPSEF_P3_V1_SWEET_PNX_CASCADE_SPEC.md",
+      "kind": "REMOTE_GIT_TEXT_MIRROR",
+      "preservation_state": "MIRRORED_VERIFIED",
+      "local_sha256": "9da3930bfb7899eda57aeca6e6230b3a3405378044087bd1f43eae5d4478b18a",
+      "local_size_bytes": 6308,
+      "local_git_blob_sha1": "0f3601c12e317672f83656440dda929acaeb1b98"
+    }
+  ],
+  "selected_artifacts": [
+    {
+      "label": "CALIBRATION materialization",
+      "run_id": 36654588477,
+      "artifact_id": 11070819539,
+      "recorded_archive_sha256": "ab5f303b4405162684d9a8ece23c0ed378b25e7863129a284f3e65ca0844058a",
+      "exposure": "DEVELOPMENT_EXPOSED",
+      "preservation_state": "RECORDED_NOT_RETRIEVED",
+      "archive_bytes_verified_locally": false,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36654588477"
+    },
+    {
+      "label": "ARETA preflight",
+      "run_id": 36657724871,
+      "artifact_id": 11073405357,
+      "recorded_archive_sha256": "9623141a4fb21ffaa8ff893ea6fb187610611ef854d055870c157ec86e4acfed",
+      "exposure": "SYNTHETIC_PREFLIGHT",
+      "preservation_state": "RECORDED_NOT_RETRIEVED",
+      "archive_bytes_verified_locally": false,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36657724871"
+    },
+    {
+      "label": "H2 v2",
+      "run_id": 36702245858,
+      "artifact_id": 11090183156,
+      "recorded_archive_sha256": "769bcd52f897868ebcb5b64b46f217d0b0ee63b047d1815174ca2c7d3ab38d2b",
+      "exposure": "CALIBRATION_EXPOSED",
+      "preservation_state": "RECORDED_NOT_RETRIEVED",
+      "archive_bytes_verified_locally": false,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36702245858"
+    },
+    {
+      "label": "H3",
+      "run_id": 36703934748,
+      "artifact_id": 11091545756,
+      "recorded_archive_sha256": "82372c564d0f05dd16b3f7cc6d141c5eb77647a2c3a4277560ab6c6dc71d7f27",
+      "exposure": "CALIBRATION_EXPOSED",
+      "preservation_state": "RECORDED_NOT_RETRIEVED",
+      "archive_bytes_verified_locally": false,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36703934748"
+    },
+    {
+      "label": "H4",
+      "run_id": 36705698086,
+      "artifact_id": 11092051414,
+      "recorded_archive_sha256": "060b5ee437feefae2031108c102ee408ffe61178a813b54396599b199970994e",
+      "exposure": "CALIBRATION_EXPOSED",
+      "preservation_state": "RECORDED_NOT_RETRIEVED",
+      "archive_bytes_verified_locally": false,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36705698086"
+    },
+    {
+      "label": "H1 official alignment",
+      "run_id": 36716848223,
+      "artifact_id": 11098030966,
+      "recorded_archive_sha256": "ad476c7dfb8e194320a1a5d4b0a05ea016be5e4b012403854290fc86ca455fb1",
+      "exposure": "CALIBRATION_EXPOSED",
+      "preservation_state": "RECORDED_NOT_RETRIEVED",
+      "archive_bytes_verified_locally": false,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36716848223"
+    },
+    {
+      "label": "H1 scoring continuation",
+      "run_id": 36720612925,
+      "artifact_id": 11101562193,
+      "recorded_archive_sha256": "5f3478162cb54034cb89a58a47db32f70e50573186b7df980215e56b3259e420",
+      "exposure": "CALIBRATION_EXPOSED",
+      "preservation_state": "RECORDED_NOT_RETRIEVED",
+      "archive_bytes_verified_locally": false,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36720612925"
+    },
+    {
+      "label": "P1 source freeze",
+      "run_id": 36765798233,
+      "artifact_id": 11123050529,
+      "recorded_archive_sha256": "e4020418ca2f2793d4bb79bc766e26838398fb9affba6d0f1c704255cd5aed46",
+      "exposure": "C_F_DEVELOPMENT",
+      "preservation_state": "LOCAL_BYTES_SHA256_VERIFIED",
+      "archive_bytes_verified_locally": true,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36765798233"
+    },
+    {
+      "label": "P2 old invalid",
+      "run_id": 36768378938,
+      "artifact_id": 11124303107,
+      "recorded_archive_sha256": "5209633d389db02054456a42710a96a1d6e573cefca308254747897969c7d41c",
+      "exposure": "C_F_HISTORICAL_INVALID",
+      "preservation_state": "RECORDED_NOT_RETRIEVED",
+      "archive_bytes_verified_locally": false,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36768378938"
+    },
+    {
+      "label": "P2 V2 Stage0",
+      "run_id": 36868057043,
+      "artifact_id": 11165486137,
+      "recorded_archive_sha256": "9cdb16ad4f3606b2af158e296a7e59e24f3718aec18d8cbc174acfa4a2d50918",
+      "exposure": "SOURCE_FREE",
+      "preservation_state": "RECORDED_NOT_RETRIEVED",
+      "archive_bytes_verified_locally": false,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36868057043"
+    },
+    {
+      "label": "P2 V2 Stage2",
+      "run_id": 36899056538,
+      "artifact_id": 11186450279,
+      "recorded_archive_sha256": "c5c5d32c99ce216a5b93362748cfefa67de4ec1f5b2b1174c8d3caf0fcd914af",
+      "exposure": "C_F_DEVELOPMENT",
+      "preservation_state": "LOCAL_BYTES_SHA256_VERIFIED",
+      "archive_bytes_verified_locally": true,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36899056538"
+    },
+    {
+      "label": "P3 V1 Stage2",
+      "run_id": 36920015935,
+      "artifact_id": 11192760024,
+      "recorded_archive_sha256": "9a31de6dcff43efb903212a7fe2e2ad378f24e177faba0ecbd46ba4dd05e4253",
+      "exposure": "C_F_DEVELOPMENT",
+      "preservation_state": "LOCAL_BYTES_SHA256_VERIFIED",
+      "archive_bytes_verified_locally": true,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36920015935"
+    },
+    {
+      "label": "Stage2 source analysis",
+      "run_id": 36923877787,
+      "artifact_id": 11192953283,
+      "recorded_archive_sha256": "d773c8b65f607e06ce811d44d7e18deaf49c0da0c17428122d2258b043f82c4b",
+      "exposure": "C_F_DEVELOPMENT",
+      "preservation_state": "RECORDED_NOT_RETRIEVED",
+      "archive_bytes_verified_locally": false,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36923877787"
+    },
+    {
+      "label": "V4.2 final measurement",
+      "run_id": 36940844664,
+      "artifact_id": 11200024879,
+      "recorded_archive_sha256": "10ecdb75b5d80540d2c9ddf5e94672e8d64bbe3eb685ca3f53d63789c3d308af",
+      "exposure": "ADAPTIVELY_CONSUMED_DEVELOPMENT",
+      "preservation_state": "LOCAL_BYTES_SHA256_VERIFIED",
+      "archive_bytes_verified_locally": true,
+      "run_url": "https://github.com/abdullah-s-mahmood/sweet-runtime-parity/actions/runs/36940844664"
+    }
+  ],
+  "v4_2_remote_metadata": {
+    "id": 11200024879,
+    "name": "mpsef-rjoint-v4-2-development-measurement-v1",
+    "size_in_bytes": 60494,
+    "url": "https://api.github.com/repos/abdullah-s-mahmood/sweet-runtime-parity/actions/artifacts/11200024879",
+    "archive_download_url": "https://api.github.com/repos/abdullah-s-mahmood/sweet-runtime-parity/actions/artifacts/11200024879/zip",
+    "expired": false,
+    "created_at": "2026-10-01T23:38:23Z",
+    "expires_at": "2026-12-30T23:26:48Z",
+    "updated_at": "2026-10-01T23:38:23Z",
+    "digest": "sha256:10ecdb75b5d80540d2c9ddf5e94672e8d64bbe3eb685ca3f53d63789c3d308af",
+    "workflow_run": {
+      "id": 36940844664,
+      "repository_id": 1392251096,
+      "head_repository_id": 1392251096,
+      "head_branch": "phase2-arabic-eval",
+      "head_sha": "eabbd984744d3c5551e19b537d2b5b89d9cb5d8a"
+    }
   },
-  "preservation": {
-    "critical_arabic_evidence_status": "PRESERVED_BY_EXISTING_REPOSITORY_REFERENCES",
-    "wider_archive_status": "PARTIAL_NOT_CLAIMED_COMPLETE",
-    "reserved_data_opened_by_at0_en": false,
-    "reruns_triggered": false
+  "datasets": [
+    {
+      "role": "CALIBRATION",
+      "uids": 6888,
+      "uid_sha256": "3b6c1128f412531223b3c2e5346082d3290f40daac706eb13bbafa1db10a09c9",
+      "status": "DEVELOPMENT_EXPOSED"
+    },
+    {
+      "role": "C_F",
+      "uids": 1918,
+      "clusters": 764,
+      "status": "ADAPTIVELY_CONSUMED_DEVELOPMENT_NOT_CLEAN_HOLDOUT"
+    },
+    {
+      "role": "C_T",
+      "uids": 2898,
+      "clusters": 1020,
+      "status": "PARENT_CALIBRATION_EXPOSED_NOT_CLEAN_HOLDOUT"
+    },
+    {
+      "role": "C_R",
+      "uids": 2072,
+      "clusters": 768,
+      "status": "PARENT_CALIBRATION_EXPOSED_NOT_CLEAN_HOLDOUT"
+    },
+    {
+      "role": "INTERNAL_EVALUATION",
+      "uids": 5510,
+      "uid_sha256": "55a07608bd4ffd88f9d443aa877cae0830a20f4e797621853fb5bd096c276255",
+      "status": "UNOPENED_RESERVED_REPORTED"
+    },
+    {
+      "role": "STRESS_DIAGNOSTIC",
+      "uids": 1379,
+      "uid_sha256": "aa0c341451adca4bf861a0758c36f6b6629e3c3af65b5f8c9f73da2997752587",
+      "status": "UNOPENED_RESERVED_REPORTED"
+    },
+    {
+      "role": "Confirmation",
+      "uids": null,
+      "status": "UNOPENED_RESERVED_REPORTED"
+    },
+    {
+      "role": "Holdout",
+      "uids": null,
+      "status": "UNOPENED_RESERVED_REPORTED"
+    },
+    {
+      "role": "A7ta_reserve",
+      "uids": 88,
+      "status": "UNOPENED_RESERVED_REPORTED"
+    },
+    {
+      "role": "Nahw_reserve",
+      "uids": 59,
+      "status": "UNOPENED_RESERVED_REPORTED"
+    },
+    {
+      "role": "QALB15_TEST",
+      "uids": null,
+      "status": "UNOPENED_RESERVED_REPORTED"
+    }
+  ],
+  "identity_lexical_index": {
+    "path": "evidence/2026-10-03/metadata_index.json",
+    "semantics": "Source line index for discovery only; do not infer identifier types/relationships from regex matches.",
+    "sha256": "95aa89a6f7fd05ee68de3191f9df5ebf0a40e718af9ba64d71a4a1ae68cc971e",
+    "indexed_lines": 850
   },
-  "current_phase": "AT0-EN",
-  "offline": {
-    "fixtures": "30/30 PASS",
-    "unit_tests": "3/3 PASS",
-    "portability": "10/10 PASS"
-  },
-  "live_generation": {
-    "status": "NOT_RUN",
-    "reason": "No two authorized model endpoints and no explicit authorized cost ceiling in this implementation environment."
+  "gaps": [
+    "Complete repository refs/bundle and independent second storage copy remain pending.",
+    "Remote Actions archive bytes and model weights have not been downloaded/verified in this study.",
+    "P3 punctuation checkpoint revision, tokenizer/config/weight hashes must be recovered from existing runtime locks.",
+    "M1-A historical counts do not reconcile by subtraction; preserve ledger values and resolve scope using metadata without rerunning data.",
+    "Other historical artifact availability/expiry not checked; see full continuity documents and lexical index."
+  ],
+  "repository_adoption_commit": "bca3a32791c6f2c1832403cbd751ea8c78cd6a43",
+  "at0_en_offline": {
+    "fixtures_passed": 30,
+    "fixtures_total": 30,
+    "portability_passed": 10,
+    "portability_total": 10,
+    "live_slots_total": 48,
+    "live_slots_run": 0,
+    "blocker": "MODEL_ACCESS_AND_BUDGET_AUTHORIZATION"
   }
 }

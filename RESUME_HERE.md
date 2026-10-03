@@ -4259,17 +4259,3 @@ Independent statuses:
 Next allowed action: complete the authorized AT0-EN 48-slot live matrix when model access and budget are explicitly available, or return the compact `HIGHER_MODEL_REVIEW_PACKET.md` to the higher-model architect for a blocker decision. Do NOT begin HW1-EN, DR, Arabic resumption, reserved-data opening, V4.2 rerun, selector/consensus work, voice fitting, DOCX/Word integration, or paid launch before that review gate.
 
 Operating rule: routine implementation/research is delegated to the implementation agent. The higher model is reserved for architecture, difficult research synthesis, brainstorming, frozen-result review, and high-stakes scientific/strategic decisions. Tool operations in this project are executed strictly sequentially; no parallel tool orchestration.
-
-
-## 2026-10-03 — English-first rebaseline and AT0-EN offline gate
-
-- Strategic state: English-first + multilingual-ready Core.
-- Arabic active research: FROZEN, evidence preserved for future LANG_AR port.
-- AT0-EN offline harness created under `phase2/academic_transform/at0_en/`.
-- Offline preflight: 30/30 fixtures PASS; 3/3 unit tests PASS; 10/10 portability checks PASS.
-- Live experiment: NOT_RUN. Blocker: no two authorized model endpoints and no explicit authorized cost ceiling in this environment.
-- All 48 expected live slots are accounted as `NOT_RUN_MODEL_ACCESS`; no slots were dropped.
-- `HUMAN_WRITING_STATUS=NOT_ASSESSED`.
-- `SCIENTIFIC_FIDELITY_STATUS=NOT_ESTABLISHED`.
-- `DETECTOR_ROBUSTNESS_STATUS=NOT_RUN`.
-- Do not start HW1-EN, DR, Arabic restart, V4.2 rerun, reserved-data opening, selector/consensus, voice fitting, DOCX/Word or paid launch before higher-model review.

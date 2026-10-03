@@ -3217,17 +3217,3 @@ Complete the authorized 48-slot AT0-EN live matrix only after exact model identi
 
 ### Repository adoption identity — 2026-10-03
 The English-first architecture package, AT0-EN offline harness, frozen results, evidence mirrors, and delegation protocol were adopted in commit `bca3a32791c6f2c1832403cbd751ea8c78cd6a43`. This commit is the implementation checkpoint for the 30/30 fixture and 10/10 portability evidence; it does not contain a live transformation result.
-
-
-## 2026-10-03 — English-first rebaseline and AT0-EN offline gate
-
-- Strategic state: English-first + multilingual-ready Core.
-- Arabic active research: FROZEN, evidence preserved for future LANG_AR port.
-- AT0-EN offline harness created under `phase2/academic_transform/at0_en/`.
-- Offline preflight: 30/30 fixtures PASS; 3/3 unit tests PASS; 10/10 portability checks PASS.
-- Live experiment: NOT_RUN. Blocker: no two authorized model endpoints and no explicit authorized cost ceiling in this environment.
-- All 48 expected live slots are accounted as `NOT_RUN_MODEL_ACCESS`; no slots were dropped.
-- `HUMAN_WRITING_STATUS=NOT_ASSESSED`.
-- `SCIENTIFIC_FIDELITY_STATUS=NOT_ESTABLISHED`.
-- `DETECTOR_ROBUSTNESS_STATUS=NOT_RUN`.
-- Do not start HW1-EN, DR, Arabic restart, V4.2 rerun, reserved-data opening, selector/consensus, voice fitting, DOCX/Word or paid launch before higher-model review.

@@ -1,122 +1,122 @@
 [
   {
     "fixture_id": "F01",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F02",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F03",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F04",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F05",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F06",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F07",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F08",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F09",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F10",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F11",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F12",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F13",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F14",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F15",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F16",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F17",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F18",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F19",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F20",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F21",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F22",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F23",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F24",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F25",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F26",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F27",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F28",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F29",
-    "status": "DEFINED"
+    "frozen": true
   },
   {
     "fixture_id": "F30",
-    "status": "DEFINED"
+    "frozen": true
   }
 ]
