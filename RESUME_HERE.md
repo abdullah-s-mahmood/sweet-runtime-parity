@@ -6074,3 +6074,135 @@ Time estimates:
 - report remaining checkpoints/units and observed runtime/throughput when available.
 
 This reporting rule is permanent unless the user explicitly changes it.
+
+
+## 2026-10-03 — AT0-EN V2.4 B1 first aligner score CLOSED
+
+Checkpoint status:
+**100% COMPLETE / FIRST SCORE FROZEN / REPAIR NOT STARTED**
+
+Run:
+`37145678669`
+
+Trigger commit:
+`3c3ccde1637cb819cd20987a224bbcfe2354dea1`
+
+Artifact:
+- id: `11281074678`
+- SHA-256: `245593d8e6af433713553e2cd6489f3b68e92015239ad1e7edafa4323b169647`
+
+Frozen first-score summary:
+`phase2/academic_transform/at0_en/v2_4/gate_b1/results/B1_FIRST_SCORE_FROZEN.json`
+commit:
+`1c6860406c7ae3c6565f4dd85369d85681af8056`
+
+Closure:
+`phase2/academic_transform/at0_en/v2_4/gate_b1/B1_FIRST_SCORE_CLOSURE.md`
+commit:
+`6c48404aa98757cc957cc5fcc9a2f27f42eae1b5`
+
+Result:
+`FAIL_B1_HUMAN_CORRECT`
+
+Metrics:
+- pair outcome: 10/12 = 83.33%
+- critical gold alignment coverage: 20/22 = 90.91%
+- critical alignment-status accuracy: 95%
+- dangerous false-preserve: 0
+- faithful safe-pair rejection: 1
+- material adversarial acceptance: 1
+- critical uncertainty preservation: 100%
+- critical evidence-trace completeness: 100%
+
+Mapping-shape performance:
+- ONE_TO_ONE: 6/7 = 85.71%
+- ONE_TO_MANY: 2/2 = 100%
+- MANY_TO_ONE: 1/2 = 50%
+- MIXED: 1/1 = 100%
+
+Frozen failures:
+1. B1-P03 faithful merge falsely rejected:
+   split/merge binding equivalence under-modeled.
+2. B1-P04 relation/value rebinding falsely accepted:
+   assignment matched by value strongly enough to hide swapped Group A/B ownership.
+
+Interpretation:
+- B1 hard gate FAILS.
+- progression to extracted-graph alignment is BLOCKED.
+- failure is localized to aligner mechanics, not a demonstrated architecture collapse.
+
+Principle-based next repair:
+- owner/entity-first assignment;
+- relation-aware assignment;
+- canonical binding facts across split/merge;
+- identical values must never compensate for wrong owners;
+- no ID-specific branches;
+- thresholds unchanged.
+
+### Permanent cumulative success ledger at this checkpoint
+
+Historical V2.3 end-to-end baseline:
+- adversarial escape: 37.5%
+- safe automatic acceptance: 25%
+- BOTH_FAIL
+
+V2.4 Gate 0:
+- 326/326 contract checks PASS
+
+A1:
+- deterministic-anchor precision: 100%
+- recall: 100%
+- provenance: 35/35
+
+A2:
+- structural sentence representation: 100%
+- decimal defects: 5 -> 0 after repair
+
+A3:
+- gold coverage: 100%
+- critical coverage: 100%
+- false additions: 0%
+- atomicity: 88%
+- certain precision: 92.86%
+- error-abstention recall: 87.5%
+- unnecessary abstention: 23.53%
+- critical silent semantic errors: 0
+- PASS_DEVELOPMENT
+
+A4:
+- GO_ALIGNMENT_RESEARCH_DEVELOPMENT_ONLY
+
+B1 reference:
+- 363/363 PASS
+
+B1 first aligner:
+- pair outcome: 83.33%
+- critical coverage: 90.91%
+- critical status accuracy: 95%
+- uncertainty preservation: 100%
+- evidence traces: 100%
+- one material adversarial acceptance
+- one faithful false rejection
+- FAIL_B1_HUMAN_CORRECT
+
+Quality delta:
+- no directly valid system-level improvement percentage versus V2.3 yet because B1 is component-isolated;
+- B1 improves diagnostic isolation but currently FAILS its hard safety gate.
+
+Completion:
+- current checkpoint: 100%
+- Gate B1 overall: approximately 70%
+- whole ACAD_PASS planning estimate: approximately 27% ±5%
+
+Exact next authorized checkpoint:
+`AT0-EN V2.4 GATE B1.1 — PRINCIPLE-BASED ALIGNER REPAIR + REVALIDATION`
+
+Not authorized:
+- extracted-graph alignment
+- candidate extraction
+- live generation
+- HW1-EN
+- untouched holdout
+- production claims
+
+Higher-model consultation is not required at B1.1 start unless repair exposes a new construct-validity issue.
