@@ -1,3 +1,4 @@
 Run B2.2 relation-aware prototype regressions.
 Rerun after explicit scientific predicate normalization.
 Final B2.2 regression pass after modality/negation red-team.
+Rerun after explicit negative predicate handling fix.
