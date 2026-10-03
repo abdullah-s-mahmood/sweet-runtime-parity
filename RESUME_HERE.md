@@ -4585,3 +4585,65 @@ Before any new inference:
 6. preregister transport, scientific-preservation, information-retention, unsupported-addition, usefulness/no-op, latency and cost metrics separately.
 
 No new model inference is authorized until V2.4 population/protocol freeze is complete.
+
+
+## 2026-10-03 — V2.3 closed; V2.4 hybrid claim verifier is the only active next gate
+
+V2.2 independent red-team:
+- run 37130259582
+- artifact 11276616582
+- digest sha256:cee42205419c467dbecdeb0111dcc2109b996cb7855b2987693de5e169a2d960
+- 21/24 constructed attacks escaped (87.5%)
+- 12/12 original safe controls passed
+Conclusion: V2.2 rule-oriented verifier FAIL as standalone.
+
+V2.3 assertion-graph redesign:
+- frozen verifier commit c6180f97d1d98dbe9039728777572a65a9842aa4
+- known external gate run 37132825529 SUCCESS
+- artifact 11277318066
+- digest sha256:f397133558e06e5ae2d78107b09d91cda87cf9e7f4714459356b19cef1815794
+- all 24 previously known attacks rejected after redesign (development evidence only)
+- benchmark defect found: SAFE_EN09 and frozen EN09 content_units omit a priority-direction relation present in source_text
+
+Unseen holdout V1:
+- verifier frozen before holdout
+- run 37132991961
+- artifact 11277443135
+- digest sha256:dbec7fe4fa4cf3c4c7d6e49fd9102673557dfb24645d95f4d3bb231a752b2c3f
+- attacks caught 9/12 = 75%
+- attacks escaped 3/12 = 25%
+- safe paraphrases accepted 1/12 = 8.33%
+- safe non-pass 11/12 = 91.67%
+Conclusion: V2.3 is useful as deterministic hard guard but FAILS as standalone verifier because paraphrase robustness is inadequate.
+
+Closure:
+phase2/academic_transform/at0_en/v2_3/AT0_EN_V2_3_CLOSURE.md
+
+Only active next gate:
+AT0-EN V2.4 HYBRID CLAIM VERIFIER
+
+Frozen design:
+phase2/academic_transform/at0_en/v2_4/AT0_EN_V2_4_HYBRID_VERIFIER_DESIGN.md
+
+V2.4 combines:
+1. full-source assertion graph;
+2. deterministic hard guards;
+3. independent semantic entailment/contradiction witnesses;
+4. bidirectional source->candidate and candidate->source checks;
+5. explicit REVIEW on disagreement/uncertainty.
+
+Research candidates only; NOT yet authorized for inference:
+- Vectara HHEM-2.1-Open (Apache-2.0)
+- MoritzLaurer DeBERTa-v3-base-mnli-fever-anli (MIT)
+
+Preregistered future confirmation gate:
+- critical unsafe auto-pass = 0
+- overall adversarial unsafe auto-pass <=5%
+- safe VERIFIED_FOR_REVIEW coverage >=70%
+- safe hard-reject <=10%
+- no threshold tuning on confirmation
+
+No semantic-model inference or new generator inference is authorized yet. HW1-EN remains blocked. Arabic active research remains FROZEN and V4.2 remains CLOSED.
+
+Exact next action:
+freeze exact semantic-model revisions/artifact hashes/runtime/license/resource manifest and build source-free V2.4 harness/preflight; return to higher-model review before any semantic inference.
