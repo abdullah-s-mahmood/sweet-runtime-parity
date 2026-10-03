@@ -1,0 +1,2 @@
+Trigger first AT0-EN V2.4 B2 four-arm degradation score.
+Frozen extractor, aligner, protocol, bridge contract, and raw pairs. Freeze failures before repair.
