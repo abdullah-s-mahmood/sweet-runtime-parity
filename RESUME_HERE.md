@@ -8363,3 +8363,66 @@ Still forbidden:
 
 Stop until user says:
 `أكمل`
+
+
+## 2026-10-04 — FactPICO artifact/schema/license audit partial freeze
+
+Audit file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_ARTIFACT_SCHEMA_LICENSE_AUDIT_V1.md`
+
+Commit:
+`4c55af156df1e0f67fd8ebe4f3a06f70b5c6a813`
+
+Readiness update:
+`b842e27001e26870ed7e9125c821692d50203f48`
+
+Master continuity update:
+`10f15640b49efe562c681e54084500a50b414d59`
+
+Quality delta:
+`IMPROVED / RAW-ARTIFACT BLOCKED`
+
+Verified:
+- FactPICO ACL 2024
+- 115 RCT abstracts
+- 345 summaries
+- three generating models
+- PICO expert ratings 4/3/2/1
+- Evidence Inference expert ratings
+- Added Information factuality annotations
+- exhaustive-outcome annotation
+- FactPICO annotations CC BY 4.0
+- source abstracts from PubMed Open Access reuse-compatible sources
+- repository code MIT
+- official repo HEAD `2e16993a000aedb15cb348b7bcd61070d26bab14`
+
+Official data route:
+`https://utexas.box.com/s/mpe5idxrqrzs1wcakphng7xfi7h4g83j`
+
+Current tooling cannot materialize Box.
+
+Needed:
+download complete FactPICO shared folder/archive and upload unchanged.
+
+After upload:
+- compute SHA-256
+- inspect exact physical schema
+- reconcile 115/345
+- freeze PMIDs/source clusters
+- audit missing/duplicate/annotator fields
+- freeze hard-gold eligibility
+- draft H1 Contract V4
+
+Current state:
+`FACTPICO PARTIAL / NOT EXECUTION-READY`
+
+No V2.4 prediction.
+No H1 scoring.
+No runtime modification.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`FACTPICO PHYSICAL ARTIFACT + SCHEMA FREEZE`
+
+Stop until user uploads the Box archive or asks for download instructions.
