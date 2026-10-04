@@ -8602,3 +8602,92 @@ Exact next checkpoint:
 `USER-MEDIATED FOCUSED INDEPENDENT REVIEW OF FACTPICO H1 CONTRACT V4`
 
 Stop until user returns the complete focused review.
+
+
+## 2026-10-04 — FactPICO H1 Contract V5 frozen after focused review
+
+Focused review decision:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_FACTPICO_V4_FOCUSED_REVIEW_DECISION_V1.md`
+
+Decision commit:
+`d6804d096b648e259f3cd37b943f1a522d0e03c9`
+
+Final contract:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_FACTPICO_HARD_GOLD_CONTRACT_V5.md`
+
+Contract commit:
+`26235ace57b68b1e93f78728c885d33c1806c24e`
+
+Manifest metadata:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_HARD_GOLD_ELIGIBILITY_MANIFEST_V5_METADATA.md`
+
+Manifest metadata commit:
+`5852485cda8f4b75df5f573391b5dd3cff34da81`
+
+Readiness update:
+`7576fb11ee1fff86b0591f9571139b3f4386234a`
+
+Master continuity update:
+`ec3c7a5b65cc7dea89bbab09067c58030d92c1d6`
+
+Independent verdict:
+`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
+
+Final V5 class counts:
+- SAFE_STRICT_CONTROL 34 / 33 sources
+- ERROR_STRICT 149 / 83 sources
+- INTERMEDIATE 153 / 84 sources represented
+- N_A_SOURCE_DIAGNOSTIC 9 / 3 sources
+
+Critical V4 -> V5 change:
+`Results <=2`
+is removed as a hard-error trigger.
+
+Reason:
+released Results is a summary-level aggregate over multiple finding-level judgments and raw per-finding numeric human scores are not released.
+
+Results=4 remains a strict positive-control condition because a bounded 1–4 arithmetic average of 4 implies all contributing ratings are 4.
+
+ERROR_STRICT now PICO-only:
+- non-double PICO any applicable <=2
+- double-PICO aggregate any applicable <=1.5
+- N/A sources excluded
+
+Added Information safe-control proof:
+FactPICO evaluates all generated summaries for Added Information by highlighting spans.
+Safe control accepts “no highlighted addition” only if:
+- canonical record identity exact
+- no exact span row
+- source cluster not among 15 unresolved Added Information identity sources
+
+Safe control model skew:
+33 ALPACA / 1 GPT-4 / 0 LLAMA-2.
+Hard but limited anti-degeneracy gate only.
+
+Final eligibility manifest SHA-256:
+`d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255`
+
+Safety:
+- 149 error records
+- 83 error-exposed sources
+- any PASS_CANDIDATE = FAIL
+- zero-event 95% source upper bound ≈3.54496%
+
+Utility:
+- ERROR REJECT >=75% pair-micro + source-macro
+- SAFE PASS >=75% pair-micro + source-macro
+
+Current authorization:
+`FACTPICO H1 ADAPTER + INPUT/GOLD MANIFEST IMPLEMENTATION FREEZE`
+
+Still forbidden:
+- V2.4 FactPICO prediction
+- H1 scoring
+- runtime changes
+- threshold changes
+- original custom Gate C opening
+- human recruitment
+- Arabic work
+
+Stop until user says:
+`أكمل`
