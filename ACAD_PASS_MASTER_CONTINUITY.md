@@ -1115,41 +1115,25 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — H1 ADAPTER + NATIVE METRIC CONTRACT FREEZE`
+`PRE-GATE-C EXT/META — USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V2`
 
-The H1 physical schema and source-cluster checkpoint is complete.
+The preferred H1 adapter/native-metric contract is frozen for independent review.
 
-Frozen H1 raw identities:
-- manual judgments SHA-256:
-  `8256f7342c180e881e9c11244a7c24fe3e2fb4bdabf0fdfeb04892e4c8c722ce`
-- source corpus SHA-256:
-  `f9416ee9ef5a051e79053b526ad7023237cb87d171e79d9623bda4dbd656991e`
+Preferred contract:
+`H1_ADAPTER_NATIVE_METRIC_CONTRACT_V2.md`
 
-Frozen physical schema:
-`Abstract, Sentence, Source, Target, Accuracy, Completeness, Simplicity, Brevity`
+Review packet:
+`H1_CONTRACT_V2_HIGHER_MODEL_REVIEW_PACKET.txt`
 
-Frozen H1 source-cluster unit:
-`PMID`
-
-Maximum independent H1 clusters:
-`399`
-
-Exact next scope:
-1. decide whether ACC/COM remain native ordinal outcomes or can support exact ACAD_PASS mappings;
-2. freeze eligible external records/runs;
-3. freeze denominator and missing-gold handling;
-4. freeze source-cluster aggregation/statistics;
-5. freeze native thresholds/sample-size rationale;
-6. prove mapping to actual V2.4 outputs requires zero semantic helper inference;
-7. only after this contract passes may H1 prediction inputs be prepared.
+H1 external prediction is NOT authorized before the independent review returns and any required changes are incorporated.
 
 Still not authorized:
-- V2.4 external predictions;
-- benchmark scoring;
-- tuning;
-- original custom Gate C opening;
-- new-human recruitment;
-- modifying V2.4;
+- running V2.4 on PLABA/external evaluation records;
+- scoring H1 predictions;
+- tuning thresholds after prediction;
+- opening the original custom 80-study Gate C;
+- recruiting new human reviewers;
+- modifying frozen V2.4;
 - Arabic-track work.
 
 # 23. WHOLE-PROJECT PROGRESS
@@ -2026,3 +2010,80 @@ No Arabic work.
 
 Exact next checkpoint:
 `H1 ADAPTER + NATIVE METRIC CONTRACT FREEZE`
+
+
+---
+
+# 37. H1 ADAPTER + NATIVE METRIC CONTRACT V2 — FROZEN FOR INDEPENDENT REVIEW
+
+Date: 2026-10-04
+
+Preferred contract:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_ADAPTER_NATIVE_METRIC_CONTRACT_V2.md`
+
+Commit:
+`23a613da183157c14ef5c1c82051a5014dbca18e`
+
+Higher-model review packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_CONTRACT_V2_HIGHER_MODEL_REVIEW_PACKET.txt`
+
+Packet commit:
+`0f583d601f8d195797e597308887465864dd3c94`
+
+Readiness update:
+`5cc7f8c3339d4db3d67fdc51d1f19652c19f5e1b`
+
+Quality delta:
+`IMPROVED`
+
+V2 strengthens V1:
+1. confirmatory utility uses only 14 complete PLABA runs;
+2. hard safety uses every observed extreme-negative gold row across all 19 runs;
+3. exact Source==Target positive rows are excluded from primary transformed-positive acceptance and retained as identity controls.
+
+Frozen gold strata:
+- QUALIFIED_POSITIVE = ACC==1 AND COM==1
+- QUALIFIED_NEGATIVE = ACC==-1 OR COM==-1
+- other cells diagnostic only
+- 0 is NOT mapped to REVIEW
+
+All-run safety population:
+- 4,275 qualified-negative rows
+- 396 exposed PMID clusters
+- any PASS_CANDIDATE is a hard safety failure
+
+Confirmatory positive utility:
+- 14 complete runs
+- 33,660 non-identical qualified-positive rows
+- 399 PMIDs
+- PMID-macro PASS_CANDIDATE >=75%
+
+Confirmatory negative utility:
+- 14 complete runs
+- 3,677 qualified-negative rows
+- 394 PMIDs
+- PMID-macro REJECT >=75%
+- REVIEW is safe abstention but not decisive rejection
+- INVALID is non-success
+
+Statistics:
+- PMID = independence unit
+- 10,000 cluster bootstrap resamples
+- seed 20261004
+- 95% percentile interval
+- exact one-sided zero-event upper bound for safety
+
+Anti-degenerate behavior:
+- PASS-all fails safety
+- REJECT-all fails positive utility
+- REVIEW-all fails positive utility and decisive-negative utility
+- INVALID-all fails utility/integrity
+
+No V2.4 external prediction.
+No benchmark scoring.
+No custom Gate C opening.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V2`
