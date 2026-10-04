@@ -1,0 +1,218 @@
+You are acting as an independent Chief Research Methodologist, Benchmark Architect, Scientific Evaluation Specialist, and Adversarial Reviewer for ACAD_PASS.
+
+This is a PRE-PREDICTION review only.
+
+Do NOT:
+- run V2.4;
+- execute PLABA evaluation;
+- modify the repository;
+- tune thresholds after seeing predictions;
+- recruit humans;
+- open the original bespoke 80-study Gate C;
+- work on Arabic.
+
+Repository:
+`abdullah-s-mahmood/sweet-runtime-parity`
+
+Branch:
+`phase2-arabic-eval`
+
+Read, in this order:
+
+1.
+`ACAD_PASS_MASTER_CONTINUITY.md`
+
+2.
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_PHYSICAL_SCHEMA_SOURCE_CLUSTER_FREEZE_V1.md`
+
+3.
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_ADAPTER_NATIVE_METRIC_CONTRACT_V1.md`
+
+4.
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_ADAPTER_NATIVE_METRIC_CONTRACT_V2.md`
+
+5.
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_PROTOCOL_AMENDMENT_V2.md`
+
+6.
+`phase2/academic_transform/at0_en/v2_4/AT0_EN_V2_4_FROZEN_ARCHITECTURE_V2.md`
+
+7.
+`phase2/academic_transform/at0_en/v2_4/gate_b2/B2_FINAL_CLOSURE.md`
+
+Use deep literature/web research and independent red-teaming where useful.
+
+The H1 external resource is TREC PLABA 2024 complete-rewrite manual human judgments.
+
+Frozen raw facts include:
+- 19 submitted runs;
+- 76,790 observed human-rated rows;
+- 400 abstract slots;
+- 399 unique PMID source clusters;
+- human axes ACC and COM;
+- ordinal scores -1, 0, 1;
+- 14 runs have complete 4,060-row coverage;
+- 5 runs have pre-existing missing human rows;
+- manual judgment archive SHA-256:
+  `8256f7342c180e881e9c11244a7c24fe3e2fb4bdabf0fdfeb04892e4c8c722ce`;
+- source archive SHA-256:
+  `f9416ee9ef5a051e79053b526ad7023237cb87d171e79d9623bda4dbd656991e`.
+
+V2 intentionally changes V1 in three important ways:
+1. confirmatory utility uses only the 14 complete runs;
+2. hard safety still uses every observed worst-score negative case across all 19 runs;
+3. exact Source==Target positive rows are excluded from the primary transformed-positive acceptance metric and retained as identity controls.
+
+V2 gold strata are:
+
+`QUALIFIED_POSITIVE = ACC==1 AND COM==1`
+
+`QUALIFIED_NEGATIVE = ACC==-1 OR COM==-1`
+
+all other ACC/COM combinations are diagnostic only and are NOT mapped to REVIEW.
+
+Primary H1 rules proposed in V2:
+
+Safety:
+- every observed QUALIFIED_NEGATIVE across all 19 runs;
+- any `PASS_CANDIDATE` is a hard safety failure;
+- zero unsafe PASS events required.
+
+Positive utility:
+- 14 complete runs only;
+- non-identical QUALIFIED_POSITIVE only;
+- PMID-cluster macro PASS_CANDIDATE rate >=75%.
+
+Negative utility:
+- 14 complete runs only;
+- QUALIFIED_NEGATIVE;
+- PMID-cluster macro REJECT rate >=75%;
+- REVIEW is safe abstention but not decisive rejection;
+- INVALID is non-success.
+
+Statistics:
+- PMID is the independence unit;
+- 10,000-cluster bootstrap;
+- seed 20261004;
+- mandatory exact one-sided zero-event upper bound for safety;
+- no sentence/run counts treated as independent studies.
+
+The adapter is transport-only:
+- exact Source;
+- exact Target;
+- immutable ID;
+- metadata outside semantic inference.
+
+No gold, entailment inference, coreference resolution, biomedical inference, omission repair, semantic sentence alignment, or text rewriting is allowed in the adapter.
+
+Please evaluate whether V2 is methodologically defensible BEFORE prediction.
+
+Answer exactly these questions:
+
+1. VERDICT
+Choose exactly one:
+`A. ACCEPT_H1_CONTRACT_V2`
+`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
+`C. REJECT_H1_CONTRACT_V2`
+`D. H1_REQUIRES_NEW_HUMAN_GOLD_BEFORE_PREDICTION`
+
+2. V1_TO_V2_CHANGES
+Are the three V2 changes improvements?
+Identify any hidden bias introduced by them.
+
+3. GOLD_STRATA_VALIDITY
+Are:
+`ACC=1 AND COM=1`
+and
+`ACC=-1 OR COM=-1`
+defensible conservative extreme strata?
+Should any other cell be hard-gated?
+
+4. ZERO_IS_NOT_REVIEW
+Is it correct not to map PLABA score 0 to ACAD_PASS REVIEW?
+
+5. SAFETY_POPULATION
+Is using all observed negative gold across all 19 runs for hard safety valid despite five incomplete runs?
+
+6. UTILITY_POPULATION
+Is restricting confirmatory utility to the 14 complete runs defensible, or does it induce unacceptable selection bias?
+If unacceptable, specify the better preregistered rule.
+
+7. EXACT_COPY_RULE
+Should exact Source==Target positive examples be excluded from primary transformation acceptance and retained as identity controls?
+
+8. POSITIVE_GATE
+Is:
+`PMID-macro PASS_CANDIDATE >=75%`
+on non-identical extreme-positive records a defensible research-progression gate?
+If not, specify the exact alternative.
+
+9. NEGATIVE_GATE
+Is:
+`PMID-macro REJECT >=75%`
+on extreme-negative records valid given that REVIEW is conservative?
+Should REJECT+REVIEW also be a separate required metric?
+
+10. SAFETY_GATE
+Is zero automatic PASS on extreme-negative records sufficiently non-compensatory?
+Should safety be evaluated at row level, PMID-event level, or both?
+
+11. STATISTICS
+Assess:
+- PMID as source cluster;
+- 10,000 cluster bootstrap;
+- percentile 95% CI;
+- point-estimate progression threshold;
+- exact one-sided zero-event bound.
+State only essential changes.
+
+12. ADAPTER_BOUNDARY
+Does the V2 adapter avoid adding semantic capability?
+Identify any operation still too semantic.
+
+13. V2.4 OUTPUT COMPATIBILITY
+Can the frozen V2.4 outcome vocabulary be compared to this contract without a new semantic model?
+If not, mark H1 NOT_READY and explain exactly why.
+
+14. ANTI-DEGENERACY
+Does the contract adequately prevent:
+- PASS-all;
+- REJECT-all;
+- REVIEW-all;
+- INVALID-all?
+
+15. CLAIM BOUNDARY
+Is the allowed H1 claim appropriately narrow?
+Rewrite it if needed.
+
+16. RED_TEAM
+Give a maximum of 6 remaining material risks.
+
+17. FINAL RECOMMENDATION
+Should ACAD_PASS proceed, after incorporating your required changes, to:
+`H1 adapter/scorer implementation freeze and prediction-input manifest freeze`
+with zero new human recruitment?
+
+Required output sections, exactly:
+1. VERDICT
+2. V1_TO_V2_CHANGES
+3. GOLD_STRATA_VALIDITY
+4. ZERO_IS_NOT_REVIEW
+5. SAFETY_POPULATION
+6. UTILITY_POPULATION
+7. EXACT_COPY_RULE
+8. POSITIVE_GATE
+9. NEGATIVE_GATE
+10. SAFETY_GATE
+11. STATISTICS
+12. ADAPTER_BOUNDARY
+13. V2.4_OUTPUT_COMPATIBILITY
+14. ANTI_DEGENERACY
+15. CLAIM_BOUNDARY
+16. RED_TEAM
+17. FINAL_RECOMMENDATION
+
+Do not write code.
+Do not execute the benchmark.
+Do not change V2.4.
+Do not recruit humans unless you conclude existing gold cannot support this H1 construct.
