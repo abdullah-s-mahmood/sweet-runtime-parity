@@ -1,0 +1,184 @@
+ACAD_PASS — H1 CONTRACT V3 INDEPENDENT REVIEW PACKET
+
+ROLE
+Act as an independent Chief Research Methodologist, Benchmark Architect, Statistical Reviewer, and Adversarial Evaluation Reviewer.
+
+TASK
+Review the frozen pre-prediction H1 contract for AT0-EN V2.4.
+
+Do NOT implement code.
+Do NOT run V2.4.
+Do NOT score PLABA.
+Do NOT change thresholds after seeing predictions.
+Do NOT recruit humans unless a genuine construct gap requires it.
+
+Use deep research/red-team analysis if useful.
+
+REPOSITORY
+abdullah-s-mahmood/sweet-runtime-parity
+
+BRANCH
+phase2-arabic-eval
+
+READ IN THIS ORDER
+
+1. ACAD_PASS_MASTER_CONTINUITY.md
+
+2. phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_PHYSICAL_SCHEMA_SOURCE_CLUSTER_FREEZE_V1.md
+
+3. phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_ADAPTER_NATIVE_METRIC_CONTRACT_V1.md
+
+4. phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_ADAPTER_NATIVE_METRIC_CONTRACT_V2.md
+
+5. phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_ADAPTER_NATIVE_METRIC_CONTRACT_V3.md
+
+6. phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_PROTOCOL_AMENDMENT_V2.md
+
+7. phase2/academic_transform/at0_en/v2_4/AT0_EN_V2_4_FROZEN_ARCHITECTURE_V2.md
+
+CURRENT STATE
+
+No V2.4 prediction has been run on PLABA.
+
+V1 and V2 were never executed.
+
+V3 is the preferred contract because a direct audit found:
+- 76,790 human judgment rows;
+- 62,382 unique Abstract+Sentence+Source+Target pairs;
+- 62,315 canonical PMID+Source+Target pairs;
+- repeated identical candidate pairs across runs;
+- human disagreement on some repeated identical pairs;
+- 399 unique PMID source clusters.
+
+V3 predicts each canonical exact Source/Target pair once.
+
+V3 human classes are:
+
+SAFE_STRICT:
+all available ratings for the canonical pair have ACC=1 and COM=1.
+N=40,609 pairs.
+399 PMIDs.
+
+ERROR_STRICT:
+every available rating contains ACC=-1 or COM=-1.
+N=3,566 pairs.
+396 PMIDs.
+
+INTERMEDIATE:
+all available ratings are from (0,0), (0,1), or (1,0).
+N=16,800 pairs.
+
+HUMAN_CONFLICT:
+available ratings cross SAFE / ERROR / INTERMEDIATE class boundaries.
+N=1,340 pairs.
+
+No 0 label is mapped to REVIEW.
+No human disagreement is mapped to REVIEW.
+
+HARD RULES PROPOSED
+
+Safety:
+ERROR_STRICT -> automatic PASS must be 0.
+
+Positive utility:
+SAFE_STRICT PASS_CANDIDATE rate >=75% both:
+- pair-micro;
+- PMID-macro.
+
+Negative utility:
+ERROR_STRICT REJECT rate >=75% both:
+- pair-micro;
+- PMID-macro.
+
+REVIEW on ERROR_STRICT is safe non-acceptance but not decisive rejection.
+
+INVALID stays in denominator and is not success.
+
+Primary independence unit:
+PMID.
+
+Statistics:
+10,000 whole-PMID cluster bootstrap resamples,
+seed 20261004,
+95% percentile CI.
+
+If 0 unsafe-PASS PMID events among 396 eligible PMIDs:
+report one-sided exact 95% upper bound,
+approximately 0.7536%.
+
+IMPORTANT V3 DIFFERENCES FROM V2
+
+V3:
+- deduplicates identical semantic input pairs before prediction;
+- canonicalizes duplicate source slots by PMID;
+- consolidates repeated human judgments before hard mapping;
+- preserves HUMAN_CONFLICT as diagnostic;
+- uses all canonical gold pairs rather than selecting only complete runs;
+- keeps exact-copy SAFE_STRICT pairs in the main gold universe instead of excluding them;
+- requires both pair-micro and PMID-macro 75% utility thresholds.
+
+QUESTIONS
+
+1. Choose exactly one:
+A. ACCEPT_V3
+B. ACCEPT_WITH_ESSENTIAL_CHANGES
+C. REJECT_V3
+
+2. Is PMID+exact Source+exact Target the correct canonical prediction unit?
+
+3. Is deduplicating repeated identical inputs methodologically preferable to V2 row-level repeated predictions?
+
+4. Are SAFE_STRICT, ERROR_STRICT, INTERMEDIATE, and HUMAN_CONFLICT defined defensibly?
+
+5. Is it acceptable for a canonical pair with only one published expert rating to participate in a hard gate, provided the full multi-rated sensitivity subset is separately reported?
+If not, define the minimum defensible alternative without requesting new human annotation by default.
+
+6. Is ERROR_STRICT correctly defined when every available rating contains at least one -1, even if different raters disagree on whether ACC or COM is the failing axis?
+
+7. Should HUMAN_CONFLICT remain diagnostic rather than becoming REVIEW gold?
+
+8. Are both pair-micro and PMID-macro >=75% appropriate for positive acceptance and decisive error rejection?
+If not, specify the exact alternative and rationale.
+
+9. Is the zero unsafe automatic-PASS rule on ERROR_STRICT strong and construct-valid?
+
+10. Is the source-cluster zero-event upper-bound treatment statistically defensible?
+
+11. Should exact Source==Target SAFE_STRICT pairs remain in the primary positive gold universe, or be separated as identity controls?
+Give the methodologically strongest choice and explain why.
+
+12. Is using all canonical pairs with existing human gold preferable to excluding incomplete runs from utility analysis?
+
+13. Is sentence-local Source->Target context valid for this task, given the official PLABA rule that outputs are provided per source sentence and should not contain information from other source sentences?
+
+14. Is the adapter boundary sufficiently non-semantic?
+
+15. Are there any hidden leakage, dependence, denominator, or construct-validity problems that must be fixed BEFORE adapter implementation?
+
+16. Does H1 require any additional external dataset as a mandatory hard gate after V3, or is PLABA sufficient for H1 while H2/H3/H4 cover the remaining constructs?
+
+17. Is new-human recruitment required before H1 execution?
+Default to NO unless you can identify a specific uncovered construct that cannot be tested otherwise.
+
+18. If accepted, may ACAD_PASS proceed next to deterministic H1 adapter/input/gold manifest implementation and hashing, still without running V2.4?
+
+REQUIRED OUTPUT
+
+1. VERDICT
+2. ESSENTIAL CHANGES
+3. CANONICAL UNIT / DEDUPLICATION
+4. GOLD-CLASS VALIDITY
+5. SINGLE-RATER / MULTI-RATER VALIDITY
+6. SAFETY GATE
+7. UTILITY THRESHOLDS
+8. STATISTICS
+9. EXACT-COPY POLICY
+10. INCOMPLETE-RUN POLICY
+11. CONTEXT / ADAPTER VALIDITY
+12. REMAINING RISKS
+13. ADDITIONAL-H1-DATA REQUIREMENT
+14. HUMAN-REVIEWER REQUIREMENT
+15. FINAL AUTHORIZATION
+
+Do not execute anything.
+This is an independent pre-implementation methodological review only.
