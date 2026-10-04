@@ -1115,25 +1115,43 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V2`
+`PRE-GATE-C EXT/META — INDEPENDENT REVIEW OF H1 CONTRACT V3`
 
-The preferred H1 adapter/native-metric contract is frozen for independent review.
+Preferred H1 contract:
+`H1_ADAPTER_NATIVE_METRIC_CONTRACT_V3.md`
 
-Preferred contract:
-`H1_ADAPTER_NATIVE_METRIC_CONTRACT_V2.md`
+V1 and V2 are preserved but superseded before execution.
 
-Review packet:
-`H1_CONTRACT_V2_HIGHER_MODEL_REVIEW_PACKET.txt`
+Why V3:
+- 76,790 judgment rows collapse to 62,315 canonical PMID+Source+Target prediction pairs;
+- identical deterministic inputs must not be predicted repeatedly merely because multiple runs emitted the same target;
+- repeated human judgments can disagree, so conflicting gold must not receive incompatible hard expectations;
+- run-completeness selection is replaced by a canonical-pair universe containing every pair with >=1 published human judgment.
 
-H1 external prediction is NOT authorized before the independent review returns and any required changes are incorporated.
+Frozen V3 canonical gold:
+- SAFE_STRICT: 40,609 pairs / 399 PMIDs
+- ERROR_STRICT: 3,566 pairs / 396 PMIDs
+- INTERMEDIATE: 16,800 pairs / 399 PMIDs
+- HUMAN_CONFLICT: 1,340 pairs / 320 PMIDs
+
+Hard V3 rules:
+- ERROR_STRICT automatic PASS = 0
+- SAFE_STRICT pair-micro PASS >=75%
+- SAFE_STRICT PMID-macro PASS >=75%
+- ERROR_STRICT pair-micro REJECT >=75%
+- ERROR_STRICT PMID-macro REJECT >=75%
+
+Exact next action:
+user mediates independent higher-model review using:
+`H1_CONTRACT_V3_HIGHER_MODEL_REVIEW_PACKET.txt`
 
 Still not authorized:
-- running V2.4 on PLABA/external evaluation records;
-- scoring H1 predictions;
-- tuning thresholds after prediction;
-- opening the original custom 80-study Gate C;
-- recruiting new human reviewers;
-- modifying frozen V2.4;
+- H1 adapter implementation;
+- V2.4 external predictions;
+- H1 scoring;
+- V2.4 tuning;
+- original custom Gate C opening;
+- new-human recruitment;
 - Arabic-track work.
 
 # 23. WHOLE-PROJECT PROGRESS
@@ -2087,3 +2105,81 @@ No Arabic work.
 
 Exact next checkpoint:
 `USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V2`
+
+
+---
+
+# 38. H1 ADAPTER + NATIVE METRIC CONTRACT V3 — FROZEN FOR INDEPENDENT REVIEW
+
+Date: 2026-10-04
+
+Preferred contract:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_ADAPTER_NATIVE_METRIC_CONTRACT_V3.md`
+
+Commit:
+`672bbc119eaa174e22365f5c4907bb47f9474a7d`
+
+Higher-model review packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_CONTRACT_V3_HIGHER_MODEL_REVIEW_PACKET.txt`
+
+Packet commit:
+`78e5562cba86b99655acc5c54cec277e1196cbc4`
+
+Readiness update:
+`e20ea2544032fdc8c44eed6cc0c187d5ba2503fb`
+
+Quality delta:
+`IMPROVED`
+
+Reason V2 was superseded before execution:
+- it treated repeated row-level judgments as repeated prediction units;
+- identical source/target pairs recur across runs;
+- direct audit found human class conflict on repeated identical pairs;
+- it restricted utility to complete runs, which is less principled than canonicalizing every pair with existing published gold;
+- it excluded exact-copy positive pairs from primary gold rather than retaining them with explicit subgroup reporting.
+
+No H1 prediction was ever run under V1 or V2.
+
+Frozen V3 prediction unit:
+`PMID + exact Source + exact Target`
+
+Canonical-pair count:
+`62,315`
+
+Eligibility-manifest SHA-256:
+`f0371da56290999d4786ce86ea319be15f994c8cc8075a8fddaaa81c12cf5dc9`
+
+Canonical gold:
+- SAFE_STRICT 40,609 / 399 PMIDs
+- ERROR_STRICT 3,566 / 396 PMIDs
+- INTERMEDIATE 16,800 / 399 PMIDs
+- HUMAN_CONFLICT 1,340 / 320 PMIDs
+
+Multi-rated sensitivity:
+10,554 pairs:
+- SAFE_STRICT 7,159
+- ERROR_STRICT 455
+- INTERMEDIATE 1,600
+- HUMAN_CONFLICT 1,340
+
+V3 preserves:
+- 0 != REVIEW
+- human disagreement != REVIEW
+- INVALID remains in utility denominators
+- PMID remains independence unit
+- 10,000 PMID-cluster bootstrap, seed 20261004
+- zero unsafe PASS non-compensatory
+- no criticality claim from PLABA alone
+
+Current status:
+`H1 CONTRACT V3 FROZEN FOR INDEPENDENT REVIEW`
+
+No V2.4 external prediction.
+No scoring.
+No adapter implementation.
+No custom Gate C opening.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V3`
