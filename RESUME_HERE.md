@@ -7404,3 +7404,103 @@ Until consultation response:
 - do not open custom Gate C
 - do not execute external suite
 - do not modify frozen V2.4 runtime
+
+
+## 2026-10-04 — No-new-human higher-model consultation received and EXT/META protocol amendment frozen
+
+Independent higher-model verdict:
+`B — YES_WITH_ESSENTIAL_CHANGES`
+
+Meaning:
+- `Gate C-EXT + Gate C-META` may replace the custom newly-human-adjudicated 80-study Gate C for the next research-progression decision.
+- do not recruit new human reviewers now.
+- original custom Gate C remains frozen, preserved and unopened.
+- residual human study status:
+  `DEFERRED — CONDITIONALLY REQUIRED FOR UNCOVERED CLAIMS`.
+
+Important consultation corrections accepted:
+- PLABA is not automatically PASS gold.
+- PlainFact remains secondary unless exact human validation supports the measured label.
+- CLEF SimpleText hard evidence must use actual human-annotated real-system material, not synthetic distortion training records.
+- QASemConsistency is relation-level evidence, not full-source completeness evidence.
+- metamorphic testing requires formal oracle validity + matched controls; it cannot prove absolute correctness by itself.
+- “all output content is supported” and “all required source content is preserved” are separate constructs.
+- retain native dataset semantics unless an exact ACAD_PASS adapter mapping is justified.
+- no weighted aggregate may compensate a safety failure.
+
+Fresh implementation-agent web verification after consultation confirmed:
+- FactPICO (ACL 2024): 345 RCT plain-language summaries with fine-grained expert judgments/rationales on PICO and findings.
+- FaReBio (EMNLP Findings 2024): expert-annotated biomedical summary faithfulness + supporting evidence.
+- LongSciVerify (LREC-COLING 2024): human fine-grained factual consistency for long scientific-document summaries.
+- CLEF SimpleText 2026 official docs explicitly reuse manual annotations from 2025 submissions as ground truth for distortion classification.
+
+New prioritized H1 audit candidates:
+- FactPICO
+- FaReBio
+- LongSciVerify
+
+Decision record:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/NO_NEW_HUMAN_HIGHER_MODEL_CONSULTATION_DECISION_V1.md`
+commit:
+`d6dbb95053a2d95a1d273eeff9a71e00afbfa988`
+
+Protocol amendment:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_PROTOCOL_AMENDMENT_V1.md`
+commit:
+`7ad010a95373ecb7626bf1bea5a3b68979a08385`
+
+Readiness contract:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_READINESS_V1.md`
+commit:
+`99803dee149e8c5f8ba6d30e830d27556f4766b9`
+
+Pre-execution independent-review packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_PREEXECUTION_REVIEW_PACKET_V1.txt`
+commit:
+`5e18d6e71e7a4d2720d81c4d53d117a4bdb11b8f`
+
+Hard-gate functional design frozen for review:
+- H1 = scientific transformation fidelity
+- H2 = scientific claim/evidence fidelity
+- H3 = fine-grained relation fidelity
+- H4 = deterministic ACAD_PASS metamorphic validation
+
+Diagnostic by default:
+- DeFacto
+- USB
+- PlainFact
+- QASPER
+- FENICE
+- TRUE or AggreFact
+- expert-edited 2026 simplification corpus
+- other long-document resources unless promoted before results
+
+Current readiness:
+`NOT_READY_GATE_C_EXT_META`
+
+No external benchmark executed.
+No V2.4 prediction run on external evaluation cases.
+No custom 80-study source opened.
+No reviewer recruited.
+No runtime change.
+
+Quality delta:
+`IMPROVED`
+- independent construct-validity review now supports the no-new-human direction;
+- claim boundaries tightened;
+- stronger expert scientific benchmarks added;
+- public-gold exposure limitation explicitly recognized;
+- non-compensatory multi-track protocol frozen for review.
+
+Current exact next checkpoint:
+`USER-MEDIATED HIGHER-MODEL PRE-EXECUTION REVIEW`
+
+User should provide the higher model:
+`GATE_C_EXT_META_PREEXECUTION_REVIEW_PACKET_V1.txt`
+
+Until that response:
+- do not freeze/execute final external dataset suite;
+- do not run verifier on external evaluation cases;
+- do not open original custom Gate C;
+- do not recruit new humans;
+- do not modify V2.4.
