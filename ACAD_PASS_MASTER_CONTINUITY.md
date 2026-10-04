@@ -1115,34 +1115,46 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — FACTPICO H1 ADAPTER + INPUT/GOLD MANIFEST IMPLEMENTATION FREEZE`
+`PRE-GATE-C EXT/META — H1 FACTPICO PRE-PREDICTION INTEGRITY GATE`
 
-FactPICO H1 Contract V5 is frozen after focused independent review.
+FactPICO H1 V5 adapter/input/gold implementation freeze is complete.
 
-Final hard classes:
-- SAFE_STRICT_CONTROL: 34 records / 33 source clusters
-- ERROR_STRICT: 149 records / 83 source clusters
-- INTERMEDIATE: 153 records / 84 source clusters represented
-- N_A_SOURCE_DIAGNOSTIC: 9 records / 3 source clusters
+Frozen implementation:
+- adapter SHA-256:
+  `ab128309261eeffdb734464f2a2fef52cef4ce37bdb3b9654317d6b5bba0b7e1`
+- prediction-input SHA-256:
+  `ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82`
+- separate-gold SHA-256:
+  `6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48`
+- eligibility-manifest SHA-256:
+  `d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255`
+- build-manifest SHA-256:
+  `67bfbd4302f66d2248009c8a6fe9cef658a6f202d278450b73e942c68cb6f16b`
 
-Final eligibility manifest SHA-256:
-`d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255`
+No V2.4 prediction has been run.
 
 Authorized next scope:
-1. implement deterministic FactPICO transport adapter;
-2. regenerate/freeze the exact 345-record prediction-input manifest;
-3. regenerate/freeze the separate V5 gold manifest;
-4. prove inference artifact contains zero gold fields;
-5. hash adapter code/config/input/gold artifacts;
-6. validate exact ID completeness and class/count reproduction;
-7. STOP before V2.4 prediction.
+1. verify repository adapter bytes/hash against frozen local adapter;
+2. verify frozen V2.4 runtime hash/version;
+3. verify source/input/gold/build hashes;
+4. freeze exact one-shot prediction command/config;
+5. prove inference path cannot access gold artifact;
+6. freeze retry/failure policy and output-ID contract;
+7. STOP before prediction unless execution is explicitly authorized.
+
+Fresh landscape strategy is now:
+`CONSTRUCT-MODULAR EXTERNAL VALIDATION`
+
+Do not force one benchmark to prove all ACAD_PASS constructs.
+
+Future H2/H3 candidates must be freshly compared against 2025–2026 resources before execution.
 
 Still not authorized:
-- V2.4 FactPICO prediction;
+- FactPICO V2.4 prediction;
 - H1 scoring;
 - runtime modification;
-- threshold change;
-- original custom Gate C opening;
+- threshold changes;
+- custom Gate C opening;
 - new-human recruitment;
 - Arabic-track work.
 
@@ -2700,3 +2712,104 @@ No Arabic work.
 
 Exact next checkpoint:
 `FACTPICO H1 ADAPTER + INPUT/GOLD MANIFEST IMPLEMENTATION FREEZE`
+
+
+---
+
+# 45. SCIENTIFIC VERIFICATION LANDSCAPE RESET + FACTPICO ADAPTER FREEZE
+
+Date: 2026-10-04
+
+Landscape reset:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/SCIENTIFIC_VERIFICATION_LANDSCAPE_RESET_V1.md`
+
+Commit:
+`f723cb718dc7451c2b484df43cb13a34e3603348`
+
+Core diagnosis:
+`RESOURCE SCARCITY = FALSE`
+
+Actual issue:
+`CONSTRUCT MATCHING + EVALUATION INTEGRITY`
+
+Fresh research found strong modern resources across separate constructs:
+- scientific revision/evaluation: ACL 2025 revision metrics, ParaRev, XtraGPT, Mr Dre
+- long scientific factuality: LongSciVerify, FENICE, ACL 2026 factuality stress testing, LLM-Oasis
+- claim/evidence: SciVer, CLAIM-BENCH, SciClaimEval, SciTab extensions, ClimateViz, Matter-of-Fact
+- citation verification: SciCiteVal, CiteAudit, SciTrue
+- biomedical quality: FactPICO, RoBBR, BioPulse-QA, ReFACT
+- products/systems: Scite, Elicit, Paperpal, SciSpace, IPPOLIS Write
+
+Strategy correction:
+`REUSE MORE / FORCE LESS`
+
+ACAD_PASS should use strongest matched evidence per construct rather than one benchmark per whole pipeline.
+
+Current FactPICO role remains valid:
+`H1 source-bounded critical RCT-element fidelity/preservation`
+
+PLABA:
+diagnostic/authentic transformation evidence.
+
+Future H2/H3 resource selections are reopened before execution and must compare modern candidates against the older frozen candidates.
+
+FactPICO adapter implementation freeze:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_H1_ADAPTER_IMPLEMENTATION_FREEZE_V1.md`
+
+Commit:
+`ee41d5908c5f703aa6738c4a6a3078e69f0e0f25`
+
+Adapter:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_h1_adapter_v5.py`
+
+Commit:
+`c36aef499fe28c83b80f1d7a9f296deefa309d2d`
+
+SHA-256:
+`ab128309261eeffdb734464f2a2fef52cef4ce37bdb3b9654317d6b5bba0b7e1`
+
+Build manifest:
+`FACTPICO_H1_V5_BUILD_MANIFEST.json`
+
+Commit:
+`8450003be24db1b101cb7a8be663431a934dbd76`
+
+Frozen artifacts:
+- prediction input: 345 records
+  SHA-256 `ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82`
+- separate gold: 345 records
+  SHA-256 `6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48`
+- eligibility manifest:
+  SHA-256 `d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255`
+- build manifest:
+  SHA-256 `67bfbd4302f66d2248009c8a6fe9cef658a6f202d278450b73e942c68cb6f16b`
+
+No-gold-leak:
+`PASS`
+
+Deterministic rebuild:
+`PASS — two sequential independent builds, identical hashes`
+
+Prediction keys only:
+- record_id
+- source_text
+- candidate_text
+
+Prediction/gold record-ID exact match:
+`PASS`
+
+Tooling negative evidence:
+Python startup emitted an unrelated artifact_tool spreadsheet runtime warmup error, but adapter completed with return code 0; second sequential build reproduced all hashes.
+Classified tooling/environment only.
+
+Current H1 performance:
+`NOT YET MEASURED`
+
+No V2.4 external prediction.
+No H1 scoring.
+No runtime change.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`H1 FACTPICO PRE-PREDICTION INTEGRITY GATE`
