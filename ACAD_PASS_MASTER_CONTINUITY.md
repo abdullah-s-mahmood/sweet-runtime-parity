@@ -1115,41 +1115,33 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — INDEPENDENT REVIEW OF H1 CONTRACT V3`
+`PRE-GATE-C EXT/META — H1 CONTEXT + GOLD-SEMANTICS RESOLUTION`
 
-Preferred H1 contract:
-`H1_ADAPTER_NATIVE_METRIC_CONTRACT_V3.md`
+Independent review of H1 Contract V3 returned:
+`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
 
-V1 and V2 are preserved but superseded before execution.
+Verified blocker:
+PLABA's sentence-level expert judgments account for whole-abstract context and permit task-specific omission/generalization that is not automatically equivalent to ACAD_PASS strict protected-detail preservation.
 
-Why V3:
-- 76,790 judgment rows collapse to 62,315 canonical PMID+Source+Target prediction pairs;
-- identical deterministic inputs must not be predicted repeatedly merely because multiple runs emitted the same target;
-- repeated human judgments can disagree, so conflicting gold must not receive incompatible hard expectations;
-- run-completeness selection is replaced by a canonical-pair universe containing every pair with >=1 published human judgment.
+Frozen V2.4 currently has no separate non-obligatory context channel.
 
-Frozen V3 canonical gold:
-- SAFE_STRICT: 40,609 pairs / 399 PMIDs
-- ERROR_STRICT: 3,566 pairs / 396 PMIDs
-- INTERMEDIATE: 16,800 pairs / 399 PMIDs
-- HUMAN_CONFLICT: 1,340 pairs / 320 PMIDs
+Current H1 state:
+`H1_NOT_READY_CONTEXT_GOLD_ALIGNMENT`
 
-Hard V3 rules:
-- ERROR_STRICT automatic PASS = 0
-- SAFE_STRICT pair-micro PASS >=75%
-- SAFE_STRICT PMID-macro PASS >=75%
-- ERROR_STRICT pair-micro REJECT >=75%
-- ERROR_STRICT PMID-macro REJECT >=75%
-
-Exact next action:
-user mediates independent higher-model review using:
-`H1_CONTRACT_V3_HIGHER_MODEL_REVIEW_PACKET.txt`
+Authorized next scope:
+1. freeze PLABA annotator/evaluation context semantics from primary sources;
+2. compare PLABA permissible omission/addition rules against ACAD_PASS protected-content semantics;
+3. determine whether a non-semantic eligible hard subset can be defined before prediction;
+4. determine whether frozen V2.4 can validly consume any required context without creating false completeness obligations;
+5. if not, narrow PLABA's hard role and identify the minimum published external resource needed to close the uncovered H1 construct;
+6. draft H1 Contract V4 only after this resolution.
 
 Still not authorized:
 - H1 adapter implementation;
-- V2.4 external predictions;
+- V2.4 PLABA predictions;
 - H1 scoring;
-- V2.4 tuning;
+- V2.4 modification;
+- threshold tuning;
 - original custom Gate C opening;
 - new-human recruitment;
 - Arabic-track work.
@@ -2183,3 +2175,76 @@ No Arabic work.
 
 Exact next checkpoint:
 `USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V3`
+
+
+---
+
+# 39. H1 CONTRACT V3 INDEPENDENT REVIEW — ACCEPTED WITH ESSENTIAL CHANGES
+
+Date: 2026-10-04
+
+Review decision:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_CONTRACT_V3_INDEPENDENT_REVIEW_DECISION_V1.md`
+
+Commit:
+`5488022080f2d55265f1e12e168c5efef5e6c59f`
+
+Readiness update:
+`1742ba46bd82b9a006aa1d05c85d7bf15b0c0ad8`
+
+Independent verdict:
+`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
+
+Implementation-agent verification agreed with the core blocker:
+- PLABA Task 1 is sentence-aligned but the whole rewritten abstract is expected to be coherent;
+- PLABA discussion explicitly says sentence-level evaluation accounts for context of the entire abstract;
+- official guidelines permit resolving anaphora from previous sentences;
+- official guidelines permit ignoring some non-consumer-relevant sentences;
+- official guidelines permit omitting confidence intervals, p-values and similar measurements;
+- official guidelines permit explanations/generalizations that may add contextual material.
+
+Therefore:
+`PLABA SAFE_STRICT != AUTOMATIC ACAD_PASS STRICT-PRESERVATION PASS GOLD`
+
+without a compatibility contract.
+
+V2.4 context audit:
+- frozen extractor receives one text string;
+- no independent context field exists;
+- prepending context would make that context part of source obligations and can create false omissions against a current-sentence target.
+
+Current state:
+`H1_NOT_READY_CONTEXT_GOLD_ALIGNMENT`
+
+Retained V3 strengths:
+- canonical PMID+Source+Target deduplication;
+- human conflict diagnostic only;
+- score 0 is not REVIEW;
+- PMID cluster statistics;
+- public-gold procedural separation;
+- no new-human requirement now.
+
+Required correction:
+- Source==Target positives must be excluded from primary transformed-positive acceptance and reported as identity controls;
+- final eligible denominators must be recalculated after context/gold compatibility is frozen.
+
+Quality delta:
+`MIXED / METHODOLOGICALLY IMPROVED`
+
+Improved:
+- detected a genuine construct mismatch before any prediction;
+- prevented invalid H1 adapter implementation;
+- preserved all negative protocol history.
+
+Worsened/new blocker:
+- PLABA alone is not yet proven compatible as a full hard H1 gate for frozen V2.4.
+
+No V2.4 prediction.
+No H1 scoring.
+No runtime change.
+No custom holdout opening.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`H1 CONTEXT + GOLD-SEMANTICS RESOLUTION`
