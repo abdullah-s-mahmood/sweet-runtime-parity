@@ -1115,28 +1115,39 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — H1 RAW ARTIFACT + SCHEMA + TERMS FREEZE`
+`PRE-GATE-C EXT/META — H1 PHYSICAL SCHEMA + SOURCE-CLUSTER FREEZE`
 
-The prior access-resolution checkpoint substantially resolved the main H1 evidence source.
+The H1 raw artifact/schema/terms checkpoint is now frozen.
 
-Preferred H1 core candidate:
+Current preferred H1 core:
 `TREC PLABA 2024 COMPLETE-REWRITE MANUAL JUDGMENTS`
 
-Authorized next scope:
-1. freeze exact 2024 manual-judgment artifact bytes/checksums if tooling permits;
-2. inspect/freeze exact TSV schema and record identifiers;
-3. freeze original TREC 2024 source/test corpus identifiers/bytes;
-4. document the exact TREC research-use/data-sharing terms applicable to reuse;
-5. map sentence records to original PubMed/PMID source clusters;
-6. only then draft/freeze the H1 adapter + native metric contract.
+Resolved:
+- Zenodo artifact identity and publisher MD5;
+- public NIST/TREC source/test corpus route;
+- 2023 physical judgment schema;
+- 2024 logical ACC/COM/SIM/BRV/FIN schema;
+- TREC research-use handling policy;
+- source-cluster principle = original biomedical abstract / PMID.
+
+Exact next scope:
+1. materialize `manual-judgments-task1-2024.zip`;
+2. materialize `PLABA_2024-Task_2.zip`;
+3. compute local SHA-256;
+4. inspect every 2024 TSV header/record structure;
+5. map rows/sentences/runs to the 400 source abstracts and PMIDs;
+6. freeze exact source-cluster manifest;
+7. only then draft/freeze the H1 adapter + metric contract.
+
+If the environment still cannot materialize the two public ZIPs, user upload of those exact files is the preferred resolution.
 
 Still not authorized:
 - running V2.4 on external evaluation records;
-- external benchmark scoring;
+- external scoring;
 - tuning;
-- opening the original custom 80-study Gate C;
+- opening original custom Gate C;
 - recruiting new human reviewers;
-- modifying frozen V2.4;
+- modifying V2.4;
 - Arabic-track work.
 
 # 23. WHOLE-PROJECT PROGRESS
@@ -1810,3 +1821,89 @@ No Arabic work.
 
 Exact next checkpoint:
 `H1 RAW ARTIFACT + SCHEMA + TERMS FREEZE`
+
+
+---
+
+# 35. H1 RAW ARTIFACT + SCHEMA + TERMS FREEZE V1 — PARTIAL PASS
+
+Date: 2026-10-04
+
+Freeze file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_RAW_ARTIFACT_SCHEMA_TERMS_FREEZE_V1.md`
+
+Commit:
+`a4e4d01a6f3b0ff2dba6360327c523e587e1c282`
+
+Readiness update:
+`3cb83a562fe96705c0c7b84de3a07e5089f26d31`
+
+Quality delta:
+`IMPROVED / TOOLING-MATERIALIZATION BLOCKED`
+
+Frozen artifact identity:
+- Zenodo DOI `10.5281/zenodo.18637045`
+- version `v2`
+- `manual-judgments-task1-2024.zip`
+- publisher MD5 `589ad66e0b9324592f0151cc67974015`
+- size 7.1 MB
+
+Frozen source/test route:
+`https://trec.nist.gov/data/plaba/PLABA_2024-Task_2.zip`
+
+2023 physical schema directly verified:
+`Source, Output, Answer, Simp. sent, Simp. term, Simp. term acc., Simp. fluency, Acc. comp., Acc. faith., Team, Sent, Abst`
+
+Observed source/abstract identifiers include:
+`Q1_A4`, `Q2_A6`
+
+2024 logical schema frozen from peer-reviewed retrospective:
+- ACC accuracy relative to source;
+- COM completeness / minimize information loss;
+- SIM simplicity;
+- BRV brevity;
+- FIN mean score.
+
+Current conceptual H1 mapping:
+- H1-S <- ACC
+- H1-C <- COM
+
+No binary PASS/REJECT threshold has been frozen.
+
+Usage/terms:
+- TREC research-use framework permits research/NLP/document-understanding use and scientific reporting subject to restrictions;
+- raw protected text must not be redistributed in the ACAD_PASS repo;
+- store only IDs/hashes/protocol metadata/derived metrics publicly;
+- Zenodo record is Open but explicit license value is not shown, so unrestricted redistribution is NOT assumed.
+
+Independence rule:
+`original biomedical abstract / PMID = source cluster`
+
+The 400 test abstracts are the maximum candidate H1 source-cluster pool.
+
+Still unresolved:
+- local ZIP bytes;
+- local SHA-256;
+- exact 2024 TSV physical headers;
+- exact PMID manifest;
+- explicit Zenodo license;
+- final H1 adapter and metric thresholds.
+
+Current readiness:
+- condition 1 PASS;
+- conditions 2 and 3 substantial partial / not pass;
+- condition 4 NOT READY;
+- overall `NOT_READY_GATE_C_EXT_META`.
+
+Exact next checkpoint:
+`H1 PHYSICAL SCHEMA + SOURCE-CLUSTER FREEZE`
+
+Preferred files if manual upload is required:
+1. `manual-judgments-task1-2024.zip`
+2. `PLABA_2024-Task_2.zip`
+
+No V2.4 prediction.
+No benchmark scoring.
+No custom holdout opening.
+No human recruitment.
+No Arabic work.
