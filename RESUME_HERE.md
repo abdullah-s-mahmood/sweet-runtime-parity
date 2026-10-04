@@ -8691,3 +8691,111 @@ Still forbidden:
 
 Stop until user says:
 `أكمل`
+
+
+## 2026-10-04 — Landscape reset + FactPICO H1 adapter implementation freeze
+
+Landscape reset:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/SCIENTIFIC_VERIFICATION_LANDSCAPE_RESET_V1.md`
+
+Commit:
+`f723cb718dc7451c2b484df43cb13a34e3603348`
+
+Strategic conclusion:
+`MANY STRONG RESOURCES EXIST`
+
+Actual bottleneck:
+`CONSTRUCT MATCHING + EVALUATION INTEGRITY`
+
+New permanent rule:
+`CONSTRUCT-MODULAR EXTERNAL VALIDATION`
+
+Use the strongest benchmark/system per function rather than force one dataset to prove the whole ACAD_PASS pipeline.
+
+Fresh modern resources recorded for later audit:
+- revision/preservation: ACL 2025 scientific revision evaluation, ParaRev, XtraGPT, Mr Dre
+- long scientific factuality: LongSciVerify, FENICE, ACL 2026 long-document stress testing, LLM-Oasis
+- claim/evidence: SciVer, CLAIM-BENCH, SciClaimEval, SciTab/Table-Text Alignment, ClimateViz, Matter-of-Fact
+- citation verification: SciCiteVal, CiteAudit, SciTrue
+- biomedical quality: FactPICO, RoBBR, BioPulse-QA, ReFACT
+- application comparators: Scite, Elicit, Paperpal, SciSpace, IPPOLIS Write
+
+Future H2/H3 candidate selection is reopened before execution.
+Do not assume older SciFact/QASem choices remain primary without fresh comparison.
+
+FactPICO current H1 role remains:
+`source-bounded critical RCT-element fidelity/preservation`
+
+Implementation freeze:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_H1_ADAPTER_IMPLEMENTATION_FREEZE_V1.md`
+
+Commit:
+`ee41d5908c5f703aa6738c4a6a3078e69f0e0f25`
+
+Adapter:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_h1_adapter_v5.py`
+
+Adapter commit:
+`c36aef499fe28c83b80f1d7a9f296deefa309d2d`
+
+Adapter SHA-256:
+`ab128309261eeffdb734464f2a2fef52cef4ce37bdb3b9654317d6b5bba0b7e1`
+
+Build manifest:
+`FACTPICO_H1_V5_BUILD_MANIFEST.json`
+
+Build-manifest commit:
+`8450003be24db1b101cb7a8be663431a934dbd76`
+
+Frozen local/private artifact hashes:
+- prediction input:
+  `ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82`
+- separate gold:
+  `6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48`
+- V5 eligibility:
+  `d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255`
+- build manifest:
+  `67bfbd4302f66d2248009c8a6fe9cef658a6f202d278450b73e942c68cb6f16b`
+
+Adapter validation:
+- 345 records
+- 115 sources
+- 115/model
+- 25 double-PICO sources
+- 3 N/A sources
+- 216 exact Added Information source/candidate pairs
+- 15 unresolved auxiliary Added Information source clusters
+- all V5 class/source/model counts reproduced exactly
+- no duplicate record IDs
+- no gold fields in prediction input
+- prediction/gold ID sets exact match
+- eligibility hash exact reproduction
+
+Determinism:
+two sequential builds in separate directories produced identical output hashes.
+
+Tooling negative evidence:
+first Python invocation emitted unrelated artifact_tool spreadsheet-runtime warmup error.
+Adapter itself returned code 0.
+Second build reproduced all hashes.
+Classify as environment/tooling only.
+
+Current readiness:
+FactPICO adapter/input/gold implementation = PASS/FROZEN.
+V2.4 prediction = NOT RUN.
+H1 performance = NOT YET MEASURED.
+
+Exact next checkpoint:
+`H1 FACTPICO PRE-PREDICTION INTEGRITY GATE`
+
+Still forbidden:
+- V2.4 FactPICO prediction
+- H1 scoring
+- runtime changes
+- threshold changes
+- custom Gate C opening
+- human recruitment
+- Arabic work
+
+Stop until user says:
+`أكمل`
