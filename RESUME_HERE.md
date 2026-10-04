@@ -7504,3 +7504,101 @@ Until that response:
 - do not open original custom Gate C;
 - do not recruit new humans;
 - do not modify V2.4.
+
+
+## 2026-10-04 — Second EXT/META pre-execution review accepted; V2 protocol frozen
+
+Independent review verdict:
+`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
+
+The review explicitly authorizes the next non-execution stage:
+`dataset / version / split / adapter / metric / overlap freezing`
+
+with:
+`ZERO NEW-HUMAN RECRUITMENT AT THIS STAGE`
+
+No external benchmark execution is authorized yet.
+
+Key required changes accepted:
+1. H1 must prove two separate functions:
+   - output-content support/factuality;
+   - preservation/completeness of required source content.
+2. H2/H3 must be measurable from actual frozen V2.4 outputs without semantic helper inference.
+3. evidence location/reference correctness != semantic support correctness.
+4. META oracle must be independent from verifier output AND extractor semantic assumptions/rules.
+5. denominators, sample/source-cluster targets, thresholds, missing/invalid handling and success rules must be frozen before prediction.
+
+H1 resource status:
+- FactPICO = CONDITIONAL SUBSTITUTE
+- FaReBio = CONDITIONAL SUBSTITUTE
+- LongSciVerify = DIAGNOSTIC ONLY
+
+Preferred minimum H1 candidates:
+- CLEF SimpleText human-annotated real-system outputs
+- eligible PLABA/TREC human judgments
+
+Additional H1 resource only if exact frozen labels reveal a construct gap.
+
+H2:
+SciFact remains claim/evidence only.
+Gold evidence cannot be used to claim full retrieval evaluation.
+
+H3:
+QASemConsistency remains relation-level only.
+Gold QA decomposition cannot assist inference.
+Unmatched relations cannot be dropped from the frozen denominator.
+
+META/REVIEW:
+controlled REVIEW testing can proceed without new human labels if the oracle proves unresolvedness independently and matched anti-degenerate controls are included.
+This does NOT establish natural-world ambiguity performance.
+
+Adapter boundary strengthened:
+deterministic or rule-based semantic inference is still an invalid adapter if it adds capability necessary for success.
+
+Statistical rule:
+no universal N.
+Each hard track must freeze a source-cluster/sample target justified by CI width, error bound, power/effect target, or controlled-family coverage as appropriate.
+
+Public-gold claim:
+procedurally frozen prospective evaluation against previously published external human/expert labels.
+Do NOT call it secret/unseen holdout validation.
+
+No diagnostic dataset promoted to hard now.
+
+Decision file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_PREEXECUTION_REVIEW_DECISION_V2.md`
+commit:
+`41f518392a6aab3af4e1c0f0d2834a5736e02377`
+
+Protocol V2:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_PROTOCOL_AMENDMENT_V2.md`
+commit:
+`a8cd52bb731a53e1a72de6984a2eb3308fad7966`
+
+Readiness V2:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_READINESS_V2.md`
+commit:
+`73c7e5673b4bbcc708e2eb69eb745c91d3e713e6`
+
+Master continuity update:
+commit:
+`fc21d6d7b834170ed73ca43463cf605a2ab0ecec`
+
+Readiness now:
+- condition 1/10 = PASS
+- conditions 2-10 = NOT YET PASS
+- overall = `NOT_READY_GATE_C_EXT_META`
+
+Quality delta:
+`IMPROVED`
+
+No V2.4 runtime change.
+No external evaluation prediction.
+No original custom Gate C source opened.
+No human reviewer recruited.
+
+Exact next checkpoint:
+`PRE-GATE-C EXT/META — DATASET / VERSION / SPLIT / ADAPTER / METRIC / OVERLAP FREEZE`
+
+Stop here until user says:
+`أكمل`
