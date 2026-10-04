@@ -8518,3 +8518,87 @@ Exact next checkpoint:
 
 Stop until user says:
 `أكمل`
+
+
+## 2026-10-04 — FactPICO hard-gold eligibility + H1 Contract V4 frozen for focused review
+
+Contract:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_FACTPICO_HARD_GOLD_CONTRACT_V4.md`
+
+Commit:
+`d0891669fe21949439ee3d57f1e3e0a4c3659c70`
+
+Focused review packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_FACTPICO_V4_FOCUSED_REVIEW_PACKET.txt`
+
+Packet commit:
+`d737db5d927eea17caa6c6cdbcbccfea840d0915`
+
+Readiness update:
+`86b123008baf1b389de0e0a7bcae3fb575725453`
+
+Master continuity update:
+`5118523bbe825da7cc8f216623fb5aebc8676aff`
+
+Quality delta:
+`IMPROVED / REVIEW PENDING`
+
+Proposal:
+- prediction universe 345 / 115 sources
+- N/A-source diagnostic 9 / 3 sources
+- hard pool 336 / 112 sources
+- SAFE_STRICT_CONTROL 34 / 33 sources
+- ERROR_STRICT 172 / 91 sources
+- INTERMEDIATE 130 / 79 sources
+
+SAFE_STRICT_CONTROL:
+- P/I/C/O all 4
+- Results 4
+- no identified added-information span
+- no unresolved added-info identity source
+- non-N/A source
+
+Safe-control model skew:
+- ALPACA 33
+- GPT-4 1
+- LLAMA-2 0
+
+This is explicitly limited safe-control evidence, not broad transformation utility.
+
+ERROR_STRICT:
+- non-double PICO <=2
+- double-PICO aggregate <=1.5
+- OR Results <=2
+
+Added Information correctness remains diagnostic only because FactPICO permits externally factual explanations while V2.4 is source-bounded.
+
+Provisional eligibility manifest:
+`FACTPICO_HARD_GOLD_ELIGIBILITY_MANIFEST_V4_PROPOSAL.csv`
+345 rows
+SHA-256:
+`72ece44c2d23b8c6ce667f5f1ff0856fb28900a412a0b14ed192ce329b8a9d91`
+
+Proposed gates:
+- ERROR_STRICT PASS_CANDIDATE = 0
+- ERROR_STRICT REJECT >=75% pair-micro + source-macro
+- SAFE_STRICT_CONTROL PASS >=75% pair-micro + source-macro
+
+Focused independent review only on:
+1. N/A policy
+2. double-PICO <=1.5 rule
+3. Results <=2 rule
+4. safe-control/no-added-info rule
+5. safe-control size/model skew
+6. 75% thresholds
+
+No V2.4 prediction.
+No H1 scoring.
+No adapter implementation.
+No runtime change.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`USER-MEDIATED FOCUSED INDEPENDENT REVIEW OF FACTPICO H1 CONTRACT V4`
+
+Stop until user returns the complete focused review.
