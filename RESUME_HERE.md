@@ -7733,3 +7733,94 @@ Next scope:
 
 Stop here until user says:
 `أكمل`
+
+
+## 2026-10-04 — H1 access + artifact resolution substantially improved
+
+Resolution file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_ACCESS_ARTIFACT_RESOLUTION_V1.md`
+
+Commit:
+`f88fe5b599ade9b85e6a301b350bc33c2163e331`
+
+Readiness update:
+`451c4a19b8b825d5de2df026152b19bff79fbe16`
+
+Master continuity update:
+`12b3cdf8ec791e5efcf056dd323d6c10f422e588`
+
+Quality delta:
+`IMPROVED`
+
+Key resolution:
+public Zenodo dataset `10.5281/zenodo.18637045` exposes raw TREC PLABA manual judgments.
+
+Relevant artifacts:
+- `manual-judgments-task1-2023.csv`
+  MD5 `0f320090ce516d799b4e970ebb3194a4`
+- `manual-judgments-task1-2024.zip`
+  MD5 `589ad66e0b9324592f0151cc67974015`
+- `manual-judgments-task2-2024.zip`
+  MD5 `c23fe9c96addedb9c8ad4a8901734996`
+
+Critical task-numbering issue resolved:
+- original TREC 2024 naming: Task 2 = Complete Abstract Adaptation
+- retrospective publication / Zenodo normalization: Task 1 = Rewriting Abstracts
+
+Therefore H1 complete-rewrite manual judgment archive is:
+`manual-judgments-task1-2024.zip`
+
+2024 retrospective manual axes:
+- ACC = accuracy relative to source
+- COM = completeness / information preservation
+- SIM = simplicity
+- BRV = brevity
+- FIN = mean of axes
+
+Paper states:
+- 19 2024 complete-rewrite submissions;
+- sentence-level outputs across all 400 test abstracts were manually evaluated;
+- manual evaluation is treated as gold standard.
+
+Preferred H1 conceptual core:
+- H1-S <- ACC
+- H1-C <- COM
+
+No outcome mapping frozen yet.
+
+TREC corpus public route identified:
+`https://trec.nist.gov/data/plaba/PLABA_2024-Task_2.zip`
+
+Rights:
+- TREC research-use/data-sharing path identified;
+- Zenodo record publicly Open;
+- explicit license value not shown in Zenodo metadata;
+- exact applicable reuse agreement remains to be frozen.
+
+FaReBio:
+- expert faithfulness/evidence benchmark;
+- 25 articles / 175 summaries / 1,445 sentences;
+- public for research only;
+- conditional H1-S support, not H1-C.
+
+SimpleText:
+optional/access-gated; no longer blocks H1.
+
+Current readiness:
+- condition 1 PASS
+- condition 2 SUBSTANTIAL PARTIAL / NOT PASS
+- condition 3 SUBSTANTIAL PARTIAL / NOT PASS
+- condition 4 NOT READY
+- overall NOT_READY_GATE_C_EXT_META
+
+No V2.4 prediction.
+No benchmark score.
+No custom 80-study holdout opened.
+No human recruitment.
+No Arabic-track work.
+
+Exact next checkpoint:
+`H1 RAW ARTIFACT + SCHEMA + TERMS FREEZE`
+
+Stop until user says:
+`أكمل`
