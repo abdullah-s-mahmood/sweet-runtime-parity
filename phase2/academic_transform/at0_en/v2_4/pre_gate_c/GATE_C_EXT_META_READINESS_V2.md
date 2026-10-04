@@ -11,8 +11,8 @@ Protocol:
 | # | Condition | Status | Required evidence |
 |---|---|---|---|
 | 1 | Independent protocol review | PASS | Review decision V2 incorporated |
-| 2 | Dataset artifacts/versions/access/licenses | NOT READY | Exact files/releases/licenses for selected hard tracks |
-| 3 | Eligible splits/IDs/human-label provenance/context | NOT READY | Frozen IDs, labels, annotation context, exclusions |
+| 2 | Dataset artifacts/versions/access/licenses | PARTIAL / NOT PASS | H1 identity/access audit completed; SimpleText annotation bytes/license and PLABA/TREC reusable artifacts still unresolved |
+| 3 | Eligible splits/IDs/human-label provenance/context | PARTIAL / NOT PASS | H1 construct provenance clarified; exact SimpleText/TREC judgment IDs and final eligible records still unfrozen |
 | 4 | Dataset-specific adapter contracts + measurable-output mapping | NOT READY | Frozen contract proving comparison to actual V2.4 outputs without new semantic inference |
 | 5 | Overlap/source-cluster manifest | NOT READY | IDs/hashes/lineage/cluster counts |
 | 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | NOT READY | Frozen per-track quantitative contract |
@@ -231,7 +231,7 @@ Before execution freeze:
 ## 11. Current blockers
 
 Methodological blockers still open:
-1. actual H1 label-function coverage not yet verified;
+1. H1 label-function coverage is partially verified conceptually, but exact SimpleText/TREC record-level labels remain inaccessible/unfrozen;
 2. actual H2 measurable-output mapping not yet frozen;
 3. actual H3 measurable-output mapping not yet frozen;
 4. dataset artifacts/licenses/versions not yet frozen;
@@ -265,3 +265,29 @@ Still forbidden:
 - opening original custom 80-study Gate C;
 - recruiting new humans;
 - changing V2.4.
+
+
+## 13. H1 dataset/access audit checkpoint
+
+Audit file:
+`H1_DATASET_VERSION_ACCESS_LABEL_AUDIT_V1.md`
+
+Audit commit:
+`87485c350c148668fcba85fc6d6bca802b1c5001`
+
+Key findings:
+- SimpleText 2025 real human-annotated outputs remain a strong H1-S candidate.
+- Official 2026 documentation confirms reuse of manual 2025 annotations as ground truth for information-distortion classification.
+- SimpleText H1-C sufficiency is not yet established until the actual annotation artifact is inspected.
+- PLABA original dataset identity is verified: 750 abstracts / 7,643 aligned sentence pairs.
+- PLABA human references are not automatic full-preservation PASS gold because omission is permitted.
+- TREC PLABA 2023 completeness/faithfulness is sampled over selected question-relevant sentences.
+- TREC PLABA 2024 expert evaluation directly includes accuracy and completeness on complete abstract adaptation and is currently the strongest PLABA-family H1-C candidate.
+- TREC 2024 reusable judgment artifact/access/license terms are not yet frozen.
+- article/publication license must not be silently treated as dataset/judgment license.
+
+H1 current state:
+`PARTIAL FREEZE / ACCESS + ARTIFACT RESOLUTION REQUIRED`
+
+Exact next H1 subcheckpoint:
+`H1 ACCESS + ARTIFACT RESOLUTION`
