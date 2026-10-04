@@ -8426,3 +8426,95 @@ Exact next checkpoint:
 `FACTPICO PHYSICAL ARTIFACT + SCHEMA FREEZE`
 
 Stop until user uploads the Box archive or asks for download instructions.
+
+
+## 2026-10-04 — FactPICO physical artifact + schema freeze complete
+
+Freeze:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_PHYSICAL_ARTIFACT_SCHEMA_FREEZE_V1.md`
+
+Commit:
+`117cd7c4b414aa77dab22db22423d2ce6bb319e1`
+
+Readiness update:
+`58bb72ed2e9da9b11c7aec771d3a55f1d03c4bba`
+
+Master continuity:
+`130c5ba1fd060579b6d58f78f6d9e81d5e24c320`
+
+Quality delta:
+`IMPROVED`
+
+FactPICO.zip:
+- size 2,232,398 bytes
+- MD5 `7f14a2b793f0ee5bb03aadb0131768db`
+- SHA-256 `ec260d7c69db9537f819fbdf728c997520e55de56b9f03b2980b017c91b9d4f4`
+- ZIP integrity PASS
+
+Primary gold:
+`data/all_evaluations.csv`
+SHA-256:
+`1035640d11dbe5fd28ad13385785638fca3c2f0632ba5e94480ed319b90992cd`
+
+Counts:
+- 115 sources
+- 345 summaries
+- 115/model for GPT-4, LLAMA-2, ALPACA
+- 3 outputs/source
+- no duplicate source+generation records
+
+Primary human fields:
+Population, Intervention, Comparator, Outcome, Results
+
+Source cluster:
+`SHA256(exact Abstract)`
+115 clusters.
+
+Derived manifests:
+- source-cluster manifest SHA-256:
+  `a5b26ad1bac4a80e6b158c251557383835e7c43772e25b084d4a4a2bf49fc831`
+- 345-record gold manifest SHA-256:
+  `693f15c7eaaa6a4687cff04444a4096a076e71600bf240adcf1e5defafe534a5`
+
+Physical semantics:
+- 0 = N/A for relevant PICO element fields
+- half-step PICO values = aggregated double-annotation values
+- Results aggregates 1–5 evidence-inference spans
+- Avg. PICO-R is derived, not hard gold
+- holistic score not hard-mapped yet
+
+Rationale defects:
+- rest_270_annotated_rationales.csv has 240, not 270, rows
+- 80 single-annotated source abstracts + 25 double-annotated = 105 sources
+- 10 sources / 30 summaries lack released PICO rationale rows
+- 15 released PICO rationale candidate texts remain corrupted/mismatched relative to canonical all_evaluations candidate text
+- primary numeric gold remains complete 345/345
+
+Evidence inference:
+- 645 rationale rows
+- all 345 summaries covered
+- 1–5 result spans/summary
+
+Contradictions:
+diagnostic only.
+
+pico_rationales.csv == llm_pico_rationales.csv byte-identical;
+LLM rationales diagnostic only.
+
+Current status:
+`FACTPICO PRIMARY GOLD PHYSICAL FREEZE = PASS`
+
+Rationale layer:
+`PARTIAL / NON-BLOCKING`
+
+No V2.4 prediction.
+No H1 scoring.
+No runtime modification.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`FACTPICO HARD-GOLD ELIGIBILITY + H1 CONTRACT V4 FREEZE`
+
+Stop until user says:
+`أكمل`
