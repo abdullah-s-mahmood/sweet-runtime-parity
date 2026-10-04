@@ -1,0 +1,180 @@
+ACAD_PASS — GATE C EXT/META PRE-EXECUTION INDEPENDENT REVIEW PACKET V1
+
+ROLE
+
+Act as an independent Chief Research Methodologist, Benchmark Architect, and Adversarial Reviewer.
+
+This is a PRE-EXECUTION protocol review.
+Do not implement, run datasets, modify code, open the custom holdout, or recruit annotators.
+
+DEEP RESEARCH / RED-TEAM
+
+Use current literature/web research where useful.
+Do not merely ratify the prior decision.
+Focus on construct validity, leakage, benchmark overlap, oracle validity, statistical independence, and overclaim risk.
+
+FILES TO REVIEW IN THIS ORDER
+
+1. ACAD_PASS_MASTER_CONTINUITY.md
+2. phase2/academic_transform/at0_en/v2_4/pre_gate_c/NO_NEW_HUMAN_HIGHER_MODEL_CONSULTATION_DECISION_V1.md
+3. phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_PROTOCOL_AMENDMENT_V1.md
+4. phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_READINESS_V1.md
+5. phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_PROTOCOL_FINAL_V1.md
+6. phase2/academic_transform/at0_en/v2_4/gate_b2/B2_FINAL_CLOSURE.md
+
+CURRENT STATE
+
+- V2.4 runtime remains frozen and unchanged.
+- Original custom 80-study Gate C remains frozen and unopened.
+- No new human reviewers have been recruited.
+- No external benchmark has been executed.
+- No external evaluation cases have been passed through the verifier.
+- The previous independent consultation returned:
+  B — YES_WITH_ESSENTIAL_CHANGES.
+- The implementation agent accepted that decision with a versioned replacement amendment.
+- Current external-composite readiness is:
+  NOT_READY_GATE_C_EXT_META.
+
+PROPOSED HARD-GATE FUNCTIONS
+
+H1 — Scientific transformation fidelity
+- at least one direct scientific-transformation human-judgment source
+- plus at least one independent expert scientific-factuality source at different granularity/construction
+Candidate pool:
+CLEF SimpleText 2025 manual real submissions;
+eligible PLABA/TREC human judgments;
+FactPICO;
+FaReBio;
+LongSciVerify.
+
+H2 — Scientific claim/evidence
+- SciFact
+- exact claim/evidence semantics only
+
+H3 — Fine-grained relation fidelity
+- QASemConsistency
+- relation level, not full-document inference
+
+H4 — ACAD_PASS deterministic metamorphic validation
+- owner/value
+- group labels
+- negation
+- modality
+- causality
+- citation ownership
+- equation binding
+- denominator/baseline
+- temporal/scope
+- critical qualifier deletion
+- faithful split/merge
+- formally valid REVIEW ambiguity
+- matched anti-degenerate controls
+
+DIAGNOSTIC BY DEFAULT
+
+DeFacto
+USB
+PlainFact
+QASPER
+FENICE
+TRUE or AggreFact
+expert-edited 2026 simplification corpus
+other long-document resources if not used in H1
+
+GLOBAL RULE
+
+No weighted aggregate.
+
+GO requires every hard gate to pass its frozen contract plus all non-compensatory safety requirements.
+
+For eligible mapped critical cases:
+- unsafe automatic PASS = 0
+- critical silent scientific error = 0
+- critical uncertainty -> automatic PASS = 0
+- unsupported critical decision evidence = 0
+
+Public benchmark labels are acknowledged as public, not secret holdout gold.
+The protocol therefore requires procedural prediction/gold separation and explicit prior-exposure reporting, not a false claim of secret untouched evaluation.
+
+TEN PRECONDITIONS BEFORE EXECUTION
+
+1. independent review of amendment
+2. exact artifacts/versions/access/licenses
+3. eligible IDs/splits/human-label provenance
+4. dataset-specific adapter contracts
+5. overlap/source-cluster manifest
+6. metrics/thresholds/sample sizes/statistics
+7. META oracle/cases/seeds/exclusions
+8. runtime + adapter identity hashes
+9. prior exposure + prediction/gold separation
+10. one-shot failure/exclusion/retest/full-report policy
+
+QUESTIONS
+
+Q1. Choose exactly one:
+A. ACCEPT_PREEXECUTION_PROTOCOL
+B. ACCEPT_WITH_ESSENTIAL_CHANGES
+C. REJECT_EXTERNAL_REPLACEMENT
+D. RESIDUAL_HUMAN_REQUIRED_BEFORE_EXECUTION
+
+Q2. Is the hard-gate functional decomposition H1/H2/H3/H4 construct-valid?
+
+Q3. For H1, should FactPICO, FaReBio, and LongSciVerify be:
+- mandatory,
+- conditional substitutes,
+- diagnostic only,
+or some explicit combination?
+Give the minimum non-redundant H1 composition.
+
+Q4. Is CLEF SimpleText + qualified PLABA/TREC enough for direct transformation fidelity, or must an additional expert factuality benchmark be mandatory?
+
+Q5. Are SciFact and QASemConsistency correctly constrained, or is either being overinterpreted?
+
+Q6. Is the META REVIEW design defensible for research progression without new human labels?
+If not, specify the minimum missing oracle.
+
+Q7. Are the ten readiness preconditions sufficient?
+Add only blockers that must be frozen before execution.
+
+Q8. Identify any adapter operation that would accidentally become a new semantic model and invalidate evaluation of frozen V2.4.
+
+Q9. Define the minimum statistically defensible per-track sample/source-cluster rule before execution.
+Do not invent a universal N if the constructs differ.
+
+Q10. Is procedural prediction-first/label-second still useful with public benchmark labels, and what exact claim may be made about independence?
+
+Q11. Are any proposed diagnostic datasets important enough to become hard gates before execution?
+
+Q12. Red-team the current amendment.
+Maximum 8 material failure modes.
+
+Q13. State the exact allowed overall claim if the suite passes.
+
+Q14. State the exact prohibited claims.
+
+Q15. Final recommendation:
+Should ACAD_PASS proceed next to dataset/version/adapter freezing with zero new-human recruitment?
+
+OUTPUT FORMAT
+
+1. VERDICT
+2. REQUIRED CHANGES
+3. HARD-GATE COMPOSITION
+4. H1 MINIMUM PACKAGE
+5. H2/H3 VALIDITY
+6. META/REVIEW VALIDITY
+7. READINESS CONDITIONS
+8. ADAPTER BOUNDARY
+9. STATISTICAL MINIMUMS
+10. PUBLIC-GOLD INDEPENDENCE CLAIM
+11. DIAGNOSTIC PROMOTIONS
+12. RED-TEAM RISKS — max 8
+13. ALLOWED CLAIM
+14. PROHIBITED CLAIMS
+15. FINAL RECOMMENDATION
+
+No code.
+No implementation.
+No dataset execution.
+No verifier changes.
+No human recruitment.
