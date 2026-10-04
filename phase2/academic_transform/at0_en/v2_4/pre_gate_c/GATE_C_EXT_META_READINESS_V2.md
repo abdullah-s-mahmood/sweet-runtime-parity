@@ -13,9 +13,9 @@ Protocol:
 | 1 | Independent protocol review | PASS | Review decision V2 incorporated |
 | 2 | Dataset artifacts/versions/access/licenses | SUBSTANTIAL PARTIAL / NOT PASS | User-supplied H1 ZIP bytes locally verified; manual-judgment MD5 matches publisher; local SHA-256 frozen for both archives; explicit reuse/license documentation still incomplete |
 | 3 | Eligible splits/IDs/human-label provenance/context | SUBSTANTIAL PARTIAL / NOT PASS | Exact 2024 TSV physical schema, 400 abstract slots, 4,060 source sentences, 399 PMID clusters and row-level source reconciliation are frozen; final eligible subset/metric contract remains unfrozen |
-| 4 | Dataset-specific adapter contracts + measurable-output mapping | NOT READY | Frozen contract proving comparison to actual V2.4 outputs without new semantic inference |
+| 4 | Dataset-specific adapter contracts + measurable-output mapping | H1 CONTRACT FROZEN / REVIEW PENDING | H1 Adapter + Native Metric Contract V2 frozen; independent review required before implementation or prediction |
 | 5 | Overlap/source-cluster manifest | H1 INTERNAL PARTIAL / NOT PASS | H1 source-cluster rule frozen at PMID with 399 clusters and one duplicate PMID; cross-dataset overlap manifest remains future work |
-| 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | NOT READY | Frozen per-track quantitative contract |
+| 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | H1 PARTIAL / REVIEW PENDING | H1 extreme-label strata, safety/utility denominators, PMID clustering, thresholds and bootstrap plan frozen in V2; other hard tracks remain |
 | 7 | META independent oracle/contracts/cases/seeds/exclusions | NOT READY | Oracle package independent from extractor/verifier semantics |
 | 8 | Runtime + adapter identity | PARTIAL | V2.4 frozen; adapter hashes pending |
 | 9 | Prior exposure + prediction/gold separation | NOT READY | Exposure register + frozen procedural separation |
@@ -419,3 +419,63 @@ Score alphabet on all axes:
 
 Current exact next checkpoint:
 `H1 ADAPTER + NATIVE METRIC CONTRACT FREEZE`
+
+
+## 17. H1 adapter + native metric contract V2 checkpoint
+
+Preferred contract:
+`H1_ADAPTER_NATIVE_METRIC_CONTRACT_V2.md`
+
+Commit:
+`23a613da183157c14ef5c1c82051a5014dbca18e`
+
+Review packet:
+`H1_CONTRACT_V2_HIGHER_MODEL_REVIEW_PACKET.txt`
+
+Review-packet commit:
+`0f583d601f8d195797e597308887465864dd3c94`
+
+Key V2 changes relative to V1:
+1. confirmatory utility restricted to 14 complete PLABA runs;
+2. hard safety retains all observed extreme-negative gold across all 19 runs;
+3. exact Source==Target positive rows excluded from primary transformed-positive utility and retained as identity controls.
+
+Gold strata:
+- QUALIFIED_POSITIVE = ACC==1 AND COM==1
+- QUALIFIED_NEGATIVE = ACC==-1 OR COM==-1
+- all other cells = diagnostic only; 0 is NOT mapped to REVIEW
+
+Primary H1 safety:
+- all 19 runs
+- 4,275 negative rows
+- 396 negative-exposed PMID clusters
+- any PASS_CANDIDATE = safety failure
+
+Primary positive utility:
+- 14 complete runs
+- non-identical positive rows only
+- 33,660 rows
+- 399 PMIDs
+- PMID-macro PASS_CANDIDATE >=75%
+
+Primary negative utility:
+- 14 complete runs
+- 3,677 negative rows
+- 394 PMIDs
+- PMID-macro REJECT >=75%
+
+Statistics:
+- PMID cluster unit
+- 10,000 bootstrap resamples
+- seed 20261004
+- 95% percentile CI
+- exact one-sided zero-event upper bound for safety
+
+Current status:
+`H1 CONTRACT V2 FROZEN FOR INDEPENDENT REVIEW`
+
+H1 prediction remains:
+`NOT AUTHORIZED`
+
+Exact next checkpoint:
+`USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V2`
