@@ -1115,38 +1115,40 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — H1 PHYSICAL SCHEMA + SOURCE-CLUSTER FREEZE`
+`PRE-GATE-C EXT/META — H1 ADAPTER + NATIVE METRIC CONTRACT FREEZE`
 
-The H1 raw artifact/schema/terms checkpoint is now frozen.
+The H1 physical schema and source-cluster checkpoint is complete.
 
-Current preferred H1 core:
-`TREC PLABA 2024 COMPLETE-REWRITE MANUAL JUDGMENTS`
+Frozen H1 raw identities:
+- manual judgments SHA-256:
+  `8256f7342c180e881e9c11244a7c24fe3e2fb4bdabf0fdfeb04892e4c8c722ce`
+- source corpus SHA-256:
+  `f9416ee9ef5a051e79053b526ad7023237cb87d171e79d9623bda4dbd656991e`
 
-Resolved:
-- Zenodo artifact identity and publisher MD5;
-- public NIST/TREC source/test corpus route;
-- 2023 physical judgment schema;
-- 2024 logical ACC/COM/SIM/BRV/FIN schema;
-- TREC research-use handling policy;
-- source-cluster principle = original biomedical abstract / PMID.
+Frozen physical schema:
+`Abstract, Sentence, Source, Target, Accuracy, Completeness, Simplicity, Brevity`
+
+Frozen H1 source-cluster unit:
+`PMID`
+
+Maximum independent H1 clusters:
+`399`
 
 Exact next scope:
-1. materialize `manual-judgments-task1-2024.zip`;
-2. materialize `PLABA_2024-Task_2.zip`;
-3. compute local SHA-256;
-4. inspect every 2024 TSV header/record structure;
-5. map rows/sentences/runs to the 400 source abstracts and PMIDs;
-6. freeze exact source-cluster manifest;
-7. only then draft/freeze the H1 adapter + metric contract.
-
-If the environment still cannot materialize the two public ZIPs, user upload of those exact files is the preferred resolution.
+1. decide whether ACC/COM remain native ordinal outcomes or can support exact ACAD_PASS mappings;
+2. freeze eligible external records/runs;
+3. freeze denominator and missing-gold handling;
+4. freeze source-cluster aggregation/statistics;
+5. freeze native thresholds/sample-size rationale;
+6. prove mapping to actual V2.4 outputs requires zero semantic helper inference;
+7. only after this contract passes may H1 prediction inputs be prepared.
 
 Still not authorized:
-- running V2.4 on external evaluation records;
-- external scoring;
+- V2.4 external predictions;
+- benchmark scoring;
 - tuning;
-- opening original custom Gate C;
-- recruiting new human reviewers;
+- original custom Gate C opening;
+- new-human recruitment;
 - modifying V2.4;
 - Arabic-track work.
 
@@ -1907,3 +1909,120 @@ No benchmark scoring.
 No custom holdout opening.
 No human recruitment.
 No Arabic work.
+
+
+---
+
+# 36. H1 PHYSICAL SCHEMA + SOURCE-CLUSTER FREEZE V1 — COMPLETE
+
+Date: 2026-10-04
+
+Freeze file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_PHYSICAL_SCHEMA_SOURCE_CLUSTER_FREEZE_V1.md`
+
+Commit:
+`1cb73aa79658462d105be0de02f2e2acb6f16023`
+
+Readiness update:
+`4ed5de1969a889e88c0e8f25ca30305017c3ae7c`
+
+Quality delta:
+`IMPROVED`
+
+User supplied the exact two public ZIPs.
+
+Manual-judgment archive:
+- size `7,054,073` bytes
+- MD5 `589ad66e0b9324592f0151cc67974015`
+- publisher MD5 match = YES
+- SHA-256:
+  `8256f7342c180e881e9c11244a7c24fe3e2fb4bdabf0fdfeb04892e4c8c722ce`
+
+Source/test archive:
+- size `231,126` bytes
+- MD5 `daa454a5234161489fef52eab1ebec26`
+- SHA-256:
+  `f9416ee9ef5a051e79053b526ad7023237cb87d171e79d9623bda4dbd656991e`
+
+Inner source file:
+`test.json`
+SHA-256:
+`2d53f485082ea16571ac54d9f3bcbd56c1c199130d4b8542e93b678ed561e9a7`
+
+Exact physical 2024 judgment schema:
+- Abstract
+- Sentence
+- Source
+- Target
+- Accuracy
+- Completeness
+- Simplicity
+- Brevity
+
+Source corpus:
+- 40 questions
+- 400 abstract slots
+- 4,060 source sentences
+- 399 unique PMIDs
+
+Duplicate PMID:
+`15857353`
+
+Slots:
+- Q14_A3
+- Q37_A5
+
+Their 7-sentence sources are exactly identical.
+
+Permanent independence rule:
+`PMID = primary H1 source cluster`
+
+Maximum independent source clusters:
+`399`
+
+Judgment archive:
+- 19 runs
+- 76,790 retained rows
+- 14/19 full 4,060-row runs
+- 5/19 incomplete runs
+- 350 missing run×sentence rows
+- 315 unique source-sentence pairs missing in >=1 run
+- 0 extra source pairs
+- 0 empty targets
+
+All retained judgment rows:
+- match a valid Abstract+Sentence source ID;
+- match source text exactly against test.json.
+
+Score alphabet:
+`-1, 0, 1`
+
+Gold descriptive counts:
+Accuracy:
+- -1: 2,084
+- 0: 10,296
+- 1: 64,410
+
+Completeness:
+- -1: 3,151
+- 0: 16,992
+- 1: 56,647
+
+These are external gold properties, not ACAD_PASS results.
+
+Current readiness:
+- Condition 1 PASS
+- Condition 2 substantial partial / not pass because rights documentation remains
+- Condition 3 substantial partial / not pass because final eligible subset/metric contract remains
+- Condition 5 H1-internal clustering frozen; cross-dataset overlap remains
+- Conditions 4 and 6 NOT READY
+- overall `NOT_READY_GATE_C_EXT_META`
+
+No V2.4 prediction.
+No external scoring.
+No custom Gate C opening.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`H1 ADAPTER + NATIVE METRIC CONTRACT FREEZE`
