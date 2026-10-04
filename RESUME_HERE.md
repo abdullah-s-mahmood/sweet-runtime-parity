@@ -8192,3 +8192,84 @@ Exact next checkpoint:
 `USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V3`
 
 Stop until user returns the full higher-model review.
+
+
+## 2026-10-04 — H1 Contract V3 independent review accepted with essential changes
+
+Decision file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_CONTRACT_V3_INDEPENDENT_REVIEW_DECISION_V1.md`
+
+Commit:
+`5488022080f2d55265f1e12e168c5efef5e6c59f`
+
+Readiness update:
+`1742ba46bd82b9a006aa1d05c85d7bf15b0c0ad8`
+
+Master continuity update:
+`f2ff6d51241e1b753ef0190332ea269e5f60fba7`
+
+Independent verdict:
+`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
+
+Higher-model review source:
+user uploaded full review.
+
+Core accepted:
+- canonical PMID+Source+Target deduplication
+- score 0 != REVIEW
+- HUMAN_CONFLICT != REVIEW
+- single published expert judgment acceptable under narrow claims
+- multi-rated subset is sensitivity only
+- pair-micro + PMID-macro framework
+- PMID cluster bootstrap
+- zero unsafe PASS after eligibility freeze
+- no new humans now
+
+Core blocker independently verified:
+PLABA sentence-level evaluation accounts for whole-abstract context, while official guidelines allow context-dependent rewriting and task-permitted information omission.
+
+Primary-source verification:
+- entire rewritten abstract expected to read fluently as one document
+- sentence-level evaluation accounts for entire-abstract context
+- anaphora may be resolved from previous source sentence
+- some source sentences may be ignored
+- confidence intervals / p-values / similar measurements may be omitted
+- context may be used to make named entities/pronouns explicit
+
+V2.4 frozen runtime audit:
+- source extractor takes one raw text string
+- no separate non-protected context field
+- blindly prepending prior/whole abstract context would create false preservation obligations against a single target sentence
+
+Therefore:
+`H1_NOT_READY_CONTEXT_GOLD_ALIGNMENT`
+
+Important interpretation:
+`PLABA SAFE_STRICT` is not automatically equivalent to ACAD_PASS strict protected-detail preservation.
+
+Exact-copy policy correction:
+Source==Target SAFE cases must be excluded from primary transformed-positive acceptance and kept as identity controls.
+
+Current authorization:
+`H1 CONTEXT + GOLD-SEMANTICS RESOLUTION`
+
+Still forbidden:
+- H1 adapter implementation
+- V2.4 PLABA prediction
+- H1 scoring
+- V2.4 modification
+- original custom 80-study Gate C opening
+- new human recruitment
+- Arabic work
+
+Quality delta:
+`MIXED / METHODOLOGICALLY IMPROVED`
+
+Reason:
+we found a genuine construct mismatch before contaminating the external evaluation.
+
+Exact next checkpoint:
+`H1 CONTEXT + GOLD-SEMANTICS RESOLUTION`
+
+Stop until user says:
+`أكمل`
