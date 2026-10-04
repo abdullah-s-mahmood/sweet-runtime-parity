@@ -1,0 +1,46 @@
+{
+  "contract_id": "H1_PLABA2024_EXTREME_V1",
+  "manual_judgments_sha256": "8256f7342c180e881e9c11244a7c24fe3e2fb4bdabf0fdfeb04892e4c8c722ce",
+  "source_corpus_sha256": "f9416ee9ef5a051e79053b526ad7023237cb87d171e79d9623bda4dbd656991e",
+  "expected_run_sentence_grid": 77140,
+  "gold_available_rows": 76790,
+  "gold_coverage_fraction": 0.9954627949183303,
+  "source_clusters_total": 399,
+  "strata": {
+    "EXTREME_POSITIVE": {
+      "rows": 51901,
+      "pmid_clusters": 399
+    },
+    "EXTREME_NEGATIVE": {
+      "rows": 4275,
+      "pmid_clusters": 396
+    },
+    "MIDDLE": {
+      "rows": 20614,
+      "pmid_clusters": 399
+    }
+  },
+  "gold_mapping": {
+    "EXTREME_POSITIVE": "Accuracy==1 AND Completeness==1",
+    "EXTREME_NEGATIVE": "Accuracy==-1 OR Completeness==-1",
+    "MIDDLE": "all other ACC/COM combinations; diagnostic only"
+  },
+  "hard_thresholds": {
+    "positive_cluster_macro_pass_acceptance_min": 0.75,
+    "negative_cluster_macro_valid_containment_min": 0.75,
+    "negative_clusters_with_any_auto_pass_max": 0
+  },
+  "bootstrap": {
+    "unit": "PMID",
+    "replicates": 10000,
+    "seed": 20261004,
+    "interval": "percentile_95_two_sided"
+  },
+  "zero_event": {
+    "unit": "PMID cluster with >=1 EXTREME_NEGATIVE row",
+    "one_sided_confidence": 0.95
+  },
+  "middle_stratum_policy": "diagnostic_only_no_review_mapping",
+  "invalid_verification_policy": "retained_in_denominator_and_not_counted_as_success",
+  "prediction_completeness_policy": "exact_record_id_set_required"
+}
