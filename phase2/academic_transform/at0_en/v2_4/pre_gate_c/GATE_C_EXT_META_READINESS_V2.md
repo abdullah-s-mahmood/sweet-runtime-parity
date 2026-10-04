@@ -11,10 +11,10 @@ Protocol:
 | # | Condition | Status | Required evidence |
 |---|---|---|---|
 | 1 | Independent protocol review | PASS | Review decision V2 incorporated |
-| 2 | Dataset artifacts/versions/access/licenses | SUBSTANTIAL PARTIAL / NOT PASS | Canonical Zenodo artifact identity + publisher MD5 + public NIST corpus URL frozen; research-use terms identified conservatively; local byte copies/SHA-256 and explicit Zenodo license remain unresolved |
-| 3 | Eligible splits/IDs/human-label provenance/context | SUBSTANTIAL PARTIAL / NOT PASS | 2023 physical schema is visible; 2024 logical ACC/COM schema and 19-run/400-abstract scope frozen; exact 2024 TSV columns/record IDs/PMID mapping remain unfrozen |
+| 2 | Dataset artifacts/versions/access/licenses | SUBSTANTIAL PARTIAL / NOT PASS | User-supplied H1 ZIP bytes locally verified; manual-judgment MD5 matches publisher; local SHA-256 frozen for both archives; explicit reuse/license documentation still incomplete |
+| 3 | Eligible splits/IDs/human-label provenance/context | SUBSTANTIAL PARTIAL / NOT PASS | Exact 2024 TSV physical schema, 400 abstract slots, 4,060 source sentences, 399 PMID clusters and row-level source reconciliation are frozen; final eligible subset/metric contract remains unfrozen |
 | 4 | Dataset-specific adapter contracts + measurable-output mapping | NOT READY | Frozen contract proving comparison to actual V2.4 outputs without new semantic inference |
-| 5 | Overlap/source-cluster manifest | NOT READY | IDs/hashes/lineage/cluster counts |
+| 5 | Overlap/source-cluster manifest | H1 INTERNAL PARTIAL / NOT PASS | H1 source-cluster rule frozen at PMID with 399 clusters and one duplicate PMID; cross-dataset overlap manifest remains future work |
 | 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | NOT READY | Frozen per-track quantitative contract |
 | 7 | META independent oracle/contracts/cases/seeds/exclusions | NOT READY | Oracle package independent from extractor/verifier semantics |
 | 8 | Runtime + adapter identity | PARTIAL | V2.4 frozen; adapter hashes pending |
@@ -361,3 +361,61 @@ Preferred resolution:
 upload/materialize exactly:
 1. `manual-judgments-task1-2024.zip`
 2. `PLABA_2024-Task_2.zip`
+
+
+## 16. H1 physical schema + source-cluster freeze checkpoint
+
+Freeze file:
+`H1_PHYSICAL_SCHEMA_SOURCE_CLUSTER_FREEZE_V1.md`
+
+Commit:
+`1cb73aa79658462d105be0de02f2e2acb6f16023`
+
+User supplied both exact public ZIPs.
+
+Raw integrity:
+- `manual-judgments-task1-2024.zip`
+  - size 7,054,073 bytes
+  - MD5 `589ad66e0b9324592f0151cc67974015`
+  - publisher MD5 match = YES
+  - SHA-256 `8256f7342c180e881e9c11244a7c24fe3e2fb4bdabf0fdfeb04892e4c8c722ce`
+- `PLABA_2024-Task_2.zip`
+  - size 231,126 bytes
+  - MD5 `daa454a5234161489fef52eab1ebec26`
+  - SHA-256 `f9416ee9ef5a051e79053b526ad7023237cb87d171e79d9623bda4dbd656991e`
+
+Exact 2024 TSV schema:
+`Abstract, Sentence, Source, Target, Accuracy, Completeness, Simplicity, Brevity`
+
+Source corpus:
+- 40 questions
+- 400 abstract slots
+- 4,060 source sentences
+- 399 unique PMIDs
+
+Duplicate:
+`PMID 15857353`
+appears as:
+- `Q14_A3`
+- `Q37_A5`
+with identical 7-sentence source text.
+
+Therefore:
+`MAX H1 INDEPENDENT SOURCE CLUSTERS = 399`
+
+Judgment archive:
+- 19 runs
+- 76,790 retained judgment rows
+- 14/19 runs contain all 4,060 source-sentence rows
+- 5/19 runs contain missing rows
+- 350 missing run×sentence rows total
+- 315 unique source-sentence pairs missing in >=1 run
+- 0 extra rows
+- 0 empty targets
+- every retained row source text exactly matches `test.json`
+
+Score alphabet on all axes:
+`-1, 0, 1`
+
+Current exact next checkpoint:
+`H1 ADAPTER + NATIVE METRIC CONTRACT FREEZE`
