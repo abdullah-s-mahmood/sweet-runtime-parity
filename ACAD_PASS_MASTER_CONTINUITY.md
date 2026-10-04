@@ -1115,40 +1115,40 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — FACTPICO PHYSICAL ARTIFACT + SCHEMA FREEZE`
+`PRE-GATE-C EXT/META — FACTPICO HARD-GOLD ELIGIBILITY + H1 CONTRACT V4 FREEZE`
 
-FactPICO identity/construct/license audit is complete.
+FactPICO physical artifact/schema freeze is complete.
 
-Verified:
-- benchmark identity and ACL 2024 publication;
-- 115 RCT abstracts / 345 summaries;
-- PICO, Evidence Inference, Added Information expert annotation design;
-- FactPICO annotations released under CC BY 4.0;
-- repository code under MIT;
-- source RCT articles come from PubMed Open Access reuse-compatible sources;
-- full abstract -> full summary context is compatible in principle with frozen V2.4.
+Canonical primary gold:
+`data/all_evaluations.csv`
 
-Blocked:
-the official data files are hosted in a UT Austin Box shared folder that cannot be materialized by the current environment.
+Frozen archive SHA-256:
+`ec260d7c69db9537f819fbdf728c997520e55de56b9f03b2980b017c91b9d4f4`
 
-Preferred next action:
-user downloads the COMPLETE FactPICO shared folder/archive from the official Box link and uploads it unchanged.
+Frozen primary-gold SHA-256:
+`1035640d11dbe5fd28ad13385785638fca3c2f0632ba5e94480ed319b90992cd`
 
-Then authorized:
-1. hash every file;
-2. inspect exact released schema;
-3. reconcile 115/345 counts;
-4. freeze source IDs/PMIDs and source clusters;
-5. audit duplicates/missing values/annotator fields;
-6. freeze hard-gold eligibility;
-7. draft H1 Contract V4.
+Frozen source clusters:
+`115 exact-Abstract SHA-256 clusters`
+
+Authorized next scope:
+1. define native element-level safe/error/uncertain strata;
+2. freeze treatment of 0=N/A;
+3. freeze treatment of half/fractional aggregate human scores;
+4. freeze Results aggregate semantics;
+5. decide whether Added Information can contribute to hard H1-S without external fact-checking leakage;
+6. freeze micro/macro/source-cluster metrics and thresholds;
+7. freeze prediction/gold separation and exact record IDs;
+8. draft H1 Contract V4;
+9. seek independent review only if materially necessary.
 
 Still not authorized:
-- V2.4 external predictions;
+- V2.4 FactPICO predictions;
 - H1 scoring;
-- V2.4 modification;
-- new-human recruitment;
+- V2.4 runtime modification;
+- threshold tuning after prediction;
 - original custom Gate C opening;
+- new-human recruitment;
 - Arabic-track work.
 
 # 23. WHOLE-PROJECT PROGRESS
@@ -2402,3 +2402,111 @@ No H1 scoring.
 No runtime change.
 No human recruitment.
 No Arabic work.
+
+
+---
+
+# 42. FACTPICO PHYSICAL ARTIFACT + SCHEMA FREEZE — COMPLETE
+
+Date: 2026-10-04
+
+Freeze file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_PHYSICAL_ARTIFACT_SCHEMA_FREEZE_V1.md`
+
+Commit:
+`117cd7c4b414aa77dab22db22423d2ce6bb319e1`
+
+Readiness update:
+`58bb72ed2e9da9b11c7aec771d3a55f1d03c4bba`
+
+Quality delta:
+`IMPROVED`
+
+User supplied:
+`FactPICO.zip`
+
+Raw archive:
+- size 2,232,398 bytes
+- MD5 `7f14a2b793f0ee5bb03aadb0131768db`
+- SHA-256 `ec260d7c69db9537f819fbdf728c997520e55de56b9f03b2980b017c91b9d4f4`
+- ZIP integrity PASS
+
+Primary numeric gold:
+`data/all_evaluations.csv`
+
+SHA-256:
+`1035640d11dbe5fd28ad13385785638fca3c2f0632ba5e94480ed319b90992cd`
+
+Reconciled:
+- 115 RCT source abstracts
+- 345 unique summaries
+- 115 outputs/model for GPT-4, LLAMA-2, ALPACA
+- exactly 3 summaries/source
+- no duplicate Abstract+generation records
+
+Primary expert fields:
+- Population
+- Intervention
+- Comparator
+- Outcome
+- Results
+
+Important physical semantics:
+- 0 in relevant PICO fields = N/A encoding
+- half-step PICO values occur in doubly annotated source group and are aggregate values, not native categorical labels
+- Results is summary-level aggregate over 1–5 evidence inference spans
+- Avg. PICO-R includes derived aggregation and is not hard gold
+- holistic score has no hard role yet
+
+Source-cluster ID:
+`SHA256(exact Abstract)`
+
+Unique source clusters:
+`115`
+
+Derived source-cluster manifest SHA-256:
+`a5b26ad1bac4a80e6b158c251557383835e7c43772e25b084d4a4a2bf49fc831`
+
+Derived record/gold manifest:
+345 records
+
+SHA-256:
+`693f15c7eaaa6a4687cff04444a4096a076e71600bf240adcf1e5defafe534a5`
+
+Rationale-layer defects preserved:
+- `rest_270_annotated_rationales.csv` actually contains 240 rows
+- single-rationale sources = 80 abstracts / 240 summaries
+- double-rationale sources = 25 abstracts / 75 summaries
+- rationale source sets disjoint
+- 105/115 abstracts have PICO rationale files
+- 30/345 summaries therefore have numeric expert ratings but no released PICO rationale row
+- 15 released PICO rationale candidate strings remain corrupted/mismatched against canonical generation text after conservative formatting normalization
+- canonical source/candidate text MUST always come from all_evaluations.csv
+
+Evidence-inference rationale layer:
+- 645 rows
+- all 345 summaries represented
+- 1–5 result spans per summary
+
+Contradictions:
+`DIAGNOSTIC ONLY`
+
+LLM rationale files:
+`pico_rationales.csv` and `llm_pico_rationales.csv`
+are byte-identical and diagnostic only.
+
+Artifact completeness decision:
+- primary numeric gold = PASS
+- rationale completeness = PARTIAL / NON-BLOCKING
+- physical schema = PASS
+- source clustering = PASS
+- hard-gold eligibility/mapping = NOT READY
+
+No V2.4 prediction.
+No H1 scoring.
+No runtime change.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`FACTPICO HARD-GOLD ELIGIBILITY + H1 CONTRACT V4 FREEZE`
