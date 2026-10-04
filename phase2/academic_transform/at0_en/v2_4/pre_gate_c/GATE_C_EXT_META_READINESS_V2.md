@@ -11,8 +11,8 @@ Protocol:
 | # | Condition | Status | Required evidence |
 |---|---|---|---|
 | 1 | Independent protocol review | PASS | Review decision V2 incorporated |
-| 2 | Dataset artifacts/versions/access/licenses | PARTIAL / NOT PASS | H1 identity/access audit completed; SimpleText annotation bytes/license and PLABA/TREC reusable artifacts still unresolved |
-| 3 | Eligible splits/IDs/human-label provenance/context | PARTIAL / NOT PASS | H1 construct provenance clarified; exact SimpleText/TREC judgment IDs and final eligible records still unfrozen |
+| 2 | Dataset artifacts/versions/access/licenses | SUBSTANTIAL PARTIAL / NOT PASS | TREC/PLABA Zenodo manual-judgment files + publisher MD5s and public TREC corpus URL resolved; local bytes/SHA-256 and exact reuse agreement/license documentation remain |
+| 3 | Eligible splits/IDs/human-label provenance/context | SUBSTANTIAL PARTIAL / NOT PASS | TREC 2024 rewrite gold scope, ACC/COM constructs, 19-run archive and 400-abstract evaluation scope resolved; exact TSV record schema/IDs still unfrozen |
 | 4 | Dataset-specific adapter contracts + measurable-output mapping | NOT READY | Frozen contract proving comparison to actual V2.4 outputs without new semantic inference |
 | 5 | Overlap/source-cluster manifest | NOT READY | IDs/hashes/lineage/cluster counts |
 | 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | NOT READY | Frozen per-track quantitative contract |
@@ -231,7 +231,7 @@ Before execution freeze:
 ## 11. Current blockers
 
 Methodological blockers still open:
-1. H1 label-function coverage is partially verified conceptually, but exact SimpleText/TREC record-level labels remain inaccessible/unfrozen;
+1. H1 label-function coverage is now strongly supported by TREC 2024 ACC+COM manual judgments, but exact TSV schema/record IDs and local artifact hashes remain unfrozen;
 2. actual H2 measurable-output mapping not yet frozen;
 3. actual H3 measurable-output mapping not yet frozen;
 4. dataset artifacts/licenses/versions not yet frozen;
@@ -291,3 +291,36 @@ H1 current state:
 
 Exact next H1 subcheckpoint:
 `H1 ACCESS + ARTIFACT RESOLUTION`
+
+
+## 14. H1 access/artifact resolution checkpoint
+
+Resolution file:
+`H1_ACCESS_ARTIFACT_RESOLUTION_V1.md`
+
+Commit:
+`f88fe5b599ade9b85e6a301b350bc33c2163e331`
+
+Major resolution:
+- public Zenodo record `10.5281/zenodo.18637045` exposes raw PLABA 2023-2024 manual judgments;
+- 2024 complete-rewrite judgment archive:
+  `manual-judgments-task1-2024.zip`
+  MD5:
+  `589ad66e0b9324592f0151cc67974015`;
+- public NIST/TREC URL for the original 2024 complete-adaptation corpus is identified;
+- retrospective paper confirms 2024 ACC and COM manual axes over complete rewrite outputs for all 400 test abstracts;
+- critical task-numbering mismatch is resolved and frozen;
+- FaReBio identity/research-only access and expert-faithfulness construct are verified;
+- SimpleText no longer needs to be a blocking H1 dependency.
+
+Preferred H1 core candidate:
+`TREC PLABA 2024 COMPLETE-REWRITE MANUAL JUDGMENTS`
+
+Conceptual mapping:
+- H1-S <- ACC
+- H1-C <- COM
+
+No binary adapter mapping is authorized yet.
+
+Exact next H1 checkpoint:
+`H1 RAW ARTIFACT + SCHEMA + TERMS FREEZE`
