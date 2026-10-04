@@ -1115,35 +1115,33 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — H1 CONTEXT + GOLD-SEMANTICS RESOLUTION`
+`PRE-GATE-C EXT/META — FACTPICO ARTIFACT + SCHEMA + LICENSE FREEZE`
 
-Independent review of H1 Contract V3 returned:
-`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
+H1 context/gold-semantics resolution is complete at design level.
 
-Verified blocker:
-PLABA's sentence-level expert judgments account for whole-abstract context and permit task-specific omission/generalization that is not automatically equivalent to ACAD_PASS strict protected-detail preservation.
+Decision:
+- PLABA-only hard H1 = rejected;
+- PLABA = diagnostic/authentic-transformation track;
+- FactPICO = minimum hard-H1 replacement/companion candidate.
 
-Frozen V2.4 currently has no separate non-obligatory context channel.
-
-Current H1 state:
-`H1_NOT_READY_CONTEXT_GOLD_ALIGNMENT`
+Reason:
+FactPICO evaluates whole RCT abstracts against whole plain-language summaries and directly annotates critical PICO elements, evidence inference, omissions/missing critical descriptors, and correctness of added information.
 
 Authorized next scope:
-1. freeze PLABA annotator/evaluation context semantics from primary sources;
-2. compare PLABA permissible omission/addition rules against ACAD_PASS protected-content semantics;
-3. determine whether a non-semantic eligible hard subset can be defined before prediction;
-4. determine whether frozen V2.4 can validly consume any required context without creating false completeness obligations;
-5. if not, narrow PLABA's hard role and identify the minimum published external resource needed to close the uncovered H1 construct;
-6. draft H1 Contract V4 only after this resolution.
+1. obtain exact FactPICO data artifact;
+2. compute hashes;
+3. inspect exact source/summary/human-annotation schema;
+4. freeze record IDs and PubMed/source clusters;
+5. verify dataset reuse/license terms separately from repo license;
+6. audit overlap with other external tracks;
+7. only then draft H1 Contract V4.
 
 Still not authorized:
-- H1 adapter implementation;
-- V2.4 PLABA predictions;
+- V2.4 external predictions;
 - H1 scoring;
 - V2.4 modification;
-- threshold tuning;
-- original custom Gate C opening;
 - new-human recruitment;
+- original custom Gate C opening;
 - Arabic-track work.
 
 # 23. WHOLE-PROJECT PROGRESS
@@ -2248,3 +2246,85 @@ No Arabic work.
 
 Exact next checkpoint:
 `H1 CONTEXT + GOLD-SEMANTICS RESOLUTION`
+
+
+---
+
+# 40. H1 CONTEXT + GOLD-SEMANTICS RESOLUTION — DESIGN-LEVEL PASS
+
+Date: 2026-10-04
+
+Resolution file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_CONTEXT_GOLD_SEMANTICS_RESOLUTION_V1.md`
+
+Commit:
+`0db47c57fc012dd95cc7a147b27745e5d8356314`
+
+Readiness update:
+`7c948cc7704bbe27dbd95b11c19a0036921e45d8`
+
+Quality delta:
+`IMPROVED`
+
+Primary-source PLABA resolution:
+- sentence alignment does NOT imply context independence;
+- whole rewritten abstract is expected to remain coherent;
+- sentence-level evaluation accounts for broader abstract context;
+- annotation guidelines permit context-dependent anaphora resolution;
+- some sentences may be ignored for consumer relevance;
+- confidence intervals, p-values and similar measurements may be omitted;
+- explanatory additions/generalizations are permitted.
+
+Therefore:
+`PLABA SAFE_STRICT != ACAD_PASS STRICT-PRESERVATION PASS GOLD`
+
+No hard PLABA subset will be created by post-hoc surface/semantic filtering.
+
+Revised PLABA role:
+`H1 DIAGNOSTIC / AUTHENTIC TRANSFORMATION UTILITY`
+
+Minimum stronger hard-H1 companion selected:
+`FactPICO`
+
+FactPICO:
+- ACL 2024 DOI `10.18653/v1/2024.acl-long.459`;
+- 115 RCT abstracts;
+- 345 whole plain-language summaries;
+- expert fine-grained evaluation of PICO elements;
+- PICO ratings explicitly distinguish accurate / vague-inaccurate / severe inaccuracies or missing critical descriptors / missing;
+- evidence-inference ratings assess whether critical findings are accurately represented or omitted;
+- added-information spans and correctness are annotated;
+- whole abstract -> whole summary context is compatible in principle with the frozen V2.4 single-source/single-candidate interface.
+
+FactPICO therefore covers:
+- H1-S via critical factuality/support and added-information correctness;
+- H1-C via missing PICO elements, missing critical descriptors, and omitted evidence inference.
+
+Claim remains narrow:
+`critical RCT-element fidelity/preservation`
+not exhaustive document preservation.
+
+Official repository:
+`lilywchen/FactPICO`
+
+Observed main HEAD:
+`2e16993a000aedb15cb348b7bcd61070d26bab14`
+
+Repository license:
+`MIT`
+
+Data files are hosted separately through UT Austin Box.
+Their exact bytes and separate reuse/license terms are not yet frozen.
+
+InfoLossQA:
+`DIAGNOSTIC ONLY`
+for information-loss characterization; not hard-gated because its QA representation is not an exact V2.4 outcome oracle without semantic adapter work.
+
+No V2.4 prediction.
+No H1 scoring.
+No runtime change.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`FACTPICO ARTIFACT + SCHEMA + LICENSE FREEZE`
