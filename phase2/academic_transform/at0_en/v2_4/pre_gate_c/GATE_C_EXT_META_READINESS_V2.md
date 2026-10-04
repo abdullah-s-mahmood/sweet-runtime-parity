@@ -13,9 +13,9 @@ Protocol:
 | 1 | Independent protocol review | PASS | Review decision V2 incorporated |
 | 2 | Dataset artifacts/versions/access/licenses | SUBSTANTIAL PARTIAL / NOT PASS | User-supplied H1 ZIP bytes locally verified; manual-judgment MD5 matches publisher; local SHA-256 frozen for both archives; explicit reuse/license documentation still incomplete |
 | 3 | Eligible splits/IDs/human-label provenance/context | SUBSTANTIAL PARTIAL / NOT PASS | Exact 2024 TSV physical schema, 400 abstract slots, 4,060 source sentences, 399 PMID clusters and row-level source reconciliation are frozen; final eligible subset/metric contract remains unfrozen |
-| 4 | Dataset-specific adapter contracts + measurable-output mapping | H1 V3 CONTRACT FROZEN / REVIEW PENDING | V3 canonical-pair contract supersedes V2 before any prediction; independent review required before adapter implementation |
+| 4 | Dataset-specific adapter contracts + measurable-output mapping | H1 NOT READY — CONTEXT/GOLD ALIGNMENT | V3 review accepted with essential changes; PLABA human context and ACAD_PASS preservation semantics are not yet compatible enough for adapter implementation |
 | 5 | Overlap/source-cluster manifest | H1 INTERNAL PARTIAL / NOT PASS | H1 source-cluster rule frozen at PMID with 399 clusters and one duplicate PMID; cross-dataset overlap manifest remains future work |
-| 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | H1 V3 PARTIAL / REVIEW PENDING | V3 freezes canonical-pair gold classes, micro+PMID-macro 75% utility thresholds, zero unsafe PASS, cluster bootstrap and zero-event reporting; other hard tracks remain |
+| 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | H1 PARTIAL / NOT PASS | Statistical framework remains usable, but H1 gold eligibility and denominators must be recalculated after context/preservation compatibility is frozen |
 | 7 | META independent oracle/contracts/cases/seeds/exclusions | NOT READY | Oracle package independent from extractor/verifier semantics |
 | 8 | Runtime + adapter identity | PARTIAL | V2.4 frozen; adapter hashes pending |
 | 9 | Prior exposure + prediction/gold separation | NOT READY | Exposure register + frozen procedural separation |
@@ -525,3 +525,49 @@ Until that review:
 - no H1 adapter implementation;
 - no V2.4 PLABA prediction;
 - no H1 scoring.
+
+
+## 19. H1 V3 independent review decision — context/gold blocker
+
+Decision file:
+`H1_CONTRACT_V3_INDEPENDENT_REVIEW_DECISION_V1.md`
+
+Commit:
+`5488022080f2d55265f1e12e168c5efef5e6c59f`
+
+Independent verdict:
+`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
+
+Accepted:
+- canonical PMID+Source+Target deduplication;
+- HUMAN_CONFLICT remains diagnostic;
+- score 0 is not REVIEW;
+- single published expert rating may remain usable under narrow claims;
+- pair-micro + PMID-macro framework;
+- PMID-cluster bootstrap;
+- zero unsafe PASS as a non-compensatory rule after eligibility is frozen.
+
+Blocking issue verified from primary PLABA sources:
+- PLABA sentence-level evaluation explicitly accounts for entire-abstract context;
+- task/guidelines allow some omission, generalization and contextual resolution;
+- these semantics are not automatically identical to ACAD_PASS strict protected-detail preservation.
+
+Frozen V2.4 currently lacks a separate context channel that can provide PLABA interpretation context without making that context itself part of the preservation obligations.
+
+Therefore:
+`H1_NOT_READY_CONTEXT_GOLD_ALIGNMENT`
+
+Required exact-copy correction:
+primary transformed-positive utility must exclude `Source == Target` and report identity controls separately.
+
+Current authorization:
+`H1 CONTEXT + GOLD-SEMANTICS RESOLUTION`
+
+Still forbidden:
+- H1 adapter implementation;
+- V2.4 PLABA predictions;
+- H1 scoring;
+- V2.4 modification;
+- new-human recruitment;
+- original custom Gate C opening;
+- Arabic work.
