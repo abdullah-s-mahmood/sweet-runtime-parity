@@ -1115,25 +1115,23 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — DATASET / VERSION / SPLIT / ADAPTER / METRIC / OVERLAP FREEZE`
+`PRE-GATE-C EXT/META — H1 ACCESS + ARTIFACT RESOLUTION`
 
-The second independent pre-execution review returned:
-`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
+This is the next sequential subcheckpoint inside:
+`DATASET / VERSION / SPLIT / ADAPTER / METRIC / OVERLAP FREEZE`
 
-Required V2 changes have been incorporated.
+H1 dataset/version/access audit V1 is complete and frozen.
 
 Authorized next scope:
-1. inspect actual candidate dataset releases;
-2. freeze exact files/versions/licenses;
-3. inspect exact human/expert label schemas and annotator context;
-4. freeze eligible splits/IDs;
-5. freeze dataset-specific adapter contracts against actual V2.4 outputs;
-6. freeze denominators, metrics, thresholds and sample/source-cluster targets;
-7. construct overlap/source-lineage manifest;
-8. draft/freeze independent META oracle contracts.
+1. locate an official downloadable/registered SimpleText 2025 human-annotation artifact;
+2. establish SimpleText dataset reuse/license terms;
+3. obtain or independently verify PLABA OSF artifact/license metadata and hashes if accessible;
+4. identify TREC 2024 expert-judgment artifact availability and reuse path;
+5. only after artifact/access resolution, freeze exact H1 IDs/splits and draft H1 adapters.
 
 Still not authorized:
 - running V2.4 on external evaluation records;
+- benchmark scoring;
 - opening the custom 80-study holdout;
 - recruiting new human reviewers;
 - modifying frozen V2.4 runtime;
@@ -1646,3 +1644,78 @@ No human recruitment.
 
 Exact next checkpoint:
 `PRE-GATE-C EXT/META — DATASET / VERSION / SPLIT / ADAPTER / METRIC / OVERLAP FREEZE`
+
+
+---
+
+# 33. H1 DATASET / VERSION / ACCESS / LABEL AUDIT V1 — FROZEN
+
+Date: 2026-10-04
+
+Audit:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_DATASET_VERSION_ACCESS_LABEL_AUDIT_V1.md`
+
+Commit:
+`87485c350c148668fcba85fc6d6bca802b1c5001`
+
+Readiness update commit:
+`4025a5a295228e47ba7509d3acbb03027638daba`
+
+Quality delta:
+`IMPROVED / ACCESS-BLOCKED`
+
+Key findings:
+
+### CLEF SimpleText 2025
+- official track identity verified;
+- official 2026 documentation confirms manual 2025 annotations are reused as ground truth for information-distortion classification;
+- current public Codabench remains operational;
+- official site says data are available to registered participants;
+- actual annotation artifact bytes/IDs are not yet frozen;
+- repository has no declared top-level license metadata;
+- H1-S = strong candidate;
+- H1-C = unresolved until exact human annotation coverage is inspected.
+
+### PLABA original dataset
+- version-of-record DOI:
+  `10.1038/s41597-022-01920-3`
+- 750 manually adapted biomedical abstracts;
+- 7,643 sentence pairs;
+- public OSF identity confirmed;
+- canonical public artifact named `data.json`;
+- direct OSF artifact retrieval failed through current tooling;
+- article is CC BY 4.0, but dataset-specific license is not separately verified;
+- PLABA references allow omission and therefore are NOT automatic full-content PASS gold.
+
+### TREC PLABA 2023
+- completeness/faithfulness manual judgments apply to selected question-relevant sentences;
+- therefore H1-C coverage is partial/sampled only.
+
+### TREC PLABA 2024
+- complete abstract adaptation;
+- expert manual evaluation includes:
+  simplicity, accuracy, completeness, brevity;
+- completeness explicitly targets information loss from the original;
+- retrospective PLABA paper confirms extensive biomedical-expert manual evaluation;
+- strongest current PLABA-family H1-C candidate;
+- actual reusable judgment artifact and reuse terms remain unfrozen.
+
+Current readiness:
+- condition 1 = PASS;
+- condition 2 = PARTIAL / NOT PASS;
+- condition 3 = PARTIAL / NOT PASS;
+- conditions 4-7,9 = NOT READY;
+- condition 8 = PARTIAL;
+- condition 10 = PARTIAL.
+
+Overall:
+`NOT_READY_GATE_C_EXT_META`
+
+Important negative evidence:
+- publication license cannot substitute silently for dataset license;
+- public task descriptions cannot substitute for artifact bytes/hashes;
+- sample human evaluation cannot be represented as exhaustive gold;
+- no H1 adapter is authorized until exact record-level gold is frozen.
+
+Exact next checkpoint:
+`H1 ACCESS + ARTIFACT RESOLUTION`
