@@ -11,10 +11,10 @@ Protocol:
 | # | Condition | Status | Required evidence |
 |---|---|---|---|
 | 1 | Independent protocol review | PASS | Review decision V2 incorporated |
-| 2 | Dataset artifacts/versions/access/licenses | SUBSTANTIAL PARTIAL / NOT PASS | User-supplied H1 ZIP bytes locally verified; manual-judgment MD5 matches publisher; local SHA-256 frozen for both archives; explicit reuse/license documentation still incomplete |
-| 3 | Eligible splits/IDs/human-label provenance/context | SUBSTANTIAL PARTIAL / NOT PASS | Exact 2024 TSV physical schema, 400 abstract slots, 4,060 source sentences, 399 PMID clusters and row-level source reconciliation are frozen; final eligible subset/metric contract remains unfrozen |
+| 2 | Dataset artifacts/versions/access/licenses | H1 FACTPICO PASS / OTHER TRACKS PENDING | FactPICO ZIP bytes and every released file hashed; annotations CC BY 4.0; repo MIT; source-text reuse path verified conservatively; PLABA artifacts already frozen |
+| 3 | Eligible splits/IDs/human-label provenance/context | H1 FACTPICO PHYSICAL PASS / HARD-GOLD ELIGIBILITY PENDING | 115 source clusters/345 summaries and expert numeric fields frozen; rationale defects documented; final H1 safe/error/uncertain strata still unfrozen |
 | 4 | Dataset-specific adapter contracts + measurable-output mapping | H1 REDESIGNED / FACTPICO ARTIFACT FREEZE PENDING | PLABA-only hard H1 rejected; FactPICO selected as minimum hard H1 companion because full-abstract source/candidate context matches V2.4 interface; adapter contract still not ready |
-| 5 | Overlap/source-cluster manifest | H1 INTERNAL PARTIAL / NOT PASS | H1 source-cluster rule frozen at PMID with 399 clusters and one duplicate PMID; cross-dataset overlap manifest remains future work |
+| 5 | Overlap/source-cluster manifest | H1 INTERNAL PARTIAL / NOT PASS | PLABA clustered by PMID; FactPICO clustered by exact Abstract SHA-256 with 115 sources; cross-dataset/PMID lineage overlap remains future work |
 | 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | H1 DESIGN PARTIAL / NOT PASS | H1 construct split resolved: FactPICO hard critical-fidelity candidate + PLABA diagnostic; exact FactPICO denominators/mappings/thresholds await artifact/schema freeze |
 | 7 | META independent oracle/contracts/cases/seeds/exclusions | NOT READY | Oracle package independent from extractor/verifier semantics |
 | 8 | Runtime + adapter identity | PARTIAL | V2.4 frozen; adapter hashes pending |
@@ -667,3 +667,72 @@ Exact next checkpoint:
 
 Preferred user action:
 download the complete FactPICO Box shared folder/archive and upload it unchanged.
+
+
+## 22. FactPICO physical artifact + schema freeze
+
+Freeze file:
+`FACTPICO_PHYSICAL_ARTIFACT_SCHEMA_FREEZE_V1.md`
+
+Commit:
+`117cd7c4b414aa77dab22db22423d2ce6bb319e1`
+
+User-supplied official Box archive:
+`FactPICO.zip`
+
+Archive:
+- size: 2,232,398 bytes
+- MD5: `7f14a2b793f0ee5bb03aadb0131768db`
+- SHA-256: `ec260d7c69db9537f819fbdf728c997520e55de56b9f03b2980b017c91b9d4f4`
+- ZIP integrity PASS
+
+Canonical primary numeric gold:
+`data/all_evaluations.csv`
+
+SHA-256:
+`1035640d11dbe5fd28ad13385785638fca3c2f0632ba5e94480ed319b90992cd`
+
+Reconciled:
+- 115 unique RCT abstracts
+- 345 unique summaries
+- 115 GPT-4
+- 115 LLAMA-2
+- 115 ALPACA
+- exactly 3 model outputs per source
+- no duplicate Abstract+generation pairs
+
+Primary human fields:
+- Population
+- Intervention
+- Comparator
+- Outcome
+- Results
+
+FactPICO source-cluster key:
+`SHA256(exact Abstract text)`
+
+Source clusters:
+`115`
+
+Derived source manifest SHA-256:
+`a5b26ad1bac4a80e6b158c251557383835e7c43772e25b084d4a4a2bf49fc831`
+
+Derived 345-record gold manifest SHA-256:
+`693f15c7eaaa6a4687cff04444a4096a076e71600bf240adcf1e5defafe534a5`
+
+Important release findings:
+- `0` in relevant PICO fields encodes N/A, not worst factuality;
+- half-step PICO values occur in doubly annotated material and represent aggregate ratings;
+- Results is an aggregate over 1–5 evidence-inference spans per summary;
+- Avg. PICO-R is derived and NOT hard gold;
+- PICO rationale release covers 315/345 summaries, leaving 30 without human PICO rationale rows;
+- 15 released PICO-rationale candidate strings contain corruption/mismatch relative to canonical all_evaluations generation text;
+- rationale defects do NOT affect complete primary numeric gold;
+- evidence-inference rationales cover all 345 summaries;
+- contradiction annotations remain diagnostic only;
+- LLM PICO rationale files are byte-identical duplicates and diagnostic only.
+
+Current exact next checkpoint:
+`FACTPICO HARD-GOLD ELIGIBILITY + H1 CONTRACT V4 FREEZE`
+
+No external V2.4 prediction authorized.
