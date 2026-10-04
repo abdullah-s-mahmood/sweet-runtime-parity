@@ -7824,3 +7824,98 @@ Exact next checkpoint:
 
 Stop until user says:
 `أكمل`
+
+
+## 2026-10-04 — H1 raw artifact + schema + terms freeze V1
+
+Freeze file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_RAW_ARTIFACT_SCHEMA_TERMS_FREEZE_V1.md`
+
+Commit:
+`a4e4d01a6f3b0ff2dba6360327c523e587e1c282`
+
+Readiness update:
+`3cb83a562fe96705c0c7b84de3a07e5089f26d31`
+
+Master continuity update:
+`ab946b94c00b3757e00622df07520f5d2757c860`
+
+Quality delta:
+`IMPROVED / TOOLING-MATERIALIZATION BLOCKED`
+
+Frozen:
+- H1 core artifact identity:
+  `manual-judgments-task1-2024.zip`
+- Zenodo DOI:
+  `10.5281/zenodo.18637045`
+- publisher MD5:
+  `589ad66e0b9324592f0151cc67974015`
+- public NIST/TREC complete-adaptation source URL:
+  `https://trec.nist.gov/data/plaba/PLABA_2024-Task_2.zip`
+
+Directly verified 2023 manual-judgment physical schema:
+`Source, Output, Answer, Simp. sent, Simp. term, Simp. term acc., Simp. fluency, Acc. comp., Acc. faith., Team, Sent, Abst`
+
+2024 logical manual schema frozen:
+- ACC = accuracy relative to source
+- COM = completeness / minimize information loss
+- SIM = simplicity
+- BRV = brevity
+- FIN = aggregate
+
+Preferred conceptual H1:
+- H1-S <- ACC
+- H1-C <- COM
+
+No binary outcome threshold frozen.
+
+TREC handling policy frozen conservatively:
+- research use only
+- scientific reporting allowed subject to TREC/copyright terms
+- do not redistribute raw TREC/PLABA source text in public ACAD_PASS repo
+- public repo may contain IDs/hashes/protocol metadata/derived metrics
+
+Zenodo record:
+- Open public access verified
+- explicit license value not shown
+- unrestricted redistribution NOT assumed
+
+Independence:
+`original biomedical abstract / PMID = source cluster`
+
+Potential pool:
+400 TREC 2024 test abstracts.
+
+Still blocked:
+- local ZIP byte copy
+- local SHA-256
+- exact 2024 TSV physical headers
+- exact PMID/source-cluster manifest
+- explicit Zenodo license/reuse record
+- H1 adapter/native metric contract
+
+Tooling result:
+web can resolve the public ZIP URL but cannot ingest the binary due size/content type;
+local runtime has no external DNS, so direct byte materialization failed.
+
+If manual upload is needed, request exactly:
+1. `manual-judgments-task1-2024.zip`
+2. `PLABA_2024-Task_2.zip`
+
+Current readiness:
+- condition 1 PASS
+- condition 2 substantial partial / not pass
+- condition 3 substantial partial / not pass
+- condition 4 NOT READY
+- overall `NOT_READY_GATE_C_EXT_META`
+
+No V2.4 prediction.
+No scoring.
+No original custom Gate C opening.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`H1 PHYSICAL SCHEMA + SOURCE-CLUSTER FREEZE`
+
+Stop here until user says `أكمل` and/or provides the two public ZIPs.
