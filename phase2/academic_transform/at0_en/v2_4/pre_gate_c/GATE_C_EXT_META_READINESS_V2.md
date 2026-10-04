@@ -13,9 +13,9 @@ Protocol:
 | 1 | Independent protocol review | PASS | Review decision V2 incorporated |
 | 2 | Dataset artifacts/versions/access/licenses | SUBSTANTIAL PARTIAL / NOT PASS | User-supplied H1 ZIP bytes locally verified; manual-judgment MD5 matches publisher; local SHA-256 frozen for both archives; explicit reuse/license documentation still incomplete |
 | 3 | Eligible splits/IDs/human-label provenance/context | SUBSTANTIAL PARTIAL / NOT PASS | Exact 2024 TSV physical schema, 400 abstract slots, 4,060 source sentences, 399 PMID clusters and row-level source reconciliation are frozen; final eligible subset/metric contract remains unfrozen |
-| 4 | Dataset-specific adapter contracts + measurable-output mapping | H1 CONTRACT FROZEN / REVIEW PENDING | H1 Adapter + Native Metric Contract V2 frozen; independent review required before implementation or prediction |
+| 4 | Dataset-specific adapter contracts + measurable-output mapping | H1 V3 CONTRACT FROZEN / REVIEW PENDING | V3 canonical-pair contract supersedes V2 before any prediction; independent review required before adapter implementation |
 | 5 | Overlap/source-cluster manifest | H1 INTERNAL PARTIAL / NOT PASS | H1 source-cluster rule frozen at PMID with 399 clusters and one duplicate PMID; cross-dataset overlap manifest remains future work |
-| 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | H1 PARTIAL / REVIEW PENDING | H1 extreme-label strata, safety/utility denominators, PMID clustering, thresholds and bootstrap plan frozen in V2; other hard tracks remain |
+| 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | H1 V3 PARTIAL / REVIEW PENDING | V3 freezes canonical-pair gold classes, micro+PMID-macro 75% utility thresholds, zero unsafe PASS, cluster bootstrap and zero-event reporting; other hard tracks remain |
 | 7 | META independent oracle/contracts/cases/seeds/exclusions | NOT READY | Oracle package independent from extractor/verifier semantics |
 | 8 | Runtime + adapter identity | PARTIAL | V2.4 frozen; adapter hashes pending |
 | 9 | Prior exposure + prediction/gold separation | NOT READY | Exposure register + frozen procedural separation |
@@ -472,10 +472,56 @@ Statistics:
 - exact one-sided zero-event upper bound for safety
 
 Current status:
-`H1 CONTRACT V2 FROZEN FOR INDEPENDENT REVIEW`
+`H1 CONTRACT V2 SUPERSEDED BEFORE EXECUTION`
 
-H1 prediction remains:
-`NOT AUTHORIZED`
+No V2.4 H1 prediction was run under V2.
 
-Exact next checkpoint:
-`USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V2`
+Exact next checkpoint changed after duplicate/disagreement audit:
+`USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V3`
+
+
+## 18. H1 contract V3 canonical-pair correction
+
+Preferred contract:
+`H1_ADAPTER_NATIVE_METRIC_CONTRACT_V3.md`
+
+Commit:
+`672bbc119eaa174e22365f5c4907bb47f9474a7d`
+
+Independent review packet:
+`H1_CONTRACT_V3_HIGHER_MODEL_REVIEW_PACKET.txt`
+
+Packet commit:
+`78e5562cba86b99655acc5c54cec277e1196cbc4`
+
+Reason V3 was required before any prediction:
+- 76,790 human rows collapse to 62,315 unique PMID+Source+Target prediction pairs;
+- repeated identical text across runs must not create repeated deterministic V2.4 predictions;
+- 1,340 canonical pairs have human class conflict and cannot receive a forced hard expected outcome;
+- V2 complete-run selection could alter utility population based on run-level missingness rather than canonical gold availability;
+- V3 uses every canonical pair with >=1 published human judgment and preserves external-gold missingness separately.
+
+Frozen V3 classes:
+- SAFE_STRICT: 40,609 pairs / 399 PMIDs
+- ERROR_STRICT: 3,566 pairs / 396 PMIDs
+- INTERMEDIATE: 16,800 pairs / 399 PMIDs
+- HUMAN_CONFLICT: 1,340 pairs / 320 PMIDs
+
+V3 hard rules:
+- ERROR_STRICT automatic PASS = 0
+- SAFE_STRICT pair-micro PASS >=75%
+- SAFE_STRICT PMID-macro PASS >=75%
+- ERROR_STRICT pair-micro REJECT >=75%
+- ERROR_STRICT PMID-macro REJECT >=75%
+
+V3 keeps exact-copy positives in the primary gold universe but requires explicit subgroup reporting.
+
+V1 and V2 remain preserved and were never executed.
+
+Current exact next checkpoint:
+`USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V3`
+
+Until that review:
+- no H1 adapter implementation;
+- no V2.4 PLABA prediction;
+- no H1 scoring.
