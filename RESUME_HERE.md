@@ -7602,3 +7602,134 @@ Exact next checkpoint:
 
 Stop here until user says:
 `أكمل`
+
+
+## 2026-10-04 — H1 dataset/version/access/label audit V1 frozen
+
+Checkpoint:
+`PRE-GATE-C EXT/META — H1 DATASET / VERSION / ACCESS / LABEL AUDIT`
+
+Audit file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_DATASET_VERSION_ACCESS_LABEL_AUDIT_V1.md`
+
+Audit commit:
+`87485c350c148668fcba85fc6d6bca802b1c5001`
+
+Readiness V2 updated:
+commit:
+`4025a5a295228e47ba7509d3acbb03027638daba`
+
+Master continuity updated:
+commit:
+`897fed6ce816fd16d1f10045cd9259bb07e655ec`
+
+### CLEF SimpleText 2025
+Verified:
+- official Task 2 identity and paper;
+- official 2026 page explicitly states that manual CLEF 2025 Task 1 annotations are reused as ground truth for 2026 information-distortion classification;
+- 2025 data are made available to registered participants;
+- CLEF 2025 Task 2 Codabench remains operational;
+- site repository main HEAD observed:
+  `14cb2f19a5eb7e8d7d3382b241578c5affc5bbac`;
+- repository-level license metadata is absent.
+
+Not frozen:
+- official human annotation artifact bytes;
+- exact eligible IDs;
+- exact dataset license/reuse terms;
+- artifact hashes.
+
+Construct:
+- H1-S = strong candidate;
+- H1-C = unresolved until exact annotation coverage/artifact inspection.
+
+### PLABA original
+Verified:
+- DOI `10.1038/s41597-022-01920-3`;
+- 750 abstracts;
+- 7,643 sentence pairs;
+- manual adaptation;
+- OSF project identity `rnpmf`;
+- official artifact name `data.json`;
+- data keyed using question identity and PMID.
+
+Access issue:
+direct OSF download failed through current tools.
+
+License boundary:
+article = CC BY 4.0;
+dataset-specific license = NOT SEPARATELY VERIFIED.
+
+Permanent:
+PLABA human reference is NOT automatic full-preservation PASS because omission is permitted.
+
+### TREC PLABA 2023
+Manual completeness/faithfulness is evaluated only on up to 3 question-relevant sentences per abstract.
+Therefore:
+`H1-C = PARTIAL / SAMPLED-SCOPE`
+
+### TREC PLABA 2024
+Task 2 = complete abstract adaptation.
+Expert manual evaluation includes:
+- simplicity;
+- accuracy;
+- completeness;
+- brevity.
+
+Completeness explicitly targets minimizing information lost from the original.
+
+2025 retrospective paper confirms:
+- 2023 + 2024 PLABA tracks;
+- four professionally written references;
+- extensive biomedical-expert manual evaluation;
+- factual accuracy + completeness judgments.
+
+Current classification:
+`STRONGEST PLABA-FAMILY H1-C CANDIDATE`
+
+But:
+TREC 2024 reusable record-level judgment artifact + reuse/license terms remain NOT FROZEN.
+
+### Readiness after checkpoint
+
+Condition 1:
+`PASS`
+
+Condition 2:
+`PARTIAL / NOT PASS`
+
+Condition 3:
+`PARTIAL / NOT PASS`
+
+Condition 8:
+`PARTIAL`
+
+Condition 10:
+`PARTIAL`
+
+Other conditions:
+`NOT READY`
+
+Overall:
+`NOT_READY_GATE_C_EXT_META`
+
+Quality delta:
+`IMPROVED / ACCESS-BLOCKED`
+
+No V2.4 prediction.
+No scoring.
+No custom Gate C opening.
+No human recruitment.
+No runtime change.
+
+Exact next checkpoint:
+`H1 ACCESS + ARTIFACT RESOLUTION`
+
+Next scope:
+- SimpleText 2025 annotation artifact/access/license;
+- PLABA OSF artifact/license metadata;
+- TREC 2024 expert judgment artifact/reuse path;
+- then exact H1 IDs/hashes/adapters.
+
+Stop here until user says:
+`أكمل`
