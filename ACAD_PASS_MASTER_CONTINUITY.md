@@ -1115,38 +1115,31 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — FACTPICO HARD-GOLD ELIGIBILITY + H1 CONTRACT V4 FREEZE`
+`PRE-GATE-C EXT/META — USER-MEDIATED FOCUSED INDEPENDENT REVIEW OF FACTPICO H1 CONTRACT V4`
 
-FactPICO physical artifact/schema freeze is complete.
+FactPICO physical artifact is fully frozen.
+H1 Contract V4 is now frozen for focused methodological review.
 
-Canonical primary gold:
-`data/all_evaluations.csv`
+Preferred contract:
+`H1_FACTPICO_HARD_GOLD_CONTRACT_V4.md`
 
-Frozen archive SHA-256:
-`ec260d7c69db9537f819fbdf728c997520e55de56b9f03b2980b017c91b9d4f4`
+Focused review packet:
+`H1_FACTPICO_V4_FOCUSED_REVIEW_PACKET.txt`
 
-Frozen primary-gold SHA-256:
-`1035640d11dbe5fd28ad13385785638fca3c2f0632ba5e94480ed319b90992cd`
-
-Frozen source clusters:
-`115 exact-Abstract SHA-256 clusters`
-
-Authorized next scope:
-1. define native element-level safe/error/uncertain strata;
-2. freeze treatment of 0=N/A;
-3. freeze treatment of half/fractional aggregate human scores;
-4. freeze Results aggregate semantics;
-5. decide whether Added Information can contribute to hard H1-S without external fact-checking leakage;
-6. freeze micro/macro/source-cluster metrics and thresholds;
-7. freeze prediction/gold separation and exact record IDs;
-8. draft H1 Contract V4;
-9. seek independent review only if materially necessary.
+Review scope is deliberately narrow to conserve higher-model usage:
+- N/A policy;
+- double-annotation cutoff;
+- Results aggregate error rule;
+- source-bounded safe-control rule;
+- severe Alpaca skew / safe-control status;
+- 75% micro+source-macro thresholds.
 
 Still not authorized:
+- H1 adapter implementation;
 - V2.4 FactPICO predictions;
 - H1 scoring;
-- V2.4 runtime modification;
-- threshold tuning after prediction;
+- V2.4 modification;
+- threshold changes after prediction;
 - original custom Gate C opening;
 - new-human recruitment;
 - Arabic-track work.
@@ -2510,3 +2503,95 @@ No Arabic work.
 
 Exact next checkpoint:
 `FACTPICO HARD-GOLD ELIGIBILITY + H1 CONTRACT V4 FREEZE`
+
+
+---
+
+# 43. FACTPICO HARD-GOLD ELIGIBILITY + H1 CONTRACT V4 — FROZEN FOR FOCUSED REVIEW
+
+Date: 2026-10-04
+
+Contract:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_FACTPICO_HARD_GOLD_CONTRACT_V4.md`
+
+Commit:
+`d0891669fe21949439ee3d57f1e3e0a4c3659c70`
+
+Focused review packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_FACTPICO_V4_FOCUSED_REVIEW_PACKET.txt`
+
+Packet commit:
+`d737db5d927eea17caa6c6cdbcbccfea840d0915`
+
+Readiness update:
+`86b123008baf1b389de0e0a7bcae3fb575725453`
+
+Quality delta:
+`IMPROVED / REVIEW PENDING`
+
+V4 prediction universe:
+`345 records / 115 source clusters`
+
+Hard source eligibility:
+- 3 sources / 9 summaries containing N/A PICO are diagnostic-only in the proposal;
+- hard pool = 112 sources / 336 summaries.
+
+Proposed V4 classes:
+- SAFE_STRICT_CONTROL = 34 records / 33 sources
+- ERROR_STRICT = 172 records / 91 sources
+- INTERMEDIATE = 130 records / 79 sources
+- N_A_SOURCE_DIAGNOSTIC = 9 records / 3 sources
+
+SAFE_STRICT_CONTROL proposal:
+- all PICO fields = 4
+- Results = 4
+- no identified Added Information span
+- no unresolved Added Information identity source
+- non-N/A source
+
+Important limitation:
+SAFE_STRICT_CONTROL model distribution:
+- ALPACA 33
+- GPT-4 1
+- LLAMA-2 0
+
+Therefore this cannot support a broad authentic-transformation claim without explicit narrowing.
+
+ERROR_STRICT proposal:
+- non-double PICO: any applicable <=2
+- double-annotated averaged PICO: any <=1.5
+- OR Results <=2
+
+Why <=1.5 for double-PICO:
+released half-step averages hide raw rater pairs; <=1.5 guarantees both integer underlying ratings lie in the hard-error range {1,2}. A released 2.0 may be (2,2) or disagreement such as (1,3), so V4 leaves it non-hard pending review.
+
+Added Information:
+not hard-mapped because FactPICO may mark externally factual explanatory additions as acceptable while frozen V2.4 is source-bounded.
+
+Provisional metadata-only eligibility manifest:
+345 rows
+SHA-256:
+`72ece44c2d23b8c6ce667f5f1ff0856fb28900a412a0b14ed192ce329b8a9d91`
+
+Proposed gates:
+- any ERROR_STRICT PASS_CANDIDATE = H1 safety FAIL
+- ERROR_STRICT REJECT >=75% pair-micro AND source-macro
+- SAFE_STRICT_CONTROL PASS >=75% pair-micro AND source-macro
+
+Safety source clusters:
+91
+If zero unsafe source-cluster events:
+simple one-sided 95% upper bound ≈ 3.2384%.
+Benchmark-specific only.
+
+Focused higher-model review is justified because these are construct/statistical decisions, not implementation tasks.
+
+No V2.4 prediction.
+No H1 scoring.
+No adapter implementation.
+No runtime change.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`USER-MEDIATED FOCUSED INDEPENDENT REVIEW OF FACTPICO H1 CONTRACT V4`
