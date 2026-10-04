@@ -15,7 +15,7 @@ Protocol:
 | 3 | Eligible splits/IDs/human-label provenance/context | H1 FACTPICO PHYSICAL PASS / HARD-GOLD ELIGIBILITY PENDING | 115 source clusters/345 summaries and expert numeric fields frozen; rationale defects documented; final H1 safe/error/uncertain strata still unfrozen |
 | 4 | Dataset-specific adapter contracts + measurable-output mapping | H1 REDESIGNED / FACTPICO ARTIFACT FREEZE PENDING | PLABA-only hard H1 rejected; FactPICO selected as minimum hard H1 companion because full-abstract source/candidate context matches V2.4 interface; adapter contract still not ready |
 | 5 | Overlap/source-cluster manifest | H1 INTERNAL PARTIAL / NOT PASS | PLABA clustered by PMID; FactPICO clustered by exact Abstract SHA-256 with 115 sources; cross-dataset/PMID lineage overlap remains future work |
-| 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | H1 DESIGN PARTIAL / NOT PASS | H1 construct split resolved: FactPICO hard critical-fidelity candidate + PLABA diagnostic; exact FactPICO denominators/mappings/thresholds await artifact/schema freeze |
+| 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | H1 V4 FROZEN / REVIEW PENDING | FactPICO V4 proposes explicit safe/error/intermediate strata, source-cluster statistics, zero unsafe PASS and 75% micro+macro utility gates; focused independent review required before implementation |
 | 7 | META independent oracle/contracts/cases/seeds/exclusions | NOT READY | Oracle package independent from extractor/verifier semantics |
 | 8 | Runtime + adapter identity | PARTIAL | V2.4 frozen; adapter hashes pending |
 | 9 | Prior exposure + prediction/gold separation | NOT READY | Exposure register + frozen procedural separation |
@@ -736,3 +736,66 @@ Current exact next checkpoint:
 `FACTPICO HARD-GOLD ELIGIBILITY + H1 CONTRACT V4 FREEZE`
 
 No external V2.4 prediction authorized.
+
+
+## 23. FactPICO hard-gold eligibility + H1 Contract V4 checkpoint
+
+Contract:
+`H1_FACTPICO_HARD_GOLD_CONTRACT_V4.md`
+
+Commit:
+`d0891669fe21949439ee3d57f1e3e0a4c3659c70`
+
+Focused independent-review packet:
+`H1_FACTPICO_V4_FOCUSED_REVIEW_PACKET.txt`
+
+Packet commit:
+`d737db5d927eea17caa6c6cdbcbccfea840d0915`
+
+Proposed V4 hard design:
+- all 345 FactPICO records remain in prediction universe;
+- 3 N/A-containing source clusters / 9 records diagnostic only;
+- hard-eligible pool: 112 sources / 336 records;
+- SAFE_STRICT_CONTROL: 34 records / 33 sources;
+- ERROR_STRICT: 172 records / 91 sources;
+- INTERMEDIATE: 130 records / 79 sources.
+
+SAFE_STRICT_CONTROL:
+- all PICO = 4;
+- Results = 4;
+- no identified Added Information span;
+- no unresolved Added Information identity source;
+- non-N/A source.
+
+Important limitation:
+33/34 SAFE controls are ALPACA, so this is explicitly limited safe-control evidence, not broad transformation utility.
+
+ERROR_STRICT:
+- non-double PICO: any applicable score <=2;
+- double-annotated averaged PICO: any score <=1.5;
+- OR Results <=2.
+
+Hard safety:
+`ERROR_STRICT -> PASS_CANDIDATE = 0`
+
+Negative utility proposal:
+- pair-micro REJECT >=75%;
+- source-macro REJECT >=75%.
+
+Limited safe-control utility proposal:
+- pair-micro PASS >=75%;
+- source-macro PASS >=75%.
+
+Provisional metadata-only eligibility manifest:
+- 345 rows
+- SHA-256 `72ece44c2d23b8c6ce667f5f1ff0856fb28900a412a0b14ed192ce329b8a9d91`
+
+Material decisions intentionally sent for focused independent review:
+1. N/A source exclusion vs field-wise omission;
+2. double-annotation <=1.5 hard-error cutoff;
+3. Results <=2 aggregate hard-error trigger;
+4. no-Added-Information safe-control requirement;
+5. whether 34/33-source heavily ALPACA-skewed safe-control should remain hard;
+6. 75% pair-micro+source-macro thresholds.
+
+No V2.4 prediction authorized.
