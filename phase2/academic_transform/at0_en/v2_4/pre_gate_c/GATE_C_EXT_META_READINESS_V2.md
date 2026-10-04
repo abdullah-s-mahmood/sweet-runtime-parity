@@ -624,3 +624,46 @@ Still forbidden:
 - new-human recruitment;
 - original custom Gate C opening;
 - Arabic work.
+
+
+## 21. FactPICO artifact/schema/license audit checkpoint
+
+Audit file:
+`FACTPICO_ARTIFACT_SCHEMA_LICENSE_AUDIT_V1.md`
+
+Commit:
+`4c55af156df1e0f67fd8ebe4f3a06f70b5c6a813`
+
+Verified:
+- ACL 2024 benchmark identity;
+- 115 RCT abstracts;
+- 345 generated summaries;
+- expert PICO / evidence-inference / added-information annotation design;
+- annotation license explicitly CC BY 4.0 in the paper appendix;
+- repository code license MIT;
+- source RCT articles drawn from PubMed Open Access subset with reuse-compatible source licensing;
+- full-abstract/full-summary context is compatible in principle with frozen V2.4's single-source/single-candidate interface.
+
+Official repository:
+`lilywchen/FactPICO`
+
+Observed HEAD:
+`2e16993a000aedb15cb348b7bcd61070d26bab14`
+
+Official data route:
+UT Austin Box shared folder.
+
+Current environment cannot materialize/read the Box artifact.
+
+Therefore:
+- raw bytes NOT READY
+- exact filenames NOT READY
+- physical schema NOT READY
+- local SHA-256 NOT READY
+- source-cluster manifest NOT READY
+
+Exact next checkpoint:
+`FACTPICO PHYSICAL ARTIFACT + SCHEMA FREEZE`
+
+Preferred user action:
+download the complete FactPICO Box shared folder/archive and upload it unchanged.
