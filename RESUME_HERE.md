@@ -8107,3 +8107,88 @@ Exact next checkpoint:
 `USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V2`
 
 Stop until user returns the complete higher-model review.
+
+
+## 2026-10-04 — H1 contract V3 frozen; V2 superseded before execution
+
+Preferred contract:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_ADAPTER_NATIVE_METRIC_CONTRACT_V3.md`
+
+Commit:
+`672bbc119eaa174e22365f5c4907bb47f9474a7d`
+
+Review packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_CONTRACT_V3_HIGHER_MODEL_REVIEW_PACKET.txt`
+
+Packet commit:
+`78e5562cba86b99655acc5c54cec277e1196cbc4`
+
+Readiness update:
+`e20ea2544032fdc8c44eed6cc0c187d5ba2503fb`
+
+Master continuity update:
+`615bd9c2b6a169e71aaa187abf91f796a4ed5e94`
+
+Quality delta:
+`IMPROVED`
+
+Why V3 was necessary:
+- row-level gold = 76,790;
+- unique Abstract+Sentence+Source+Target = 62,382;
+- canonical PMID+Source+Target = 62,315;
+- repeated identical inputs across runs must not be repeated V2.4 predictions;
+- human ratings disagree across some repeated identical inputs;
+- hard gold therefore requires canonical consolidation before prediction.
+
+Frozen canonical gold:
+- SAFE_STRICT = 40,609 pairs / 399 PMIDs
+- ERROR_STRICT = 3,566 pairs / 396 PMIDs
+- INTERMEDIATE = 16,800 pairs / 399 PMIDs
+- HUMAN_CONFLICT = 1,340 pairs / 320 PMIDs
+
+Multi-rated sensitivity:
+10,554 canonical pairs:
+- SAFE_STRICT 7,159
+- ERROR_STRICT 455
+- INTERMEDIATE 1,600
+- HUMAN_CONFLICT 1,340
+
+Frozen eligibility-manifest SHA-256:
+`f0371da56290999d4786ce86ea319be15f994c8cc8075a8fddaaa81c12cf5dc9`
+
+V3 hard rules:
+- ERROR_STRICT PASS_CANDIDATE = 0
+- SAFE_STRICT pair-micro PASS >=75%
+- SAFE_STRICT PMID-macro PASS >=75%
+- ERROR_STRICT pair-micro REJECT >=75%
+- ERROR_STRICT PMID-macro REJECT >=75%
+
+No mapping:
+- 0 -> REVIEW
+- human disagreement -> REVIEW
+
+Exact-copy positive pairs remain in primary gold with prespecified subgroup reporting; they are not silently removed.
+
+Statistics:
+- PMID primary independence unit
+- 10,000 whole-PMID cluster bootstrap
+- seed 20261004
+- 95% percentile CI
+- zero-event source-cluster upper bound
+
+Important negative evidence:
+V1 and V2 are preserved.
+Neither was executed.
+V2 is superseded because its repeated-row/run-completeness design could inflate evidence and create incompatible hard expectations under human disagreement.
+
+No V2.4 external prediction.
+No H1 scoring.
+No adapter implementation.
+No custom Gate C opening.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V3`
+
+Stop until user returns the full higher-model review.
