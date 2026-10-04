@@ -1115,26 +1115,33 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — FACTPICO ARTIFACT + SCHEMA + LICENSE FREEZE`
+`PRE-GATE-C EXT/META — FACTPICO PHYSICAL ARTIFACT + SCHEMA FREEZE`
 
-H1 context/gold-semantics resolution is complete at design level.
+FactPICO identity/construct/license audit is complete.
 
-Decision:
-- PLABA-only hard H1 = rejected;
-- PLABA = diagnostic/authentic-transformation track;
-- FactPICO = minimum hard-H1 replacement/companion candidate.
+Verified:
+- benchmark identity and ACL 2024 publication;
+- 115 RCT abstracts / 345 summaries;
+- PICO, Evidence Inference, Added Information expert annotation design;
+- FactPICO annotations released under CC BY 4.0;
+- repository code under MIT;
+- source RCT articles come from PubMed Open Access reuse-compatible sources;
+- full abstract -> full summary context is compatible in principle with frozen V2.4.
 
-Reason:
-FactPICO evaluates whole RCT abstracts against whole plain-language summaries and directly annotates critical PICO elements, evidence inference, omissions/missing critical descriptors, and correctness of added information.
+Blocked:
+the official data files are hosted in a UT Austin Box shared folder that cannot be materialized by the current environment.
 
-Authorized next scope:
-1. obtain exact FactPICO data artifact;
-2. compute hashes;
-3. inspect exact source/summary/human-annotation schema;
-4. freeze record IDs and PubMed/source clusters;
-5. verify dataset reuse/license terms separately from repo license;
-6. audit overlap with other external tracks;
-7. only then draft H1 Contract V4.
+Preferred next action:
+user downloads the COMPLETE FactPICO shared folder/archive from the official Box link and uploads it unchanged.
+
+Then authorized:
+1. hash every file;
+2. inspect exact released schema;
+3. reconcile 115/345 counts;
+4. freeze source IDs/PMIDs and source clusters;
+5. audit duplicates/missing values/annotator fields;
+6. freeze hard-gold eligibility;
+7. draft H1 Contract V4.
 
 Still not authorized:
 - V2.4 external predictions;
@@ -2328,3 +2335,70 @@ No Arabic work.
 
 Exact next checkpoint:
 `FACTPICO ARTIFACT + SCHEMA + LICENSE FREEZE`
+
+
+---
+
+# 41. FACTPICO ARTIFACT + SCHEMA + LICENSE AUDIT — PARTIAL FREEZE
+
+Date: 2026-10-04
+
+Audit:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_ARTIFACT_SCHEMA_LICENSE_AUDIT_V1.md`
+
+Commit:
+`4c55af156df1e0f67fd8ebe4f3a06f70b5c6a813`
+
+Readiness update:
+`b842e27001e26870ed7e9125c821692d50203f48`
+
+Quality delta:
+`IMPROVED / RAW-ARTIFACT BLOCKED`
+
+Verified from primary sources:
+- FactPICO ACL 2024 DOI `10.18653/v1/2024.acl-long.459`;
+- 115 RCT abstracts;
+- 345 plain-language summaries from GPT-4, Llama-2-Chat, Alpaca;
+- expert PICO rating semantics:
+  4 accurate,
+  3 vague/slightly inaccurate,
+  2 severe inaccuracies and/or missing critical descriptors,
+  1 missing;
+- Evidence Inference ratings:
+  accurate / vague-slightly inaccurate / inaccurate / not mentioned;
+- Added Information spans + factuality + rationale;
+- separate exhaustive-outcome annotation exists;
+- annotations released under CC BY 4.0;
+- source articles from PubMed Open Access subset with reuse-compatible terms;
+- repository code license MIT;
+- official repo HEAD observed:
+  `2e16993a000aedb15cb348b7bcd61070d26bab14`.
+
+Official data route:
+`https://utexas.box.com/s/mpe5idxrqrzs1wcakphng7xfi7h4g83j`
+
+Current environment cannot access/materialize the Box payload.
+
+Therefore NOT yet frozen:
+- exact data filenames;
+- raw bytes;
+- local SHA-256;
+- exact physical columns;
+- PMID/source-ID manifest;
+- annotator/provenance fields in the released artifact;
+- exact duplicate/missing conventions.
+
+Current FactPICO readiness:
+`PARTIAL / NOT EXECUTION-READY`
+
+Exact next checkpoint:
+`FACTPICO PHYSICAL ARTIFACT + SCHEMA FREEZE`
+
+Preferred user action:
+download the complete Box shared folder/archive and upload it here unchanged.
+
+No V2.4 prediction.
+No H1 scoring.
+No runtime change.
+No human recruitment.
+No Arabic work.
