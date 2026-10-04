@@ -11,8 +11,8 @@ Protocol:
 | # | Condition | Status | Required evidence |
 |---|---|---|---|
 | 1 | Independent protocol review | PASS | Review decision V2 incorporated |
-| 2 | Dataset artifacts/versions/access/licenses | SUBSTANTIAL PARTIAL / NOT PASS | TREC/PLABA Zenodo manual-judgment files + publisher MD5s and public TREC corpus URL resolved; local bytes/SHA-256 and exact reuse agreement/license documentation remain |
-| 3 | Eligible splits/IDs/human-label provenance/context | SUBSTANTIAL PARTIAL / NOT PASS | TREC 2024 rewrite gold scope, ACC/COM constructs, 19-run archive and 400-abstract evaluation scope resolved; exact TSV record schema/IDs still unfrozen |
+| 2 | Dataset artifacts/versions/access/licenses | SUBSTANTIAL PARTIAL / NOT PASS | Canonical Zenodo artifact identity + publisher MD5 + public NIST corpus URL frozen; research-use terms identified conservatively; local byte copies/SHA-256 and explicit Zenodo license remain unresolved |
+| 3 | Eligible splits/IDs/human-label provenance/context | SUBSTANTIAL PARTIAL / NOT PASS | 2023 physical schema is visible; 2024 logical ACC/COM schema and 19-run/400-abstract scope frozen; exact 2024 TSV columns/record IDs/PMID mapping remain unfrozen |
 | 4 | Dataset-specific adapter contracts + measurable-output mapping | NOT READY | Frozen contract proving comparison to actual V2.4 outputs without new semantic inference |
 | 5 | Overlap/source-cluster manifest | NOT READY | IDs/hashes/lineage/cluster counts |
 | 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | NOT READY | Frozen per-track quantitative contract |
@@ -324,3 +324,40 @@ No binary adapter mapping is authorized yet.
 
 Exact next H1 checkpoint:
 `H1 RAW ARTIFACT + SCHEMA + TERMS FREEZE`
+
+
+## 15. H1 raw artifact + schema + terms freeze checkpoint
+
+Freeze file:
+`H1_RAW_ARTIFACT_SCHEMA_TERMS_FREEZE_V1.md`
+
+Commit:
+`a4e4d01a6f3b0ff2dba6360327c523e587e1c282`
+
+Frozen:
+- canonical 2024 complete-rewrite judgment archive identity;
+- Zenodo DOI/version;
+- publisher MD5;
+- public NIST/TREC source-corpus URL;
+- 2023 raw physical schema as directly readable evidence;
+- 2024 logical ACC/COM/SIM/BRV/FIN schema;
+- original-abstract/PMID source-cluster rule;
+- conservative TREC research-use / no-redistribution policy.
+
+Still unresolved:
+- local ZIP bytes and SHA-256;
+- exact 2024 TSV physical headers;
+- exact 400-record PMID manifest;
+- explicit Zenodo license value;
+- final H1 adapter/native metric contract.
+
+Tooling limitation is now explicit:
+the web source resolves the public ZIP, but current local runtime cannot materialize external binary bytes.
+
+Exact next H1 checkpoint:
+`H1 PHYSICAL SCHEMA + SOURCE-CLUSTER FREEZE`
+
+Preferred resolution:
+upload/materialize exactly:
+1. `manual-judgments-task1-2024.zip`
+2. `PLABA_2024-Task_2.zip`
