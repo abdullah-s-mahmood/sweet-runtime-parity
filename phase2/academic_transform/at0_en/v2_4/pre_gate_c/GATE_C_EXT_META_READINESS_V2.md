@@ -13,9 +13,9 @@ Protocol:
 | 1 | Independent protocol review | PASS | Review decision V2 incorporated |
 | 2 | Dataset artifacts/versions/access/licenses | SUBSTANTIAL PARTIAL / NOT PASS | User-supplied H1 ZIP bytes locally verified; manual-judgment MD5 matches publisher; local SHA-256 frozen for both archives; explicit reuse/license documentation still incomplete |
 | 3 | Eligible splits/IDs/human-label provenance/context | SUBSTANTIAL PARTIAL / NOT PASS | Exact 2024 TSV physical schema, 400 abstract slots, 4,060 source sentences, 399 PMID clusters and row-level source reconciliation are frozen; final eligible subset/metric contract remains unfrozen |
-| 4 | Dataset-specific adapter contracts + measurable-output mapping | H1 NOT READY — CONTEXT/GOLD ALIGNMENT | V3 review accepted with essential changes; PLABA human context and ACAD_PASS preservation semantics are not yet compatible enough for adapter implementation |
+| 4 | Dataset-specific adapter contracts + measurable-output mapping | H1 REDESIGNED / FACTPICO ARTIFACT FREEZE PENDING | PLABA-only hard H1 rejected; FactPICO selected as minimum hard H1 companion because full-abstract source/candidate context matches V2.4 interface; adapter contract still not ready |
 | 5 | Overlap/source-cluster manifest | H1 INTERNAL PARTIAL / NOT PASS | H1 source-cluster rule frozen at PMID with 399 clusters and one duplicate PMID; cross-dataset overlap manifest remains future work |
-| 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | H1 PARTIAL / NOT PASS | Statistical framework remains usable, but H1 gold eligibility and denominators must be recalculated after context/preservation compatibility is frozen |
+| 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | H1 DESIGN PARTIAL / NOT PASS | H1 construct split resolved: FactPICO hard critical-fidelity candidate + PLABA diagnostic; exact FactPICO denominators/mappings/thresholds await artifact/schema freeze |
 | 7 | META independent oracle/contracts/cases/seeds/exclusions | NOT READY | Oracle package independent from extractor/verifier semantics |
 | 8 | Runtime + adapter identity | PARTIAL | V2.4 frozen; adapter hashes pending |
 | 9 | Prior exposure + prediction/gold separation | NOT READY | Exposure register + frozen procedural separation |
@@ -568,6 +568,59 @@ Still forbidden:
 - V2.4 PLABA predictions;
 - H1 scoring;
 - V2.4 modification;
+- new-human recruitment;
+- original custom Gate C opening;
+- Arabic work.
+
+
+## 20. H1 context + gold-semantics resolution
+
+Resolution file:
+`H1_CONTEXT_GOLD_SEMANTICS_RESOLUTION_V1.md`
+
+Commit:
+`0db47c57fc012dd95cc7a147b27745e5d8356314`
+
+Design-level resolution:
+- PLABA-only hard H1 is rejected because its human-gold semantics use abstract context and permit task-specific omission/generalization that is not equivalent to ACAD_PASS strict protected-detail preservation.
+- No post-hoc PLABA hard subset will be created using surface/semantic filtering.
+- PLABA remains an important diagnostic/authentic-transformation H1 track.
+- FactPICO is selected as the minimum hard-H1 replacement/companion resource.
+
+Why FactPICO:
+- whole RCT abstract -> whole plain-language summary;
+- no separate hidden context channel required by V2.4;
+- expert ratings explicitly cover PICO elements and evidence inference;
+- rating levels encode accurate, vague/inaccurate, missing critical descriptors, and missing;
+- added-information spans and correctness are annotated;
+- therefore it covers both H1-S factual support and H1-C critical-content preservation at a narrow RCT-critical-element scope.
+
+FactPICO paper:
+`10.18653/v1/2024.acl-long.459`
+
+Official repository:
+`lilywchen/FactPICO`
+
+Observed main HEAD:
+`2e16993a000aedb15cb348b7bcd61070d26bab14`
+
+Repository license:
+`MIT`
+
+Separately hosted data artifact/license:
+`NOT YET FROZEN`
+
+Default diagnostic:
+`InfoLossQA`
+for information-loss characterization only; not promoted to hard because its QA representation would otherwise require semantic adapter logic.
+
+Exact next checkpoint:
+`FACTPICO ARTIFACT + SCHEMA + LICENSE FREEZE`
+
+Still forbidden:
+- V2.4 external predictions;
+- H1 scoring;
+- runtime modification;
 - new-human recruitment;
 - original custom Gate C opening;
 - Arabic work.
