@@ -8033,3 +8033,77 @@ No Arabic work.
 
 Stop here until user says:
 `أكمل`
+
+
+## 2026-10-04 — H1 adapter/native-metric contract V2 frozen for independent review
+
+Preferred contract:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_ADAPTER_NATIVE_METRIC_CONTRACT_V2.md`
+
+Commit:
+`23a613da183157c14ef5c1c82051a5014dbca18e`
+
+Review packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_CONTRACT_V2_HIGHER_MODEL_REVIEW_PACKET.txt`
+
+Review packet commit:
+`0f583d601f8d195797e597308887465864dd3c94`
+
+Readiness update:
+`5cc7f8c3339d4db3d67fdc51d1f19652c19f5e1b`
+
+Master continuity update:
+`f6af52f70f6a0a6a351628ec0f4ce04f656bd6f5`
+
+Quality delta:
+`IMPROVED`
+
+Key V2 changes:
+1. utility confirmatory subset = 14 complete PLABA runs only;
+2. safety population = all observed qualified-negative gold across all 19 runs;
+3. exact Source==Target positive rows removed from primary transformed-positive utility and kept as identity controls.
+
+Gold strata:
+- QUALIFIED_POSITIVE = ACC==1 AND COM==1
+- QUALIFIED_NEGATIVE = ACC==-1 OR COM==-1
+- other ACC/COM cells diagnostic only
+- human score 0 is NOT ACAD_PASS REVIEW
+
+Safety:
+- 4,275 negative rows
+- 396 PMID clusters
+- any PASS_CANDIDATE = hard safety failure
+
+Positive utility:
+- 33,660 non-identical qualified-positive rows
+- 399 PMIDs
+- PMID-macro PASS_CANDIDATE >=75%
+
+Negative utility:
+- 3,677 qualified-negative rows
+- 394 PMIDs
+- PMID-macro REJECT >=75%
+- REVIEW = safe abstention, not decisive rejection
+- INVALID = non-success
+
+Statistics:
+- PMID cluster unit
+- 10,000 cluster bootstrap resamples
+- seed 20261004
+- percentile 95% CI
+- exact one-sided zero-event upper bound
+
+Current state:
+`H1 CONTRACT V2 FROZEN FOR INDEPENDENT REVIEW`
+
+No V2.4 external prediction.
+No scoring.
+No threshold tuning.
+No original custom Gate C opening.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`USER-MEDIATED HIGHER-MODEL REVIEW OF H1 CONTRACT V2`
+
+Stop until user returns the complete higher-model review.
