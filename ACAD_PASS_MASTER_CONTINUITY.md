@@ -1115,29 +1115,29 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — H1 ACCESS + ARTIFACT RESOLUTION`
+`PRE-GATE-C EXT/META — H1 RAW ARTIFACT + SCHEMA + TERMS FREEZE`
 
-This is the next sequential subcheckpoint inside:
-`DATASET / VERSION / SPLIT / ADAPTER / METRIC / OVERLAP FREEZE`
+The prior access-resolution checkpoint substantially resolved the main H1 evidence source.
 
-H1 dataset/version/access audit V1 is complete and frozen.
+Preferred H1 core candidate:
+`TREC PLABA 2024 COMPLETE-REWRITE MANUAL JUDGMENTS`
 
 Authorized next scope:
-1. locate an official downloadable/registered SimpleText 2025 human-annotation artifact;
-2. establish SimpleText dataset reuse/license terms;
-3. obtain or independently verify PLABA OSF artifact/license metadata and hashes if accessible;
-4. identify TREC 2024 expert-judgment artifact availability and reuse path;
-5. only after artifact/access resolution, freeze exact H1 IDs/splits and draft H1 adapters.
+1. freeze exact 2024 manual-judgment artifact bytes/checksums if tooling permits;
+2. inspect/freeze exact TSV schema and record identifiers;
+3. freeze original TREC 2024 source/test corpus identifiers/bytes;
+4. document the exact TREC research-use/data-sharing terms applicable to reuse;
+5. map sentence records to original PubMed/PMID source clusters;
+6. only then draft/freeze the H1 adapter + native metric contract.
 
 Still not authorized:
 - running V2.4 on external evaluation records;
-- benchmark scoring;
-- opening the custom 80-study holdout;
+- external benchmark scoring;
+- tuning;
+- opening the original custom 80-study Gate C;
 - recruiting new human reviewers;
-- modifying frozen V2.4 runtime;
-- live generation;
-- HW1-EN;
-- production claims.
+- modifying frozen V2.4;
+- Arabic-track work.
 
 # 23. WHOLE-PROJECT PROGRESS
 
@@ -1719,3 +1719,94 @@ Important negative evidence:
 
 Exact next checkpoint:
 `H1 ACCESS + ARTIFACT RESOLUTION`
+
+
+---
+
+# 34. H1 ACCESS + ARTIFACT RESOLUTION V1 — SUBSTANTIALLY RESOLVED
+
+Date: 2026-10-04
+
+Resolution file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_ACCESS_ARTIFACT_RESOLUTION_V1.md`
+
+Commit:
+`f88fe5b599ade9b85e6a301b350bc33c2163e331`
+
+Readiness update:
+`451c4a19b8b825d5de2df026152b19bff79fbe16`
+
+Quality delta:
+`IMPROVED`
+
+Major finding:
+a public Zenodo dataset now exposes raw PLABA manual judgments for TREC 2023-2024.
+
+Zenodo DOI:
+`10.5281/zenodo.18637045`
+
+Key 2024 complete-rewrite artifact under the retrospective taxonomy:
+`manual-judgments-task1-2024.zip`
+
+Publisher-provided MD5:
+`589ad66e0b9324592f0151cc67974015`
+
+Critical naming ambiguity resolved:
+- original TREC 2024 event page:
+  `Task 2 = Complete Abstract Adaptation`
+- retrospective paper/Zenodo normalization:
+  `Task 1 = Rewriting abstracts`
+
+Therefore for Zenodo manual judgments the complete-rewrite archive is:
+`manual-judgments-task1-2024.zip`
+
+Do not select the 2024 `task2` judgment ZIP for H1 complete-rewrite fidelity.
+
+The retrospective peer-reviewed paper establishes 2024 rewrite manual axes:
+- ACC = accuracy relative to source;
+- COM = completeness / minimizing information loss;
+- SIM = simplicity;
+- BRV = brevity;
+- FIN = aggregate.
+
+It reports 19 complete-rewrite submissions and sentence-level evaluation across all 400 test abstracts.
+
+Current H1 conceptual core:
+- H1-S <- ACC
+- H1-C <- COM
+
+No binary PASS/REJECT adapter mapping has been authorized.
+
+NIST/TREC public archive now exposes the original 2024 complete-adaptation corpus URL.
+
+Rights/use:
+- TREC research-use path is documented through its data-sharing framework;
+- Zenodo record is publicly Open;
+- Zenodo rendered metadata does not declare an explicit license;
+- exact applicable reuse agreement must still be frozen before execution.
+
+FaReBio:
+- identity/version and expert faithfulness/evidence construct verified;
+- public for research only;
+- remains conditional H1-S corroboration, not mandatory H1-C.
+
+SimpleText:
+- remains useful/optional;
+- participant/Codabench access remains;
+- no longer a mandatory blocker for H1.
+
+Readiness:
+- condition 1 = PASS;
+- condition 2 = SUBSTANTIAL PARTIAL / NOT PASS;
+- condition 3 = SUBSTANTIAL PARTIAL / NOT PASS;
+- condition 4 = NOT READY;
+- overall = `NOT_READY_GATE_C_EXT_META`.
+
+No V2.4 predictions.
+No benchmark scoring.
+No custom holdout opening.
+No new-human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`H1 RAW ARTIFACT + SCHEMA + TERMS FREEZE`
