@@ -7919,3 +7919,117 @@ Exact next checkpoint:
 `H1 PHYSICAL SCHEMA + SOURCE-CLUSTER FREEZE`
 
 Stop here until user says `أكمل` and/or provides the two public ZIPs.
+
+
+## 2026-10-04 — H1 physical schema + source-cluster freeze complete
+
+Freeze file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_PHYSICAL_SCHEMA_SOURCE_CLUSTER_FREEZE_V1.md`
+
+Commit:
+`1cb73aa79658462d105be0de02f2e2acb6f16023`
+
+Readiness update:
+`4ed5de1969a889e88c0e8f25ca30305017c3ae7c`
+
+Master continuity update:
+`f412d0b17dd2d233f305becb46cb06db70071d45`
+
+User supplied:
+- `manual-judgments-task1-2024.zip`
+- `PLABA_2024-Task_2.zip`
+
+Raw integrity:
+- manual judgments SHA-256:
+  `8256f7342c180e881e9c11244a7c24fe3e2fb4bdabf0fdfeb04892e4c8c722ce`
+- manual judgments MD5:
+  `589ad66e0b9324592f0151cc67974015`
+  publisher MD5 match = YES
+- source ZIP SHA-256:
+  `f9416ee9ef5a051e79053b526ad7023237cb87d171e79d9623bda4dbd656991e`
+- source ZIP MD5:
+  `daa454a5234161489fef52eab1ebec26`
+- test.json SHA-256:
+  `2d53f485082ea16571ac54d9f3bcbd56c1c199130d4b8542e93b678ed561e9a7`
+
+Exact judgment TSV schema:
+`Abstract, Sentence, Source, Target, Accuracy, Completeness, Simplicity, Brevity`
+
+Source corpus:
+- 40 questions
+- 400 abstract slots
+- 4,060 source sentences
+- 399 unique PMIDs
+
+Duplicate:
+PMID `15857353`
+appears in:
+- Q14_A3
+- Q37_A5
+with exact same seven source sentences.
+
+Therefore:
+`PMID = H1 source-cluster unit`
+and max independent clusters = 399.
+
+Judgment archive:
+- 19 runs
+- 76,790 rows
+- 14 complete 4,060-row runs
+- 5 incomplete runs
+- 350 missing run×sentence rows
+- 315 unique source-sentence pairs missing in >=1 run
+- 0 extra rows
+- 0 empty target fields
+
+All retained rows match test.json exactly by:
+- Abstract
+- Sentence
+- Source text
+
+Score alphabet:
+`-1, 0, 1`
+
+Gold-only descriptive distributions:
+Accuracy:
+- -1 2,084
+- 0 10,296
+- 1 64,410
+
+Completeness:
+- -1 3,151
+- 0 16,992
+- 1 56,647
+
+No ACAD_PASS predictions were run.
+
+Quality delta:
+`IMPROVED`
+
+Current readiness:
+- Condition 1 PASS
+- Condition 2 substantial partial / rights terms remain
+- Condition 3 substantial partial / final eligible subset not frozen
+- Condition 5 H1 internal clustering frozen
+- Conditions 4 and 6 NOT READY
+- overall `NOT_READY_GATE_C_EXT_META`
+
+Exact next checkpoint:
+`H1 ADAPTER + NATIVE METRIC CONTRACT FREEZE`
+
+Next work:
+- decide native ACC/COM handling vs exact ACAD_PASS mapping;
+- freeze eligible records/runs;
+- freeze denominator and incomplete-run handling;
+- freeze PMID-clustered statistics;
+- freeze thresholds/sample-size rationale;
+- prove no semantic helper inference is needed.
+
+No V2.4 prediction.
+No scoring.
+No original custom Gate C opening.
+No human recruitment.
+No Arabic work.
+
+Stop here until user says:
+`أكمل`
