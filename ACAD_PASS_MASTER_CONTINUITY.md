@@ -1,6 +1,6 @@
 # ACAD_PASS MASTER CONTINUITY
 
-Last updated: 2026-10-03
+Last updated: 2026-10-04
 Repository: `abdullah-s-mahmood/sweet-runtime-parity`
 Branch: `phase2-arabic-eval`
 
@@ -1114,29 +1114,30 @@ Do NOT select/open the 80 Gate C sources yet.
 
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
-`AT0-EN V2.4 PRE-GATE-C — HOLDOUT-OPENING READINESS SETUP`
+Current authorized path:
+`PRE-GATE-C — EXT/META PRE-EXECUTION INDEPENDENT REVIEW`
 
-Scope:
-1. finalize reviewer qualification pack
-2. finalize reviewer qualification thresholds
-3. define recruitment brief for each domain
-4. determine practical reviewer recruitment route (Kolabtree / Prolific Domain Experts / hybrid)
-5. define reviewer neutral IDs/assignment
-6. define gold access separation
-7. define constructor vs gold vs prediction-runner role separation
-8. verify all eight opening conditions
+The custom 80-study Gate C remains frozen/unopened and is no longer the immediate progression path.
 
-Only after this checkpoint passes:
-`SOURCE_SAMPLING_AUTHORIZED`
+Current scope:
+1. independently review `GATE_C_EXT_META_PROTOCOL_AMENDMENT_V1.md`;
+2. independently review `GATE_C_EXT_META_READINESS_V1.md`;
+3. decide the minimum non-redundant H1 scientific-transformation package;
+4. verify H2/H3 construct boundaries;
+5. verify META/REVIEW oracle validity;
+6. verify the ten pre-execution readiness conditions;
+7. authorize or reject progression to dataset/version/adapter freezing.
 
-Not authorized now:
-- selecting Gate C source papers
-- opening source passages
-- candidate construction
-- Gate C gold labeling
-- Gate C predictions
-- live generation
-- HW1-EN
+Only after independent review accepts the replacement protocol may ACAD_PASS proceed to dataset/version/adapter freezing.
+
+Still not authorized:
+- executing external benchmarks;
+- opening the custom 80-study holdout;
+- Gate C predictions;
+- recruiting new human reviewers;
+- modifying frozen V2.4 runtime;
+- live generation;
+- HW1-EN;
 - production claims
 
 ---
@@ -1221,23 +1222,29 @@ Pipeline:
 Gate B:
 **COMPLETE / DEVELOPMENT PASS**
 
-Gate C protocol:
-**FINAL / FROZEN / INTEGRITY PASS**
+Original custom Gate C protocol:
+**FINAL / FROZEN / INTEGRITY PASS / PRESERVED**
 
-Gate C holdout:
+Original custom Gate C holdout:
 **UNOPENED**
 
 Human reviewer pool:
-**NOT YET RECRUITED**
+**NOT RECRUITED / RECRUITMENT DEFERRED**
 
-Reviewer problem:
-**SOLVABLE VIA INTERNET-RECRUITED QUALIFIED EXPERTS**
+Current preferred research-progression route:
+**Gate C-EXT + Gate C-META**
+
+No-new-human consultation verdict:
+`YES_WITH_ESSENTIAL_CHANGES`
+
+External composite readiness:
+`NOT_READY_GATE_C_EXT_META`
 
 Current authorization:
-`PRE-GATE-C HOLDOUT-OPENING READINESS SETUP ONLY`
+`PRE-EXECUTION INDEPENDENT REVIEW ONLY`
 
 Exact next work:
-**Reviewer qualification + recruitment/access-separation setup.**
+**Higher-model review of the frozen EXT/META amendment + readiness packet.**
 
 
 ---
@@ -1445,3 +1452,109 @@ Until response:
 - do not execute external datasets;
 - do not modify V2.4 runtime.
 
+
+
+---
+
+# 30. NO-NEW-HUMAN HIGHER-MODEL CONSULTATION — RECEIVED / ACCEPTED WITH CHANGES
+
+Date: 2026-10-04
+
+Independent verdict:
+`B — YES_WITH_ESSENTIAL_CHANGES`
+
+Core decision:
+- `Gate C-EXT + Gate C-META` may replace the custom newly-human-adjudicated Gate C for the next research-progression decision.
+- do not recruit new human reviewers now;
+- original 80-study Gate C remains frozen, preserved and unopened;
+- residual human validation becomes:
+  `DEFERRED — CONDITIONALLY REQUIRED FOR UNCOVERED CLAIMS`.
+
+Consultation corrections accepted:
+- PLABA is not automatically PASS gold;
+- PlainFact stays secondary unless exact human-validation semantics justify use;
+- CLEF SimpleText external human gold must use genuinely human-annotated real-system material, not synthetic distortions;
+- QASemConsistency is relation-level, not complete-source preservation;
+- metamorphic testing is complementary and needs anti-degenerate controls;
+- support and completeness are separate constructs;
+- native dataset semantics must be retained unless exact mapping is justified;
+- no weighted aggregate may compensate safety failure.
+
+New prioritized benchmarks:
+- FactPICO (ACL 2024);
+- FaReBio (EMNLP Findings 2024);
+- LongSciVerify (LREC-COLING 2024).
+
+Fresh implementation-agent source verification confirmed:
+- FactPICO provides expert fine-grained PICO/finding factuality judgments;
+- FaReBio provides expert faithfulness + supporting-evidence annotations;
+- LongSciVerify provides human fine-grained factual-consistency annotations for long scientific summaries;
+- CLEF SimpleText 2026 officially states that manual 2025 annotations are reusable as ground truth for distortion classification.
+
+Decision record:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/NO_NEW_HUMAN_HIGHER_MODEL_CONSULTATION_DECISION_V1.md`
+
+Decision record commit:
+`d6dbb95053a2d95a1d273eeff9a71e00afbfa988`
+
+Quality delta:
+`IMPROVED`
+because the replacement is now independently reviewed, construct boundaries are tighter, and three stronger scientific fidelity resources were added to priority audit.
+
+No runtime change.
+No benchmark execution.
+No custom holdout opening.
+
+---
+
+# 31. GATE C EXT/META PROTOCOL AMENDMENT + READINESS — FROZEN FOR REVIEW
+
+Date: 2026-10-04
+
+Protocol amendment:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_PROTOCOL_AMENDMENT_V1.md`
+
+Commit:
+`7ad010a95373ecb7626bf1bea5a3b68979a08385`
+
+Readiness contract:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_READINESS_V1.md`
+
+Commit:
+`99803dee149e8c5f8ba6d30e830d27556f4766b9`
+
+Independent pre-execution review packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_PREEXECUTION_REVIEW_PACKET_V1.txt`
+
+Commit:
+`5e18d6e71e7a4d2720d81c4d53d117a4bdb11b8f`
+
+Hard-gate functions frozen for review:
+- H1 scientific transformation fidelity;
+- H2 scientific claim/evidence fidelity;
+- H3 fine-grained relation fidelity;
+- H4 ACAD_PASS deterministic metamorphic validation.
+
+Diagnostic-by-default:
+- DeFacto;
+- USB;
+- PlainFact;
+- QASPER;
+- FENICE;
+- TRUE or AggreFact;
+- expert-edited 2026 simplification corpus;
+- other long-document tracks unless promoted before results.
+
+Readiness:
+`NOT_READY_GATE_C_EXT_META`
+
+Ten mandatory conditions must pass before any external-suite verifier execution.
+
+Exact next action:
+`USER-MEDIATED HIGHER-MODEL PRE-EXECUTION REVIEW`
+
+Until response:
+- no external benchmark execution;
+- no custom 80-study holdout opening;
+- no new-human recruitment;
+- no V2.4 runtime change.
