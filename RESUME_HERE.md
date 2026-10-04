@@ -8273,3 +8273,93 @@ Exact next checkpoint:
 
 Stop until user says:
 `أكمل`
+
+
+## 2026-10-04 — H1 context + gold-semantics resolution complete at design level
+
+Resolution:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_CONTEXT_GOLD_SEMANTICS_RESOLUTION_V1.md`
+
+Commit:
+`0db47c57fc012dd95cc7a147b27745e5d8356314`
+
+Readiness update:
+`7c948cc7704bbe27dbd95b11c19a0036921e45d8`
+
+Master continuity update:
+`21bada9cadb6b490588080f8df0228cd051e9691`
+
+Quality delta:
+`IMPROVED`
+
+PLABA conclusion:
+- sentence-level alignment is not equivalent to context-free judging;
+- PLABA task/guidelines permit context-dependent rewriting and omission of some details;
+- PLABA cannot by itself serve as strict ACAD_PASS preservation PASS gold.
+
+Therefore:
+`PLABA-ONLY HARD H1 = REJECTED`
+
+No post-hoc surface/semantic hard subset will be created.
+
+PLABA remains:
+`DIAGNOSTIC / AUTHENTIC TRANSFORMATION UTILITY`
+
+Minimum hard-H1 companion selected:
+`FactPICO`
+
+FactPICO source:
+ACL 2024
+DOI:
+`10.18653/v1/2024.acl-long.459`
+
+Official repo:
+`lilywchen/FactPICO`
+
+Observed repo HEAD:
+`2e16993a000aedb15cb348b7bcd61070d26bab14`
+
+Repo license:
+`MIT`
+
+FactPICO hard-H1 rationale:
+- whole abstract -> whole plain-language summary
+- 115 RCT abstracts
+- 345 generated summaries
+- expert ratings for Population / Intervention / Comparator / Outcome
+- rating 2 includes severe inaccuracies and/or missing critical descriptors
+- rating 1 = missing
+- evidence-inference ratings cover findings/results
+- added-information spans and correctness are expert annotated
+- full-source/full-candidate context fits frozen V2.4 interface without separate hidden context channel
+
+Construct coverage:
+- H1-S: critical factuality/support + correctness of added information
+- H1-C: missing PICO descriptors/elements + missing evidence inference
+
+Claim boundary:
+`CRITICAL RCT-ELEMENT FIDELITY/PRESERVATION`
+not exhaustive document preservation.
+
+FactPICO raw data:
+hosted separately via UT Austin Box.
+Exact bytes + separate dataset license/reuse terms:
+`NOT YET FROZEN`
+
+InfoLossQA:
+`DIAGNOSTIC ONLY`
+because its QA representation is not an exact frozen V2.4 oracle without semantic adapter logic.
+
+Current authorization:
+`FACTPICO ARTIFACT + SCHEMA + LICENSE FREEZE`
+
+Still forbidden:
+- V2.4 external prediction
+- H1 scoring
+- runtime modification
+- new human recruitment
+- original custom Gate C opening
+- Arabic work
+
+Stop until user says:
+`أكمل`
