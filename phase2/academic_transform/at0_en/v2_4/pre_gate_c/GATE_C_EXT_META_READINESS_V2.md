@@ -13,7 +13,7 @@ Protocol:
 | 1 | Independent protocol review | PASS | Review decision V2 incorporated |
 | 2 | Dataset artifacts/versions/access/licenses | H1 FACTPICO PASS / OTHER TRACKS PENDING | FactPICO ZIP bytes and every released file hashed; annotations CC BY 4.0; repo MIT; source-text reuse path verified conservatively; PLABA artifacts already frozen |
 | 3 | Eligible splits/IDs/human-label provenance/context | H1 FACTPICO PHYSICAL PASS / HARD-GOLD ELIGIBILITY PENDING | 115 source clusters/345 summaries and expert numeric fields frozen; rationale defects documented; final H1 safe/error/uncertain strata still unfrozen |
-| 4 | Dataset-specific adapter contracts + measurable-output mapping | H1 REDESIGNED / FACTPICO ARTIFACT FREEZE PENDING | PLABA-only hard H1 rejected; FactPICO selected as minimum hard H1 companion because full-abstract source/candidate context matches V2.4 interface; adapter contract still not ready |
+| 4 | Dataset-specific adapter contracts + measurable-output mapping | H1 FACTPICO IMPLEMENTATION PASS / PRE-PREDICTION GATE NEXT | V5 deterministic adapter implemented; 345-record prediction input and separate gold hashes frozen; no-gold-leak and deterministic rebuild PASS |
 | 5 | Overlap/source-cluster manifest | H1 INTERNAL PARTIAL / NOT PASS | PLABA clustered by PMID; FactPICO clustered by exact Abstract SHA-256 with 115 sources; cross-dataset/PMID lineage overlap remains future work |
 | 6 | Metrics/thresholds/denominators/sample targets/statistics/evidence audit | H1 V5 FROZEN / IMPLEMENTATION NEXT | Focused review incorporated: Results negative trigger removed; final FactPICO hard classes and denominators frozen; 75% micro+macro utility and zero unsafe PASS retained |
 | 7 | META independent oracle/contracts/cases/seeds/exclusions | NOT READY | Oracle package independent from extractor/verifier semantics |
@@ -862,3 +862,77 @@ Still forbidden:
 - custom Gate C opening;
 - new-human recruitment;
 - Arabic work.
+
+
+## 25. FactPICO H1 adapter/input/gold implementation freeze
+
+Landscape reset:
+`SCIENTIFIC_VERIFICATION_LANDSCAPE_RESET_V1.md`
+
+Landscape commit:
+`f723cb718dc7451c2b484df43cb13a34e3603348`
+
+Implementation freeze:
+`FACTPICO_H1_ADAPTER_IMPLEMENTATION_FREEZE_V1.md`
+
+Freeze commit:
+`ee41d5908c5f703aa6738c4a6a3078e69f0e0f25`
+
+Adapter:
+`factpico_h1_adapter_v5.py`
+
+Adapter commit:
+`c36aef499fe28c83b80f1d7a9f296deefa309d2d`
+
+Adapter SHA-256:
+`ab128309261eeffdb734464f2a2fef52cef4ce37bdb3b9654317d6b5bba0b7e1`
+
+Build manifest:
+`FACTPICO_H1_V5_BUILD_MANIFEST.json`
+
+Build-manifest commit:
+`8450003be24db1b101cb7a8be663431a934dbd76`
+
+Frozen private prediction-input SHA-256:
+`ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82`
+
+Frozen separate private-gold SHA-256:
+`6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48`
+
+Eligibility manifest SHA-256:
+`d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255`
+
+Expected build-manifest SHA-256:
+`67bfbd4302f66d2248009c8a6fe9cef658a6f202d278450b73e942c68cb6f16b`
+
+Validation:
+- 345 prediction IDs
+- exactly one input record/ID
+- prediction keys only: record_id/source_text/candidate_text
+- zero gold fields in inference artifact
+- prediction/gold ID sets exact match
+- deterministic rebuild repeated twice with identical hashes
+- no V2.4 execution
+
+Environmental note:
+an unrelated artifact_tool spreadsheet-warmup warning appeared during Python startup, but adapter returned code 0 and deterministic second build matched all hashes.
+Classified tooling/environment only.
+
+Fresh landscape conclusion:
+`MANY STRONG RESOURCES EXIST; PROBLEM = CONSTRUCT MATCHING + EVALUATION INTEGRITY`
+
+Strategy:
+`REUSE MORE / FORCE LESS`
+
+Future H2/H3 resource choices are explicitly reopened for modern-resource audit before their execution:
+- SciVer
+- CLAIM-BENCH
+- SciClaimEval
+- SciCiteVal/CiteAudit
+- SciTab/Table-Text Alignment
+while established prior resources remain candidates/baselines.
+
+Exact next checkpoint:
+`H1 FACTPICO PRE-PREDICTION INTEGRITY GATE`
+
+V2.4 prediction remains unauthorized.
