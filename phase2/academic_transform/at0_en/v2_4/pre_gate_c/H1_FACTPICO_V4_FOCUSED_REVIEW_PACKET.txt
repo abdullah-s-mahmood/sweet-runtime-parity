@@ -1,0 +1,96 @@
+ACAD_PASS — H1 FACTPICO CONTRACT V4 FOCUSED INDEPENDENT REVIEW
+
+ROLE
+Act only as an independent research-methodology/statistical reviewer.
+
+DO NOT:
+- write code;
+- run V2.4;
+- score FactPICO;
+- modify repository;
+- recruit humans;
+- review unrelated ACAD_PASS history.
+
+Goal:
+Review ONLY the six material pre-implementation decisions in H1 FactPICO Contract V4.
+
+Repository:
+`abdullah-s-mahmood/sweet-runtime-parity`
+
+Branch:
+`phase2-arabic-eval`
+
+Read only:
+1. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_PHYSICAL_ARTIFACT_SCHEMA_FREEZE_V1.md`
+2. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_FACTPICO_HARD_GOLD_CONTRACT_V4.md`
+3. If needed for output compatibility only:
+   `phase2/academic_transform/at0_en/v2_4/AT0_EN_V2_4_FROZEN_ARCHITECTURE_V2.md`
+
+Use deep research / adversarial brainstorming only where it materially changes these six decisions.
+
+Frozen facts:
+- 115 source abstracts / 345 summaries.
+- Primary expert fields: Population, Intervention, Comparator, Outcome, Results.
+- PICO human scale: 4 accurate, 3 vague/somewhat inaccurate, 2 severe inaccuracies or missing critical descriptors, 1 missing, N/A.
+- Released 0 encodes N/A where observed.
+- 25 source abstracts / 75 summaries are double-PICO-annotated; released PICO can be half-step aggregates.
+- Results is an aggregate over 1–5 evidence-inference spans per summary and may aggregate multiple human observations.
+- Added Information can be factual external explanatory content, while V2.4 is source-bounded.
+- 3 source clusters / 9 summaries contain N/A PICO.
+- Proposed hard pool excludes those 3 sources.
+- Proposed SAFE_STRICT_CONTROL: all PICO=4, Results=4, no identified Added Information span, no unresolved auxiliary added-info identity.
+  Count: 34 records / 33 sources.
+  Model mix: 33 Alpaca, 1 GPT-4, 0 Llama-2.
+- Proposed ERROR_STRICT:
+  * non-double PICO: any applicable field <=2;
+  * double-PICO aggregate: any field <=1.5;
+  * OR Results <=2.
+  Count: 172 records / 91 sources.
+- Remaining 130 records are intermediate.
+- Hard safety: ERROR_STRICT automatic PASS must be 0.
+- Negative utility: REJECT >=75% both pair-micro and source-macro.
+- Limited positive control utility: PASS >=75% both pair-micro and source-macro.
+- No V2.4 FactPICO prediction has been run.
+
+Answer ONLY:
+
+1. VERDICT
+Choose exactly:
+A. ACCEPT_V4
+B. ACCEPT_WITH_ESSENTIAL_CHANGES
+C. REJECT_V4
+
+2. N_A_POLICY
+Should all 3 source clusters containing any N/A PICO be excluded from hard H1, or should only N/A fields be ignored?
+Give one choice and one paragraph rationale.
+
+3. DOUBLE_ANNOTATION_ERROR_RULE
+Is <=1.5 an appropriately conservative hard-error cutoff for averaged double-annotated PICO values?
+If not, give the exact replacement.
+
+4. RESULTS_RULE
+Is Results <=2 defensible as a hard-error trigger despite aggregation across findings/raters?
+If not, give the exact replacement rule.
+
+5. SAFE_CONTROL_RULE
+Is requiring all PICO=4, Results=4, and no Added Information span appropriate for a source-bounded V2.4 safe-control?
+If not, give the exact replacement.
+
+6. SAFE_CONTROL_SIZE_AND_SKEW
+Can 34 records / 33 sources, with 33 Alpaca and 1 GPT-4, remain a hard >=75% positive progression gate?
+Choose:
+- KEEP_HARD
+- DIAGNOSTIC_ONLY
+- REDEFINE
+and specify the exact consequence.
+
+7. THRESHOLDS
+Are >=75% pair-micro AND >=75% source-macro appropriate for:
+- ERROR_STRICT decisive REJECT;
+- SAFE_STRICT_CONTROL automatic PASS?
+State exact changes only.
+
+8. FINAL_AUTHORIZATION
+After applying your essential changes, may we proceed ONLY to deterministic adapter/input/gold-manifest implementation and hashing, still without running V2.4?
+
+Do not broaden the review beyond these questions.
