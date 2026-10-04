@@ -1115,32 +1115,31 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C — EXT/META PRE-EXECUTION INDEPENDENT REVIEW`
+`PRE-GATE-C EXT/META — DATASET / VERSION / SPLIT / ADAPTER / METRIC / OVERLAP FREEZE`
 
-The custom 80-study Gate C remains frozen/unopened and is no longer the immediate progression path.
+The second independent pre-execution review returned:
+`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
 
-Current scope:
-1. independently review `GATE_C_EXT_META_PROTOCOL_AMENDMENT_V1.md`;
-2. independently review `GATE_C_EXT_META_READINESS_V1.md`;
-3. decide the minimum non-redundant H1 scientific-transformation package;
-4. verify H2/H3 construct boundaries;
-5. verify META/REVIEW oracle validity;
-6. verify the ten pre-execution readiness conditions;
-7. authorize or reject progression to dataset/version/adapter freezing.
+Required V2 changes have been incorporated.
 
-Only after independent review accepts the replacement protocol may ACAD_PASS proceed to dataset/version/adapter freezing.
+Authorized next scope:
+1. inspect actual candidate dataset releases;
+2. freeze exact files/versions/licenses;
+3. inspect exact human/expert label schemas and annotator context;
+4. freeze eligible splits/IDs;
+5. freeze dataset-specific adapter contracts against actual V2.4 outputs;
+6. freeze denominators, metrics, thresholds and sample/source-cluster targets;
+7. construct overlap/source-lineage manifest;
+8. draft/freeze independent META oracle contracts.
 
 Still not authorized:
-- executing external benchmarks;
+- running V2.4 on external evaluation records;
 - opening the custom 80-study holdout;
-- Gate C predictions;
 - recruiting new human reviewers;
 - modifying frozen V2.4 runtime;
 - live generation;
 - HW1-EN;
-- production claims
-
----
+- production claims.
 
 # 23. WHOLE-PROJECT PROGRESS
 
@@ -1234,20 +1233,35 @@ Human reviewer pool:
 Current preferred research-progression route:
 **Gate C-EXT + Gate C-META**
 
-No-new-human consultation verdict:
+First no-new-human consultation:
 `YES_WITH_ESSENTIAL_CHANGES`
 
-External composite readiness:
+Second independent pre-execution review:
+`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
+
+Protocol:
+`GATE_C_EXT_META_PROTOCOL_AMENDMENT_V2.md`
+
+Readiness:
+`GATE_C_EXT_META_READINESS_V2.md`
+
+Condition 1 of 10:
+`PASS`
+
+Conditions 2-10:
+`NOT YET PASS`
+
+Current overall readiness:
 `NOT_READY_GATE_C_EXT_META`
 
 Current authorization:
-`PRE-EXECUTION INDEPENDENT REVIEW ONLY`
+`DATASET / VERSION / SPLIT / ADAPTER / METRIC / OVERLAP FREEZING ONLY`
+
+External verifier execution:
+**NOT AUTHORIZED**
 
 Exact next work:
-**Higher-model review of the frozen EXT/META amendment + readiness packet.**
-
-
----
+**Freeze external dataset identities, label contracts, measurable-output adapters, denominators/statistics, overlap/source clusters, and independent META oracles.**
 
 # 28. NO-NEW-HUMAN GATE C ALTERNATIVE — RESEARCH UPDATE
 
@@ -1558,3 +1572,77 @@ Until response:
 - no custom 80-study holdout opening;
 - no new-human recruitment;
 - no V2.4 runtime change.
+
+
+---
+
+# 32. SECOND EXT/META PRE-EXECUTION REVIEW — ACCEPTED WITH ESSENTIAL CHANGES
+
+Date: 2026-10-04
+
+Independent verdict:
+`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
+
+The reviewer explicitly authorized progression to:
+`dataset / version / split / adapter / metric / overlap freezing`
+
+with:
+`ZERO NEW-HUMAN RECRUITMENT AT THIS STAGE`
+
+No benchmark execution is authorized yet.
+
+Five accepted methodological changes:
+1. H1 is defined by two required functions, not dataset count:
+   - output-content support/factuality;
+   - preservation/completeness of required source content.
+2. H2/H3 must be measurable from actual frozen V2.4 outputs without a new semantic inference layer.
+3. evidence-location correctness and semantic-support correctness are separate audits.
+4. META oracle must be independent from both verifier output and extractor semantic assumptions/rules.
+5. per-track denominators/sample targets/success rules/missing-output handling must be frozen before prediction.
+
+H1 resource classification:
+- FactPICO = `CONDITIONAL SUBSTITUTE`
+- FaReBio = `CONDITIONAL SUBSTITUTE`
+- LongSciVerify = `DIAGNOSTIC ONLY`
+
+Current preferred H1 freeze candidates:
+- human-annotated real-system CLEF SimpleText material;
+- eligible PLABA/TREC judgments that actually establish the required preservation/completeness function.
+
+FactPICO/FaReBio are added only if they close a documented H1 construct gap.
+
+No diagnostic dataset is promoted to hard now.
+
+Review decision:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_PREEXECUTION_REVIEW_DECISION_V2.md`
+commit:
+`41f518392a6aab3af4e1c0f0d2834a5736e02377`
+
+Revised protocol:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_PROTOCOL_AMENDMENT_V2.md`
+commit:
+`a8cd52bb731a53e1a72de6984a2eb3308fad7966`
+
+Revised readiness:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/GATE_C_EXT_META_READINESS_V2.md`
+commit:
+`73c7e5673b4bbcc708e2eb69eb745c91d3e713e6`
+
+Quality delta:
+`IMPROVED`
+
+Reason:
+- stronger construct separation;
+- stronger adapter boundary;
+- independent META oracle requirement;
+- no empty denominators;
+- explicit source-cluster/sample-target precommitment;
+- public-gold independence claim narrowed correctly.
+
+No runtime change.
+No external prediction.
+No custom holdout opening.
+No human recruitment.
+
+Exact next checkpoint:
+`PRE-GATE-C EXT/META — DATASET / VERSION / SPLIT / ADAPTER / METRIC / OVERLAP FREEZE`
