@@ -1115,31 +1115,33 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — USER-MEDIATED FOCUSED INDEPENDENT REVIEW OF FACTPICO H1 CONTRACT V4`
+`PRE-GATE-C EXT/META — FACTPICO H1 ADAPTER + INPUT/GOLD MANIFEST IMPLEMENTATION FREEZE`
 
-FactPICO physical artifact is fully frozen.
-H1 Contract V4 is now frozen for focused methodological review.
+FactPICO H1 Contract V5 is frozen after focused independent review.
 
-Preferred contract:
-`H1_FACTPICO_HARD_GOLD_CONTRACT_V4.md`
+Final hard classes:
+- SAFE_STRICT_CONTROL: 34 records / 33 source clusters
+- ERROR_STRICT: 149 records / 83 source clusters
+- INTERMEDIATE: 153 records / 84 source clusters represented
+- N_A_SOURCE_DIAGNOSTIC: 9 records / 3 source clusters
 
-Focused review packet:
-`H1_FACTPICO_V4_FOCUSED_REVIEW_PACKET.txt`
+Final eligibility manifest SHA-256:
+`d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255`
 
-Review scope is deliberately narrow to conserve higher-model usage:
-- N/A policy;
-- double-annotation cutoff;
-- Results aggregate error rule;
-- source-bounded safe-control rule;
-- severe Alpaca skew / safe-control status;
-- 75% micro+source-macro thresholds.
+Authorized next scope:
+1. implement deterministic FactPICO transport adapter;
+2. regenerate/freeze the exact 345-record prediction-input manifest;
+3. regenerate/freeze the separate V5 gold manifest;
+4. prove inference artifact contains zero gold fields;
+5. hash adapter code/config/input/gold artifacts;
+6. validate exact ID completeness and class/count reproduction;
+7. STOP before V2.4 prediction.
 
 Still not authorized:
-- H1 adapter implementation;
-- V2.4 FactPICO predictions;
+- V2.4 FactPICO prediction;
 - H1 scoring;
-- V2.4 modification;
-- threshold changes after prediction;
+- runtime modification;
+- threshold change;
 - original custom Gate C opening;
 - new-human recruitment;
 - Arabic-track work.
@@ -2595,3 +2597,106 @@ No Arabic work.
 
 Exact next checkpoint:
 `USER-MEDIATED FOCUSED INDEPENDENT REVIEW OF FACTPICO H1 CONTRACT V4`
+
+
+---
+
+# 44. FACTPICO H1 CONTRACT V5 — FROZEN AFTER FOCUSED INDEPENDENT REVIEW
+
+Date: 2026-10-04
+
+V4 focused review decision:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_FACTPICO_V4_FOCUSED_REVIEW_DECISION_V1.md`
+
+Commit:
+`d6804d096b648e259f3cd37b943f1a522d0e03c9`
+
+Final V5 contract:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_FACTPICO_HARD_GOLD_CONTRACT_V5.md`
+
+Commit:
+`26235ace57b68b1e93f78728c885d33c1806c24e`
+
+Manifest metadata:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_HARD_GOLD_ELIGIBILITY_MANIFEST_V5_METADATA.md`
+
+Commit:
+`5852485cda8f4b75df5f573391b5dd3cff34da81`
+
+Readiness update:
+`7576fb11ee1fff86b0591f9571139b3f4386234a`
+
+Quality delta:
+`IMPROVED`
+
+Independent verdict:
+`B. ACCEPT_WITH_ESSENTIAL_CHANGES`
+
+Final incorporated review changes:
+1. all 3 N/A source clusters remain outside hard H1;
+2. double-PICO hard-error cutoff <=1.5 retained;
+3. Results<=2 REMOVED as independent hard-error trigger because released Results is an aggregate and raw per-finding human numeric ratings are not available;
+4. Results=4 retained only for strict positive controls;
+5. Added Information absence is accepted for safe-control only under complete annotation-framework + exact identity + no-span + no unresolved-source safeguards;
+6. limited positive safe-control remains mandatory anti-degeneracy gate despite model skew;
+7. >=75% pair-micro AND source-macro retained for positive and negative utility.
+
+Primary-source FactPICO validation:
+- all generated summaries were evaluated for PICO and Added Information;
+- annotators highlighted addition spans;
+- all 75 double-annotated texts received Added Information evaluation independently;
+- Added Information is stored/released as span events.
+
+Final V5 classes:
+- SAFE_STRICT_CONTROL = 34 records / 33 sources
+- ERROR_STRICT = 149 records / 83 sources
+- INTERMEDIATE = 153 records / 84 sources represented
+- N_A_SOURCE_DIAGNOSTIC = 9 records / 3 sources
+
+Model distribution of SAFE_STRICT_CONTROL:
+- ALPACA 33
+- GPT-4 1
+- LLAMA-2 0
+
+Therefore positive-gate claim remains:
+`LIMITED SOURCE-BOUNDED SAFE-CONTROL USABILITY`
+not broad transformation acceptance.
+
+Model distribution of ERROR_STRICT:
+- ALPACA 35
+- GPT-4 45
+- LLAMA-2 69
+
+Final V5 eligibility-manifest SHA-256:
+`d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255`
+
+Superseded V4 proposal manifest SHA-256:
+`72ece44c2d23b8c6ce667f5f1ff0856fb28900a412a0b14ed192ce329b8a9d91`
+
+Safety rule:
+`149 ERROR_STRICT -> PASS_CANDIDATE must be 0`
+
+Eligible safety source clusters:
+`83`
+
+If zero unsafe source events:
+one-sided exact 95% simple binomial upper bound ≈
+`3.54496%`
+
+Negative utility:
+- pair-micro REJECT >=75%
+- source-macro REJECT >=75%
+
+Limited positive utility:
+- pair-micro PASS >=75%
+- source-macro PASS >=75%
+
+No V2.4 prediction.
+No H1 scoring.
+No adapter implementation yet.
+No runtime change.
+No human recruitment.
+No Arabic work.
+
+Exact next checkpoint:
+`FACTPICO H1 ADAPTER + INPUT/GOLD MANIFEST IMPLEMENTATION FREEZE`
