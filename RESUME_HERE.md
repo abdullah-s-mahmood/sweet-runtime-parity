@@ -9200,3 +9200,62 @@ Remaining gate:
 No FactPICO prediction/scoring/gold join authorized.
 
 Stop until independent higher-model pre-prediction decision is returned.
+
+
+## 2026-10-05 — V2.5 essential pre-execution closure complete
+
+Higher-model verdict:
+`B. READY_WITH_ESSENTIAL_PRE_EXECUTION_CHANGES`
+
+Closure completed.
+
+Final successful run:
+`37289569561`
+
+Head:
+`29e3abe5ccb708cb88d94ae00630eaa0fdc2b123`
+
+Artifact:
+`11335647986`
+
+Artifact ZIP SHA-256:
+`61d82aa30de89e84aa5bc0433bdfa528259269c0b3630648df5c0d4c95573b63`
+
+Regression report SHA-256:
+`e0ccf3dd45a7e20f9df7b4086779b2d2846d539c67564ecee2e6a8720b419c87`
+
+Closed:
+- exact objective checks 205
+- float-vs-exact mapping discrepancies 0
+- priority conflict PASS
+- partial tie PASS
+- near tie PASS
+- full tie policy PASS
+- fresh-process reproducibility PASS
+- mixed-batch accounting PASS
+- overwrite refusal PASS
+- one-shot guard PASS
+- 128 full tie + near-envelope unequal PASS
+
+Preserved negative:
+`37289060156` failed old 10s synthetic full-tie criterion.
+
+Resolution:
+synthetic criterion refrozen to 30s after synthetic-only evidence;
+production timeout unchanged at 60s/record.
+
+Final repeated full-tie n128:
+7.3144 / 7.0391 / 7.0154 s.
+
+FactPICO:
+`NOT_RUN`
+
+Current state:
+`READY_FOR_FINAL_HIGHER_MODEL_PRE_PREDICTION_RE_REVIEW`
+
+Packet:
+`phase2/academic_transform/at0_en/v2_5/V2_5_FINAL_PRE_PREDICTION_REVIEW_PACKET.txt`
+
+No FactPICO prediction/scoring/gold join authorized.
+
+Stop until higher-model final re-review is returned.
