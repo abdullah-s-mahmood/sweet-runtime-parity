@@ -58,7 +58,7 @@ def _period_is_boundary(text:str,i:int)->bool:
     left=text[max(0,i-16):i+1].lower()
     if any(left.endswith(x) for x in BIOMED_ABBREVIATIONS):
         return False
-    if re.search(r"(?:\\b[A-Za-z]\\.){2,}$",text[max(0,i-12):i+1]):
+    if re.search(r"(?:\b[A-Za-z]\.){2,}$",text[max(0,i-12):i+1]):
         return False
     j=i-1
     while j>=0 and text[j].isalpha():
@@ -67,7 +67,7 @@ def _period_is_boundary(text:str,i:int)->bool:
     if len(token)==1 and token.isalpha():
         return False
     k=i+1
-    while k<len(text) and text[k] in " \\t":
+    while k<len(text) and text[k] in " \t":
         k+=1
     if k<len(text) and text[k].islower():
         return False
@@ -80,7 +80,7 @@ def _heading_like(text:str)->bool:
     core=s.rstrip(":").strip()
     words=core.split()
     return (
-        s.endswith(":") and len(words)<=8
+        (s.endswith(":") and len(words)<=8)
         or (len(words)<=6 and any(ch.isalpha() for ch in core) and core.upper()==core)
     )
 
@@ -98,7 +98,7 @@ def sentence_spans(text:str):
             boundary=True
         elif ch==".":
             boundary=_period_is_boundary(text,i)
-        elif ch=="\\n":
+        elif ch=="\n":
             current=text[start:i].strip()
             boundary=_heading_like(current)
             include=False
