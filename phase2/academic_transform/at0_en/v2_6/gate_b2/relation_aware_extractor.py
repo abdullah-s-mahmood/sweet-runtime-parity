@@ -314,6 +314,231 @@ def parse_measured_as(sentence:str, idx:int):
     return None
 
 
+
+# ---------------- V2.6 R4.1 generic RCT/scientific surface coverage ----------------
+
+RCT_PEOPLE=r"(?:patients?|participants?|subjects?|women|men|children|adults?|survivors?|individuals?|persons?|volunteers?)"
+RCT_COUNT_WORDS={
+    "zero":0,"one":1,"two":2,"three":3,"four":4,"five":5,"six":6,"seven":7,"eight":8,"nine":9,
+    "ten":10,"eleven":11,"twelve":12,"thirteen":13,"fourteen":14,"fifteen":15,"sixteen":16,
+    "seventeen":17,"eighteen":18,"nineteen":19,"twenty":20,"thirty":30,"forty":40,"fifty":50,
+    "sixty":60,"seventy":70,"eighty":80,"ninety":90,
+}
+
+def parse_english_count(raw:str):
+    s=raw.lower().replace("-"," ").replace(","," ").strip()
+    if re.fullmatch(r"\d+",s):
+        return int(s)
+    parts=s.split()
+    if not parts:
+        return None
+    total=0
+    current=0
+    used=False
+    for p in parts:
+        if p in RCT_COUNT_WORDS:
+            current+=RCT_COUNT_WORDS[p]; used=True
+        elif p=="hundred":
+            current=max(1,current)*100; used=True
+        elif p=="thousand":
+            total+=max(1,current)*1000; current=0; used=True
+        else:
+            return None
+    return total+current if used else None
+
+def rct_quantities(sentence:str):
+    """Extract explicit number+unit/percent facts; p-values without units are intentionally excluded."""
+    units=r"(?:%|mg/day|mg|g|kg|mcg|µg|ml|mL|l/min|L/min|mmhg|mmHg|bpm|months?|weeks?|days?|years?|hours?|hrs?|minutes?|mins?|seconds?|sec|s|points?)"
+    out=[]
+    for m in re.finditer(rf"(?<![A-Za-z0-9])([-+]?\d+(?:\.\s*\d+)?)\s*({units})\b|(?<![A-Za-z0-9])([-+]?\d+(?:\.\s*\d+)?)\s*(%)",sentence,re.I):
+        val=(m.group(1) or m.group(3) or "").replace(" ","")
+        unit=(m.group(2) or m.group(4) or "").lower()
+        out.append(f"{val}{unit}")
+    return sorted(set(out))
+
+def rct_bindings(sentence:str,extra=None):
+    b=dict(extra or {})
+    qs=rct_quantities(sentence)
+    if qs:
+        b["quantities"]=qs
+    return b
+
+def rct_modality(sentence:str):
+    l=f" {sentence.lower()} "
+    if " may " in l: return "MAY"
+    if " could " in l: return "COULD"
+    if " can " in l: return "CAN"
+    if " appears " in l or " appear " in l: return "POSSIBLE"
+    if " seems " in l or " seem " in l: return "POSSIBLE"
+    return "ASSERTED"
+
+def rct_population_from_text(text:str):
+    s=text.strip(" ,.;")
+    m=re.match(
+        rf"^(?P<count>(?:\d[\d,]*|[A-Za-z-]+(?:\s+[A-Za-z-]+){{0,4}}))\s+(?P<noun>{RCT_PEOPLE})\b(?P<rest>.*)$",
+        s,re.I)
+    if not m:
+        return None
+    count=parse_english_count(m.group("count"))
+    if count is None:
+        return None
+    noun=m.group("noun").lower()
+    rest=m.group("rest").strip()
+    # Remove explicit enrollment/assignment tail from the population descriptor.
+    rest=re.sub(r"\s+(?:were|was)\s+(?:enrolled|included|recruited|randomized|assigned|allocated)\b.*$","",rest,flags=re.I).strip()
+    subject=(noun+(" "+rest if rest else "")).strip()
+    return subject,count
+
+def parse_rct_surface(sentence:str,start_idx:int):
+    s=sentence.rstrip(".").strip()
+    if not s:
+        return None
+    l=s.lower()
+    out=[]
+
+    # Purpose/objective statements are useful context but not critical preservation targets.
+    m=re.fullmatch(r"(?:To|We\s+(?:aimed|sought)\s+to)\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,"study","AIM_TO",m.group("object"),sentence,
+                             criticality="MATERIAL",confidence="CERTAIN")]
+
+    # Compact study-design fragments.
+    if re.search(r"\b(?:trial|study)\b",l) and re.search(r"\b(?:randomized|randomised|controlled|double-blind|single-blind|prospective|retrospective|phase\s+[ivx]+)\b",l):
+        if not re.search(r"\b(?:patients?|participants?|subjects?|women|men|children|received|assigned|allocated|outcome|endpoint|end point)\b",l):
+            return [mk_assertion(start_idx,"study","STUDY_DESIGN",s,sentence,
+                                 criticality="MATERIAL",confidence="CERTAIN")]
+
+    # Setting fragments.
+    if re.search(r"\b(?:hospital|hospitals|medical center|medical centre|clinic|university-affiliated center|tertiary center)\b",l) and not re.search(r"\b(?:received|assigned|randomized|randomised|outcome|endpoint)\b",l):
+        if len(s.split())<=16:
+            return [mk_assertion(start_idx,"study","SETTING",s,sentence,
+                                 criticality="MATERIAL",confidence="CERTAIN")]
+
+    # Explicit population enrollment fragments/sentences.
+    pop=rct_population_from_text(s)
+    if pop and re.search(r"\b(?:enrolled|included|recruited)\b",l):
+        subject,count=pop
+        return [mk_assertion(start_idx,subject,"POPULATION",None,sentence,
+                             criticality="CRITICAL",bindings={"count":count},confidence="CERTAIN")]
+
+    # Random assignment/allocation. Emit population identity too if encoded in the subject.
+    m=re.fullmatch(
+        r"(?P<subject>.+?)\s+(?:were|was)\s+(?:randomly\s+)?(?:assigned|allocated|randomized|randomised)(?:\s+at\s+random)?\s+(?:to|between)\s+(?P<object>.+)",
+        s,re.I)
+    if not m:
+        m=re.fullmatch(
+            r"(?P<subject>.+?)\s+(?:were|was)\s+(?:allocated\s+at\s+random)\s+to\s+(?P<object>.+)",
+            s,re.I)
+    if m:
+        p=rct_population_from_text(m.group("subject"))
+        if p:
+            psub,count=p
+            out.append(mk_assertion(start_idx,psub,"POPULATION",None,sentence,
+                                    criticality="CRITICAL",bindings={"count":count},confidence="CERTAIN"))
+            start_idx+=1
+        out.append(mk_assertion(start_idx,m.group("subject"),"ASSIGN",m.group("object"),sentence,
+                                criticality="CRITICAL",bindings=rct_bindings(sentence),confidence="CERTAIN"))
+        return out
+
+    # Primary/secondary outcome or endpoint definition.
+    m=re.fullmatch(
+        r"(?:The\s+)?(?P<kind>primary|secondary|main)\s+(?:outcomes?|endpoints?|end\s+points?|outcome\s+variables?)\s+(?:was|were)\s+(?P<object>.+)",
+        s,re.I)
+    if m:
+        kind="primary outcome" if m.group("kind").lower() in {"primary","main"} else "secondary outcome"
+        return [mk_assertion(start_idx,kind,"DEFINE_OUTCOME",m.group("object"),sentence,
+                             criticality="CRITICAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Explicit intervention/procedure receipt.
+    m=re.fullmatch(r"(?P<subject>.+?)\s+(?P<verb>received|underwent|completed)\s+(?P<object>.+)",s,re.I)
+    if m:
+        pred={"received":"RECEIVE","underwent":"UNDERGO","completed":"COMPLETE"}[m.group("verb").lower()]
+        crit="CRITICAL" if pred in {"RECEIVE","UNDERGO"} else "MATERIAL"
+        return [mk_assertion(start_idx,m.group("subject"),pred,m.group("object"),sentence,
+                             criticality=crit,bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Passive treatment/assessment/follow-up.
+    m=re.fullmatch(
+        r"(?P<subject>.+?)\s+(?:was|were)\s+(?P<adv>(?:randomly\s+|independently\s+|also\s+)*)?(?P<verb>treated|assessed|measured|evaluated|followed|selected|included|recruited)\s+(?P<object>.*)",
+        s,re.I)
+    if m:
+        norm={
+            "treated":"TREAT","assessed":"MEASURE","measured":"MEASURE","evaluated":"EVALUATE",
+            "followed":"FOLLOW_UP","selected":"SELECT","included":"INCLUDE","recruited":"POPULATION",
+        }[m.group("verb").lower()]
+        crit="CRITICAL" if norm in {"TREAT","POPULATION"} or "outcome" in l or "endpoint" in l else "MATERIAL"
+        return [mk_assertion(start_idx,m.group("subject"),norm,m.group("object") or None,sentence,
+                             criticality=crit,bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Explicit safety event statements.
+    m=re.fullmatch(
+        r"(?P<neg>No\s+)?(?P<subject>(?:serious\s+)?(?:adverse\s+events?|toxicit(?:y|ies)|deaths?))\s+(?:were|was)\s+(?P<verb>reported|observed|recorded|demonstrated)\s*(?P<object>.*)",
+        s,re.I)
+    if m:
+        return [mk_assertion(start_idx,m.group("subject"),"SAFETY_EVENT",m.group("object") or None,sentence,
+                             criticality="CRITICAL",
+                             polarity="NEGATIVE" if m.group("neg") else "POSITIVE",
+                             bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # No significant difference statement.
+    m=re.fullmatch(r"(?:There\s+(?:were|was)\s+)?No\s+(?:statistically\s+)?significant\s+differences?\s+(?:in\s+)?(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,"groups","DIFFER",m.group("object"),sentence,
+                             criticality="CRITICAL",polarity="NEGATIVE",
+                             bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Association and explicit causality.
+    m=re.fullmatch(r"(?P<subject>.+?)\s+(?:was|were|is|are)\s+associated\s+with\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,m.group("subject"),"ASSOCIATE_WITH",m.group("object"),sentence,
+                             criticality="CRITICAL",causality="ASSOCIATION_ONLY",
+                             bindings=rct_bindings(sentence),confidence="CERTAIN")]
+    m=re.fullmatch(r"(?P<subject>.+?)\s+(?:caused|causes|cause)\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,m.group("subject"),"CAUSE",m.group("object"),sentence,
+                             criticality="CRITICAL",causality="CAUSAL",
+                             bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Directional effect statements, including explicit modality.
+    m=re.fullmatch(
+        r"(?P<subject>.+?)\s+(?:(?P<modal>may|can|could)\s+)?(?P<verb>reduced|reduce|decreased|decrease|lowered|lower|increased|increase|improved|improve)\s+(?P<object>.+)",
+        s,re.I)
+    if m:
+        v=m.group("verb").lower()
+        pred="REDUCE" if v in {"reduced","reduce","decreased","decrease","lowered","lower"} else "INCREASE"
+        mod={"may":"MAY","can":"CAN","could":"COULD"}.get((m.group("modal") or "").lower(),"ASSERTED")
+        return [mk_assertion(start_idx,m.group("subject"),pred,m.group("object"),sentence,
+                             criticality="CRITICAL",modality=mod,
+                             bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Comparative copular results.
+    m=re.fullmatch(
+        r"(?P<subject>.+?)\s+(?:was|were)\s+(?P<direction>higher|greater|lower|less|similar)\s+(?P<object>.+)",
+        s,re.I)
+    if m:
+        d=m.group("direction").lower()
+        pred="COMPARE_SIMILAR" if d=="similar" else ("COMPARE_HIGHER" if d in {"higher","greater"} else "COMPARE_LOWER")
+        return [mk_assertion(start_idx,m.group("subject"),pred,m.group("object"),sentence,
+                             criticality="CRITICAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Common explicit result/reporting verbs. Preserve surface subject/object and stay conservative.
+    generic=[
+        (r"reported","REPORT"),(r"observed","REPORT"),(r"showed","SHOW"),(r"demonstrated","SHOW"),
+        (r"indicated","SHOW"),(r"experienced","EXPERIENCE"),(r"remained","REMAIN"),
+        (r"differed","DIFFER"),(r"correlated\s+with","CORRELATE_WITH"),(r"resulted\s+in","RESULT_IN"),
+        (r"achieved","ACHIEVE"),(r"continued","CONTINUE"),
+    ]
+    for pat,norm in generic:
+        m=re.fullmatch(rf"(?P<subject>.+?)\s+{pat}\s+(?P<object>.+)",s,re.I)
+        if m:
+            crit="CRITICAL" if (rct_quantities(sentence) or re.search(r"\b(?:outcome|endpoint|response|recurrence|survival|mortality|pain|quality of life|adverse|toxicity)\b",l)) else "MATERIAL"
+            return [mk_assertion(start_idx,m.group("subject"),norm,m.group("object"),sentence,
+                                 criticality=crit,modality=rct_modality(sentence),
+                                 bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    return None
+
+
 def parse_explicit_scientific_predicate(sentence:str, idx:int):
     s=sentence.rstrip(".").strip()
 
@@ -467,6 +692,7 @@ def relation_aware_extract(text:str, case_id:str)->dict:
             lambda s,i: parse_scope_evaluation(s,i),
             lambda s,i: parse_noncausal(s,i),
             lambda s,i: parse_density_relation(s,i),
+            lambda s,i: parse_rct_surface(s,i),
             lambda s,i: parse_reduce(s,i),
             lambda s,i: parse_distinct_mechanism(s,i),
             lambda s,i: parse_measured_as(s,i),
