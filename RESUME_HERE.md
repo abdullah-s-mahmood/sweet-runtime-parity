@@ -8799,3 +8799,146 @@ Still forbidden:
 
 Stop until user says:
 `أكمل`
+
+
+## 2026-10-05 — Strategic landscape review incorporated; FactPICO blocked before prediction by scalability preflight
+
+Higher-model review decision:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/STRATEGIC_LANDSCAPE_HIGHER_MODEL_REVIEW_DECISION_V1.md`
+
+Commit:
+`a1a9975797a6e3879ed8174c82e4ffbacd4dea7e`
+
+Final verdict:
+`B. PROCEED WITH MAJOR STRATEGIC MODIFICATIONS`
+
+Permanent strategy:
+`CONSTRUCT-MODULAR EXTERNAL VALIDATION`
+
+Important accepted reviewer points:
+- candidate support != required-information preservation
+- isolated capability pass != end-to-end revision safety
+- expert gold is construct-specific
+- architecture specifications require implementation/generalization evidence
+- novelty cannot be mere integration of familiar components
+
+H1 split:
+- H1-A support/factuality
+- H1-B required-information preservation
+- H1-C revision usefulness
+
+FactPICO remains only:
+`HARD SUBGATE FOR SOURCE-BOUNDED CRITICAL RCT/PICO FIDELITY`
+
+Capability/claim map:
+`ACAD_PASS_CAPABILITY_CLAIM_MAP_V1.md`
+commit:
+`bba139f93af7b5b0be95ce6de1dde593cf77ffc6`
+
+Future resource map:
+- InfoLossQA -> omission/information loss
+- ParaReval/ParaRev -> revision usefulness
+- SciFact/SciVer -> claim support
+- QASemConsistency + NLI4CT -> local relations / clinical numeric-comparison reasoning
+- citation integrity remains separate
+- META remains independent
+
+FactPICO Added Information decision:
+`FACTPICO_ADDED_INFORMATION_COMPLETENESS_DECISION_V1.md`
+commit:
+`99372a2e67594f17eaf67ddf5b2a00a84ea9c189`
+
+Decision:
+`PASS_WITH_NARROW_CLAIM`
+
+Only allowed negative-event interpretation:
+`NO_HIGHLIGHTED_ADDED_INFORMATION_SPAN_IN_THE_RELEASE`
+
+Readiness supersession:
+`PRE_GATE_C_READINESS_SUPERSESSION_INDEX_V1.md`
+commit:
+`8ef29c7c00d46ade02f6b1c358bba9a58d879532`
+
+FactPICO pre-prediction integrity gate:
+`FACTPICO_H1_PRE_PREDICTION_INTEGRITY_GATE_V1.md`
+commit:
+`160a823c4712815c364a30b9bcce42c4c9d03d93`
+
+Readiness update:
+`e4e2feb4d82cf10a0e584a66d93d7e9eaa9c962a`
+
+Master continuity update:
+`2c940d0ec2aec322e9ad7c306e9c997683374fac`
+
+Integrity PASS:
+- FactPICO role/claim frozen
+- Added Information interpretation frozen
+- readiness authority unified
+- artifact hashes
+- input/gold isolation
+- no gold leakage
+- deterministic adapter
+- runtime identity unchanged
+
+Canonical frozen pipeline:
+run `37150864483`
+trigger commit `c0193aa3f578cc32b454a031ead73ff7e56c8918`
+artifact SHA-256 `74f765f614b616da2eb101c30d669de0c0931b304a377944be2a4039fe5a844c`
+
+Git compare to gate-time HEAD:
+`0 changes to frozen runtime components`
+
+NEW BLOCKER:
+`FACTORIAL ALIGNER SCALABILITY`
+
+Frozen B1.1 aligner:
+`best_one_to_one`
+enumerates:
+`itertools.permutations(candidate, len(source))`
+
+Unequal >1 assertion counts also use:
+`n=min(source,candidate)`
+followed by permutation search.
+
+Complexity:
+- n=6: 720
+- n=8: 40,320
+- n=10: 3,628,800
+- n=12: 479,001,600
+- n=15: 1,307,674,368,000
+- n=20: 2,432,902,008,176,640,000
+
+B2 was a small mechanics/development set.
+Full-document scalability was NOT previously measured.
+
+Therefore:
+`NOT_READY_FOR_FACTPICO_PREDICTION`
+
+Classification:
+`IMPLEMENTATION SCALABILITY / EXECUTION VALIDITY BLOCKER`
+
+Not a FactPICO result.
+Not a semantic failure.
+No benchmark record has been predicted.
+
+Do NOT silently replace matcher under V2.4 identity.
+
+Exact next checkpoint:
+`V2.4 SYNTHETIC SCALABILITY PREFLIGHT + EXECUTION-POLICY DECISION`
+
+Allowed:
+- synthetic/non-FactPICO stress tests
+- static complexity audit
+- execution wrapper/failure policy design
+- decide frozen V2.4 timeout/INVALID vs version bump
+
+Forbidden:
+- FactPICO prediction
+- H1 scoring
+- frozen runtime modification without version bump
+- threshold tuning
+- custom Gate C opening
+- Arabic work
+
+Stop until user says:
+`أكمل`
