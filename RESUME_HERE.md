@@ -9338,3 +9338,50 @@ Current stop:
 `FINAL EXECUTION AUTHORIZATION REVIEW`
 
 Do not run FactPICO until independent authorization is returned.
+
+
+## 2026-10-05 — Final V2.5 FactPICO execution authorization received
+
+Independent higher-model verdict:
+`A. AUTHORIZE_ONE_PROSPECTIVE_FACTPICO_PREDICTION_RUN`
+
+Decision record:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/V2_5_FINAL_EXECUTION_AUTHORIZATION_DECISION_V1.md`
+
+Decision commit:
+`af6c877295684c2028fe5e72948723c2f31d899c`
+
+Confirmed:
+- priority-conflict fixture CLOSED
+- durable attempt ledger CLOSED
+- no concrete unresolved execution defect
+
+Maximum authorization:
+`ONE PROSPECTIVE AT0-EN V2.5 FACTPICO PREDICTION RUN + IMMUTABLE PREDICTION ARTIFACT FREEZE ONLY`
+
+Execution checkout:
+`659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee`
+
+Authorization ID:
+`FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001`
+
+Input SHA:
+`ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82`
+
+Current attempt:
+`UNCONSUMED`
+
+Current FactPICO state:
+- prediction NOT_RUN
+- gold join NOT_RUN
+- scoring NOT_RUN
+- profiling NOT_RUN
+
+Important execution safety:
+do NOT create the real remote claim until the exact frozen private prediction-input bytes are available and their SHA/count/order are verified. Claim creation consumes the attempt even if inference never starts.
+
+Current exact next checkpoint:
+`AUTHORIZED ONE-SHOT EXECUTION PREFLIGHT`
+
+Still forbidden:
+gold join, scoring, rerun, adaptive retry, runtime/matcher modification, threshold/gold changes, pre-run FactPICO profiling, redesign, custom Gate C, Arabic work.
