@@ -23,7 +23,7 @@ from transformers import (
 )
 
 SEED = 20261005
-LABELS = ["O", "B-P", "I-P", "B-I", "I-I", "B-O", "I-O"]
+LABELS = ["O", "B-P", "I-P", "B-I", "I-I", "B-C", "I-C", "B-O", "I-O"]
 LABEL2ID = {x:i for i,x in enumerate(LABELS)}
 ID2LABEL = {i:x for x,i in LABEL2ID.items()}
 THRESHOLDS = [0.80, 0.85, 0.90, 0.95]
@@ -122,7 +122,7 @@ def raw_metrics_from_logits(logits, labels):
     gold,pred,_=word_sequences(logits,labels)
     rep=classification_report(gold,pred,output_dict=True,zero_division=0)
     per={}
-    for cls in ["P","I","O"]:
+    for cls in ["P","I","C","O"]:
         d=rep.get(cls,{})
         per[cls]={
             "precision":float(d.get("precision",0.0)),
@@ -175,7 +175,7 @@ def entities(tags, confidences=None):
     return out
 
 def calibration_metrics(gold_tags,pred_tags,pred_conf,threshold):
-    counts={c:{"tp":0,"fp":0,"fn":0,"accepted":0,"gold":0} for c in ["P","I","O"]}
+    counts={c:{"tp":0,"fp":0,"fn":0,"accepted":0,"gold":0} for c in ["P","I","C","O"]}
     for gt,pt,cf in zip(gold_tags,pred_tags,pred_conf):
         gold={(c,s,e) for c,s,e,_ in entities(gt)}
         pred={(c,s,e):conf for c,s,e,conf in entities(pt,cf) if conf>=threshold}
@@ -238,12 +238,12 @@ def main():
         output_dir=str(work),
         seed=SEED,
         data_seed=SEED,
-        learning_rate=2e-5,
+        learning_rate=5e-5,
         weight_decay=0.01,
         warmup_ratio=0.10,
         per_device_train_batch_size=8,
         per_device_eval_batch_size=16,
-        gradient_accumulation_steps=2,
+        gradient_accumulation_steps=1,
         num_train_epochs=10,
         evaluation_strategy="epoch",
         save_strategy="epoch",
@@ -294,12 +294,12 @@ def main():
         "dev_sentences":len(dev_s),
         "training":{
             "max_epochs":10,
-            "learning_rate":2e-5,
+            "learning_rate":5e-5,
             "weight_decay":0.01,
             "warmup_ratio":0.10,
             "train_batch_size":8,
             "eval_batch_size":16,
-            "gradient_accumulation":2,
+            "gradient_accumulation":1,
             "early_stopping_patience":2,
             "best_model_checkpoint":trainer.state.best_model_checkpoint,
             "best_metric":trainer.state.best_metric,
