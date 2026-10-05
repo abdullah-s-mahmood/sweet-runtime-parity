@@ -4,7 +4,7 @@ on:
   push:
     branches: [at0-en-v2.6-dev]
     paths:
-      - 'phase2/academic_transform/at0_en/v2_6/R4_2_TRAIN_TRIGGER_V3.txt'
+      - 'phase2/academic_transform/R4_2_SAFE_FULL_TRAIN_TRIGGER_V4.txt'
 
 permissions:
   contents: read
