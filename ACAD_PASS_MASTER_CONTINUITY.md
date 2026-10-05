@@ -3795,3 +3795,9 @@ STOP:
 - no scoring rerun
 - no threshold/gold/population changes
 - no adaptive repair before independent interpretation
+
+
+Rerun-prevention closure:
+- one-shot scoring workflow removed after successful immutable freeze
+- removal commit: `1fa410c417f4e718f7213fe431ad04534ae90940`
+- purpose: prevent accidental second gold/scoring execution
