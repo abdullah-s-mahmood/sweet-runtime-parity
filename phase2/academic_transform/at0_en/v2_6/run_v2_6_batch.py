@@ -14,10 +14,10 @@ from typing import Iterable
 HERE = pathlib.Path(__file__).resolve().parent
 AT0 = HERE.parent
 V24 = AT0 / "v2_4"
-V25 = AT0 / "v2_6"
+V26 = AT0 / "v2_6"
 
 EXTRACTOR_PATH = V26 / "gate_b2" / "relation_aware_extractor.py"
-ALIGNER_PATH = V25 / "gate_b1" / "b1_aligner.py"
+ALIGNER_PATH = V26 / "gate_b1" / "b1_aligner.py"
 
 RUNTIME_ID = "AT0-EN V2.6-DEV"
 DEFAULT_RECORD_TIMEOUT_SECONDS = 60.0
@@ -67,8 +67,8 @@ def process_record(record: dict, max_assertions_per_side: int) -> dict:
     if reason:
         return invalid(rid, reason)
 
-    ra = loadmod("v25_runtime_extractor", EXTRACTOR_PATH)
-    b1 = loadmod("v25_runtime_aligner", ALIGNER_PATH)
+    ra = loadmod("v26_runtime_extractor", EXTRACTOR_PATH)
+    b1 = loadmod("v26_runtime_aligner", ALIGNER_PATH)
 
     source_graph = ra.relation_aware_extract(record["source_text"], f"{rid}-SRC")
     candidate_graph = ra.relation_aware_extract(record["candidate_text"], f"{rid}-CAND")
@@ -131,10 +131,10 @@ def run_child_command(command: list[str], stdin_text: str, timeout_seconds: floa
 
 
 def _synthetic_test_fault(record_id: str) -> str | None:
-    raw = os.environ.get("ACAD_PASS_V25_SYNTHETIC_FAULT_MAP")
+    raw = os.environ.get("ACAD_PASS_V26_SYNTHETIC_FAULT_MAP")
     if not raw:
         return None
-    if os.environ.get("ACAD_PASS_V25_SYNTHETIC_TEST_MODE") != "1":
+    if os.environ.get("ACAD_PASS_V26_SYNTHETIC_TEST_MODE") != "1":
         raise RuntimeError("Synthetic fault map present without synthetic test mode.")
     if not record_id.startswith("SYN-"):
         raise RuntimeError("Synthetic fault injection is restricted to SYN-* record IDs.")
