@@ -1,0 +1,71 @@
+name: AT0 EN V2.6 DEV representation mechanics
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - 'phase2/academic_transform/at0_en/v2_6/**'
+      - '.github/workflows/at0_en_v2_6_dev_representation.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: at0-en-v2-6-dev-representation
+  cancel-in-progress: false
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout V2.6 dev branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: at0-en-v2.6-dev
+          fetch-depth: 1
+
+      - name: Static compile
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            phase2/academic_transform/at0_en/v2_6/gate_a/source_anchor_extractor.py \
+            phase2/academic_transform/at0_en/v2_6/gate_a/source_assertion_extractor.py \
+            phase2/academic_transform/at0_en/v2_6/gate_b2/relation_aware_extractor.py \
+            phase2/academic_transform/at0_en/v2_6/gate_b1/b1_aligner.py \
+            phase2/academic_transform/at0_en/v2_6/run_v2_6_batch.py \
+            phase2/academic_transform/at0_en/v2_6/tests/check_v2_6_representation_dev.py
+
+      - name: Run deterministic suite first fresh process
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/v26"
+          python phase2/academic_transform/at0_en/v2_6/tests/check_v2_6_representation_dev.py \
+            > "$RUNNER_TEMP/v26/RUN1.json"
+
+      - name: Run deterministic suite second fresh process
+        shell: bash
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_6/tests/check_v2_6_representation_dev.py \
+            > "$RUNNER_TEMP/v26/RUN2.json"
+          cmp "$RUNNER_TEMP/v26/RUN1.json" "$RUNNER_TEMP/v26/RUN2.json"
+          sha256sum "$RUNNER_TEMP/v26/RUN1.json" > "$RUNNER_TEMP/v26/RUN1_SHA256.txt"
+          sha256sum \
+            phase2/academic_transform/at0_en/v2_6/gate_a/source_assertion_extractor.py \
+            phase2/academic_transform/at0_en/v2_6/gate_b2/relation_aware_extractor.py \
+            phase2/academic_transform/at0_en/v2_6/gate_b1/b1_aligner.py \
+            phase2/academic_transform/at0_en/v2_6/run_v2_6_batch.py \
+            phase2/academic_transform/at0_en/v2_6/tests/check_v2_6_representation_dev.py \
+            > "$RUNNER_TEMP/v26/CODE_SHA256.txt"
+
+      - name: Upload dev evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: at0-en-v2-6-dev-representation-mechanics
+          path: ${{ runner.temp }}/v26
+          if-no-files-found: warn
+          retention-days: 90
