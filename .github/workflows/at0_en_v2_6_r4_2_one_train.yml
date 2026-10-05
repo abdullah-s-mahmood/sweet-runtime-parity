@@ -4,7 +4,7 @@ on:
   push:
     branches: [at0-en-v2.6-dev]
     paths:
-      - 'phase2/academic_transform/at0_en/v2_6/R4_2_TRAIN_TRIGGER_V1.txt'
+      - 'phase2/academic_transform/at0_en/v2_6/R4_2_TRAIN_TRIGGER_V2.txt'
 
 permissions:
   contents: read
@@ -47,7 +47,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/r42/model" "$RUNNER_TEMP/r42/data" "$RUNNER_TEMP/r42/out"
+          mkdir -p "$RUNNER_TEMP/r42/model" "$RUNNER_TEMP/r42/data"
           python - <<'PY'
           import hashlib, os, pathlib, urllib.request
           from huggingface_hub import snapshot_download
