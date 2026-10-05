@@ -64,11 +64,13 @@ def _period_is_boundary(text:str,i:int)->bool:
     while j>=0 and text[j].isalpha():
         j-=1
     token=text[j+1:i]
-    if len(token)==1 and token.isalpha():
-        return False
     k=i+1
     while k<len(text) and text[k] in " \t":
         k+=1
+    # Protect personal-name initials such as "A. Smith", but do not
+    # suppress boundaries after one-letter scientific units such as "s.".
+    if len(token)==1 and token.isupper() and k<len(text) and text[k].isupper():
+        return False
     if k<len(text) and text[k].islower():
         return False
     return True
