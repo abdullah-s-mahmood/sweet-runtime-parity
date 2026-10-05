@@ -9494,3 +9494,30 @@ Current exact checkpoint:
 `FACTPICO PREDICTION FROZEN / STOP BEFORE GOLD JOIN`
 
 Next requires separate explicit authorization for gold join/scoring.
+
+
+## 2026-10-05 — UI-resilient execution rule added
+
+User explicitly requested minimizing recurrence of:
+`Our systems are thinking a bit more about this request before responding.`
+
+Permanent operational rule:
+- sequential tools only;
+- minimize calls when safely possible;
+- batch related read-only checks;
+- avoid unnecessary polling;
+- short checkpoint messages only;
+- UI interruption is NOT scientific failure;
+- resume from last verified durable state;
+- do not repeat completed work after UI interruption;
+- never weaken one-shot integrity or auditability merely to reduce calls.
+
+Current state remains:
+- authorization GRANTED
+- real FactPICO attempt UNCONSUMED
+- prediction NOT_RUN
+- gold join NOT_RUN
+- scoring NOT_RUN
+
+Next:
+`VERIFY REAL CLAIM ABSENT -> ATOMIC REMOTE CLAIM -> ONE AUTHORIZED PREDICTION RUN -> FREEZE -> STOP BEFORE GOLD JOIN`
