@@ -374,20 +374,43 @@ def rct_modality(sentence:str):
 
 def rct_population_from_text(text:str):
     s=text.strip(" ,.;")
-    m=re.match(
-        rf"^(?P<count>(?:\d[\d,]*|[A-Za-z-]+(?:\s+[A-Za-z-]+){{0,4}}))\s+(?P<noun>{RCT_PEOPLE})\b(?P<rest>.*)$",
-        s,re.I)
-    if not m:
+    # Isolate the explicit population phrase before enrollment/assignment when present.
+    head=re.split(
+        r"\s+(?:were|was)\s+(?:enrolled|included|recruited|randomized|randomised|assigned|allocated)\b",
+        s,maxsplit=1,flags=re.I
+    )[0].strip()
+    tokens=head.split()
+    if len(tokens)<2:
         return None
-    count=parse_english_count(m.group("count"))
-    if count is None:
+
+    # Locate a human-population noun, allowing generic modifiers such as
+    # "healthy volunteers", "postmenopausal women", or "older patients".
+    person_idx=None
+    person_re=re.compile(rf"^(?:{RCT_PEOPLE})$",re.I)
+    for idx,tok in enumerate(tokens):
+        if person_re.fullmatch(tok.strip(" ,;:()")):
+            person_idx=idx
+            break
+    if person_idx is None:
         return None
-    noun=m.group("noun").lower()
-    rest=m.group("rest").strip()
-    # Remove explicit enrollment/assignment tail from the population descriptor.
-    rest=re.sub(r"\s+(?:were|was)\s+(?:enrolled|included|recruited|randomized|assigned|allocated)\b.*$","",rest,flags=re.I).strip()
-    subject=(noun+(" "+rest if rest else "")).strip()
-    return subject,count
+
+    # Use the longest parseable numeric/number-word prefix before the
+    # population descriptor. This handles "one hundred healthy volunteers"
+    # and "three hundred thirty-five women" without guessing semantics.
+    count=None
+    split_idx=None
+    for k in range(person_idx,0,-1):
+        candidate=" ".join(tokens[:k])
+        parsed=parse_english_count(candidate)
+        if parsed is not None:
+            count=parsed
+            split_idx=k
+            break
+    if count is None or split_idx is None:
+        return None
+
+    subject=" ".join(tokens[split_idx:]).strip()
+    return subject.lower(),count
 
 def parse_rct_surface(sentence:str,start_idx:int):
     s=sentence.rstrip(".").strip()
@@ -501,11 +524,11 @@ def parse_rct_surface(sentence:str,start_idx:int):
 
     # Directional effect statements, including explicit modality.
     m=re.fullmatch(
-        r"(?P<subject>.+?)\s+(?:(?P<modal>may|can|could)\s+)?(?P<verb>reduced|reduce|decreased|decrease|lowered|lower|increased|increase|improved|improve)\s+(?P<object>.+)",
+        r"(?P<subject>.+?)\s+(?:(?P<modal>may|can|could)\s+)?(?P<verb>reduced|reduces|reduce|decreased|decreases|decrease|lowered|lowers|lower|increased|increases|increase|improved|improves|improve)\s+(?P<object>.+)",
         s,re.I)
     if m:
         v=m.group("verb").lower()
-        pred="REDUCE" if v in {"reduced","reduce","decreased","decrease","lowered","lower"} else "INCREASE"
+        pred="REDUCE" if v in {"reduced","reduces","reduce","decreased","decreases","decrease","lowered","lowers","lower"} else "INCREASE"
         mod={"may":"MAY","can":"CAN","could":"COULD"}.get((m.group("modal") or "").lower(),"ASSERTED")
         return [mk_assertion(start_idx,m.group("subject"),pred,m.group("object"),sentence,
                              criticality="CRITICAL",modality=mod,
