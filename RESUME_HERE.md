@@ -9385,3 +9385,44 @@ Current exact next checkpoint:
 
 Still forbidden:
 gold join, scoring, rerun, adaptive retry, runtime/matcher modification, threshold/gold changes, pre-run FactPICO profiling, redesign, custom Gate C, Arabic work.
+
+
+## 2026-10-05 — Authorized FactPICO preflight complete
+
+Successful GitHub Actions preflight:
+- run `37317413838`
+- head `fa1ffb4f37e44dec04d29061ba95c5091ee3a46a`
+- artifact `11348064811`
+- digest `sha256:c3786ba8c6516d959e0f22f075e289868b9765b7aa72c49fe5607a547b4e69e4`
+
+Verified on immutable checkout `659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee`:
+- matcher hash PASS
+- batch runner hash PASS
+- one-shot guard hash PASS
+- public FactPICO ZIP hash PASS
+- 345 input rebuild PASS
+- frozen input SHA PASS
+- gold SHA PASS
+- eligibility SHA PASS
+- unique IDs/order/schema PASS
+- no claim created
+- no inference started
+
+New preserved provenance finding:
+- documented adapter SHA `ab128309...` does not match committed bytes;
+- actual committed adapter SHA is `3b0698772630a17d6d05fdf7197f5faa79b22212332ae785b069318bda4cd5b0`;
+- Git compare from `c36aef...` to `659b61...` shows the adapter file was not modified;
+- classification: historical documented-hash mismatch, not post-freeze mutation.
+
+Reconciliation:
+`FACTPICO_ADAPTER_COMMITTED_IDENTITY_RECONCILIATION_V1.md`
+commit `c22f027fb879a8092fa129f45c238d07f9a25ffd`.
+
+Real attempt:
+`UNCONSUMED`
+
+Prediction/gold join/scoring:
+`NOT_RUN`
+
+Next:
+`VERIFY REAL CLAIM ABSENT -> CREATE ATOMIC REMOTE CLAIM -> ONE AUTHORIZED V2.5 PREDICTION -> FREEZE -> STOP BEFORE GOLD JOIN`
