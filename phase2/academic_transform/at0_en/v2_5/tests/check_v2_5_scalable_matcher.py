@@ -459,15 +459,24 @@ pc_candidate = [
     simple_assertion("PCC0", "group B", "metric x"),
     simple_assertion("PCC1", "group A", "metric y"),
 ]
+# Deliberately make the semantically matching alternative stronger at the
+# lowest priority while owner compatibility must still win lexicographically.
+pc_source[1]["predicate"] = "REDUCE"
+pc_candidate[1]["predicate"] = "REDUCE"
 (pc_best, pc_path), _ = exact_oracle(pc_source, pc_candidate)
+pc_alt = exact_objective_for_perm(pc_source, pc_candidate, (0, 1))
 assert pc_path == (1, 0)
 assert pc_best[0] == 0
-assert exact_objective_for_perm(pc_source, pc_candidate, (0, 1))[0] == -2
+assert pc_alt[0] == -2
+assert pc_best[1] > pc_alt[1]
+assert pc_best[2] < pc_alt[2]
 assert candidate_index_tuple(new.best_one_to_one(pc_source, pc_candidate), pc_candidate) == pc_path
 characterized_objective_cases.append({
     "name": "priority_conflict",
     "selected_path": pc_path,
     "objective": serial_objective(pc_best),
+    "alternative_objective": serial_objective(pc_alt),
+    "semantic_tradeoff_verified": True,
 })
 
 pt_source = [
