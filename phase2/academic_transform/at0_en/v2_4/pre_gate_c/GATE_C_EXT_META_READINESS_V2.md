@@ -936,3 +936,100 @@ Exact next checkpoint:
 `H1 FACTPICO PRE-PREDICTION INTEGRITY GATE`
 
 V2.4 prediction remains unauthorized.
+
+
+## 26. Strategic landscape review reconciliation + pre-prediction integrity gate
+
+Higher-model strategic review decision:
+`STRATEGIC_LANDSCAPE_HIGHER_MODEL_REVIEW_DECISION_V1.md`
+
+Commit:
+`a1a9975797a6e3879ed8174c82e4ffbacd4dea7e`
+
+Final strategic verdict:
+`B. PROCEED WITH MAJOR STRATEGIC MODIFICATIONS`
+
+Current authoritative capability/claim map:
+`ACAD_PASS_CAPABILITY_CLAIM_MAP_V1.md`
+
+Commit:
+`bba139f93af7b5b0be95ce6de1dde593cf77ffc6`
+
+FactPICO Added Information completeness decision:
+`FACTPICO_ADDED_INFORMATION_COMPLETENESS_DECISION_V1.md`
+
+Commit:
+`99372a2e67594f17eaf67ddf5b2a00a84ea9c189`
+
+Decision:
+`PASS_WITH_NARROW_CLAIM`
+
+Allowed statement:
+`NO_HIGHLIGHTED_ADDED_INFORMATION_SPAN_IN_THE_RELEASE`
+
+Not:
+no possible addition / full source entailment.
+
+Readiness supersession index:
+`PRE_GATE_C_READINESS_SUPERSESSION_INDEX_V1.md`
+
+Commit:
+`8ef29c7c00d46ade02f6b1c358bba9a58d879532`
+
+FactPICO pre-prediction integrity gate:
+`FACTPICO_H1_PRE_PREDICTION_INTEGRITY_GATE_V1.md`
+
+Commit:
+`160a823c4712815c364a30b9bcce42c4c9d03d93`
+
+Integrity checks PASS:
+- claim boundary frozen;
+- Added Information interpretation closed;
+- readiness authority unified;
+- artifact hashes frozen;
+- no gold leakage;
+- adapter deterministic;
+- prediction/gold IDs exact match;
+- frozen runtime unchanged since canonical pipeline freeze.
+
+Runtime drift audit:
+GitHub compare from freeze trigger commit
+`c0193aa3f578cc32b454a031ead73ff7e56c8918`
+to gate-time HEAD found:
+`0 changes`
+to the seven frozen runtime components.
+
+NEW BLOCKER:
+`FACTORIAL ALIGNER SCALABILITY`
+
+Frozen B1.1 aligner enumerates permutations for one-to-one assertion assignment.
+
+Worst-case enumeration in
+`n = min(source_assertions,candidate_assertions)`:
+
+- n=10 -> 3,628,800
+- n=12 -> 479,001,600
+- n=15 -> 1,307,674,368,000
+
+The B2 implementation itself describes the unequal-count fallback as appropriate for a small mechanics set.
+
+FactPICO uses full abstracts/full summaries.
+
+Therefore:
+`NOT_READY_FOR_FACTPICO_PREDICTION`
+
+Reason:
+`BLOCKED_BY_SCALABILITY_PREFLIGHT`
+
+Do NOT conflate this execution-validity blocker with FactPICO scientific performance.
+
+Exact next checkpoint:
+`V2.4 SYNTHETIC SCALABILITY PREFLIGHT + EXECUTION-POLICY DECISION`
+
+Still forbidden:
+- FactPICO V2.4 prediction;
+- H1 scoring;
+- frozen runtime modification without version bump;
+- threshold tuning;
+- custom Gate C opening;
+- Arabic work.
