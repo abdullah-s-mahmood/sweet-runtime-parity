@@ -1,0 +1,321 @@
+ACAD_PASS — FINAL V2.5 PRE-PREDICTION RE-REVIEW
+
+ROLE
+Act only as an independent final methodology/runtime reviewer.
+
+DO NOT:
+- write code;
+- modify repository;
+- run or profile FactPICO;
+- join gold;
+- score;
+- redesign H1/H2/H3/H4;
+- reopen broad landscape research;
+- tune scientific thresholds.
+
+GOAL
+Decide whether the bounded essential changes requested in the previous V2.5 pre-prediction review are now closed sufficiently to authorize, in a later separate step, exactly ONE prospective FactPICO prediction run plus immutable prediction-artifact freeze.
+
+REPOSITORY
+abdullah-s-mahmood/sweet-runtime-parity
+
+BRANCH
+phase2-arabic-eval
+
+READ IN ORDER
+
+1. phase2/academic_transform/at0_en/v2_5/V2_5_ESSENTIAL_PRE_EXECUTION_CLOSURE_V1.md
+2. phase2/academic_transform/at0_en/v2_5/AT0_EN_V2_5_RUNTIME_FREEZE_V2.md
+3. phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V5_EXECUTION_IDENTITY_AMENDMENT_V2.md
+4. phase2/academic_transform/at0_en/v2_5/V2_5_ONE_SHOT_EXECUTION_CONTROL_SPEC_V1.md
+
+If code verification is necessary:
+5. phase2/academic_transform/at0_en/v2_5/run_v2_5_batch.py
+6. phase2/academic_transform/at0_en/v2_5/run_v2_5_one_shot_guard.py
+7. phase2/academic_transform/at0_en/v2_5/tests/check_v2_5_scalable_matcher.py
+8. phase2/academic_transform/at0_en/v2_5/gate_b1/b1_aligner.py
+
+PREVIOUS REVIEW
+Verdict:
+B. READY_WITH_ESSENTIAL_PRE_EXECUTION_CHANGES
+
+Required closure:
+- characterized near-ties / partial ties / priority conflicts with exact objective checks;
+- fresh-process reproducibility;
+- mixed-batch end-to-end timeout/crash INVALID accounting;
+- 128 full-tie + near-envelope unequal-count scalability;
+- one-shot attempt guard + prediction overwrite prevention.
+
+FINAL EXECUTION EVIDENCE
+
+Run:
+37289569561
+
+Head:
+29e3abe5ccb708cb88d94ae00630eaa0fdc2b123
+
+Conclusion:
+SUCCESS
+
+Artifact:
+11335647986
+
+Artifact ZIP SHA-256:
+61d82aa30de89e84aa5bc0433bdfa528259269c0b3630648df5c0d4c95573b63
+
+Regression report SHA-256:
+e0ccf3dd45a7e20f9df7b4086779b2d2846d539c67564ecee2e6a8720b419c87
+
+FROZEN IMPLEMENTATION HASHES
+
+Matcher:
+ac36409cd32c9a759a3e962ee6a86aa30d0a52299f2a19ccc8206d7b54e248ea
+
+Batch runner:
+7a3383e6108272b641e8f4bcda553a5d97aad7a873616341c3493d425fec6def
+
+One-shot guard:
+3d19fab7be1d1ebee647552bec309be3249e144a86abe1b4d19205f7636e1656
+
+One-shot control spec:
+89dbc7d84df8b1e7e8df5237bc5a0ef7655ea71fd25fe6389c8fc1e18fdd78ab
+
+Regression test:
+e2ddd2c283bef5bb15828d195acd93ef04ba0a7b91c8b420d75f0ef58a113169
+
+MATCHER / SCIENTIFIC REGRESSION
+
+Matcher code:
+UNCHANGED from prior V2.5 freeze.
+
+B1:
+12/12 exact behavior retained.
+
+B2 exact output differences:
+0.
+
+EE:
+12/12 correct;
+5/5 safe PASS;
+0/6 unsafe PASS;
+1/1 REVIEW preserved.
+
+No new unsafe PASS.
+No lost safe-control acceptance.
+No observed uncertainty regression.
+
+OBJECTIVE / NUMERIC CLOSURE
+
+205 brute-force feasible cases now explicitly check:
+- selected mapping;
+- exact objective optimum.
+
+Observed legacy-float vs exact-rational selected-mapping differences:
+0.
+
+Additional characterized cases:
+- priority conflict: PASS
+- partial tie: PASS
+- semantic near-tie: PASS
+- exact full tie / earliest tuple: PASS
+
+Near-tie semantic gap:
+5/51.
+
+FRESH-PROCESS REPRODUCIBILITY
+
+Two fresh processes:
+complete outputs byte-identical = PASS.
+
+MIXED-BATCH FAILURE ACCOUNTING
+
+Actual batch path with isolated SYN-* test-only accounting mechanism:
+- exact ID order = PASS
+- exactly one output per ID = PASS
+- synthetic timeout -> exactly one INVALID / RECORD_TIMEOUT = PASS
+- synthetic crash -> exactly one INVALID / CHILD_PROCESS_CRASH = PASS
+- unaffected records survive = PASS
+
+The synthetic test mechanism is inert unless explicit synthetic-test environment variables are enabled and rejects non-SYN-* IDs.
+
+It is forbidden in FactPICO execution.
+
+ONE-SHOT CONTROLS
+
+Batch runner:
+refuses existing output path = PASS.
+
+One-shot guard:
+- claims attempt directory before inference;
+- writes ATTEMPT_CLAIM state CONSUMED_BEFORE_INFERENCE;
+- invokes runner once;
+- freezes prediction SHA-256;
+- refuses second invocation against same attempt directory.
+
+Synthetic guard regression:
+PASS.
+
+Important:
+real one-shot execution specification requires attempt-directory storage that survives parent cancellation/failure.
+
+An ephemeral-only workspace is explicitly forbidden.
+
+SCALABILITY / NEGATIVE EVIDENCE
+
+A new full-tie 128 test initially exposed instability of the former 10-second synthetic matcher acceptance criterion.
+
+Preserved failed run:
+37289060156
+
+Failure:
+128x128 full-tie exceeded the old 10-second synthetic assertion.
+
+This used no FactPICO.
+
+A later run passed the same case at ~5.33 s.
+
+The synthetic regression budget was therefore explicitly refrozen to:
+30 seconds.
+
+This does NOT change the production per-record timeout:
+60 seconds.
+
+Final successful run repeated 128x128 full tie three times:
+- 7.3144 s
+- 7.0391 s
+- 7.0154 s
+
+Max:
+7.3144 s.
+
+Near-envelope grouping:
+127x128 = 1.2717 s
+128x127 = 1.2707 s
+
+All PASS under 30-second synthetic criterion.
+
+This budget change was based solely on synthetic evidence before FactPICO profiling.
+
+MEMORY QUALIFICATION
+
+Memory numbers are tracemalloc-tracked Python allocations only.
+
+Do NOT interpret them as process RSS or an enforced OS memory cap.
+
+FACTPICO STATUS
+
+Prediction:
+NOT_RUN
+
+Scoring:
+NOT_RUN
+
+Assertion-count profiling:
+NOT_RUN
+
+Timing:
+NOT_RUN
+
+Gold join:
+NOT_RUN
+
+Frozen prediction input:
+345 records.
+
+Input SHA-256:
+ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82
+
+Gold SHA-256:
+6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48
+
+Eligibility SHA-256:
+d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255
+
+No V5 gold/eligibility/threshold/population change.
+
+QUESTIONS
+
+1. VERDICT
+Choose exactly one:
+
+A. READY_FOR_ONE_PROSPECTIVE_FACTPICO_PREDICTION_AUTHORIZATION
+B. READY_WITH_FINAL_EXECUTION_CONTROL_CHANGE
+C. NOT_READY
+
+2. PREVIOUS GAP CLOSURE
+For each previously required category, state CLOSED or NOT_CLOSED:
+- objective/numeric boundaries;
+- fresh-process reproducibility;
+- mixed-batch failure accounting;
+- max-tie/unequal scalability;
+- output replacement prevention;
+- one-shot attempt consumption.
+
+List only actual remaining gaps.
+
+3. SYNTHETIC 30-SECOND BUDGET
+Is replacing the unstable 10-second synthetic acceptance criterion with 30 seconds methodologically acceptable given:
+- it was changed only using synthetic evidence;
+- the final full-tie repeats were <=7.32 s;
+- the actual external per-record timeout remains frozen at 60 s;
+- no FactPICO profiling occurred?
+
+State whether this creates any scientific-selection problem.
+
+4. DURABLE ATTEMPT LEDGER
+Is the frozen requirement that the real attempt directory live on storage surviving parent cancellation/failure sufficient as an execution-control contract?
+
+Or must a specific durable mechanism/path/provider be frozen and mechanically tested BEFORE execution authorization?
+
+This is the most important remaining red-team question.
+
+5. SYNTHETIC FAULT MECHANISM
+Is the isolated SYN-* accounting-test mechanism acceptable given:
+- it is inert without explicit test environment variables;
+- it rejects non-SYN-* IDs;
+- those environment variables are forbidden in the real command?
+
+If not, state the exact necessary change.
+
+6. FACTPICO INTEGRITY
+Confirm whether FactPICO remains prospectively unpredicted and whether any V5 gold/eligibility/threshold amendment is now required.
+
+7. FINAL ONE-SHOT RULES
+If ready, freeze the exact later execution rules:
+- verify frozen input SHA;
+- exactly 345 unique IDs/order;
+- immutable checkout/runtime identity;
+- synthetic-test env absent;
+- one durable pre-inference attempt claim;
+- sequential execution;
+- zero retries;
+- 60s/record;
+- max128 assertions/side;
+- exactly one output per ID;
+- all INVALIDs visible;
+- no gold access;
+- no result-adaptive changes;
+- prediction artifact SHA frozen before gold;
+- no prediction replacement;
+- cancellation/crash consumes attempt.
+
+8. AUTHORIZATION BOUNDARY
+If A:
+authorize only:
+ONE PROSPECTIVE AT0-EN V2.5 FACTPICO PREDICTION RUN + IMMUTABLE PREDICTION ARTIFACT FREEZE.
+
+Gold join/scoring remains a separate later checkpoint.
+
+Still forbid:
+- scoring;
+- gold join;
+- reruns;
+- adaptive retry;
+- runtime/matcher changes;
+- threshold changes;
+- FactPICO profiling before run;
+- H1/H2/H3/H4 redesign;
+- custom Gate C;
+- Arabic work.
+
+Do not broaden this review.
