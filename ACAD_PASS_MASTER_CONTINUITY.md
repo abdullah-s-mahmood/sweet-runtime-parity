@@ -1115,46 +1115,42 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — V2.4 SYNTHETIC SCALABILITY PREFLIGHT + EXECUTION-POLICY DECISION`
+`PRE-GATE-C EXT/META — FOCUSED HIGHER-MODEL DECISION ON V2.4 SCALABILITY BLOCKER`
 
-Strategic landscape higher-model review is incorporated.
+Full higher-model landscape report and reviewer handoff have been reconciled.
 
-Final strategic verdict:
-`B. PROCEED WITH MAJOR STRATEGIC MODIFICATIONS`
+No additional user file is currently required.
+
+Synthetic scalability preflight on frozen B1.1 matcher:
+- n=6: 0.1767 s
+- n=7: 1.4159 s
+- n=8: 12.9480 s
+- no FactPICO records used.
+
+Preflight verdict:
+`FAIL_SCALABILITY`
+
+Known issue:
+factorial permutation enumeration in assertion assignment.
 
 FactPICO remains:
-`HARD SUBGATE FOR SOURCE-BOUNDED CRITICAL RCT/PICO FIDELITY`
+`UNTOUCHED / NOT PREDICTED`
 
-It is NOT complete H1.
+Focused review packet:
+`V2_4_SCALABILITY_HIGHER_MODEL_REVIEW_PACKET.txt`
 
-Completed before prediction:
-- modular capability/claim map;
-- Added Information narrow completeness decision;
-- readiness supersession index;
-- FactPICO pre-prediction integrity gate;
-- frozen runtime drift check.
+Decision needed:
+A. run canonical V2.4 with preregistered timeout/INVALID;
+B. version-bump scalable matcher before FactPICO;
+C. another explicit clean path.
 
-New blocker:
-`FACTORIAL ALIGNER SCALABILITY`
-
-Frozen B1.1 alignment uses permutation enumeration in the minimum source/candidate assertion count.
-
-Therefore FactPICO prediction remains:
-`NOT AUTHORIZED`
-
-Authorized next scope:
-1. synthetic/non-FactPICO scalability preflight only;
-2. quantify runtime growth without touching external benchmark records;
-3. decide between:
-   - frozen V2.4 + predeclared timeout/INVALID policy;
-   - version-bumped scalable matcher;
-4. freeze exact execution/failure policy;
-5. STOP before any FactPICO prediction.
+Implementation-agent recommendation:
+`PREFER B, SUBJECT TO INDEPENDENT REVIEW`
 
 Still not authorized:
-- FactPICO V2.4 prediction;
+- FactPICO prediction;
 - H1 scoring;
-- frozen runtime change under same V2.4 identity;
+- silent modification of frozen V2.4;
 - threshold tuning;
 - custom Gate C opening;
 - Arabic-track work.
@@ -2931,3 +2927,125 @@ No Arabic work.
 
 Exact next checkpoint:
 `V2.4 SYNTHETIC SCALABILITY PREFLIGHT + EXECUTION-POLICY DECISION`
+
+
+---
+
+# 47. FULL LANDSCAPE RECONCILIATION + V2.4 SYNTHETIC SCALABILITY PREFLIGHT
+
+Date: 2026-10-05
+
+User supplied:
+- `ACAD_PASS_LANDSCAPE_STRATEGIC_REVIEW_2026-10-04.md`
+- `ACAD_PASS_REVIEWER_HANDOFF.md`
+
+Conclusion:
+`NO ADDITIONAL FILE REQUIRED FOR CURRENT CHECKPOINT`
+
+Original historical reviewer attachments may be requested later only if a specific unresolved historical claim requires exact provenance.
+
+Full-report reconciliation:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FULL_STRATEGIC_LANDSCAPE_RECONCILIATION_V1.md`
+
+Commit:
+`b724f618eb8067e44edd7ac3ae823b52f292ae01`
+
+Important newly incorporated roadmap details:
+- validation hierarchy:
+  artifact/conformance -> construct-level capability -> complete editing transaction;
+- later task contract PRESERVE/SIMPLIFY/CORRECT;
+- original native document authority;
+- read-only context separated from obligations;
+- independent coverage ledger;
+- dependency-aware bounded repair;
+- scoped delivery certificate;
+- integration candidates Docling, GROBID, academic-refchecker, MiniCheck-family, W3C PROV/Web Annotation;
+- baseline/benchmark candidates InfoLossQA, FaReBio, ParaReval, XtraGPT, MrDre, EditPropBench, SciFact, SciVer, QASemConsistency, NLI4CT, SciCiteVal;
+- code/license/scorer caveats preserved.
+
+Explicit later failure-mode ledger expanded with:
+- shared extraction blindness
+- benchmark packaging leakage
+- multiplicity collapse
+- context laundering
+- evidence cherry-picking
+- stale verification
+- compensatory repair
+- hidden document layers
+- scientific-state confusion
+- authoritative-source drift
+
+No current FactPICO V5 rule changed.
+
+Synthetic scalability preflight:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/V2_4_SYNTHETIC_SCALABILITY_PREFLIGHT_V1.md`
+
+Commit:
+`03609245bab8d22e4c164708fd8ed2d9ded36803`
+
+Method:
+reproduced exact frozen best_one_to_one helper logic on synthetic assertion dictionaries only.
+
+Measured:
+- n3 0.00140s
+- n4 0.00410s
+- n5 0.02483s
+- n6 0.17669s
+- n7 1.41590s
+- n8 12.94802s
+
+Measured n8 throughput:
+~3114 permutations/sec.
+
+Optimistic n8-rate extrapolation:
+- n9 ~1.94m
+- n10 ~19.42m
+- n11 ~3.56h
+- n12 ~42.73h
+- n13 ~23.14d
+- n14 ~324.02d
+- n15 ~13.31y
+
+Measured throughput decreases with n, so these are optimistic.
+
+Mathematical diagnosis:
+frozen global objective is additive over source/candidate pair assignments with lexicographic priorities:
+1. hard-owner mismatches
+2. owner similarity
+3. semantic similarity
+
+Therefore factorial permutation enumeration is an implementation choice, not an intrinsic requirement of the matching problem.
+
+But replacing it changes frozen executable identity.
+
+Preflight verdict:
+`FAIL_SCALABILITY`
+
+FactPICO exposure:
+`NONE`
+
+No FactPICO assertion counts measured.
+No FactPICO source/candidate passed through V2.4.
+
+Focused independent review packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/V2_4_SCALABILITY_HIGHER_MODEL_REVIEW_PACKET.txt`
+
+Commit:
+`481c45c8a77f2446f9f2759c46c620c55054c1f2`
+
+Readiness update:
+`aa43910aa5d97528521cce253397404dcab827fe`
+
+Implementation-agent recommendation:
+`PREFER VERSION-BUMP SCALABLE MATCHER, SUBJECT TO INDEPENDENT REVIEW`
+
+Reason:
+a known execution defect should not be allowed to dominate a prospective external scientific measurement if it can be resolved cleanly before exposure.
+
+No FactPICO prediction.
+No scoring.
+No frozen-runtime modification.
+No Arabic work.
+
+Exact next checkpoint:
+`FOCUSED HIGHER-MODEL DECISION ON V2.4 SCALABILITY BLOCKER`
