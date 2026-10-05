@@ -9887,3 +9887,59 @@ Next exact checkpoint:
 Do not inspect holdout text to patch R4.1B.
 Do not rerun consumed holdout.
 Do not touch FactPICO.
+
+
+---
+
+# PROCESS PROGRESS OBSERVABILITY RULE
+
+Date: 2026-10-05
+
+Permanent user-project agreement:
+
+For every future execution process, experiment, workflow, training job, validation run, migration, build, or other long-running operation, the implementation SHOULD expose internal progress observability whenever technically feasible.
+
+Minimum required status fields:
+
+- `progress_percent`: estimated completion percentage from 0 to 100.
+- `state`: one of `PENDING / RUNNING / COMPLETED / FAILED / STALLED / CANCELLED`.
+- `current_stage`: human-readable current step/epoch/phase.
+- `completed_units` and `total_units` when meaningful.
+- `last_successful_checkpoint`: latest durable completed point.
+- `last_progress_at`: timestamp of latest meaningful progress.
+- `next_expected_step`: what should happen next.
+- `failure_or_stall_reason`: populated when FAILED or STALLED.
+
+For model training specifically, expose when feasible:
+- current epoch / maximum epochs;
+- current global step / estimated total steps;
+- latest training loss;
+- latest validation metric;
+- best metric/checkpoint so far;
+- elapsed time;
+- progress percentage;
+- heartbeat / last update timestamp.
+
+For batch processing:
+- processed records / total records;
+- success / failure / skipped counts;
+- current item or shard;
+- progress percentage.
+
+For GitHub Actions or remote workflows:
+- periodically persist a machine-readable status artifact such as `PROCESS_STATUS.json` and/or append heartbeat/progress information to logs;
+- do not rely only on the coarse GitHub job state when finer-grained progress can be exposed safely.
+
+Stall rule:
+If progress does not change for a predefined reasonable interval, mark the process `STALLED` rather than merely `RUNNING`, while preserving the last durable checkpoint.
+
+This observability requirement must NOT weaken:
+- scientific one-shot controls;
+- determinism;
+- frozen evidence;
+- benchmark integrity;
+- security;
+- reproducibility.
+
+Objective:
+`AT ANY MOMENT, WE SHOULD BE ABLE TO TELL HOW FAR THE PROCESS HAS PROGRESSED AND WHETHER IT IS STILL MAKING PROGRESS OR HAS STOPPED.`
