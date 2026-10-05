@@ -1115,47 +1115,48 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — H1 FACTPICO PRE-PREDICTION INTEGRITY GATE`
+`PRE-GATE-C EXT/META — V2.4 SYNTHETIC SCALABILITY PREFLIGHT + EXECUTION-POLICY DECISION`
 
-FactPICO H1 V5 adapter/input/gold implementation freeze is complete.
+Strategic landscape higher-model review is incorporated.
 
-Frozen implementation:
-- adapter SHA-256:
-  `ab128309261eeffdb734464f2a2fef52cef4ce37bdb3b9654317d6b5bba0b7e1`
-- prediction-input SHA-256:
-  `ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82`
-- separate-gold SHA-256:
-  `6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48`
-- eligibility-manifest SHA-256:
-  `d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255`
-- build-manifest SHA-256:
-  `67bfbd4302f66d2248009c8a6fe9cef658a6f202d278450b73e942c68cb6f16b`
+Final strategic verdict:
+`B. PROCEED WITH MAJOR STRATEGIC MODIFICATIONS`
 
-No V2.4 prediction has been run.
+FactPICO remains:
+`HARD SUBGATE FOR SOURCE-BOUNDED CRITICAL RCT/PICO FIDELITY`
+
+It is NOT complete H1.
+
+Completed before prediction:
+- modular capability/claim map;
+- Added Information narrow completeness decision;
+- readiness supersession index;
+- FactPICO pre-prediction integrity gate;
+- frozen runtime drift check.
+
+New blocker:
+`FACTORIAL ALIGNER SCALABILITY`
+
+Frozen B1.1 alignment uses permutation enumeration in the minimum source/candidate assertion count.
+
+Therefore FactPICO prediction remains:
+`NOT AUTHORIZED`
 
 Authorized next scope:
-1. verify repository adapter bytes/hash against frozen local adapter;
-2. verify frozen V2.4 runtime hash/version;
-3. verify source/input/gold/build hashes;
-4. freeze exact one-shot prediction command/config;
-5. prove inference path cannot access gold artifact;
-6. freeze retry/failure policy and output-ID contract;
-7. STOP before prediction unless execution is explicitly authorized.
-
-Fresh landscape strategy is now:
-`CONSTRUCT-MODULAR EXTERNAL VALIDATION`
-
-Do not force one benchmark to prove all ACAD_PASS constructs.
-
-Future H2/H3 candidates must be freshly compared against 2025–2026 resources before execution.
+1. synthetic/non-FactPICO scalability preflight only;
+2. quantify runtime growth without touching external benchmark records;
+3. decide between:
+   - frozen V2.4 + predeclared timeout/INVALID policy;
+   - version-bumped scalable matcher;
+4. freeze exact execution/failure policy;
+5. STOP before any FactPICO prediction.
 
 Still not authorized:
 - FactPICO V2.4 prediction;
 - H1 scoring;
-- runtime modification;
-- threshold changes;
+- frozen runtime change under same V2.4 identity;
+- threshold tuning;
 - custom Gate C opening;
-- new-human recruitment;
 - Arabic-track work.
 
 # 23. WHOLE-PROJECT PROGRESS
@@ -2813,3 +2814,120 @@ No Arabic work.
 
 Exact next checkpoint:
 `H1 FACTPICO PRE-PREDICTION INTEGRITY GATE`
+
+
+---
+
+# 46. STRATEGIC LANDSCAPE REVIEW INCORPORATED + FACTPICO PRE-PREDICTION BLOCKER
+
+Date: 2026-10-05
+
+Higher-model review:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/STRATEGIC_LANDSCAPE_HIGHER_MODEL_REVIEW_DECISION_V1.md`
+
+Commit:
+`a1a9975797a6e3879ed8174c82e4ffbacd4dea7e`
+
+Review verdict:
+`B. PROCEED WITH MAJOR STRATEGIC MODIFICATIONS`
+
+User-supplied review emphasized:
+- candidate support != required-information preservation;
+- component passes != end-to-end revision safety;
+- expert labels are construct-specific;
+- architecture claims require execution/generalization evidence;
+- novelty cannot rest on component aggregation alone.
+
+Permanent strategic correction:
+`CONSTRUCT-MODULAR EXTERNAL VALIDATION`
+
+H1 is now interpreted as:
+- H1-A candidate support/factuality;
+- H1-B required-information preservation;
+- H1-C revision usefulness.
+
+FactPICO covers bounded critical-RCT parts of H1-A/H1-B only.
+
+Future primary complements:
+- InfoLossQA for omission/information loss;
+- ParaReval/ParaRev for revision usefulness;
+- SciFact/SciVer for claim support;
+- QASemConsistency + NLI4CT for relation/numeric/comparison reasoning.
+
+Capability map:
+`ACAD_PASS_CAPABILITY_CLAIM_MAP_V1.md`
+
+Commit:
+`bba139f93af7b5b0be95ce6de1dde593cf77ffc6`
+
+Added Information completeness decision:
+`FACTPICO_ADDED_INFORMATION_COMPLETENESS_DECISION_V1.md`
+
+Commit:
+`99372a2e67594f17eaf67ddf5b2a00a84ea9c189`
+
+Decision:
+`PASS_WITH_NARROW_CLAIM`
+
+Meaning:
+absence of an exact span-event row may support only:
+`NO_HIGHLIGHTED_ADDED_INFORMATION_SPAN_IN_THE_RELEASE`
+under exact identity and unresolved-source exclusions.
+
+Readiness supersession:
+`PRE_GATE_C_READINESS_SUPERSESSION_INDEX_V1.md`
+
+Commit:
+`8ef29c7c00d46ade02f6b1c358bba9a58d879532`
+
+FactPICO pre-prediction integrity gate:
+`FACTPICO_H1_PRE_PREDICTION_INTEGRITY_GATE_V1.md`
+
+Commit:
+`160a823c4712815c364a30b9bcce42c4c9d03d93`
+
+Readiness update:
+`e4e2feb4d82cf10a0e584a66d93d7e9eaa9c962a`
+
+Pre-prediction checks passed:
+- claim boundary
+- Added Information interpretation
+- readiness authority
+- FactPICO hashes
+- adapter determinism
+- no gold leakage
+- prediction/gold IDs
+- frozen runtime unchanged
+
+Git compare from canonical freeze trigger
+`c0193aa3f578cc32b454a031ead73ff7e56c8918`
+to gate-time HEAD showed:
+`0 frozen runtime component changes`.
+
+New blocker found by implementation audit:
+`FACTORIAL ALIGNER SCALABILITY`
+
+Frozen B1.1 code enumerates permutations for assertion matching.
+
+Complexity examples:
+- 10 assertions: 3,628,800 permutations
+- 12 assertions: 479,001,600
+- 15 assertions: 1,307,674,368,000
+
+Development B2 used a deliberately small mechanics set; full-document scalability was never measured.
+
+Therefore:
+`NOT_READY_FOR_FACTPICO_PREDICTION`
+
+This is an execution-validity blocker, not a FactPICO scientific result.
+
+Quality delta:
+`IMPROVED SIGNIFICANTLY / NEW REAL BLOCKER FOUND BEFORE ONE-SHOT`
+
+No FactPICO prediction.
+No H1 scoring.
+No frozen runtime modification.
+No Arabic work.
+
+Exact next checkpoint:
+`V2.4 SYNTHETIC SCALABILITY PREFLIGHT + EXECUTION-POLICY DECISION`
