@@ -49,7 +49,7 @@ PRED_RE=[(re.compile(r"\b"+p+r"\b",re.I),n) for p,n in PREDICATES]
 
 BIOMED_ABBREVIATIONS={
     "e.g.","i.e.","etc.","vs.","dr.","mr.","mrs.","ms.","prof.","fig.","figs.",
-    "eq.","eqs.","al.","no.","nos.","st.","inc.","dept.","approx.","cf.","ref.","refs."
+    "eq.","eqs.","no.","nos.","st.","inc.","dept.","approx.","cf.","ref.","refs."
 }
 
 def _period_is_boundary(text:str,i:int)->bool:
@@ -69,8 +69,13 @@ def _period_is_boundary(text:str,i:int)->bool:
             j-=1
         if j>=0 and text[j] in "=<>":
             return False
-    left=text[max(0,i-16):i+1].lower()
-    if any(left.endswith(x) for x in BIOMED_ABBREVIATIONS):
+    left=text[max(0,i-24):i+1]
+    # Match abbreviations as complete lexical tokens, never as arbitrary suffixes
+    # (e.g. hospital. must not match al.; test. must not match st.).
+    m=re.search(r"([A-Za-z]+)\.$",left)
+    if m and (m.group(1).lower()+".") in BIOMED_ABBREVIATIONS:
+        return False
+    if re.search(r"\bet\s+al\.$",left,re.I):
         return False
     if re.search(r"(?:\b[A-Za-z]\.){2,}$",text[max(0,i-12):i+1]):
         return False
