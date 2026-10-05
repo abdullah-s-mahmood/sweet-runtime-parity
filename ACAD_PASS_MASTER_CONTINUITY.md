@@ -1115,58 +1115,37 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — V2.5 PRE-PREDICTION HIGHER-MODEL REVIEW`
+`V2.5 PRE-PREDICTION HIGHER-MODEL REVIEW`
 
-Focused scalability review verdict:
-`B. VERSION_BUMP_BEFORE_FACTPICO`
+AT0-EN V2.5 scalable-matcher regression/runtime freeze exists and is internally consistent.
 
-AT0-EN V2.5 scalable matcher has been implemented and regression-frozen.
+Implementation-agent pre-review audit:
+`phase2/academic_transform/at0_en/v2_5/V2_5_IMPLEMENTATION_AGENT_PRE_REVIEW_AUDIT_V1.md`
 
-Regression run:
-`37279532576`
+Audit verdict:
+`PASS_FOR_HIGHER_MODEL_PRE_PREDICTION_REVIEW`
 
-Run conclusion:
-`SUCCESS`
+Quality delta:
+`IMPROVED`
 
-Artifact:
-`11331840770`
+No newly observed semantic or execution regression.
 
-Artifact digest:
-`sha256:ec012324b265b5e6be5e1aff5f5dd670547692fc9f8bb6a3f58c993ccbb2cba1`
-
-Key evidence:
-- B1 exact differences 0/12
-- B2 four-arm exact differences 0
-- EE 12/12; safe 5/5; unsafe PASS 0/6; REVIEW 1/1
-- 205 brute-force-oracle synthetic equivalence cases
-- tie-sensitive downstream case PASS
-- timeout/crash/empty/out-of-envelope guardrails PASS
-- n=128 two runs ~6.31–6.73 s; ~5.35 MB peak
-- FactPICO used FALSE
-
-V2.5 runtime identity:
-- matcher: HUNGARIAN_EXACT_INTEGER_LEXICOGRAPHIC_V1
-- numeric: EXACT_RATIONAL_FORMULA_V1
-- max assertions/side: 128
-- per-record timeout: 60 s
-- retries: 0
-- failure/out-of-envelope -> INVALID_VERIFICATION
-
-FactPICO V5 scientific gold/thresholds/input/gold hashes are unchanged.
-
-FactPICO prediction:
+FactPICO:
 `NOT_RUN`
 
-Current review packet:
-`phase2/academic_transform/at0_en/v2_5/V2_5_PRE_PREDICTION_HIGHER_MODEL_REVIEW_PACKET.txt`
-
 Still not authorized:
-- FactPICO prediction
-- FactPICO scoring
-- gold join
-- threshold changes
-- custom Gate C opening
+- FactPICO prediction;
+- FactPICO scoring;
+- gold join;
+- threshold/gold changes;
+- broad runtime redesign;
+- custom Gate C opening;
 - Arabic work.
+
+Exact next action:
+send/use
+`phase2/academic_transform/at0_en/v2_5/V2_5_PRE_PREDICTION_HIGHER_MODEL_REVIEW_PACKET.txt`
+for the independent final pre-prediction decision.
 
 # 23. WHOLE-PROJECT PROGRESS
 
@@ -3184,3 +3163,45 @@ Quality delta:
 
 Exact next checkpoint:
 `V2.5 PRE-PREDICTION HIGHER-MODEL REVIEW`
+
+
+---
+
+# 48. V2.5 IMPLEMENTATION-AGENT PRE-REVIEW AUDIT
+
+Date: 2026-10-05
+
+Audit:
+`phase2/academic_transform/at0_en/v2_5/V2_5_IMPLEMENTATION_AGENT_PRE_REVIEW_AUDIT_V1.md`
+
+Commit:
+`21ece496e825ada155a9d44f11c8146b07391425`
+
+Verdict:
+`PASS_FOR_HIGHER_MODEL_PRE_PREDICTION_REVIEW`
+
+Quality delta:
+`IMPROVED`
+
+Verified:
+- V2.5 runtime freeze PASS
+- zero B1/B2 exact regression differences
+- 205 synthetic exhaustive-equivalence cases
+- tie/grouping/failure-path checks PASS
+- scalable envelope to n=128 PASS
+- 60s per-record guardrail
+- max 128 assertions/side
+- zero retries
+- INVALID on timeout/crash/out-of-envelope
+- FactPICO V5 hashes/eligibility/thresholds unchanged
+- FactPICO NOT_RUN
+
+No new risk identified by implementation-agent consistency audit.
+
+Numeric caveat remains explicit:
+exact-rational V2.5 is not universally claimed bitwise-identical to every possible V2.4 floating near-tie.
+
+Current mandatory gate:
+`V2.5 PRE-PREDICTION HIGHER-MODEL REVIEW`
+
+No FactPICO prediction authorized.
