@@ -9566,3 +9566,26 @@ Current exact checkpoint:
 `FACTPICO V2.5 POST-PREDICTION / PRE-GOLD AUTHORIZATION REVIEW`
 
 Do not interpret the 37/308/0/0 distribution as performance metrics until separately authorized gold join/scoring.
+
+
+## 2026-10-05 — Post-prediction / pre-gold review packet prepared
+
+Packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_POST_PREDICTION_PRE_GOLD_REVIEW_PACKET.txt`
+
+Commit:
+`5a72c16de204fc787fbd9fc6e6232033439779a1`
+
+Decision requested next:
+- A. AUTHORIZE_ONE_DETERMINISTIC_FACTPICO_GOLD_JOIN_AND_FROZEN_SCORING_RUN
+- B. BLOCK_BEFORE_GOLD_JOIN
+
+Current boundary unchanged:
+- prediction frozen
+- attempt consumed
+- gold join NOT_RUN
+- scoring NOT_RUN
+- rerun/adaptation forbidden
+
+Exact next checkpoint:
+`INDEPENDENT POST-PREDICTION / PRE-GOLD AUTHORIZATION REVIEW`
