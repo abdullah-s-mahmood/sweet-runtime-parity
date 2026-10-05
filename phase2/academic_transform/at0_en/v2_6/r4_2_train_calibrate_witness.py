@@ -15,8 +15,9 @@ import torch
 from seqeval.metrics import classification_report
 from transformers import (
     AutoConfig,
-    AutoModelForTokenClassification,
     AutoTokenizer,
+    BertModel,
+    BertForTokenClassification,
     EarlyStoppingCallback,
     Trainer,
     TrainingArguments,
@@ -42,6 +43,11 @@ def seed_all():
     torch.manual_seed(SEED)
     torch.use_deterministic_algorithms(True, warn_only=True)
     torch.set_num_threads(2)
+
+def assert_model_finite(model,stage:str):
+    bad=[name for name,p in model.named_parameters() if not torch.isfinite(p).all()]
+    if bad:
+        raise RuntimeError(f"non-finite parameters at {stage}: {bad[:10]}")
 
 def read_conll(path:pathlib.Path):
     sentences=[]
@@ -217,19 +223,37 @@ def main():
     train_s=read_conll(args.train)
     dev_s=read_conll(args.dev)
     tokenizer=AutoTokenizer.from_pretrained(args.model_dir,local_files_only=True,use_fast=True)
-    cfg=AutoConfig.from_pretrained(
+
+    # Safe conversion path validated by AT0_EN_V26_R4_2_SAFE_FLAX_BASE_LOAD_SMOKE_V1:
+    # Flax base checkpoint -> BertModel -> safetensors -> BertForTokenClassification.
+    base=BertModel.from_pretrained(
         args.model_dir,
+        from_flax=True,
+        local_files_only=True,
+    )
+    assert_model_finite(base,"post_flax_base_conversion")
+    converted=args.out/"converted_base"
+    base.save_pretrained(converted,safe_serialization=True)
+    tokenizer.save_pretrained(converted)
+    converted_sha=sha256_path(converted/"model.safetensors")
+    expected_converted_sha="3a6d0b156c45ccd8093af83a9ad3d388808eba5a9e15f0032fc0fe068bb92b68"
+    if converted_sha!=expected_converted_sha:
+        raise RuntimeError(f"converted base hash mismatch: {converted_sha}")
+
+    cfg=AutoConfig.from_pretrained(
+        converted,
         local_files_only=True,
         num_labels=len(LABELS),
         label2id=LABEL2ID,
         id2label=ID2LABEL,
     )
-    model=AutoModelForTokenClassification.from_pretrained(
-        args.model_dir,
-        from_flax=True,
-        local_files_only=True,
+    model=BertForTokenClassification.from_pretrained(
+        converted,
         config=cfg,
+        local_files_only=True,
     )
+    assert_model_finite(model,"pre_training_token_classifier")
+
     train_ds=TokenDataset(train_s,tokenizer)
     dev_ds=TokenDataset(dev_s,tokenizer)
 
@@ -267,6 +291,7 @@ def main():
         callbacks=[EarlyStoppingCallback(early_stopping_patience=2)],
     )
     train_result=trainer.train()
+    assert_model_finite(trainer.model,"post_training_selected_model")
 
     selected=args.out/"selected_model"
     trainer.save_model(selected)
@@ -292,6 +317,13 @@ def main():
         "labels":LABELS,
         "train_sentences":len(train_s),
         "dev_sentences":len(dev_s),
+        "conversion":{
+            "path":"FLAX_BASE_TO_BERTMODEL_TO_SAFETENSORS_TO_TOKEN_CLASSIFIER",
+            "converted_base_safetensors_sha256":converted_sha,
+            "expected_converted_base_safetensors_sha256":"3a6d0b156c45ccd8093af83a9ad3d388808eba5a9e15f0032fc0fe068bb92b68",
+            "smoke_run_id":37354833183,
+            "smoke_artifact_id":11363823244,
+        },
         "training":{
             "max_epochs":10,
             "learning_rate":5e-5,
