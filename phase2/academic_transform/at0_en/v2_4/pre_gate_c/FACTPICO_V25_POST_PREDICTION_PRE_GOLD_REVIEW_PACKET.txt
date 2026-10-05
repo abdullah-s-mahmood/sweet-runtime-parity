@@ -1,0 +1,320 @@
+ACAD_PASS — FACTPICO V2.5 POST-PREDICTION / PRE-GOLD AUTHORIZATION REVIEW PACKET
+Date: 2026-10-05
+Status: REVIEW ONLY — NO GOLD JOIN / NO SCORING
+
+======================================================================
+1. DECISION REQUESTED
+======================================================================
+
+Return exactly one primary verdict:
+
+A. AUTHORIZE_ONE_DETERMINISTIC_FACTPICO_GOLD_JOIN_AND_FROZEN_SCORING_RUN
+
+or
+
+B. BLOCK_BEFORE_GOLD_JOIN
+
+If B, identify only concrete defects that must be closed before any gold join.
+
+Do NOT propose:
+- prediction rerun;
+- adaptive retry;
+- matcher/runtime modification;
+- threshold change;
+- gold change;
+- benchmark-population change;
+- custom Gate C;
+- Arabic-track work.
+
+The one authorized prospective prediction attempt has already been consumed and
+MUST NOT be repeated.
+
+======================================================================
+2. SUCCESSFUL ONE-SHOT PREDICTION EXECUTION
+======================================================================
+
+Authorization ID:
+FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001
+
+GitHub Actions run:
+37318062175
+
+Workflow:
+.github/workflows/factpico_v25_one_authorized_execution.yml
+
+Run head:
+066d606e311136c5020ba800c3872b054c11e6da
+
+Immutable execution checkout:
+659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee
+
+Run conclusion:
+SUCCESS
+
+Job ID:
+111789731999
+
+Prediction state:
+PREDICTIONS_FROZEN
+
+======================================================================
+3. INPUT / PREDICTION IDENTITIES
+======================================================================
+
+FactPICO source ZIP SHA-256:
+ec260d7c69db9537f819fbdf728c997520e55de56b9f03b2980b017c91b9d4f4
+
+Prediction input SHA-256:
+ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82
+
+Input records:
+345
+
+Unique input IDs:
+345
+
+Prediction records:
+345
+
+Unique prediction IDs:
+345
+
+Input/prediction ID order:
+EXACT MATCH = PASS
+
+Frozen prediction SHA-256:
+925c8a073f4304fe751af072c1d1b8fc64455104e8ed2f23a88c3fc3e6ad496b
+
+Retry count:
+0
+
+INVALID_VERIFICATION:
+0
+
+======================================================================
+4. DURABLE ATTEMPT CONSUMPTION
+======================================================================
+
+Ledger branch:
+factpico-v25-one-shot-ledger
+
+Canonical key:
+claims/real/FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001/ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82/ATTEMPT_CLAIM.json
+
+Pre-claim query:
+ABSENT / HTTP 404
+
+Claim creation commit:
+6387516d84e9ba1109d387dcc4bde715ce2ac16b
+
+Claim blob SHA:
+a1d7bb2df60e55db8f914550858c2accadad1390
+
+Claim read-back:
+PASS
+
+Attempt state:
+PERMANENTLY CONSUMED
+
+No second run is permitted.
+
+======================================================================
+5. IMMUTABLE PREDICTION ARTIFACT
+======================================================================
+
+Artifact ID:
+11348646367
+
+Artifact:
+factpico-v25-one-prospective-prediction-frozen
+
+Artifact ZIP size:
+358556 bytes
+
+Artifact ZIP SHA-256:
+eb68ab179bc17af1105a63ae1ff2f3fc76a4449bffd74a40a76a775319743daa
+
+Execution freeze record:
+phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_PROSPECTIVE_PREDICTION_EXECUTION_FREEZE_V1.md
+
+Freeze record commit:
+97e35b9d8375a67fb58861b4f87b611f31e5f499
+
+======================================================================
+6. UNSCORED RUNTIME OUTCOME DISTRIBUTION
+======================================================================
+
+PASS_CANDIDATE:
+0
+
+REJECT:
+37
+
+REVIEW:
+308
+
+INVALID_VERIFICATION:
+0
+
+Total:
+345
+
+IMPORTANT:
+These are runtime outputs only.
+They have NOT been joined to FactPICO gold.
+They MUST NOT be reported as accuracy, precision, recall, F1, specificity,
+sensitivity, H1 pass/fail, or benchmark performance.
+
+======================================================================
+7. FROZEN GOLD CONTRACT
+======================================================================
+
+Contract:
+phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_FACTPICO_HARD_GOLD_CONTRACT_V5.md
+
+Frozen gold artifact SHA-256:
+6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48
+
+Eligibility manifest SHA-256:
+d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255
+
+Frozen classes:
+SAFE_STRICT_CONTROL = 34 records / 33 source clusters
+ERROR_STRICT = 149 records / 83 source clusters
+INTERMEDIATE = 153 records
+N_A_SOURCE_DIAGNOSTIC = 9 records / 3 source clusters
+
+Frozen H1 interpretation:
+SOURCE-BOUNDED CRITICAL RCT-ELEMENT FIDELITY / PRESERVATION
+
+FactPICO is only a source-bounded critical RCT/PICO fidelity subgate.
+It is NOT complete H1.
+
+======================================================================
+8. PREDECLARED HARD DECISION RULES
+======================================================================
+
+Hard safety gate:
+Population = ERROR_STRICT
+Unsafe event = PASS_CANDIDATE
+Requirement:
+ERROR_STRICT -> PASS_CANDIDATE = 0
+
+Negative utility gate:
+Population = ERROR_STRICT
+Success = REJECT
+Require BOTH:
+- pair-micro REJECT >= 75%
+- source-macro REJECT >= 75%
+
+Positive anti-degeneracy gate:
+Population = SAFE_STRICT_CONTROL
+Success = PASS_CANDIDATE
+Require BOTH:
+- pair-micro PASS >= 75%
+- source-macro PASS >= 75%
+
+INTERMEDIATE and N_A_SOURCE_DIAGNOSTIC:
+diagnostic only.
+
+Primary cluster:
+source abstract SHA-256
+
+Frozen interval procedure:
+whole-source cluster bootstrap
+10,000 resamples
+seed 20261004
+percentile 95% CI
+
+Primary gate decisions use frozen point thresholds.
+No lower-CI >=75% rule is added.
+
+======================================================================
+9. PROPOSED AUTHORIZED GOLD/JOIN PROCEDURE
+======================================================================
+
+If and only if verdict A is issued:
+
+1. Use the immutable frozen prediction artifact identified above.
+2. Reconstruct or retrieve the frozen V5 gold artifact only after prediction
+   identity has been reverified.
+3. Verify gold SHA exactly:
+   6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48
+4. Verify eligibility SHA exactly:
+   d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255
+5. Join ONLY by exact frozen record_id.
+6. Require exactly 345 matched IDs, no missing, duplicate or extra IDs.
+7. Do not alter predictions after gold is loaded.
+8. Apply only H1_FACTPICO_HARD_GOLD_CONTRACT_V5 rules.
+9. Compute the preregistered hard gates and frozen diagnostics.
+10. Use cluster bootstrap exactly as frozen:
+    10,000 resamples, seed 20261004.
+11. Preserve all raw joined rows and scoring outputs immutably.
+12. Freeze scoring script/config hashes and result-artifact SHA.
+13. Do not tune thresholds or rerun prediction based on results.
+14. Stop after FactPICO scoring/result freeze for a separate interpretation /
+    next-architecture checkpoint.
+
+======================================================================
+10. CURRENT STOP BOUNDARY
+======================================================================
+
+Prediction:
+RUN_ONCE / COMPLETE / FROZEN
+
+Real attempt:
+CONSUMED
+
+Gold join:
+NOT_RUN
+
+Scoring:
+NOT_RUN
+
+H1 FactPICO performance:
+NOT_YET_MEASURED
+
+No performance conclusion has been declared.
+
+======================================================================
+11. KNOWN PROVENANCE NOTE
+======================================================================
+
+Historical documentation listed the adapter SHA as:
+ab128309261eeffdb734464f2a2fef52cef4ce37bdb3b9654317d6b5bba0b7e1
+
+The actual unchanged committed adapter bytes are:
+3b0698772630a17d6d05fdf7197f5faa79b22212332ae785b069318bda4cd5b0
+
+This was reconciled before execution.
+The deterministic rebuild still reproduced the exact frozen input, gold and
+eligibility hashes.
+
+Record:
+FACTPICO_ADAPTER_COMMITTED_IDENTITY_RECONCILIATION_V1.md
+
+This is preserved as negative/provenance evidence, not silently erased.
+
+======================================================================
+12. REVIEW QUESTIONS
+======================================================================
+
+Please verify:
+
+1. Is the immutable prediction identity sufficient to open the gold only now?
+2. Is the exact record-ID join procedure adequately fail-closed?
+3. Are the V5 hard-gold classes and thresholds still the only permitted scoring
+   contract?
+4. Is the cluster-bootstrap procedure sufficiently frozen?
+5. Is any additional pre-gold integrity control required that does NOT require a
+   prediction rerun?
+6. If no concrete blocker remains, authorize exactly ONE deterministic gold
+   join + scoring execution, with no adaptive changes.
+
+Return:
+- VERDICT;
+- any concrete blocker;
+- exact authorized scope if A;
+- required STOP boundary after scoring.
+
+END OF REVIEW PACKET.
