@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import os
 import pathlib
 import subprocess
 import sys
@@ -129,11 +130,34 @@ def run_child_command(command: list[str], stdin_text: str, timeout_seconds: floa
     return "OK", proc.stdout
 
 
+def _synthetic_test_fault(record_id: str) -> str | None:
+    raw = os.environ.get("ACAD_PASS_V25_SYNTHETIC_FAULT_MAP")
+    if not raw:
+        return None
+    if os.environ.get("ACAD_PASS_V25_SYNTHETIC_TEST_MODE") != "1":
+        raise RuntimeError("Synthetic fault map present without synthetic test mode.")
+    if not record_id.startswith("SYN-"):
+        raise RuntimeError("Synthetic fault injection is restricted to SYN-* record IDs.")
+    mapping = json.loads(raw)
+    if not isinstance(mapping, dict):
+        raise RuntimeError("Synthetic fault map must be a JSON object.")
+    action = mapping.get(record_id)
+    if action not in {None, "TIMEOUT", "CRASH"}:
+        raise RuntimeError("Unsupported synthetic fault action.")
+    return action
+
+
 def guarded_process_record(record: dict, timeout_seconds: float, max_assertions_per_side: int) -> dict:
     rid = str(record.get("record_id", ""))
     reason = validate_record(record)
     if reason:
         return invalid(rid, reason)
+
+    fault = _synthetic_test_fault(rid)
+    if fault == "TIMEOUT":
+        return invalid(rid, "RECORD_TIMEOUT")
+    if fault == "CRASH":
+        return invalid(rid, "CHILD_PROCESS_CRASH")
 
     cmd = [
         sys.executable,
@@ -208,6 +232,8 @@ def run_batch(
     if len(set(ids)) != len(ids):
         raise RuntimeError("Duplicate record IDs in input.")
 
+    if output_path.exists():
+        raise RuntimeError("Refusing to overwrite existing prediction output.")
     output_path.parent.mkdir(parents=True, exist_ok=True)
     outputs = []
 
