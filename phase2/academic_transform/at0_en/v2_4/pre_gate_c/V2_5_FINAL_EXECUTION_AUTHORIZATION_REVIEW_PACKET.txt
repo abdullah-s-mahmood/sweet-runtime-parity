@@ -1,0 +1,257 @@
+ACAD_PASS — FINAL EXECUTION AUTHORIZATION REVIEW
+
+ROLE
+Act only as the independent final execution-authorization reviewer.
+
+DO NOT:
+- write code;
+- modify repository;
+- run/profile FactPICO;
+- score or join gold;
+- reopen broad architecture/benchmark research.
+
+REPOSITORY
+abdullah-s-mahmood/sweet-runtime-parity
+
+BRANCH
+phase2-arabic-eval
+
+READ ONLY:
+
+1. phase2/academic_transform/at0_en/v2_4/pre_gate_c/V2_5_FINAL_EXECUTION_CONTROL_CLOSURE_V1.md
+2. phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V5_EXECUTION_IDENTITY_AMENDMENT_V3.md
+3. phase2/academic_transform/at0_en/v2_5/V2_5_ONE_SHOT_EXECUTION_CONTROL_SPEC_V1.md
+
+If code verification is materially necessary:
+4. phase2/academic_transform/at0_en/v2_5/run_v2_5_one_shot_guard.py
+5. phase2/academic_transform/at0_en/v2_5/tests/check_v2_5_scalable_matcher.py
+
+YOUR PREVIOUS VERDICT
+
+B. READY_WITH_FINAL_EXECUTION_CONTROL_CHANGE
+
+You identified exactly two remaining gaps:
+
+1. the priority-conflict fixture did not force a true higher-priority-vs-semantic conflict;
+2. the actual durable attempt storage mechanism had not been frozen and tested for survival/restart refusal.
+
+BOTH HAVE NOW BEEN CLOSED.
+
+PRIORITY-CONFLICT CLOSURE
+
+The second source and second candidate predicates were changed to REDUCE.
+
+The test now asserts:
+- selected assignment has fewer hard-owner mismatches;
+- selected assignment has higher owner similarity;
+- selected assignment has LOWER semantic score than the alternative;
+- the exact oracle and matcher still select the higher-priority assignment.
+
+Regression:
+PASS.
+
+Matcher:
+UNCHANGED.
+
+Final regression run:
+37312305371
+
+Head:
+659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee
+
+Conclusion:
+SUCCESS
+
+Artifact:
+11345959688
+
+Artifact ZIP SHA-256:
+f3510bd4cacdb40a70d6b37d6d9f6fac24a9d77285462723f1e0738eb374a701
+
+Frozen hashes:
+
+Matcher:
+ac36409cd32c9a759a3e962ee6a86aa30d0a52299f2a19ccc8206d7b54e248ea
+
+Batch runner:
+7a3383e6108272b641e8f4bcda553a5d97aad7a873616341c3493d425fec6def
+
+One-shot guard:
+574d0c0a1222435069eee48534e2d4e04ca72f6d538bf3c5c334a683304bb6d2
+
+One-shot control spec:
+a615988ff14b64307576b367da593175c742f8c9a6e7928fc195f9811c21afed
+
+Regression test:
+81fb84f28668804b95844adc32a3d7743061e89aa69bec2a2c89129b57b4d471
+
+Regression report:
+b2248f62724e3d9a7a30f34bb42ff97e287bc608e9852e78bf13fcee63fc3a2a
+
+DURABLE LEDGER CLOSURE
+
+Actual durable mechanism:
+GitHub repository contents.
+
+Repository:
+abdullah-s-mahmood/sweet-runtime-parity
+
+Dedicated ledger branch:
+factpico-v25-one-shot-ledger
+
+Authorization ID:
+FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001
+
+Frozen FactPICO input SHA:
+ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82
+
+Canonical REAL claim key:
+
+claims/real/FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001/ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82/ATTEMPT_CLAIM.json
+
+Every permitted launch must consult this exact branch/key.
+
+If the real claim exists:
+ABORT BEFORE INFERENCE.
+
+If absent:
+atomically create it before inference, fetch it back, retain its commit/blob identity, then invoke the local guard bound to the same authorization/provider/key/claim-commit.
+
+Choosing another branch/key/path does NOT restore authorization.
+
+Deleting/cleaning a consumed claim does NOT restore authorization.
+
+SYNTHETIC SURVIVAL TEST
+
+Synthetic claim:
+claims/synthetic/SYN-DURABLE-LEDGER-001/ATTEMPT_CLAIM.json
+
+Creation commit:
+f687cedcb82c543d8d21552db79a2d25a93f7a4e
+
+Observed later blob SHA:
+cf03473f29ab3ce3452d133302ccc27672c1278f
+
+Test procedure:
+1. create durable claim with CONSUMED_BEFORE_INFERENCE;
+2. intentionally do not start inference;
+3. end first launcher/tool invocation;
+4. fresh independent launcher queries same branch/key;
+5. claim is still present unchanged;
+6. fresh-launch procedure classifies attempt as consumed and does not start inference.
+
+Verdict:
+PASS.
+
+Synthetic evidence claim is retained.
+
+Current repository-tree verification:
+
+REAL claim exists:
+FALSE
+
+Synthetic evidence claim exists:
+TRUE
+
+Therefore the actual FactPICO attempt is still UNCONSUMED.
+
+GUARD BINDING
+
+For real frozen FactPICO input/count, the local guard refuses to start without:
+- exact authorization ID;
+- exact durable-ledger provider;
+- exact canonical key;
+- nonempty remote claim commit SHA.
+
+These identities are written into local attempt and prediction-freeze manifests.
+
+FACTPICO STATUS
+
+Prediction:
+NOT_RUN
+
+Profiling:
+NOT_RUN
+
+Timing:
+NOT_RUN
+
+Scoring:
+NOT_RUN
+
+Gold join:
+NOT_RUN
+
+No changes to:
+- V5 gold;
+- eligibility;
+- thresholds;
+- population;
+- record IDs;
+- input/gold hashes;
+- claim boundary.
+
+QUESTION
+
+Return exactly:
+
+## 1. VERDICT
+
+Choose one:
+
+A. AUTHORIZE_ONE_PROSPECTIVE_FACTPICO_PREDICTION_RUN
+B. FINAL_BLOCKER_REMAINS
+
+## 2. TWO-GAP CLOSURE
+
+State CLOSED / NOT_CLOSED for:
+- priority-conflict fixture;
+- durable attempt ledger.
+
+List only concrete remaining defect, if any.
+
+## 3. ATTEMPT INTEGRITY
+
+Confirm whether:
+- the real attempt remains unconsumed;
+- the GitHub durable-ledger mechanism is sufficient;
+- cancellation/crash after remote claim creation consumes the attempt;
+- no alternate path/key/provider may reset authorization.
+
+## 4. FINAL AUTHORIZATION
+
+If verdict A, authorize ONLY:
+
+ONE PROSPECTIVE AT0-EN V2.5 FACTPICO PREDICTION RUN + IMMUTABLE PREDICTION ARTIFACT FREEZE
+
+Under frozen controls:
+- input SHA verification;
+- exactly 345 unique IDs/order;
+- immutable runtime checkout;
+- synthetic-test variables absent;
+- durable remote claim created before inference;
+- local guard bound to remote claim identity;
+- strictly sequential;
+- zero retries;
+- 60 s/record;
+- max128 assertions/side;
+- one output per ID;
+- all INVALIDs visible;
+- no gold/eligibility access;
+- no adaptive changes;
+- freeze prediction SHA/evidence;
+- stop before gold join.
+
+Still forbid:
+- scoring;
+- gold join;
+- rerun;
+- adaptive retry;
+- runtime/matcher modification;
+- threshold/gold changes;
+- pre-run FactPICO profiling;
+- H1/H2/H3/H4 redesign;
+- custom Gate C;
+- Arabic work.
+
+Do not request additional testing unless a concrete unresolved defect remains.
