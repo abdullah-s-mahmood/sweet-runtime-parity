@@ -1115,37 +1115,41 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`V2.5 PRE-PREDICTION HIGHER-MODEL REVIEW`
+`FINAL HIGHER-MODEL PRE-PREDICTION RE-REVIEW`
 
-AT0-EN V2.5 scalable-matcher regression/runtime freeze exists and is internally consistent.
+V2.5 essential pre-execution changes are closed by implementation evidence.
 
-Implementation-agent pre-review audit:
-`phase2/academic_transform/at0_en/v2_5/V2_5_IMPLEMENTATION_AGENT_PRE_REVIEW_AUDIT_V1.md`
+Final successful regression:
+- run `37289569561`
+- head `29e3abe5ccb708cb88d94ae00630eaa0fdc2b123`
+- artifact `11335647986`
+- artifact SHA-256 `61d82aa30de89e84aa5bc0433bdfa528259269c0b3630648df5c0d4c95573b63`
 
-Audit verdict:
-`PASS_FOR_HIGHER_MODEL_PRE_PREDICTION_REVIEW`
+Current implementation verdict:
+`READY_FOR_FINAL_HIGHER_MODEL_PRE_PREDICTION_RE_REVIEW`
 
 Quality delta:
 `IMPROVED`
 
-No newly observed semantic or execution regression.
+Preserved negative evidence:
+old 10-second synthetic max-tie criterion showed runner variability in run `37289060156`.
+It was replaced before FactPICO by a 30-second synthetic regression criterion; production remains 60 seconds/record.
 
 FactPICO:
 `NOT_RUN`
 
 Still not authorized:
 - FactPICO prediction;
-- FactPICO scoring;
-- gold join;
+- gold join/scoring;
+- reruns/adaptive retry;
+- runtime/matcher changes;
 - threshold/gold changes;
-- broad runtime redesign;
 - custom Gate C opening;
 - Arabic work.
 
 Exact next action:
-send/use
-`phase2/academic_transform/at0_en/v2_5/V2_5_PRE_PREDICTION_HIGHER_MODEL_REVIEW_PACKET.txt`
-for the independent final pre-prediction decision.
+send the focused review prompt corresponding to:
+`phase2/academic_transform/at0_en/v2_5/V2_5_FINAL_PRE_PREDICTION_REVIEW_PACKET.txt`
 
 # 23. WHOLE-PROJECT PROGRESS
 
@@ -3205,3 +3209,60 @@ Current mandatory gate:
 `V2.5 PRE-PREDICTION HIGHER-MODEL REVIEW`
 
 No FactPICO prediction authorized.
+
+
+---
+
+# 49. V2.5 ESSENTIAL PRE-EXECUTION CLOSURE
+
+Date: 2026-10-05
+
+Higher-model pre-prediction verdict:
+`B. READY_WITH_ESSENTIAL_PRE_EXECUTION_CHANGES`
+
+Implementation closure:
+`phase2/academic_transform/at0_en/v2_5/V2_5_ESSENTIAL_PRE_EXECUTION_CLOSURE_V1.md`
+
+Runtime freeze:
+`phase2/academic_transform/at0_en/v2_5/AT0_EN_V2_5_RUNTIME_FREEZE_V2.md`
+
+Execution identity:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V5_EXECUTION_IDENTITY_AMENDMENT_V2.md`
+
+Final run:
+`37289569561`
+
+Head:
+`29e3abe5ccb708cb88d94ae00630eaa0fdc2b123`
+
+Artifact:
+`11335647986`
+
+Artifact digest:
+`61d82aa30de89e84aa5bc0433bdfa528259269c0b3630648df5c0d4c95573b63`
+
+Key closure:
+- exact objective checked on all 205 oracle cases
+- no observed float-vs-exact selected-mapping discrepancy
+- characterized priority/partial-tie/near-tie/full-tie PASS
+- fresh-process reproducibility PASS
+- mixed-batch failure accounting PASS
+- output overwrite refusal PASS
+- one-shot guard PASS
+- max-shape/unequal near-envelope PASS
+- no canonical B1/B2 regression
+
+Preserved negative:
+run `37289060156` failed new 128 full-tie <=10s synthetic criterion.
+This revealed synthetic runtime variability, not semantic failure.
+Criterion refrozen to 30s using synthetic-only evidence.
+External record timeout remains 60s.
+
+FactPICO exposure:
+`NONE`
+
+Net:
+`IMPROVED / NO NEW SCIENTIFIC REGRESSION OBSERVED`
+
+Current checkpoint:
+`FINAL HIGHER-MODEL PRE-PREDICTION RE-REVIEW`
