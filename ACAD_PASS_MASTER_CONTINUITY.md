@@ -3708,3 +3708,90 @@ external/gold-based validation evidence and frozen interpretation, not runtime s
 
 Current exact checkpoint remains:
 `INDEPENDENT POST-PREDICTION / PRE-GOLD AUTHORIZATION REVIEW`
+
+
+---
+
+# 56. FACTPICO V2.5 GOLD JOIN / SCORING COMPLETE AND FROZEN
+
+Date: 2026-10-05
+
+Canonical scoring freeze:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_GOLD_SCORING_EXECUTION_FREEZE_V1.md`
+
+Freeze commit:
+`7f5a717c549696d91eef2ace7f16a6d8e783ca4e`
+
+Pre-gold code/config freeze run:
+`37324968724`
+
+Scorer SHA:
+`00df8950ffb3d0ee48925c98ad976e1a940e68069a937396d4b28fdd5923d7fb`
+
+Config SHA:
+`bf2c47d0d2b7121c64168d62fc8f51669c22579f5827b6d3e4d0a4f20d304322`
+
+Authorized scoring run:
+`37325138336`
+
+Scoring artifact:
+- ID `11351451888`
+- digest `105534207a4566c38d76174e9cd263244b87e37358b6007c76502bc250d67e77`
+
+Exact join:
+`345/345 PASS`
+
+Hard safety:
+`PASS`
+- unsafe PASS records = 0
+- unsafe PASS sources = 0
+- one-sided exact 95% source upper bound = 3.5449568%
+
+Negative utility:
+`FAIL`
+- pair-micro REJECT = 10.7383%
+- CI = [5.7971%, 16.2338%]
+- source-macro REJECT = 9.4378%
+- CI = [4.8193%, 14.8594%]
+- threshold = 75%
+
+Positive anti-degeneracy:
+`FAIL`
+- pair-micro PASS = 0%
+- source-macro PASS = 0%
+- both CIs = [0%, 0%]
+- threshold = 75%
+
+Mechanical decision:
+`H1_FULL_PASS_NOT_ACHIEVED`
+
+No interpretation or repair has yet been authorized.
+
+Progress scorecard V2:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_STAGE_PROGRESS_SCORECARD_V2.md`
+
+Scorecard commit:
+`37d1287ba7d61668a02ba2a0f52c26eb5829dd46`
+
+Current engineering indicators:
+- FactPICO V2.5 completion = 95%
+- experimental-integrity maturity = 98/100
+- scientific-validation completeness = 95/100
+- process rigor satisfaction = 98/100
+- benchmark-outcome satisfaction = 30/100
+- overall English-track maturity = 74/100
+
+Interpretation review packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_POST_SCORING_INTERPRETATION_REVIEW_PACKET.txt`
+
+Packet commit:
+`42af380148c790162572ba335a2a817a85d1565a`
+
+Current exact checkpoint:
+`FACTPICO V2.5 POST-SCORING INDEPENDENT INTERPRETATION / NEXT-DECISION REVIEW`
+
+STOP:
+- no prediction rerun
+- no scoring rerun
+- no threshold/gold/population changes
+- no adaptive repair before independent interpretation
