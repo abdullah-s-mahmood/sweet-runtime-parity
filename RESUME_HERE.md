@@ -9589,3 +9589,29 @@ Current boundary unchanged:
 
 Exact next checkpoint:
 `INDEPENDENT POST-PREDICTION / PRE-GOLD AUTHORIZATION REVIEW`
+
+
+## 2026-10-05 — Progress / maturity scorecard
+
+Scorecard:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_STAGE_PROGRESS_SCORECARD_V1.md`
+
+Commit:
+`f056eb2391e57076f7b3159186d3fb9b78887196`
+
+Engineering indicators only:
+- prediction-execution checkpoint: 100%
+- FactPICO V2.5 validation subphase: 70%
+- execution-integrity maturity: 96/100
+- scientific-validation completeness: 70/100
+- FactPICO-stage quality satisfaction: 90/100
+- overall English-track maturity: 78/100
+- target excellent/review-ready: >=90/100
+
+Delta since previous major checkpoint:
+- completion ≈ +20 percentage points
+- execution integrity ≈ +8 points
+- scientific-performance delta NOT YET COMPARABLE before gold scoring.
+
+Exact next checkpoint:
+`INDEPENDENT POST-PREDICTION / PRE-GOLD AUTHORIZATION REVIEW`
