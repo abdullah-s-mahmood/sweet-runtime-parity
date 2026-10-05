@@ -3675,3 +3675,36 @@ Current stop remains:
 
 Exact next checkpoint:
 `INDEPENDENT POST-PREDICTION / PRE-GOLD AUTHORIZATION REVIEW`
+
+
+---
+
+# 55. FACTPICO V2.5 PROGRESS / MATURITY SCORECARD
+
+Scorecard:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_STAGE_PROGRESS_SCORECARD_V1.md`
+
+Scorecard commit:
+`f056eb2391e57076f7b3159186d3fb9b78887196`
+
+Engineering progress indicators (NOT benchmark metrics):
+- authorized prediction-execution checkpoint: `100%`
+- FactPICO V2.5 validation subphase: `70%`
+- execution-integrity maturity: `96/100`
+- scientific-validation completeness: `70/100`
+- current FactPICO-stage quality satisfaction: `90/100`
+- overall ACAD_PASS English-track maturity: `78/100`
+
+Improvement since the previous major checkpoint:
+- completion: approximately `+20 percentage points`
+- execution-integrity maturity: approximately `+8 points`
+- scientific-performance delta: `NOT YET COMPARABLE` until frozen gold scoring is authorized and executed.
+
+Target for `EXCELLENT / REVIEW-READY` system maturity:
+`>=90/100`
+
+Main remaining gap:
+external/gold-based validation evidence and frozen interpretation, not runtime stability.
+
+Current exact checkpoint remains:
+`INDEPENDENT POST-PREDICTION / PRE-GOLD AUTHORIZATION REVIEW`
