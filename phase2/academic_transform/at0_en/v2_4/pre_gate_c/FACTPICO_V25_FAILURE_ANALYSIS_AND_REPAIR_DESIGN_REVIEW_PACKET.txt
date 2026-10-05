@@ -1,0 +1,98 @@
+ACAD_PASS — FAILURE ANALYSIS AND REPAIR DESIGN REVIEW PACKET
+Date: 2026-10-05
+Status: INDEPENDENT REVIEW ONLY / NO IMPLEMENTATION
+
+DECISION REQUESTED
+
+Return exactly one primary verdict:
+
+A. ACCEPT_FAILURE_LOCALIZATION_AND_AUTHORIZE_V26_DEV_REPAIR_IMPLEMENTATION
+
+or
+
+B. REVISE_FAILURE_ANALYSIS_OR_REPAIR_DESIGN
+
+Read:
+1. FACTPICO_V25_FAILURE_ANALYSIS_TAXONOMY_V1.md
+2. FACTPICO_V25_FAILURE_ANALYSIS_REPORT_V1.md
+3. AT0_EN_V26_DEV_REPAIR_DESIGN_V1.md
+4. FACTPICO_V25_GOLD_SCORING_EXECUTION_FREEZE_V1.md
+
+Frozen historical result remains:
+H1_FULL_PASS_NOT_ACHIEVED
+
+Do NOT authorize:
+- FactPICO prediction rerun;
+- FactPICO rescoring;
+- threshold/gold/population changes;
+- relabeling;
+- deletion of historical failure evidence;
+- using exposed FactPICO as a new prospective external test;
+- broad redesign;
+- custom Gate C;
+- Arabic-track work.
+
+KEY LOCALIZATION EVIDENCE
+
+- 345/345 records contain assertion uncertainty.
+- 2,773 / 2,824 alignment rows are UNCERTAIN.
+- 308/345 final outcomes are REVIEW.
+- 300/308 REVIEW records have all assertion alignments UNCERTAIN.
+- all 37 REJECT records contain a critical semantic/binding mismatch plus uncertainty.
+- relation alignment rows = 0.
+- 339/345 records contain non-1:1 assertion grouping.
+- 331/345 contain more source than candidate assertion IDs.
+- median source:candidate assertion-count ratio = 4.83.
+- current unequal-count code appends all leftover assertions to the last group.
+- 48 records show very short preserved source fragments.
+- 116 records show escaped/tag-like candidate evidence fragments.
+
+MOST DEFENSIBLE CURRENT MODEL
+
+EXTRACTION / REPRESENTATION UNCERTAINTY
++
+UNEQUAL-COUNT GROUPING AMPLIFICATION
++
+FAIL-CLOSED REVIEW GATE
+
+The final decision gate is behaving as designed.
+A decision-rule-only relaxation is NOT proposed.
+
+PROPOSED V2.6-DEV PACKAGE
+
+R1 text-boundary/markup normalization.
+R2 localized assertion confidence.
+R3 exact partial alignment with explicit unmatched nodes.
+R4 extraction coverage extension only if independent development evidence still requires it.
+
+No implementation has occurred.
+
+PROPOSED INDEPENDENT DEVELOPMENT SUITE
+
+260 non-FactPICO fixtures:
+- 60 segmentation/normalization;
+- 60 safe paraphrase;
+- 80 critical error;
+- 60 unequal-count alignment.
+
+Proposed invariants:
+- zero unsafe PASS on critical-error fixtures;
+- zero INVALID on valid fixtures;
+- no hidden unmatched critical assertion;
+- deterministic fresh-process reproduction.
+
+Proposed utility targets for independent approval:
+- safe PASS >=80%;
+- critical-error REJECT >=90%;
+- safe REVIEW <=20%.
+
+REVIEW QUESTIONS
+
+1. Is the evidence sufficient to localize the dominant weakness upstream of the final decision rule?
+2. Is R1-R3 the narrowest justified first repair package?
+3. Should R4 remain conditional?
+4. Are the proposed independent development fixtures and acceptance criteria adequate?
+5. If A, authorize implementation ONLY on a new V2.6-DEV branch/version using non-FactPICO development material.
+6. Define the STOP boundary before any post-repair external validation.
+
+END PACKET.
