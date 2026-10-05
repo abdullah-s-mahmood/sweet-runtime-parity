@@ -61,6 +61,29 @@ jobs:
             phase2/academic_transform/at0_en/v2_6/tests/check_v2_6_representation_dev.py \
             > "$RUNNER_TEMP/v26/CODE_SHA256.txt"
 
+      - name: Diagnose residual R4 confidence paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' > "$RUNNER_TEMP/v26/R4_RESIDUAL_DEBUG.json"
+          import importlib.util, json, pathlib
+          p=pathlib.Path("phase2/academic_transform/at0_en/v2_6/gate_b2/relation_aware_extractor.py")
+          spec=importlib.util.spec_from_file_location("ra_dbg",p)
+          ra=importlib.util.module_from_spec(spec); spec.loader.exec_module(ra)
+          cases=[
+            "One hundred patients with condition0 were enrolled.",
+            "One hundred healthy volunteers were enrolled.",
+            "Treatment0 may reduce recurrence0.",
+            "Treatment0 reduces recurrence0.",
+          ]
+          out=[]
+          for i,s in enumerate(cases):
+              direct=ra.parse_rct_surface(s,1)
+              graph=ra.relation_aware_extract(s,f"DBG-{i}")
+              out.append({"text":s,"direct":direct,"graph_assertions":graph["assertions"]})
+          print(json.dumps(out,indent=2,sort_keys=True))
+          PY
+
       - name: Run frozen R4 biomedical surface suite
         shell: bash
         run: |
