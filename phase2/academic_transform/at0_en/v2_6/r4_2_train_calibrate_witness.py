@@ -130,8 +130,8 @@ def raw_metrics_from_logits(logits, labels):
             "f1":float(d.get("f1-score",0.0)),
             "support":int(d.get("support",0)),
         }
-    macro_f1=sum(per[x]["f1"] for x in per)/3.0
-    macro_precision=sum(per[x]["precision"] for x in per)/3.0
+    macro_f1=sum(per[x]["f1"] for x in per)/4.0
+    macro_precision=sum(per[x]["precision"] for x in per)/4.0
     micro=rep.get("micro avg",{})
     return {
         "per_class":per,
@@ -194,7 +194,7 @@ def calibration_metrics(gold_tags,pred_tags,pred_conf,threshold):
         p=d["tp"]/(d["tp"]+d["fp"]) if d["tp"]+d["fp"] else 0.0
         r=d["tp"]/(d["tp"]+d["fn"]) if d["tp"]+d["fn"] else 0.0
         per[c]={**d,"precision":p,"recall":r}
-    macro_precision=sum(per[c]["precision"] for c in per)/3.0
+    macro_precision=sum(per[c]["precision"] for c in per)/4.0
     passes=(
         all(per[c]["precision"]>=0.90 for c in per)
         and all(per[c]["precision"]>=0.85 for c in per)
