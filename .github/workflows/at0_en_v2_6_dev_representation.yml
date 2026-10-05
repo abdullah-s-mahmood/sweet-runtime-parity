@@ -61,6 +61,13 @@ jobs:
             phase2/academic_transform/at0_en/v2_6/tests/check_v2_6_representation_dev.py \
             > "$RUNNER_TEMP/v26/CODE_SHA256.txt"
 
+      - name: Run frozen R4 biomedical surface suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_6/tests/check_v2_6_r4_surface_dev.py \
+            > "$RUNNER_TEMP/v26/R4_SURFACE.json"
+
       - name: Run independent real-RCT extraction stress diagnostic
         shell: bash
         run: |
