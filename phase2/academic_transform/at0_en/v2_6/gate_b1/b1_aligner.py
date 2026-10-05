@@ -27,6 +27,11 @@ SYN={
     "evaluated":"evaluate","evaluation":"evaluate",
     "fixed":"fix","unchanged":"unchanged",
     "groups":"group","vehicles":"vehicle","findings":"finding",
+    "endpoint":"outcome","endpoints":"outcome",
+    "assigned":"assign","allocated":"assign","randomized":"assign","randomised":"assign",
+    "decreased":"reduce","decrease":"reduce","lowered":"reduce","lower":"reduce",
+    "improved":"increase","improve":"increase",
+    "reported":"report","observed":"report","recorded":"report",
 }
 
 def norm_token(t:str)->str:
