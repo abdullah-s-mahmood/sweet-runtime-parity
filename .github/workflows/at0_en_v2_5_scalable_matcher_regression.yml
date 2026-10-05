@@ -34,6 +34,7 @@ jobs:
           sha256sum \
             phase2/academic_transform/at0_en/v2_5/AT0_EN_V2_5_EXACT_SCALABLE_MATCHER_SPEC_V1.md \
             phase2/academic_transform/at0_en/v2_5/gate_b1/b1_aligner.py \
+            phase2/academic_transform/at0_en/v2_5/run_v2_5_batch.py \
             phase2/academic_transform/at0_en/v2_5/tests/check_v2_5_scalable_matcher.py \
             phase2/academic_transform/at0_en/v2_5/tests/results/V2_5_SCALABLE_MATCHER_REGRESSION_REPORT.json \
             > phase2/academic_transform/at0_en/v2_5/tests/results/V2_5_REGRESSION_SHA256SUMS.txt
