@@ -1104,3 +1104,93 @@ Reason:
 known factorial execution defect may confound the one-shot external measurement.
 
 FactPICO remains untouched/unconsumed.
+
+
+## 28. AT0-EN V2.5 scalable-matcher regression + runtime freeze
+
+Higher-model scalability decision:
+`V2_4_SCALABILITY_HIGHER_MODEL_DECISION_V1.md`
+
+Decision:
+`B. VERSION_BUMP_BEFORE_FACTPICO`
+
+V2.5 runtime freeze:
+`../v2_5/AT0_EN_V2_5_RUNTIME_FREEZE_V1.md`
+
+Freeze commit:
+`d8282a13d9ba215117f1dd52c80088ccdb972a15`
+
+FactPICO execution-identity amendment:
+`FACTPICO_V5_EXECUTION_IDENTITY_AMENDMENT_V1.md`
+
+Amendment commit:
+`2301367d918501dbbe875ebf8bf9c4eb0e6e35ec`
+
+GitHub Actions run:
+`37279532576`
+
+Run head:
+`05e200461c1067c120e73acf4a6055383eb350b2`
+
+Artifact:
+`11331840770`
+
+Artifact digest:
+`sha256:ec012324b265b5e6be5e1aff5f5dd670547692fc9f8bb6a3f58c993ccbb2cba1`
+
+Regression:
+`PASS`
+
+Evidence:
+- B1 exact output differences 0/12
+- B2 four-arm exact output differences 0
+- EE 12/12, safe 5/5, unsafe PASS 0/6, REVIEW 1/1
+- 205 synthetic exhaustive equivalence cases
+- downstream tie PASS
+- guardrail timeout/crash/empty/out-of-envelope PASS
+- retry count 0
+- FactPICO used FALSE
+
+Synthetic scalable matcher:
+- n=9 ~0.032 s
+- n=10 ~0.039 s
+- n=12 ~0.056 s
+- n=16 ~0.099 s
+- n=32 ~0.395 s
+- n=64 ~1.58 s
+- n=128 ~6.31–6.73 s
+- peak memory at n=128 ~5.35 MB
+
+Frozen operational envelope:
+- max assertions/side 128
+- per-record timeout 60 s
+- strictly sequential
+- no retry
+- runtime failure/out-of-envelope => INVALID_VERIFICATION
+
+V2.5 numeric policy:
+`EXACT_RATIONAL_FORMULA_V1`
+
+Algorithm:
+`HUNGARIAN_EXACT_INTEGER_LEXICOGRAPHIC_V1`
+
+FactPICO V5 scientific contract/artifacts unchanged.
+
+FactPICO prediction:
+`NOT_RUN`
+
+Current exact checkpoint:
+`V2.5 PRE-PREDICTION HIGHER-MODEL REVIEW`
+
+Review packet:
+`../v2_5/V2_5_PRE_PREDICTION_HIGHER_MODEL_REVIEW_PACKET.txt`
+
+Packet commit:
+`274d9bbd107779618a894445d83e1ec050d84973`
+
+Still forbidden:
+- FactPICO prediction/scoring
+- gold join
+- threshold changes
+- custom Gate C opening
+- Arabic work.
