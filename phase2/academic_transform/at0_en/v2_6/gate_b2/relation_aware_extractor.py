@@ -348,7 +348,7 @@ def parse_english_count(raw:str):
 
 def rct_quantities(sentence:str):
     """Extract explicit number+unit/percent facts; p-values without units are intentionally excluded."""
-    units=r"(?:%|mg/day|mg|g|kg|mcg|µg|ml|mL|l/min|L/min|mmhg|mmHg|bpm|months?|weeks?|days?|years?|hours?|hrs?|minutes?|mins?|seconds?|sec|s|points?)"
+    units=r"(?:%|percent(?:age)?|mg/day|mg|g|kg|mcg|µg|ml|mL|l/min|L/min|mmhg|mmHg|bpm|months?|weeks?|days?|years?|yrs?|hours?|hrs?|minutes?|mins?|seconds?|sec|s|points?|cm)"
     out=[]
     for m in re.finditer(rf"(?<![A-Za-z0-9])([-+]?\d+(?:\.\s*\d+)?)\s*({units})\b|(?<![A-Za-z0-9])([-+]?\d+(?:\.\s*\d+)?)\s*(%)",sentence,re.I):
         val=(m.group(1) or m.group(3) or "").replace(" ","")
@@ -558,6 +558,171 @@ def parse_rct_surface(sentence:str,start_idx:int):
             return [mk_assertion(start_idx,m.group("subject"),norm,m.group("object"),sentence,
                                  criticality=crit,modality=rct_modality(sentence),
                                  bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # ---------------- R4.1B: generic coverage for already-open RCT development text ----------------
+
+    # Explicit study aim/objective variants.
+    m=re.fullmatch(r"(?:The\s+)?(?:aim|objective|purpose)\s+of\s+.+?\s+(?:was|is)\s+to\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,"study","AIM_TO",m.group("object"),sentence,
+                             criticality="MATERIAL",confidence="CERTAIN")]
+    m=re.fullmatch(r"We\s+(?:determined|evaluated|assessed|investigated|examined|compared)\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,"study","AIM_TO",m.group("object"),sentence,
+                             criticality="MATERIAL",confidence="CERTAIN")]
+    m=re.fullmatch(r"We\s+conducted\s+.+?\s+to\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,"study","AIM_TO",m.group("object"),sentence,
+                             criticality="MATERIAL",confidence="CERTAIN")]
+
+    # Outcome/endpoint definition variants.
+    m=re.fullmatch(r"(?P<object>.+?)\s+(?:was|is)\s+the\s+(?:main|primary)\s+(?:study\s+)?(?:end\s*point|endpoint|outcome)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,"primary outcome","DEFINE_OUTCOME",m.group("object"),sentence,
+                             criticality="CRITICAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+    m=re.fullmatch(r"(?:Other|Secondary)\s+(?:end\s*points?|endpoints?|outcomes?|objectives?)\s+.+?\s+(?:were|included)\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,"secondary outcome","DEFINE_OUTCOME",m.group("object"),sentence,
+                             criticality="CRITICAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+    m=re.fullmatch(r"Rates?\s+of\s+(?P<object>.+?)\s+(?:were|was)\s+among\s+the\s+(?:end\s*points?|endpoints?|outcomes?)\s+for\s+analysis",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,"study outcomes","DEFINE_OUTCOME",m.group("object"),sentence,
+                             criticality="CRITICAL",confidence="CERTAIN")]
+    m=re.fullmatch(r"(?:the\s+)?(?P<kind>primary|secondary|main)\s+(?:endpoint|end\s*point|outcome)\s+(?:was|is)\s+to\s+(?:record|assess|measure|evaluate)\s+(?P<object>.+)",s,re.I)
+    if m:
+        kind="primary outcome" if m.group("kind").lower() in {"primary","main"} else "secondary outcome"
+        return [mk_assertion(start_idx,kind,"DEFINE_OUTCOME",m.group("object"),sentence,
+                             criticality="CRITICAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Explicit no-difference / non-significance variants.
+    diff_patterns=[
+        r"(?:There\s+(?:was|were)\s+)?no\s+(?:statistically\s+)?(?:significant\s+)?differences?\s+(?P<object>.+)",
+        r"No\s+difference\s+between\s+(?P<object>.+)",
+    ]
+    for pat in diff_patterns:
+        m=re.fullmatch(pat,s,re.I)
+        if m:
+            return [mk_assertion(start_idx,"compared groups","DIFFER",m.group("object"),sentence,
+                                 criticality="CRITICAL",polarity="NEGATIVE",
+                                 bindings=rct_bindings(sentence),confidence="CERTAIN")]
+    m=re.fullmatch(r"(?P<subject>.+?)\s+did\s+not\s+differ(?:\s+significantly)?\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,m.group("subject"),"DIFFER",m.group("object"),sentence,
+                             criticality="CRITICAL",polarity="NEGATIVE",
+                             bindings=rct_bindings(sentence),confidence="CERTAIN")]
+    m=re.fullmatch(r"(?P<subject>.+?)\s+(?:was|were)\s+not\s+(?:statistically\s+)?significantly\s+different\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,m.group("subject"),"DIFFER",m.group("object"),sentence,
+                             criticality="CRITICAL",polarity="NEGATIVE",
+                             bindings=rct_bindings(sentence),confidence="CERTAIN")]
+    m=re.fullmatch(r"(?P<subject>.+?)\s+had\s+emerged\s+in\s+(?P<object>.+)",s,re.I)
+    if m and s.lower().startswith("no difference"):
+        return [mk_assertion(start_idx,"compared groups","DIFFER",m.group("object"),sentence,
+                             criticality="CRITICAL",polarity="NEGATIVE",
+                             bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Explicit safety/tolerability variants.
+    m=re.fullmatch(r"(?P<subject>.+?)\s+(?:was|were)\s+well\s+tolerated(?:\s+(?P<object>.+))?",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,m.group("subject"),"SAFETY_TOLERANCE",m.group("object") or None,sentence,
+                             criticality="CRITICAL",confidence="CERTAIN")]
+    m=re.fullmatch(r"(?P<subject>.+?toxicit(?:y|ies))\s+(?:was|were)\s+not\s+(?:demonstrated|observed|reported)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,m.group("subject"),"SAFETY_EVENT",None,sentence,
+                             criticality="CRITICAL",polarity="NEGATIVE",confidence="CERTAIN")]
+    if re.search(r"\b(?:treatment-related\s+)?deaths?\b",l) and re.search(r"\b(?:there\s+(?:was|were)|occurred|reported)\b",l):
+        return [mk_assertion(start_idx,"death","SAFETY_EVENT",s,sentence,
+                             criticality="CRITICAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+    if re.search(r"\badverse\s+(?:event|events|reaction|reactions)\b",l):
+        return [mk_assertion(start_idx,"adverse events","SAFETY_EVENT",s,sentence,
+                             criticality="CRITICAL",polarity="NEGATIVE" if re.search(r"\bno\b",l) else "POSITIVE",
+                             bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Explicit efficacy/effect/conclusion variants with modality preserved.
+    m=re.fullmatch(r"(?P<subject>.+?)\s+(?P<modal>appears?|seems?)\s+to\s+have\s+no\s+(?:statistically\s+significant\s+)?effect\s+on\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,m.group("subject"),"EFFECT",m.group("object"),sentence,
+                             criticality="CRITICAL",polarity="NEGATIVE",modality="POSSIBLE",
+                             bindings=rct_bindings(sentence),confidence="CERTAIN")]
+    m=re.fullmatch(r"(?P<subject>.+?)\s+(?:(?P<modal>appears?|seems?)\s+to\s+be\s+)?(?P<neg>not\s+)?(?P<rel>superior|effective|efficacious|beneficial|comparable)\s+(?P<object>.+)",s,re.I)
+    if m:
+        pred="SUPERIOR" if m.group("rel").lower()=="superior" else "EFFECT"
+        return [mk_assertion(start_idx,m.group("subject"),pred,m.group("object"),sentence,
+                             criticality="CRITICAL",
+                             polarity="NEGATIVE" if m.group("neg") else "POSITIVE",
+                             modality="POSSIBLE" if m.group("modal") else "ASSERTED",
+                             bindings=rct_bindings(sentence),confidence="CERTAIN")]
+    m=re.fullmatch(r"(?P<subject>.+?)\s+had\s+beneficial\s+effects?\s+on\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,m.group("subject"),"EFFECT",m.group("object"),sentence,
+                             criticality="CRITICAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+    m=re.fullmatch(r"(?:This\s+study|These\s+data|The\s+study)\s+(?:documents?|supports?)\s+(?P<object>.+)",s,re.I)
+    if m:
+        return [mk_assertion(start_idx,"study conclusion","SUPPORT",m.group("object"),sentence,
+                             criticality="CRITICAL",modality=rct_modality(sentence),
+                             bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Explicit numeric clinical result surfaces.
+    qs=rct_quantities(sentence)
+    result_cue=re.search(r"\b(?:rate|rates|incidence|survival|response|responses|recurrence|recurrences|accuracy|sensitivity|specificity|benefit|events?|pcr|conservation|mortality|risk ratio|hazard ratio)\b",l)
+    if qs and result_cue:
+        m=re.fullmatch(r"(?P<subject>.+?)\s+(?:was|were)\s+(?P<object>.+)",s,re.I)
+        if m:
+            return [mk_assertion(start_idx,m.group("subject"),"RESULT_VALUE",m.group("object"),sentence,
+                                 criticality="CRITICAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+        m=re.fullmatch(r"(?P<subject>.+?)\s+occurred\s+(?P<object>.+)",s,re.I)
+        if m:
+            return [mk_assertion(start_idx,m.group("subject"),"RESULT_VALUE",m.group("object"),sentence,
+                                 criticality="CRITICAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+        m=re.fullmatch(r"There\s+(?:was|were)\s+(?P<object>.+)",s,re.I)
+        if m:
+            return [mk_assertion(start_idx,"clinical events","RESULT_VALUE",m.group("object"),sentence,
+                                 criticality="CRITICAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+        m=re.fullmatch(r"(?P<subject>.+?)\s+had\s+(?P<object>.+)",s,re.I)
+        if m:
+            return [mk_assertion(start_idx,m.group("subject"),"RESULT_VALUE",m.group("object"),sentence,
+                                 criticality="CRITICAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Count-only and temporally-prefixed population statements.
+    pop=rct_population_from_text(s)
+    if pop and not re.search(r"\b(?:effect|response|survival|recurrence|risk|hazard|difference|differed|death|adverse|toxicity)\b",l):
+        subject,count=pop
+        return [mk_assertion(start_idx,subject,"POPULATION",None,sentence,
+                             criticality="CRITICAL",bindings={"count":count},confidence="CERTAIN")]
+    m=re.search(rf"(?P<count>\d[\d,]*|(?:[A-Za-z-]+\s+){{0,4}}[A-Za-z-]+)\s+(?P<subject>(?:[A-Za-z-]+\s+){{0,3}}{RCT_PEOPLE})\b",s,re.I)
+    if m and re.search(r"\b(?:enrolled|accrued|recruited|available)\b",l):
+        count=parse_english_count(m.group("count"))
+        if count is not None:
+            crit="CRITICAL" if re.search(r"\b(?:enrolled|accrued|recruited)\b",l) else "MATERIAL"
+            return [mk_assertion(start_idx,m.group("subject").lower(),"POPULATION",None,sentence,
+                                 criticality=crit,bindings={"count":count},confidence="CERTAIN")]
+
+    # Explicit methods/statistics and follow-up procedure surfaces.
+    if re.fullmatch(r"(?:All\s+)?statistical\s+tests\s+were\s+two-sided",s,re.I):
+        return [mk_assertion(start_idx,"statistical tests","METHOD_STAT","two-sided",sentence,
+                             criticality="MATERIAL",confidence="CERTAIN")]
+    if re.search(r"\b(?:were|was)\s+(?:determined|computed|assayed|tested|conducted|performed|collected|assessed|measured)\s+(?:by|using|to|after|at|from)\b",l):
+        return [mk_assertion(start_idx,"study procedure","METHOD",s,sentence,
+                             criticality="MATERIAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+    if re.match(r"^(?:Follow-up|Cardiovascular follow-up)\s+(?:included|was|were)",s,re.I):
+        return [mk_assertion(start_idx,"follow-up","FOLLOW_UP",s,sentence,
+                             criticality="MATERIAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+    if re.match(r"^(?:During|At|After)\s+.+?\b(?:follow-up|assessment|observation)\b",s,re.I) and not result_cue:
+        return [mk_assertion(start_idx,"follow-up","FOLLOW_UP",s,sentence,
+                             criticality="MATERIAL",bindings=rct_bindings(sentence),confidence="CERTAIN")]
+
+    # Statistical continuation fragments and bibliographic/investigator metadata.
+    if re.fullmatch(r"P\s*[<=>]\s*\.?\d+\)?",s,re.I):
+        return [mk_assertion(start_idx,"statistical evidence","STATISTIC_FRAGMENT",s,sentence,
+                             criticality="MATERIAL",confidence="CERTAIN")]
+    if re.fullmatch(r"\(.+?\d{4}\)",s) or re.search(r"\bInvestigators\b$",s):
+        return [mk_assertion(start_idx,"document","METADATA",s,sentence,
+                             criticality="MATERIAL",confidence="CERTAIN")]
+
+    # Design/title fallback only after all critical RCT parsers have had priority.
+    if re.search(r"\b(?:trial|study)\b",l) and re.search(r"\b(?:randomized|randomised|controlled|double-blind|single-blind|prospective|retrospective|phase\s+[ivx]+)\b",l):
+        return [mk_assertion(start_idx,"study","STUDY_DESIGN",s,sentence,
+                             criticality="MATERIAL",confidence="CERTAIN")]
 
     return None
 
