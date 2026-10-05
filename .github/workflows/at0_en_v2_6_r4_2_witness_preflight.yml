@@ -1,0 +1,127 @@
+name: AT0 EN V2.6 R4.2 witness identity preflight
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - 'phase2/academic_transform/at0_en/v2_6/R4_2_PREFLIGHT_TRIGGER_V1.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: at0-en-v2.6-dev
+          fetch-depth: 1
+
+      - name: Install identity-only dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --quiet huggingface_hub==0.25.2
+
+      - name: Resolve and hash safe model/data identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r42"
+          python - <<'PY' > "$RUNNER_TEMP/r42/R4_2_PREFLIGHT_IDENTITY.json"
+          import hashlib, json, os, pathlib, platform, urllib.request
+          from huggingface_hub import HfApi, snapshot_download
+
+          model_id="microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract"
+          api=HfApi()
+          info=api.model_info(model_id)
+          revision=info.sha
+          safe_files=["config.json","tokenizer_config.json","vocab.txt","flax_model.msgpack","LICENSE.md"]
+          root=pathlib.Path(snapshot_download(
+              repo_id=model_id,
+              revision=revision,
+              allow_patterns=safe_files,
+              local_dir=os.path.join(os.environ["RUNNER_TEMP"],"r42","model"),
+              local_dir_use_symlinks=False,
+          ))
+          missing=[x for x in safe_files if not (root/x).exists()]
+          if missing:
+              raise SystemExit(f"missing safe model files: {missing}")
+          if (root/"pytorch_model.bin").exists():
+              raise SystemExit("pickle weight unexpectedly downloaded")
+
+          def sha256(p):
+              h=hashlib.sha256()
+              with open(p,"rb") as f:
+                  for chunk in iter(lambda:f.read(1024*1024),b""):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          data_repo="BIDS-Xu-Lab/section_specific_annotation_of_PICO"
+          data_commit="bc4b878773192f38b2600ec830ca4208b82f7dc0"
+          specs=[
+            ("EBM_TRAIN","data/EBM-NLPmod/fold1/train.txt","9e6ef5b93c9d2b728977c202412cea58fe86fa86"),
+            ("EBM_DEV","data/EBM-NLPmod/fold1/dev.txt","f9e4ec83bde8a564dc3148ef730b0f9801fdbdf7"),
+            ("EBM_TEST","data/EBM-NLPmod/fold1/test.txt","7a22af9caf5a67aa75700a79ad3d47399d53d965"),
+            ("COVID_TEST","data/COVID-19/fold1/test.txt","659be83d0389b2f2c1e12ee9cf24898346fe55fa"),
+            ("AD_TEST","data/AD/fold1/test.txt","7b752b3e5f813a8104cf8a1173ecdba89012dbf5"),
+          ]
+          datasets={}
+          for name,path,expected_blob in specs:
+              url=f"https://raw.githubusercontent.com/{data_repo}/{data_commit}/{path}"
+              raw=urllib.request.urlopen(url,timeout=30).read()
+              blob=hashlib.sha1(f"blob {len(raw)}\0".encode()+raw).hexdigest()
+              if blob!=expected_blob:
+                  raise SystemExit(f"git blob mismatch {name}: {blob}")
+              datasets[name]={
+                  "path":path,
+                  "git_blob_sha1":blob,
+                  "sha256":hashlib.sha256(raw).hexdigest(),
+                  "bytes":len(raw),
+              }
+
+          out={
+              "preflight_id":"AT0_EN_V26_R4_2_WITNESS_PREFLIGHT_V1",
+              "model":{
+                  "repo_id":model_id,
+                  "resolved_revision":revision,
+                  "license_expected":"MIT",
+                  "weight_source":"flax_model.msgpack",
+                  "pickle_weight_loaded":False,
+                  "files":{x:{"sha256":sha256(root/x),"bytes":(root/x).stat().st_size} for x in safe_files},
+              },
+              "dataset":{
+                  "repo":data_repo,
+                  "commit":data_commit,
+                  "repository_license_file_observed":False,
+                  "usage_scope":"INTERNAL_ACADEMIC_RESEARCH_DEVELOPMENT_PENDING_LICENSE_CLARIFICATION",
+                  "files":datasets,
+              },
+              "runtime":{
+                  "python":platform.python_version(),
+                  "huggingface_hub":"0.25.2",
+                  "network_used":"IDENTITY_ACQUISITION_ONLY",
+              },
+              "guards":{
+                  "factpico_used":False,
+                  "consumed_60_rct_holdout_used":False,
+                  "opened_30_rct_diagnostic_used":False,
+                  "training_performed":False,
+                  "inference_performed":False,
+              },
+              "state":"PREFLIGHT_IDENTITY_PASS"
+          }
+          canonical=json.dumps(out,sort_keys=True,separators=(",",":")).encode()
+          out["canonical_pre_hash_sha256"]=hashlib.sha256(canonical).hexdigest()
+          print(json.dumps(out,indent=2,sort_keys=True))
+          PY
+
+      - name: Upload immutable preflight evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: at0-en-v2-6-r4-2-witness-preflight
+          path: ${{ runner.temp }}/r42/R4_2_PREFLIGHT_IDENTITY.json
+          retention-days: 90
+          if-no-files-found: error
