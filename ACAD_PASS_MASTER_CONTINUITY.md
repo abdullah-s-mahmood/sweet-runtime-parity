@@ -4053,3 +4053,49 @@ Current R4 checkpoint at the time of this update:
 - 60-RCT internal holdout: UNOPENED
 - R4.1B generic coverage implementation commit: `60de7ff23150ffefe8936bfebb0db49f0be04463`
 - R4.1B validation run: in progress at this checkpoint
+
+
+# R4 INTERNAL HOLDOUT CONSUMED — R4.2 TRIGGERED
+
+Date: 2026-10-05
+
+One-time internal holdout run:
+`37340581937`
+
+Trigger head:
+`e9e0b4aead491e02c9534980ab69c6f31b17e865`
+
+Artifact:
+`11358256711`
+digest:
+`sha256:808bce1258ccb2493385d81681b83bc2dbca010b0697f46909a84ab3db27f98c`
+
+Canonical result SHA:
+`750e0b11de8f1f4ceb88ef68b55a970d5a92a06957ae0ed77480130d802a63eb`
+
+Holdout:
+- 60 RCT documents
+- FactPICO overlap = 0
+- state = CONSUMED_INTERNAL_DEVELOPMENT_HOLDOUT
+- rerun = FORBIDDEN
+- R4.1B tuning against holdout = FORBIDDEN
+- threshold relaxation = FORBIDDEN
+
+Observed:
+- total assertions 715
+- unresolved 300 = 41.9580% (FAIL vs <=40%)
+- non-CERTAIN 304 = 42.5175% (PASS vs <=45%)
+- short evidence <=3 chars = 2 (FAIL vs 0)
+- empty documents = 0 PASS
+- over-128 documents = 0 PASS
+- documents non-CERTAIN <=50% = 49/60 = 81.6667% PASS vs >=80%
+
+Overall:
+`FAIL_INTERNAL_HOLDOUT_GATE`
+
+Next exact checkpoint:
+`R4.2 AUXILIARY BIOMEDICAL EXTRACTION WITNESS / WEAK-SUPERVISION ARCHITECTURE DESIGN`
+
+Do not inspect holdout text to patch R4.1B.
+Do not rerun consumed holdout.
+Do not touch FactPICO.
