@@ -9615,3 +9615,51 @@ Delta since previous major checkpoint:
 
 Exact next checkpoint:
 `INDEPENDENT POST-PREDICTION / PRE-GOLD AUTHORIZATION REVIEW`
+
+
+## 2026-10-05 — FactPICO V2.5 scored and frozen
+
+Gold/scoring run:
+`37325138336`
+
+Artifact:
+`11351451888`
+
+Artifact digest:
+`105534207a4566c38d76174e9cd263244b87e37358b6007c76502bc250d67e77`
+
+Scorer SHA:
+`00df8950ffb3d0ee48925c98ad976e1a940e68069a937396d4b28fdd5923d7fb`
+
+Config SHA:
+`bf2c47d0d2b7121c64168d62fc8f51669c22579f5827b6d3e4d0a4f20d304322`
+
+Exact join:
+345/345 PASS
+
+Frozen gates:
+- safety PASS: 0 unsafe PASS across 149 ERROR_STRICT / 83 sources
+- negative utility FAIL: micro 10.7383%, macro 9.4378%, threshold 75%
+- positive anti-degeneracy FAIL: micro 0%, macro 0%, threshold 75%
+
+Mechanical decision:
+`H1_FULL_PASS_NOT_ACHIEVED`
+
+Current progress:
+- FactPICO completion 95%
+- execution integrity 98/100
+- scientific-validation completeness 95/100
+- process rigor satisfaction 98/100
+- benchmark-outcome satisfaction 30/100
+- overall English-track maturity 74/100
+
+Next packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_POST_SCORING_INTERPRETATION_REVIEW_PACKET.txt`
+
+Packet commit:
+`42af380148c790162572ba335a2a817a85d1565a`
+
+Current exact checkpoint:
+`FACTPICO V2.5 POST-SCORING INDEPENDENT INTERPRETATION / NEXT-DECISION REVIEW`
+
+No rerun, rescoring, adaptation, or repair is authorized yet.
