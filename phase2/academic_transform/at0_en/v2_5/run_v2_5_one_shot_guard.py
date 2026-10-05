@@ -12,6 +12,15 @@ import sys
 RUNTIME_ID = "AT0-EN V2.5"
 EXPECTED_FACTPICO_INPUT_SHA256 = "ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82"
 EXPECTED_FACTPICO_COUNT = 345
+FACTPICO_AUTHORIZATION_ID = "FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001"
+DURABLE_LEDGER_PROVIDER = "github:abdullah-s-mahmood/sweet-runtime-parity@factpico-v25-one-shot-ledger"
+DURABLE_LEDGER_KEY = (
+    "claims/real/"
+    + FACTPICO_AUTHORIZATION_ID
+    + "/"
+    + EXPECTED_FACTPICO_INPUT_SHA256
+    + "/ATTEMPT_CLAIM.json"
+)
 
 
 def sha256_file(path: pathlib.Path) -> str:
@@ -43,12 +52,30 @@ def main() -> None:
     ap.add_argument("--max-assertions-per-side", type=int, default=128)
     ap.add_argument("--expected-input-sha256", default=EXPECTED_FACTPICO_INPUT_SHA256)
     ap.add_argument("--expected-count", type=int, default=EXPECTED_FACTPICO_COUNT)
+    ap.add_argument("--authorization-id")
+    ap.add_argument("--durable-ledger-provider")
+    ap.add_argument("--durable-ledger-key")
+    ap.add_argument("--durable-ledger-commit-sha")
     args = ap.parse_args()
 
     if os.environ.get("ACAD_PASS_V25_SYNTHETIC_TEST_MODE") == "1":
         raise RuntimeError("Synthetic test mode must be disabled for a one-shot attempt.")
     if os.environ.get("ACAD_PASS_V25_SYNTHETIC_FAULT_MAP"):
         raise RuntimeError("Synthetic fault map must be absent for a one-shot attempt.")
+
+    real_factpico = (
+        args.expected_input_sha256 == EXPECTED_FACTPICO_INPUT_SHA256
+        and args.expected_count == EXPECTED_FACTPICO_COUNT
+    )
+    if real_factpico:
+        if args.authorization_id != FACTPICO_AUTHORIZATION_ID:
+            raise RuntimeError("Missing or incorrect frozen FactPICO authorization ID.")
+        if args.durable_ledger_provider != DURABLE_LEDGER_PROVIDER:
+            raise RuntimeError("Missing or incorrect frozen durable-ledger provider.")
+        if args.durable_ledger_key != DURABLE_LEDGER_KEY:
+            raise RuntimeError("Missing or incorrect frozen durable-ledger key.")
+        if not args.durable_ledger_commit_sha:
+            raise RuntimeError("Durable-ledger claim commit SHA is required before FactPICO inference.")
 
     if args.attempt_dir.exists():
         raise RuntimeError("Attempt directory already exists; attempt is consumed or output already frozen.")
@@ -74,6 +101,10 @@ def main() -> None:
         "timeout_seconds": args.timeout_seconds,
         "max_assertions_per_side": args.max_assertions_per_side,
         "retry_count": 0,
+        "authorization_id": args.authorization_id,
+        "durable_ledger_provider": args.durable_ledger_provider,
+        "durable_ledger_key": args.durable_ledger_key,
+        "durable_ledger_commit_sha": args.durable_ledger_commit_sha,
     })
 
     cmd = [
@@ -110,6 +141,10 @@ def main() -> None:
         "prediction_sha256": prediction_sha,
         "input_sha256": actual_input_sha,
         "retry_count": 0,
+        "authorization_id": args.authorization_id,
+        "durable_ledger_provider": args.durable_ledger_provider,
+        "durable_ledger_key": args.durable_ledger_key,
+        "durable_ledger_commit_sha": args.durable_ledger_commit_sha,
     })
 
     predictions_path.chmod(0o444)
