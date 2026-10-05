@@ -75,6 +75,13 @@ jobs:
           python phase2/academic_transform/at0_en/dev_support/v2_6_real_rct_stress.py \
             > "$RUNNER_TEMP/v26/REAL_RCT_STRESS.json"
 
+      - name: Audit unresolved patterns on already-open 30 RCT development set
+        shell: bash
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/dev_support/v2_6_r4_open30_unresolved_audit.py \
+            > "$RUNNER_TEMP/v26/R4_OPEN30_UNRESOLVED_AUDIT.json"
+
       - name: Upload dev evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
