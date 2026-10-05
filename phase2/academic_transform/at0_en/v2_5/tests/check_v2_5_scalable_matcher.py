@@ -8,6 +8,7 @@ import pathlib
 import random
 import time
 import tracemalloc
+import sys
 from collections import Counter
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -20,6 +21,7 @@ NEW_ALIGNER = V25 / "gate_b1" / "b1_aligner.py"
 B1_PAIRS = V24 / "gate_b1" / "B1_HUMAN_CORRECT_GRAPH_PAIRS_V1.jsonl"
 B2_RAW = V24 / "gate_b2" / "B2_RAW_TEXT_PAIRS_V1.jsonl"
 B2_EXTRACTOR = V24 / "gate_b2" / "b2_2_relation_aware_extractor.py"
+RUNNER = V25 / "run_v2_5_batch.py"
 
 OUT = HERE / "results"
 OUT.mkdir(parents=True, exist_ok=True)
@@ -45,6 +47,7 @@ def rows(path: pathlib.Path):
 old = loadmod("v24_b1", OLD_ALIGNER)
 new = loadmod("v25_b1", NEW_ALIGNER)
 ra = loadmod("v24_ra", B2_EXTRACTOR)
+runner = loadmod("v25_runner", RUNNER)
 
 pairs = rows(B1_PAIRS)
 raws = {x["pair_id"]: x for x in rows(B2_RAW)}
@@ -310,6 +313,62 @@ for n in SCALABILITY_SIZES:
     })
 
 
+# ---------------------------------------------------------------------------
+# 7. Guardrail / failure-path mechanics
+# ---------------------------------------------------------------------------
+timeout_status, _ = runner.run_child_command(
+    [sys.executable, "-c", "import time; time.sleep(2)"],
+    "",
+    0.05,
+)
+assert timeout_status == "TIMEOUT"
+
+crash_status, crash_diag = runner.run_child_command(
+    [sys.executable, "-c", "import sys; sys.exit(7)"],
+    "",
+    2.0,
+)
+assert crash_status == "CRASH"
+assert crash_diag and "EXIT_7" in crash_diag
+
+sample_raw = raws[sorted(raws)[0]]
+sample_record = {
+    "record_id": "SYN-GUARDED-VALID",
+    "source_text": sample_raw["source_text"],
+    "candidate_text": sample_raw["candidate_text"],
+}
+guarded = runner.guarded_process_record(
+    sample_record,
+    timeout_seconds=10.0,
+    max_assertions_per_side=128,
+)
+assert guarded["record_id"] == sample_record["record_id"]
+assert guarded["predicted_outcome"] in {"PASS_CANDIDATE", "REJECT", "REVIEW"}
+assert guarded["invalid_reason"] is None
+
+empty_invalid = runner.guarded_process_record(
+    {"record_id": "SYN-EMPTY", "source_text": "", "candidate_text": "A valid sentence."},
+    timeout_seconds=2.0,
+    max_assertions_per_side=128,
+)
+assert empty_invalid["predicted_outcome"] == "INVALID_VERIFICATION"
+assert empty_invalid["invalid_reason"] == "EMPTY_SOURCE_TEXT"
+
+out_of_envelope_checked = False
+for pid in sorted(raws):
+    raw = raws[pid]
+    sg = ra.relation_aware_extract(raw["source_text"], f"{pid}-SRC-ENV")
+    cg = ra.relation_aware_extract(raw["candidate_text"], f"{pid}-CAND-ENV")
+    if max(len(sg["assertions"]), len(cg["assertions"])) > 1:
+        rec = {"record_id": f"SYN-ENV-{pid}", "source_text": raw["source_text"], "candidate_text": raw["candidate_text"]}
+        env_invalid = runner.process_record(rec, max_assertions_per_side=1)
+        assert env_invalid["predicted_outcome"] == "INVALID_VERIFICATION"
+        assert env_invalid["invalid_reason"] == "ASSERTION_COUNT_OUT_OF_SUPPORTED_ENVELOPE"
+        out_of_envelope_checked = True
+        break
+assert out_of_envelope_checked
+
+
 report = {
     "gate": "AT0_EN_V2_5_SCALABLE_MATCHER_REGRESSION",
     "status": "PASS",
@@ -327,6 +386,7 @@ report = {
     "downstream_tie_case": "PASS",
     "scalability": scalability,
     "supported_max_n": SUPPORTED_MAX_N,
+    "guardrail_tests": {"timeout": "PASS", "crash": "PASS", "valid_child": "PASS", "empty_input": "PASS", "out_of_envelope": "PASS", "retry_count": 0},
     "matcher_time_budget_seconds": MATCHER_TIME_BUDGET_SECONDS,
     "peak_memory_budget_bytes": PEAK_MEMORY_BUDGET_BYTES,
 }
