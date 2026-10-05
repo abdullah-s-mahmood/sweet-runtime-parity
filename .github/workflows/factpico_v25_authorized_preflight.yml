@@ -1,0 +1,99 @@
+name: FactPICO V2.5 authorized preflight only
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - '.github/workflows/factpico_v25_authorized_preflight.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout immutable execution commit
+        uses: actions/checkout@v4
+        with:
+          ref: 659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee
+          fetch-depth: 1
+
+      - name: Verify immutable runtime identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee"
+          echo "ac36409cd32c9a759a3e962ee6a86aa30d0a52299f2a19ccc8206d7b54e248ea  phase2/academic_transform/at0_en/v2_5/gate_b1/b1_aligner.py" | sha256sum -c -
+          echo "7a3383e6108272b641e8f4bcda553a5d97aad7a873616341c3493d425fec6def  phase2/academic_transform/at0_en/v2_5/run_v2_5_batch.py" | sha256sum -c -
+          echo "574d0c0a1222435069eee48534e2d4e04ca72f6d538bf3c5c334a683304bb6d2  phase2/academic_transform/at0_en/v2_5/run_v2_5_one_shot_guard.py" | sha256sum -c -
+          echo "ab128309261eeffdb734464f2a2fef52cef4ce37bdb3b9654317d6b5bba0b7e1  phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_h1_adapter_v5.py" | sha256sum -c -
+
+      - name: Download exact public FactPICO archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECT=ec260d7c69db9537f819fbdf728c997520e55de56b9f03b2980b017c91b9d4f4
+          urls=(
+            "https://utexas.box.com/shared/static/mpe5idxrqrzs1wcakphng7xfi7h4g83j.zip"
+            "https://utexas.box.com/s/mpe5idxrqrzs1wcakphng7xfi7h4g83j?download=1"
+            "https://utexas.box.com/s/mpe5idxrqrzs1wcakphng7xfi7h4g83j"
+          )
+          ok=0
+          for u in "${urls[@]}"; do
+            rm -f /tmp/FactPICO.zip
+            if curl -fL --retry 2 --connect-timeout 20 --max-time 120 "$u" -o /tmp/FactPICO.zip; then
+              got="$(sha256sum /tmp/FactPICO.zip | awk '{print $1}')"
+              if [ "$got" = "$EXPECT" ]; then
+                ok=1
+                break
+              fi
+            fi
+          done
+          test "$ok" = 1
+          echo "$EXPECT  /tmp/FactPICO.zip" | sha256sum -c -
+
+      - name: Rebuild frozen private input and verify identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/factpico_build
+          python phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_h1_adapter_v5.py \
+            --factpico-zip /tmp/FactPICO.zip \
+            --out-dir /tmp/factpico_build \
+            > /tmp/adapter_stdout.json
+          echo "ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82  /tmp/factpico_build/FACTPICO_H1_V5_PREDICTION_INPUT_PRIVATE.jsonl" | sha256sum -c -
+          echo "6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48  /tmp/factpico_build/FACTPICO_H1_V5_GOLD_PRIVATE.jsonl" | sha256sum -c -
+          echo "d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255  /tmp/factpico_build/FACTPICO_HARD_GOLD_ELIGIBILITY_MANIFEST_V5.csv" | sha256sum -c -
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('/tmp/factpico_build/FACTPICO_H1_V5_PREDICTION_INPUT_PRIVATE.jsonl')
+          rows=[json.loads(x) for x in p.read_text(encoding='utf-8').splitlines() if x.strip()]
+          assert len(rows)==345
+          ids=[r['record_id'] for r in rows]
+          assert len(set(ids))==345
+          assert all(set(r)=={'record_id','source_text','candidate_text'} for r in rows)
+          print('PRECHECK_COUNT_ORDER_SCHEMA=PASS')
+          PY
+
+      - name: Confirm real claim is not touched
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "${ACAD_PASS_V25_SYNTHETIC_TEST_MODE:-}"
+          test -z "${ACAD_PASS_V25_SYNTHETIC_FAULT_MAP:-}"
+          echo "NO_REAL_CLAIM_CREATED=TRUE" > /tmp/PREFLIGHT_SUMMARY.txt
+          echo "EXECUTION_STARTED=FALSE" >> /tmp/PREFLIGHT_SUMMARY.txt
+          echo "INPUT_SHA=ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82" >> /tmp/PREFLIGHT_SUMMARY.txt
+          echo "COUNT=345" >> /tmp/PREFLIGHT_SUMMARY.txt
+          echo "CHECKOUT=659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee" >> /tmp/PREFLIGHT_SUMMARY.txt
+
+      - name: Upload non-sensitive preflight evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: factpico-v25-authorized-preflight-evidence
+          path: |
+            /tmp/PREFLIGHT_SUMMARY.txt
+            /tmp/adapter_stdout.json
+          if-no-files-found: error
