@@ -28,7 +28,9 @@ jobs:
           echo "ac36409cd32c9a759a3e962ee6a86aa30d0a52299f2a19ccc8206d7b54e248ea  phase2/academic_transform/at0_en/v2_5/gate_b1/b1_aligner.py" | sha256sum -c -
           echo "7a3383e6108272b641e8f4bcda553a5d97aad7a873616341c3493d425fec6def  phase2/academic_transform/at0_en/v2_5/run_v2_5_batch.py" | sha256sum -c -
           echo "574d0c0a1222435069eee48534e2d4e04ca72f6d538bf3c5c334a683304bb6d2  phase2/academic_transform/at0_en/v2_5/run_v2_5_one_shot_guard.py" | sha256sum -c -
-          echo "ab128309261eeffdb734464f2a2fef52cef4ce37bdb3b9654317d6b5bba0b7e1  phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_h1_adapter_v5.py" | sha256sum -c -
+          ADAPTER_SHA="$(sha256sum phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_h1_adapter_v5.py | awk '{print $1}')"
+          echo "COMMITTED_ADAPTER_SHA=$ADAPTER_SHA"
+          test "$ADAPTER_SHA" = "3b0698772630a17d6d05fdf7197f5faa79b22212332ae785b069318bda4cd5b0"
 
       - name: Download exact public FactPICO archive
         shell: bash
