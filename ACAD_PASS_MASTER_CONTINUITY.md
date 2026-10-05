@@ -3553,3 +3553,37 @@ Do NOT:
 - resume Arabic work.
 
 Gold join/scoring requires a separate explicit authorization checkpoint.
+
+
+---
+
+# 52. UI-RESILIENT EXECUTION AGREEMENT
+
+Date: 2026-10-05
+
+Persistent working rule added by explicit user request:
+
+`MINIMIZE_UI_STALL_RISK`
+
+Operational policy:
+- strictly sequential tool execution only;
+- minimize total tool calls where safely possible;
+- combine related read-only checks into one bounded step;
+- avoid unnecessary polling; poll only when a state transition must be verified;
+- keep checkpoint messages short;
+- never repeat completed scientific work merely because the UI displays:
+  `Our systems are thinking a bit more about this request before responding.`
+- treat that phrase as a UI/stream interruption, not scientific failure;
+- resume from the last verified durable state;
+- preserve all successful and negative evidence;
+- never sacrifice one-shot integrity, scientific controls, hashes, or auditability merely to reduce tool calls.
+
+Current scientific/execution state remains unchanged:
+- final authorization: GRANTED
+- real FactPICO attempt: UNCONSUMED
+- prediction: NOT_RUN
+- gold join: NOT_RUN
+- scoring: NOT_RUN
+
+Exact next checkpoint:
+`VERIFY REAL CLAIM ABSENT -> CREATE REMOTE CLAIM -> ONE AUTHORIZED PREDICTION RUN -> IMMUTABLE FREEZE -> STOP BEFORE GOLD JOIN`
