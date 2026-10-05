@@ -1115,41 +1115,49 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`FINAL HIGHER-MODEL PRE-PREDICTION RE-REVIEW`
+`FINAL EXECUTION AUTHORIZATION REVIEW`
 
-V2.5 essential pre-execution changes are closed by implementation evidence.
+Higher-model verdict:
+`B. READY_WITH_FINAL_EXECUTION_CONTROL_CHANGE`
 
-Final successful regression:
-- run `37289569561`
-- head `29e3abe5ccb708cb88d94ae00630eaa0fdc2b123`
-- artifact `11335647986`
-- artifact SHA-256 `61d82aa30de89e84aa5bc0433bdfa528259269c0b3630648df5c0d4c95573b63`
+Both remaining gaps are now closed:
+- true priority-conflict fixture;
+- durable GitHub attempt ledger.
+
+Final regression:
+- run `37312305371`
+- head `659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee`
+- artifact `11345959688`
+- artifact ZIP SHA-256 `f3510bd4cacdb40a70d6b37d6d9f6fac24a9d77285462723f1e0738eb374a701`
+
+Durable real claim:
+`ABSENT / UNCONSUMED`
+
+Synthetic durable claim:
+`PRESENT / RETAINED AS EVIDENCE`
 
 Current implementation verdict:
-`READY_FOR_FINAL_HIGHER_MODEL_PRE_PREDICTION_RE_REVIEW`
+`READY_FOR_FINAL_EXECUTION_AUTHORIZATION_REVIEW`
 
 Quality delta:
 `IMPROVED`
 
-Preserved negative evidence:
-old 10-second synthetic max-tie criterion showed runner variability in run `37289060156`.
-It was replaced before FactPICO by a 30-second synthetic regression criterion; production remains 60 seconds/record.
-
 FactPICO:
 `NOT_RUN`
 
-Still not authorized:
+Still not authorized until independent final authorization:
 - FactPICO prediction;
-- gold join/scoring;
-- reruns/adaptive retry;
-- runtime/matcher changes;
+- scoring;
+- gold join;
+- rerun/adaptive retry;
+- runtime/matcher modification;
 - threshold/gold changes;
-- custom Gate C opening;
+- custom Gate C;
 - Arabic work.
 
 Exact next action:
-send the focused review prompt corresponding to:
-`phase2/academic_transform/at0_en/v2_5/V2_5_FINAL_PRE_PREDICTION_REVIEW_PACKET.txt`
+send the narrowly scoped final authorization prompt based on
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/V2_5_FINAL_EXECUTION_AUTHORIZATION_REVIEW_PACKET.txt`
 
 # 23. WHOLE-PROJECT PROGRESS
 
@@ -3266,3 +3274,70 @@ Net:
 
 Current checkpoint:
 `FINAL HIGHER-MODEL PRE-PREDICTION RE-REVIEW`
+
+
+---
+
+# 50. FINAL V2.5 EXECUTION-CONTROL CLOSURE
+
+Date: 2026-10-05
+
+Higher-model verdict:
+`B. READY_WITH_FINAL_EXECUTION_CONTROL_CHANGE`
+
+Remaining gaps:
+1. priority-conflict fixture
+2. durable attempt ledger
+
+Both closed.
+
+Priority fixture:
+selected assignment now wins owner priorities while losing semantic score.
+Matcher unchanged.
+
+Final regression:
+`37312305371`
+
+Head:
+`659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee`
+
+Artifact:
+`11345959688`
+
+Artifact SHA:
+`f3510bd4cacdb40a70d6b37d6d9f6fac24a9d77285462723f1e0738eb374a701`
+
+Durable ledger:
+provider `GitHub repository contents`
+branch `factpico-v25-one-shot-ledger`
+
+Authorization:
+`FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001`
+
+Real canonical key:
+`claims/real/FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001/ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82/ATTEMPT_CLAIM.json`
+
+Synthetic durability test:
+- creation commit `f687cedcb82c543d8d21552db79a2d25a93f7a4e`
+- later blob `cf03473f29ab3ce3452d133302ccc27672c1278f`
+- survived first launcher interruption
+- fresh launcher refused restart
+- PASS
+
+Current tree:
+real claim FALSE
+synthetic evidence claim TRUE
+
+FactPICO real attempt remains:
+`UNCONSUMED`
+
+Files:
+- `V2_5_FINAL_EXECUTION_CONTROL_CLOSURE_V1.md`
+- `FACTPICO_V5_EXECUTION_IDENTITY_AMENDMENT_V3.md`
+- `V2_5_FINAL_EXECUTION_AUTHORIZATION_REVIEW_PACKET.txt`
+
+Net:
+`IMPROVED / NO NEW SCIENTIFIC REGRESSION OBSERVED`
+
+Current stop:
+`FINAL EXECUTION AUTHORIZATION REVIEW`
