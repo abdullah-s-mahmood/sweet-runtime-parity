@@ -1,0 +1,248 @@
+ACAD_PASS — FACTPICO V2.5 POST-SCORING INDEPENDENT INTERPRETATION / NEXT-DECISION REVIEW PACKET
+Date: 2026-10-05
+Status: REVIEW ONLY — RESULTS FROZEN / NO REPAIR AUTHORIZED
+
+======================================================================
+1. DECISION REQUESTED
+======================================================================
+
+The prospective prediction and the one authorized gold/scoring run are complete
+and immutable.
+
+Do NOT request:
+- prediction rerun;
+- scoring rerun;
+- threshold/gold/population changes;
+- retrospective relabeling;
+- result-adaptive benchmark modification;
+- custom Gate C;
+- Arabic-track work.
+
+Please determine what the frozen FactPICO result means for the current AT0-EN
+V2.5 architecture and identify the narrowest scientifically justified next step.
+
+Return exactly:
+
+1. INTERPRETATION VERDICT
+2. FAILURE/WEAKNESS LOCALIZATION
+3. WHAT THE RESULT DOES AND DOES NOT ESTABLISH
+4. NEXT AUTHORIZED ACTION
+5. WHAT MUST REMAIN FROZEN
+6. COMPLETION / QUALITY IMPACT
+
+======================================================================
+2. FROZEN EXECUTION IDENTITIES
+======================================================================
+
+Prediction run:
+37318062175
+
+Prediction artifact:
+11348646367
+
+Prediction SHA-256:
+925c8a073f4304fe751af072c1d1b8fc64455104e8ed2f23a88c3fc3e6ad496b
+
+Gold/scoring run:
+37325138336
+
+Scoring artifact:
+11351451888
+
+Scoring artifact ZIP SHA-256:
+105534207a4566c38d76174e9cd263244b87e37358b6007c76502bc250d67e77
+
+Scorer SHA-256:
+00df8950ffb3d0ee48925c98ad976e1a940e68069a937396d4b28fdd5923d7fb
+
+Config SHA-256:
+bf2c47d0d2b7121c64168d62fc8f51669c22579f5827b6d3e4d0a4f20d304322
+
+Gold SHA-256:
+6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48
+
+Eligibility SHA-256:
+d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255
+
+Joined rows SHA-256:
+144b778ae9ea1ee2c511dca862f1f0fe937e9b922d0e64df94eb0174c4f0e10f
+
+Scoring summary SHA-256:
+301d9f6fc0f2ca9b92493b314c63aceab2febb33318e823f3f1211cbb2cc8859
+
+Diagnostics SHA-256:
+5759d5e4f1d57f96225c9dd381154f8298f475a959fa37390a5faf43a0ac2ea8
+
+======================================================================
+3. FROZEN HARD RESULTS
+======================================================================
+
+A. HARD SAFETY GATE — PASS
+
+ERROR_STRICT:
+149 records / 83 sources
+
+Unsafe PASS_CANDIDATE:
+0 records / 0 sources
+
+One-sided exact source-level 95% zero-event upper bound:
+3.5449568%
+
+B. NEGATIVE UTILITY GATE — FAIL
+
+Success = REJECT
+
+Observed:
+REJECT = 16
+REVIEW = 133
+PASS_CANDIDATE = 0
+INVALID = 0
+
+Pair-micro REJECT:
+10.7383%
+95% cluster-bootstrap CI:
+[5.7971%, 16.2338%]
+
+Source-macro REJECT:
+9.4378%
+95% cluster-bootstrap CI:
+[4.8193%, 14.8594%]
+
+Frozen threshold:
+75% for BOTH micro and macro
+
+C. POSITIVE ANTI-DEGENERACY GATE — FAIL
+
+SAFE_STRICT_CONTROL:
+34 records / 33 sources
+
+Observed:
+PASS_CANDIDATE = 0
+REJECT = 6
+REVIEW = 28
+INVALID = 0
+
+Pair-micro PASS:
+0%
+95% CI:
+[0%, 0%]
+
+Source-macro PASS:
+0%
+95% CI:
+[0%, 0%]
+
+Frozen threshold:
+75% for BOTH micro and macro
+
+Mechanical overall decision:
+H1_FULL_PASS_NOT_ACHIEVED
+
+======================================================================
+4. DIAGNOSTIC DISTRIBUTION
+======================================================================
+
+Overall prediction distribution:
+PASS_CANDIDATE = 0
+REJECT = 37
+REVIEW = 308
+INVALID = 0
+
+ERROR_STRICT:
+16 REJECT / 133 REVIEW / 0 PASS / 0 INVALID
+
+SAFE_STRICT_CONTROL:
+6 REJECT / 28 REVIEW / 0 PASS / 0 INVALID
+
+INTERMEDIATE:
+14 REJECT / 139 REVIEW / 0 PASS / 0 INVALID
+
+N_A_SOURCE_DIAGNOSTIC:
+1 REJECT / 8 REVIEW / 0 PASS / 0 INVALID
+
+The runtime therefore never emitted PASS_CANDIDATE anywhere in this benchmark,
+but causal/architectural interpretation is intentionally deferred to you.
+
+======================================================================
+5. CLAIM BOUNDARY
+======================================================================
+
+FactPICO is only:
+SOURCE-BOUNDED CRITICAL RCT/PICO FIDELITY SUBGATE
+
+It is NOT complete H1.
+
+The result must not be inflated into:
+- universal academic-document failure;
+- universal safety proof;
+- production-readiness proof;
+- a claim about all disciplines;
+- a claim about Arabic performance.
+
+======================================================================
+6. CURRENT ENGINEERING SCORECARD
+======================================================================
+
+FactPICO V2.5 subphase completion:
+95%
+
+Experimental-integrity maturity:
+98/100
+
+Scientific-validation completeness:
+95/100
+
+Process/experimental-rigor satisfaction:
+98/100
+
+Current benchmark-outcome satisfaction:
+30/100
+
+Overall English-track maturity estimate:
+74/100
+
+Target excellent/review-ready:
+>=90/100
+
+These maturity numbers are engineering indicators, not benchmark metrics.
+
+======================================================================
+7. REVIEW QUESTIONS
+======================================================================
+
+Please decide:
+
+1. Does the pattern support describing the current failure primarily as
+   over-abstention / decision-policy conservatism, or is that conclusion not
+   yet justified without further decomposition?
+
+2. Which layer should be investigated first:
+   extraction/representation,
+   relation-aware alignment,
+   confidence/uncertainty propagation,
+   final decision policy,
+   or another bounded layer?
+
+3. Can the perfect hard-safety result be retained as valid negative evidence
+   while acknowledging that the utility gates fail badly?
+
+4. Is a bounded diagnostic decomposition on the already frozen 345 joined rows
+   justified without changing predictions/gold/thresholds?
+
+5. If yes, specify exactly what diagnostic analysis is authorized and what must
+   remain frozen.
+
+6. If repair is justified later, define the evidence threshold required before
+   a new version (V2.6 or other) is allowed to run a NEW external validation.
+   The V2.5 one-shot must never be reused.
+
+7. State whether the current architecture should be:
+   - retained with decision-layer repair,
+   - retained with deeper representation/alignment repair,
+   - partially redesigned,
+   - or held pending more diagnostic evidence.
+
+Do not optimize for a favorable result. Optimize for construct validity,
+reproducibility, and the narrowest defensible next action.
+
+END OF PACKET.
