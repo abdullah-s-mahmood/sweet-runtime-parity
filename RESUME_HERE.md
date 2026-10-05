@@ -8942,3 +8942,100 @@ Forbidden:
 
 Stop until user says:
 `أكمل`
+
+
+## 2026-10-05 — Full higher-model report reconciled; synthetic scalability blocker confirmed
+
+User supplied:
+- ACAD_PASS_LANDSCAPE_STRATEGIC_REVIEW_2026-10-04.md
+- ACAD_PASS_REVIEWER_HANDOFF.md
+
+Current file-need decision:
+`NO ADDITIONAL USER FILE REQUIRED NOW`
+
+Only request original historical attachments later if one exact historical/provenance claim cannot be resolved from repository + reviewer handoff.
+
+Full reconciliation:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FULL_STRATEGIC_LANDSCAPE_RECONCILIATION_V1.md`
+
+Commit:
+`b724f618eb8067e44edd7ac3ae823b52f292ae01`
+
+Added roadmap details from full report:
+- 3-level evidence hierarchy
+- later PRESERVE/SIMPLIFY/CORRECT task contract
+- native-document authority
+- context/obligation separation
+- coverage ledger
+- dependency-aware repair
+- scoped delivery certificate
+- Docling/GROBID/academic-refchecker/MiniCheck/W3C provenance integration candidates
+- explicit code/license/scorer warnings
+- 10 new failure modes
+- stronger simple-baseline comparison requirement
+
+No FactPICO V5 rule changed.
+
+Synthetic scalability preflight:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/V2_4_SYNTHETIC_SCALABILITY_PREFLIGHT_V1.md`
+
+Commit:
+`03609245bab8d22e4c164708fd8ed2d9ded36803`
+
+Frozen best_one_to_one synthetic measurements:
+- n3 0.00140s
+- n4 0.00410s
+- n5 0.02483s
+- n6 0.17669s
+- n7 1.41590s
+- n8 12.94802s
+
+n8 measured rate:
+~3114 permutations/sec.
+
+Optimistic extrapolation:
+- n9 ~1.94 min
+- n10 ~19.42 min
+- n11 ~3.56 h
+- n12 ~42.73 h
+- n15 ~13.31 years
+
+No FactPICO data were used.
+
+Preflight verdict:
+`FAIL_SCALABILITY`
+
+Root:
+frozen B1.1 enumerates permutations factorially.
+
+Mathematical note:
+global objective is pairwise-additive lexicographic assignment.
+Factorial enumeration is not intrinsically necessary.
+
+But replacing matcher changes frozen runtime identity.
+
+Focused higher-model packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/V2_4_SCALABILITY_HIGHER_MODEL_REVIEW_PACKET.txt`
+
+Commit:
+`481c45c8a77f2446f9f2759c46c620c55054c1f2`
+
+Readiness update:
+`aa43910aa5d97528521cce253397404dcab827fe`
+
+Master continuity update:
+`e45f902a7cf30831096573a508c849014b6c1d0a`
+
+Implementation-agent recommendation:
+`PREFER VERSION-BUMP SCALABLE MATCHER, SUBJECT TO INDEPENDENT REVIEW`
+
+FactPICO exposure:
+`NONE`
+
+FactPICO prediction:
+`NOT RUN`
+
+Exact next checkpoint:
+`FOCUSED HIGHER-MODEL DECISION ON V2.4 SCALABILITY BLOCKER`
+
+Stop until user returns focused review.
