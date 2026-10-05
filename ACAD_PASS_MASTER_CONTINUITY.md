@@ -1115,45 +1115,58 @@ Do NOT select/open the 80 Gate C sources yet.
 # 22. CURRENT EXACT NEXT CHECKPOINT
 
 Current authorized path:
-`PRE-GATE-C EXT/META — FOCUSED HIGHER-MODEL DECISION ON V2.4 SCALABILITY BLOCKER`
+`PRE-GATE-C EXT/META — V2.5 PRE-PREDICTION HIGHER-MODEL REVIEW`
 
-Full higher-model landscape report and reviewer handoff have been reconciled.
+Focused scalability review verdict:
+`B. VERSION_BUMP_BEFORE_FACTPICO`
 
-No additional user file is currently required.
+AT0-EN V2.5 scalable matcher has been implemented and regression-frozen.
 
-Synthetic scalability preflight on frozen B1.1 matcher:
-- n=6: 0.1767 s
-- n=7: 1.4159 s
-- n=8: 12.9480 s
-- no FactPICO records used.
+Regression run:
+`37279532576`
 
-Preflight verdict:
-`FAIL_SCALABILITY`
+Run conclusion:
+`SUCCESS`
 
-Known issue:
-factorial permutation enumeration in assertion assignment.
+Artifact:
+`11331840770`
 
-FactPICO remains:
-`UNTOUCHED / NOT PREDICTED`
+Artifact digest:
+`sha256:ec012324b265b5e6be5e1aff5f5dd670547692fc9f8bb6a3f58c993ccbb2cba1`
 
-Focused review packet:
-`V2_4_SCALABILITY_HIGHER_MODEL_REVIEW_PACKET.txt`
+Key evidence:
+- B1 exact differences 0/12
+- B2 four-arm exact differences 0
+- EE 12/12; safe 5/5; unsafe PASS 0/6; REVIEW 1/1
+- 205 brute-force-oracle synthetic equivalence cases
+- tie-sensitive downstream case PASS
+- timeout/crash/empty/out-of-envelope guardrails PASS
+- n=128 two runs ~6.31–6.73 s; ~5.35 MB peak
+- FactPICO used FALSE
 
-Decision needed:
-A. run canonical V2.4 with preregistered timeout/INVALID;
-B. version-bump scalable matcher before FactPICO;
-C. another explicit clean path.
+V2.5 runtime identity:
+- matcher: HUNGARIAN_EXACT_INTEGER_LEXICOGRAPHIC_V1
+- numeric: EXACT_RATIONAL_FORMULA_V1
+- max assertions/side: 128
+- per-record timeout: 60 s
+- retries: 0
+- failure/out-of-envelope -> INVALID_VERIFICATION
 
-Implementation-agent recommendation:
-`PREFER B, SUBJECT TO INDEPENDENT REVIEW`
+FactPICO V5 scientific gold/thresholds/input/gold hashes are unchanged.
+
+FactPICO prediction:
+`NOT_RUN`
+
+Current review packet:
+`phase2/academic_transform/at0_en/v2_5/V2_5_PRE_PREDICTION_HIGHER_MODEL_REVIEW_PACKET.txt`
 
 Still not authorized:
-- FactPICO prediction;
-- H1 scoring;
-- silent modification of frozen V2.4;
-- threshold tuning;
-- custom Gate C opening;
-- Arabic-track work.
+- FactPICO prediction
+- FactPICO scoring
+- gold join
+- threshold changes
+- custom Gate C opening
+- Arabic work.
 
 # 23. WHOLE-PROJECT PROGRESS
 
@@ -3049,3 +3062,125 @@ No Arabic work.
 
 Exact next checkpoint:
 `FOCUSED HIGHER-MODEL DECISION ON V2.4 SCALABILITY BLOCKER`
+
+
+---
+
+# 48. AT0-EN V2.5 SCALABLE MATCHER — REGRESSION + RUNTIME FREEZE COMPLETE
+
+Date: 2026-10-05
+
+Higher-model decision:
+`B. VERSION_BUMP_BEFORE_FACTPICO`
+
+Decision evidence:
+user-supplied focused review and reviewer handoff revision 7.
+
+V2.4 status:
+`NOT_RUN — PRE-PREDICTION SCALABILITY BLOCKER`
+
+No FactPICO semantic score exists for V2.4.
+
+V2.5 specification:
+`phase2/academic_transform/at0_en/v2_5/AT0_EN_V2_5_EXACT_SCALABLE_MATCHER_SPEC_V1.md`
+
+V2.5 runtime freeze:
+`phase2/academic_transform/at0_en/v2_5/AT0_EN_V2_5_RUNTIME_FREEZE_V1.md`
+
+Freeze commit:
+`d8282a13d9ba215117f1dd52c80088ccdb972a15`
+
+FactPICO execution identity amendment:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V5_EXECUTION_IDENTITY_AMENDMENT_V1.md`
+
+Commit:
+`2301367d918501dbbe875ebf8bf9c4eb0e6e35ec`
+
+GitHub Actions run:
+`37279532576`
+
+Workflow head:
+`05e200461c1067c120e73acf4a6055383eb350b2`
+
+Run:
+`SUCCESS`
+
+Artifact:
+`11331840770`
+
+Artifact ZIP digest:
+`sha256:ec012324b265b5e6be5e1aff5f5dd670547692fc9f8bb6a3f58c993ccbb2cba1`
+
+Frozen hashes:
+- spec `8fe6203b266f86e2e147cf65b4e55d15b8dc25b344b466ac5d0f75ca461f888f`
+- aligner `ac36409cd32c9a759a3e962ee6a86aa30d0a52299f2a19ccc8206d7b54e248ea`
+- runner `ad2e996f0e76e8d6b80285d7059b072c53914f32d9d48fbf9af8f8076282b807`
+- regression test `6633db047be337df27d1fad61eb8b33a473a6d69c60b73e35ec2611b1552a47a`
+- report `2b0861f904448663b1eaff675ed79034bdccdb4c6ccee3ba08e7986fa5eb4b20`
+
+Algorithm:
+`HUNGARIAN_EXACT_INTEGER_LEXICOGRAPHIC_V1`
+
+Numeric policy:
+`EXACT_RATIONAL_FORMULA_V1`
+
+Regression:
+- B1 12 canonical pairs, exact differences 0
+- B2 all GG/GE/EG/EE, exact differences 0
+- GG 12/12
+- GE 11/12, safe 4/5, unsafe PASS 0
+- EG 11/12, safe 4/5, unsafe PASS 0
+- EE 12/12, safe 5/5, unsafe PASS 0/6, REVIEW 1/1
+- 205 synthetic brute-force equivalence cases, 0 differences
+- downstream tie-sensitive case PASS
+- grouping boundaries preserve legacy behavior
+
+Scalability:
+- n9 ~0.032 s
+- n10 ~0.039 s
+- n12 ~0.056 s
+- n16 ~0.099 s
+- n32 ~0.395 s
+- n64 ~1.58 s
+- n128 ~6.31–6.73 s
+- n128 peak ~5.35 MB
+
+Guardrails:
+- timeout PASS
+- crash PASS
+- valid child PASS
+- empty input PASS
+- out-of-envelope PASS
+- retries 0
+
+Operational envelope:
+- max assertions/side 128
+- 60 s/record
+- strictly sequential
+- no retries
+- timeout/crash/out-of-envelope -> INVALID_VERIFICATION
+
+Numeric qualification:
+exact-rational V2.5 is not claimed universally bitwise identical to legacy floating V2.4.
+No differences were observed in canonical development or the 205 oracle cases.
+
+FactPICO:
+`NOT USED / NOT PREDICTED / NOT SCORED`
+
+FactPICO V5:
+scientific contract and frozen input/gold/eligibility hashes unchanged.
+
+Pre-prediction review packet:
+`phase2/academic_transform/at0_en/v2_5/V2_5_PRE_PREDICTION_HIGHER_MODEL_REVIEW_PACKET.txt`
+
+Commit:
+`274d9bbd107779618a894445d83e1ec050d84973`
+
+Readiness update:
+`3b7c89c6593c57462cf4e2f8376c32313c15ab6b`
+
+Quality delta:
+`MAJOR IMPROVEMENT — SCALABILITY BLOCKER REMOVED WITHOUT OBSERVED REGRESSION`
+
+Exact next checkpoint:
+`V2.5 PRE-PREDICTION HIGHER-MODEL REVIEW`
