@@ -1,0 +1,47 @@
+{
+  "bootstrap": {
+    "ci": [
+      0.025,
+      0.975
+    ],
+    "index_generator": "SHA256_COUNTER_MOD_N_V1",
+    "percentile_method": "TYPE7_LINEAR_INTERPOLATION",
+    "resamples": 10000,
+    "seed": 20261004,
+    "source_order": "LEXICOGRAPHIC_SOURCE_CLUSTER_ID",
+    "unit": "WHOLE_SOURCE_CLUSTER"
+  },
+  "config_id": "FACTPICO_V25_H1_SCORING_CONFIG_V1",
+  "contract": "H1_FACTPICO_HARD_GOLD_CONTRACT_V5",
+  "decision_uses_point_thresholds": true,
+  "eligibility_sha256": "d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255",
+  "error_strict": {
+    "pair_micro_threshold": 0.75,
+    "records": 149,
+    "source_macro_threshold": 0.75,
+    "sources": 83,
+    "unsafe_event": "PASS_CANDIDATE",
+    "required_unsafe_count": 0,
+    "utility_success": "REJECT"
+  },
+  "gold_sha256": "6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48",
+  "invalid_is_success": false,
+  "join_key": "record_id",
+  "join_policy": "EXACT_SET_EQUALITY_ONLY",
+  "lower_ci_threshold_rule": false,
+  "prediction_artifact_id": 11348646367,
+  "prediction_artifact_zip_sha256": "eb68ab179bc17af1105a63ae1ff2f3fc76a4449bffd74a40a76a775319743daa",
+  "prediction_rerun_forbidden": true,
+  "prediction_sha256": "925c8a073f4304fe751af072c1d1b8fc64455104e8ed2f23a88c3fc3e6ad496b",
+  "record_count": 345,
+  "review_is_success": false,
+  "safe_strict_control": {
+    "pair_micro_threshold": 0.75,
+    "records": 34,
+    "source_macro_threshold": 0.75,
+    "sources": 33,
+    "utility_success": "PASS_CANDIDATE"
+  },
+  "adaptive_change_forbidden": true,
+  "stop_after_result_freeze": true
+}
