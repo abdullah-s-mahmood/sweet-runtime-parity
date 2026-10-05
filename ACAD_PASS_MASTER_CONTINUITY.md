@@ -3876,3 +3876,68 @@ Still forbidden:
 - repair implementation until independent approval
 - custom Gate C
 - Arabic work
+
+
+---
+
+# 58. CONSULTATION MINIMIZATION + DEEP-REASONING RULE
+
+Date: 2026-10-05
+
+Explicit user governance update:
+
+## A. Consultation policy
+
+Higher-model / external consultation is now an EXCEPTION, not a default.
+
+Use it only when at least one condition holds:
+1. the next action is irreversible or one-shot and a wrong decision could permanently invalidate evidence;
+2. construct validity, preregistration, benchmark integrity, or a major architecture boundary is genuinely ambiguous;
+3. there are two or more technically credible paths with materially different scientific consequences that cannot be resolved from available evidence;
+4. the user explicitly requests an independent review.
+
+Do NOT request higher-model consultation for:
+- routine debugging;
+- code inspection;
+- deterministic implementation;
+- ordinary experimental design details;
+- evidence aggregation;
+- descriptive failure analysis;
+- repair implementation that is already bounded by an accepted design;
+- documentation or continuity updates;
+- decisions that can be resolved by direct evidence, deep analysis, literature, or controlled development tests.
+
+Before recommending a consultation, ChatGPT must first:
+- perform its own deep analysis;
+- inspect all available project evidence;
+- conduct deep research when external evidence can materially improve the decision;
+- perform genuine multi-hypothesis brainstorming;
+- narrow the issue to a specific unresolved question;
+- state why it cannot be responsibly resolved internally.
+
+## B. Mandatory deep-reasoning rule
+
+For every material ACAD_PASS decision:
+- perform a real deep-analysis pass;
+- actively generate competing hypotheses, not a single preferred explanation;
+- search for disconfirming evidence;
+- compare alternatives on scientific validity, safety, utility, reproducibility, implementation cost, and risk of overfitting;
+- use deep web/literature research whenever current external evidence can materially improve the result;
+- prefer the narrowest evidence-supported intervention;
+- preserve negative findings and failed paths;
+- do not optimize for agreement with prior assumptions.
+
+The objective is:
+`BEST DEFENSIBLE RESULT, NOT FASTEST AGREEMENT`
+
+## C. Credit/cost conservation rule
+
+Minimize unnecessary model escalations and repeated reviews.
+Reuse already-established evidence and previous reviews.
+Do not ask the user to spend additional model quota when the task can be completed to a high standard internally.
+
+## D. Current application
+
+The current FactPICO failure analysis and V2.6 repair-design problem is considered technically resolvable internally.
+Further higher-model review is NOT automatically required unless a future irreversible scientific boundary is reached or the user requests it.
+
