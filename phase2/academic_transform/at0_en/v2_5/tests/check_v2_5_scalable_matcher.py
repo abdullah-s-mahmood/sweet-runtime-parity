@@ -650,10 +650,19 @@ with tempfile.TemporaryDirectory(prefix="acad_pass_v25_") as td_raw:
         "--max-assertions-per-side", "128",
         "--expected-input-sha256", guard_input_sha,
         "--expected-count", "2",
+        "--authorization-id", "SYN-DURABLE-LEDGER-001",
+        "--durable-ledger-provider", "github:abdullah-s-mahmood/sweet-runtime-parity@factpico-v25-one-shot-ledger",
+        "--durable-ledger-key", "claims/synthetic/SYN-DURABLE-LEDGER-001/ATTEMPT_CLAIM.json",
+        "--durable-ledger-commit-sha", "f687cedcb82c543d8d21552db79a2d25a93f7a4e",
     ]
     g1 = subprocess.run(guard_cmd, text=True, capture_output=True, env=clean_env, check=False)
     assert g1.returncode == 0, g1.stderr
     assert (attempt_dir / "ATTEMPT_CLAIM.json").exists()
+    local_claim = json.loads((attempt_dir / "ATTEMPT_CLAIM.json").read_text(encoding="utf-8"))
+    assert local_claim["authorization_id"] == "SYN-DURABLE-LEDGER-001"
+    assert local_claim["durable_ledger_provider"] == "github:abdullah-s-mahmood/sweet-runtime-parity@factpico-v25-one-shot-ledger"
+    assert local_claim["durable_ledger_key"] == "claims/synthetic/SYN-DURABLE-LEDGER-001/ATTEMPT_CLAIM.json"
+    assert local_claim["durable_ledger_commit_sha"] == "f687cedcb82c543d8d21552db79a2d25a93f7a4e"
     assert (attempt_dir / "FACTPICO_V25_PREDICTIONS.jsonl").exists()
     assert (attempt_dir / "PREDICTION_FREEZE.json").exists()
     freeze = json.loads((attempt_dir / "PREDICTION_FREEZE.json").read_text(encoding="utf-8"))
