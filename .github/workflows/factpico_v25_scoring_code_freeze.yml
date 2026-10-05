@@ -1,0 +1,37 @@
+name: FactPICO V2.5 scoring code freeze only
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - '.github/workflows/factpico_v25_scoring_code_freeze.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: phase2-arabic-eval
+          fetch-depth: 1
+      - name: Freeze scorer and config identities before gold
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/factpico_scoring_freeze
+          SCORER=phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_v25_score_frozen.py
+          CONFIG=phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_H1_SCORING_CONFIG_V1.json
+          sha256sum "$SCORER" | tee /tmp/factpico_scoring_freeze/SCORER_SHA256.txt
+          sha256sum "$CONFIG" | tee /tmp/factpico_scoring_freeze/CONFIG_SHA256.txt
+          git rev-parse HEAD | tee /tmp/factpico_scoring_freeze/FREEZE_COMMIT.txt
+          echo "GOLD_OPENED=FALSE" > /tmp/factpico_scoring_freeze/BOUNDARY.txt
+          echo "SCORING_PERFORMED=FALSE" >> /tmp/factpico_scoring_freeze/BOUNDARY.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: factpico-v25-scoring-code-freeze
+          path: /tmp/factpico_scoring_freeze
+          if-no-files-found: error
+          retention-days: 90
