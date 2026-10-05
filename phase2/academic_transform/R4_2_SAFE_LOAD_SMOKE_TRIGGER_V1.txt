@@ -1,0 +1,1 @@
+AT0-EN V2.6 R4.2 safe Flax-base conversion smoke trigger\nDate: 2026-10-05\nNo dev/test inference. Smoke weights discarded.\n
