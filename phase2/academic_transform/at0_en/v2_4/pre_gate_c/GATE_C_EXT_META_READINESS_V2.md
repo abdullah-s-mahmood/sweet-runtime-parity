@@ -1271,3 +1271,76 @@ Still forbidden:
 - threshold/gold changes;
 - custom Gate C;
 - Arabic work.
+
+
+## 29. Final execution-control closure after higher-model verdict B
+
+Higher-model verdict:
+`B. READY_WITH_FINAL_EXECUTION_CONTROL_CHANGE`
+
+Exactly two gaps were identified and closed:
+
+1. priority-conflict fixture;
+2. actual durable attempt ledger.
+
+Priority-conflict fix:
+- second source predicate = REDUCE
+- second candidate predicate = REDUCE
+- selected mapping wins higher priorities while losing semantic score
+- exact oracle + matcher still select the higher-priority assignment
+- matcher implementation unchanged
+
+Final successful regression:
+- run `37312305371`
+- head `659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee`
+- conclusion `SUCCESS`
+- artifact `11345959688`
+- artifact ZIP SHA-256 `f3510bd4cacdb40a70d6b37d6d9f6fac24a9d77285462723f1e0738eb374a701`
+
+Final frozen hashes:
+- matcher `ac36409cd32c9a759a3e962ee6a86aa30d0a52299f2a19ccc8206d7b54e248ea`
+- batch runner `7a3383e6108272b641e8f4bcda553a5d97aad7a873616341c3493d425fec6def`
+- one-shot guard `574d0c0a1222435069eee48534e2d4e04ca72f6d538bf3c5c334a683304bb6d2`
+- one-shot control spec `a615988ff14b64307576b367da593175c742f8c9a6e7928fc195f9811c21afed`
+- regression test `81fb84f28668804b95844adc32a3d7743061e89aa69bec2a2c89129b57b4d471`
+- regression report `b2248f62724e3d9a7a30f34bb42ff97e287bc608e9852e78bf13fcee63fc3a2a`
+
+Durable ledger:
+- provider: GitHub repository contents
+- repository: `abdullah-s-mahmood/sweet-runtime-parity`
+- branch: `factpico-v25-one-shot-ledger`
+- authorization ID: `FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001`
+- real canonical claim key:
+  `claims/real/FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001/ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82/ATTEMPT_CLAIM.json`
+
+Synthetic durable survival test:
+- key `claims/synthetic/SYN-DURABLE-LEDGER-001/ATTEMPT_CLAIM.json`
+- creation commit `f687cedcb82c543d8d21552db79a2d25a93f7a4e`
+- later observed blob `cf03473f29ab3ce3452d133302ccc27672c1278f`
+- claim survived first-launch interruption
+- fresh launcher observed claim and refused inference
+- PASS
+
+Current ledger tree:
+- real claim exists: FALSE
+- synthetic evidence claim exists: TRUE
+
+Therefore FactPICO real attempt:
+`UNCONSUMED`
+
+Closure:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/V2_5_FINAL_EXECUTION_CONTROL_CLOSURE_V1.md`
+
+Execution identity:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V5_EXECUTION_IDENTITY_AMENDMENT_V3.md`
+
+Final authorization packet:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/V2_5_FINAL_EXECUTION_AUTHORIZATION_REVIEW_PACKET.txt`
+
+Current implementation status:
+`READY_FOR_FINAL_EXECUTION_AUTHORIZATION_REVIEW`
+
+FactPICO:
+`NOT_RUN`
+
+No scoring/gold join.
