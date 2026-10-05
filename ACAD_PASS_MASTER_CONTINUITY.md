@@ -3587,3 +3587,64 @@ Current scientific/execution state remains unchanged:
 
 Exact next checkpoint:
 `VERIFY REAL CLAIM ABSENT -> CREATE REMOTE CLAIM -> ONE AUTHORIZED PREDICTION RUN -> IMMUTABLE FREEZE -> STOP BEFORE GOLD JOIN`
+
+
+---
+
+# 53. FACTPICO V2.5 ONE-SHOT PREDICTION COMPLETE / FROZEN
+
+Date: 2026-10-05
+
+Canonical execution freeze:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_PROSPECTIVE_PREDICTION_EXECUTION_FREEZE_V1.md`
+
+Freeze commit:
+`97e35b9d8375a67fb58861b4f87b611f31e5f499`
+
+Successful one-shot run:
+`37318062175`
+
+Execution checkout:
+`659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee`
+
+Remote real claim:
+- commit: `6387516d84e9ba1109d387dcc4bde715ce2ac16b`
+- blob: `a1d7bb2df60e55db8f914550858c2accadad1390`
+- state: `CONSUMED_BEFORE_INFERENCE`
+
+Prediction:
+- count: `345`
+- exact ID order: PASS
+- SHA-256: `925c8a073f4304fe751af072c1d1b8fc64455104e8ed2f23a88c3fc3e6ad496b`
+- retry count: `0`
+- INVALID: `0`
+
+Unscored runtime outcomes:
+- PASS_CANDIDATE: 0
+- REJECT: 37
+- REVIEW: 308
+- INVALID_VERIFICATION: 0
+
+These counts are NOT gold-based performance metrics.
+
+Frozen artifact:
+- ID: `11348646367`
+- digest: `eb68ab179bc17af1105a63ae1ff2f3fc76a4449bffd74a40a76a775319743daa`
+- ZIP size: `358556` bytes
+
+Stop boundary:
+- gold join: NOT_RUN
+- scoring: NOT_RUN
+- rerun: FORBIDDEN
+- adaptive changes: FORBIDDEN
+
+Quality delta:
+`IMPROVED — AUTHORIZED PROSPECTIVE PREDICTION COMPLETED AND IMMUTABLY FROZEN`
+
+New risk/status:
+- real one-shot authorization is permanently CONSUMED;
+- therefore no replacement/rerun is allowed;
+- no scientific performance interpretation is allowed before a separate gold/scoring authorization.
+
+Current exact checkpoint:
+`FACTPICO V2.5 POST-PREDICTION / PRE-GOLD AUTHORIZATION REVIEW`
