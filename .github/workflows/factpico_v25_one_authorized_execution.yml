@@ -1,0 +1,248 @@
+name: FactPICO V2.5 ONE authorized prediction execution
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - '.github/workflows/factpico_v25_one_authorized_execution.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: factpico-v25-one-prospective-prediction-001
+  cancel-in-progress: false
+
+env:
+  AUTHORIZATION_ID: FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001
+  EXECUTION_COMMIT: 659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee
+  INPUT_SHA: ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82
+  EXPECTED_COUNT: '345'
+  LEDGER_BRANCH: factpico-v25-one-shot-ledger
+  LEDGER_PROVIDER: github:abdullah-s-mahmood/sweet-runtime-parity@factpico-v25-one-shot-ledger
+  LEDGER_KEY: claims/real/FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001/ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82/ATTEMPT_CLAIM.json
+
+jobs:
+  one-shot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout immutable execution commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee
+          fetch-depth: 1
+
+      - name: Verify immutable runtime and no synthetic controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXECUTION_COMMIT"
+          echo "ac36409cd32c9a759a3e962ee6a86aa30d0a52299f2a19ccc8206d7b54e248ea  phase2/academic_transform/at0_en/v2_5/gate_b1/b1_aligner.py" | sha256sum -c -
+          echo "7a3383e6108272b641e8f4bcda553a5d97aad7a873616341c3493d425fec6def  phase2/academic_transform/at0_en/v2_5/run_v2_5_batch.py" | sha256sum -c -
+          echo "574d0c0a1222435069eee48534e2d4e04ca72f6d538bf3c5c334a683304bb6d2  phase2/academic_transform/at0_en/v2_5/run_v2_5_one_shot_guard.py" | sha256sum -c -
+          echo "3b0698772630a17d6d05fdf7197f5faa79b22212332ae785b069318bda4cd5b0  phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_h1_adapter_v5.py" | sha256sum -c -
+          test -z "${ACAD_PASS_V25_SYNTHETIC_TEST_MODE:-}"
+          test -z "${ACAD_PASS_V25_SYNTHETIC_FAULT_MAP:-}"
+
+      - name: Rebuild exact frozen prediction input
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --connect-timeout 20 --max-time 120 \
+            "https://utexas.box.com/shared/static/mpe5idxrqrzs1wcakphng7xfi7h4g83j.zip" \
+            -o /tmp/FactPICO.zip
+          echo "ec260d7c69db9537f819fbdf728c997520e55de56b9f03b2980b017c91b9d4f4  /tmp/FactPICO.zip" | sha256sum -c -
+          rm -rf /tmp/factpico_build /tmp/factpico_exec_input
+          python phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_h1_adapter_v5.py \
+            --factpico-zip /tmp/FactPICO.zip \
+            --out-dir /tmp/factpico_build \
+            > /tmp/ADAPTER_STDOUT.json
+          echo "$INPUT_SHA  /tmp/factpico_build/FACTPICO_H1_V5_PREDICTION_INPUT_PRIVATE.jsonl" | sha256sum -c -
+          echo "6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48  /tmp/factpico_build/FACTPICO_H1_V5_GOLD_PRIVATE.jsonl" | sha256sum -c -
+          echo "d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255  /tmp/factpico_build/FACTPICO_HARD_GOLD_ELIGIBILITY_MANIFEST_V5.csv" | sha256sum -c -
+          mkdir /tmp/factpico_exec_input
+          cp /tmp/factpico_build/FACTPICO_H1_V5_PREDICTION_INPUT_PRIVATE.jsonl /tmp/factpico_exec_input/
+          python - <<'PY'
+          import hashlib, json, pathlib
+          p=pathlib.Path('/tmp/factpico_exec_input/FACTPICO_H1_V5_PREDICTION_INPUT_PRIVATE.jsonl')
+          rows=[json.loads(x) for x in p.read_text(encoding='utf-8').splitlines() if x.strip()]
+          assert len(rows)==345
+          ids=[r['record_id'] for r in rows]
+          assert len(set(ids))==345
+          assert all(set(r)=={'record_id','source_text','candidate_text'} for r in rows)
+          h=hashlib.sha256(p.read_bytes()).hexdigest()
+          assert h=='ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82'
+          print('EXECUTION_INPUT_IDENTITY=PASS')
+          PY
+          rm -rf /tmp/factpico_build /tmp/FactPICO.zip
+          test "$(find /tmp/factpico_exec_input -maxdepth 1 -type f | wc -l)" -eq 1
+          test -f /tmp/factpico_exec_input/FACTPICO_H1_V5_PREDICTION_INPUT_PRIVATE.jsonl
+
+      - name: Atomically consume canonical remote attempt and verify read-back
+        id: claim
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/factpico_evidence"
+
+          set +e
+          gh api "repos/$GITHUB_REPOSITORY/contents/$LEDGER_KEY?ref=$LEDGER_BRANCH" \
+            > "$RUNNER_TEMP/factpico_evidence/CLAIM_QUERY_BEFORE.json" \
+            2> "$RUNNER_TEMP/factpico_evidence/CLAIM_QUERY_BEFORE.err"
+          qrc=$?
+          set -e
+          if [ "$qrc" -eq 0 ]; then
+            echo "REAL CLAIM ALREADY EXISTS — AUTHORIZATION CONSUMED" >&2
+            exit 41
+          fi
+          if ! grep -q "HTTP 404" "$RUNNER_TEMP/factpico_evidence/CLAIM_QUERY_BEFORE.err"; then
+            cat "$RUNNER_TEMP/factpico_evidence/CLAIM_QUERY_BEFORE.err" >&2
+            exit 42
+          fi
+
+          python - <<'PY'
+          import json, os, pathlib
+          payload={
+            "authorization_id":os.environ["AUTHORIZATION_ID"],
+            "runtime_id":"AT0-EN V2.5",
+            "input_sha256":os.environ["INPUT_SHA"],
+            "state":"CONSUMED_BEFORE_INFERENCE",
+            "durable_ledger_provider":os.environ["LEDGER_PROVIDER"],
+            "repository":"abdullah-s-mahmood/sweet-runtime-parity",
+            "branch":os.environ["LEDGER_BRANCH"],
+            "key":os.environ["LEDGER_KEY"],
+            "execution_commit":os.environ["EXECUTION_COMMIT"],
+          }
+          pathlib.Path(os.environ["RUNNER_TEMP"]+"/factpico_evidence/REMOTE_ATTEMPT_CLAIM.json").write_text(
+              json.dumps(payload,sort_keys=True,indent=2)+"\n",encoding="utf-8",newline="\n")
+          PY
+
+          CLAIM_FILE="$RUNNER_TEMP/factpico_evidence/REMOTE_ATTEMPT_CLAIM.json"
+          ENC="$(base64 -w0 "$CLAIM_FILE")"
+
+          gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$LEDGER_KEY" \
+            -f message="Consume authorized FactPICO V2.5 prospective prediction attempt" \
+            -f content="$ENC" \
+            -f branch="$LEDGER_BRANCH" \
+            > "$RUNNER_TEMP/factpico_evidence/CLAIM_CREATE_RESPONSE.json"
+
+          CLAIM_COMMIT_SHA="$(jq -r '.commit.sha' "$RUNNER_TEMP/factpico_evidence/CLAIM_CREATE_RESPONSE.json")"
+          test -n "$CLAIM_COMMIT_SHA"
+          test "$CLAIM_COMMIT_SHA" != "null"
+
+          gh api "repos/$GITHUB_REPOSITORY/contents/$LEDGER_KEY?ref=$LEDGER_BRANCH" \
+            > "$RUNNER_TEMP/factpico_evidence/CLAIM_READBACK_RESPONSE.json"
+
+          CLAIM_BLOB_SHA="$(jq -r '.sha' "$RUNNER_TEMP/factpico_evidence/CLAIM_READBACK_RESPONSE.json")"
+          test -n "$CLAIM_BLOB_SHA"
+          test "$CLAIM_BLOB_SHA" != "null"
+
+          jq -r '.content' "$RUNNER_TEMP/factpico_evidence/CLAIM_READBACK_RESPONSE.json" \
+            | tr -d '\n' | base64 -d \
+            > "$RUNNER_TEMP/factpico_evidence/REMOTE_ATTEMPT_CLAIM_READBACK.json"
+          cmp "$CLAIM_FILE" "$RUNNER_TEMP/factpico_evidence/REMOTE_ATTEMPT_CLAIM_READBACK.json"
+
+          echo "CLAIM_COMMIT_SHA=$CLAIM_COMMIT_SHA" >> "$GITHUB_ENV"
+          echo "CLAIM_BLOB_SHA=$CLAIM_BLOB_SHA" >> "$GITHUB_ENV"
+          echo "claim_commit_sha=$CLAIM_COMMIT_SHA" >> "$GITHUB_OUTPUT"
+          echo "claim_blob_sha=$CLAIM_BLOB_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Run frozen one-shot guard exactly once
+        id: inference
+        shell: bash
+        run: |
+          set -euo pipefail
+          ATTEMPT_DIR="$RUNNER_TEMP/FACTPICO_V25_REAL_ATTEMPT"
+          test ! -e "$ATTEMPT_DIR"
+          set +e
+          python phase2/academic_transform/at0_en/v2_5/run_v2_5_one_shot_guard.py \
+            --input /tmp/factpico_exec_input/FACTPICO_H1_V5_PREDICTION_INPUT_PRIVATE.jsonl \
+            --attempt-dir "$ATTEMPT_DIR" \
+            --attempt-id "$AUTHORIZATION_ID" \
+            --runner phase2/academic_transform/at0_en/v2_5/run_v2_5_batch.py \
+            --timeout-seconds 60 \
+            --max-assertions-per-side 128 \
+            --expected-input-sha256 "$INPUT_SHA" \
+            --expected-count "$EXPECTED_COUNT" \
+            --authorization-id "$AUTHORIZATION_ID" \
+            --durable-ledger-provider "$LEDGER_PROVIDER" \
+            --durable-ledger-key "$LEDGER_KEY" \
+            --durable-ledger-commit-sha "$CLAIM_COMMIT_SHA" \
+            > "$RUNNER_TEMP/factpico_evidence/GUARD_LAUNCH_STDOUT.txt" \
+            2> "$RUNNER_TEMP/factpico_evidence/GUARD_LAUNCH_STDERR.txt"
+          rc=$?
+          set -e
+          echo "$rc" > "$RUNNER_TEMP/factpico_evidence/GUARD_RETURN_CODE.txt"
+          if [ "$rc" -ne 0 ]; then
+            echo "ONE_SHOT_GUARD_FAILED_AFTER_CLAIM; NO RETRY PERMITTED" >&2
+            exit "$rc"
+          fi
+
+      - name: Verify and freeze prediction artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          ATTEMPT_DIR="$RUNNER_TEMP/FACTPICO_V25_REAL_ATTEMPT"
+          PRED="$ATTEMPT_DIR/FACTPICO_V25_PREDICTIONS.jsonl"
+          FREEZE="$ATTEMPT_DIR/PREDICTION_FREEZE.json"
+          test -f "$PRED"
+          test -f "$FREEZE"
+
+          python - <<'PY'
+          import hashlib,json,os,pathlib
+          inp=pathlib.Path('/tmp/factpico_exec_input/FACTPICO_H1_V5_PREDICTION_INPUT_PRIVATE.jsonl')
+          attempt=pathlib.Path(os.environ['RUNNER_TEMP'])/'FACTPICO_V25_REAL_ATTEMPT'
+          pred=attempt/'FACTPICO_V25_PREDICTIONS.jsonl'
+          freeze=json.loads((attempt/'PREDICTION_FREEZE.json').read_text(encoding='utf-8'))
+          ir=[json.loads(x) for x in inp.read_text(encoding='utf-8').splitlines() if x.strip()]
+          pr=[json.loads(x) for x in pred.read_text(encoding='utf-8').splitlines() if x.strip()]
+          assert len(ir)==345 and len(pr)==345
+          iids=[x['record_id'] for x in ir]
+          pids=[x['record_id'] for x in pr]
+          assert len(set(iids))==345 and iids==pids
+          pred_sha=hashlib.sha256(pred.read_bytes()).hexdigest()
+          assert pred_sha==freeze['prediction_sha256']
+          assert freeze['input_sha256']==os.environ['INPUT_SHA']
+          assert freeze['authorization_id']==os.environ['AUTHORIZATION_ID']
+          assert freeze['durable_ledger_provider']==os.environ['LEDGER_PROVIDER']
+          assert freeze['durable_ledger_key']==os.environ['LEDGER_KEY']
+          assert freeze['durable_ledger_commit_sha']==os.environ['CLAIM_COMMIT_SHA']
+          evidence={
+            'state':'PREDICTIONS_FROZEN',
+            'authorization_id':os.environ['AUTHORIZATION_ID'],
+            'execution_commit':os.environ['EXECUTION_COMMIT'],
+            'input_sha256':os.environ['INPUT_SHA'],
+            'input_count':345,
+            'prediction_sha256':pred_sha,
+            'prediction_count':345,
+            'ids_unique':True,
+            'ids_order_exact':True,
+            'remote_claim_commit_sha':os.environ['CLAIM_COMMIT_SHA'],
+            'remote_claim_blob_sha':os.environ['CLAIM_BLOB_SHA'],
+            'gold_join_performed':False,
+            'scoring_performed':False,
+            'retry_count':0,
+          }
+          out=pathlib.Path(os.environ['RUNNER_TEMP'])/'factpico_evidence'/'EXECUTION_FREEZE_EVIDENCE.json'
+          out.write_text(json.dumps(evidence,sort_keys=True,indent=2)+'\n',encoding='utf-8',newline='\n')
+          print(json.dumps(evidence,sort_keys=True))
+          PY
+
+          sha256sum "$PRED" > "$RUNNER_TEMP/factpico_evidence/PREDICTION_SHA256.txt"
+          echo "GOLD_JOIN_PERFORMED=FALSE" > "$RUNNER_TEMP/factpico_evidence/STOP_BOUNDARY.txt"
+          echo "SCORING_PERFORMED=FALSE" >> "$RUNNER_TEMP/factpico_evidence/STOP_BOUNDARY.txt"
+          echo "STOP_BEFORE_GOLD_JOIN=TRUE" >> "$RUNNER_TEMP/factpico_evidence/STOP_BOUNDARY.txt"
+
+      - name: Upload immutable prediction and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: factpico-v25-one-prospective-prediction-frozen
+          path: |
+            ${{ runner.temp }}/FACTPICO_V25_REAL_ATTEMPT
+            ${{ runner.temp }}/factpico_evidence
+          if-no-files-found: error
+          retention-days: 90
