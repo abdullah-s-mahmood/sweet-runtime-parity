@@ -4155,3 +4155,33 @@ This observability requirement must NOT weaken:
 
 Objective:
 `AT ANY MOMENT, WE SHOULD BE ABLE TO TELL HOW FAR THE PROCESS HAS PROGRESSED AND WHETHER IT IS STILL MAKING PROGRESS OR HAS STOPPED.`
+
+
+---
+
+# R4.2 SAFE TRAIN RUN 4 — TIMEOUT / RECOVERY
+
+Date: 2026-10-05
+
+Run `37355935421` used the validated safe conversion path and was cancelled only by the GitHub Actions 120-minute timeout.
+
+Evidence:
+- safe base mapping succeeded;
+- checkpoints `591` and `788` existed;
+- at least 4 epochs completed;
+- no final calibration result exists;
+- test sets, FactPICO and consumed 60-RCT holdout stayed closed.
+
+Classification:
+`TECHNICAL_EXECUTION_TIMEOUT_AFTER_VALID_TRAINING_PROGRESS`
+
+Execution-only recovery:
+- job timeout raised to 360 minutes;
+- scientific hyperparameters/data/gates unchanged;
+- `PROCESS_STATUS.json` heartbeat added every 10 optimizer steps and at log/eval/save;
+- status fields include epoch, step, total steps, progress %, best metric/checkpoint, last progress time and terminal state;
+- unbuffered execution enabled;
+- checkpoint trainer-state JSON included in always-upload evidence.
+
+Next authorized step:
+after the mechanics workflow for this patch succeeds, trigger exactly one V5 safe-path full train+calibration run.

@@ -8,6 +8,9 @@ import math
 import os
 import pathlib
 import random
+import sys
+import time
+from datetime import datetime, timezone
 from dataclasses import dataclass
 
 import numpy as np
@@ -20,6 +23,7 @@ from transformers import (
     BertForTokenClassification,
     EarlyStoppingCallback,
     Trainer,
+    TrainerCallback,
     TrainingArguments,
 )
 
@@ -48,6 +52,114 @@ def assert_model_finite(model,stage:str):
     bad=[name for name,p in model.named_parameters() if not torch.isfinite(p).all()]
     if bad:
         raise RuntimeError(f"non-finite parameters at {stage}: {bad[:10]}")
+
+
+def utc_now():
+    return datetime.now(timezone.utc).isoformat()
+
+def atomic_json_write(path:pathlib.Path,payload:dict):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    tmp=path.with_suffix(path.suffix+".tmp")
+    tmp.write_text(json.dumps(payload,indent=2,sort_keys=True)+"\n",encoding="utf-8")
+    os.replace(tmp,path)
+
+def patch_status_file(path:pathlib.Path,**fields):
+    payload={}
+    if path.exists():
+        try:
+            payload=json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            payload={}
+    payload.update(fields)
+    atomic_json_write(path,payload)
+    return payload
+
+class ProgressStatusCallback(TrainerCallback):
+    def __init__(self,path:pathlib.Path,max_epochs:int,heartbeat_steps:int=10):
+        self.path=path
+        self.max_epochs=max_epochs
+        self.heartbeat_steps=heartbeat_steps
+        self.started=time.time()
+        self.latest_logs={}
+        self.last_step_written=-1
+
+    def _emit(self,state,status="RUNNING",stage="TRAINING",extra=None,force=False):
+        step=int(state.global_step or 0)
+        if not force and step==self.last_step_written:
+            return
+        total=int(state.max_steps or 0)
+        if total>0:
+            pct=min(100.0,max(0.0,100.0*step/total))
+        else:
+            epoch=float(state.epoch or 0.0)
+            pct=min(100.0,max(0.0,100.0*epoch/self.max_epochs))
+        payload={
+            "state":status,
+            "progress_percent":round(pct,2),
+            "current_stage":stage,
+            "current_epoch":float(state.epoch or 0.0),
+            "max_epochs":int(self.max_epochs),
+            "global_step":step,
+            "total_steps":total if total>0 else None,
+            "best_metric":state.best_metric,
+            "best_model_checkpoint":state.best_model_checkpoint,
+            "last_successful_checkpoint":state.best_model_checkpoint,
+            "latest_logs":self.latest_logs,
+            "started_at_unix":self.started,
+            "elapsed_seconds":round(time.time()-self.started,1),
+            "last_progress_at":utc_now(),
+            "next_expected_step":"CONTINUE_TRAINING" if status=="RUNNING" else None,
+            "failure_or_stall_reason":None,
+        }
+        if extra:
+            payload.update(extra)
+        atomic_json_write(self.path,payload)
+        print("PROCESS_STATUS "+json.dumps(payload,sort_keys=True),file=sys.stderr,flush=True)
+        self.last_step_written=step
+
+    def on_train_begin(self,args,state,control,**kwargs):
+        self._emit(state,stage="TRAINING_START",force=True)
+
+    def on_step_end(self,args,state,control,**kwargs):
+        if int(state.global_step or 0)%self.heartbeat_steps==0:
+            self._emit(state,stage="TRAINING")
+
+    def on_log(self,args,state,control,logs=None,**kwargs):
+        if logs:
+            clean={}
+            for k,v in logs.items():
+                if isinstance(v,(int,float,str,bool)) or v is None:
+                    clean[k]=v
+            self.latest_logs.update(clean)
+        self._emit(state,stage="TRAINING_LOG",force=True)
+
+    def on_evaluate(self,args,state,control,metrics=None,**kwargs):
+        if metrics:
+            clean={}
+            for k,v in metrics.items():
+                if isinstance(v,(int,float,str,bool)) or v is None:
+                    clean[k]=v
+            self.latest_logs.update(clean)
+        self._emit(state,stage="EVALUATION_COMPLETE",force=True)
+
+    def on_save(self,args,state,control,**kwargs):
+        ckpt=str(pathlib.Path(args.output_dir)/f"checkpoint-{int(state.global_step or 0)}")
+        self._emit(
+            state,
+            stage="CHECKPOINT_SAVED",
+            extra={"last_successful_checkpoint":ckpt},
+            force=True,
+        )
+
+    def on_train_end(self,args,state,control,**kwargs):
+        self._emit(
+            state,
+            status="TRAINING_COMPLETED",
+            stage="TRAINING_COMPLETE",
+            extra={"progress_percent":100.0,"next_expected_step":"CALIBRATE_ON_FROZEN_DEV"},
+            force=True,
+        )
+
 
 def read_conll(path:pathlib.Path):
     sentences=[]
@@ -257,6 +369,7 @@ def main():
     train_ds=TokenDataset(train_s,tokenizer)
     dev_ds=TokenDataset(dev_s,tokenizer)
 
+    status_path=args.out/"PROCESS_STATUS.json"
     work=args.out/"trainer"
     ta=TrainingArguments(
         output_dir=str(work),
@@ -288,7 +401,10 @@ def main():
         eval_dataset=dev_ds,
         tokenizer=tokenizer,
         compute_metrics=compute_metrics,
-        callbacks=[EarlyStoppingCallback(early_stopping_patience=2)],
+        callbacks=[
+            EarlyStoppingCallback(early_stopping_patience=2),
+            ProgressStatusCallback(status_path,max_epochs=10,heartbeat_steps=10),
+        ],
     )
     train_result=trainer.train()
     assert_model_finite(trainer.model,"post_training_selected_model")
@@ -356,6 +472,23 @@ def main():
     summary["canonical_pre_hash_sha256"]=hashlib.sha256(rawj).hexdigest()
     (args.out/"R4_2_TRAIN_CALIBRATION_SUMMARY.json").write_text(
         json.dumps(summary,indent=2,sort_keys=True)+"\n",encoding="utf-8"
+    )
+    patch_status_file(
+        status_path,
+        state="COMPLETED" if chosen else "COMPLETED_WITH_GATE_FAIL",
+        progress_percent=100.0,
+        current_stage="CALIBRATION_COMPLETE",
+        current_epoch=float(trainer.state.epoch or 0.0),
+        max_epochs=10,
+        global_step=int(trainer.state.global_step or 0),
+        total_steps=int(trainer.state.max_steps or 0) if trainer.state.max_steps else None,
+        best_metric=trainer.state.best_metric,
+        best_model_checkpoint=trainer.state.best_model_checkpoint,
+        last_successful_checkpoint=trainer.state.best_model_checkpoint,
+        last_progress_at=utc_now(),
+        next_expected_step="FREEZE_THEN_AUTHORIZE_FROZEN_DEV_TEST_EVALUATOR" if chosen else "STOP_R4_2_WITNESS_NOT_READY",
+        failure_or_stall_reason=None if chosen else "FROZEN_DEV_CALIBRATION_GATE_NOT_MET",
+        witness_state=state,
     )
     print(json.dumps(summary,indent=2,sort_keys=True))
     if chosen is None:

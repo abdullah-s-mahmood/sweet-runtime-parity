@@ -4,7 +4,7 @@ on:
   push:
     branches: [at0-en-v2.6-dev]
     paths:
-      - 'phase2/academic_transform/R4_2_SAFE_FULL_TRAIN_TRIGGER_V4.txt'
+      - 'phase2/academic_transform/R4_2_SAFE_FULL_TRAIN_TRIGGER_V5.txt'
 
 permissions:
   contents: read
@@ -16,7 +16,7 @@ concurrency:
 jobs:
   train:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -98,12 +98,14 @@ jobs:
             > "$RUNNER_TEMP/r42/TRAINER_SHA256.txt"
 
       - name: Train and calibrate witness offline
+        id: train_and_calibrate
         shell: bash
         env:
           HF_HUB_OFFLINE: "1"
           TRANSFORMERS_OFFLINE: "1"
           TOKENIZERS_PARALLELISM: "false"
           PYTHONHASHSEED: "20261005"
+          PYTHONUNBUFFERED: "1"
         run: |
           set -euo pipefail
           python phase2/academic_transform/at0_en/v2_6/r4_2_train_calibrate_witness.py \
@@ -112,6 +114,42 @@ jobs:
             --dev "$RUNNER_TEMP/r42/data/dev.txt" \
             --out "$RUNNER_TEMP/r42/out" \
             > "$RUNNER_TEMP/r42/TRAIN_STDOUT.json"
+
+      - name: Finalize process observability status
+        if: always()
+        shell: bash
+        env:
+          TRAIN_STEP_OUTCOME: \${{ steps.train_and_calibrate.outcome }}
+          JOB_STATUS: \${{ job.status }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import datetime, json, os, pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"r42"/"out"/"PROCESS_STATUS.json"
+          if not p.exists():
+              raise SystemExit(0)
+          try:
+              d=json.loads(p.read_text(encoding="utf-8"))
+          except Exception:
+              d={}
+          outcome=os.environ.get("TRAIN_STEP_OUTCOME","")
+          if d.get("state") in (None,"RUNNING","TRAINING_COMPLETED"):
+              if outcome=="cancelled":
+                  d["state"]="CANCELLED_OR_TIMEOUT"
+                  d["current_stage"]="TRAINING_INTERRUPTED"
+                  d["failure_or_stall_reason"]="GITHUB_ACTIONS_STEP_CANCELLED_OR_JOB_TIMEOUT"
+              elif outcome=="failure":
+                  d["state"]="FAILED"
+                  d["current_stage"]="TRAIN_OR_CALIBRATION_FAILED"
+                  d["failure_or_stall_reason"]="TRAIN_STEP_RETURNED_FAILURE"
+          d["terminal_observed_at"]=datetime.datetime.now(datetime.timezone.utc).isoformat()
+          d["github_train_step_outcome"]=outcome
+          d["github_job_status"]=os.environ.get("JOB_STATUS")
+          tmp=p.with_suffix(".tmp")
+          tmp.write_text(json.dumps(d,indent=2,sort_keys=True)+"\n",encoding="utf-8")
+          tmp.replace(p)
+          print(json.dumps(d,sort_keys=True),flush=True)
+          PY
 
       - name: Hash frozen training outputs
         if: always()
@@ -133,6 +171,8 @@ jobs:
             ${{ runner.temp }}/r42/TRAINER_SHA256.txt
             ${{ runner.temp }}/r42/TRAIN_STDOUT.json
             ${{ runner.temp }}/r42/OUTPUT_SHA256.txt
+            ${{ runner.temp }}/r42/out/PROCESS_STATUS.json
+            ${{ runner.temp }}/r42/out/trainer/checkpoint-*/trainer_state.json
             ${{ runner.temp }}/r42/out/R4_2_TRAIN_CALIBRATION_SUMMARY.json
             ${{ runner.temp }}/r42/out/selected_model
           if-no-files-found: warn
