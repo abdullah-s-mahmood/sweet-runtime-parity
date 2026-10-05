@@ -670,6 +670,8 @@ tie_groups = new.best_one_to_one(tie_source, tie_candidate)
 tie_elapsed = time.perf_counter() - t0
 _, tie_peak = tracemalloc.get_traced_memory()
 tracemalloc.stop()
+print(f"MAX_TIE_128_SECONDS={tie_elapsed:.6f}")
+print(f"MAX_TIE_128_TRACEMALLOC_BYTES={tie_peak}")
 assert candidate_index_tuple(tie_groups, tie_candidate) == tuple(range(tie_n))
 assert tie_elapsed <= MATCHER_TIME_BUDGET_SECONDS
 assert tie_peak <= PEAK_MEMORY_BUDGET_BYTES
