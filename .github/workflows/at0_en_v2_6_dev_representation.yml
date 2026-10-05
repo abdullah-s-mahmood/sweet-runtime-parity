@@ -61,6 +61,13 @@ jobs:
             phase2/academic_transform/at0_en/v2_6/tests/check_v2_6_representation_dev.py \
             > "$RUNNER_TEMP/v26/CODE_SHA256.txt"
 
+      - name: Run independent real-RCT extraction stress diagnostic
+        shell: bash
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/dev_support/v2_6_real_rct_stress.py \
+            > "$RUNNER_TEMP/v26/REAL_RCT_STRESS.json"
+
       - name: Upload dev evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
