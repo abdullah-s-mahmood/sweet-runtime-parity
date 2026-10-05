@@ -9039,3 +9039,126 @@ Exact next checkpoint:
 `FOCUSED HIGHER-MODEL DECISION ON V2.4 SCALABILITY BLOCKER`
 
 Stop until user returns focused review.
+
+
+## 2026-10-05 — AT0-EN V2.5 scalable matcher frozen; pre-prediction review next
+
+Higher-model verdict:
+`B. VERSION_BUMP_BEFORE_FACTPICO`
+
+Canonical V2.4:
+`NOT_RUN — PRE-PREDICTION SCALABILITY BLOCKER`
+
+Do not call V2.4 a FactPICO failure.
+
+V2.5 specification:
+`phase2/academic_transform/at0_en/v2_5/AT0_EN_V2_5_EXACT_SCALABLE_MATCHER_SPEC_V1.md`
+
+Runtime freeze:
+`phase2/academic_transform/at0_en/v2_5/AT0_EN_V2_5_RUNTIME_FREEZE_V1.md`
+
+Freeze commit:
+`d8282a13d9ba215117f1dd52c80088ccdb972a15`
+
+FactPICO execution identity amendment:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V5_EXECUTION_IDENTITY_AMENDMENT_V1.md`
+
+Commit:
+`2301367d918501dbbe875ebf8bf9c4eb0e6e35ec`
+
+Regression run:
+`37279532576`
+
+Run head:
+`05e200461c1067c120e73acf4a6055383eb350b2`
+
+Conclusion:
+`SUCCESS`
+
+Artifact:
+`11331840770`
+
+Artifact digest:
+`sha256:ec012324b265b5e6be5e1aff5f5dd670547692fc9f8bb6a3f58c993ccbb2cba1`
+
+Regression report:
+`PASS`
+
+Algorithm:
+`HUNGARIAN_EXACT_INTEGER_LEXICOGRAPHIC_V1`
+
+Numeric:
+`EXACT_RATIONAL_FORMULA_V1`
+
+B1/B2:
+- B1 exact diff 0/12
+- B2 exact diff 0 across GG/GE/EG/EE
+- GG 12/12
+- GE 11/12; safe4/5; unsafe0
+- EG 11/12; safe4/5; unsafe0
+- EE 12/12; safe5/5; unsafe0/6; REVIEW1/1
+
+Synthetic equivalence:
+`205 cases / 0 differences`
+
+Scalability:
+- n9 ~0.032s
+- n10 ~0.039s
+- n12 ~0.056s
+- n16 ~0.099s
+- n32 ~0.395s
+- n64 ~1.58s
+- n128 ~6.31–6.73s
+- peak n128 ~5.35MB
+
+Guardrails:
+timeout/crash/valid-child/empty/out-of-envelope PASS.
+Retries 0.
+
+Frozen operational envelope:
+- max assertions per side 128
+- 60 seconds per record
+- strictly sequential
+- runtime/out-of-envelope failures -> INVALID_VERIFICATION
+
+Frozen hashes:
+- spec `8fe6203b266f86e2e147cf65b4e55d15b8dc25b344b466ac5d0f75ca461f888f`
+- aligner `ac36409cd32c9a759a3e962ee6a86aa30d0a52299f2a19ccc8206d7b54e248ea`
+- runner `ad2e996f0e76e8d6b80285d7059b072c53914f32d9d48fbf9af8f8076282b807`
+- regression test `6633db047be337df27d1fad61eb8b33a473a6d69c60b73e35ec2611b1552a47a`
+- regression report `2b0861f904448663b1eaff675ed79034bdccdb4c6ccee3ba08e7986fa5eb4b20`
+
+Numeric caveat:
+exact-rational formula is a named V2.5 numeric identity change.
+No difference observed in canonical development or 205 brute-force oracle cases.
+Universal bitwise float equivalence is NOT claimed.
+
+FactPICO:
+- no text through runtime
+- no assertion count profiling
+- no timing
+- no prediction
+- no scoring
+
+FactPICO V5 scientific gold/thresholds/input/gold artifacts unchanged.
+
+Pre-prediction higher-model packet:
+`phase2/academic_transform/at0_en/v2_5/V2_5_PRE_PREDICTION_HIGHER_MODEL_REVIEW_PACKET.txt`
+
+Packet commit:
+`274d9bbd107779618a894445d83e1ec050d84973`
+
+Readiness update:
+`3b7c89c6593c57462cf4e2f8376c32313c15ab6b`
+
+Master continuity update:
+`c90aa9db4e35907115a3b21f2f81b0074db19181`
+
+Quality delta:
+`MAJOR IMPROVEMENT — FACTORIAL BLOCKER REMOVED WITH ZERO OBSERVED REGRESSION`
+
+Current checkpoint:
+`V2.5 PRE-PREDICTION HIGHER-MODEL REVIEW`
+
+STOP.
+No FactPICO prediction until review/authorization returned.
