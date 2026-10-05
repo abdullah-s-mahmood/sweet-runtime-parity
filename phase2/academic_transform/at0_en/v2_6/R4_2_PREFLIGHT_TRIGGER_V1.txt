@@ -1,0 +1,3 @@
+AT0-EN V2.6 R4.2 witness identity preflight trigger
+Date: 2026-10-05
+No training. No inference.
