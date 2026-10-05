@@ -1194,3 +1194,80 @@ Still forbidden:
 - threshold changes
 - custom Gate C opening
 - Arabic work.
+
+
+## 28. V2.5 essential pre-execution closure
+
+Independent V2.5 pre-prediction review verdict received:
+
+`B. READY_WITH_ESSENTIAL_PRE_EXECUTION_CHANGES`
+
+The matcher had no demonstrated defect.
+
+Required bounded closures:
+- characterized objective / near-tie / partial-tie / priority-conflict tests;
+- fresh-process reproducibility;
+- mixed-batch INVALID accounting;
+- max-tie and near-envelope unequal-count scalability;
+- output replacement and one-shot attempt controls.
+
+Closure file:
+`phase2/academic_transform/at0_en/v2_5/V2_5_ESSENTIAL_PRE_EXECUTION_CLOSURE_V1.md`
+
+Runtime Freeze V2:
+`phase2/academic_transform/at0_en/v2_5/AT0_EN_V2_5_RUNTIME_FREEZE_V2.md`
+
+FactPICO execution identity amendment V2:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V5_EXECUTION_IDENTITY_AMENDMENT_V2.md`
+
+Final successful regression:
+- run: `37289569561`
+- head: `29e3abe5ccb708cb88d94ae00630eaa0fdc2b123`
+- conclusion: `SUCCESS`
+- artifact: `11335647986`
+- artifact ZIP SHA-256: `61d82aa30de89e84aa5bc0433bdfa528259269c0b3630648df5c0d4c95573b63`
+- regression report SHA-256: `e0ccf3dd45a7e20f9df7b4086779b2d2846d539c67564ecee2e6a8720b419c87`
+
+Closure results:
+- B1 exact differences: 0
+- B2 four-arm exact differences: 0
+- 205 exact-objective oracle cases
+- legacy-float vs exact selected-mapping discrepancies: 0
+- priority conflict: PASS
+- partial tie: PASS
+- semantic near-tie: PASS
+- full tie tie-policy: PASS
+- fresh-process byte-identical outputs: PASS
+- mixed-batch INVALID accounting: PASS
+- output overwrite refusal: PASS
+- one-shot guard: PASS
+- 127x128 / 128x127 near-envelope: PASS
+
+Preserved negative execution evidence:
+run `37289060156` failed the newly added `128x128 full-tie <=10s` synthetic assertion.
+
+This was synthetic-only and pre-FactPICO.
+
+The old 10 s synthetic criterion was classified as runner-variability-sensitive and refrozen at `30 s`, while the actual production per-record timeout remains `60 s`.
+
+Final repeated 128x128 full-tie timings:
+- 7.3144 s
+- 7.0391 s
+- 7.0154 s
+
+No FactPICO profiling/prediction/scoring occurred.
+
+Current status:
+`READY_FOR_FINAL_HIGHER_MODEL_PRE_PREDICTION_RE_REVIEW`
+
+Review packet:
+`phase2/academic_transform/at0_en/v2_5/V2_5_FINAL_PRE_PREDICTION_REVIEW_PACKET.txt`
+
+Still forbidden:
+- FactPICO prediction;
+- gold join/scoring;
+- rerun/adaptive retry;
+- runtime/matcher changes;
+- threshold/gold changes;
+- custom Gate C;
+- Arabic work.
