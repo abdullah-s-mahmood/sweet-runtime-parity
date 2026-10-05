@@ -1,0 +1,312 @@
+{
+  "manifest_id": "AT0_EN_V26_R4_INTERNAL_HOLDOUT_V1",
+  "source_repo": "sociocom/PICO-Corpus",
+  "source_commit": "482b7d8f135fe6ea424961c2812e8d214c3f4a5f",
+  "selection_rule": "Lexicographically sorted .txt files positions 31-90, excluding the first 30-document R4 diagnostic set.",
+  "document_count": 60,
+  "opened_before_r4_freeze": false,
+  "role": "INTERNAL_DEVELOPMENT_HOLDOUT_NOT_EXTERNAL_VALIDATION",
+  "factpico_overlap_check_required_before_use": true,
+  "documents": [
+    {
+      "pmid": "15023242",
+      "git_blob_sha1": "eec6dd102db70fbe0e57be66b9cf024a91bd89d7",
+      "path": "pico_corpus_brat_annotated_files/15023242.txt"
+    },
+    {
+      "pmid": "15026791",
+      "git_blob_sha1": "7381648d3df1fa7bdc3528f7b47d5490c6df2e65",
+      "path": "pico_corpus_brat_annotated_files/15026791.txt"
+    },
+    {
+      "pmid": "15084618",
+      "git_blob_sha1": "3694c8fd6ac3aedcc0f3e548499bf78493943b1e",
+      "path": "pico_corpus_brat_annotated_files/15084618.txt"
+    },
+    {
+      "pmid": "15117982",
+      "git_blob_sha1": "828f7ca682ec15860318789b99a137237f34f289",
+      "path": "pico_corpus_brat_annotated_files/15117982.txt"
+    },
+    {
+      "pmid": "15135472",
+      "git_blob_sha1": "8571b46d031c164536eff5617b552091c70054e7",
+      "path": "pico_corpus_brat_annotated_files/15135472.txt"
+    },
+    {
+      "pmid": "15135481",
+      "git_blob_sha1": "5e26990792499bf353561d21c0e89fde9e3af218",
+      "path": "pico_corpus_brat_annotated_files/15135481.txt"
+    },
+    {
+      "pmid": "15154664",
+      "git_blob_sha1": "1d95d72ef87b6acbc8914d778de76bd1297671f7",
+      "path": "pico_corpus_brat_annotated_files/15154664.txt"
+    },
+    {
+      "pmid": "15179836",
+      "git_blob_sha1": "ccc73a67059bc89df3c53207bb54e4617606fa54",
+      "path": "pico_corpus_brat_annotated_files/15179836.txt"
+    },
+    {
+      "pmid": "15245618",
+      "git_blob_sha1": "4cd569d773a27c21a0d67ef94120d9dc0de1c753",
+      "path": "pico_corpus_brat_annotated_files/15245618.txt"
+    },
+    {
+      "pmid": "15254052",
+      "git_blob_sha1": "94746f89fd294552dcd25d53f5e89072d28c93a2",
+      "path": "pico_corpus_brat_annotated_files/15254052.txt"
+    },
+    {
+      "pmid": "15280341",
+      "git_blob_sha1": "eed9156c3b1f10d42a21ea9baa3163752e066bcc",
+      "path": "pico_corpus_brat_annotated_files/15280341.txt"
+    },
+    {
+      "pmid": "15284257",
+      "git_blob_sha1": "bcac587eeb6b693cbc47e576ce788216402bb431",
+      "path": "pico_corpus_brat_annotated_files/15284257.txt"
+    },
+    {
+      "pmid": "15341559",
+      "git_blob_sha1": "e2cfa99a6a1928e49d85ef9239d314e297f6c221",
+      "path": "pico_corpus_brat_annotated_files/15341559.txt"
+    },
+    {
+      "pmid": "15342804",
+      "git_blob_sha1": "c2efc3adeafbd138ece97307bef4a13437260336",
+      "path": "pico_corpus_brat_annotated_files/15342804.txt"
+    },
+    {
+      "pmid": "15342805",
+      "git_blob_sha1": "fac0610fc19a1dcde41197eac2c177c0ffccbfe7",
+      "path": "pico_corpus_brat_annotated_files/15342805.txt"
+    },
+    {
+      "pmid": "15375502",
+      "git_blob_sha1": "299f2434d27b3d6dfddfa7ed52cf14b8eba792a4",
+      "path": "pico_corpus_brat_annotated_files/15375502.txt"
+    },
+    {
+      "pmid": "15477634",
+      "git_blob_sha1": "a90f6d10bb297c18ec11789962599159a8eb131d",
+      "path": "pico_corpus_brat_annotated_files/15477634.txt"
+    },
+    {
+      "pmid": "15505276",
+      "git_blob_sha1": "a4a6fe44c5ba2af7d7463ade54520aafe4c6bb2f",
+      "path": "pico_corpus_brat_annotated_files/15505276.txt"
+    },
+    {
+      "pmid": "15544076",
+      "git_blob_sha1": "9344c6407221575d35a4e83883d8680c812d2bbf",
+      "path": "pico_corpus_brat_annotated_files/15544076.txt"
+    },
+    {
+      "pmid": "15545185",
+      "git_blob_sha1": "0157db362c6bc6f8a6729919150ac1f9657a5baa",
+      "path": "pico_corpus_brat_annotated_files/15545185.txt"
+    },
+    {
+      "pmid": "15547180",
+      "git_blob_sha1": "586c47f0475ac36a3f26f606cf317492ffd35069",
+      "path": "pico_corpus_brat_annotated_files/15547180.txt"
+    },
+    {
+      "pmid": "15570070",
+      "git_blob_sha1": "d7ee90c4e3703ad5ff031c7cfa199b5367c62e0a",
+      "path": "pico_corpus_brat_annotated_files/15570070.txt"
+    },
+    {
+      "pmid": "15571954",
+      "git_blob_sha1": "c5c80d5d24151f9ae4ed8bb25529bf1c14772601",
+      "path": "pico_corpus_brat_annotated_files/15571954.txt"
+    },
+    {
+      "pmid": "15617992",
+      "git_blob_sha1": "4ee7d99e2cf96a443c92b4042dbd033a5cfc1e35",
+      "path": "pico_corpus_brat_annotated_files/15617992.txt"
+    },
+    {
+      "pmid": "15668261",
+      "git_blob_sha1": "c96481f20ae742dc054538009c109cd15142632d",
+      "path": "pico_corpus_brat_annotated_files/15668261.txt"
+    },
+    {
+      "pmid": "15668474",
+      "git_blob_sha1": "fb12d60e4453c67b7edb55d0a5f1f2617a4a410a",
+      "path": "pico_corpus_brat_annotated_files/15668474.txt"
+    },
+    {
+      "pmid": "15699284",
+      "git_blob_sha1": "748f5a93d17e9a685b85d7f7a2f81c7b4a4134a6",
+      "path": "pico_corpus_brat_annotated_files/15699284.txt"
+    },
+    {
+      "pmid": "15702295",
+      "git_blob_sha1": "4ae53ed1d048885958ff819026a6e2ad691a8873",
+      "path": "pico_corpus_brat_annotated_files/15702295.txt"
+    },
+    {
+      "pmid": "15718314",
+      "git_blob_sha1": "1e7f66e57964fe7ebd42c7a240be95d195b69f2b",
+      "path": "pico_corpus_brat_annotated_files/15718314.txt"
+    },
+    {
+      "pmid": "15726120",
+      "git_blob_sha1": "b1228b83d6e691c55dd50033400c09f418e8404b",
+      "path": "pico_corpus_brat_annotated_files/15726120.txt"
+    },
+    {
+      "pmid": "15735115",
+      "git_blob_sha1": "5316fe3aea0d64d741e3b1916986f08837869574",
+      "path": "pico_corpus_brat_annotated_files/15735115.txt"
+    },
+    {
+      "pmid": "15735116",
+      "git_blob_sha1": "b8bad8e02819fe8fd7ebd4d17d6654a24cab5632",
+      "path": "pico_corpus_brat_annotated_files/15735116.txt"
+    },
+    {
+      "pmid": "15738536",
+      "git_blob_sha1": "07aed0fa8576eda0e58b1af5b285ed4805f754c8",
+      "path": "pico_corpus_brat_annotated_files/15738536.txt"
+    },
+    {
+      "pmid": "15769994",
+      "git_blob_sha1": "29f5d21e8a4b440ce6799297131cd7dec64c3359",
+      "path": "pico_corpus_brat_annotated_files/15769994.txt"
+    },
+    {
+      "pmid": "15790189",
+      "git_blob_sha1": "178ffdc7eb9f0790b1d6c47f9e7dd0b87734b3ad",
+      "path": "pico_corpus_brat_annotated_files/15790189.txt"
+    },
+    {
+      "pmid": "15821120",
+      "git_blob_sha1": "31590df5990ce6c521069c572e51f2dc41392f39",
+      "path": "pico_corpus_brat_annotated_files/15821120.txt"
+    },
+    {
+      "pmid": "15837996",
+      "git_blob_sha1": "9ff734de426cdedc7d6528365aa6b90283d60d2b",
+      "path": "pico_corpus_brat_annotated_files/15837996.txt"
+    },
+    {
+      "pmid": "15860854",
+      "git_blob_sha1": "70b02956f52224db1b40231796005ef1cdb0870e",
+      "path": "pico_corpus_brat_annotated_files/15860854.txt"
+    },
+    {
+      "pmid": "15860855",
+      "git_blob_sha1": "946af8406e30007d63db9e6384d3a7b3f5e4cdd3",
+      "path": "pico_corpus_brat_annotated_files/15860855.txt"
+    },
+    {
+      "pmid": "15897583",
+      "git_blob_sha1": "a3a54738c0ffac7d0cf65b27a5233fb5c83f2b8b",
+      "path": "pico_corpus_brat_annotated_files/15897583.txt"
+    },
+    {
+      "pmid": "15905306",
+      "git_blob_sha1": "c65145265acc845ad3a0c88c9c1859b124d43be6",
+      "path": "pico_corpus_brat_annotated_files/15905306.txt"
+    },
+    {
+      "pmid": "15930421",
+      "git_blob_sha1": "ecafe251edded9fdee02bf74b4524fcd5d51e167",
+      "path": "pico_corpus_brat_annotated_files/15930421.txt"
+    },
+    {
+      "pmid": "15946573",
+      "git_blob_sha1": "1277112a33403911b2e023755d77f91762129e5c",
+      "path": "pico_corpus_brat_annotated_files/15946573.txt"
+    },
+    {
+      "pmid": "15951457",
+      "git_blob_sha1": "d93570e44a7d43677406999639181755dd15f42f",
+      "path": "pico_corpus_brat_annotated_files/15951457.txt"
+    },
+    {
+      "pmid": "16084253",
+      "git_blob_sha1": "79cc1bd35338ed5c09371c083d9082039fed9d84",
+      "path": "pico_corpus_brat_annotated_files/16084253.txt"
+    },
+    {
+      "pmid": "16087943",
+      "git_blob_sha1": "7f0b3d8cf6464007de2bf27924a98c6da4678621",
+      "path": "pico_corpus_brat_annotated_files/16087943.txt"
+    },
+    {
+      "pmid": "16087945",
+      "git_blob_sha1": "5c5dc0adc278864523e1c96504cf41c5e91bdc56",
+      "path": "pico_corpus_brat_annotated_files/16087945.txt"
+    },
+    {
+      "pmid": "16096435",
+      "git_blob_sha1": "22a5bee0ad292b5bf7b9d8397506a980643b2c1e",
+      "path": "pico_corpus_brat_annotated_files/16096435.txt"
+    },
+    {
+      "pmid": "16106024",
+      "git_blob_sha1": "27bd6377b01d7a85f64ad63534ed643dc444d820",
+      "path": "pico_corpus_brat_annotated_files/16106024.txt"
+    },
+    {
+      "pmid": "16109560",
+      "git_blob_sha1": "69d1e736d2001fdffc2e385801f2be893e3bac77",
+      "path": "pico_corpus_brat_annotated_files/16109560.txt"
+    },
+    {
+      "pmid": "16110015",
+      "git_blob_sha1": "2828e14bfb0915d637753468f3e491f5f4e9d37d",
+      "path": "pico_corpus_brat_annotated_files/16110015.txt"
+    },
+    {
+      "pmid": "16139656",
+      "git_blob_sha1": "1de3b83bcb168cd14e7ae496ad14aab5ff94c97b",
+      "path": "pico_corpus_brat_annotated_files/16139656.txt"
+    },
+    {
+      "pmid": "16172456",
+      "git_blob_sha1": "8d61f75924476ffc40d286951a1d4a72cafab1bd",
+      "path": "pico_corpus_brat_annotated_files/16172456.txt"
+    },
+    {
+      "pmid": "16236737",
+      "git_blob_sha1": "2dca57605fde25153dc116adc20f1a1955c41a42",
+      "path": "pico_corpus_brat_annotated_files/16236737.txt"
+    },
+    {
+      "pmid": "16258087",
+      "git_blob_sha1": "26847fb83aa4207b2fa323fad19b5aa1f182db2f",
+      "path": "pico_corpus_brat_annotated_files/16258087.txt"
+    },
+    {
+      "pmid": "16288118",
+      "git_blob_sha1": "4daf81526e6505d8e90b66ae09db316ea243768f",
+      "path": "pico_corpus_brat_annotated_files/16288118.txt"
+    },
+    {
+      "pmid": "16293863",
+      "git_blob_sha1": "486fd581a9aaca4e69d06fb963fb10d1c1119e7f",
+      "path": "pico_corpus_brat_annotated_files/16293863.txt"
+    },
+    {
+      "pmid": "16308853",
+      "git_blob_sha1": "c970b8ba586bb7dd96fbf45c64121fa5ff01d592",
+      "path": "pico_corpus_brat_annotated_files/16308853.txt"
+    },
+    {
+      "pmid": "16325695",
+      "git_blob_sha1": "97beab9beb68044e2a3198e0d066618d23893c66",
+      "path": "pico_corpus_brat_annotated_files/16325695.txt"
+    },
+    {
+      "pmid": "16330517",
+      "git_blob_sha1": "2be352da57980f9c8a97875f3a2365182736e9be",
+      "path": "pico_corpus_brat_annotated_files/16330517.txt"
+    }
+  ]
+}
