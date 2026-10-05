@@ -9663,3 +9663,9 @@ Current exact checkpoint:
 `FACTPICO V2.5 POST-SCORING INDEPENDENT INTERPRETATION / NEXT-DECISION REVIEW`
 
 No rerun, rescoring, adaptation, or repair is authorized yet.
+
+
+Rerun-prevention closure:
+- one-shot scoring workflow removed after successful immutable freeze
+- removal commit: `1fa410c417f4e718f7213fe431ad04534ae90940`
+- purpose: prevent accidental second gold/scoring execution
