@@ -53,8 +53,16 @@ BIOMED_ABBREVIATIONS={
 }
 
 def _period_is_boundary(text:str,i:int)->bool:
+    # Standard decimals such as 42.0.
     if i>0 and i+1<len(text) and text[i-1].isdigit() and text[i+1].isdigit():
         return False
+    # Biomedical/statistical leading-dot decimals such as P=.031, P <.001, P >.05.
+    if i+1<len(text) and text[i+1].isdigit():
+        j=i-1
+        while j>=0 and text[j] in " \t":
+            j-=1
+        if j>=0 and text[j] in "=<>":
+            return False
     left=text[max(0,i-16):i+1].lower()
     if any(left.endswith(x) for x in BIOMED_ABBREVIATIONS):
         return False
