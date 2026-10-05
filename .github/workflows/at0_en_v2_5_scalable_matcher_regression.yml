@@ -1,0 +1,47 @@
+name: AT0 EN V2.5 Scalable Matcher Regression
+
+on:
+  push:
+    branches:
+      - phase2-arabic-eval
+    paths:
+      - 'phase2/academic_transform/at0_en/v2_5/**'
+      - '.github/workflows/at0_en_v2_5_scalable_matcher_regression.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run V2.5 matcher regression
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_5/tests/check_v2_5_scalable_matcher.py
+
+      - name: Freeze file identities
+        run: |
+          set -euo pipefail
+          sha256sum \
+            phase2/academic_transform/at0_en/v2_5/AT0_EN_V2_5_EXACT_SCALABLE_MATCHER_SPEC_V1.md \
+            phase2/academic_transform/at0_en/v2_5/gate_b1/b1_aligner.py \
+            phase2/academic_transform/at0_en/v2_5/tests/check_v2_5_scalable_matcher.py \
+            phase2/academic_transform/at0_en/v2_5/tests/results/V2_5_SCALABLE_MATCHER_REGRESSION_REPORT.json \
+            > phase2/academic_transform/at0_en/v2_5/tests/results/V2_5_REGRESSION_SHA256SUMS.txt
+          cat phase2/academic_transform/at0_en/v2_5/tests/results/V2_5_REGRESSION_SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at0-en-v2-5-scalable-matcher-regression
+          path: phase2/academic_transform/at0_en/v2_5/tests/results/
+          if-no-files-found: error
+          retention-days: 90
