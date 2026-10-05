@@ -3801,3 +3801,78 @@ Rerun-prevention closure:
 - one-shot scoring workflow removed after successful immutable freeze
 - removal commit: `1fa410c417f4e718f7213fe431ad04534ae90940`
 - purpose: prevent accidental second gold/scoring execution
+
+
+---
+
+# 57. FACTPICO FAILURE ANALYSIS + V2.6 REPAIR DESIGN FROZEN
+
+Date: 2026-10-05
+
+Independent interpretation verdict:
+`A. AUTHORIZE_BOUNDED_FACTPICO_FAILURE_ANALYSIS_AND_REPAIR_DESIGN`
+
+Taxonomy:
+`FACTPICO_V25_FAILURE_ANALYSIS_TAXONOMY_V1.md`
+commit `ecc458d9f46a51f5cc9f6e10b51b6d5caacc1ce7`
+
+Failure analysis:
+`FACTPICO_V25_FAILURE_ANALYSIS_REPORT_V1.md`
+commit `3a96a19105f2c732c8ba62d2daef4a1957718b6d`
+
+Repair design:
+`AT0_EN_V26_DEV_REPAIR_DESIGN_V1.md`
+commit `f7b329baa42225353e20895fc15f4a1ef8e50593`
+
+Key frozen localization:
+- 345/345 contain assertion uncertainty
+- 2773/2824 alignments UNCERTAIN
+- 308 REVIEW explained by uncertainty gate
+- 37 REJECT explained by critical mismatch overriding uncertainty
+- relation alignments 0
+- 339/345 non-1:1 assertion groups
+- 331/345 source assertion count > candidate count
+- median source:candidate ratio 4.83
+- current unequal-count code appends all leftovers to last group
+
+Most defensible mechanism:
+`EXTRACTION/REPRESENTATION UNCERTAINTY + UNEQUAL-COUNT GROUPING AMPLIFICATION + FAIL-CLOSED REVIEW GATE`
+
+Decision-rule-only relaxation:
+`NOT JUSTIFIED`
+
+Proposed V2.6-DEV design only:
+- R1 boundary/markup normalization
+- R2 localized assertion confidence
+- R3 partial exact alignment with explicit unmatched nodes
+- R4 independent extraction-coverage extension only if still needed
+
+NO IMPLEMENTATION performed.
+
+FactPICO V2.5 experiment:
+`100% COMPLETE`
+
+Scientific performance improvement:
+`0%` because runtime is unchanged.
+
+Current indicators:
+- diagnostic localization completeness 92/100
+- evidence/reproducibility 99/100
+- process rigor 99/100
+- repair-direction confidence 88/100
+- validated benchmark satisfaction 30/100
+- overall English-track maturity 74/100
+
+Next review packet:
+`FACTPICO_V25_FAILURE_ANALYSIS_AND_REPAIR_DESIGN_REVIEW_PACKET.txt`
+commit `731160384e89a6d28c2b892b8b05697fc6d4e2f5`
+
+Current exact checkpoint:
+`FAILURE_ANALYSIS_AND_REPAIR_DESIGN_REVIEW`
+
+Still forbidden:
+- FactPICO rerun/rescoring
+- threshold/gold/population changes
+- repair implementation until independent approval
+- custom Gate C
+- Arabic work
