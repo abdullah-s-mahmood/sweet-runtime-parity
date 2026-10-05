@@ -3402,3 +3402,69 @@ Quality delta:
 
 Current exact checkpoint:
 `AUTHORIZED ONE-SHOT EXECUTION PREFLIGHT`
+
+
+---
+
+# 52. AUTHORIZED FACTPICO PREFLIGHT COMPLETE + ADAPTER PROVENANCE RECONCILIATION
+
+Date: 2026-10-05
+
+Authorized preflight workflow:
+`37317413838`
+
+Head:
+`fa1ffb4f37e44dec04d29061ba95c5091ee3a46a`
+
+Artifact:
+`11348064811`
+
+Artifact digest:
+`sha256:c3786ba8c6516d959e0f22f075e289868b9765b7aa72c49fe5607a547b4e69e4`
+
+Immutable execution checkout verified:
+`659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee`
+
+PASS:
+- matcher SHA
+- batch runner SHA
+- one-shot guard SHA
+- exact public FactPICO ZIP SHA
+- 345-record prediction-input rebuild
+- prediction-input SHA
+- gold SHA
+- eligibility SHA
+- unique IDs/order/schema
+- no real claim created
+- no inference started
+
+Provenance mismatch found:
+historically documented adapter SHA
+`ab128309...`
+does not match the bytes actually committed in Git.
+
+Actual committed adapter SHA:
+`3b0698772630a17d6d05fdf7197f5faa79b22212332ae785b069318bda4cd5b0`
+
+Git compare from adapter implementation commit `c36aef...` to execution checkout `659b61...` shows no adapter-file modification.
+
+Therefore:
+`HISTORICAL DOCUMENTED-HASH MISMATCH / NOT POST-FREEZE CODE MUTATION`
+
+Reconciliation file:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_ADAPTER_COMMITTED_IDENTITY_RECONCILIATION_V1.md`
+
+Commit:
+`c22f027fb879a8092fa129f45c238d07f9a25ffd`
+
+Scientific contract/runtime/thresholds/gold/population:
+`UNCHANGED`
+
+Real attempt:
+`UNCONSUMED`
+
+FactPICO prediction:
+`NOT_RUN`
+
+Exact next checkpoint:
+`VERIFY REAL CLAIM ABSENT -> ATOMIC REMOTE CLAIM -> ONE AUTHORIZED PREDICTION RUN -> IMMUTABLE FREEZE -> STOP BEFORE GOLD JOIN`
