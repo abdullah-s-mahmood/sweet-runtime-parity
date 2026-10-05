@@ -9716,3 +9716,16 @@ Next:
 Packet:
 `FACTPICO_V25_FAILURE_ANALYSIS_AND_REPAIR_DESIGN_REVIEW_PACKET.txt`
 commit `731160384e89a6d28c2b892b8b05697fc6d4e2f5`
+
+
+## 2026-10-05 — Consultation-minimization / deep-reasoning rule
+
+Permanent rules:
+- higher-model consultation is exceptional, not default;
+- consult only for irreversible/high-stakes scientific boundaries, unresolved construct-validity ambiguity, materially divergent scientific paths, or explicit user request;
+- first perform internal deep analysis, competing-hypothesis brainstorming, disconfirming-evidence search, and deep external research where useful;
+- do not spend user quota on routine implementation/debugging/analysis that can be done internally;
+- current FactPICO failure-analysis / V2.6 repair problem is internally resolvable; no automatic higher-model review is required.
+
+Objective:
+`BEST DEFENSIBLE RESULT, NOT FASTEST AGREEMENT`
