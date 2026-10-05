@@ -1033,3 +1033,74 @@ Still forbidden:
 - threshold tuning;
 - custom Gate C opening;
 - Arabic work.
+
+
+## 27. Full higher-model report reconciliation + synthetic scalability preflight
+
+Full strategic reconciliation:
+`FULL_STRATEGIC_LANDSCAPE_RECONCILIATION_V1.md`
+
+Commit:
+`b724f618eb8067e44edd7ac3ae823b52f292ae01`
+
+Newly incorporated from full reviewer report:
+- three-level evidence hierarchy:
+  ARTIFACT/CONFORMANCE -> CONSTRUCT CAPABILITY -> COMPLETE TRANSACTION;
+- stronger later-version architecture around executable obligations, native-document authority, context/obligation separation, coverage audit and dependency-aware repair;
+- concrete integration candidates and code/license warnings;
+- explicit unresolved failure modes:
+  shared extraction blindness, benchmark packaging leakage, multiplicity collapse, context laundering, evidence cherry-picking, stale verification, compensatory repair, hidden document layers, scientific-state confusion, authoritative-source drift;
+- later novelty/baseline requirement:
+  compare against simpler imported baselines and simplify ACAD_PASS if the richer architecture does not add measurable value.
+
+No change to FactPICO V5.
+
+Synthetic scalability preflight:
+`V2_4_SYNTHETIC_SCALABILITY_PREFLIGHT_V1.md`
+
+Commit:
+`03609245bab8d22e4c164708fd8ed2d9ded36803`
+
+Synthetic-only measured frozen matcher runtime:
+- n=6: 0.1767 s
+- n=7: 1.4159 s
+- n=8: 12.9480 s
+
+n=8 throughput:
+~3,114 permutations/sec.
+
+Optimistic constant-throughput extrapolation:
+- n=9: ~1.94 min
+- n=10: ~19.42 min
+- n=11: ~3.56 h
+- n=12: ~42.73 h
+- n=15: ~13.31 years
+
+No FactPICO record was used.
+
+Preflight verdict:
+`FAIL_SCALABILITY`
+
+Current external prediction status:
+`NOT_READY_FOR_FACTPICO_PREDICTION`
+
+Focused higher-model review packet:
+`V2_4_SCALABILITY_HIGHER_MODEL_REVIEW_PACKET.txt`
+
+Packet commit:
+`481c45c8a77f2446f9f2759c46c620c55054c1f2`
+
+Decision requested:
+- canonical V2.4 + preregistered timeout/INVALID baseline;
+vs
+- version-bumped scalable matcher before FactPICO;
+vs
+- another explicitly cleaner path.
+
+Implementation-agent preliminary recommendation:
+`PREFER VERSION-BUMP SCALABLE MATCHER, SUBJECT TO INDEPENDENT REVIEW`
+
+Reason:
+known factorial execution defect may confound the one-shot external measurement.
+
+FactPICO remains untouched/unconsumed.
