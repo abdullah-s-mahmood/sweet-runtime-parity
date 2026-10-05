@@ -1,0 +1,132 @@
+ACAD_PASS — FOCUSED HIGHER-MODEL DECISION ON V2.4 SCALABILITY BLOCKER
+
+ROLE
+Act only as an independent research-methodology / scientific-software reviewer.
+
+DO NOT:
+- write code;
+- run FactPICO;
+- modify repository;
+- redesign H1/H2/H3/H4;
+- tune thresholds;
+- perform another broad landscape review.
+
+GOAL
+Choose the scientifically clean execution path after a new pre-prediction scalability blocker was found in frozen V2.4.
+
+REPOSITORY
+`abdullah-s-mahmood/sweet-runtime-parity`
+
+BRANCH
+`phase2-arabic-eval`
+
+READ ONLY:
+1. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/V2_4_SYNTHETIC_SCALABILITY_PREFLIGHT_V1.md`
+2. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_H1_PRE_PREDICTION_INTEGRITY_GATE_V1.md`
+3. `phase2/academic_transform/at0_en/v2_4/AT0_EN_V2_4_FROZEN_ARCHITECTURE_V2.md`
+4. `phase2/academic_transform/at0_en/v2_4/gate_b1/b1_aligner.py`
+5. If needed for strategic boundary:
+   `phase2/academic_transform/at0_en/v2_4/pre_gate_c/FULL_STRATEGIC_LANDSCAPE_RECONCILIATION_V1.md`
+
+FROZEN FACTS
+
+- Canonical V2.4 external FactPICO prediction has NOT been run.
+- FactPICO remains unconsumed prospectively.
+- Frozen V2.4 B1.1 aligner uses full permutation enumeration for one-to-one assertion matching.
+- Measured synthetic runtime using the exact helper logic:
+  * n=6: 0.1767 s
+  * n=7: 1.4159 s
+  * n=8: 12.9480 s
+- n=8 throughput ≈3,114 permutations/sec.
+- Optimistic extrapolation:
+  * n=9 ≈1.94 min
+  * n=10 ≈19.42 min
+  * n=11 ≈3.56 h
+  * n=12 ≈42.73 h
+- Throughput already decreases with n, so these are optimistic.
+- No FactPICO assertion counts were measured.
+- V2.4's previous B2 development set was deliberately small.
+- The alignment objective is additive across pair assignments and lexicographically optimizes:
+  1. hard-owner mismatches;
+  2. owner similarity;
+  3. semantic similarity.
+- Therefore the problem is mathematically an assignment problem; factorial enumeration is not necessary in principle.
+- Replacing the matcher changes frozen executable behavior and therefore cannot be silently called the same V2.4 runtime.
+- The recent deep strategic review previously recommended preserving V2.4 long enough to obtain a properly scoped external baseline, but that recommendation preceded discovery of this measured scalability blocker.
+
+OPTIONS
+
+OPTION A — RUN CANONICAL V2.4 WITH PREDECLARED TIMEOUT/RESOURCE POLICY
+
+Before seeing FactPICO outcomes:
+- freeze a benchmark-independent per-record timeout/resource limit;
+- every record still produces an output record;
+- timeout/crash = INVALID_VERIFICATION;
+- no adaptive retries after benchmark behavior is seen.
+
+Pros:
+- obtains true canonical V2.4 external baseline.
+
+Risk:
+- external measurement may mostly measure factorial execution failure rather than scientific verification.
+
+OPTION B — VERSION-BUMP BEFORE FACTPICO
+
+- preserve canonical V2.4 unchanged/history;
+- implement a pre-specified scalable assignment method;
+- rerun existing development/regression evidence;
+- freeze a new runtime identity;
+- run FactPICO prospectively only on the new version.
+
+Pros:
+- likely measures semantic capability rather than known factorial tractability.
+
+Risk:
+- canonical V2.4 never receives an external FactPICO baseline;
+- implementation/tie behavior may change.
+
+OPTION C — ANOTHER CLEANER PATH
+
+Only if you can specify it precisely.
+
+QUESTIONS
+
+1. VERDICT
+Choose exactly one:
+A. RUN_FROZEN_V2_4_WITH_TIMEOUT
+B. VERSION_BUMP_BEFORE_FACTPICO
+C. OTHER
+
+2. SCIENTIFIC_VALIDITY
+Would knowingly running frozen factorial V2.4 on full-document FactPICO with a fixed timeout produce a scientifically useful baseline, or an avoidably confounded one?
+
+3. BASELINE_VALUE
+How important is preserving an external measurement of canonical V2.4 now that a pre-existing execution-validity defect is known before prediction?
+
+4. VERSION_IDENTITY
+If the matcher is replaced with a scalable algorithm while preserving the same intended lexicographic pair objective, must this be a new pipeline version? State exact versioning recommendation.
+
+5. REGRESSION REQUIREMENTS
+If you choose version bump, specify the minimum regression evidence required BEFORE external prediction:
+- existing B1/B2 cases?
+- synthetic assignment-equivalence cases?
+- safety/adversarial cases?
+- runtime scalability cases?
+Give exact minimum categories, not code.
+
+6. MATCHER SEMANTICS
+Should a replacement be required to reproduce the exact lexicographic optimum of the old matcher, or is a deterministic scalable approximation acceptable if separately frozen and regression-tested?
+
+7. TIMEOUT POLICY
+If you choose Option A, specify how the timeout/resource limit should be selected without using FactPICO assertion counts or runtime behavior.
+
+8. FACTPICO STATUS
+Does this blocker consume or contaminate FactPICO?
+Expected answer should explicitly distinguish:
+- static/synthetic preflight exposure;
+- external benchmark prediction exposure.
+
+9. FINAL AUTHORIZATION
+State exactly what the implementation agent may do next and where it must stop.
+
+Use deep technical reasoning, but keep this review focused on this blocker only.
