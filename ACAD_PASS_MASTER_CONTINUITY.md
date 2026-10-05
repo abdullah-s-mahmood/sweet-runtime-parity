@@ -3341,3 +3341,64 @@ Net:
 
 Current stop:
 `FINAL EXECUTION AUTHORIZATION REVIEW`
+
+
+---
+
+# 51. FINAL FACTPICO V2.5 EXECUTION AUTHORIZATION
+
+Date: 2026-10-05
+
+Independent higher-model verdict:
+`A. AUTHORIZE_ONE_PROSPECTIVE_FACTPICO_PREDICTION_RUN`
+
+Decision record:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/V2_5_FINAL_EXECUTION_AUTHORIZATION_DECISION_V1.md`
+
+Decision-record commit:
+`af6c877295684c2028fe5e72948723c2f31d899c`
+
+Two-gap status:
+- priority-conflict fixture: CLOSED
+- durable attempt ledger: CLOSED
+- concrete unresolved execution defect: NONE
+
+Authorized maximum:
+`ONE PROSPECTIVE AT0-EN V2.5 FACTPICO PREDICTION RUN + IMMUTABLE PREDICTION ARTIFACT FREEZE ONLY`
+
+Immutable execution checkout:
+`659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee`
+
+Authorization ID:
+`FACTPICO-V5-V25-ONE-PROSPECTIVE-PREDICTION-001`
+
+Frozen prediction-input SHA-256:
+`ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82`
+
+Real attempt:
+`UNCONSUMED`
+
+FactPICO:
+- prediction: NOT_RUN
+- gold join: NOT_RUN
+- scoring: NOT_RUN
+- profiling: NOT_RUN
+
+Mandatory order:
+1. verify exact frozen input bytes/hash and 345 unique IDs/order;
+2. verify canonical real durable claim absent;
+3. atomically create/read back canonical remote claim;
+4. invoke bound local guard exactly once;
+5. strictly sequential, zero retries, 60 s/record, max128 assertions/side;
+6. retain all INVALID outcomes;
+7. freeze prediction SHA/artifact/evidence;
+8. STOP before gold join.
+
+Still forbidden:
+scoring, gold join, rerun, adaptive retry, runtime/matcher changes, threshold/gold changes, pre-run FactPICO profiling, H1/H2/H3/H4 redesign, custom Gate C, Arabic work.
+
+Quality delta:
+`IMPROVED — FINAL EXECUTION AUTHORIZATION OBTAINED / NO NEW SCIENTIFIC REGRESSION`
+
+Current exact checkpoint:
+`AUTHORIZED ONE-SHOT EXECUTION PREFLIGHT`
