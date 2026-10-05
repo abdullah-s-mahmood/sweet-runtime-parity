@@ -3468,3 +3468,88 @@ FactPICO prediction:
 
 Exact next checkpoint:
 `VERIFY REAL CLAIM ABSENT -> ATOMIC REMOTE CLAIM -> ONE AUTHORIZED PREDICTION RUN -> IMMUTABLE FREEZE -> STOP BEFORE GOLD JOIN`
+
+
+---
+
+# 53. FACTPICO V2.5 ONE PROSPECTIVE PREDICTION — COMPLETE AND FROZEN
+
+Date: 2026-10-05
+
+Final freeze record:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_ONE_PROSPECTIVE_PREDICTION_FREEZE_V1.md`
+
+Freeze-record commit:
+`cdabc233c77cad2dace15233ccbc179ee5fa2dac`
+
+Authorized execution:
+- run `37318062175`
+- workflow head `066d606e311136c5020ba800c3872b054c11e6da`
+- job `111789731999`
+- conclusion `SUCCESS`
+
+Immutable runtime checkout:
+`659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee`
+
+Input:
+- count `345`
+- SHA-256 `ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82`
+- unique IDs/order `PASS`
+
+Durable real claim:
+- state `CONSUMED_BEFORE_INFERENCE`
+- creation commit `6387516d84e9ba1109d387dcc4bde715ce2ac16b`
+- blob SHA `a1d7bb2df60e55db8f914550858c2accadad1390`
+- read-back `PASS`
+
+Prediction:
+- state `PREDICTIONS_FROZEN`
+- count `345`
+- SHA-256 `925c8a073f4304fe751af072c1d1b8fc64455104e8ed2f23a88c3fc3e6ad496b`
+- retry count `0`
+
+Frozen artifact:
+- ID `11348646367`
+- size `358556 bytes`
+- digest `sha256:eb68ab179bc17af1105a63ae1ff2f3fc76a4449bffd74a40a76a775319743daa`
+- independently downloaded ZIP SHA matches the GitHub artifact digest exactly
+- private preservation copy stored in ACAD_PASS Library
+
+Preserved preflight negative:
+- run `37317221936` failed BEFORE CLAIM because historical adapter SHA metadata did not match committed bytes
+- no inference and no claim occurred in that failed preflight
+- provenance was reconciled before execution
+
+Successful preflight:
+- run `37317413838`
+- artifact `11348064811`
+- digest `sha256:c3786ba8c6516d959e0f22f075e289868b9765b7aa72c49fe5607a547b4e69e4`
+
+Current FactPICO boundary:
+- prediction `COMPLETE / FROZEN`
+- real one-shot authorization `CONSUMED / NO RERUN`
+- gold join `NOT_RUN`
+- scoring `NOT_RUN`
+- eligibility join `NOT_RUN`
+- scientific H1 result `NOT YET MEASURED`
+
+Quality delta:
+`IMPROVED — AUTHORIZED ONE-SHOT EXECUTION COMPLETED WITH EXACT ID/ORDER AND IMMUTABLE ARTIFACT`
+
+New irreversible state:
+`ONE-SHOT AUTHORIZATION CONSUMED AS DESIGNED`
+
+Exact current checkpoint:
+`FACTPICO PREDICTION FROZEN / STOP BEFORE GOLD JOIN`
+
+Do NOT:
+- rerun prediction;
+- join gold;
+- score;
+- inspect results adaptively;
+- modify runtime/matcher;
+- change thresholds/gold;
+- open custom Gate C;
+- resume Arabic work.
+
+Gold join/scoring requires a separate explicit authorization checkpoint.
