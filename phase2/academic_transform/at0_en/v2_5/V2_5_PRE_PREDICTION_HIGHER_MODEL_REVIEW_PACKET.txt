@@ -1,0 +1,161 @@
+ACAD_PASS — V2.5 PRE-PREDICTION FREEZE REVIEW
+
+ROLE
+Act only as an independent final pre-prediction methodology/runtime reviewer.
+
+DO NOT:
+- write code;
+- run FactPICO;
+- score FactPICO;
+- modify the repository;
+- redesign H1/H2/H3/H4;
+- reopen landscape research;
+- tune thresholds.
+
+GOAL
+Decide whether the newly frozen AT0-EN V2.5 runtime is ready for a separately authorized first prospective FactPICO H1 V5 prediction.
+
+REPOSITORY
+`abdullah-s-mahmood/sweet-runtime-parity`
+
+BRANCH
+`phase2-arabic-eval`
+
+READ ONLY, IN ORDER
+
+1. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/V2_4_SCALABILITY_HIGHER_MODEL_DECISION_V1.md`
+2. `phase2/academic_transform/at0_en/v2_5/AT0_EN_V2_5_EXACT_SCALABLE_MATCHER_SPEC_V1.md`
+3. `phase2/academic_transform/at0_en/v2_5/AT0_EN_V2_5_RUNTIME_FREEZE_V1.md`
+4. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V5_EXECUTION_IDENTITY_AMENDMENT_V1.md`
+5. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/H1_FACTPICO_HARD_GOLD_CONTRACT_V5.md`
+6. `phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_H1_ADAPTER_IMPLEMENTATION_FREEZE_V1.md`
+
+If necessary for direct code verification only:
+7. `phase2/academic_transform/at0_en/v2_5/gate_b1/b1_aligner.py`
+8. `phase2/academic_transform/at0_en/v2_5/run_v2_5_batch.py`
+9. `phase2/academic_transform/at0_en/v2_5/tests/check_v2_5_scalable_matcher.py`
+
+FROZEN FACTS TO VERIFY, NOT ASSUME
+
+GitHub Actions run:
+`37279532576`
+
+Run head:
+`05e200461c1067c120e73acf4a6055383eb350b2`
+
+Run conclusion:
+`success`
+
+Artifact:
+`11331840770`
+
+Artifact ZIP digest:
+`sha256:ec012324b265b5e6be5e1aff5f5dd670547692fc9f8bb6a3f58c993ccbb2cba1`
+
+Regression report status:
+`PASS`
+
+Key regression results:
+- B1 exact output differences: 0 across 12 canonical pairs
+- B2 four-arm exact output differences: 0
+- EE: 12/12 correct, 5/5 safe PASS, 0/6 unsafe PASS, 1/1 REVIEW preserved
+- GG: 12/12
+- GE: 11/12, 4/5 safe, 0 unsafe PASS
+- EG: 11/12, 4/5 safe, 0 unsafe PASS
+- synthetic exhaustive-equivalence cases: 205
+- downstream tie case: PASS
+- timeout/crash/empty/out-of-envelope mechanics: PASS
+- retries: 0
+- FactPICO used: false
+
+Synthetic scalability, two runs each:
+- n=9 ~0.032s
+- n=10 ~0.039s
+- n=12 ~0.056s
+- n=16 ~0.099s
+- n=32 ~0.395s
+- n=64 ~1.58s
+- n=128 ~6.31–6.73s
+- peak at n=128 ~5.35 MB
+
+Frozen runtime envelope:
+- exact Hungarian integer assignment
+- exact rational formula policy
+- max assertions/side = 128
+- per-record timeout = 60s
+- strictly sequential
+- retry count = 0
+- timeout/crash/out-of-envelope => INVALID_VERIFICATION
+
+Important numeric caveat:
+V2.5 uses exact rational evaluation of the same mathematical score formula rather than V2.4 binary-float accumulation.
+No differences were observed in:
+- canonical B1/B2 outputs
+- 205 brute-force-oracle synthetic cases
+But universal bitwise equivalence to all possible V2.4 near-ties is NOT claimed.
+
+FactPICO:
+- no text passed through V2.5
+- no assertion counts profiled
+- no timing
+- no predictions
+- no scoring
+- V5 scientific gold/thresholds/population unchanged
+- prediction input/gold hashes unchanged
+
+QUESTIONS
+
+1. VERDICT
+Choose exactly one:
+A. READY_FOR_SEPARATE_FACTPICO_EXECUTION_AUTHORIZATION
+B. READY_WITH_ESSENTIAL_PRE_EXECUTION_CHANGES
+C. NOT_READY
+
+2. MATCHER_CORRECTNESS
+Is the combination of:
+- exact integer Hungarian optimization,
+- declared exact-rational numeric policy,
+- 205 brute-force equivalence cases,
+- exact B1/B2 regression,
+- tie-policy test
+sufficient for the narrowly authorized version bump?
+If not, state the exact missing evidence.
+
+3. NUMERIC_POLICY
+Is the explicit exact-rational policy acceptable despite not claiming universal bitwise identity with V2.4 floating accumulation?
+State whether this changes the scientific construct or only runtime/numeric identity.
+
+4. RESOURCE ENVELOPE
+Is:
+- max 128 assertions/side
+- 60s per-record timeout
+- no retries
+- INVALID on timeout/crash/out-of-envelope
+a defensible benchmark-independent execution policy given it was selected from synthetic/development evidence only?
+If not, give the exact required change.
+
+5. REGRESSION EVIDENCE
+Do the exact B1/B2 zero-diff results and preserved safety/uncertainty behavior satisfy the earlier focused review requirements?
+List any unmet category explicitly.
+
+6. FACTPICO INTEGRITY
+Confirm whether FactPICO remains prospectively unpredicted and whether changing only runtime identity to V2.5 requires any V5 gold/eligibility/threshold amendment.
+Do not propose changes merely for stylistic cleanliness.
+
+7. ONE-SHOT EXECUTION POLICY
+If ready, specify the exact rules that must govern the later FactPICO run:
+- input hash verification;
+- exact 345 IDs;
+- sequential execution;
+- no retries;
+- immutable prediction artifact before gold join;
+- handling INVALID;
+- no result-adaptive changes.
+
+8. STOP / AUTHORIZATION
+State exactly what the implementation agent may do next.
+
+If ready, authorization should be limited to ONE prospective V2.5 FactPICO prediction run and prediction-artifact freeze only.
+Gold join/scoring should remain a separate subsequent step unless you explicitly justify combining them without weakening procedural separation.
+
+Do not broaden this review.
