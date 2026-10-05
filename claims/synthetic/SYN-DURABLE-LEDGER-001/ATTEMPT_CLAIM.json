@@ -1,0 +1,15 @@
+{
+  "schema_version": "ACAD_PASS_DURABLE_LEDGER_V1",
+  "purpose": "SYNTHETIC_DURABILITY_TEST_ONLY",
+  "state": "CONSUMED_BEFORE_INFERENCE",
+  "runtime_id": "AT0-EN V2.5",
+  "authorization_scope": "SYNTHETIC_ONLY",
+  "input_sha256": "SYNTHETIC_DURABILITY_TEST_V1",
+  "attempt_id": "SYN-DURABLE-LEDGER-001",
+  "canonical_provider": "github",
+  "canonical_repository": "abdullah-s-mahmood/sweet-runtime-parity",
+  "canonical_branch": "factpico-v25-one-shot-ledger",
+  "canonical_key": "claims/synthetic/SYN-DURABLE-LEDGER-001/ATTEMPT_CLAIM.json",
+  "inference_started": false,
+  "note": "Claim intentionally persisted without inference to test survival and restart refusal."
+}
