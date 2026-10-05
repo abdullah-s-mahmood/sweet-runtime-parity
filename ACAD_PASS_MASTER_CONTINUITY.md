@@ -3941,3 +3941,81 @@ Do not ask the user to spend additional model quota when the task can be complet
 The current FactPICO failure analysis and V2.6 repair-design problem is considered technically resolvable internally.
 Further higher-model review is NOT automatically required unless a future irreversible scientific boundary is reached or the user requests it.
 
+
+
+---
+
+# 59. AT0-EN V2.6-DEV R1-R3 IMPLEMENTED / MECHANICS PASS
+
+Date: 2026-10-05
+
+Development branch:
+`at0-en-v2.6-dev`
+
+Internal bounded implementation review:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V2_6_INTERNAL_EVIDENCE_REVIEW_V1.md`
+commit:
+`a85fed42415a3e01492fac5d442913f6503927b4`
+
+Implemented:
+- R1 biomedical-aware boundary/markup normalization with provenance
+- R2 atomic/local assertion confidence
+- R3 exact partial Hungarian alignment with explicit unmatched OMITTED/NEW_INFORMATION nodes
+- final fail-closed pair_outcome ordering unchanged
+
+Independent development mechanics suite:
+`phase2/academic_transform/at0_en/v2_6/tests/check_v2_6_representation_dev.py`
+
+FactPICO records used:
+`0`
+
+First dev run:
+`37334848280` — FAIL preserved as negative evidence.
+Only failing family: segmentation 54/60 due to single-letter scientific unit `s.` being mistaken for a personal initial.
+Safe 60/60 PASS; critical errors 80/80 REJECT; unsafe PASS 0; unequal-count 60/60.
+
+Narrow code-only fix:
+`6e6430fd5b669b0e27d75347dc7d2958154fb402`
+
+Second dev run:
+`37335021149` — SUCCESS
+
+Successful artifact:
+`11355512964`
+digest:
+`e3b5975c608901de8c53467fd7d47a9fbda5830df26fe2bacee2fc9c8866b272`
+
+Successful result:
+- segmentation 60/60
+- safe paraphrase 60/60 PASS_CANDIDATE
+- critical error 80/80 REJECT
+- unsafe critical PASS 0
+- safe REVIEW 0
+- unequal-count explicit accounting 60/60
+- INVALID 0
+- two fresh-process outputs byte-identical
+
+Canonical mechanics summary SHA:
+`bdf54ee696e9841d927de46fb4a0d33ab26a43fe13380d34f9134cf941d02476`
+
+This is development evidence only; it is NOT external validation.
+
+Real-RCT stress diagnostic has now been frozen before observation:
+`phase2/academic_transform/at0_en/dev_support/v2_6_real_rct_stress.py`
+commit:
+`e378b24140eb8159ce4d584e5aa8848922e7ce76`
+
+Source:
+`sociocom/PICO-Corpus`
+source commit:
+`482b7d8f135fe6ea424961c2812e8d214c3f4a5f`
+30 deterministically selected RCT abstracts with frozen Git blob identities.
+
+R4 decision thresholds were frozen before observing stress results.
+
+Current exact checkpoint:
+`V2.6 REAL-RCT STRESS / R4 NECESSITY DECISION`
+
+No FactPICO rerun/rescoring.
+No external validation.
+No R4 implementation until development evidence justifies it.
