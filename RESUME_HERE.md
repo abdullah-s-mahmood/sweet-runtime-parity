@@ -9669,3 +9669,50 @@ Rerun-prevention closure:
 - one-shot scoring workflow removed after successful immutable freeze
 - removal commit: `1fa410c417f4e718f7213fe431ad04534ae90940`
 - purpose: prevent accidental second gold/scoring execution
+
+
+## 2026-10-05 — Failure analysis and V2.6 repair design frozen
+
+Verdict authorizing this phase:
+`A. AUTHORIZE_BOUNDED_FACTPICO_FAILURE_ANALYSIS_AND_REPAIR_DESIGN`
+
+Failure analysis:
+`FACTPICO_V25_FAILURE_ANALYSIS_REPORT_V1.md`
+commit `3a96a19105f2c732c8ba62d2daef4a1957718b6d`
+
+Repair design:
+`AT0_EN_V26_DEV_REPAIR_DESIGN_V1.md`
+commit `f7b329baa42225353e20895fc15f4a1ef8e50593`
+
+Key result:
+- all 345 records contain assertion uncertainty
+- 308 REVIEW are directly caused by uncertainty gating
+- 37 REJECT have critical mismatch overriding uncertainty
+- zero relation alignments
+- 339/345 non-1:1 assertion groups
+- median source:candidate assertion ratio 4.83
+
+Most defensible bottleneck:
+`representation/extraction uncertainty + unequal-count grouping amplification`
+
+Do NOT fix the result by relaxing REVIEW/PASS policy.
+
+No repair implemented yet.
+
+Progress:
+- FactPICO V2.5 experiment 100%
+- current failure-analysis phase 100%
+- repair-design phase 100%
+- scientific performance improvement 0% (runtime unchanged)
+- diagnostic localization 92/100
+- process rigor 99/100
+- repair-direction confidence 88/100
+- benchmark outcome satisfaction 30/100
+- overall English-track maturity 74/100
+
+Next:
+`FAILURE_ANALYSIS_AND_REPAIR_DESIGN_REVIEW`
+
+Packet:
+`FACTPICO_V25_FAILURE_ANALYSIS_AND_REPAIR_DESIGN_REVIEW_PACKET.txt`
+commit `731160384e89a6d28c2b892b8b05697fc6d4e2f5`
