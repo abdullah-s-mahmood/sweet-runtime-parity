@@ -1,0 +1,5 @@
+AT0-EN V2.6 R4.2 V5 safe full train+calibration trigger
+Date: 2026-10-05
+Execution-only recovery from run 37355935421 timeout.
+Scientific protocol unchanged.
+Progress observability enabled.
