@@ -1,0 +1,71 @@
+name: AT0 EN V2.6 R4 ONE internal holdout open
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - 'phase2/academic_transform/at0_en/v2_6/V26_R4_HOLDOUT_OPEN_TRIGGER_V1.txt'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: at0-en-v2-6-r4-internal-holdout-one-open
+  cancel-in-progress: false
+
+jobs:
+  holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact trigger commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: at0-en-v2.6-dev
+          fetch-depth: 1
+
+      - name: Verify frozen authorization inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f phase2/academic_transform/at0_en/v2_6/V26_R4_HOLDOUT_OPEN_TRIGGER_V1.txt
+          test -f phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R4_INTERNAL_HOLDOUT_MANIFEST_V1.json
+          test -f phase2/academic_transform/at0_en/v2_6/FACTPICO_V25_SOURCE_CLUSTER_HASHES_FOR_R4_OVERLAP_V1.json
+          test -f phase2/academic_transform/at0_en/dev_support/v2_6_r4_internal_holdout_eval.py
+          mkdir -p "$RUNNER_TEMP/r4_holdout"
+          git rev-parse HEAD > "$RUNNER_TEMP/r4_holdout/TRIGGER_HEAD.txt"
+          sha256sum \
+            phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R4_INTERNAL_HOLDOUT_MANIFEST_V1.json \
+            phase2/academic_transform/at0_en/v2_6/FACTPICO_V25_SOURCE_CLUSTER_HASHES_FOR_R4_OVERLAP_V1.json \
+            phase2/academic_transform/at0_en/dev_support/v2_6_r4_internal_holdout_eval.py \
+            phase2/academic_transform/at0_en/v2_6/gate_b2/relation_aware_extractor.py \
+            phase2/academic_transform/at0_en/v2_6/gate_a/source_assertion_extractor.py \
+            > "$RUNNER_TEMP/r4_holdout/FROZEN_INPUT_SHA256.txt"
+
+      - name: Open and evaluate internal holdout once
+        shell: bash
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/dev_support/v2_6_r4_internal_holdout_eval.py \
+            > "$RUNNER_TEMP/r4_holdout/R4_INTERNAL_HOLDOUT_RESULT.json"
+
+      - name: Mark stop boundary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "HOLDOUT_TRIGGERED=TRUE"
+            echo "FACTPICO_RERUN=FALSE"
+            echo "EXTERNAL_VALIDATION=FALSE"
+            echo "THRESHOLD_TUNING_AFTER_OPEN=FORBIDDEN"
+            echo "STOP_AFTER_HOLDOUT_RESULT_FREEZE=TRUE"
+          } > "$RUNNER_TEMP/r4_holdout/STOP_BOUNDARY.txt"
+
+      - name: Upload immutable holdout evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: at0-en-v2-6-r4-internal-holdout-consumed
+          path: ${{ runner.temp }}/r4_holdout
+          if-no-files-found: error
+          retention-days: 90
