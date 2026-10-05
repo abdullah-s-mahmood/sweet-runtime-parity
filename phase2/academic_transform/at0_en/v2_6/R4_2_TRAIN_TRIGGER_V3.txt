@@ -1,0 +1,3 @@
+AT0-EN V2.6 R4.2 corrected PICO P/I/C/O witness training+calibration trigger
+Date: 2026-10-05
+Published PubMedBERT setting frozen. No test inference.
