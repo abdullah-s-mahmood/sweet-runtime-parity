@@ -1,3 +1,4 @@
 AT0-EN V2.5 scalable matcher regression trigger.
 No FactPICO execution.
 Final runtime-freeze regression pass requested on 2026-10-05.
+Runner hash coverage correction trigger.
