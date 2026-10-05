@@ -4019,3 +4019,37 @@ Current exact checkpoint:
 No FactPICO rerun/rescoring.
 No external validation.
 No R4 implementation until development evidence justifies it.
+
+
+## UI/STREAM INTERRUPTION RESILIENCE UPDATE — 2026-10-05
+
+Observed UI symptoms:
+- `Our systems are thinking a bit more about this request before responding.`
+- `Connection interrupted. Waiting for the complete answer`
+
+Permanent operating rule:
+`DURABLE_STATE_BEFORE_RETRY`
+
+When either UI/stream symptom appears:
+1. Treat it as an interface/stream event, NOT as scientific or execution failure.
+2. Before retrying any operation, inspect the durable state (GitHub branch head, commit history, workflow run, artifact/ledger as applicable).
+3. If the intended step already committed or executed, continue from that durable checkpoint and DO NOT repeat it.
+4. Preserve partial/failed runs as evidence; never erase them because the UI interrupted.
+5. Minimize polling and tool-call count, but never weaken one-shot controls, frozen thresholds, holdout integrity, auditability, or scientific gates.
+6. GitHub durable state outranks what was or was not visibly streamed in the chat UI.
+
+Evidence motivating this rule:
+During AT0-EN V2.6 R4 work, commits
+`9d5e810e5c003950311d4ff8dda4e7e515f8521e`
+and
+`0ddd847cf660962b35cd6082259ca2da5b11d689`
+were durably present even though the chat stream had been interrupted.
+
+Current R4 checkpoint at the time of this update:
+- legacy mechanics: 260/260 PASS
+- frozen R4 surface suite: 120/120 PASS after bounded fixes
+- critical unsafe PASS: 0
+- open-30 real-RCT pre-holdout coverage after R4.1: unresolved 57.11%, non-CERTAIN 57.61%
+- 60-RCT internal holdout: UNOPENED
+- R4.1B generic coverage implementation commit: `60de7ff23150ffefe8936bfebb0db49f0be04463`
+- R4.1B validation run: in progress at this checkpoint
