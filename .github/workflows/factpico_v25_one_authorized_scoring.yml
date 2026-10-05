@@ -1,0 +1,148 @@
+name: FactPICO V2.5 ONE authorized gold join and frozen scoring
+
+on:
+  push:
+    branches: [phase2-arabic-eval]
+    paths:
+      - '.github/workflows/factpico_v25_one_authorized_scoring.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: factpico-v25-one-gold-scoring-001
+  cancel-in-progress: false
+
+env:
+  FREEZE_COMMIT: e173187708b95bb0377af2b67f18aa91a66f8285
+  SCORER_SHA: 00df8950ffb3d0ee48925c98ad976e1a940e68069a937396d4b28fdd5923d7fb
+  CONFIG_SHA: bf2c47d0d2b7121c64168d62fc8f51669c22579f5827b6d3e4d0a4f20d304322
+  PRED_ARTIFACT_ID: '11348646367'
+  PRED_ARTIFACT_ZIP_SHA: eb68ab179bc17af1105a63ae1ff2f3fc76a4449bffd74a40a76a775319743daa
+  PRED_SHA: 925c8a073f4304fe751af072c1d1b8fc64455104e8ed2f23a88c3fc3e6ad496b
+  GOLD_SHA: 6b0028e0180609d04c9f9b9dd62304fbcfd23f0606f4651a662a18a196a83e48
+  ELIG_SHA: d7c4999734f76179a576df4f35f87b981d694dd40615a0ede28ca7d4c61ab255
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout frozen scorer/config commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: e173187708b95bb0377af2b67f18aa91a66f8285
+          fetch-depth: 1
+
+      - name: Verify scoring code/config identities BEFORE gold
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$FREEZE_COMMIT"
+          SCORER=phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_v25_score_frozen.py
+          CONFIG=phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_H1_SCORING_CONFIG_V1.json
+          echo "$SCORER_SHA  $SCORER" | sha256sum -c -
+          echo "$CONFIG_SHA  $CONFIG" | sha256sum -c -
+          mkdir -p "$RUNNER_TEMP/factpico_scoring_evidence"
+          sha256sum "$SCORER" > "$RUNNER_TEMP/factpico_scoring_evidence/SCORER_SHA256.txt"
+          sha256sum "$CONFIG" > "$RUNNER_TEMP/factpico_scoring_evidence/CONFIG_SHA256.txt"
+          git rev-parse HEAD > "$RUNNER_TEMP/factpico_scoring_evidence/SCORER_CONFIG_FREEZE_COMMIT.txt"
+          echo "CODE_CONFIG_VERIFIED_BEFORE_GOLD=TRUE" > "$RUNNER_TEMP/factpico_scoring_evidence/PRE_GOLD_BOUNDARY.txt"
+
+      - name: Download immutable prediction artifact and verify BEFORE gold
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -fL --retry 2 --connect-timeout 20 --max-time 120 \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$PRED_ARTIFACT_ID/zip" \
+            -o "$RUNNER_TEMP/prediction_artifact.zip"
+          echo "$PRED_ARTIFACT_ZIP_SHA  $RUNNER_TEMP/prediction_artifact.zip" | sha256sum -c -
+          mkdir "$RUNNER_TEMP/prediction_artifact"
+          unzip -q "$RUNNER_TEMP/prediction_artifact.zip" -d "$RUNNER_TEMP/prediction_artifact"
+          PRED="$RUNNER_TEMP/prediction_artifact/FACTPICO_V25_REAL_ATTEMPT/FACTPICO_V25_PREDICTIONS.jsonl"
+          test -f "$PRED"
+          echo "$PRED_SHA  $PRED" | sha256sum -c -
+          python - <<'PY'
+          import json, os, pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"prediction_artifact/FACTPICO_V25_REAL_ATTEMPT/FACTPICO_V25_PREDICTIONS.jsonl"
+          rows=[json.loads(x) for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+          assert len(rows)==345
+          ids=[r["record_id"] for r in rows]
+          assert len(set(ids))==345
+          print("PREDICTION_IDENTITY_BEFORE_GOLD=PASS")
+          PY
+          echo "PREDICTION_VERIFIED_BEFORE_GOLD=TRUE" >> "$RUNNER_TEMP/factpico_scoring_evidence/PRE_GOLD_BOUNDARY.txt"
+
+      - name: Open exact frozen gold and eligibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --connect-timeout 20 --max-time 120 \
+            "https://utexas.box.com/shared/static/mpe5idxrqrzs1wcakphng7xfi7h4g83j.zip" \
+            -o "$RUNNER_TEMP/FactPICO.zip"
+          echo "ec260d7c69db9537f819fbdf728c997520e55de56b9f03b2980b017c91b9d4f4  $RUNNER_TEMP/FactPICO.zip" | sha256sum -c -
+          rm -rf "$RUNNER_TEMP/factpico_gold_build"
+          python phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_h1_adapter_v5.py \
+            --factpico-zip "$RUNNER_TEMP/FactPICO.zip" \
+            --out-dir "$RUNNER_TEMP/factpico_gold_build" \
+            > "$RUNNER_TEMP/factpico_scoring_evidence/GOLD_BUILD_STDOUT.json"
+          GOLD="$RUNNER_TEMP/factpico_gold_build/FACTPICO_H1_V5_GOLD_PRIVATE.jsonl"
+          ELIG="$RUNNER_TEMP/factpico_gold_build/FACTPICO_HARD_GOLD_ELIGIBILITY_MANIFEST_V5.csv"
+          echo "$GOLD_SHA  $GOLD" | sha256sum -c -
+          echo "$ELIG_SHA  $ELIG" | sha256sum -c -
+          echo "GOLD_OPENED_AFTER_CODE_AND_PREDICTION_FREEZE=TRUE" > "$RUNNER_TEMP/factpico_scoring_evidence/GOLD_OPEN_BOUNDARY.txt"
+
+      - name: Execute exactly one deterministic gold join and scoring run
+        shell: bash
+        run: |
+          set -euo pipefail
+          PRED="$RUNNER_TEMP/prediction_artifact/FACTPICO_V25_REAL_ATTEMPT/FACTPICO_V25_PREDICTIONS.jsonl"
+          GOLD="$RUNNER_TEMP/factpico_gold_build/FACTPICO_H1_V5_GOLD_PRIVATE.jsonl"
+          ELIG="$RUNNER_TEMP/factpico_gold_build/FACTPICO_HARD_GOLD_ELIGIBILITY_MANIFEST_V5.csv"
+          OUT="$RUNNER_TEMP/FACTPICO_V25_SCORING_RESULT"
+          test ! -e "$OUT"
+          python phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_v25_score_frozen.py \
+            --predictions "$PRED" \
+            --gold "$GOLD" \
+            --eligibility "$ELIG" \
+            --out-dir "$OUT" \
+            > "$RUNNER_TEMP/factpico_scoring_evidence/SCORER_STDOUT.json"
+          test -f "$OUT/FACTPICO_V25_SCORING_SUMMARY.json"
+          test -f "$OUT/FACTPICO_V25_SCORING_FREEZE.json"
+          test -f "$OUT/FACTPICO_V25_JOINED_ROWS.jsonl"
+          test -f "$OUT/FACTPICO_V25_CLASS_MODEL_DIAGNOSTICS.json"
+          echo "GOLD_JOIN_EXECUTIONS=1" > "$RUNNER_TEMP/factpico_scoring_evidence/EXECUTION_COUNT.txt"
+          echo "SCORING_EXECUTIONS=1" >> "$RUNNER_TEMP/factpico_scoring_evidence/EXECUTION_COUNT.txt"
+          echo "PREDICTION_RERUN=FALSE" >> "$RUNNER_TEMP/factpico_scoring_evidence/EXECUTION_COUNT.txt"
+          echo "ADAPTIVE_CHANGE=FALSE" >> "$RUNNER_TEMP/factpico_scoring_evidence/EXECUTION_COUNT.txt"
+
+      - name: Freeze result identities and stop before interpretation
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/FACTPICO_V25_SCORING_RESULT"
+          sha256sum "$OUT/FACTPICO_V25_JOINED_ROWS.jsonl" > "$RUNNER_TEMP/factpico_scoring_evidence/JOINED_ROWS_SHA256.txt"
+          sha256sum "$OUT/FACTPICO_V25_SCORING_SUMMARY.json" > "$RUNNER_TEMP/factpico_scoring_evidence/SCORING_SUMMARY_SHA256.txt"
+          sha256sum "$OUT/FACTPICO_V25_CLASS_MODEL_DIAGNOSTICS.json" > "$RUNNER_TEMP/factpico_scoring_evidence/DIAGNOSTICS_SHA256.txt"
+          sha256sum "$OUT/FACTPICO_V25_SCORING_FREEZE.json" > "$RUNNER_TEMP/factpico_scoring_evidence/SCORING_FREEZE_SHA256.txt"
+          cp phase2/academic_transform/at0_en/v2_4/pre_gate_c/factpico_v25_score_frozen.py "$RUNNER_TEMP/factpico_scoring_evidence/"
+          cp phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_H1_SCORING_CONFIG_V1.json "$RUNNER_TEMP/factpico_scoring_evidence/"
+          echo "RESULTS_FROZEN=TRUE" > "$RUNNER_TEMP/factpico_scoring_evidence/STOP_BOUNDARY.txt"
+          echo "INTERPRETATION_PERFORMED=FALSE" >> "$RUNNER_TEMP/factpico_scoring_evidence/STOP_BOUNDARY.txt"
+          echo "STOP_BEFORE_INTERPRETATION=TRUE" >> "$RUNNER_TEMP/factpico_scoring_evidence/STOP_BOUNDARY.txt"
+          cat "$OUT/FACTPICO_V25_SCORING_SUMMARY.json"
+
+      - name: Upload immutable scoring result and evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: factpico-v25-one-gold-scoring-frozen
+          path: |
+            ${{ runner.temp }}/FACTPICO_V25_SCORING_RESULT
+            ${{ runner.temp }}/factpico_scoring_evidence
+          if-no-files-found: error
+          retention-days: 90
