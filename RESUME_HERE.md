@@ -9426,3 +9426,71 @@ Prediction/gold join/scoring:
 
 Next:
 `VERIFY REAL CLAIM ABSENT -> CREATE ATOMIC REMOTE CLAIM -> ONE AUTHORIZED V2.5 PREDICTION -> FREEZE -> STOP BEFORE GOLD JOIN`
+
+
+## 2026-10-05 — FactPICO V2.5 one prospective prediction COMPLETE / FROZEN
+
+Authorization:
+`A. AUTHORIZE_ONE_PROSPECTIVE_FACTPICO_PREDICTION_RUN`
+
+Execution:
+- run `37318062175`
+- workflow head `066d606e311136c5020ba800c3872b054c11e6da`
+- job `111789731999`
+- immutable runtime checkout `659b61b6e1784bb8159f2bb1d36b41c0fb3de7ee`
+- conclusion `SUCCESS`
+
+Remote claim:
+- commit `6387516d84e9ba1109d387dcc4bde715ce2ac16b`
+- blob `a1d7bb2df60e55db8f914550858c2accadad1390`
+- state `CONSUMED_BEFORE_INFERENCE`
+- read-back PASS
+- authorization permanently consumed; NO RERUN
+
+Input:
+- 345 records
+- SHA `ce7f796b13aacc2a4d3792cd3f037e77f340fb077398847c6402d9aba8776c82`
+- unique IDs/order PASS
+
+Prediction:
+- 345 outputs
+- SHA `925c8a073f4304fe751af072c1d1b8fc64455104e8ed2f23a88c3fc3e6ad496b`
+- retry count 0
+- state `PREDICTIONS_FROZEN`
+
+Artifact:
+- GitHub artifact `11348646367`
+- size 358556 bytes
+- digest `sha256:eb68ab179bc17af1105a63ae1ff2f3fc76a4449bffd74a40a76a775319743daa`
+- independent downloaded ZIP SHA matches exactly
+- private ACAD_PASS Library preservation copy created
+
+Freeze record:
+`phase2/academic_transform/at0_en/v2_4/pre_gate_c/FACTPICO_V25_ONE_PROSPECTIVE_PREDICTION_FREEZE_V1.md`
+commit `cdabc233c77cad2dace15233ccbc179ee5fa2dac`
+
+Preserved negative:
+- preflight run `37317221936` failed before claim due stale/incorrect historical adapter SHA metadata
+- no claim/inference occurred
+- reconciliation recorded in `FACTPICO_ADAPTER_COMMITTED_IDENTITY_RECONCILIATION_V1.md`
+- corrected preflight run `37317413838` PASS
+
+STOP BOUNDARY:
+- gold join NOT_RUN
+- scoring NOT_RUN
+- eligibility join NOT_RUN
+- scientific H1 result NOT YET MEASURED
+- no adaptive inspection
+- no rerun
+- no runtime/matcher change
+- no threshold/gold change
+- no custom Gate C
+- no Arabic work
+
+Quality:
+`IMPROVED — ONE AUTHORIZED PREDICTION COMPLETED AND FROZEN`
+
+Current exact checkpoint:
+`FACTPICO PREDICTION FROZEN / STOP BEFORE GOLD JOIN`
+
+Next requires separate explicit authorization for gold join/scoring.
