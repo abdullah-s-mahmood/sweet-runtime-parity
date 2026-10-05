@@ -44,7 +44,7 @@ STOP={"the","a","an","this","that","these","those","same","separate","one","two"
 SYMBOL=r"[A-Za-z]_[A-Za-z0-9]+"
 CIT=r"CIT_[A-Za-z0-9_]+"
 
-TAG_RE=re.compile(r"(?:&lt;|<)\\s*/?\\s*(?:s|sentence)\\s*(?:&gt;|>)",re.I)
+TAG_RE=re.compile(r"(?:&lt;|<)\s*/?\s*(?:s|sentence)\s*(?:&gt;|>)",re.I)
 ENTITY_REPLACEMENTS={
     "&amp;":"&",
     "&quot;":'"',
@@ -79,22 +79,22 @@ def normalize_scientific_text(text:str):
         if matched:
             continue
         ch=text[i]
-        if ch in " \\t\\r\\f\\v":
-            if not out or out[-1] not in {" ","\\n"}:
+        if ch in " \t\r\f\v":
+            if not out or out[-1] not in {" ","\n"}:
                 out.append(" "); mapping.append(i)
             i+=1
             continue
-        if ch=="\\n":
+        if ch=="\n":
             if out and out[-1]==" ":
                 out.pop(); mapping.pop()
-            if not out or out[-1]!="\\n":
-                out.append("\\n"); mapping.append(i)
+            if not out or out[-1]!="\n":
+                out.append("\n"); mapping.append(i)
             i+=1
             continue
         out.append(ch); mapping.append(i); i+=1
-    while out and out[0] in {" ","\\n"}:
+    while out and out[0] in {" ","\n"}:
         out.pop(0); mapping.pop(0)
-    while out and out[-1] in {" ","\\n"}:
+    while out and out[-1] in {" ","\n"}:
         out.pop(); mapping.pop()
     return "".join(out),mapping,events
 
