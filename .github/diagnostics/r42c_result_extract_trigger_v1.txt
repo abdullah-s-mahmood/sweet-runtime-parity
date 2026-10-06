@@ -1,0 +1,1 @@
+Extract the compact scientific summary from completed R4.2C run 37464774424. Read-only diagnostic; no training or test inference.
