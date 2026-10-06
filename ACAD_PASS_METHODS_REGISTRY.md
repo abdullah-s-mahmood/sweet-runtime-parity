@@ -45,3 +45,27 @@ Purpose: durable registry of every materially considered or executed architectur
 - Record every executed result, rejection reason, and reusable component.
 - Do not reuse exposed SELECT/DEV adaptively without a newly frozen evaluation protocol.
 - Protected external tests remain closed until a separately frozen model/protocol is ready.
+
+
+## 2026-10-07 independent evidence update
+
+### Boundary-repair feasibility audit
+
+Run `37539123038` completed successfully on FIT only.
+
+Frozen result:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_INDEPENDENT_BOUNDARY_REPAIR_FEASIBILITY_FREEZE_V1.md`
+
+Key evidence:
+- local perturbation candidates = 105,766;
+- unique nearest gold target = 101,487 (~95.95%);
+- ambiguous nearest target = 4,279 (~4.05%);
+- repairable within +/-4 = 100,768 (~95.28%);
+- composite spans = 2,822;
+- composite ambiguous nearest target = 753 (~26.68%);
+- composite repairable within +/-4 = 615 (~21.79%).
+
+Registry implication:
+- BOPN / boundary-offset repair remains HIGH priority for local near-boundary errors;
+- composite/far spans should preferentially be handled by contextual joint pair scoring / reject-review;
+- a future repair + contextual-verifier hybrid is now supported by TRAIN-only structural evidence, but remains contingent on Stage-B error decomposition.
