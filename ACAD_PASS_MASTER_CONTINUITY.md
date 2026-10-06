@@ -4575,3 +4575,26 @@ trigger/head `fb3644e2f01189a0f5c0c676fa0f26d4d8ef2116`
 started 2026-10-06 17:33:33 Asia/Baghdad.
 
 Stop boundary remains before EBM/COVID/AD external test inference.
+
+
+---
+
+## 2026-10-06 — R4.2D result and next checkpoint
+
+R4.2D one-shot dev train/calibration run `37479970741` completed all 3 epochs / 1587 steps and ended `COMPLETED_WITH_GATE_FAIL` (scientific, not technical).
+
+Artifact `11422811514`, digest `sha256:7fd6cf920ff98bb19770a8a55efaae35ce73c11a5e4bf5a122b732238bc951e7`.
+
+Best t=0.90 macro precision = `0.8239836029`, versus R4.2C `0.8254464286` (delta `-0.0014628257`, -0.1463 pp).
+
+At t=0.90 accepted/TP/FP changed from R4.2C `281/225/56` to R4.2D `268/214/54`: the guard removed 11 TP but only 2 FP.
+
+Mean P(VALID) among accepted TP = `0.9537864043`; among accepted FP = `0.9662910192`. Therefore the content-only validity guard is rejected and must not be retuned/repeated.
+
+Frozen result:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R4_2D_DEV_GATE_RESULT_FREEZE_V1.md`
+
+Current checkpoint:
+`DESIGN_AND_PREFLIGHT_R4_2E_TRAIN_ONLY_JOINT_BOUNDARY_PAIR_VALIDATOR`
+
+R4.2E should use contextual start/end representations from the frozen R4.2C boundary encoder and score the boundary pair jointly. External tests remain closed.
