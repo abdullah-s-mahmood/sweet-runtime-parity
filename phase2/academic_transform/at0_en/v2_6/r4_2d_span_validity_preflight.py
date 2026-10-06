@@ -157,6 +157,7 @@ def main():
         "smoke_loss":float(loss.detach()),
         "finite_gradients":True,
         "converted_base_sha256":converted_sha,
+        "frozen_component_identities":{"r4b_model_sha256":"3f1fbad22c6ab13256c142b6d90d13576e3c19b71d68a72598506a201dafca0c","r4_2c_boundary_model_sha256":"a56a24572ffd59b93c71e7b68b4ceb63f52ee17e6247fa5f4f857b826de788ae","r4_2c_type_model_sha256":"d531a61cf76e38cfec307e53a95382fbf3cb107d4a7b0d3677a1304b7f30b8a0"},
         "guards":{
             "train_only":True,
             "dev_read":False,
