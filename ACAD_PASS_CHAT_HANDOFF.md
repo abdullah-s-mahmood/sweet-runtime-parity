@@ -430,3 +430,70 @@ Recommended minimal instruction in a new conversation:
 If this file itself is pasted into the new chat, say:
 
 `Continue ACAD_PASS from this handoff. Verify durable GitHub state before any retry and continue the exact current checkpoint.`
+
+
+---
+
+# 10. LATEST VERIFIED UPDATE — R4.2C RECOVERY SMOKE PASS
+
+Date: 2026-10-06
+
+Read-only tokenizer audit:
+- run `37454434658`
+- artifact `11408961382`
+- digest `sha256:fd43fccc9b7dc60664af21ac9178a2d59dea557462b2f99dc43a0a0be141da33`
+- max encoded train/dev length = 141 wordpieces with specials;
+- sentences >256 = 0;
+- sentences >512 = 0;
+- root cause was NOT sequence capacity.
+
+Exact root cause:
+- 17 literal zero-length surface-token rows in pinned train data across 12 sentences;
+- tag distribution: O=5, I-I=5, I-P=6, I-O=1;
+- source implementation explicitly filters tokenized-empty rows before training.
+
+Source-aligned trainer correction:
+- commit `a74f064b473a5065886afb39926369305532b778`
+- max_length remains 256;
+- no scientific hyperparameter/gate change.
+
+Recovery record:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R4_2C_PRETRAIN_EMPTY_TOKEN_RECOVERY_V1.md`
+
+Recovery smoke:
+- run `37455086281` SUCCESS
+- artifact `11409796452`
+- digest `sha256:fd53c2eac731e7eb023f83efb2a646c76052fd5f99e7868648e0d5485551aae9`
+- trainer SHA `56b2d77d548c3980700664e58557b33bc0dbde66f99bdff529812fe301e95ca8`
+- smoke-result SHA `57da2eb93574f09d7d84efd800c885863567db3455195595b61a81e77a174a94`
+- train full token alignment = 1576/1576 PASS
+- dev full token alignment = 205/205 PASS
+- boundary loss = 1.8232231140 finite
+- span loss = 0.6865816712 finite
+- exact scorer fixtures PASS
+- scientific_training_performed = false
+- forbidden test/FactPICO/holdout access = false
+
+Recovery smoke freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R4_2C_RECOVERY_SMOKE_FREEZE_V1.md`
+commit:
+`893122f344535850fa226358cdf763398a267ac3`
+
+Quality delta:
+`IMPROVED — TECHNICAL FAILURE ROOT CAUSE IDENTIFIED AND SOURCE-ALIGNED RECOVERY VALIDATED`
+
+Scientific-performance delta:
+`NOT COMPARABLE / NO NEW FULL TRAINING RESULT YET`
+
+CURRENT EXACT CHECKPOINT — THIS SUPERSEDES EARLIER CHECKPOINT TEXT ABOVE:
+`R4_2C_RECOVERY_SMOKE_PASS / READY_FOR_ONE_REPLACEMENT_DEVELOPMENT_TRAINING_AND_FROZEN_DEV_CALIBRATION_RUN`
+
+Next authorized operation:
+trigger exactly one replacement R4.2C development training + frozen-dev calibration run using the corrected trainer, monitor PROCESS_STATUS, freeze its result, then STOP before any EBM/COVID/AD test inference.
+
+Do NOT:
+- rerun the failed pre-training run unchanged;
+- change max_length, thresholds, gates, data, model family or hyperparameters;
+- open EBM/COVID/AD tests;
+- touch FactPICO;
+- rerun consumed 60-RCT holdout.
