@@ -10113,3 +10113,30 @@ Frozen decision:
 Next:
 `R4_2C_TRAIN_ONLY_SPAN_GUARD_DESIGN_AND_PREFLIGHT`
 Do not train yet until the train-only architecture/design is frozen and mechanics passes.
+
+
+---
+
+## 2026-10-06 — R4.2C preflight PASS; training protocol frozen
+
+Preflight run `37447124232`: SUCCESS.
+Artifact `11404450510`.
+Digest `sha256:f975a0f251bcfd392af49b7227678f7162ad55f7cd970d530083fdf5202868b1`.
+State: `R4_2C_PREFLIGHT_READY`.
+
+Frozen protocol:
+`AT0_EN_V26_R4_2C_TRAINING_PROTOCOL_V1.md`.
+
+Key freeze:
+- no model-family switch;
+- no C collapse;
+- boundary localizer: 5-way, 3 epochs, lr 5e-5, batch8, wd .01;
+- fixed boundary-generation threshold .25;
+- span classifier: P/I/C/O, 3 epochs, lr 2e-5, batch16, wd .01;
+- exact consensus only;
+- final threshold grid/gate unchanged;
+- disagreements -> REVIEW;
+- test sets remain closed.
+
+Next:
+implement trainer/evaluator and pass mechanics/smoke before one development training run.

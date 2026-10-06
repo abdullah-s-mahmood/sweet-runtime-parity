@@ -4380,3 +4380,57 @@ Quality delta:
 - diagnosis: IMPROVED materially
 - dominant failure mechanism: now quantified
 - architecture uncertainty: reduced
+
+
+---
+
+# 2026-10-06 — R4.2C PREFLIGHT PASS / TRAINING PROTOCOL FROZEN
+
+R4.2C preflight:
+- run `37447124232`
+- artifact `11404450510`
+- digest `sha256:f975a0f251bcfd392af49b7227678f7162ad55f7cd970d530083fdf5202868b1`
+- canonical pre-hash `e27f70e2db357f289b00d174f1ac7a2d2685c2ad57ee02d841e3c850e3d2fbb5`
+- state `R4_2C_PREFLIGHT_READY`
+
+Preflight capacity:
+- train P/I/C/O spans = 434/1328/181/1068
+- train max gold span width = 54
+- dev max gold span width = 30
+- frozen max span width = 64
+- exact-agreement scorer fixtures PASS
+- no test/holdout access
+
+Training protocol frozen:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R4_2C_TRAINING_PROTOCOL_V1.md`
+
+Architecture:
+`FROZEN_R4_2B_BIO_CANDIDATE + CLASS_AGNOSTIC_BOUNDARY_LOCALIZER + INDEPENDENT P/I/C/O SPAN_CLASSIFIER`
+
+Boundary module:
+- 5 labels OUT/START/END/BOTH/IN
+- lr 5e-5
+- batch 8
+- 3 epochs
+- weight decay .01
+- fixed boundary generation threshold .25
+
+Span classifier:
+- P/I/C/O independent sigmoid outputs; C remains separate
+- lr 2e-5
+- batch 16
+- 3 epochs
+- weight decay .01
+
+Model identity remains the validated safe PubMedBERT-base path; no switch to large.
+
+Final calibration grid unchanged:
+`{0.80,0.85,0.90,0.95}`
+
+Exact gate unchanged:
+per-class precision >=.90, recall >=.20, accepted >=10; macro precision >=.90.
+
+Next exact step:
+`IMPLEMENT R4.2C TRAINER/EVALUATOR -> MECHANICS/SMOKE -> ONLY THEN ONE DEVELOPMENT TRAINING RUN`
+
+Tests remain CLOSED.
