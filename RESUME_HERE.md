@@ -10140,3 +10140,27 @@ Key freeze:
 
 Next:
 implement trainer/evaluator and pass mechanics/smoke before one development training run.
+
+
+---
+
+## 2026-10-06 — R4.2C smoke PASS; one dev training run authorized
+
+Run `37451040508`: SUCCESS.
+Artifact `11406382749`.
+Digest `sha256:d51cd634ff242ef11805de77c57560259457572a64c30ebb97533477bb891eea`.
+
+Smoke:
+- boundary_loss 1.8232231140 finite
+- span_loss 0.6865816712 finite
+- exact scorer fixtures PASS
+- R4.2B model identity exact
+- finite gradients/optimizer step for both new modules
+- no full scientific training
+- no tests/holdouts opened
+
+Authorization:
+exactly one R4.2C development training + frozen-dev calibration run.
+
+Next:
+trigger once, monitor PROCESS_STATUS, freeze result, stop before EBM/COVID/AD test inference.

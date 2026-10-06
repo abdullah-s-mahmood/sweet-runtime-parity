@@ -4434,3 +4434,38 @@ Next exact step:
 `IMPLEMENT R4.2C TRAINER/EVALUATOR -> MECHANICS/SMOKE -> ONLY THEN ONE DEVELOPMENT TRAINING RUN`
 
 Tests remain CLOSED.
+
+
+---
+
+# 2026-10-06 — R4.2C IMPLEMENTATION SMOKE PASS / DEVELOPMENT TRAINING AUTHORIZED
+
+Smoke run:
+`37451040508`
+
+Artifact:
+`11406382749`
+
+Artifact digest:
+`sha256:d51cd634ff242ef11805de77c57560259457572a64c30ebb97533477bb891eea`
+
+Result:
+`R4_2C_SMOKE_PASS`
+
+Observed:
+- boundary loss = `1.8232231140` finite
+- span loss = `0.6865816712` finite
+- exact scorer fixtures = PASS
+- R4.2B model SHA = `3f1fbad22c6ab13256c142b6d90d13576e3c19b71d68a72598506a201dafca0c`
+- safe base conversion remained valid
+- boundary and span modules both produced finite gradients and one optimizer update
+- no scientific full training occurred in smoke
+- no EBM/COVID/AD tests, FactPICO, consumed 60-RCT holdout, or opened-30 diagnostic were used
+
+Decision:
+`AUTHORIZE_ONE_R4_2C_DEVELOPMENT_TRAINING_AND_FROZEN_DEV_CALIBRATION_RUN`
+
+No hyperparameter, threshold, data, class, metric, or gate changes are authorized after this point.
+
+Exact next step:
+`TRIGGER ONE R4.2C DEVELOPMENT TRAINING RUN -> OBSERVE PROCESS_STATUS -> FREEZE RESULT -> STOP BEFORE ANY TEST INFERENCE`
