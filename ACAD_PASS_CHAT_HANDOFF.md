@@ -497,3 +497,63 @@ Do NOT:
 - open EBM/COVID/AD tests;
 - touch FactPICO;
 - rerun consumed 60-RCT holdout.
+
+
+---
+
+# 11. LATEST VERIFIED UPDATE — R4.2C DEV GATE FAIL + FP DECOMPOSITION
+
+Date: 2026-10-06
+
+Replacement R4.2C run:
+- run `37464774424`
+- artifact `11417809920`
+- digest `sha256:1144116b0f5bc026fa1f96eb2def07e4e640455e011a01b5b8f184732b900218`
+- final state `COMPLETED_WITH_GATE_FAIL`
+- failure class `SCIENTIFIC_FROZEN_DEV_CONSENSUS_GATE_FAIL`
+- not a technical failure.
+
+Training:
+- boundary selected epoch 2, eval_loss 0.3318938017
+- span selected epoch 3, eval_macro_f1 0.8962295847, eval_accuracy 0.8903061224
+
+Best frozen calibration:
+- threshold 0.90
+- macro precision 0.8254464286
+- P/I/C/O precision = 0.770833 / 0.812500 / 0.937500 / 0.780952
+- chosen calibration = null
+
+Threshold-only rescue remains rejected.
+
+Dev-only FP diagnostic:
+- run `37477106239`
+- artifact `11420250305`
+- digest `sha256:269736b2bfa42d3ca877dad42b26cbb8d0f77bf40de8d56074f9538c196110df`
+- 404 candidates
+- at t=0.90: 225 TP, 56 FP
+- 48/56 FP = 85.71% individually plausible but jointly invalid span-boundary pairs
+- 33/56 FP = 58.93% same-class wrong-boundary overlap
+- span confidence does not separate TP from FP: TP mean 0.96918 vs FP mean 0.97025.
+
+Oracle diagnostic only:
+if the 48 joint-invalid FPs were perfectly rejected with current TPs preserved, approximate precision would be P 1.000, I 0.938, C 1.000, O 0.976. This is not an achieved result; it demonstrates mechanism sufficiency.
+
+Frozen evidence:
+- `AT0_EN_V26_R4_2C_DEV_GATE_RESULT_FREEZE_V1.md`
+- `AT0_EN_V26_R4_2C_FP_DECOMPOSITION_FREEZE_V1.md`
+
+Architecture direction:
+`R4_2D = FROZEN_R4_2C + TRAIN_ONLY_HARD_NEGATIVE_SPAN_VALIDITY_GUARD`
+
+Rationale:
+the R4.2C type classifier learned only gold spans and has no explicit invalid/non-entity span rejection objective. R4.2D must add a separate validity guard trained strictly from TRAIN-only positives and hard negative spans. Do not mine dev FPs for training.
+
+CURRENT EXACT CHECKPOINT:
+`DESIGN_AND_PREFLIGHT_R4_2D_HARD_NEGATIVE_SPAN_VALIDITY_GUARD`
+
+Do not:
+- open EBM/COVID/AD tests;
+- touch FactPICO;
+- rerun consumed 60-RCT holdout;
+- tune the old R4.2C threshold grid as a rescue;
+- train R4.2D before its negative-generation policy and fixed decision rule are frozen.
