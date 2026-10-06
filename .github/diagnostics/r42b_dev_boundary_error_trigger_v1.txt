@@ -1,0 +1,4 @@
+R4.2B frozen-development boundary/confidence diagnostic only.
+Source run: 37409097042
+Source artifact: 11397202598
+No training. No threshold changes. No test/holdout access.
