@@ -1,0 +1,2 @@
+R4.2B source-aligned preflight marker v1.
+Read-only train/dev protocol audit. No tests.
