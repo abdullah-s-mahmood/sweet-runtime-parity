@@ -4847,3 +4847,95 @@ CURRENT GOVERNANCE:
 - when Stage A reaches terminal state: STOP launching parallel work and revert immediately to sequential-only;
 - first operation after Stage A terminal: inspect/freeze Stage-A identities and guards;
 - only then consider the already-authorized Stage B sequentially.
+
+
+---
+
+## 2026-10-07 — Parallel exploratory evidence while R4.3 Stage A remains active
+
+Temporary user-authorized exception allowed independent, non-conflicting exploratory work in parallel with Stage A. Scientific processing returns to strictly sequential after Stage A ends.
+
+### Stage A current exact run
+
+- run `37535183682`
+- workflow `AT0 EN V2.6 R4.3 FIT-only ancestors`
+- status `IN_PROGRESS`
+- current step: `Train FIT-only frozen ancestors`
+- all setup/acquisition/identity-freeze steps completed successfully
+- live job log blob still unavailable while active; no fabricated epoch/step percentage
+- automatic watch remains attached to this exact run
+
+### Independent FIT-only boundary-repair feasibility
+
+Run `37539123038` SUCCESS.
+Artifact `11448196366`, digest `sha256:f51f6490079bd50218e7e467a7853e5a5391261ce0a5303ced53f4648085da2c`.
+
+Local perturbations:
+- candidates 105,766
+- unique nearest gold target 101,487 (~95.95%)
+- ambiguous nearest target 4,279 (~4.05%)
+- repairable within +/-4 = 100,768 (~95.28%)
+
+Composite spans:
+- total 2,822
+- ambiguous nearest target 753 (~26.68%)
+- repairable within +/-4 = 615 (~21.79%)
+
+Implication: future hybrid should preferentially repair local/near-boundary spans, while composite/far/ambiguous spans should be contextually scored/rejected rather than blindly repaired.
+
+Frozen file:
+`AT0_EN_V26_R43_INDEPENDENT_BOUNDARY_REPAIR_FEASIBILITY_FREEZE_V1.md`
+
+### Independent FIT-only context signal probe
+
+Run `37539134852` SUCCESS.
+Artifact `11447393744`, digest `sha256:ffdfee805e32a500403ef5a1fd1f219f96f799b675a1eaf037f1e1bd5607af76`.
+
+All eval:
+- cropped accuracy 0.7586423755, macro-F1 0.5634747631
+- contextual accuracy 0.7730987072, macro-F1 0.6414445653
+- delta macro-F1 +0.0779698022
+
+Ambiguous-surface subset:
+- cropped macro-F1 0.3866666667
+- contextual macro-F1 0.5777777778
+- delta +0.1911111111
+
+Implication: missing context is now directly supported by FIT-only evidence. This supports H0/H1 but does not prove biaffine necessity.
+
+Frozen file:
+`AT0_EN_V26_R43_INDEPENDENT_CONTEXT_SIGNAL_FREEZE_V1.md`
+
+### Independent FIT-only context locality audit
+
+Run `37539816534` SUCCESS.
+Artifact `11448172538`, digest `sha256:f1a69ebce503b40bf598e4abeb4ec334098207a8684e37c52556568bfc1aa29a`.
+
+Representation conflicts:
+- cropped surface only: 42
+- +/-1 context: 2
+- +/-2 context: 1
+- +/-4 context: 0
+- full sentence + coordinates: 0
+
+Frozen file:
+`AT0_EN_V26_R43_INDEPENDENT_CONTEXT_LOCALITY_FREEZE_V1.md`
+
+### Stage-B mechanics/readiness
+
+Mechanics run `37540302867` SUCCESS.
+- H0 params = 579,461
+- H1 params = 662,666
+- H1-H0 = 83,205
+- both forward/backward finite
+
+Prepared but NOT TRIGGERED:
+- trainer `r43_stage_b_h0_h1_diagnostic.py`
+- workflow `.github/workflows/at0_en_v2_6_r43_stage_b_h0_h1.yml`
+
+The Stage-B workflow is pinned to Stage-A run `37535183682`, verifies Stage-A summary/model hashes/guards, uses the frozen split, enforces candidate-ceiling stop, then performs only the authorized H0-vs-H1 diagnostic.
+
+Do NOT create `.github/diagnostics/r43_stage_b_trigger_v1.txt` until Stage A is terminal SUCCESS and its artifact is fully verified.
+
+CURRENT EXACT CHECKPOINT:
+`R43_STAGE_A_IN_PROGRESS / INDEPENDENT_EVIDENCE_FROZEN / STAGE_B_READY_BUT_NOT_TRIGGERED`
