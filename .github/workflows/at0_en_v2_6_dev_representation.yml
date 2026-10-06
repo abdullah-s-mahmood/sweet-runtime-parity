@@ -91,19 +91,9 @@ jobs:
           python phase2/academic_transform/at0_en/v2_6/tests/check_v2_6_r4_surface_dev.py \
             > "$RUNNER_TEMP/v26/R4_SURFACE.json"
 
-      - name: Run independent real-RCT extraction stress diagnostic
-        shell: bash
-        run: |
-          set -euo pipefail
-          python phase2/academic_transform/at0_en/dev_support/v2_6_real_rct_stress.py \
-            > "$RUNNER_TEMP/v26/REAL_RCT_STRESS.json"
-
-      - name: Audit unresolved patterns on already-open 30 RCT development set
-        shell: bash
-        run: |
-          set -euo pipefail
-          python phase2/academic_transform/at0_en/dev_support/v2_6_r4_open30_unresolved_audit.py \
-            > "$RUNNER_TEMP/v26/R4_OPEN30_UNRESOLVED_AUDIT.json"
+      # Real-RCT/open30 diagnostics are intentionally NOT automatic here.
+      # They require a separate explicit scientific authorization so ordinary
+      # V2.6/R43 commits cannot accidentally consume exposed/protected evidence.
 
       - name: Upload dev evidence
         if: always()
