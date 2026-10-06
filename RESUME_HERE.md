@@ -10082,3 +10082,34 @@ Exact next step:
 one development-only preflight, then freeze protocol before any training.
 
 All EBM/COVID/AD tests remain unopened.
+
+
+## 2026-10-06 — R4.2B boundary diagnosis completed
+
+User-facing timezone rule: always report time in Iraq `Asia/Baghdad (UTC+3)` unless explicitly asked otherwise.
+
+Completed read-only/dev-only diagnostic:
+- run `37445035553`
+- artifact `11402997860`
+- digest `sha256:6718d7007ed8b16f9644a33879e540ebadd26bcdbb248f98f21d5a74c8e0f5b1`
+- no training/test/holdout use
+
+High-confidence error conclusion:
+- threshold 0.95 accepted 326, exact 249, errors 77
+- boundary same-type 47
+- spurious 18
+- type exact 9
+- type+boundary 3
+- 76.62% of high-confidence errors are boundary/type consistency failures
+
+Threshold-only rescue rejected:
+- no global threshold satisfies all class gates
+- class-specific extreme thresholds fit the observed dev but are bootstrap-unstable
+- do not alter R4.2B retrospectively
+
+Frozen decision:
+`R4_2C_INDEPENDENT_BOUNDARY_AND_TYPE_AGREEMENT_GUARD`
+
+Next:
+`R4_2C_TRAIN_ONLY_SPAN_GUARD_DESIGN_AND_PREFLIGHT`
+Do not train yet until the train-only architecture/design is frozen and mechanics passes.
