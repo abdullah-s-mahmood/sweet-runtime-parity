@@ -4490,3 +4490,53 @@ Rules:
 
 Creation commit:
 `07791961d45bec3045575c7201d2783dcf51d068`
+
+
+---
+
+## 2026-10-06 — R4.2C pre-training failure diagnosed; source-aligned recovery smoke PASS
+
+Failed development-train run:
+- run `37451685278`
+- artifact `11406449018`
+- digest `sha256:a515ebe81649f456f669b4da32679de4f6ebaa342388bc51978bc2cb33240ad5`
+- failed before first training unit with `RuntimeError: boundary truncation: 54 != 55`
+- completed_units = 0; no epoch, no calibration, no scientific result.
+
+Read-only tokenizer-capacity audit:
+- run `37454434658`
+- artifact `11408961382`
+- digest `sha256:fd43fccc9b7dc60664af21ac9178a2d59dea557462b2f99dc43a0a0be141da33`
+- max train/dev encoded length = 141 wordpieces including specials;
+- >256 = 0; >512 = 0.
+
+Root cause:
+17 literal zero-length train surface-token rows across 12 sentences, tags O=5, I-I=5, I-P=6, I-O=1. Pinned source preprocessing explicitly filters tokenized-empty rows.
+
+Source-aligned correction:
+commit `a74f064b473a5065886afb39926369305532b778`.
+Frozen max_length 256 and all scientific hyperparameters/gates unchanged.
+
+Recovery smoke:
+- run `37455086281` SUCCESS
+- artifact `11409796452`
+- digest `sha256:fd53c2eac731e7eb023f83efb2a646c76052fd5f99e7868648e0d5485551aae9`
+- trainer SHA `56b2d77d548c3980700664e58557b33bc0dbde66f99bdff529812fe301e95ca8`
+- full train alignment 1576/1576 PASS
+- full dev alignment 205/205 PASS
+- boundary loss 1.8232231140 finite
+- span loss 0.6865816712 finite
+- exact scorer PASS
+- no scientific full training or forbidden test/holdout access.
+
+Freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R4_2C_RECOVERY_SMOKE_FREEZE_V1.md`
+commit `893122f344535850fa226358cdf763398a267ac3`.
+
+Quality delta:
+`IMPROVED — TECHNICAL ROOT CAUSE CLOSED / SCIENTIFIC PERFORMANCE NOT YET COMPARABLE`
+
+Exact next checkpoint:
+`ONE REPLACEMENT R4.2C DEVELOPMENT TRAINING + FROZEN-DEV CALIBRATION RUN`
+
+STOP before any EBM/COVID/AD test inference.
