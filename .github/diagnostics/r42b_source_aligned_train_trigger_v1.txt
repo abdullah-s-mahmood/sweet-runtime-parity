@@ -1,0 +1,2 @@
+R4.2B source-code-hyperparameter-aligned dev-only training marker v1.
+Tests remain closed. Frozen calibration gate unchanged.
