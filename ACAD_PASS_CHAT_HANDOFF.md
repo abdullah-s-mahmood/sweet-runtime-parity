@@ -557,3 +557,60 @@ Do not:
 - rerun consumed 60-RCT holdout;
 - tune the old R4.2C threshold grid as a rescue;
 - train R4.2D before its negative-generation policy and fixed decision rule are frozen.
+
+
+---
+
+# 12. LATEST VERIFIED UPDATE — R4.2D PREFLIGHT PASS / FULL RUN STARTED
+
+Date: 2026-10-06
+
+R4.2D design:
+`FROZEN_R4_2C + TRAIN_ONLY_HARD_NEGATIVE_SPAN_VALIDITY_GUARD`
+
+Design file:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R4_2D_SPAN_VALIDITY_DESIGN_V1.md`
+
+Frozen validity rule:
+- VALID / INVALID binary span classifier
+- train only
+- one deterministic boundary-shift negative plus one deterministic length-matched non-overlap negative per gold when available
+- fixed validity threshold `P(VALID) >= 0.50`
+- existing R4.2C threshold grid and scientific gate unchanged.
+
+Preflight:
+- run `37479013072` SUCCESS
+- artifact `11419504487`
+- digest `sha256:576f52d692efc41a93a1b5a6500b6a79040db392a0d06751d1e7f49ca536b863`
+- positives 3011
+- unique boundary-shift negatives 3011
+- unique non-overlap negatives 2431
+- total unique invalid 5442
+- total examples 8453
+- collisions 0
+- dataset SHA256 `6038f5dd905271b27ad7be8f86118aa583f5adc06158b3adcbd9a7f02b724461`
+- max wordpieces 58
+- smoke loss 0.761030376 finite
+- finite gradients true
+- dev/test not read.
+
+Preflight freeze:
+`AT0_EN_V26_R4_2D_PREFLIGHT_FREEZE_V1.md`
+
+Authorized full run was launched:
+- trigger commit `fb3644e2f01189a0f5c0c676fa0f26d4d8ef2116`
+- run `37479970741`
+- workflow `AT0 EN V2.6 R4.2D ONE span validity train calibration`
+- state at this checkpoint `IN_PROGRESS`
+- start 2026-10-06 17:33:33 Asia/Baghdad
+- setup/checkout/Python PASS
+- frozen runtime installation active at first observation
+- scientific training had not yet started at that observation.
+
+CURRENT EXACT CHECKPOINT:
+`R4_2D_RUN_37479970741_IN_PROGRESS`
+
+Exact next operation:
+monitor the SAME run, inspect PROCESS_STATUS and artifact at terminal state, freeze exact result, and STOP before EBM/COVID/AD external test inference.
+
+Do not rerun or change protocol automatically.
