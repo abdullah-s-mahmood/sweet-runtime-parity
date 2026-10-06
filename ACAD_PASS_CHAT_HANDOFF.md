@@ -742,3 +742,48 @@ CURRENT EXACT CHECKPOINT:
 `R43_CONTEXTUAL_PAIR_PREFLIGHT_PASS / REVIEW_FROZEN_PACKET_BEFORE_ANY_TRAINING_AUTHORIZATION`
 
 Do NOT train FIT-only B/boundary/type/H0/H1 yet.
+
+
+---
+
+## 2026-10-07 — R4.3 Stage A FIT-only ancestors launched
+
+Higher-model review + successful TRAIN-only preflight are now frozen.
+
+Canonical R4.3 packet:
+- `AT0_EN_V26_R43_CONTEXTUAL_PAIR_DIAGNOSTIC_DESIGN_V1.md`
+- `AT0_EN_V26_R43_CONTEXTUAL_PAIR_DIAGNOSTIC_DESIGN_V2.md`
+- `AT0_EN_V26_R43_CONTEXTUAL_PAIR_PREFLIGHT_FREEZE_V1.md`
+- `AT0_EN_V26_R43_DIAGNOSTIC_TRAINING_AUTHORIZATION_V1.md`
+
+Frozen split manifest:
+`fbed5472eee4d0158626f438f5169f8767cb44dd65d8d89c74b8a3a573321226`
+
+FIT = 320 documents; P/I/C/O = 342/1038/144/847.
+SELECT = 80 documents; P/I/C/O = 92/290/37/221.
+
+Stage A run:
+- workflow `AT0 EN V2.6 R4.3 FIT-only ancestors`
+- run `37535183682`
+- head `ad058bc856c280914158e005b07ffe6a0834aa13`
+- state at launch: IN_PROGRESS
+- started 2026-10-07 00:37:25 Asia/Baghdad
+- current observed step: frozen runtime installation; scientific training not yet entered.
+
+Stage A trains ONLY FIT:
+- B candidate generator 10 fixed epochs
+- C boundary 3 fixed epochs
+- C type 3 fixed epochs
+- final fixed epoch only
+- SELECT is not training/checkpoint-selection data.
+
+Governance hardening:
+generic `at0_en_v2_6_dev_representation.yml` no longer automatically runs real-RCT stress or the already-open 30-RCT audit. Those diagnostics now require separate explicit authorization. The hardening mechanics run `37535069562` passed.
+
+Current exact checkpoint:
+`R43_STAGE_A_RUN_37535183682_IN_PROGRESS`
+
+Exact next operation:
+monitor THIS SAME Stage-A run; do not relaunch. On success freeze ancestor hashes/evidence, then separately execute the already-authorized Stage B H0-vs-H1 comparison. On technical failure, root-cause and only scientifically neutral repair.
+
+Do not access historical DEV, fold1 TEST, other folds, external EBM/COVID/AD tests, FactPICO, opened-30 diagnostic, or consumed 60-RCT holdout.
