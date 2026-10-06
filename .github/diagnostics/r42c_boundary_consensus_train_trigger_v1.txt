@@ -1,0 +1,1 @@
+Trigger exactly one authorized R4.2C development training + frozen-dev calibration run. Frozen protocol unchanged. No test access.
