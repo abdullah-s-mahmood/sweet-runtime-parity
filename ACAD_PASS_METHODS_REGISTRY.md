@@ -93,3 +93,60 @@ Registry implication:
 - missing context is now supported by direct TRAIN/FIT-only evidence;
 - contextual scoring remains HIGH priority;
 - this does not by itself establish biaffine necessity, so H0 versus H1 remains scientifically necessary.
+
+
+## 2026-10-07 independent context evidence
+
+### Frozen-base contextual signal probe
+
+Run `37539134852`, FIT-only exploratory.
+
+Frozen result:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_INDEPENDENT_CONTEXT_SIGNAL_PROBE_FREEZE_V1.md`
+
+Same simple 5-way probe task, cropped versus contextual frozen-base representations:
+- cropped macro F1 = 0.563475;
+- contextual macro F1 = 0.641445;
+- delta = +0.077970 (+7.797 pp);
+- ambiguous-surface subset macro F1 delta = +0.191111 (+19.111 pp), n=14.
+
+Strong gains:
+- P F1 0.4583 -> 0.7368;
+- O F1 0.4685 -> 0.6398;
+- I F1 0.5841 -> 0.6245.
+
+Risk:
+- C F1 0.4483 -> 0.3529;
+- C precision 0.5652 -> 0.2687.
+
+Registry implication:
+context is now directly supported as useful, but C must be treated as a distinct stability risk; no class-specific SELECT tuning is authorized.
+
+### Context locality audit
+
+Run `37539816534`, FIT-only exploratory.
+
+Frozen result:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_INDEPENDENT_CONTEXT_LOCALITY_AUDIT_FREEZE_V1.md`
+
+Conflicting label keys:
+- surface only: 42;
+- +/-1 outside token: 2;
+- +/-2: 1;
+- +/-4: 0;
+- full sentence + coordinates: 0.
+
+Registry implication:
+the cropped-surface ambiguity is overwhelmingly contextual rather than irreducible annotation contradiction in this FIT construction.
+
+### Stage-B mechanics readiness
+
+Run `37540302867` PASS.
+Freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_STAGE_B_MECHANICS_FREEZE_V1.md`
+
+H0/H1 implementation is mechanics-ready but MUST remain unlaunched until Stage A successfully freezes its FIT-only ancestors.
+
+### Additional retained alternative
+
+Diffusion-style boundary denoising / DiffusionNER is retained as a later alternative for exact-boundary recovery. It is lower priority than the already source-audited BOPN / Locate-and-Label repair family unless later evidence shows iterative denoising is specifically warranted.
