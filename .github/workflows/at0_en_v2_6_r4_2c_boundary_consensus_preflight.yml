@@ -1,0 +1,88 @@
+name: AT0 EN V2.6 R4.2C boundary-consensus preflight
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r42c_boundary_consensus_preflight_trigger_v1.txt'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: at0-en-v2-6-r4-2c-boundary-consensus-preflight
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: at0-en-v2.6-dev
+          fetch-depth: 1
+      - name: Download exact R4.2B source model artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: at0-en-v2-6-r4-2b-source-aligned-train-calibration
+          path: ${{ runner.temp }}/r42c/source
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37409097042
+      - name: Download exact R4.2B boundary diagnostic artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: at0-en-v2-6-r4-2b-dev-boundary-error-analysis
+          path: ${{ runner.temp }}/r42c/boundary
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37445035553
+      - name: Acquire frozen train and dev only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r42c/data"
+          python - <<'PY'
+          import hashlib, os, pathlib, urllib.request
+          base="https://raw.githubusercontent.com/BIDS-Xu-Lab/section_specific_annotation_of_PICO/bc4b878773192f38b2600ec830ca4208b82f7dc0/data/EBM-NLPmod/fold1/"
+          for name,want in [
+            ("train.txt","6491a57e5c8639e5bfc3c0326b8501869fccab655a1ed571b75a772dc1c70a5e"),
+            ("dev.txt","3b12534fedec35660587e6a5084b0b8ff11267c1da4a2f5afe9aa16c4941340a")]:
+              raw=urllib.request.urlopen(base+name,timeout=30).read()
+              got=hashlib.sha256(raw).hexdigest()
+              if got!=want: raise SystemExit(f"{name} hash mismatch {got}")
+              p=pathlib.Path(os.environ["RUNNER_TEMP"])/"r42c"/"data"/name
+              p.write_bytes(raw)
+          PY
+      - name: Run development-only R4.2C preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_6/r4_2c_boundary_consensus_preflight.py \
+            --train "$RUNNER_TEMP/r42c/data/train.txt" \
+            --dev "$RUNNER_TEMP/r42c/data/dev.txt" \
+            --model "$RUNNER_TEMP/r42c/source/out/selected_model/model.safetensors" \
+            --boundary-json "$RUNNER_TEMP/r42c/boundary/out/R4_2B_DEV_BOUNDARY_ERROR_ANALYSIS.json" \
+            --out "$RUNNER_TEMP/r42c/out" | tee "$RUNNER_TEMP/r42c/PREFLIGHT_STDOUT.json"
+      - name: Freeze hashes
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum phase2/academic_transform/at0_en/v2_6/r4_2c_boundary_consensus_preflight.py > "$RUNNER_TEMP/r42c/PREFLIGHT_SCRIPT_SHA256.txt"
+          if [ -d "$RUNNER_TEMP/r42c/out" ]; then
+            find "$RUNNER_TEMP/r42c/out" -type f -print0 | sort -z | xargs -0 sha256sum > "$RUNNER_TEMP/r42c/OUTPUT_SHA256.txt" || true
+          fi
+      - name: Upload R4.2C preflight evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: at0-en-v2-6-r4-2c-boundary-consensus-preflight
+          path: |
+            ${{ runner.temp }}/r42c/PREFLIGHT_STDOUT.json
+            ${{ runner.temp }}/r42c/PREFLIGHT_SCRIPT_SHA256.txt
+            ${{ runner.temp }}/r42c/OUTPUT_SHA256.txt
+            ${{ runner.temp }}/r42c/out/R4_2C_BOUNDARY_CONSENSUS_PREFLIGHT.json
+            ${{ runner.temp }}/r42c/out/PROCESS_STATUS.json
+          if-no-files-found: warn
+          retention-days: 90
