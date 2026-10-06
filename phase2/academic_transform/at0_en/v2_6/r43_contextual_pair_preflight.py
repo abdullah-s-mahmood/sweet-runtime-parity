@@ -65,7 +65,7 @@ def parse_train(path:pathlib.Path):
     flush_doc()
     return docs,dict(sorted(empty.items())),malformed_lines
 
-def bio_spans(tags):
+def bio_spans(tags,initial_continuation_type=None):
     spans=[]; malformed=[]; cur=None
     prev="O"
     for i,tag in enumerate(tags):
@@ -79,19 +79,42 @@ def bio_spans(tags):
                 ctyp,s=cur; spans.append((ctyp,s,i))
             cur=(typ,i)
         elif pref=="I":
-            valid_prev=(prev==f"B-{typ}" or prev==f"I-{typ}")
-            if not valid_prev:
-                malformed.append({"index":i,"tag":tag,"previous":prev})
-                if cur is not None:
-                    ctyp,s=cur; spans.append((ctyp,s,i))
-                cur=(typ,i)
-            elif cur is None:
-                malformed.append({"index":i,"tag":tag,"previous":prev,"reason":"missing_active_span"})
-                cur=(typ,i)
+            if i==0 and initial_continuation_type==typ:
+                # Source continuation segment: raw label remains I-X.
+                cur=(typ,0)
+            else:
+                valid_prev=(prev==f"B-{typ}" or prev==f"I-{typ}")
+                if not valid_prev:
+                    malformed.append({"index":i,"tag":tag,"previous":prev})
+                    if cur is not None:
+                        ctyp,s=cur; spans.append((ctyp,s,i))
+                    cur=(typ,i)
+                elif cur is None:
+                    malformed.append({"index":i,"tag":tag,"previous":prev,"reason":"missing_active_span"})
+                    cur=(typ,i)
         prev=tag
     if cur is not None:
         typ,s=cur; spans.append((typ,s,len(tags)))
     return spans,malformed
+
+def spans_for_sentence(doc,si):
+    tokens,tags=doc[si]
+    initial_type=None
+    continuation=None
+    prefix_bad=[]
+    if tags and tags[0].startswith("I-"):
+        typ=tags[0][2:]
+        prev_last=None
+        if si>0 and doc[si-1][1]:
+            prev_last=doc[si-1][1][-1]
+        if prev_last in (f"B-{typ}",f"I-{typ}"):
+            initial_type=typ
+            continuation={"sentence":si,"tag":tags[0],"previous_sentence_last_tag":prev_last}
+        else:
+            prefix_bad.append({"index":0,"tag":tags[0],"previous_sentence_last_tag":prev_last,
+                               "reason":"invalid_cross_example_continuation"})
+    spans,bad=bio_spans(tags,initial_type)
+    return spans,prefix_bad+bad,continuation
 
 def canonical_doc_tokens(doc):
     return json.dumps([s[0] for s in doc],ensure_ascii=False,separators=(",",":"))
@@ -100,7 +123,7 @@ def canonical_doc_tags(doc):
     return json.dumps([s[1] for s in doc],ensure_ascii=False,separators=(",",":"))
 
 def gold_inventory(docs):
-    doc_rows=[]; all_gold=[]; malformed_bio=[]
+    doc_rows=[]; all_gold=[]; malformed_bio=[]; continuations=[]
     coord_conflicts=[]
     maxw=0
     class_tot=collections.Counter()
@@ -108,7 +131,9 @@ def gold_inventory(docs):
         cc=collections.Counter(); ntok=0
         for si,(tokens,tags) in enumerate(doc):
             ntok+=len(tokens)
-            spans,bad=bio_spans(tags)
+            spans,bad,cont=spans_for_sentence(doc,si)
+            if cont is not None:
+                continuations.append({"document":di,**cont})
             for x in bad:
                 malformed_bio.append({"document":di,"sentence":si,**x})
             seen={}
@@ -132,7 +157,7 @@ def gold_inventory(docs):
             "tokens":ntok,
             "gold_counts":{c:int(cc[c]) for c in LABELS},
         })
-    return doc_rows,all_gold,malformed_bio,coord_conflicts,maxw,dict(class_tot)
+    return doc_rows,all_gold,malformed_bio,continuations,coord_conflicts,maxw,dict(class_tot)
 
 def build_groups(doc_rows):
     by=collections.defaultdict(list)
@@ -193,13 +218,15 @@ def split_groups(groups,total_docs,class_tot):
     return manifest,fit_docs,sel_docs,target_docs,target
 
 def span_maps(docs,docset):
-    # gold coordinate maps + positive rows
+    # gold coordinate maps + positive rows using frozen continuation-segment semantics
     gold_by_sent={}
     positives=[]
     for di in sorted(docset):
         doc=docs[di]
         for si,(tokens,tags) in enumerate(doc):
-            spans,_=bio_spans(tags)
+            spans,bad,_=spans_for_sentence(doc,si)
+            if bad:
+                raise RuntimeError(f"unexpected BIO violation in span_maps: doc={di} sent={si} {bad[:3]}")
             gm={(s,e):typ for typ,s,e in spans}
             gold_by_sent[(di,si)]=gm
             for typ,s,e in spans:
@@ -381,10 +408,17 @@ def main():
     if bad_lines: raise RuntimeError(f"malformed source lines: {bad_lines[:5]}")
     if empty!=EXPECTED_EMPTY: raise RuntimeError(f"empty-surface mismatch: {empty}")
 
-    doc_rows,all_gold,bad_bio,coord_conf,maxw,class_tot=gold_inventory(docs)
+    doc_rows,all_gold,bad_bio,continuations,coord_conf,maxw,class_tot=gold_inventory(docs)
     if bad_bio: raise RuntimeError(f"malformed BIO continuity: {bad_bio[:10]}")
+    cont_counts=dict(sorted(collections.Counter(x["tag"] for x in continuations).items()))
+    expected_cont={"I-I":2,"I-O":1,"I-P":8}
+    if len(continuations)!=11 or cont_counts!=expected_cont:
+        raise RuntimeError(f"continuation inventory mismatch: n={len(continuations)} counts={cont_counts}")
     if coord_conf: raise RuntimeError(f"gold coordinate conflicts: {coord_conf[:10]}")
     if maxw>MAX_WIDTH: raise RuntimeError(f"gold width {maxw}>{MAX_WIDTH}")
+    if len(docs)!=400: raise RuntimeError(f"document count changed: {len(docs)}")
+    if sum(len(d) for d in docs)!=1576: raise RuntimeError("sentence count changed")
+    if len(all_gold)!=3011: raise RuntimeError(f"gold segment count changed: {len(all_gold)}")
 
     groups,tag_conflicts=build_groups(doc_rows)
     manifest,fit_docs,sel_docs,target_docs,target=split_groups(groups,len(docs),class_tot)
@@ -496,7 +530,11 @@ def main():
             "overlap_documents":len(fit_docs&sel_docs),
         },
         "flat_representation":{
-            "malformed_bio_continuations":len(bad_bio),
+            "within_or_cross_example_invalid_bio_continuations":len(bad_bio),
+            "source_continuation_segments":len(continuations),
+            "source_continuation_tag_counts":cont_counts,
+            "source_continuation_inventory":continuations,
+            "continuation_semantics":"RAW I-X PRESERVED; INITIAL I-X STARTS AN EXAMPLE-LOCAL CONTINUATION SEGMENT ONLY WHEN PREVIOUS EXAMPLE IN SAME DOCUMENT ENDS SAME TYPE",
             "gold_coordinate_class_conflicts":len(coord_conf),
             "max_width_ok":maxw<=MAX_WIDTH,
         },
