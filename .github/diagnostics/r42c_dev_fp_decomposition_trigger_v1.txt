@@ -1,0 +1,1 @@
+Run one read-only R4.2C frozen-dev false-positive decomposition. No training. No test access.
