@@ -787,3 +787,129 @@ Exact next operation:
 monitor THIS SAME Stage-A run; do not relaunch. On success freeze ancestor hashes/evidence, then separately execute the already-authorized Stage B H0-vs-H1 comparison. On technical failure, root-cause and only scientifically neutral repair.
 
 Do not access historical DEV, fold1 TEST, other folds, external EBM/COVID/AD tests, FactPICO, opened-30 diagnostic, or consumed 60-RCT holdout.
+
+
+---
+
+## 2026-10-07 — TEMPORARY PARALLEL WINDOW DURING R4.3 STAGE A
+
+User explicitly authorized a temporary exception to the usual sequential-only rule UNTIL Stage A finishes:
+independent, non-conflicting work may run in parallel while Stage A is active. As soon as Stage A terminates, revert immediately to sequential-only execution.
+
+Canonical Stage A:
+- run `37535183682`
+- workflow `AT0 EN V2.6 R4.3 FIT-only ancestors`
+- status at latest checkpoint: `IN_PROGRESS`
+- active scientific step: FIT-only ancestor training
+- no live logs available during run; do not infer failure from missing log blob.
+
+Independent work completed during the temporary window:
+
+### 1. Boundary-repair feasibility
+Run `37539123038` SUCCESS.
+Artifact `11448196366`.
+Digest `sha256:f51f6490079bd50218e7e467a7853e5a5391261ce0a5303ced53f4648085da2c`.
+
+Local perturbations:
+- 105,766 candidates
+- 101,487 unique nearest gold (~95.95%)
+- 4,279 ambiguous (~4.05%)
+- ~95.28% repairable within +/-4
+
+Composite spans:
+- 2,822 total
+- 753 ambiguous (~26.68%)
+- only 615 (~21.79%) repairable within +/-4
+
+Frozen file:
+`AT0_EN_V26_R43_INDEPENDENT_BOUNDARY_REPAIR_FEASIBILITY_FREEZE_V1.md`
+
+Interpretation:
+near-boundary errors are suitable for gated offset repair; composite/far spans are better suited to contextual verification/review.
+
+### 2. Frozen-base context-signal probe
+Run `37539134852` SUCCESS.
+Artifact `11447393744`.
+Digest `sha256:ffdfee805e32a500403ef5a1fd1f219f96f799b675a1eaf037f1e1bd5607af76`.
+
+FIT-only internal probe:
+- cropped macro F1 = 0.563475
+- contextual macro F1 = 0.641445
+- delta = +0.077970 (+7.797 pp)
+- ambiguous-surface subset delta = +0.191111 (+19.111 pp), n=14
+
+Important risk:
+- C precision fell 0.5652 -> 0.2687 in the simple contextual linear probe.
+
+Frozen file:
+`AT0_EN_V26_R43_INDEPENDENT_CONTEXT_SIGNAL_PROBE_FREEZE_V1.md`
+
+Interpretation:
+context is materially useful, but C remains a stability risk.
+
+### 3. Context-locality audit
+Run `37539816534` SUCCESS.
+Artifact `11448172538`.
+Digest `sha256:f1a69ebce503b40bf598e4abeb4ec334098207a8684e37c52556568bfc1aa29a`.
+
+Conflict keys:
+- surface only: 42
+- +/-1 context: 2
+- +/-2 context: 1
+- +/-4 context: 0
+- full sentence + coordinates: 0
+
+Frozen file:
+`AT0_EN_V26_R43_INDEPENDENT_CONTEXT_LOCALITY_AUDIT_FREEZE_V1.md`
+
+Interpretation:
+most cropped-surface ambiguity is contextual, not irreducible.
+
+### 4. Stage-B mechanics
+Run `37540302867` SUCCESS.
+Artifact `11447889249`.
+Digest `sha256:d35ad79f82cb64d75f9e1f25a3367f1b329962945ec47e07bdac5d49e6647a9c`.
+
+H0:
+- 579,461 params
+- finite mechanics PASS
+
+H1:
+- 662,666 params
+- finite mechanics PASS
+
+Difference:
+- 83,205 params
+
+Prepared Stage-B implementation:
+`r43_stage_b_h0_h1_diagnostic.py`
+
+It has a mandatory candidate-ceiling STOP before H0/H1 scientific training if native SELECT proposals cannot meet recall/support floors.
+
+Frozen mechanics:
+`AT0_EN_V26_R43_STAGE_B_MECHANICS_FREEZE_V1.md`
+
+Stage B has NOT been launched.
+
+### 5. Additional independent probe currently running
+Run `37540851386`:
+`AT0 EN V2.6 R4.3 independent base H0-H1 probe`
+FIT-only, frozen-base, no Stage-A outputs, SELECT/DEV/TEST/protected data.
+Exploratory only; cannot modify frozen Stage B.
+
+### Durable method registry
+`ACAD_PASS_METHODS_REGISTRY.md`
+records all tried/researched/retained methods including contextual MLP, biaffine, triaffine, PICOX composites, BOPN, Locate-and-Label, MRC, GlobalPointer/grid, hybrid repair+verification, stronger encoders, ensembles, and DiffusionNER as a retained lower-priority alternative.
+
+### Source-code-audited repair fallback
+`AT0_EN_V26_R43_BOUNDARY_REPAIR_SOURCE_AUDIT_V1.md`
+documents official BOPN and Locate-and-Label mechanisms.
+
+### Post-Stage-B prospective decision matrix
+`AT0_EN_V26_R43_STAGE_B_READINESS_AND_FALLBACK_MATRIX_V1.md`
+
+CURRENT GOVERNANCE:
+- while Stage A active: temporary parallel independent work allowed by explicit user authorization;
+- when Stage A reaches terminal state: STOP launching parallel work and revert immediately to sequential-only;
+- first operation after Stage A terminal: inspect/freeze Stage-A identities and guards;
+- only then consider the already-authorized Stage B sequentially.
