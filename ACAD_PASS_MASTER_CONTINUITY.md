@@ -4469,3 +4469,24 @@ No hyperparameter, threshold, data, class, metric, or gate changes are authorize
 
 Exact next step:
 `TRIGGER ONE R4.2C DEVELOPMENT TRAINING RUN -> OBSERVE PROCESS_STATUS -> FREEZE RESULT -> STOP BEFORE ANY TEST INFERENCE`
+
+
+---
+
+# 60. CROSS-CHAT HANDOFF FILE AGREEMENT
+
+Date: 2026-10-06
+
+User explicitly requires a single portable continuity file that is kept current so a new conversation can resume without losing project state.
+
+Canonical portable handoff:
+`ACAD_PASS_CHAT_HANDOFF.md`
+
+Rules:
+- update it after every material checkpoint;
+- include current branch, durable state, successes, failures, frozen decisions, forbidden actions, key runs/artifacts/hashes, and exact next authorized step;
+- in a new chat, read it first, then the master continuity and latest RESUME_HERE tail;
+- durable GitHub state outranks stale prose if any discrepancy exists.
+
+Creation commit:
+`07791961d45bec3045575c7201d2783dcf51d068`
