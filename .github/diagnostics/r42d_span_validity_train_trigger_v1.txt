@@ -1,0 +1,1 @@
+Run exactly one authorized R4.2D span-validity development training and frozen-dev calibration. Protocol frozen. No external test access.
