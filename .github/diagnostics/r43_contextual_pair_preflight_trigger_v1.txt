@@ -1,1 +1,1 @@
-Run one no-training TRAIN-only R4.3 H0-vs-H1 contextual pair preflight. Do not read DEV, TEST, other folds, or protected external sets.
+Run one replacement no-training TRAIN-only R4.3 H0-vs-H1 preflight under Design V2 continuation-segment semantics. Do not read DEV, TEST, other folds, or protected external sets.
