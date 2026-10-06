@@ -9973,3 +9973,33 @@ Execution-only recovery:
 
 Next authorized step:
 after the mechanics workflow for this patch succeeds, trigger exactly one V5 safe-path full train+calibration run.
+
+
+---
+
+# 2026-10-06 — R4.2 V5 VALID RESULT / R4.2B SOURCE-ALIGNED RECOVERY
+
+V5 run `37372306905` attempt 2 completed valid training and calibration.
+It is a scientific gate failure, not a technical failure.
+
+Best exact entity macro-F1: 0.6841077577.
+Exact micro-F1 of selected best model: 0.665.
+Frozen calibration gate: FAIL.
+At threshold 0.95, precision P/I/C/O = 0.7400 / 0.843137 / 0.941176 / 0.831325; macro precision 0.838910.
+
+The dominant issue is high-confidence exact-entity false positives for P/I/O.
+C passes precision at 0.90 and 0.95.
+Recall and accepted-count floors are not the limiting factor.
+
+A deep audit of the pinned source code found V5 training-protocol mismatches:
+weight_decay 0.01 vs source 0.0; warmup_ratio 0.10 vs source warmup_steps 0; seed 20261005 vs source 42; eval batch 16 vs source 8; early stopping/best-model selection vs fixed 10-epoch source execution.
+
+R4.2B preflight run `37408747717` proved truncation is not material on fold1:
+0 train/dev sentences over budget, 0 gold entities lost, max sequence 139 wordpieces.
+
+Authorized next experiment:
+one source-code-hyperparameter-aligned dev-only training run, with all frozen test sets still closed.
+No threshold relaxation.
+
+PERMANENT TIME DISPLAY RULE:
+Whenever user-facing messages mention a clock time, deadline, start/end time, or converted timestamp, display it in Iraq time `Asia/Baghdad (UTC+3)` unless the user explicitly requests another timezone. Internal GitHub UTC timestamps may be retained in evidence files, but user-facing reporting must convert them to Iraq time.

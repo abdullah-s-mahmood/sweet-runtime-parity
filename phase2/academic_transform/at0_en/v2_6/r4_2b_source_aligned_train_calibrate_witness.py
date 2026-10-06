@@ -1,0 +1,507 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import math
+import os
+import pathlib
+import random
+import sys
+import time
+from datetime import datetime, timezone
+from dataclasses import dataclass
+
+import numpy as np
+import torch
+from seqeval.metrics import classification_report
+from transformers import (
+    AutoConfig,
+    AutoTokenizer,
+    BertModel,
+    BertForTokenClassification,
+    EarlyStoppingCallback,
+    Trainer,
+    TrainerCallback,
+    TrainingArguments,
+)
+
+SEED = 42
+LABELS = ["O", "B-P", "I-P", "B-I", "I-I", "B-C", "I-C", "B-O", "I-O"]
+LABEL2ID = {x:i for i,x in enumerate(LABELS)}
+ID2LABEL = {i:x for x,i in LABEL2ID.items()}
+THRESHOLDS = [0.80, 0.85, 0.90, 0.95]
+
+def sha256_path(path:pathlib.Path)->str:
+    h=hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda:f.read(1024*1024),b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+def seed_all():
+    os.environ["PYTHONHASHSEED"]=str(SEED)
+    random.seed(SEED)
+    np.random.seed(SEED)
+    torch.manual_seed(SEED)
+    torch.use_deterministic_algorithms(True, warn_only=True)
+    torch.set_num_threads(2)
+
+def assert_model_finite(model,stage:str):
+    bad=[name for name,p in model.named_parameters() if not torch.isfinite(p).all()]
+    if bad:
+        raise RuntimeError(f"non-finite parameters at {stage}: {bad[:10]}")
+
+
+def utc_now():
+    return datetime.now(timezone.utc).isoformat()
+
+def atomic_json_write(path:pathlib.Path,payload:dict):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    tmp=path.with_suffix(path.suffix+".tmp")
+    tmp.write_text(json.dumps(payload,indent=2,sort_keys=True)+"\n",encoding="utf-8")
+    os.replace(tmp,path)
+
+def patch_status_file(path:pathlib.Path,**fields):
+    payload={}
+    if path.exists():
+        try:
+            payload=json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            payload={}
+    payload.update(fields)
+    atomic_json_write(path,payload)
+    return payload
+
+class ProgressStatusCallback(TrainerCallback):
+    def __init__(self,path:pathlib.Path,max_epochs:int,heartbeat_steps:int=10):
+        self.path=path
+        self.max_epochs=max_epochs
+        self.heartbeat_steps=heartbeat_steps
+        self.started=time.time()
+        self.latest_logs={}
+        self.last_step_written=-1
+        self.last_checkpoint=None
+
+    def _emit(self,state,status="RUNNING",stage="TRAINING",extra=None,force=False):
+        step=int(state.global_step or 0)
+        if not force and step==self.last_step_written:
+            return
+        total=int(state.max_steps or 0)
+        if total>0:
+            pct=min(100.0,max(0.0,100.0*step/total))
+        else:
+            epoch=float(state.epoch or 0.0)
+            pct=min(100.0,max(0.0,100.0*epoch/self.max_epochs))
+        payload={
+            "state":status,
+            "progress_percent":round(pct,2),
+            "current_stage":stage,
+            "current_epoch":float(state.epoch or 0.0),
+            "max_epochs":int(self.max_epochs),
+            "global_step":step,
+            "total_steps":total if total>0 else None,
+            "best_metric":state.best_metric,
+            "best_model_checkpoint":state.best_model_checkpoint,
+            "last_successful_checkpoint":self.last_checkpoint or state.best_model_checkpoint,
+            "latest_logs":self.latest_logs,
+            "started_at_unix":self.started,
+            "elapsed_seconds":round(time.time()-self.started,1),
+            "last_progress_at":utc_now(),
+            "next_expected_step":"CONTINUE_TRAINING" if status=="RUNNING" else None,
+            "failure_or_stall_reason":None,
+        }
+        if extra:
+            payload.update(extra)
+        atomic_json_write(self.path,payload)
+        print("PROCESS_STATUS "+json.dumps(payload,sort_keys=True),file=sys.stderr,flush=True)
+        self.last_step_written=step
+
+    def on_train_begin(self,args,state,control,**kwargs):
+        self._emit(state,stage="TRAINING_START",force=True)
+
+    def on_step_end(self,args,state,control,**kwargs):
+        if int(state.global_step or 0)%self.heartbeat_steps==0:
+            self._emit(state,stage="TRAINING")
+
+    def on_log(self,args,state,control,logs=None,**kwargs):
+        if logs:
+            clean={}
+            for k,v in logs.items():
+                if isinstance(v,(int,float,str,bool)) or v is None:
+                    clean[k]=v
+            self.latest_logs.update(clean)
+        self._emit(state,stage="TRAINING_LOG",force=True)
+
+    def on_evaluate(self,args,state,control,metrics=None,**kwargs):
+        if metrics:
+            clean={}
+            for k,v in metrics.items():
+                if isinstance(v,(int,float,str,bool)) or v is None:
+                    clean[k]=v
+            self.latest_logs.update(clean)
+        self._emit(state,stage="EVALUATION_COMPLETE",force=True)
+
+    def on_save(self,args,state,control,**kwargs):
+        ckpt=str(pathlib.Path(args.output_dir)/f"checkpoint-{int(state.global_step or 0)}")
+        self.last_checkpoint=ckpt
+        self._emit(
+            state,
+            stage="CHECKPOINT_SAVED",
+            extra={"last_successful_checkpoint":ckpt},
+            force=True,
+        )
+
+    def on_train_end(self,args,state,control,**kwargs):
+        self._emit(
+            state,
+            status="TRAINING_COMPLETED",
+            stage="TRAINING_COMPLETE",
+            extra={"progress_percent":100.0,"next_expected_step":"CALIBRATE_ON_FROZEN_DEV"},
+            force=True,
+        )
+
+
+def read_conll(path:pathlib.Path):
+    sentences=[]
+    tokens=[]
+    tags=[]
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line=raw.rstrip("\n")
+        if not line.strip():
+            if tokens:
+                sentences.append((tokens,tags))
+                tokens=[]; tags=[]
+            continue
+        parts=line.split("\t")
+        if len(parts)!=2:
+            parts=line.rsplit(None,1)
+        if len(parts)!=2:
+            raise RuntimeError(f"bad CoNLL line in {path}: {line!r}")
+        tok,tag=parts
+        if tok=="-DOCSTART-":
+            if tokens:
+                sentences.append((tokens,tags))
+                tokens=[]; tags=[]
+            continue
+        if tag not in LABEL2ID:
+            raise RuntimeError(f"unknown label {tag!r}")
+        tokens.append(tok)
+        tags.append(tag)
+    if tokens:
+        sentences.append((tokens,tags))
+    return sentences
+
+class TokenDataset(torch.utils.data.Dataset):
+    def __init__(self, sentences, tokenizer, max_length=256):
+        self.sentences=sentences
+        self.items=[]
+        for tokens,tags in sentences:
+            enc=tokenizer(
+                tokens,
+                is_split_into_words=True,
+                truncation=True,
+                max_length=max_length,
+                padding="max_length",
+                return_attention_mask=True,
+            )
+            word_ids=enc.word_ids()
+            label_ids=[]
+            prev=None
+            for wid in word_ids:
+                if wid is None:
+                    label_ids.append(-100)
+                elif wid!=prev:
+                    label_ids.append(LABEL2ID[tags[wid]])
+                else:
+                    label_ids.append(-100)
+                prev=wid
+            enc["labels"]=label_ids
+            self.items.append({k:torch.tensor(v) for k,v in enc.items()})
+    def __len__(self): return len(self.items)
+    def __getitem__(self,i): return self.items[i]
+
+def word_sequences(logits, labels):
+    probs=np.exp(logits-logits.max(axis=-1,keepdims=True))
+    probs=probs/probs.sum(axis=-1,keepdims=True)
+    pred_ids=logits.argmax(axis=-1)
+    gold_all=[]; pred_all=[]; conf_all=[]
+    for p,g,pr in zip(pred_ids,labels,probs):
+        gt=[]; pt=[]; cf=[]
+        for pi,gi,pvec in zip(p,g,pr):
+            if gi==-100:
+                continue
+            gt.append(ID2LABEL[int(gi)])
+            pt.append(ID2LABEL[int(pi)])
+            cf.append(float(pvec[int(pi)]))
+        gold_all.append(gt); pred_all.append(pt); conf_all.append(cf)
+    return gold_all,pred_all,conf_all
+
+def raw_metrics_from_logits(logits, labels):
+    gold,pred,_=word_sequences(logits,labels)
+    rep=classification_report(gold,pred,output_dict=True,zero_division=0)
+    per={}
+    for cls in ["P","I","C","O"]:
+        d=rep.get(cls,{})
+        per[cls]={
+            "precision":float(d.get("precision",0.0)),
+            "recall":float(d.get("recall",0.0)),
+            "f1":float(d.get("f1-score",0.0)),
+            "support":int(d.get("support",0)),
+        }
+    macro_f1=sum(per[x]["f1"] for x in per)/4.0
+    macro_precision=sum(per[x]["precision"] for x in per)/4.0
+    micro=rep.get("micro avg",{})
+    return {
+        "per_class":per,
+        "macro_f1":macro_f1,
+        "macro_precision":macro_precision,
+        "micro_f1":float(micro.get("f1-score",0.0)),
+        "micro_precision":float(micro.get("precision",0.0)),
+        "micro_recall":float(micro.get("recall",0.0)),
+    }
+
+def compute_metrics(eval_pred):
+    m=raw_metrics_from_logits(eval_pred.predictions,eval_pred.label_ids)
+    return {
+        "macro_f1":m["macro_f1"],
+        "micro_f1":m["micro_f1"],
+        "macro_precision":m["macro_precision"],
+    }
+
+def entities(tags, confidences=None):
+    out=[]
+    cur=None
+    for i,tag in enumerate(tags+["O"]):
+        if tag=="O":
+            typ=None; pref="O"
+        else:
+            pref,typ=tag.split("-",1)
+        if cur is not None:
+            ctyp,start,vals=cur
+            if pref=="I" and typ==ctyp:
+                if confidences is not None and i<len(confidences):
+                    vals.append(confidences[i])
+                continue
+            conf=min(vals) if vals else 1.0
+            out.append((ctyp,start,i,conf))
+            cur=None
+        if tag!="O":
+            vals=[]
+            if confidences is not None and i<len(confidences):
+                vals=[confidences[i]]
+            cur=(typ,i,vals)
+    return out
+
+def calibration_metrics(gold_tags,pred_tags,pred_conf,threshold):
+    counts={c:{"tp":0,"fp":0,"fn":0,"accepted":0,"gold":0} for c in ["P","I","C","O"]}
+    for gt,pt,cf in zip(gold_tags,pred_tags,pred_conf):
+        gold={(c,s,e) for c,s,e,_ in entities(gt)}
+        pred={(c,s,e):conf for c,s,e,conf in entities(pt,cf) if conf>=threshold}
+        for c,s,e in gold:
+            counts[c]["gold"]+=1
+        for key,conf in pred.items():
+            c=key[0]
+            counts[c]["accepted"]+=1
+            if key in gold: counts[c]["tp"]+=1
+            else: counts[c]["fp"]+=1
+        for key in gold:
+            if key not in pred:
+                counts[key[0]]["fn"]+=1
+    per={}
+    for c,d in counts.items():
+        p=d["tp"]/(d["tp"]+d["fp"]) if d["tp"]+d["fp"] else 0.0
+        r=d["tp"]/(d["tp"]+d["fn"]) if d["tp"]+d["fn"] else 0.0
+        per[c]={**d,"precision":p,"recall":r}
+    macro_precision=sum(per[c]["precision"] for c in per)/4.0
+    passes=(
+        all(per[c]["precision"]>=0.90 for c in per)
+        and all(per[c]["precision"]>=0.85 for c in per)
+        and all(per[c]["recall"]>=0.20 for c in per)
+        and all(per[c]["accepted"]>=10 for c in per)
+        and macro_precision>=0.90
+    )
+    return {"threshold":threshold,"per_class":per,"macro_precision":macro_precision,"passes":passes}
+
+def main():
+    ap=argparse.ArgumentParser()
+    ap.add_argument("--model-dir",type=pathlib.Path,required=True)
+    ap.add_argument("--train",type=pathlib.Path,required=True)
+    ap.add_argument("--dev",type=pathlib.Path,required=True)
+    ap.add_argument("--out",type=pathlib.Path,required=True)
+    args=ap.parse_args()
+    seed_all()
+    args.out.mkdir(parents=True,exist_ok=False)
+
+    train_s=read_conll(args.train)
+    dev_s=read_conll(args.dev)
+    tokenizer=AutoTokenizer.from_pretrained(args.model_dir,local_files_only=True,use_fast=True)
+
+    # Safe conversion path validated by AT0_EN_V26_R4_2_SAFE_FLAX_BASE_LOAD_SMOKE_V1:
+    # Flax base checkpoint -> BertModel -> safetensors -> BertForTokenClassification.
+    base=BertModel.from_pretrained(
+        args.model_dir,
+        from_flax=True,
+        local_files_only=True,
+    )
+    assert_model_finite(base,"post_flax_base_conversion")
+    converted=args.out/"converted_base"
+    base.save_pretrained(converted,safe_serialization=True)
+    tokenizer.save_pretrained(converted)
+    converted_sha=sha256_path(converted/"model.safetensors")
+    expected_converted_sha="3a6d0b156c45ccd8093af83a9ad3d388808eba5a9e15f0032fc0fe068bb92b68"
+    if converted_sha!=expected_converted_sha:
+        raise RuntimeError(f"converted base hash mismatch: {converted_sha}")
+
+    cfg=AutoConfig.from_pretrained(
+        converted,
+        local_files_only=True,
+        num_labels=len(LABELS),
+        label2id=LABEL2ID,
+        id2label=ID2LABEL,
+    )
+    model=BertForTokenClassification.from_pretrained(
+        converted,
+        config=cfg,
+        local_files_only=True,
+    )
+    assert_model_finite(model,"pre_training_token_classifier")
+
+    train_ds=TokenDataset(train_s,tokenizer)
+    dev_ds=TokenDataset(dev_s,tokenizer)
+
+    status_path=args.out/"PROCESS_STATUS.json"
+    work=args.out/"trainer"
+    ta=TrainingArguments(
+        output_dir=str(work),
+        seed=SEED,
+        data_seed=SEED,
+        learning_rate=5e-5,
+        weight_decay=0.0,
+        warmup_steps=0,
+        adam_epsilon=1e-8,
+        max_grad_norm=1.0,
+        optim="adamw_hf",
+        lr_scheduler_type="linear",
+        per_device_train_batch_size=8,
+        per_device_eval_batch_size=8,
+        gradient_accumulation_steps=1,
+        num_train_epochs=10,
+        evaluation_strategy="no",
+        save_strategy="epoch",
+        logging_strategy="steps",
+        logging_steps=10,
+        save_total_limit=2,
+        load_best_model_at_end=False,
+        report_to=[],
+        disable_tqdm=True,
+        save_safetensors=True,
+        dataloader_num_workers=0,
+    )
+    trainer=Trainer(
+        model=model,
+        args=ta,
+        train_dataset=train_ds,
+        eval_dataset=dev_ds,
+        tokenizer=tokenizer,
+        compute_metrics=compute_metrics,
+        callbacks=[
+            ProgressStatusCallback(status_path,max_epochs=10,heartbeat_steps=10),
+        ],
+    )
+    train_result=trainer.train()
+    assert_model_finite(trainer.model,"post_training_selected_model")
+
+    selected=args.out/"selected_model"
+    trainer.save_model(selected)
+    tokenizer.save_pretrained(selected)
+    if not (selected/"model.safetensors").exists():
+        raise RuntimeError("final model was not saved as safetensors")
+
+    pred=trainer.predict(dev_ds)
+    raw=raw_metrics_from_logits(pred.predictions,pred.label_ids)
+    gold,pred_tags,conf=word_sequences(pred.predictions,pred.label_ids)
+    calibrations=[calibration_metrics(gold,pred_tags,conf,t) for t in THRESHOLDS]
+    chosen=next((x for x in calibrations if x["passes"]),None)
+    state="R4_2B_SOURCE_ALIGNED_WITNESS_CALIBRATED" if chosen else "R4_2B_SOURCE_ALIGNED_WITNESS_NOT_READY"
+
+    files={}
+    for p in sorted(selected.iterdir()):
+        if p.is_file():
+            files[p.name]={"sha256":sha256_path(p),"bytes":p.stat().st_size}
+
+    summary={
+        "experiment":"R4_2B_SOURCE_CODE_HYPERPARAMETER_ALIGNED_DEV_ONLY",
+        "state":state,
+        "seed":SEED,
+        "labels":LABELS,
+        "train_sentences":len(train_s),
+        "dev_sentences":len(dev_s),
+        "conversion":{
+            "path":"FLAX_BASE_TO_BERTMODEL_TO_SAFETENSORS_TO_TOKEN_CLASSIFIER",
+            "converted_base_safetensors_sha256":converted_sha,
+            "expected_converted_base_safetensors_sha256":"3a6d0b156c45ccd8093af83a9ad3d388808eba5a9e15f0032fc0fe068bb92b68",
+            "smoke_run_id":37354833183,
+            "smoke_artifact_id":11363823244,
+        },
+        "training":{
+            "protocol":"SOURCE_CODE_HYPERPARAMETER_ALIGNED_ON_VALIDATED_SAFE_RUNTIME",
+            "fixed_epochs":10,
+            "learning_rate":5e-5,
+            "weight_decay":0.0,
+            "warmup_steps":0,
+            "train_batch_size":8,
+            "eval_batch_size":8,
+            "gradient_accumulation":1,
+            "seed":42,
+            "optimizer":"adamw_hf",
+            "lr_scheduler":"linear",
+            "early_stopping":False,
+            "load_best_model_at_end":False,
+            "final_epoch":float(trainer.state.epoch or 0.0),
+            "global_step":trainer.state.global_step,
+            "train_loss":float(train_result.training_loss),
+        },
+        "dev_raw_metrics":raw,
+        "calibration_candidates":calibrations,
+        "chosen_calibration":chosen,
+        "selected_model_files":files,
+        "guards":{
+            "test_files_read":False,
+            "factpico_used":False,
+            "consumed_60_rct_holdout_used":False,
+            "opened_30_rct_diagnostic_used":False,
+            "pickle_weight_loaded":False,
+            "final_weights_safetensors":True,
+        },
+        "stop_boundary":"STOP_BEFORE_EBM_COVID_AD_TEST_INFERENCE",
+    }
+    rawj=json.dumps(summary,sort_keys=True,separators=(",",":")).encode()
+    summary["canonical_pre_hash_sha256"]=hashlib.sha256(rawj).hexdigest()
+    (args.out/"R4_2B_SOURCE_ALIGNED_TRAIN_CALIBRATION_SUMMARY.json").write_text(
+        json.dumps(summary,indent=2,sort_keys=True)+"\n",encoding="utf-8"
+    )
+    patch_status_file(
+        status_path,
+        state="COMPLETED" if chosen else "COMPLETED_WITH_GATE_FAIL",
+        progress_percent=100.0,
+        current_stage="CALIBRATION_COMPLETE",
+        current_epoch=float(trainer.state.epoch or 0.0),
+        max_epochs=10,
+        global_step=int(trainer.state.global_step or 0),
+        total_steps=int(trainer.state.max_steps or 0) if trainer.state.max_steps else None,
+        best_metric=None,
+        best_model_checkpoint=None,
+        last_successful_checkpoint=str(selected),
+        last_progress_at=utc_now(),
+        next_expected_step="FREEZE_THEN_AUTHORIZE_FROZEN_DEV_TEST_EVALUATOR" if chosen else "STOP_AND_RUN_DEV_ONLY_BOUNDARY_ERROR_ANALYSIS",
+        failure_or_stall_reason=None if chosen else "SOURCE_ALIGNED_FROZEN_DEV_CALIBRATION_GATE_NOT_MET",
+        witness_state=state,
+    )
+    print(json.dumps(summary,indent=2,sort_keys=True))
+    if chosen is None:
+        raise SystemExit(2)
+
+if __name__=="__main__":
+    main()
