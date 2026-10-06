@@ -1,1 +1,2 @@
 Trigger exactly one R4.2C boundary-consensus implementation smoke. No scientific training. No test access.
+Recovery smoke after source-aligned zero-length token filtering. Full train/dev token-alignment guard required. No scientific training. No test access.
