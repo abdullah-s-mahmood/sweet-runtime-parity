@@ -1,0 +1,177 @@
+name: AT0 EN V2.6 R4.3 Stage-B H0 vs H1 diagnostic
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r43_stage_b_trigger_v1.txt'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: at0-en-v2-6-r43-stage-b-h0-h1
+  cancel-in-progress: false
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: at0-en-v2.6-dev
+          fetch-depth: 1
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+
+      - name: Install frozen runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --quiet             numpy==1.26.4 torch==2.2.2 transformers==4.39.3             safetensors==0.4.3 huggingface_hub==0.25.2
+
+      - name: Download exact Stage-A frozen ancestors
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: at0-en-v2-6-r43-fit-ancestors
+          path: ${{ runner.temp }}/r43/ancestors
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37535183682
+
+      - name: Download frozen R4.3 preflight manifest
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: at0-en-v2-6-r43-contextual-pair-preflight
+          path: ${{ runner.temp }}/r43/preflight
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37534110955
+
+      - name: Acquire exact TRAIN only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r43/data"
+          python - <<'PY'
+          import hashlib, os, pathlib, urllib.request
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"r43/data/train.txt"
+          b=urllib.request.urlopen(
+            "https://raw.githubusercontent.com/BIDS-Xu-Lab/section_specific_annotation_of_PICO/bc4b878773192f38b2600ec830ca4208b82f7dc0/data/EBM-NLPmod/fold1/train.txt",
+            timeout=30).read()
+          want="6491a57e5c8639e5bfc3c0326b8501869fccab655a1ed571b75a772dc1c70a5e"
+          got=hashlib.sha256(b).hexdigest()
+          if got!=want: raise SystemExit(f"TRAIN hash mismatch {got}")
+          p.write_bytes(b)
+          PY
+
+      - name: Verify Stage-A identities and guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"r43/ancestors"
+          summaries=list(root.rglob("R43_FIT_ANCESTORS_SUMMARY.json"))
+          if len(summaries)!=1:
+              raise SystemExit(f"expected one Stage-A summary, got {summaries}")
+          s=json.loads(summaries[0].read_text())
+          if s.get("state")!="R43_FIT_ANCESTORS_COMPLETE":
+              raise SystemExit(f"Stage-A not complete: {s.get('state')}")
+          if s.get("split_manifest_sha256")!="fbed5472eee4d0158626f438f5169f8767cb44dd65d8d89c74b8a3a573321226":
+              raise SystemExit("Stage-A split identity mismatch")
+          required={
+            "fit_only_training":True,
+            "select_used_for_training":False,
+            "historical_dev_read":False,
+            "test_read":False,
+            "other_folds_read":False,
+            "factpico_used":False,
+            "consumed_60_rct_holdout_used":False,
+            "checkpoint_selection":"FINAL_FIXED_EPOCH_ONLY",
+          }
+          g=s.get("guards",{})
+          for k,v in required.items():
+              if g.get(k)!=v: raise SystemExit(f"guard mismatch {k}: {g.get(k)!r} != {v!r}")
+          dirs={}
+          for key,name in [("B_CANDIDATE","b_candidate"),("C_BOUNDARY","c_boundary"),("C_TYPE","c_type")]:
+              cand=[p for p in root.rglob(name) if p.is_dir() and (p/"model.safetensors").exists()]
+              if len(cand)!=1: raise SystemExit(f"{name} model dirs: {cand}")
+              dirs[key]=cand[0]
+              h=hashlib.sha256((cand[0]/"model.safetensors").read_bytes()).hexdigest()
+              want=s["models"][key]["model_sha256"]
+              if h!=want: raise SystemExit(f"{key} hash mismatch {h} != {want}")
+              if (cand[0]/"pytorch_model.bin").exists(): raise SystemExit(f"pickle forbidden in {key}")
+          with pathlib.Path(os.environ["GITHUB_ENV"]).open("a") as f:
+              f.write(f"R43_B_MODEL={dirs['B_CANDIDATE']}\n")
+              f.write(f"R43_BOUNDARY_MODEL={dirs['C_BOUNDARY']}\n")
+              f.write(f"R43_TYPE_MODEL={dirs['C_TYPE']}\n")
+          print(json.dumps({"state":"R43_STAGE_A_IDENTITY_VERIFIED_FOR_STAGE_B",
+                            "models":s["models"],"guards":g},indent=2,sort_keys=True))
+          PY
+
+      - name: Verify Stage-B mechanics and protocol identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r43/evidence"
+          python -m py_compile phase2/academic_transform/at0_en/v2_6/r43_stage_b_h0_h1_diagnostic.py
+          python phase2/academic_transform/at0_en/v2_6/r43_stage_b_h0_h1_diagnostic.py --mechanics-only             > "$RUNNER_TEMP/r43/evidence/STAGE_B_MECHANICS.json"
+          sha256sum             phase2/academic_transform/at0_en/v2_6/r43_stage_b_h0_h1_diagnostic.py             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_CONTEXTUAL_PAIR_DIAGNOSTIC_DESIGN_V1.md             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_CONTEXTUAL_PAIR_DIAGNOSTIC_DESIGN_V2.md             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_DIAGNOSTIC_TRAINING_AUTHORIZATION_V1.md             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_STAGE_B_READINESS_AND_FALLBACK_MATRIX_V1.md             > "$RUNNER_TEMP/r43/evidence/PROTOCOL_SHA256.txt"
+
+      - name: Run one frozen H0-vs-H1 Stage-B diagnostic
+        id: diagnostic
+        shell: bash
+        env:
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONHASHSEED: "42"
+          TRANSFORMERS_OFFLINE: "1"
+          HF_HUB_OFFLINE: "1"
+        run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/r43/out"
+          python phase2/academic_transform/at0_en/v2_6/r43_stage_b_h0_h1_diagnostic.py             --train "$RUNNER_TEMP/r43/data/train.txt"             --split-manifest "$RUNNER_TEMP/r43/preflight/R43_FIT_SELECT_MANIFEST.json"             --b-model "$R43_B_MODEL"             --boundary-model "$R43_BOUNDARY_MODEL"             --type-model "$R43_TYPE_MODEL"             --out "$RUNNER_TEMP/r43/out"             | tee "$RUNNER_TEMP/r43/evidence/STAGE_B_STDOUT.json"
+
+      - name: Finalize terminal status if interrupted
+        if: always()
+        shell: bash
+        env:
+          STEP_OUTCOME: ${{ steps.diagnostic.outcome }}
+        run: |
+          python - <<'PY'
+          import datetime, json, os, pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"r43/out/PROCESS_STATUS.json"
+          if p.exists():
+              d=json.loads(p.read_text())
+              if d.get("state")=="RUNNING":
+                  d["state"]="FAILED" if os.environ.get("STEP_OUTCOME")=="failure" else "CANCELLED"
+                  d["failure_or_stall_reason"]="STAGE_B_DIAGNOSTIC_DID_NOT_COMPLETE"
+              d["terminal_observed_at"]=datetime.datetime.now(datetime.timezone.utc).isoformat()
+              p.write_text(json.dumps(d,indent=2,sort_keys=True)+"\n")
+          PY
+
+      - name: Hash frozen outputs
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -d "$RUNNER_TEMP/r43/out" ]; then
+            find "$RUNNER_TEMP/r43/out" -type f -print0 | sort -z | xargs -0 sha256sum               > "$RUNNER_TEMP/r43/evidence/OUTPUT_SHA256.txt" || true
+          fi
+
+      - name: Upload Stage-B evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: at0-en-v2-6-r43-stage-b-h0-h1
+          path: |
+            ${{ runner.temp }}/r43/evidence
+            ${{ runner.temp }}/r43/out/PROCESS_STATUS.json
+            ${{ runner.temp }}/r43/out/R43_STAGE_B_H0_H1_SUMMARY.json
+            ${{ runner.temp }}/r43/out/R43_FINAL_H0_H1_FIT_MANIFEST.json
+            ${{ runner.temp }}/r43/out/H0.safetensors
+            ${{ runner.temp }}/r43/out/H1.safetensors
+          if-no-files-found: warn
+          retention-days: 90
