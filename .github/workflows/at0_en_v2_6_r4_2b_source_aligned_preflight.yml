@@ -1,0 +1,92 @@
+name: AT0 EN V2.6 R4.2B source-aligned preflight
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r42b_source_aligned_preflight_trigger_v1.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: at0-en-v2.6-dev
+          fetch-depth: 1
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+
+      - name: Install tokenizer runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --quiet \
+            transformers==4.39.3 \
+            huggingface_hub==0.25.2
+
+      - name: Acquire frozen tokenizer and train/dev only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r42b/model" "$RUNNER_TEMP/r42b/data"
+          python - <<'PY'
+          import hashlib, os, pathlib, urllib.request
+          from huggingface_hub import snapshot_download
+          root=pathlib.Path(snapshot_download(
+              repo_id="microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract",
+              revision="d673b8835373c6fa116d6d8006b33d48734e305d",
+              allow_patterns=["config.json","tokenizer_config.json","vocab.txt"],
+              local_dir=os.path.join(os.environ["RUNNER_TEMP"],"r42b","model"),
+              local_dir_use_symlinks=False,
+          ))
+          expected={
+            "config.json":"56bab767c02bc792897638feb8addc06d483d9c73769a5f554bbabea1f5507a1",
+            "tokenizer_config.json":"53b6f42b8b8daddbdc6d3532c324187a92b46c1602bd6e8d4ad5a413b4fc90e1",
+            "vocab.txt":"7b36651908a88bc38bda41b728b2a598191e0d3b553cbacf7b1e5f026d5b5b9f",
+          }
+          for name,sha in expected.items():
+              raw=(root/name).read_bytes()
+              if hashlib.sha256(raw).hexdigest()!=sha:
+                  raise SystemExit(f"tokenizer hash mismatch {name}")
+          data=[
+            ("train.txt","data/EBM-NLPmod/fold1/train.txt","6491a57e5c8639e5bfc3c0326b8501869fccab655a1ed571b75a772dc1c70a5e"),
+            ("dev.txt","data/EBM-NLPmod/fold1/dev.txt","3b12534fedec35660587e6a5084b0b8ff11267c1da4a2f5afe9aa16c4941340a"),
+          ]
+          out=pathlib.Path(os.environ["RUNNER_TEMP"])/"r42b"/"data"
+          for local,path,sha in data:
+              raw=urllib.request.urlopen(
+                  "https://raw.githubusercontent.com/BIDS-Xu-Lab/section_specific_annotation_of_PICO/"
+                  "bc4b878773192f38b2600ec830ca4208b82f7dc0/"+path,timeout=30
+              ).read()
+              if hashlib.sha256(raw).hexdigest()!=sha:
+                  raise SystemExit(f"data hash mismatch {local}")
+              (out/local).write_bytes(raw)
+          PY
+
+      - name: Run source-aligned mismatch preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_6/r4_2b_source_aligned_preflight.py \
+            --model-dir "$RUNNER_TEMP/r42b/model" \
+            --train "$RUNNER_TEMP/r42b/data/train.txt" \
+            --dev "$RUNNER_TEMP/r42b/data/dev.txt" \
+            > "$RUNNER_TEMP/r42b/R4_2B_SOURCE_ALIGNED_PREFLIGHT.json"
+          cat "$RUNNER_TEMP/r42b/R4_2B_SOURCE_ALIGNED_PREFLIGHT.json"
+          sha256sum "$RUNNER_TEMP/r42b/R4_2B_SOURCE_ALIGNED_PREFLIGHT.json" \
+            > "$RUNNER_TEMP/r42b/R4_2B_SOURCE_ALIGNED_PREFLIGHT_SHA256.txt"
+
+      - name: Upload preflight evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r42b-source-aligned-preflight
+          path: \${{ runner.temp }}/r42b
+          if-no-files-found: error
+          retention-days: 90
