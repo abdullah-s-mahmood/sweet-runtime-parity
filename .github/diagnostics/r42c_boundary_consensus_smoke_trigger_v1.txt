@@ -1,0 +1,1 @@
+Trigger exactly one R4.2C boundary-consensus implementation smoke. No scientific training. No test access.
