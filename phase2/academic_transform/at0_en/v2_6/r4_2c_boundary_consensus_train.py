@@ -66,8 +66,8 @@ def atomic_json_write(path,payload):
     t.write_text(json.dumps(payload,indent=2,sort_keys=True)+"\n",encoding="utf-8")
     os.replace(t,p)
 
-def read_conll(path):
-    out=[]; toks=[]; tags=[]
+def read_conll(path,expected_empty_surface_tag_counts=None):
+    out=[]; toks=[]; tags=[]; empty_surface=Counter()
     for raw in pathlib.Path(path).read_text(encoding="utf-8").splitlines():
         if not raw.strip():
             if toks:
@@ -82,8 +82,18 @@ def read_conll(path):
                 out.append((toks,tags)); toks=[]; tags=[]
             continue
         if tag not in R4B_LABELS: raise RuntimeError(f"unknown tag {tag!r}")
+        # Source-aligned preprocessing parity with BIDS-Xu-Lab
+        # utils_ner.update_data_to_max_len(): tokenized-empty rows are filtered.
+        if tok=="":
+            empty_surface[tag]+=1
+            continue
         toks.append(tok); tags.append(tag)
     if toks: out.append((toks,tags))
+    if expected_empty_surface_tag_counts is not None:
+        got=dict(sorted(empty_surface.items()))
+        want=dict(sorted(expected_empty_surface_tag_counts.items()))
+        if got!=want:
+            raise RuntimeError(f"empty-surface normalization mismatch: {got} != {want}")
     return out
 
 def spans_from_tags(tags):
@@ -372,8 +382,11 @@ def calibration(sentences,candidates,start_probs,end_probs,span_probs):
     return results
 
 def smoke(args,train_s,dev_s,tokenizer,converted,status_path):
+    # Full frozen train/dev token-alignment guard before optimizer smoke.
+    btrain_full=BoundaryDataset(train_s,tokenizer)
+    bdev_full=BoundaryDataset(dev_s,tokenizer)
     bmodel=make_boundary_model(converted)
-    bds=BoundaryDataset(train_s[:8],tokenizer)
+    bds=btrain_full
     batch={k:torch.stack([bds[i][k] for i in range(4)]) for k in bds[0]}
     opt=torch.optim.AdamW(bmodel.parameters(),lr=5e-5,weight_decay=.01)
     loss=bmodel(**batch).loss
@@ -403,6 +416,14 @@ def smoke(args,train_s,dev_s,tokenizer,converted,status_path):
     result={"state":"R4_2C_SMOKE_PASS","boundary_loss":float(loss.detach()),
             "span_loss":float(sloss.detach()),"r4b_model_sha256":rsha,
             "exact_scorer_fixture_pass":scorer,
+            "full_token_alignment_guard":{"train_sentences":len(btrain_full),
+                                          "dev_sentences":len(bdev_full),
+                                          "pass":True},
+            "source_aligned_empty_surface_normalization":{
+                "train_tag_counts":{"O":5,"I-I":5,"I-P":6,"I-O":1},
+                "dev_tag_counts":{},
+                "total_train_rows_removed":17,
+                "total_dev_rows_removed":0},
             "guards":{"scientific_training_performed":False,"test_files_read":False,
                       "factpico_used":False,"consumed_holdout_used":False}}
     atomic_json_write(pathlib.Path(args.out)/"R4_2C_SMOKE.json",result)
@@ -554,7 +575,8 @@ def main():
       "current_stage":"SAFE_BASE_CONVERSION","completed_units":0,"total_units":7 if args.mode=="train" else 5,
       "last_successful_checkpoint":None,"last_progress_at":utc_now(),
       "next_expected_step":"CONVERT_SAFE_BASE","failure_or_stall_reason":None})
-    train_s=read_conll(args.train); dev_s=read_conll(args.dev)
+    train_s=read_conll(args.train,{"O":5,"I-I":5,"I-P":6,"I-O":1})
+    dev_s=read_conll(args.dev,{})
     converted=args.out/"converted_base"
     tokenizer,_=convert_safe_base(args.model_dir,converted)
     if args.mode=="smoke":
