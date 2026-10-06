@@ -1,0 +1,1 @@
+Run one independent exploratory TRAIN/FIT-only boundary-repair feasibility audit. Do not use Stage-A outputs, SELECT, historical DEV, TEST, other folds, external tests, FactPICO, or consumed holdout. Exploratory only; frozen Stage B unchanged.
