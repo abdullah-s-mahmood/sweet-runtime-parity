@@ -1,0 +1,82 @@
+name: AT0 EN V2.6 R4.3 contextual pair preflight
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r43_contextual_pair_preflight_trigger_v1.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: at0-en-v2.6-dev
+          fetch-depth: 1
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+      - name: Install preflight runtime only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --quiet transformers==4.39.3 huggingface_hub==0.25.2 tokenizers==0.15.2
+      - name: Acquire exact TRAIN and pinned tokenizer only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r43/data" "$RUNNER_TEMP/r43/tokenizer"
+          python - <<'PY'
+          import hashlib, os, pathlib, urllib.request
+          from huggingface_hub import snapshot_download
+
+          # TRAIN ONLY. Do not add DEV/TEST/other-fold URLs here.
+          url="https://raw.githubusercontent.com/BIDS-Xu-Lab/section_specific_annotation_of_PICO/bc4b878773192f38b2600ec830ca4208b82f7dc0/data/EBM-NLPmod/fold1/train.txt"
+          raw=urllib.request.urlopen(url,timeout=30).read()
+          want="6491a57e5c8639e5bfc3c0326b8501869fccab655a1ed571b75a772dc1c70a5e"
+          got=hashlib.sha256(raw).hexdigest()
+          if got!=want: raise SystemExit(f"train hash mismatch {got}")
+          (pathlib.Path(os.environ["RUNNER_TEMP"])/"r43"/"data"/"train.txt").write_bytes(raw)
+
+          files={
+            "config.json":"56bab767c02bc792897638feb8addc06d483d9c73769a5f554bbabea1f5507a1",
+            "tokenizer_config.json":"53b6f42b8b8daddbdc6d3532c324187a92b46c1602bd6e8d4ad5a413b4fc90e1",
+            "vocab.txt":"7b36651908a88bc38bda41b728b2a598191e0d3b553cbacf7b1e5f026d5b5b9f",
+          }
+          root=pathlib.Path(snapshot_download(
+            repo_id="microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract",
+            revision="d673b8835373c6fa116d6d8006b33d48734e305d",
+            allow_patterns=list(files),
+            local_dir=os.path.join(os.environ["RUNNER_TEMP"],"r43","tokenizer"),
+            local_dir_use_symlinks=False))
+          for name,want in files.items():
+              got=hashlib.sha256((root/name).read_bytes()).hexdigest()
+              if got!=want: raise SystemExit(f"tokenizer hash mismatch {name}: {got}")
+          PY
+      - name: Run no-training TRAIN-only preflight
+        shell: bash
+        env:
+          HF_HUB_OFFLINE: "1"
+          TRANSFORMERS_OFFLINE: "1"
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONHASHSEED: "42"
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_6/r43_contextual_pair_preflight.py             --train "$RUNNER_TEMP/r43/data/train.txt"             --tokenizer-dir "$RUNNER_TEMP/r43/tokenizer"             --out "$RUNNER_TEMP/r43/out"
+      - name: Freeze identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_CONTEXTUAL_PAIR_DIAGNOSTIC_DESIGN_V1.md             phase2/academic_transform/at0_en/v2_6/r43_contextual_pair_preflight.py             "$RUNNER_TEMP/r43/out/R43_CONTEXTUAL_PAIR_PREFLIGHT.json"             "$RUNNER_TEMP/r43/out/R43_FIT_SELECT_MANIFEST.json"             "$RUNNER_TEMP/r43/out/R43_STATIC_EXAMPLE_MANIFEST.json"             > "$RUNNER_TEMP/r43/out/PREFLIGHT_SHA256.txt"
+      - name: Upload R4.3 preflight evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: at0-en-v2-6-r43-contextual-pair-preflight
+          path: ${{ runner.temp }}/r43/out
+          if-no-files-found: error
+          retention-days: 90
