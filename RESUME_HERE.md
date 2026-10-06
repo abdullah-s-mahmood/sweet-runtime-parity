@@ -10233,3 +10233,20 @@ Exact next checkpoint:
 `ONE REPLACEMENT R4.2C DEVELOPMENT TRAINING + FROZEN-DEV CALIBRATION RUN`
 
 STOP before any EBM/COVID/AD test inference.
+
+
+## 2026-10-06 — R4.2D active checkpoint
+
+R4.2C frozen-dev consensus failed scientifically, not technically. FP decomposition run `37477106239` showed 48/56 accepted FPs at t=0.90 were individually boundary-supported but jointly invalid spans; same-class wrong-boundary overlap was 33/56. Threshold-only rescue rejected.
+
+R4.2D direction frozen:
+`FROZEN_R4_2C + TRAIN_ONLY_HARD_NEGATIVE_SPAN_VALIDITY_GUARD`
+
+R4.2D preflight run `37479013072` PASS:
+3011 VALID + 5442 INVALID = 8453 examples, collisions 0, dataset SHA `6038f5dd905271b27ad7be8f86118aa583f5adc06158b3adcbd9a7f02b724461`, max wordpieces 58, finite smoke loss/gradients.
+
+One authorized full R4.2D dev training + frozen-dev calibration run started:
+`37479970741`
+trigger `fb3644e2f01189a0f5c0c676fa0f26d4d8ef2116`
+
+Current rule: monitor this same run only; freeze result; stop before EBM/COVID/AD tests.
