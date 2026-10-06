@@ -1,0 +1,1 @@
+Run one train-only R4.2D span-validity preflight and smoke. No full training. No dev/test access.
