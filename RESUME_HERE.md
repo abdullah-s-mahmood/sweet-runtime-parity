@@ -10003,3 +10003,48 @@ No threshold relaxation.
 
 PERMANENT TIME DISPLAY RULE:
 Whenever user-facing messages mention a clock time, deadline, start/end time, or converted timestamp, display it in Iraq time `Asia/Baghdad (UTC+3)` unless the user explicitly requests another timezone. Internal GitHub UTC timestamps may be retained in evidence files, but user-facing reporting must convert them to Iraq time.
+
+
+---
+
+# 2026-10-06 — R4.2B SOURCE-ALIGNED FULL TRAINING RESULT
+
+Run `37409097042` completed the full fixed 10-epoch source-aligned training and frozen-dev calibration.
+
+User-facing Iraq-time milestones:
+- training step started: 2026-10-06 06:29:58 Asia/Baghdad (UTC+3)
+- epoch 10 / step 1970 reached: 2026-10-06 10:44:45 Asia/Baghdad
+- calibration gate result emitted: 2026-10-06 10:45:52 Asia/Baghdad
+- artifact upload completed: 2026-10-06 10:46:11 Asia/Baghdad
+
+Execution evidence:
+- epochs: 10/10
+- global steps: 1970/1970
+- progress: 100%
+- train runtime: 15282.3433 s (~4 h 14 m 42 s)
+- train loss: 0.1087133559
+- final checkpoint: checkpoint-1970
+- artifact id: 11397202598
+- artifact digest: sha256:45d204d5f073aa5ecc5944dc49bee88be5bb677e0160b8c17720f2250de6fa71
+
+Scientific outcome:
+`R4_2B_SOURCE_ALIGNED_WITNESS_NOT_READY`
+
+Failure classification:
+`SCIENTIFIC_FROZEN_DEV_CALIBRATION_GATE_FAIL`
+
+Exact failure reason recorded by PROCESS_STATUS:
+`SOURCE_ALIGNED_FROZEN_DEV_CALIBRATION_GATE_NOT_MET`
+
+This was NOT a timeout, queue failure, runner failure, NaN state, or model-loading failure.
+Training completed validly and the evidence artifact was uploaded successfully.
+
+Frozen next step from the run itself:
+`STOP_AND_RUN_DEV_ONLY_BOUNDARY_ERROR_ANALYSIS`
+
+Do NOT open EBM/COVID/AD test sets.
+Do NOT rerun FactPICO.
+Do NOT rerun the consumed 60-RCT holdout.
+Do NOT relax calibration thresholds post hoc.
+
+The automatic run watcher was disabled after completion because no automatic scientific rerun is authorized.
