@@ -1,0 +1,139 @@
+name: AT0 EN V2.6 R4.3 FIT-only ancestors
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r43_fit_ancestors_trigger_v1.txt'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: at0-en-v2-6-r43-fit-ancestors
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: at0-en-v2.6-dev
+          fetch-depth: 1
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+
+      - name: Install frozen runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --quiet             numpy==1.26.4 torch==2.2.2 transformers==4.39.3 accelerate==0.28.0             safetensors==0.4.3 huggingface_hub==0.25.2 jax==0.4.25 jaxlib==0.4.25 flax==0.8.2
+
+      - name: Download frozen R4.3 preflight manifest
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: at0-en-v2-6-r43-contextual-pair-preflight
+          path: ${{ runner.temp }}/r43/preflight
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37534110955
+
+      - name: Acquire exact TRAIN and verified safe base
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r43/data" "$RUNNER_TEMP/r43/model"
+          python - <<'PY'
+          import hashlib, os, pathlib, urllib.request
+          from huggingface_hub import snapshot_download
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"r43"
+          url="https://raw.githubusercontent.com/BIDS-Xu-Lab/section_specific_annotation_of_PICO/bc4b878773192f38b2600ec830ca4208b82f7dc0/data/EBM-NLPmod/fold1/train.txt"
+          raw=urllib.request.urlopen(url,timeout=30).read()
+          want="6491a57e5c8639e5bfc3c0326b8501869fccab655a1ed571b75a772dc1c70a5e"
+          got=hashlib.sha256(raw).hexdigest()
+          if got!=want: raise SystemExit(f"train hash mismatch {got}")
+          (root/"data"/"train.txt").write_bytes(raw)
+          files={
+            "flax_model.msgpack":"2048c0dca92fe54cf2bec6c36972511ca04e546060307098139b19221dd4e93f",
+            "config.json":"56bab767c02bc792897638feb8addc06d483d9c73769a5f554bbabea1f5507a1",
+            "tokenizer_config.json":"53b6f42b8b8daddbdc6d3532c324187a92b46c1602bd6e8d4ad5a413b4fc90e1",
+            "vocab.txt":"7b36651908a88bc38bda41b728b2a598191e0d3b553cbacf7b1e5f026d5b5b9f",
+          }
+          snap=pathlib.Path(snapshot_download(
+              repo_id="microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract",
+              revision="d673b8835373c6fa116d6d8006b33d48734e305d",
+              allow_patterns=list(files),local_dir=str(root/"model"),local_dir_use_symlinks=False))
+          for n,w in files.items():
+              got=hashlib.sha256((snap/n).read_bytes()).hexdigest()
+              if got!=w: raise SystemExit(f"safe-base hash mismatch {n}: {got}")
+          if (snap/"pytorch_model.bin").exists(): raise SystemExit("pickle forbidden")
+          PY
+
+      - name: Freeze trainer identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r43/evidence"
+          python -V > "$RUNNER_TEMP/r43/evidence/RUNTIME.txt"
+          python -m pip freeze | sort >> "$RUNNER_TEMP/r43/evidence/RUNTIME.txt"
+          sha256sum             phase2/academic_transform/at0_en/v2_6/r43_fit_ancestors_train.py             phase2/academic_transform/at0_en/v2_6/r43_contextual_pair_preflight.py             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_CONTEXTUAL_PAIR_DIAGNOSTIC_DESIGN_V1.md             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_CONTEXTUAL_PAIR_DIAGNOSTIC_DESIGN_V2.md             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_DIAGNOSTIC_TRAINING_AUTHORIZATION_V1.md             > "$RUNNER_TEMP/r43/evidence/PROTOCOL_SHA256.txt"
+
+      - name: Train FIT-only frozen ancestors
+        id: train
+        shell: bash
+        env:
+          HF_HUB_OFFLINE: "1"
+          TRANSFORMERS_OFFLINE: "1"
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONUNBUFFERED: "1"
+          PYTHONHASHSEED: "42"
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_6/r43_fit_ancestors_train.py             --model-dir "$RUNNER_TEMP/r43/model"             --train "$RUNNER_TEMP/r43/data/train.txt"             --split-manifest "$RUNNER_TEMP/r43/preflight/R43_FIT_SELECT_MANIFEST.json"             --out "$RUNNER_TEMP/r43/out"             > "$RUNNER_TEMP/r43/evidence/TRAIN_STDOUT.json"
+
+      - name: Finalize process status
+        if: always()
+        shell: bash
+        env:
+          STEP_OUTCOME: ${{ steps.train.outcome }}
+        run: |
+          python - <<'PY'
+          import datetime,json,os,pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"r43"/"out"/"PROCESS_STATUS.json"
+          if p.exists():
+              d=json.loads(p.read_text())
+              if d.get("state")=="RUNNING":
+                  d["state"]="FAILED" if os.environ.get("STEP_OUTCOME")=="failure" else "CANCELLED"
+                  d["failure_or_stall_reason"]="FIT_ANCESTOR_TRAINING_DID_NOT_COMPLETE"
+              d["terminal_observed_at"]=datetime.datetime.now(datetime.timezone.utc).isoformat()
+              p.write_text(json.dumps(d,indent=2,sort_keys=True)+"\n")
+              print(json.dumps(d,sort_keys=True))
+          PY
+
+      - name: Hash frozen outputs
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -d "$RUNNER_TEMP/r43/out" ]; then
+            find "$RUNNER_TEMP/r43/out" -type f -print0 | sort -z | xargs -0 sha256sum               > "$RUNNER_TEMP/r43/evidence/OUTPUT_SHA256.txt" || true
+          fi
+
+      - name: Upload FIT-only ancestor evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: at0-en-v2-6-r43-fit-ancestors
+          path: |
+            ${{ runner.temp }}/r43/evidence
+            ${{ runner.temp }}/r43/out/PROCESS_STATUS.json
+            ${{ runner.temp }}/r43/out/R43_FIT_ANCESTORS_SUMMARY.json
+            ${{ runner.temp }}/r43/out/b_candidate
+            ${{ runner.temp }}/r43/out/c_boundary
+            ${{ runner.temp }}/r43/out/c_type
+          if-no-files-found: warn
+          retention-days: 90
