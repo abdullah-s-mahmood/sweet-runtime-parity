@@ -4325,3 +4325,58 @@ Next exact step:
 No threshold relaxation.
 No test-set opening.
 No FactPICO/holdout reruns.
+
+
+---
+
+# R4.2B DEV-ONLY BOUNDARY DIAGNOSTIC — COMPLETE
+
+Date: 2026-10-06
+
+Permanent reporting rule added:
+- every user-facing time must be converted to Iraq time `Asia/Baghdad (UTC+3)` unless the user explicitly requests another timezone.
+
+Frozen diagnostic:
+- run `37445035553`
+- artifact `11402997860`
+- digest `sha256:6718d7007ed8b16f9644a33879e540ebadd26bcdbb248f98f21d5a74c8e0f5b1`
+- freeze file: `phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R4_2B_DEV_BOUNDARY_ERROR_DIAGNOSTIC_FREEZE_V1.md`
+
+Key results:
+- 404 predicted entities
+- exact correct 270
+- same-type boundary errors 70
+- spurious 42
+- exact-boundary type errors 13
+- type+boundary errors 9
+- token-level collapsed P/I/C/O micro F1 `0.8101347017`
+- entity-level exact micro F1 remains `0.6783919598`
+- at threshold 0.95: 326 accepted, 249 exact, 77 errors
+- 47/77 high-confidence errors were same-type boundary errors
+- 12/77 were type or type+boundary errors
+- 59/77 = 76.62% of high-confidence errors are boundary/type-consistency failures
+- dense dev-only threshold analysis found no single global threshold meeting all frozen class gates
+- extreme class-specific thresholds can fit this dev, but sentence-cluster bootstrap stability was inadequate
+- `REJECT_THRESHOLD_ONLY_RESCUE`
+
+Architecture decision:
+`R4_2C_INDEPENDENT_BOUNDARY_AND_TYPE_AGREEMENT_GUARD`
+
+Keep R4.2B frozen as candidate generator. Add an independent span-oriented boundary/type verifier; exact span+type agreement is required for witness acceptance, otherwise REVIEW. Do not use dev-specific heuristics and do not relax existing gates.
+
+Exact next authorized checkpoint:
+`R4_2C_TRAIN_ONLY_SPAN_GUARD_DESIGN_AND_PREFLIGHT`
+
+Before any new training:
+1. inspect frozen TRAIN only for span length/type distributions
+2. freeze candidate generation, negative sampling, losses and confidence rule
+3. keep current dev for calibration/evaluation only
+4. keep EBM/COVID/AD tests, FactPICO, consumed 60-RCT holdout and opened-30 diagnostic closed
+5. mechanics/preflight first
+6. then authorize exactly one R4.2C training run
+
+Quality delta:
+- measured model performance: unchanged
+- diagnosis: IMPROVED materially
+- dominant failure mechanism: now quantified
+- architecture uncertainty: reduced
