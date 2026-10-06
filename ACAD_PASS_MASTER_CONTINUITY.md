@@ -4260,3 +4260,68 @@ Do NOT rerun the consumed 60-RCT holdout.
 Do NOT relax calibration thresholds post hoc.
 
 The automatic run watcher was disabled after completion because no automatic scientific rerun is authorized.
+
+
+---
+
+# 2026-10-06 — R4.2B DEV-ONLY BOUNDARY DIAGNOSTIC / R4.2C DECISION
+
+Dev-only diagnostic run:
+`37445035553`
+
+Artifact:
+`11402997860`
+
+Artifact digest:
+`sha256:6718d7007ed8b16f9644a33879e540ebadd26bcdbb248f98f21d5a74c8e0f5b1`
+
+Canonical diagnostic pre-hash:
+`dc5920c1d3148f4b78c7fcde36d25efe78cbf3471db406a5c51e79d36b2d8431`
+
+Scope:
+- frozen development split only
+- no training
+- no threshold changes
+- no EBM/COVID/AD tests
+- no FactPICO
+- no consumed 60-RCT holdout
+- no opened-30 diagnostic reuse
+
+At threshold 0.95:
+- accepted = 326
+- exact TP = 249
+- exact errors = 77
+- same-type boundary = 47 = 61.039% of high-confidence errors
+- overlap-related boundary/type = 59 = 76.623%
+- spurious = 18 = 23.377%
+
+Exact precision:
+- P 0.769231
+- I 0.780303
+- C 0.933333
+- O 0.724409
+
+Diagnostic partial-overlap micro-F1:
+`0.831658`
+vs exact micro-F1:
+`0.678392`
+delta:
+`+15.33 pp`
+
+Partial scoring remains diagnostic only and does NOT replace the exact-span gate.
+
+Mechanism:
+`HIGH-CONFIDENCE BOUNDARY/TYPE DISAGREEMENT DOMINATES; INTERNAL-SPAN SOFTMAX CONFIDENCE IS NOT AN EXACT-BOUNDARY CONFIDENCE MEASURE`
+
+Frozen next architecture:
+`R4.2C SELECTIVE BOUNDARY-CONSENSUS VERIFIER`
+
+Design:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R4_2C_BOUNDARY_CONSENSUS_DESIGN_V1.md`
+
+Next exact step:
+`R4.2C DEVELOPMENT-ONLY PREFLIGHT`
+
+No threshold relaxation.
+No test-set opening.
+No FactPICO/holdout reruns.

@@ -10048,3 +10048,37 @@ Do NOT rerun the consumed 60-RCT holdout.
 Do NOT relax calibration thresholds post hoc.
 
 The automatic run watcher was disabled after completion because no automatic scientific rerun is authorized.
+
+
+---
+
+## 2026-10-06 — R4.2B boundary diagnostic complete; R4.2C chosen
+
+Run `37445035553`: SUCCESS.
+
+Artifact:
+`11402997860`
+digest:
+`sha256:6718d7007ed8b16f9644a33879e540ebadd26bcdbb248f98f21d5a74c8e0f5b1`
+
+At threshold 0.95 there are 77 high-confidence exact-span errors:
+- 47 same-type boundary errors
+- 12 additional overlap-related type/boundary errors
+- 18 spurious
+
+Thus 59/77 = 76.623% are overlap-related.
+
+Exact precision at 0.95:
+P 0.769231 / I 0.780303 / C 0.933333 / O 0.724409.
+
+Diagnostic partial-overlap micro-F1 = 0.831658 versus exact 0.678392 (+15.33 pp).
+Partial scoring is diagnostic only.
+
+Decision:
+Do NOT lower gates and do NOT patch boundaries with dev-specific regexes.
+Proceed to `R4.2C SELECTIVE BOUNDARY-CONSENSUS VERIFIER`.
+
+Exact next step:
+one development-only preflight, then freeze protocol before any training.
+
+All EBM/COVID/AD tests remain unopened.
