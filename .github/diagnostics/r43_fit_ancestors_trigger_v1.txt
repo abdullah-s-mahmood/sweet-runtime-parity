@@ -1,0 +1,1 @@
+Run exactly one authorized R4.3 Stage-A FIT-only ancestor training under frozen manifest fbed5472eee4d0158626f438f5169f8767cb44dd65d8d89c74b8a3a573321226. No SELECT fitting, no historical DEV, no test access.
