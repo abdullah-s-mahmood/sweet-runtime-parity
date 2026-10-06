@@ -1,0 +1,49 @@
+name: AT0 EN V2.6 R4.2C result extract
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r42c_result_extract_trigger_v1.txt'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Download frozen R4.2C result artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: at0-en-v2-6-r4-2c-boundary-consensus-train-calibration
+          path: ${{ runner.temp }}/r42c_result
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37464774424
+      - name: Extract scientific summary only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r42c_extract"
+          find "$RUNNER_TEMP/r42c_result" -maxdepth 4 -type f -printf '%P\n' | sort
+          SUMMARY=$(find "$RUNNER_TEMP/r42c_result" -type f -name 'R4_2C_TRAIN_CALIBRATION_SUMMARY.json' -print -quit)
+          STATUS=$(find "$RUNNER_TEMP/r42c_result" -type f -name 'PROCESS_STATUS.json' -print -quit)
+          HASHES=$(find "$RUNNER_TEMP/r42c_result" -type f -name 'OUTPUT_SHA256.txt' -print -quit)
+          test -n "$SUMMARY"
+          test -n "$STATUS"
+          cp "$SUMMARY" "$RUNNER_TEMP/r42c_extract/"
+          cp "$STATUS" "$RUNNER_TEMP/r42c_extract/"
+          if [ -n "$HASHES" ]; then cp "$HASHES" "$RUNNER_TEMP/r42c_extract/"; fi
+          echo '=== R4_2C_TRAIN_CALIBRATION_SUMMARY.json ==='
+          cat "$SUMMARY"
+          echo '=== PROCESS_STATUS.json ==='
+          cat "$STATUS"
+      - name: Upload compact result evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: at0-en-v2-6-r4-2c-result-extract
+          path: ${{ runner.temp }}/r42c_extract
+          if-no-files-found: error
+          retention-days: 90
