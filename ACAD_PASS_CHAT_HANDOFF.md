@@ -664,3 +664,81 @@ Do not:
 - open EBM/COVID/AD tests;
 - touch FactPICO;
 - rerun the consumed 60-RCT holdout.
+
+
+---
+
+## 2026-10-07 — R4.3 contextual pair preflight PASS / STOP BEFORE TRAINING
+
+Independent higher-model verdict:
+`RUN_ONE_MORE_TRAIN_ONLY_DIAGNOSTIC_BEFORE_ARCHITECTURE_SELECTION`
+
+Bounded future comparison:
+- H0 contextual typed MLP
+- H1 same contextual path + biaffine start/end interaction
+
+Critical correction:
+R4.2C `48/56 joint_invalid_fp` must not be read as 48 literal cross-entity pairs. Literal gold-boundary cross-pairs were only 3 across all 404 candidates. Competing explanations are missing context, negative mismatch, and endpoint interaction.
+
+Design:
+- `AT0_EN_V26_R43_CONTEXTUAL_PAIR_DIAGNOSTIC_DESIGN_V1.md`
+- `AT0_EN_V26_R43_CONTEXTUAL_PAIR_DIAGNOSTIC_DESIGN_V2.md`
+
+Initial preflight run `37533646474` stopped pre-training on 11 source sequence-initial I-* labels. TRAIN-only audit proved all 11 are valid same-type continuation segments across source example boundaries; zero invalid within-example I transitions. V2 freezes explicit continuation-segment semantics without rewriting raw labels.
+
+Successful replacement preflight:
+- run `37534110955` SUCCESS
+- head `4ca858fcd8b632bc67748bfe1e8fdb0d9d6f8dbd`
+- artifact `11446235369`
+- digest `sha256:84f9688be55f46dfc6d05cee638c7552e12e6ed0ccae63e3b6f2fc99a4478c94`
+- freeze file `AT0_EN_V26_R43_CONTEXTUAL_PAIR_PREFLIGHT_FREEZE_V1.md`
+- freeze commit `fca998366cd246b68e13469e1a27d538a66eec88`
+
+Source TRAIN:
+- 400 documents, 1576 sequences, 41070 tokens
+- gold P/I/C/O = 434/1328/181/1068; total 3011
+- max gold width 54
+- duplicate document groups 0
+- tag-conflicting duplicate docs 0
+- invalid BIO after frozen continuation semantics 0
+
+Frozen FIT/SELECT:
+- manifest SHA `fbed5472eee4d0158626f438f5169f8767cb44dd65d8d89c74b8a3a573321226`
+- FIT 320 docs; P/I/C/O = 342/1038/144/847; total 2371
+- SELECT 80 docs; P/I/C/O = 92/290/37/221; total 640
+- overlap 0
+- SELECT deviations from exact 20% targets: P +5.99%, I +9.19%, C +2.21%, O +3.46%
+
+TRAIN-only negative feasibility:
+- local raw 4742
+- composites raw 2042 = 1239 same-class + 803 different-class
+- unique local+composite NONE 6157
+- reserved background fallback unique 1908
+- gold/synthetic coordinate collisions 0
+- static manifest SHA `1ac4b4dd2ca3c1dbc42b5dc0530cafc93fb289f1646b518e305a3d7c20d5d8d2`
+- native FIT-model errors intentionally deferred until a future FIT-only B replica exists
+
+Critical context evidence:
+- complete TRAIN: 14 identical cropped token strings/tokenizer sequences occur with multiple entity classes
+- FIT prospective construction: 43 cropped token strings (48 tokenizer-ID sequences) can be both entity and synthetic NONE depending on context
+This directly strengthens the missing-context hypothesis and explains why content-only R4.2D can fail. It does NOT prove biaffine necessity.
+
+Head sizes:
+- H0 trainable = 579,461
+- H1 trainable = 662,666
+- H1-H0 = 83,205 biaffine parameters
+
+Access guards:
+- TRAIN only
+- historical DEV false
+- fold1 TEST false
+- other folds false
+- external EBM/COVID/AD false
+- FactPICO false
+- consumed 60-RCT holdout false
+- scientific training false
+
+CURRENT EXACT CHECKPOINT:
+`R43_CONTEXTUAL_PAIR_PREFLIGHT_PASS / REVIEW_FROZEN_PACKET_BEFORE_ANY_TRAINING_AUTHORIZATION`
+
+Do NOT train FIT-only B/boundary/type/H0/H1 yet.
