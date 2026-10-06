@@ -454,7 +454,10 @@ def bootstrap_docs(docs,doc_ids,items,pair_p,t,reps=2000):
         for d in sample:
             gold.update(gold_by_doc[d])
             for r in acc_by[d]:
-                (tp if r["is_tp"] else fp)[r["type"]]+=1
+                if r["is_tp"]:
+                    tp[r["type"]]+=1
+                else:
+                    fp[r["type"]]+=1
         ps=[]; rs=[]
         for c in ["P","I","C","O"]:
             p=tp[c]/(tp[c]+fp[c]) if tp[c]+fp[c] else 0.0
@@ -512,6 +515,36 @@ def main():
 
     # Add tokens to type inference proposal rows.
     fit_props=proposal_items(docs,fit,fit_b); sel_props=proposal_items(docs,select,sel_b)
+
+    # Candidate ceiling is a pre-head stop rule. Do not train H0/H1 when
+    # native SELECT proposals cannot mathematically satisfy support/recall.
+    ceiling=candidate_ceiling(docs,select,sel_props)
+    ceiling_block=any((not d["support_floor_possible"]) or (not d["recall_floor_possible"]) for d in ceiling["per_class"].values())
+    if ceiling_block:
+        summary={
+          "state":"R43_STAGE_B_STOPPED_AT_CANDIDATE_CEILING",
+          "decision":"STOP_H0_H1_AS_INSUFFICIENT_CANDIDATE_CEILING",
+          "nominated":None,
+          "train_sha256":EXPECTED_TRAIN_SHA,
+          "split_manifest_sha256":EXPECTED_SPLIT_SHA,
+          "candidate_ceiling":ceiling,
+          "candidate_ceiling_block":True,
+          "ancestor_model_sha256":{
+            "B":sha256_path(args.b_model/"model.safetensors"),
+            "BOUNDARY":sha256_path(args.boundary_model/"model.safetensors"),
+            "TYPE":sha256_path(args.type_model/"model.safetensors")},
+          "guards":{"h0_h1_training_performed":False,"select_used_for_training":False,
+            "historical_dev_read":False,"test_read":False,"other_folds_read":False,
+            "factpico_used":False,"consumed_60_rct_holdout_used":False},
+          "stop_boundary":"STOP_AND_REOPEN_CANDIDATE_REPAIR_DESIGN"
+        }
+        dump(args.out/"R43_STAGE_B_H0_H1_SUMMARY.json",summary)
+        dump(status,{"state":"COMPLETED_WITH_CANDIDATE_CEILING_BLOCK","progress_percent":100.0,
+            "current_stage":"CANDIDATE_CEILING_STOP","last_progress_at":utc_now(),
+            "failure_or_stall_reason":None,"next_expected_step":"REOPEN_CANDIDATE_REPAIR_DESIGN"})
+        print(json.dumps(summary,indent=2,sort_keys=True))
+        return
+
     fit_type=infer_type(tmodel,tok,fit_props); sel_type=infer_type(tmodel,tok,sel_props)
     fit_props=attach_evidence(fit_props,boundary_probs,fit_type,hidden,docs)
     sel_props=attach_evidence(sel_props,boundary_probs,sel_type,hidden,docs)
@@ -534,8 +567,6 @@ def main():
     Xs,pes,nes,ws,_=build_raw_feature_tensor(docs,sel_feature_rows,hidden)
     p0=pair_probs(h0,Xs,pes,nes,ws); p1=pair_probs(h1,Xs,pes,nes,ws)
 
-    ceiling=candidate_ceiling(docs,select,sel_props)
-    ceiling_block=any((not d["support_floor_possible"]) or (not d["recall_floor_possible"]) for d in ceiling["per_class"].values())
     cstyle=[cstyle_metrics(docs,select,sel_props,t) for t in THRESHOLDS]
     # Remove rows to keep baseline compact.
     for x in cstyle: x.pop("accepted_rows",None)
