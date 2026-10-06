@@ -614,3 +614,53 @@ Exact next operation:
 monitor the SAME run, inspect PROCESS_STATUS and artifact at terminal state, freeze exact result, and STOP before EBM/COVID/AD external test inference.
 
 Do not rerun or change protocol automatically.
+
+
+---
+
+# 12. LATEST VERIFIED UPDATE — R4.2D DEV GATE FAIL
+
+Date: 2026-10-06
+
+R4.2D run:
+- run `37479970741`
+- artifact `11422811514`
+- digest `sha256:7fd6cf920ff98bb19770a8a55efaae35ce73c11a5e4bf5a122b732238bc951e7`
+- final state `COMPLETED_WITH_GATE_FAIL`
+- scientific failure, not technical
+- epochs 3/3, steps 1587/1587
+- validity model SHA `14a70d925cfff7959cba4afa4a10b8f30413961eaea24ba308754dfc6d36f146`
+
+Best frozen calibration at t=0.90:
+- macro precision 0.8239836029
+- P/I/C/O precision = 0.770833 / 0.801887 / 0.937500 / 0.785714
+
+Compared with R4.2C at t=0.90:
+- macro precision changed 0.8254464286 -> 0.8239836029
+- delta = -0.0014628257 (-0.1463 pp)
+- accepted/TP/FP changed 281/225/56 -> 268/214/54
+- guard removed 13 candidates: 11 TP and only 2 FP.
+
+Critical evidence:
+- accepted TP mean P(VALID) = 0.9537864043
+- accepted FP mean P(VALID) = 0.9662910192
+- therefore the content-only validity classifier does not separate exact-valid spans from false candidates and is rejected.
+
+Frozen result:
+`AT0_EN_V26_R4_2D_DEV_GATE_RESULT_FREEZE_V1.md`
+
+Decision:
+`REJECT_CONTENT_ONLY_SPAN_VALIDITY_GUARD`
+
+CURRENT EXACT CHECKPOINT:
+`DESIGN_AND_PREFLIGHT_R4_2E_TRAIN_ONLY_JOINT_BOUNDARY_PAIR_VALIDATOR`
+
+R4.2E direction:
+preserve frozen R4.2C and train a small pair validator using contextual start/end representations from the frozen R4.2C boundary encoder, so validity is modeled as a JOINT boundary-pair decision instead of candidate-span semantic content.
+
+Do not:
+- tune R4.2D validity threshold on dev;
+- rerun R4.2D unchanged;
+- open EBM/COVID/AD tests;
+- touch FactPICO;
+- rerun the consumed 60-RCT holdout.
