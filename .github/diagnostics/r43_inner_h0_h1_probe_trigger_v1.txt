@@ -1,0 +1,1 @@
+Run one independent exploratory FIT-only H0-vs-H1 inner probe using frozen safe base. Do not use Stage-A outputs, SELECT, historical DEV, TEST, other folds, external tests, FactPICO, or consumed holdout. Exploratory only; frozen Stage B unchanged.
