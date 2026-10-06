@@ -1,0 +1,1 @@
+Run mechanics-only validation for the prepared R4.3 Stage-B H0/H1 implementation. No TRAIN/SELECT/DEV/TEST data access. No scientific training.
