@@ -4540,3 +4540,38 @@ Exact next checkpoint:
 `ONE REPLACEMENT R4.2C DEVELOPMENT TRAINING + FROZEN-DEV CALIBRATION RUN`
 
 STOP before any EBM/COVID/AD test inference.
+
+
+---
+
+## 2026-10-06 — R4.2C failure localized; R4.2D validity guard activated
+
+R4.2C full replacement run `37464774424` completed all training/calibration and ended `COMPLETED_WITH_GATE_FAIL`, i.e. scientific frozen-dev failure rather than technical failure. Best macro precision was 0.8254464286 at t=0.90; P/I/C/O precision = 0.770833/0.812500/0.937500/0.780952.
+
+Read-only dev FP decomposition run `37477106239` found at t=0.90:
+- 225 TP, 56 FP;
+- 48/56 FP (85.71%) = individually plausible but jointly invalid spans;
+- 33/56 FP (58.93%) = same-class wrong-boundary overlap;
+- TP vs FP type-confidence means nearly indistinguishable (0.96918 vs 0.97025).
+
+Chosen architecture:
+`R4_2D = FROZEN_R4_2C + TRAIN_ONLY_HARD_NEGATIVE_SPAN_VALIDITY_GUARD`
+
+R4.2D design frozen in `AT0_EN_V26_R4_2D_SPAN_VALIDITY_DESIGN_V1.md`.
+
+Preflight run `37479013072` PASS:
+- 3011 positive spans;
+- 5442 unique invalid spans;
+- 8453 total examples;
+- 0 collisions;
+- deterministic dataset SHA `6038f5dd905271b27ad7be8f86118aa583f5adc06158b3adcbd9a7f02b724461`;
+- max 58 wordpieces;
+- smoke loss 0.761030376 finite; gradients valid;
+- dev/test not read.
+
+One authorized full R4.2D dev training + frozen-dev calibration run:
+`37479970741`
+trigger/head `fb3644e2f01189a0f5c0c676fa0f26d4d8ef2116`
+started 2026-10-06 17:33:33 Asia/Baghdad.
+
+Stop boundary remains before EBM/COVID/AD external test inference.
