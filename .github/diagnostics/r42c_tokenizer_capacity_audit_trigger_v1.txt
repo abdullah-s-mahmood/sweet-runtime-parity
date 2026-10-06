@@ -1,0 +1,2 @@
+trigger=R4_2C_TOKENIZER_CAPACITY_AUDIT_V1
+purpose=read_only_full_train_dev_tokenizer_capacity_measurement_after_pretraining_truncation_failure
