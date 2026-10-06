@@ -1,0 +1,1 @@
+Run one no-training TRAIN-only R4.3 H0-vs-H1 contextual pair preflight. Do not read DEV, TEST, other folds, or protected external sets.
