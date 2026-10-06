@@ -1,0 +1,1 @@
+Trigger one R4.2C boundary-consensus development-only preflight. No training. No test access. Frozen gates unchanged.
