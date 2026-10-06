@@ -69,3 +69,27 @@ Registry implication:
 - BOPN / boundary-offset repair remains HIGH priority for local near-boundary errors;
 - composite/far spans should preferentially be handled by contextual joint pair scoring / reject-review;
 - a future repair + contextual-verifier hybrid is now supported by TRAIN-only structural evidence, but remains contingent on Stage-B error decomposition.
+
+
+### Context-signal and locality evidence
+
+Independent FIT-only runs:
+- context-signal probe `37539134852`
+- context-locality audit `37539816534`
+
+Frozen results:
+- `AT0_EN_V26_R43_INDEPENDENT_CONTEXT_SIGNAL_FREEZE_V1.md`
+- `AT0_EN_V26_R43_INDEPENDENT_CONTEXT_LOCALITY_FREEZE_V1.md`
+
+Key evidence:
+- frozen-base contextual probe macro-F1 = 0.6414445653 vs cropped probe = 0.5634747631; delta +0.0779698022;
+- on ambiguous surfaces, contextual macro-F1 = 0.5777777778 vs cropped = 0.3866666667; delta +0.1911111111;
+- cropped surface-only representation had 42 conflicting keys;
+- +/-1 word context reduced conflicts to 2;
+- +/-2 reduced conflicts to 1;
+- +/-4 reduced conflicts to 0.
+
+Registry implication:
+- missing context is now supported by direct TRAIN/FIT-only evidence;
+- contextual scoring remains HIGH priority;
+- this does not by itself establish biaffine necessity, so H0 versus H1 remains scientifically necessary.
