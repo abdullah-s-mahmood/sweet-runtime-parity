@@ -1,0 +1,1 @@
+Run one independent exploratory FIT-only frozen-base context-vs-cropped signal probe. Do not use Stage-A outputs, SELECT, historical DEV, TEST, other folds, external tests, FactPICO, or consumed holdout. Exploratory only; frozen Stage B unchanged.
