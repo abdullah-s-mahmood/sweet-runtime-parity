@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import argparse, hashlib, json, math, pathlib, random, traceback
+import argparse, datetime, hashlib, json, math, pathlib, random, traceback
 import numpy as np
 import torch
 from torch import nn
@@ -10,6 +10,7 @@ from safetensors.torch import save_file
 
 from r44b_b1_preflight import J0, J1
 
+EXPECTED_ATTEMPT_ID="R44B_B1_DEV_J0J1_ATTEMPT_1"
 SEED=44
 EPOCHS=10
 BATCH_SIZE=64
@@ -56,6 +57,9 @@ def read_jsonl(p:pathlib.Path):
 
 def write_json(p:pathlib.Path,obj):
     p.write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n")
+
+def now():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
 
 def write_jsonl(p:pathlib.Path,rows):
     with p.open("w",encoding="utf-8") as f:
@@ -161,7 +165,7 @@ def build_model(head):
     if n!=EXPECTED_PARAMS[head]: raise RuntimeError(f"{head} parameter count {n}")
     return m
 
-def fit_head(train_features,head,out_dir:pathlib.Path,epochs=EPOCHS,batch_size=BATCH_SIZE):
+def fit_head(train_features,head,out_dir:pathlib.Path,epochs=EPOCHS,batch_size=BATCH_SIZE,status_path=None,status_meta=None):
     if epochs!=EPOCHS or batch_size!=BATCH_SIZE:
         raise RuntimeError("scientific schedule mutation")
     *x,y=train_features
@@ -192,7 +196,17 @@ def fit_head(train_features,head,out_dir:pathlib.Path,epochs=EPOCHS,batch_size=B
             torch.nn.utils.clip_grad_norm_(model.parameters(),GRAD_CLIP,error_if_nonfinite=True)
             opt.step(); sched.step(); global_step+=1
             loss_sum+=float(loss.detach())*len(yb); count+=len(yb)
-        trace.append({"epoch":ep,"mean_loss":loss_sum/count,"global_step":global_step,"lr":float(opt.param_groups[0]["lr"])})
+        epoch_loss=loss_sum/count
+        trace.append({"epoch":ep,"mean_loss":epoch_loss,"global_step":global_step,"lr":float(opt.param_groups[0]["lr"])})
+        if status_path is not None:
+            meta=dict(status_meta or {})
+            write_json(status_path,{
+                **meta,
+                "state":"RUNNING","current_stage":"TRAINING","current_epoch":ep,
+                "epochs_total":epochs,"global_step":global_step,"total_steps":total_steps,
+                "latest_loss":epoch_loss,"progress_percent":round(90.0*ep/epochs,6),
+                "last_progress_at":now(),"failure_or_stall_reason":None,
+            })
     if global_step!=total_steps: raise RuntimeError("optimizer step accounting")
     ckpt=out_dir/f"R44B_{head}_FINAL_MODEL.safetensors"
     save_file({k:v.detach().cpu().contiguous() for k,v in model.state_dict().items()},str(ckpt))
@@ -216,10 +230,14 @@ def predict(model,features,batch_size=256):
     return p.numpy()
 
 def scientific_run(a):
+    if a.attempt_id!=EXPECTED_ATTEMPT_ID:
+        raise RuntimeError(f"attempt identity mismatch {a.attempt_id}")
     out=a.out
     out.mkdir(parents=True,exist_ok=False)
     status=out/"PROCESS_STATUS.json"
-    write_json(status,{"state":"INITIALIZING","scientific_attempt_started":False,"outer_fold":a.outer_fold,"head":a.head})
+    write_json(status,{"state":"INITIALIZING","scientific_attempt_started":False,
+                       "attempt_id":a.attempt_id,"outer_fold":a.outer_fold,"head":a.head,
+                       "progress_percent":0.0,"last_progress_at":now()})
 
     m=json.loads(a.manifest.read_text())
     got=canonical_manifest_sha(m)
@@ -269,14 +287,20 @@ def scientific_run(a):
 
     write_json(status,{
         "state":"RUNNING","scientific_attempt_started":True,"first_optimizer_update_pending":True,
-        "outer_fold":k,"head":a.head,"meta_rows":len(meta),"eval_rows":len(ev),
+        "attempt_id":a.attempt_id,"outer_fold":k,"head":a.head,"meta_rows":len(meta),"eval_rows":len(ev),
+        "progress_percent":0.0,"last_progress_at":now(),
         "seed":SEED,"epochs":EPOCHS,"batch_size":BATCH_SIZE,
     })
-    model,trace,ckpt,total_steps=fit_head(train,a.head,out,EPOCHS,BATCH_SIZE)
+    model,trace,ckpt,total_steps=fit_head(
+        train,a.head,out,EPOCHS,BATCH_SIZE,status_path=status,
+        status_meta={"scientific_attempt_started":True,"attempt_id":a.attempt_id,
+                     "outer_fold":k,"head":a.head,"meta_rows":len(meta),"eval_rows":len(ev)}
+    )
     write_json(status,{
         "state":"RUNNING","scientific_attempt_started":True,"first_optimizer_update_pending":False,
-        "outer_fold":k,"head":a.head,"meta_rows":len(meta),"eval_rows":len(ev),
+        "attempt_id":a.attempt_id,"outer_fold":k,"head":a.head,"meta_rows":len(meta),"eval_rows":len(ev),
         "global_steps":total_steps,"current_stage":"EVALUATION_NO_GRAD",
+        "progress_percent":95.0,"last_progress_at":now(),
     })
     probs=predict(model,eval_x)
 
@@ -295,7 +319,7 @@ def scientific_run(a):
 
     summary={
         "state":"R44B_HEAD_FOLD_COMPLETE","scientific_attempt_started":True,
-        "outer_fold":k,"head":a.head,"seed":SEED,
+        "attempt_id":a.attempt_id,"outer_fold":k,"head":a.head,"seed":SEED,
         "schedule":{"epochs":EPOCHS,"batch_size":BATCH_SIZE,"optimizer":"AdamW","lr":LR,
                     "weight_decay":WEIGHT_DECAY,"gradient_clip":GRAD_CLIP,
                     "scheduler":"linear_decay_no_warmup","early_stopping":False,
@@ -325,8 +349,8 @@ def scientific_run(a):
     }
     sp=out/f"R44B_OUTER_{k}_{a.head}_SUMMARY.json"; write_json(sp,summary)
     write_json(status,{
-        "state":"COMPLETED","scientific_attempt_started":True,"outer_fold":k,"head":a.head,
-        "progress_percent":100.0,"meta_rows":len(meta),"eval_rows":len(ev),
+        "state":"COMPLETED","scientific_attempt_started":True,"attempt_id":a.attempt_id,
+        "outer_fold":k,"head":a.head,"progress_percent":100.0,"last_progress_at":now(),"meta_rows":len(meta),"eval_rows":len(ev),
         "optimizer_steps":total_steps,"checkpoint_sha256":summary["checkpoint_sha256"],
         "probabilities_sha256":summary["probabilities_sha256"],
         "next_action":"AGGREGATE_ONLY_AFTER_ALL_10_FOLD_HEAD_JOBS_COMPLETE",
@@ -335,6 +359,7 @@ def scientific_run(a):
 
 def main():
     ap=argparse.ArgumentParser()
+    ap.add_argument("--attempt-id",required=True)
     ap.add_argument("--nested-root",type=pathlib.Path,required=True)
     ap.add_argument("--context-root",type=pathlib.Path,required=True)
     ap.add_argument("--manifest",type=pathlib.Path,required=True)
@@ -348,7 +373,8 @@ def main():
         try:
             a.out.mkdir(parents=True,exist_ok=True)
             write_json(a.out/"PROCESS_STATUS.json",{
-                "state":"FAILED","outer_fold":a.outer_fold,"head":a.head,
+                "state":"FAILED","attempt_id":getattr(a,"attempt_id",None),
+                "outer_fold":a.outer_fold,"head":a.head,"last_progress_at":now(),
                 "error_type":type(e).__name__,"error":str(e),
                 "traceback_tail":traceback.format_exc().splitlines()[-20:],
             })
