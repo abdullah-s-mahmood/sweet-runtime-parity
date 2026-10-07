@@ -157,8 +157,18 @@ def decode_constrained(tags,conf):
                 vals.append(conf[j]); j+=1
             out.append({"type":typ,"start":i,"end":j,"b_conf":float(min(vals))}); i=j; continue
         if tag.startswith("I-"):
-            violations.append({"word_index":i,"predicted":tag,
-                               "previous_predicted":tags[i-1] if i else "SEQUENCE_START"})
+            typ=tag[2:]; j=i+1
+            while j<len(tags) and tags[j]==f"I-{typ}": j+=1
+            prev=tags[i-1] if i else "SEQUENCE_START"
+            if i==0:
+                kind="INITIAL_I_RUN"
+            elif prev=="O":
+                kind="O_TO_I_RUN"
+            else:
+                kind="CROSS_TYPE_I_RUN"
+            violations.append({"start":i,"end":j,"predicted_type":typ,
+                               "kind":kind,"previous_predicted":prev})
+            i=j; continue
         i+=1
     return out,violations
 
@@ -182,7 +192,16 @@ def infer_heldout(bmodel,boundary,tok,docs,doc_ids,batch=8):
                 for p in pos:
                     v=bp[bi,p]; z=int(v.argmax()); ptags.append(BIO_LABELS[z]); conf.append(float(v[z]))
                 pp,vv=decode_constrained(ptags,conf)
-                for x in vv:bviol.append({"document":di,"sentence":si,**x})
+                for x in vv:
+                    source_gold_valid_continuation=False
+                    if x["kind"]=="INITIAL_I_RUN" and si>0 and tags_gold:
+                        typ=x["predicted_type"]
+                        prev_gold=docs[di][si-1][1][-1] if docs[di][si-1][1] else "O"
+                        source_gold_valid_continuation=(
+                            tags_gold[0]==f"I-{typ}" and prev_gold in {f"B-{typ}",f"I-{typ}"}
+                        )
+                    bviol.append({"document":di,"sentence":si,
+                                  "source_gold_valid_continuation":source_gold_valid_continuation,**x})
                 proposals[(di,si)]=pp
                 q=qp[bi,pos,:].cpu().numpy()
                 bnd[(di,si)]={"start":(q[:,BOUNDARY2ID["START"]]+q[:,BOUNDARY2ID["BOTH"]]).tolist(),
@@ -258,7 +277,14 @@ def candidate_bank(fold,docs,heldout,sections,proposals,bviol,bnd):
              "per_class":per,"target_counts":dict(target_counts),"taxonomy":dict(tax),
              "predicted_type_counts":dict(predicted_counts),"goldless_candidate_count":goldless_candidates,
              "B_conf_exact_typed":quantiles(tp_conf),"B_conf_other":quantiles(fp_conf),
-             "BIO_violation_count":len(bviol)}
+             "BIO_violation_count":len(bviol),
+             "BIO_violation_breakdown":dict(collections.Counter(x["kind"] for x in bviol)),
+             "BIO_initial_I_gold_valid_continuation_runs":sum(
+                 1 for x in bviol if x.get("source_gold_valid_continuation")
+             ),
+             "BIO_violation_unmatched_or_invalid_runs":sum(
+                 1 for x in bviol if not x.get("source_gold_valid_continuation")
+             )}
     return rows,metrics
 
 def main():
