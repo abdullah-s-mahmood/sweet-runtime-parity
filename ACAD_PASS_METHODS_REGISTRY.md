@@ -192,3 +192,18 @@ DO NOT prematurely train triaffine/BOPN or use SELECT/historical DEV/protected t
 - Actual-code synthetic BIO contract audit run `37568400156` passed and confirmed invalid I transitions produce normal-looking proposals. FIT frequency remains unmeasured.
 
 The canonical forensic report was updated at commit `d6f7f6bed04b5234564aeff65b80b7171a4a19f0`.
+
+
+### 2026-10-07 verified FIT-only B model replay — major causal finding
+
+Read-only run `37568769890` SUCCESS. Artifact `11460495207` digest `sha256:e76de599341742c69c3202cfd299c9677d4f07c914c255d1c9b3b32ae175e9c0`.
+
+On 320 FIT docs, frozen B yielded **2371 exact correct proposals out of 2371 gold and ZERO FP**. Of 1292 FIT sentences, 299 were gold-empty and emitted zero predictions. Original Stage-B SELECT roster instead contained 447 exact correct plus 250 FP; same-model raw native precision ~=64.13% and recall ~=69.84%. This confirms a substantial in-sample vs unseen-document gap and fully explains `native_slots=0`; no FIT native B errors existed to mine.
+
+Goldless sentence error omission is a latent future mining coverage defect, not the observed current zero-native cause. Seven predicted I-after-O transitions occurred only at sequence initial positions, potentially legitimate corpus continuation segments; do NOT call them 7 genuine failures.
+
+**Highest-priority method upgraded from OOF_B only to group-disjoint OOF B candidate AND C_BOUNDARY contextual representation (and C_TYPE if retained)** plus true native error-bank on held-out FIT folds, class NONE/P/I/C/O, calibration, and a separately frozen evaluation.
+
+Canonical freezes:
+- `AT0_EN_V26_R43_FIT_B_NATIVE_ERROR_CAUSAL_RESULT_FREEZE_V1.md`
+- `AT0_EN_V26_R43_CAUSAL_FORENSIC_AUDIT_AND_RESEARCH_V1.md` updated commit `57f51c51e3059655ca8b1960d659d9bf92259b89`.
