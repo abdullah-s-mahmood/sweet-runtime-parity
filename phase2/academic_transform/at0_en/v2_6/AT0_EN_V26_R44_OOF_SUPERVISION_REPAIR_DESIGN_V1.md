@@ -28,6 +28,13 @@ R4.4 creates:
 - DESIGN = 256 documents.
 - VERIFY_INTERNAL = 64 documents.
 
+Within DESIGN, 5 OOF folds are constructed deterministically. After greedy assignment, a deterministic exhaustive pair-swap search between folds may accept only strict improvements to the same frozen balance objective while enforcing the already-frozen constraints:
+- every fold C support >=15;
+- every class deviation from its fold target <=25%;
+- fold sizes unchanged;
+- seed, data universe, targets and tolerances unchanged;
+- no model outcomes participate.
+
 VERIFY_INTERNAL:
 - frozen before any R4.4 model training;
 - never used for architecture, threshold, epoch, negative mix or calibration decisions;
