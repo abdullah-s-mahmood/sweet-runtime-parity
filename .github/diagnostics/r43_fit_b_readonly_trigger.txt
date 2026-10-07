@@ -1,0 +1,1 @@
+Only replay frozen Stage-A B on FIT, collect native FP by goldless/gold-bearing sentence and illegal BIO transitions; no training; no SELECT/DEV/TEST.
