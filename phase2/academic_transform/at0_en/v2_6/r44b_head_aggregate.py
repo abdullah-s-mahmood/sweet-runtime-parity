@@ -35,6 +35,19 @@ def write_json(p,obj):
 def row_key(r):
     return (int(r["outer_fold"]),int(r["document"]),int(r["sentence"]),int(r["start"]),int(r["end"]),str(r["b_type"]))
 
+def require_exactly_one(items,label):
+    items=list(items)
+    if len(items)!=1: raise RuntimeError(f"missing/duplicate output {label}: {len(items)}")
+    return items[0]
+
+def ensure_unique_rows(rows,label):
+    seen=set()
+    for r in rows:
+        k=row_key(r)
+        if k in seen: raise RuntimeError(f"duplicate output row {label}/{k}")
+        seen.add(k)
+    return seen
+
 def probvec(r):
     p=[float(r["p_"+c]) for c in CLASSES]
     if any(not math.isfinite(x) or x<0.0 or x>1.0 for x in p): raise RuntimeError("nonfinite/out-of-range probability")
@@ -148,8 +161,9 @@ def validate_complete(outputs_root,nested_root,manifest):
         for k in range(5):
             dirs=list(outputs_root.rglob(f"R44B_OUTER_{k}_{head}_SUMMARY.json"))
             probs=list(outputs_root.rglob(f"R44B_OUTER_{k}_{head}_PROBS.jsonl"))
-            if len(dirs)!=1 or len(probs)!=1: raise RuntimeError(f"missing/duplicate output {head}/{k}: {len(dirs)}/{len(probs)}")
-            s=json.loads(dirs[0].read_text())
+            summary_path=require_exactly_one(dirs,f"{head}/{k}/summary")
+            prob_path=require_exactly_one(probs,f"{head}/{k}/probabilities")
+            s=json.loads(summary_path.read_text())
             if s.get("state")!="R44B_HEAD_FOLD_COMPLETE" or s.get("head")!=head or int(s.get("outer_fold"))!=k:
                 raise RuntimeError(f"summary state {head}/{k}")
             g=s.get("guards",{})
@@ -157,22 +171,21 @@ def validate_complete(outputs_root,nested_root,manifest):
             if not all(g.get(x) is True for x in must_true): raise RuntimeError(f"guard true {head}/{k}")
             must_false=["mechanics_state_reused","verify_internal_used","old_select_used","protected_data_used","threshold_evaluation_performed","calibration_fitted","early_stopping_used","checkpoint_shopping"]
             if any(g.get(x) for x in must_false): raise RuntimeError(f"guard false {head}/{k}")
-            if sha256_path(probs[0])!=s.get("probabilities_sha256"): raise RuntimeError(f"prob SHA {head}/{k}")
-            rows=read_jsonl(probs[0])
+            if sha256_path(prob_path)!=s.get("probabilities_sha256"): raise RuntimeError(f"prob SHA {head}/{k}")
+            rows=read_jsonl(prob_path)
             evalp=nested_root/f"R44B_OUTER_{k}_EVAL.jsonl"; ev=read_jsonl(evalp)
             if len(rows)!=len(ev) or len(rows)!=int(s["eval_rows"]): raise RuntimeError(f"row count {head}/{k}")
-            seen=set()
+            seen=ensure_unique_rows(rows,f"{head}/{k}")
             for rr,er in zip(rows,ev):
                 if rr["head"]!=head or int(rr["outer_fold"])!=k: raise RuntimeError("head/fold provenance")
                 rk=row_key(rr); ek=(k,int(er["document"]),int(er["sentence"]),int(er["start"]),int(er["end"]),str(er["b_type"]))
                 if rk!=ek or str(rr["target"])!=str(er["target"]): raise RuntimeError(f"eval row identity {head}/{k}")
-                if rk in seen: raise RuntimeError(f"duplicate output row {head}/{rk}")
-                seen.add(rk); probvec(rr)
+                probvec(rr)
                 if int(rr["document"]) not in folds[k]: raise RuntimeError("fold document")
             all_rows.extend(rows); head_summ.append(s)
         if len(all_rows)!=1942: raise RuntimeError(f"{head} total probability rows {len(all_rows)} != 1942")
-        keys=[row_key(r) for r in all_rows]
-        if len(set(keys))!=1942: raise RuntimeError(f"{head} duplicate aggregate keys")
+        keys=ensure_unique_rows(all_rows,f"{head}/aggregate")
+        if len(keys)!=1942: raise RuntimeError(f"{head} aggregate key count")
         all_heads[head]=all_rows; summaries[head]=head_summ
     if set(row_key(r) for r in all_heads["J0"])!=set(row_key(r) for r in all_heads["J1"]):
         raise RuntimeError("J0/J1 population mismatch")
