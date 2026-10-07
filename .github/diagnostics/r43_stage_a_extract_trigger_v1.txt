@@ -1,0 +1,1 @@
+Verify completed Stage-A run 37535183682 and artifact 11455753005. Extract summary/status and independently hash each model; no training, no SELECT/DEV/TEST access. One-shot.
