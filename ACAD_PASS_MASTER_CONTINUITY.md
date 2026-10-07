@@ -4939,3 +4939,53 @@ Do NOT create `.github/diagnostics/r43_stage_b_trigger_v1.txt` until Stage A is 
 
 CURRENT EXACT CHECKPOINT:
 `R43_STAGE_A_IN_PROGRESS / INDEPENDENT_EVIDENCE_FROZEN / STAGE_B_READY_BUT_NOT_TRIGGERED`
+
+
+---
+
+## 2026-10-07 — R4.3 Stage A terminal verification and Stage B launch
+
+CURRENT STATUS:
+`R43_STAGE_A_100_PERCENT_PHYSICALLY_VERIFIED / R43_STAGE_B_H0_H1_RUNNING`
+
+### Stage A — COMPLETE, SUCCESS, VERIFIED
+
+- Source run: `37535183682`, final success at ~2026-10-07 01:50Z (04:50 Baghdad).
+- Head `ad058bc856c280914158e005b07ffe6a0834aa13`.
+- Main ancestor artifact `11455753005`; digest `sha256:f2a0352cc4668faf180c4486f496d5bf6ccfd0e39d57fe8144b1b55808d3c2b6`.
+- Physical hash verification run `37566322559` SUCCESS, artifact `11458734036` digest `sha256:0b873b366b1267cc86d29b49d60d7982ad65914a78e4011d003abd651a3184c7`.
+- Witness `R43_STAGE_A_COMPACT_IDENTITY_PASS`.
+- TRAIN SHA `6491a57e5c8639e5bfc3c0326b8501869fccab655a1ed571b75a772dc1c70a5e`.
+- Immutable split SHA `fbed5472eee4d0158626f438f5169f8767cb44dd65d8d89c74b8a3a573321226`.
+- FIT docs320, sentences1292, gold2371 (P342/I1038/C144/O847).
+- B_CANDIDATE: 10/10 epochs, steps1620, loss0.1110674603, SHA `4e4852b847be5bf64cd707ed62f770e13d64ee6becea3ce049f69bde220bfb05`.
+- C_BOUNDARY: 3/3 epochs, steps486, loss0.2763030014, SHA `8c0848e798dd2b2409a81931b7bac496f88fceec2c8bd589e95a186d67dacebb`.
+- C_TYPE: 3/3 epochs, steps447, loss0.1797347431, SHA `c7d5e4d2eb1632ac39c944e28232f8addff6c037b1ea80a09436a885101aed1a`.
+- FIT-only and final-epoch-only guards confirmed; no SELECT training, historical DEV, test, other folds, FactPICO, consumed 60-RCT.
+- Canonical freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_STAGE_A_VERIFIED_RESULT_FREEZE_V1.md`.
+
+### Independent FIT-only H0/H1 probes — terminal but NOT selection
+
+- Probe A run `37540851386`: H0 macro-F1 0.8054956, H1 0.8211369, H1-H0 +0.0156413.
+- Probe B run `37541116791`: H0 macro-F1 0.8457483, H1 0.8277176, H1-H0 -0.0180307.
+- Different FIT-only inner partitions and candidate construction; opposite signs. Neither can be used to tune/select the main Stage B.
+- Frozen details: `AT0_EN_V26_R43_INDEPENDENT_H0_H1_PROBES_FREEZE_V1.md`.
+
+### Stage B — ONE RUN LAUNCHED
+
+- Run `37566553994`
+- Head SHA `a53cc67017d9973c4a76c4c99abdf34e2e329bb3`.
+- Workflow `.github/workflows/at0_en_v2_6_r43_stage_b_h0_h1.yml`
+- Trainer `phase2/academic_transform/at0_en/v2_6/r43_stage_b_h0_h1_diagnostic.py`
+- Trigger `.github/diagnostics/r43_stage_b_trigger_v1.txt`.
+- Last confirmed initial status `IN_PROGRESS`.
+- Reads only pinned TRAIN and frozen 320-FIT/80-SELECT; uses exact Stage-A ancestor artifacts with SHA verification, makes native FIT-error negatives, computes candidate ceiling, and compares frozen H0 contextual typed MLP versus H1 identical+biaffine using frozen threshold grid `{0.80,0.85,0.90,0.95}`.
+- Frozen scientific gate: precision>=0.90 each P/I/C/O, recall>=0.20 each, accepted>=10 each, macro precision>=0.90.
+- Candidate ceiling can stop before head training; do not override.
+- Stage B monitoring automation `6ac4142f5a1c8191aa1d615ea7e5bf81` updated to exact run `37566553994`, once hourly with state-change notifications.
+- Strictly sequential scientific processing REINSTATED; temporary parallel permission expired once A finished.
+- Do NOT relaunch Stage A, Stage B, independent probes or consume any closed tests.
+
+NEXT_ACTION:
+`WATCH_RUN_37566553994 -> ON_TERMINAL_VERIFY_ARTIFACT_AND_FREEZE_H0_VS_H1_RESULT -> APPLY_FROZEN_DECISION_RULES`.
