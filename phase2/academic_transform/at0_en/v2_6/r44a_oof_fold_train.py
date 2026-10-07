@@ -7,7 +7,6 @@ import numpy as np
 import torch
 from transformers import AutoConfig, AutoTokenizer, BertModel, BertForTokenClassification, Trainer, TrainerCallback, TrainingArguments
 
-from r43_contextual_pair_preflight import parse_train
 
 SEED=44
 CLASSES=["P","I","C","O"]
@@ -265,13 +264,19 @@ def candidate_bank(fold,docs,heldout,sections,proposals,bviol,bnd):
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--model-dir",type=pathlib.Path,required=True)
-    ap.add_argument("--train",type=pathlib.Path,required=True)
+    ap.add_argument("--design-source",type=pathlib.Path,required=True)
+    ap.add_argument("--design-summary",type=pathlib.Path,required=True)
     ap.add_argument("--manifest",type=pathlib.Path,required=True)
     ap.add_argument("--fold",type=int,required=True)
     ap.add_argument("--out",type=pathlib.Path,required=True)
     a=ap.parse_args(); seed_all(); a.out.mkdir(parents=True,exist_ok=False); status=a.out/"PROCESS_STATUS.json"
     if a.fold not in range(5):raise RuntimeError("fold must be 0..4")
-    if sha256_path(a.train)!=EXPECTED_TRAIN_SHA:raise RuntimeError("TRAIN identity mismatch")
+    ds_summary=json.loads(a.design_summary.read_text())
+    if ds_summary.get("state")!="R44_DESIGN_SOURCE_PACKAGE_PASS":raise RuntimeError("design source summary state")
+    if ds_summary.get("source_train_sha256")!=EXPECTED_TRAIN_SHA:raise RuntimeError("source TRAIN provenance mismatch")
+    if ds_summary.get("r44_manifest_sha256")!=EXPECTED_R44_MANIFEST_SHA:raise RuntimeError("design source manifest provenance mismatch")
+    if sha256_path(a.design_source)!=ds_summary.get("design_source_sha256"):raise RuntimeError("design source physical hash mismatch")
+
     m=json.loads(a.manifest.read_text())
     ms=m.pop("manifest_sha256",None)
     got=sha_text(json.dumps(m,sort_keys=True,separators=(",",":")))
@@ -282,10 +287,18 @@ def main():
     train_ids=design-held
     if not held or train_ids&held or train_ids&verify or held&verify or (design|verify)&oldsel:raise RuntimeError("document isolation failure")
     all_oof=set()
-    for f in m["oof_folds"]:all_oof.update(f["documents"])
+    for foldrow in m["oof_folds"]:all_oof.update(foldrow["documents"])
     if all_oof!=design:raise RuntimeError("OOF coverage mismatch")
-    docs,empty,bad=parse_train(a.train)
-    if bad or len(docs)!=400:raise RuntimeError("source parse mismatch")
+
+    src=json.loads(a.design_source.read_text())
+    if src.get("state")!="R44_DESIGN_SOURCE_MATERIALIZED":raise RuntimeError("design source state")
+    docs={}
+    for d in src["documents"]:
+        di=int(d["original_document"])
+        if di in docs:raise RuntimeError("duplicate design document")
+        docs[di]=[(s["tokens"],s["tags"]) for s in d["sentences"]]
+    if set(docs)!=design:raise RuntimeError("training artifact is not exact DESIGN set")
+    if set(docs)&verify or set(docs)&oldsel:raise RuntimeError("excluded document present in training artifact")
 
     rows=[]; train_gold=collections.Counter()
     for di in sorted(train_ids):
@@ -318,7 +331,8 @@ def main():
 
     summary={
       "state":"R44A_FOLD_COMPLETE","fold":a.fold,"seed":SEED,
-      "train_sha256":EXPECTED_TRAIN_SHA,"r44_manifest_sha256":EXPECTED_R44_MANIFEST_SHA,
+      "source_train_sha256":EXPECTED_TRAIN_SHA,"design_source_sha256":sha256_path(a.design_source),
+      "r44_manifest_sha256":EXPECTED_R44_MANIFEST_SHA,
       "train_documents":len(train_ids),"heldout_documents":len(held),
       "train_document_ids_sha256":sha_text(json.dumps(sorted(train_ids))),
       "heldout_document_ids_sha256":sha_text(json.dumps(sorted(held))),
@@ -328,7 +342,9 @@ def main():
       "candidate_bank":{"rows":len(bank),"sha256":bank_sha,"metrics":metrics},
       "bio_violations":viol,
       "guards":{"design_only_training":True,"heldout_fold_used_for_training":False,
-                "verify_internal_read":False,"old_r43_select_read":False,"historical_dev_read":False,
+                "training_artifact_contains_verify_internal":False,
+                "training_artifact_contains_old_r43_select":False,
+                "verify_internal_used":False,"old_r43_select_used":False,"historical_dev_read":False,
                 "test_read":False,"other_folds_read":False,"factpico_used":False,
                 "consumed_60_rct_holdout_used":False,"head_training":False,
                 "checkpoint_selection":"FINAL_FIXED_EPOCH_ONLY"},
