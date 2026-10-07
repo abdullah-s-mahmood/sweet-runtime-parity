@@ -10848,3 +10848,41 @@ Important: not every possible method is authorized automatically. Mandatory supe
 
 Next:
 `R44A_COMPLETE -> AUDIT_REAL_OOF_BANK -> ADVERSARIAL_HIGHER_MODEL_REVIEW -> FREEZE_LEAKAGE_SAFE_R44B -> ONLY_THEN_HEAD_TRAINING`.
+
+
+## 2026-10-07 — FREE-SPEED V1 adopted without altering official R44-A
+
+Verified repository facts:
+- 199 workflows before speed-audit workflow was added; 555 historical Actions runs at audit time.
+- Static FREE-SPEED audit run `37595953052` SUCCESS; artifact `11470688166`.
+- Audit now scans 200 workflows.
+- Flags: CACHE 171; CANCEL_SUPERSEDED 20; CPU_TUNING 12; PARALLEL_CANDIDATE 1; no obvious change 25.
+- These are candidate classifications only, not blanket authorization.
+
+Official R44-A run `37581447046` remains unchanged/sequential. Fold0 completed SUCCESS; Fold1 started. Fold0 first real OOF evidence:
+- 407 candidates from 384 gold;
+- exact typed 275;
+- NONE 126;
+- native typed precision .6756757 / recall .7161458;
+- 64 same-class wrong-boundary;
+- 58 spurious/no-overlap;
+- 6 wrong-type exact-coordinate;
+- 4 different-class wrong-boundary;
+- 21 goldless candidates;
+- 25 unmatched/invalid BIO runs = 24 O_TO_I_RUN + 1 CROSS_TYPE_I_RUN;
+- bank SHA `159b4924a919520fea98c3aacbebb73af0a4d87adf1a1efa0b4933f0550aa4ce`.
+This directly validates realistic OOF negative mining.
+
+Speed optimization implemented for FUTURE workflows only:
+- immutable converted BiomedBERT base run `37596247997` SUCCESS;
+- artifact `11470867918`, digest `sha256:040918879e47afeb8d2e5f7a79e9de2c9a4e0402495ee778a766db506b752441`;
+- model.safetensors remains exact expected SHA `3a6d0b156c45ccd8093af83a9ad3d388808eba5a9e15f0032fc0fe068bb92b68`.
+- `r44a_oof_fold_train.py` now has optional hash-guarded `--preconverted-base`; current official run is unaffected because it is pinned to its triggering commit.
+- untriggered `.github/workflows/r44a_fast_candidate.yml` prepared with max-parallel=5, same frozen science, immutable base and pip cache. NO trigger created.
+- `torch.set_num_threads(2)` and `dataloader_num_workers=0` are NOT changed yet; require reproducibility/performance benchmark first.
+- no mass concurrency edits; cancel-in-progress changes remain only candidates for superseded diagnostics.
+- canonical decision file: `FREE_SPEED_V1_POLICY.md` commit `6d004380417c71ca84e87b6119d535800a9578ac`.
+
+Continue:
+official R44-A -> aggregate audit -> adversarial higher-model review -> freeze R44-B.
+Do not cancel official R44-A merely for speed.
