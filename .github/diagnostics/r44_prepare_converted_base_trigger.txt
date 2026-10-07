@@ -1,0 +1,1 @@
+Download pinned BiomedBERT source, verify source hashes, convert once to safe PyTorch artifact, verify expected converted SHA. No training, no scientific data.
