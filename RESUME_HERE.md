@@ -10886,3 +10886,51 @@ Speed optimization implemented for FUTURE workflows only:
 Continue:
 official R44-A -> aggregate audit -> adversarial higher-model review -> freeze R44-B.
 Do not cancel official R44-A merely for speed.
+
+
+## 2026-10-07 — R44-A Fold1 completed; two-fold OOF pattern repeats
+
+Official R44-A parent run `37581447046` remains sequential and unchanged.
+
+Fold1:
+- job `112661815333` SUCCESS
+- artifact `11478992299`
+- artifact digest `sha256:dc4c33d3f6729e96267d1514640bc6d0c05757a6d83217d4ad29f35f403b7318`
+- candidate bank SHA `4ed91bb8dbc8cd73a61f7242bd5369d3f2e6b80af107f48756c090c4b9fdf210`
+- candidates 375; gold 377; exact typed 264
+- native typed precision .7040; recall .7002653
+- NONE 96
+- same-class wrong-boundary 53
+- spurious/no-overlap 41
+- wrong-type exact-coordinate 15
+- different-class wrong-boundary 2
+- goldless candidates 24
+- invalid/unmatched BIO runs 26 = 24 O_TO_I_RUN + 2 INITIAL_I_RUN
+- other-candidate median B confidence .9778778553
+- all access/protection guards PASS.
+
+Combined folds0+1 descriptive evidence:
+- gold 761
+- candidates 782
+- exact-coordinate 560
+- exact-typed 539
+- typed precision .6893
+- typed recall .7083
+- coordinate precision .7161
+- coordinate recall .7359
+- NONE 222
+- goldless candidates 45
+- taxonomy: exact typed539 / same-class wrong-boundary117 / spurious99 / wrong-type exact-coordinate21 / different-class wrong-boundary6
+- 216/243 non-exact-typed candidates are wrong-boundary or spurious.
+- high-confidence errors repeat across both folds, so B thresholding alone is unlikely to solve precision.
+
+Canonical partial freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44A_FOLDS0_1_PARTIAL_EVIDENCE_FREEZE_V1.md`
+commit `9ccc24515b93be3964466aa8b64effd6952f906b`.
+
+Current live state at last check:
+- folds0,1 complete
+- fold2 in progress
+- folds3,4 queued
+- confirmed fold completion progress = 40%
+- no architecture/threshold selection before folds2-4 + aggregate.
