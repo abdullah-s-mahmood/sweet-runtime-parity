@@ -10819,3 +10819,32 @@ After aggregate:
 
 NEXT:
 `COMPLETE_R44A_OOF_BANK -> FREEZE_AND_AUDIT_REAL_OOF_ERROR_DISTRIBUTION -> SELECT/FREEZE_LEAKAGE_SAFE_R44B_PROTOCOL -> ONLY_THEN_CONSIDER_HEAD_TRAINING`.
+
+
+## 2026-10-07 — R44-A launched + post-R44 change control frozen
+
+R44-A sequential OOF upstream candidate-bank workflow launched:
+- run `37581447046`
+- workflow: `R44-A sequential OOF upstream candidate bank`
+- strict scientific sequence: matrix max-parallel=1; folds 0..4; B_CANDIDATE then C_BOUNDARY per fold; aggregate; STOP before J0/J1 or VERIFY_INTERNAL.
+- At the last live check, fold0 had entered `Train fold ancestors and materialize held-out candidate bank`; folds1-4 were queued. Preparatory artifact/model identity steps had all passed.
+- Live logs may be unavailable while active; do not invent percent/epoch if PROCESS_STATUS cannot be read.
+
+Corrected source protocol V2:
+- run `37580279584` SUCCESS
+- artifact `11464027321`
+- official P/I/C/O = 426/1326/181/1067 = 3000 total
+- legacy local-continuation parser = +8P/+2I/+1O = 3011
+- 11 extras exactly correspond to initial-I continuation fragments.
+
+R44-A pre-launch improvements:
+- BIO violation diagnostics repaired to contiguous-run level and valid source continuation separated (commit `868a6bf300bded961f07076fb0e7fd4c0ba1f751`).
+- aggregate exact DESIGN guards: 256 docs and P/I/C/O 271/829/115/677, plus candidate-row/target count consistency.
+- final mechanics/invariants current-head run `37581258498` SUCCESS.
+- prelaunch forensic audit: `AT0_EN_V26_R44A_PRELAUNCH_FORENSIC_AUDIT_V1.md`.
+- change-control checklist: `AT0_EN_V26_POST_R44_CHANGE_CONTROL_MATRIX_V1.md`, commit `a2dbb0fa141a042e290da7992bae933e0c6bc9d0`.
+
+Important: not every possible method is authorized automatically. Mandatory supervision/leakage/calibration changes are binding; BOPN/triaffine/document context/stronger encoders/SSL/LLM teacher are conditional branches based on the measured R44-A error mechanism.
+
+Next:
+`R44A_COMPLETE -> AUDIT_REAL_OOF_BANK -> ADVERSARIAL_HIGHER_MODEL_REVIEW -> FREEZE_LEAKAGE_SAFE_R44B -> ONLY_THEN_HEAD_TRAINING`.
