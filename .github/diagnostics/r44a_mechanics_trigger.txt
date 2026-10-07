@@ -3,3 +3,5 @@ Run compile and synthetic invariants for R44-A source semantics, constrained BIO
 V2 run-level BIO diagnostic mechanics recheck after commit 868a6bf300bded961f07076fb0e7fd4c0ba1f751.
 
 Final pre-launch mechanics compile/recheck after aggregate DESIGN identity guard and source-protocol V2 freeze.
+
+Final current-head compile after candidate-row and target-count aggregate guards.
