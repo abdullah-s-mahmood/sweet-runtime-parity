@@ -151,3 +151,39 @@ Recommended next:
 5. aggregate and apply the deterministic frozen decision rule;
 6. freeze architecture + threshold;
 7. STOP before VERIFY_INTERNAL access.
+
+
+---
+
+## 8. 2026-10-08 superseding clarification after higher-model review
+
+The independent higher-model review returned:
+`PROCEED_WITH_NONSCIENTIFIC_IMPLEMENTATION_FIXES_ONLY`.
+
+No scientific redesign is authorized.
+
+Corrections to this review:
+- the 10 fold/pair computations are computationally separable, NOT statistically independent;
+- shared training documents/fitted ancestors create dependence and folds must not be interpreted as independent replicates;
+- context-cache computation is label-independent, but the frozen source JSON contains tags; the correct claim is `NO_LABEL_DEPENDENT_CONTEXT_COMPUTATION`;
+- `VERIFY_INTERNAL` is historically exposed through earlier parent R4.3 FIT training/audits and split-statistic balancing, although it has not been used for R44 candidate-specific verification/tuning;
+- run `37702502662` computed gradients on a small mixed meta/eval development mechanics sample but made no optimizer update and retained no trained state. Those objects/gradients MUST NEVER initialize the scientific run.
+
+The scientific J0/J1 experiment remains prospectively unconsumed.
+
+Before it may run, non-scientific executor closure must prove:
+- fresh model/optimizer/scheduler/RNG per fold/head;
+- meta-only optimizer updates;
+- evaluation under `model.eval()` + `torch.no_grad()`;
+- canonical manifest-hash recomputation;
+- pinned source/artifact identities;
+- complete probability serialization;
+- exactly 1,942 aggregated outer probability rows per head;
+- failure on missing/duplicate/nonfinite outputs;
+- authoritative gold recall denominators P=271, I=829, C=115, O=677;
+- synthetic correctness of NONE rejection, type correction, exact-boundary accounting, `>=` thresholds, all-class gates, lowest passing threshold and J0-first precedence;
+- frozen calibration diagnostic definitions only, with no fitted calibration;
+- no score-driven retry/checkpoint shopping.
+
+Current verdict:
+`PROCEED_ONLY_AFTER_I1_EXECUTOR_AND_I2_DOCUMENTATION_CLOSURE_PASS`.
