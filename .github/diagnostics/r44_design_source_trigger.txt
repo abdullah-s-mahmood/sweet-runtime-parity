@@ -1,0 +1,1 @@
+Materialize only the 256 frozen R4.4 DESIGN documents into the training artifact. VERIFY_INTERNAL and old R4.3 SELECT must be absent. No scientific training.
