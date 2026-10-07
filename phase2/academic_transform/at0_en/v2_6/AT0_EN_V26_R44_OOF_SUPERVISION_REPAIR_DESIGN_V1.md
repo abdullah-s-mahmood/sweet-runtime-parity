@@ -63,6 +63,14 @@ No exact token duplicate group may cross DESIGN/VERIFY.
 Target VERIFY_INTERNAL = 64 docs (~20% of parent FIT).
 DESIGN = remaining 256.
 
+Split construction is deterministic and fixed:
+- greedy initialization minimizes the predeclared normalized balance objective;
+- a deterministic exhaustive single pair-swap local search then accepts only strict improvements to that **same objective**;
+- seed remains 44;
+- target size, balance variables and tolerances remain unchanged;
+- no downstream model result, SELECT metric or protected data participates in the optimization;
+- stop when no improving pair swap exists.
+
 Freeze:
 - every document ID;
 - class counts;
