@@ -359,3 +359,73 @@ Still forbidden:
 
 NEXT_ACTION:
 `RUN_R44B_B1_PREFLIGHT -> IF_PASS AUTHORIZE_10_PAIR_PARALLEL_UPSTREAM_GENERATION`.
+
+
+---
+
+## 21. 2026-10-08 superseding interpretation / authorization clarification
+
+This section preserves the original protocol text as historical evidence but supersedes the following wording and stop-boundary interpretations after independent higher-model review.
+
+### 21.1 Pair-fit dependence
+
+The 10 unordered pair-exclusion jobs are **computationally separable**, not statistically/scientifically independent.
+
+They may execute concurrently because:
+- inputs are immutable;
+- output namespaces are disjoint;
+- no job mutates another job's state;
+- assembly waits for all required outputs.
+
+However, their training documents overlap and the two prediction sides of one pair share the same fitted B/Boundary ancestors. Results from folds/pairs therefore MUST NOT be treated as independent stochastic replicates for uncertainty or confidence-interval claims.
+
+The 10-fit reduction is a **fixed-seed fitting equivalence** to the specified 20 logical outer/inner construction: for a given unordered excluded pair {k,j}, the training set, seed, optimizer schedule and fitting procedure are identical, so one physical fitted ancestor can supply both logical prediction sides. This is not a claim of statistical independence.
+
+### 21.2 Context-cache wording
+
+The source DESIGN JSON physically contains tags because it is the frozen source package. The context-cache implementation parses document/sentence records but computes contextual vectors from **tokens only** and performs no label-dependent context computation, supervised adaptation, cross-document fitting, calibration or normalization.
+
+Therefore supersede the literal phrase "no labels are used/read in cache construction" with:
+
+`NO_LABEL_DEPENDENT_CONTEXT_COMPUTATION`.
+
+The cache remains acceptable as immutable memoized inference from the frozen base encoder.
+
+### 21.3 VERIFY_INTERNAL provenance
+
+`VERIFY_INTERNAL` is NOT historically untouched.
+
+The 64 documents belonged to earlier parent R4.3 FIT training/audits, and R44 split construction used aggregate label counts for balancing. The defensible statement is:
+- no R44 candidate-specific verification/tuning has yet been performed on VERIFY_INTERNAL;
+- it remains closed during the R44-B DEVELOPMENT J0/J1 experiment;
+- any later access is a separate prospective **phase-internal** checkpoint, not an external/unbiased benchmark and not a reset of historical exposure.
+
+### 21.4 Mechanics-audit access
+
+Run `37702502662` used a small mixed development sample `meta[:8] + eval[:8]`, computed cross-entropy and called `backward()` only to verify finite gradients and tensor mechanics.
+
+It performed:
+- no optimizer step;
+- no scheduler step;
+- no checkpoint save;
+- no retained learned state;
+- no scientific threshold evaluation.
+
+No model object, optimizer state, gradient, RNG continuation or tensor derived from that mechanics fit may initialize the scientific J0/J1 experiment. Every scientific fold/head must initialize fresh from the frozen seed/configuration.
+
+### 21.5 Current authorization supersedes the original pre-pair stop boundary
+
+The original Section 20 stop boundary is historical and has already been passed by authorized successful upstream execution.
+
+Current authority is now:
+
+`COMPLETE_NONSCIENTIFIC_I1_EXECUTOR_CLOSURE + I2_DOCUMENTATION_CLOSURE -> SYNTHETIC_END_TO_END_PASS -> FREEZE_EXECUTOR -> AUTHORIZE_EXACTLY_ONE_FROZEN_DEVELOPMENT_J0_J1_ATTEMPT`.
+
+Still forbidden before that closure:
+- any scientific J0/J1 optimizer updates on real nested meta rows;
+- any threshold scoring of real J0/J1 outputs;
+- VERIFY_INTERNAL access;
+- calibration fitting;
+- boundary repair;
+- new architectures/losses/thresholds/seeds/epochs;
+- score-driven retries or checkpoint shopping.
