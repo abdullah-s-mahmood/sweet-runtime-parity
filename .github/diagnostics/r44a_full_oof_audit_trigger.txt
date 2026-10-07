@@ -1,0 +1,1 @@
+Read-only audit of frozen R44-A aggregate. No model training. No VERIFY_INTERNAL, old SELECT, DEV or protected tests.
