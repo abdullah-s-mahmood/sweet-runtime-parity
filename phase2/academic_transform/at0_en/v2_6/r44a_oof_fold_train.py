@@ -334,6 +334,7 @@ def main():
       "source_train_sha256":EXPECTED_TRAIN_SHA,"design_source_sha256":sha256_path(a.design_source),
       "r44_manifest_sha256":EXPECTED_R44_MANIFEST_SHA,
       "train_documents":len(train_ids),"heldout_documents":len(held),
+      "heldout_document_ids":sorted(held),
       "train_document_ids_sha256":sha_text(json.dumps(sorted(train_ids))),
       "heldout_document_ids_sha256":sha_text(json.dumps(sorted(held))),
       "train_gold_counts":{c:int(train_gold[c]) for c in CLASSES},
