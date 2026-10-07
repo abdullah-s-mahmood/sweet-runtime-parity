@@ -158,8 +158,66 @@ def greedy_subset(rows,n,seed_tag):
     opt["initial_objective"]=initial
     return chosen,remain,target,opt
 
+def row_values(r):
+    x={"documents":1,"tokens":r["tokens"],"goldless_sentences":r["goldless_sentences"],
+       "TITLE":r["section_counts"]["TITLE"],"METHODS":r["section_counts"]["METHODS"]}
+    for c in CLASSES:x["gold_"+c]=r["gold_counts"][c]
+    return x
+
+def rows_counter(rows):
+    z=collections.Counter()
+    for r in rows:z.update(row_values(r))
+    return z
+
+def fold_score(cur,target):
+    # Same predeclared balance terms plus penalties for ALREADY-FROZEN hard constraints.
+    score=0.0
+    weights={"documents":2.0,"tokens":0.5,"goldless_sentences":0.5,"TITLE":0.25,"METHODS":0.25}
+    for c in CLASSES:weights["gold_"+c]=2.0
+    for key,w in weights.items():
+        score+=w*((cur[key]-target[key])/max(1.0,target[key]))**2
+    # Existing hard constraints from the first preflight are incorporated as
+    # feasibility penalties; their values are NOT changed.
+    ccount=cur["gold_C"]
+    if ccount<15: score+=1000.0*(15-ccount)**2
+    for c in CLASSES:
+        dev=abs((cur["gold_"+c]-target["gold_"+c])/max(1.0,target["gold_"+c]))
+        if dev>.25: score+=1000.0*(dev-.25)**2
+    return score
+
+def optimize_fold_swaps(folds,targets,max_swaps=1000):
+    folds=[list(x) for x in folds]
+    curs=[rows_counter(x) for x in folds]
+    def total_score(): return sum(fold_score(curs[i],targets[i]) for i in range(len(folds)))
+    initial=total_score(); current=initial; swaps=[]
+    for step in range(max_swaps):
+        best=None
+        for i in range(len(folds)):
+            for j in range(i+1,len(folds)):
+                for ai,a in enumerate(folds[i]):
+                    av=row_values(a)
+                    for bj,b in enumerate(folds[j]):
+                        bv=row_values(b)
+                        ci=curs[i].copy(); cj=curs[j].copy()
+                        ci.subtract(av); ci.update(bv)
+                        cj.subtract(bv); cj.update(av)
+                        score=current-fold_score(curs[i],targets[i])-fold_score(curs[j],targets[j])
+                        score+=fold_score(ci,targets[i])+fold_score(cj,targets[j])
+                        if score>=current-1e-15: continue
+                        tie=sha_text(f"{SEED}|FOLDSWAP|{i}|{j}|{a['document']}|{b['document']}")
+                        rec=(score,tie,i,j,ai,bj,a,b,ci,cj)
+                        if best is None or rec[:2]<best[:2]:best=rec
+        if best is None:break
+        score,tie,i,j,ai,bj,a,b,ci,cj=best
+        folds[i][ai],folds[j][bj]=b,a
+        curs[i],curs[j]=ci,cj
+        swaps.append({"step":step+1,"fold_a":i,"fold_b":j,"out_a":a["document"],"in_a":b["document"],
+                      "objective_before":current,"objective_after":score,"tie_sha256":tie})
+        current=score
+    return folds,{"initial_objective":initial,"final_objective":current,
+                  "swap_count":len(swaps),"swaps":swaps}
+
 def assign_folds(rows,k=5):
-    totals=sum_stats(rows)
     targets=[]
     sizes=[len(rows)//k + (1 if i < len(rows)%k else 0) for i in range(k)]
     for i,n in enumerate(sizes):
@@ -177,11 +235,9 @@ def assign_folds(rows,k=5):
             tie=sha_text(f"{SEED}|FOLDASSIGN|{i}|{r['token_sha256']}")
             cand.append((score,tie,i))
         cand.sort(); i=cand[0][2]
-        folds[i].append(r); cur=curs[i]
-        cur["documents"]+=1; cur["tokens"]+=r["tokens"]; cur["goldless_sentences"]+=r["goldless_sentences"]
-        cur["TITLE"]+=r["section_counts"]["TITLE"]; cur["METHODS"]+=r["section_counts"]["METHODS"]
-        for c in CLASSES:cur["gold_"+c]+=r["gold_counts"][c]
-    return folds,sizes,targets
+        folds[i].append(r); curs[i].update(row_values(r))
+    folds,opt=optimize_fold_swaps(folds,targets)
+    return folds,sizes,targets,opt
 
 def deviations(actual,target):
     out={}
@@ -217,7 +273,7 @@ def main():
 
     verify,design,target,verify_optimization=greedy_subset(rows,64,"VERIFY")
     if len(verify)!=64 or len(design)!=256: raise RuntimeError("DESIGN/VERIFY size")
-    folds,sizes,fold_targets=assign_folds(design,5)
+    folds,sizes,fold_targets,fold_optimization=assign_folds(design,5)
 
     vstats=sum_stats(verify); dstats=sum_stats(design); pstats=sum_stats(rows)
     vdev=deviations(vstats,target)
@@ -270,6 +326,7 @@ def main():
       "verify_deviation_from_target":vdev,
       "verify_pair_swap_optimization":verify_optimization,
       "oof_fold_stats":fold_rows,
+      "oof_fold_pair_swap_optimization":fold_optimization,
       "section_feature_enabled":section_ok,
       "section_unknown_rate":unknown/max(1,total_examples),
       "continuation_fragments_parent_fit":{c:int(cont[c]) for c in CLASSES},
