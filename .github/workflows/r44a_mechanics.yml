@@ -1,0 +1,65 @@
+name: R44-A mechanics and semantic invariants
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r44a_mechanics_trigger.txt'
+permissions:
+  contents: read
+jobs:
+  mechanics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: at0-en-v2.6-dev
+          fetch-depth: 1
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+      - name: Install frozen runtime subset
+        run: pip install --quiet numpy==1.26.4 torch==2.2.2 transformers==4.39.3 accelerate==0.28.0 safetensors==0.4.3
+      - name: Static compile
+        run: |
+          python -m py_compile             phase2/academic_transform/at0_en/v2_6/r44a_oof_fold_train.py             phase2/academic_transform/at0_en/v2_6/r44a_aggregate_bank.py
+      - name: Execute semantic invariants against actual code
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import importlib.util,pathlib,json,tempfile
+          p=pathlib.Path("phase2/academic_transform/at0_en/v2_6/r44a_oof_fold_train.py")
+          spec=importlib.util.spec_from_file_location("r44a",p); m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+
+          assert m.source_spans(["I-P","I-P","O"])==[]
+          assert m.source_spans(["B-P","I-P","O"])==[("P",0,2)]
+          assert m.source_boundary_tags(["I-P","I-P","O"])==["OUT","OUT","OUT"]
+          assert m.source_boundary_tags(["B-P","I-P","O"])==["START","END","OUT"]
+
+          q,v=m.decode_constrained(["I-P","I-P","O"],[.9,.9,.9])
+          assert q==[] and len(v)==2 and v[0]["word_index"]==0
+          q,v=m.decode_constrained(["B-P","I-P","O"],[.9,.8,.9])
+          assert [(x["type"],x["start"],x["end"]) for x in q]==[("P",0,2)] and not v
+          q,v=m.decode_constrained(["B-P","I-I","O"],[.9,.8,.9])
+          assert [(x["type"],x["start"],x["end"]) for x in q]==[("P",0,1)]
+          assert len(v)==1 and v[0]["word_index"]==1
+
+          docs={
+            0:[(["alpha","beta"],["B-P","I-P"])],
+            1:[(["gamma"],["B-I"])],
+          }
+          sections={(0,0):"TITLE",(1,0):"METHODS"}
+          proposals={(0,0):[{"type":"I","start":0,"end":2,"b_conf":.8}],
+                     (1,0):[{"type":"I","start":0,"end":1,"b_conf":.9}]}
+          bnd={(0,0):{"start":[.9,.1],"end":[.1,.9]},
+               (1,0):{"start":[.9],"end":[.9]}}
+          rows,met=m.candidate_bank(0,docs,{0,1},sections,proposals,[],bnd)
+          r0=next(x for x in rows if x["document"]==0)
+          assert r0["target"]=="P" and r0["taxonomy"]=="WRONG_TYPE_EXACT_COORD"
+          assert met["per_class"]["P"]["coordinate_available"]==1
+          assert met["per_class"]["P"]["typed_B_available"]==0
+          assert met["per_class"]["I"]["typed_B_available"]==1
+          assert met["target_counts"]=={"P":1,"I":1}
+          print(json.dumps({"state":"R44A_MECHANICS_PASS","candidate_metrics":met},indent=2,sort_keys=True))
+          PY
