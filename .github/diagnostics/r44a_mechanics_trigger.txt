@@ -1,1 +1,3 @@
 Run compile and synthetic invariants for R44-A source semantics, constrained BIO decoding, type correction and candidate-bank accounting. No scientific training.
+
+V2 run-level BIO diagnostic mechanics recheck after commit 868a6bf300bded961f07076fb0e7fd4c0ba1f751.
