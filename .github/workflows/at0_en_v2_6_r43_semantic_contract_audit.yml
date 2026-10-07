@@ -1,0 +1,40 @@
+name: AT0 EN V2.6 R4.3 semantic contract read-only audit
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r43_semantic_contract_audit_trigger_v1.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: at0-en-v2.6-dev
+          fetch-depth: 1
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+      - name: Execute actual-code BIO and metric contract tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r43/semantic"
+          python -m py_compile phase2/academic_transform/at0_en/v2_6/r43_semantic_contract_audit.py
+          python phase2/academic_transform/at0_en/v2_6/r43_semantic_contract_audit.py             | tee "$RUNNER_TEMP/r43/semantic/SEMANTIC_CONTRACT_AUDIT.json"
+      - name: Freeze code/result hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum             phase2/academic_transform/at0_en/v2_6/r43_semantic_contract_audit.py             phase2/academic_transform/at0_en/v2_6/r43_stage_b_h0_h1_diagnostic.py             phase2/academic_transform/at0_en/v2_6/r43_fit_ancestors_train.py             phase2/academic_transform/at0_en/v2_6/r43_contextual_pair_preflight.py             "$RUNNER_TEMP/r43/semantic/SEMANTIC_CONTRACT_AUDIT.json"             > "$RUNNER_TEMP/r43/semantic/SHA256SUMS.txt"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: at0-en-v2-6-r43-semantic-contract-audit
+          path: ${{ runner.temp }}/r43/semantic
+          retention-days: 90
