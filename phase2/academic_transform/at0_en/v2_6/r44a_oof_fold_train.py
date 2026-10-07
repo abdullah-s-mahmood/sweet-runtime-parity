@@ -289,7 +289,10 @@ def candidate_bank(fold,docs,heldout,sections,proposals,bviol,bnd):
 
 def main():
     ap=argparse.ArgumentParser()
-    ap.add_argument("--model-dir",type=pathlib.Path,required=True)
+    ap.add_argument("--model-dir",type=pathlib.Path,required=False,
+                    help="Pinned Flax base; required unless --preconverted-base is provided")
+    ap.add_argument("--preconverted-base",type=pathlib.Path,required=False,
+                    help="Immutable converted PyTorch base with expected model.safetensors SHA")
     ap.add_argument("--design-source",type=pathlib.Path,required=True)
     ap.add_argument("--design-summary",type=pathlib.Path,required=True)
     ap.add_argument("--manifest",type=pathlib.Path,required=True)
@@ -336,7 +339,20 @@ def main():
                        "progress_percent":0.0,"train_documents":len(train_ids),"heldout_documents":len(held),
                        "last_progress_at":now(),"failure_or_stall_reason":None})
 
-    converted=a.out/"converted_base"; tok=convert_base(a.model_dir,converted)
+    if bool(a.model_dir)==bool(a.preconverted_base):
+        raise RuntimeError("provide exactly one of --model-dir or --preconverted-base")
+    if a.preconverted_base is not None:
+        converted=a.preconverted_base
+        mp=converted/"model.safetensors"
+        if not mp.exists() or sha256_path(mp)!=EXPECTED_CONVERTED_SHA:
+            raise RuntimeError("preconverted base identity mismatch")
+        if (converted/"pytorch_model.bin").exists():
+            raise RuntimeError("unexpected pickle weight in preconverted base")
+        tok=AutoTokenizer.from_pretrained(converted,local_files_only=True,use_fast=True)
+    else:
+        converted=a.out/"converted_base"
+        tok=convert_base(a.model_dir,converted)
+
     bds=TokenDataset(rows,tok,"bio")
     binfo=train_token("B_CANDIDATE",converted,bds,a.out/"b_candidate",5e-5,0.0,10,8,status,0,10)
     del bds;gc.collect()
