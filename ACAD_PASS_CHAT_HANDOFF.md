@@ -1224,3 +1224,29 @@ Higher-model consultation remains exceptional rather than automatic, but should 
 
 Permanent objective remains:
 `BEST DEFENSIBLE RESULT / MAXIMUM SCIENTIFIC RIGOR / BEST ACHIEVABLE RESULT`.
+
+
+---
+
+## 2026-10-08 01:09 Asia/Baghdad — R44-B B1 partial live progress
+
+Official run remains:
+`37683637815` — `R44-B B1 parallel pair-exclusion upstream`.
+
+Current durable state:
+- frozen precheck: SUCCESS;
+- immutable base context cache: SUCCESS, artifact `11510422862`, digest `sha256:4fdceb511c2067cf81a1ad6c64c039febf99e3c11b9d8baa32b2d73569faa91c`;
+- pair `1-2`: SUCCESS, artifact `11512599487`, digest `sha256:d0db8ec0b12048993e721967999cc1b59385984ee45a3decda70e1f3a21e811d`;
+- pair `1-4`: SUCCESS, artifact `11514343182`, digest `sha256:2649a8cfa94b3068a0a9ff322586af2ff1b285a7d1a8b144075fd608e1d3abeb`;
+- remaining 8/10 pair jobs: IN_PROGRESS;
+- failures: 0;
+- queued pair jobs: 0;
+- aggregate has not started because it waits for all ten pair jobs.
+
+Completed-pair runtime evidence:
+- pair 1-2 total B+Boundary train runtime ~61.46 min; wall time ~64.7 min;
+- pair 1-4 total B+Boundary train runtime ~84.71 min; wall time ~87.0 min.
+Runner-speed variance is therefore material; active jobs exceeding the faster completed pair is not evidence of a stall.
+
+Current next action:
+`CONTINUE_WATCH_RUN_37683637815 -> WHEN_ALL_10_PAIRS_SUCCESS VERIFY_PAIR_ARTIFACTS -> RUN/VERIFY_AGGREGATE -> VERIFY_CONTEXT_CACHE -> FREEZE_RESULT -> STOP BEFORE J0/J1 UNTIL SEPARATE DECISION/AUTHORIZATION`.
