@@ -1,0 +1,1 @@
+Static scan only. No scientific training, no protected data, no workflow mutation.
