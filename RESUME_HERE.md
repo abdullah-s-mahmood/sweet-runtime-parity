@@ -11107,3 +11107,36 @@ For every consequential ACAD_PASS scientific/design decision, do not settle for 
 - use the full set of available safe resources/tools to pursue the best achievable result, while preserving frozen data-governance and evaluation boundaries;
 - request consultation with the higher model when a major architecture/protocol choice, ambiguous evidence, difficult failure, or potentially high-value alternative warrants it, and ask that review to include deep research, adversarial critique, genuine brainstorming, alternative hypotheses, and best-possible next design;
 - do not access VERIFY_INTERNAL, old SELECT, DEV/test, protected external sets, or other embargoed data outside their explicitly authorized stage merely to improve a decision.
+
+
+---
+
+## 2026-10-08 — User governance correction: maximize safe GitHub utilization
+
+This supersedes all earlier blanket `strictly sequential` instructions.
+
+New permanent rule:
+- exploit GitHub Actions resources aggressively when jobs are scientifically independent and concurrency cannot change exact values, data boundaries, reproducibility, or attribution;
+- parallelism is allowed only with immutable inputs, disjoint outputs, no shared mutable state, no dependency races, no leakage/contamination, and complete per-job provenance;
+- dependent stages remain sequential at evidence/decision boundaries;
+- serialize writes to the same branch/ref/file, one-shot consumption, protected-data access, or anything that could make results non-exact or scientifically ambiguous;
+- never sacrifice scientific correctness for wall-clock speed.
+
+This confirms that current R44-B run `37683637815` — 10 independent pair-exclusion upstream jobs plus one label-independent context-cache job — is valid under the new standing governance and should not be cancelled merely because it is parallel.
+
+User also reconfirmed the standing best-results policy:
+- deep research using the newest/strongest relevant literature and comparable systems;
+- genuine brainstorming and alternatives;
+- disconfirming-evidence search and independent/adversarial review;
+- use the strongest available safe resources;
+- explicitly ask the user for higher-model consultation when it becomes materially useful, and request Deep Research + Adversarial Review + Real Brainstorming + Alternative Hypotheses + Failure Analysis + Best-possible next design.
+
+Current next action remains:
+`WATCH_RUN_37683637815 -> VERIFY_ALL_PAIR_ARTIFACTS + AGGREGATE + CONTEXT_CACHE -> FREEZE -> THEN DECIDE/REQUEST SEPARATE J0/J1 HEAD AUTHORIZATION`.
+
+Protected boundaries remain unchanged:
+- VERIFY_INTERNAL closed;
+- old SELECT exposed/closed for fresh validation;
+- historical DEV/test/protected sets closed;
+- FactPICO frozen/consumed;
+- 60-RCT holdout consumed.
