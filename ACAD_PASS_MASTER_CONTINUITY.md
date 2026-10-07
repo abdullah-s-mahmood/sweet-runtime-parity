@@ -5188,3 +5188,39 @@ NEXT:
 `COMPLETE_ACTUAL_HEAD_MECHANICS -> HIGHER_MODEL_ADVERSARIAL_REVIEW -> RECONCILE -> IF_CLEAR AUTHORIZE FIRST FROZEN J0/J1 NESTED HEAD RUN -> FREEZE WINNER/THRESHOLD -> STOP BEFORE VERIFY_INTERNAL`.
 
 Boundary-repair remains deferred as a separate prospective branch, especially if precision passes while recall/coverage remains operationally limited.
+
+
+---
+
+## 2026-10-08 — R44-B actual head mechanics PASS
+
+Technical-only run:
+- run `37702502662`
+- conclusion: SUCCESS
+- state: `R44B_HEAD_ACTUAL_MECHANICS_PASS`
+- artifact: `11517764421`
+- digest: `sha256:80d77e63701c9ff80b6b4fc7e571b7b089fbd2120c3bf00693a1c9c9ce570455`
+
+Actual frozen-data audit:
+- candidate rows audited across all outer meta/eval files: `9,613`
+- context physical SHA: `6bb548884cafb2a14e19b7d691b393dcf0ab9b5cc6add14e6ab0a873be33361b`
+- context index SHA: `db9a6bae51a4db38d244e9e0a98f44b5dbfb246f694db5397c6e204cd58881dd`
+- context shape: `26,595 x 768`, float32
+- max observed candidate width: `45` (frozen embedding capacity =64)
+- J0 parameters: `584,631`
+- J1 parameters: `667,836`
+- actual forward/backward finite on all five outer folds for both J0/J1
+- scalar feature ranges valid and finite
+- scientific head training performed: false
+- threshold evaluation performed: false
+- VERIFY_INTERNAL used: false
+- old SELECT used: false
+- protected data used: false
+
+Quality delta:
+`IMPROVED — ACTUAL FROZEN BANK/CACHE FEATURE MECHANICS FULLY VALIDATED`.
+
+CURRENT EXACT CHECKPOINT:
+`R44B_UPSTREAM_COMPLETE + ACTUAL_HEAD_MECHANICS_PASS -> HIGHER_MODEL_ADVERSARIAL_REVIEW -> RECONCILE -> IF CLEAR AUTHORIZE FIRST FROZEN J0/J1 NESTED SCIENTIFIC RUN`.
+
+No J0/J1 scientific run has been consumed yet.
