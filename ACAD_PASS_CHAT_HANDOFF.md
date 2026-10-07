@@ -1199,3 +1199,28 @@ After aggregate:
 
 NEXT:
 `COMPLETE_R44A_OOF_BANK -> FREEZE_AND_AUDIT_REAL_OOF_ERROR_DISTRIBUTION -> SELECT/FREEZE_LEAKAGE_SAFE_R44B_PROTOCOL -> ONLY_THEN_CONSIDER_HEAD_TRAINING`.
+
+
+---
+
+## 2026-10-08 — PERMANENT GOVERNANCE CORRECTION: SAFE MAXIMAL GITHUB RESOURCE UTILIZATION
+
+This section supersedes any earlier blanket `strictly sequential` / `never run in parallel` rule.
+
+New permanent rule:
+- maximize safe use of available GitHub Actions resources and concurrency when doing so cannot change scientific meaning or reduce result accuracy/reproducibility;
+- parallel execution is explicitly allowed for independent jobs with immutable inputs, disjoint output namespaces, no shared mutable state, no cross-job dependency, no evaluation leakage/contamination, and fully attributable deterministic outputs;
+- keep dependent scientific stages sequential at their decision boundaries: a downstream stage must not start before all required upstream evidence is complete, verified, frozen, and authorized;
+- operations touching the same branch/ref/file, consuming one-shot state, opening protected data, or capable of altering another job's inputs/outputs/decisions must be serialized;
+- if concurrency could make values non-exact, ambiguous, non-reproducible, or scientifically confounded, do not parallelize it;
+- preserve per-job hashes, guards, artifacts, process state, and provenance so parallel execution remains independently auditable.
+
+Current R44-B interpretation:
+- the already-running 10 pair-exclusion upstream jobs plus the label-independent context-cache job are scientifically independent by the frozen B1 protocol and therefore are VALID under this governance rule;
+- no need to cancel or relaunch them merely because they are parallel;
+- J0/J1 head training remains blocked until all required pair banks + aggregate + context-cache verification are complete and frozen.
+
+Higher-model consultation remains exceptional rather than automatic, but should be explicitly requested from the user when a consequential architecture/protocol decision, ambiguous evidence, difficult failure, or high-value alternative warrants it. When requested, the packet should ask for deep research, adversarial review, genuine brainstorming, alternative hypotheses, failure analysis, and best-possible next design.
+
+Permanent objective remains:
+`BEST DEFENSIBLE RESULT / MAXIMUM SCIENTIFIC RIGOR / BEST ACHIEVABLE RESULT`.
