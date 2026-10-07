@@ -11,7 +11,8 @@ from r44b_head_train import (
 )
 from r44b_head_aggregate import (
     threshold_metrics, choose_lowest_passing, decide, probvec,
-    require_exactly_one, ensure_unique_rows, GOLD_DENOMS
+    require_exactly_one, ensure_unique_rows, validate_complete,
+    sha256_path, canonical_manifest_sha, GOLD_DENOMS
 )
 
 CLASSES=["NONE","P","I","C","O"]
@@ -145,6 +146,69 @@ def test_fail_closed_helpers():
     return {"missing_output":"FAIL_CLOSED","duplicate_output":"FAIL_CLOSED",
             "duplicate_row":"FAIL_CLOSED","nonfinite":"FAIL_CLOSED","unnormalized":"FAIL_CLOSED"}
 
+
+def _write_jsonl(p,rows):
+    with pathlib.Path(p).open("w",encoding="utf-8") as f:
+        for r in rows:
+            f.write(json.dumps(r,sort_keys=True,separators=(",",":"))+"\\n")
+
+def test_full_completeness_validator(root):
+    outputs=root/"full_outputs"; nested=root/"nested"
+    outputs.mkdir(); nested.mkdir()
+    manifest={
+        "design_documents":[0,1,2,3,4],
+        "verify_internal_documents":[100],
+        "excluded_old_select_documents":[200],
+        "oof_folds":[{"fold":k,"documents":[k]} for k in range(5)],
+    }
+    msha=canonical_manifest_sha(manifest); manifest["manifest_sha256"]=msha
+    (nested/"R44B_PAIR_AGGREGATE_SUMMARY.json").write_text(json.dumps({"state":"R44B_PAIR_AGGREGATE_PASS"})+"\\n")
+    for k in range(5):
+        ev=[{
+            "fold":k,"document":k,"sentence":0,"start":0,"end":1,"width":1,
+            "b_type":"P","b_conf":.7,"boundary_start_prob":.8,"boundary_end_prob":.8,
+            "target":"P","taxonomy":"EXACT_TYPED","goldless_example":False,"section":"METHODS",
+            "normalized_example_index":0.0,"normalized_span_start":0.0,
+        }]
+        _write_jsonl(nested/f"R44B_OUTER_{k}_EVAL.jsonl",ev)
+        for head,params in [("J0",584631),("J1",667836)]:
+            d=outputs/f"{head}_{k}"; d.mkdir()
+            pr=mkprob("P","P",.9,outer=k,doc=k,b_type="P")
+            pp=d/f"R44B_OUTER_{k}_{head}_PROBS.jsonl"; _write_jsonl(pp,[pr])
+            ck=d/f"R44B_{head}_FINAL_MODEL.safetensors"; ck.write_bytes(f"synthetic-{head}-{k}".encode())
+            summary={
+                "state":"R44B_HEAD_FOLD_COMPLETE","attempt_id":"SYNTH_ATTEMPT",
+                "head":head,"outer_fold":k,"seed":44,"parameter_count":params,"eval_rows":1,
+                "probabilities_sha256":sha256_path(pp),"checkpoint_sha256":sha256_path(ck),
+                "schedule":{"epochs":10,"batch_size":64,"optimizer":"AdamW","lr":0.001,
+                            "weight_decay":0.01,"gradient_clip":1.0,
+                            "scheduler":"linear_decay_no_warmup","early_stopping":False,
+                            "checkpoint_selection":"FINAL_FIXED_EPOCH_ONLY","loss":"ordinary_5way_cross_entropy"},
+                "guards":{"fresh_model_optimizer_scheduler_rng":True,"meta_only_optimizer_updates":True,
+                          "evaluation_model_eval":True,"evaluation_no_grad":True,
+                          "mechanics_state_reused":False,"verify_internal_used":False,
+                          "old_select_used":False,"protected_data_used":False,
+                          "threshold_evaluation_performed":False,"calibration_fitted":False,
+                          "early_stopping_used":False,"checkpoint_shopping":False},
+            }
+            (d/f"R44B_OUTER_{k}_{head}_SUMMARY.json").write_text(json.dumps(summary)+"\\n")
+    heads,_,got=validate_complete(outputs,nested,manifest,
+                                  expected_manifest_sha=msha,
+                                  expected_attempt_id="SYNTH_ATTEMPT",
+                                  expected_total_rows=5)
+    if got!=msha or any(len(heads[h])!=5 for h in ["J0","J1"]):
+        raise RuntimeError("synthetic full completeness validator")
+    # Physical checkpoint tamper must fail closed.
+    tamper=outputs/"J0_0/R44B_J0_FINAL_MODEL.safetensors"
+    tamper.write_bytes(b"tampered")
+    expect_raises(lambda:validate_complete(outputs,nested,manifest,
+                                          expected_manifest_sha=msha,
+                                          expected_attempt_id="SYNTH_ATTEMPT",
+                                          expected_total_rows=5),
+                  "physical checkpoint tamper")
+    return {"full_population_validation":"PASS","rows_per_head":5,
+            "physical_checkpoint_tamper":"FAIL_CLOSED","manifest_sha":msha}
+
 def main():
     with tempfile.TemporaryDirectory(prefix="r44b_synth_") as td:
         root=pathlib.Path(td)
@@ -156,6 +220,7 @@ def main():
             "optimizer_scheduler_serialization":test_optimizer_scheduler_serialization(root),
             "gate_contract":test_gates_and_decision(),
             "fail_closed":test_fail_closed_helpers(),
+            "full_completeness_validator":test_full_completeness_validator(root),
             "frozen_gold_denominators":GOLD_DENOMS,
             "next_action":"FREEZE_EXECUTOR_IDENTITIES_THEN_AUTHORIZE_ONE_REAL_DEVELOPMENT_J0_J1_ATTEMPT",
         }
