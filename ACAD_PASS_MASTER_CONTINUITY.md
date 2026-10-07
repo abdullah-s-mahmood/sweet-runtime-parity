@@ -5152,3 +5152,39 @@ Permanent execution policy:
 The current R44-B B1 execution with 10 independent pair-exclusion upstream jobs plus one immutable label-independent context-cache job is compatible with this policy and should continue rather than be cancelled solely for being parallel.
 
 Higher-model consultation remains selective: request it when evidence is ambiguous, architecture/protocol choice is consequential, failure is difficult, or a high-value alternative warrants independent review. Consultation packets should request deep research, adversarial critique, genuine brainstorming, alternative hypotheses, failure analysis, and best-possible next design.
+
+
+---
+
+## 2026-10-08 — R44-B B1 UPSTREAM COMPLETE / PRE-HEAD DECISION BOUNDARY
+
+Durable state:
+- official R44-B upstream run `37683637815` SUCCESS;
+- all 10 pair-exclusion jobs SUCCESS;
+- nested aggregate `R44B_PAIR_AGGREGATE_PASS`;
+- nested-bank artifact `11515434193`, digest `sha256:98383b4bec040f19d6e4076fea1a70dcb406366dfd4bd724d1ad2fac6d2018fb`;
+- outer meta rows 1567/1519/1499/1535/1551;
+- C support 68/66/71/69/71;
+- immutable context cache `R44B_BASE_CONTEXT_CACHE_PASS`;
+- context artifact `11510422862`, digest `sha256:4fdceb511c2067cf81a1ad6c64c039febf99e3c11b9d8baa32b2d73569faa91c`;
+- context 26,595 x 768 float32; no labels/protected/VERIFY_INTERNAL/old SELECT.
+
+Canonical freeze:
+`AT0_EN_V26_R44B_B1_UPSTREAM_BANK_FREEZE_V1.md`.
+
+Independent pre-head adversarial review:
+`AT0_EN_V26_R44B_PREHEAD_ADVERSARIAL_REVIEW_V1.md`.
+No disqualifying leakage defect found.
+
+Critical interpretation:
+R44-B nested J0/J1 output is DEVELOPMENT MODEL-SELECTION EVIDENCE because the fixed architecture/threshold choice is made from DESIGN nested results. It is not a final unbiased generalization estimate. Freeze architecture + threshold before any future prospective VERIFY_INTERNAL use.
+
+Higher-model packet:
+`AT0_EN_V26_R44B_HIGHER_MODEL_REVIEW_PACKET_V1.md`.
+
+A technical-only actual-data mechanics audit was launched as run `37702502662`; it cannot train a scientific head, evaluate thresholds, or access protected data.
+
+NEXT:
+`COMPLETE_ACTUAL_HEAD_MECHANICS -> HIGHER_MODEL_ADVERSARIAL_REVIEW -> RECONCILE -> IF_CLEAR AUTHORIZE FIRST FROZEN J0/J1 NESTED HEAD RUN -> FREEZE WINNER/THRESHOLD -> STOP BEFORE VERIFY_INTERNAL`.
+
+Boundary-repair remains deferred as a separate prospective branch, especially if precision passes while recall/coverage remains operationally limited.
