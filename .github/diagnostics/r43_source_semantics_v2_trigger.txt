@@ -1,1 +1,2 @@
 Audit source training loader, external evaluator, and current parser semantics on pinned fold1 TRAIN only. No dev/test/other folds, no training.
+Retry after dependency-only fix. Scientific question unchanged.
