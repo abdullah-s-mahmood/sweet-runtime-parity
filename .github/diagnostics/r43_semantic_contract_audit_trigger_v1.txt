@@ -1,0 +1,1 @@
+Read-only source AST tests for invalid BIO transitions and metric duplicate guard. No real data/model/training/evaluation.
