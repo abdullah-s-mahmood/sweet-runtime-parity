@@ -11093,3 +11093,17 @@ ACTIVE run:
 - no J0/J1 training authorized yet.
 - next: pair jobs -> pair aggregate nested-bank audit + context cache verify -> separate head-training authorization.
 - VERIFY_INTERNAL, old SELECT, DEV/test/protected sets remain closed.
+
+
+## Permanent working agreement — maximum scientific rigor and best-results policy
+
+For every consequential ACAD_PASS scientific/design decision, do not settle for the first workable path. The standing method is:
+- perform deep, current literature research using the newest and strongest relevant peer-reviewed studies, benchmark papers, and comparable systems;
+- compare ACAD_PASS against relevant prior art and state-of-the-art approaches;
+- conduct genuine brainstorming with multiple plausible alternatives, not a single-path confirmation exercise;
+- identify failure modes, competing hypotheses, hidden assumptions, leakage/contamination risks, and possible simpler/stronger designs;
+- perform an independent/adversarial review of the proposed method before authorizing consequential scientific execution;
+- quantify trade-offs, expected gain, computational cost, reproducibility risk, and scientific defensibility wherever possible;
+- use the full set of available safe resources/tools to pursue the best achievable result, while preserving frozen data-governance and evaluation boundaries;
+- request consultation with the higher model when a major architecture/protocol choice, ambiguous evidence, difficult failure, or potentially high-value alternative warrants it, and ask that review to include deep research, adversarial critique, genuine brainstorming, alternative hypotheses, and best-possible next design;
+- do not access VERIFY_INTERNAL, old SELECT, DEV/test, protected external sets, or other embargoed data outside their explicitly authorized stage merely to improve a decision.
