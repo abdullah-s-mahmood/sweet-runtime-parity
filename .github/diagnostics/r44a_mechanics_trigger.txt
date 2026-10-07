@@ -1,0 +1,1 @@
+Run compile and synthetic invariants for R44-A source semantics, constrained BIO decoding, type correction and candidate-bank accounting. No scientific training.
