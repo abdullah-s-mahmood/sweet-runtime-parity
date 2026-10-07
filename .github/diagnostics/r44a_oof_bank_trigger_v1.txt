@@ -1,0 +1,1 @@
+Authorized R44-A only. Five DESIGN OOF folds sequentially (max-parallel=1), B+Boundary fixed epochs, held-out native candidate/error bank, then read-only aggregate. No J0/J1, no VERIFY_INTERNAL labels/data, no old R4.3 SELECT, no DEV/tests/other folds/protected data. Stop after aggregate bank.
