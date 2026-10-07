@@ -1,0 +1,361 @@
+# ACAD_PASS — R44-B B1 Nested Leakage-Safe Head Selection Protocol Freeze V1
+
+Date: 2026-10-07
+Status: PROTOCOL FROZEN / PREFLIGHT AUTHORIZED / NO R44-B SCIENTIFIC TRAINING YET
+
+Parent evidence:
+- R44-A run `37581447046` SUCCESS
+- full OOF audit run `37682327706` SUCCESS
+- final freeze `AT0_EN_V26_R44A_FINAL_OOF_RESULT_FREEZE_V1.md`
+
+## 1. Decision
+
+Use:
+
+`B1_NESTED_OUTER_INNER_DOCUMENT_CV`
+
+Do NOT use the cheaper fixed HEAD_SELECT split.
+
+Reason:
+- the complete OOF bank is large enough for nested evaluation;
+- overall fold behavior is stable;
+- class C is small and materially fold-variable;
+- nested evaluation avoids making the scientific conclusion depend on one arbitrary HEAD_SELECT partition;
+- safe GitHub parallelization can reduce wall-clock cost without changing the statistical design.
+
+## 2. Data universe
+
+Use only the frozen DESIGN 256 documents from R44.
+
+Still forbidden:
+- VERIFY_INTERNAL 64 docs;
+- old R4.3 SELECT 80 docs;
+- historical DEV;
+- fold1 test or other source folds;
+- external EBM/COVID/AD tests;
+- FactPICO;
+- consumed 60-RCT holdout.
+
+Use exactly the existing five frozen R44-A OOF document folds.
+No new split optimization.
+
+## 3. Outer folds
+
+For outer fold k in {0,1,2,3,4}:
+- OUTER_EVAL = original R44-A fold k;
+- OUTER_TRAIN = the other four original folds.
+
+OUTER_EVAL must be absent from every supervised upstream model used to create the head-training features for this outer evaluation.
+
+## 4. Inner meta-training construction
+
+Within OUTER_TRAIN, use the four original R44 folds as the inner validation folds.
+
+For outer k and inner validation j != k:
+- upstream training docs = DESIGN minus folds {k,j};
+- train B_CANDIDATE on those three folds only;
+- train C_BOUNDARY on those three folds only;
+- apply only to inner fold j for the meta-training rows used by outer k.
+
+This gives every meta-training row upstream evidence from a model that saw neither:
+- the row itself; nor
+- OUTER_EVAL k.
+
+Therefore the second-order stacking leakage identified before R44-A is removed.
+
+## 5. Pair-exclusion computational reduction
+
+Naively, five outer folds x four inner folds = 20 upstream ancestor pairs.
+
+But the supervised training set for (outer=k, inner=j) depends only on the unordered excluded pair {k,j}.
+
+There are only:
+`C(5,2)=10`
+unique excluded pairs.
+
+For every unordered pair {a,b}:
+- train one B ancestor and one Boundary ancestor on DESIGN minus folds {a,b};
+- apply that same frozen pair of ancestors separately to held-out fold a and held-out fold b;
+- freeze two candidate/evidence banks, one for each held-out fold.
+
+For outer k:
+- head meta-training rows for inner fold j are taken from pair {k,j}, prediction side j.
+
+This is statistically identical to the 20-job nested construction while reducing unique upstream trainings from 20 to 10.
+
+## 6. Safe parallel execution
+
+The 10 pair-exclusion jobs are scientifically independent:
+- identical immutable inputs;
+- disjoint output namespaces;
+- no job consumes another job's output;
+- no shared mutable state;
+- fixed seed/config;
+- aggregate/assembly occurs only after all required jobs complete.
+
+Therefore R44-B authorizes future execution with:
+`max-parallel: 10`
+
+If GitHub account concurrency supplies fewer runners, excess jobs may queue. This affects wall-clock only, not scientific semantics.
+
+No scientific job may overwrite another pair artifact.
+
+## 7. Upstream ancestor configuration
+
+Reuse the already frozen R44-A upstream configuration unchanged.
+
+B_CANDIDATE:
+- immutable converted BiomedBERT base;
+- seed 44;
+- lr 5e-5;
+- weight decay 0;
+- batch 8;
+- 10 fixed epochs;
+- linear decay;
+- no warmup;
+- gradient clip 1.0;
+- final epoch only.
+
+C_BOUNDARY:
+- same base;
+- seed 44;
+- lr 5e-5;
+- weight decay 0.01;
+- batch 8;
+- 3 fixed epochs;
+- final epoch only.
+
+No C_TYPE ancestor.
+
+Use the immutable preconverted base artifact from run `37596247997` and verify:
+`model.safetensors SHA256 = 3a6d0b156c45ccd8093af83a9ad3d388808eba5a9e15f0032fc0fe068bb92b68`.
+
+## 8. Candidate semantics
+
+Use the R44-A source-compatible decoder unchanged:
+- only B-X starts a candidate;
+- same-type I-X may extend it;
+- invalid I-X never manufactures a candidate;
+- valid document continuation metadata is not a new entity.
+
+For each inferred candidate:
+- exact coordinate gold match => target the gold class P/I/C/O, regardless of B proposed type;
+- otherwise target NONE.
+
+Record:
+- excluded pair;
+- prediction side fold;
+- document/sentence/start/end;
+- B proposed type;
+- B confidence;
+- Boundary start/end probabilities;
+- width;
+- source section;
+- normalized example/span positions;
+- goldless flag;
+- target;
+- taxonomy;
+- BIO diagnostics;
+- model identities.
+
+No gold candidate may be inserted if B failed to propose it.
+
+## 9. Outer-evaluation candidate evidence
+
+Reuse the already frozen R44-A candidate rows for OUTER_EVAL fold k.
+
+These rows were generated by upstream ancestors trained on DESIGN minus fold k, which is exactly the required OUTER_TRAIN upstream fit for outer evaluation.
+
+This avoids five unnecessary retrainings and preserves the already frozen evidence.
+
+The R44-A outer rows must be verified by:
+- fold identity;
+- candidate-bank SHA;
+- manifest SHA;
+- access guards.
+
+## 10. Label-independent context
+
+Use only the immutable base BiomedBERT for contextual vectors.
+
+For each candidate:
+- start vector;
+- end vector;
+- mean interior vector;
+- previous vector / edge marker;
+- following vector / edge marker.
+
+The base encoder is frozen and label-independent.
+
+A single immutable DESIGN context cache may be precomputed and reused across all outer-head jobs if:
+- source identity is verified;
+- base model SHA is verified;
+- values are stored losslessly as float32;
+- no labels are used in cache construction;
+- cache is read-only.
+
+## 11. Head architectures
+
+Classes:
+`NONE/P/I/C/O`
+
+### J0
+Inputs:
+- five 768->128 context projections;
+- learned prev/next edge vectors;
+- width embedding 16;
+- B-type embedding 16;
+- section embedding 8;
+- five scalar features:
+  - B confidence;
+  - Boundary start probability;
+  - Boundary end probability;
+  - normalized example index;
+  - normalized span start.
+
+Concatenate -> LayerNorm -> Linear(128) -> GELU -> Dropout(0.1) -> 5 logits.
+
+### J1
+Exactly J0 plus one class-specific biaffine start/end interaction over 128-d projected start/end vectors.
+
+No triaffine, GlobalPointer, grid model, MRC, stronger encoder, pseudo-labeling, synthetic negatives or boundary repair in this primary R44-B comparison.
+
+## 12. Head optimization
+
+Prospectively frozen from the prior R4.3 head schedule, with phase seed 44:
+- seed 44;
+- ordinary 5-way cross entropy;
+- AdamW;
+- lr 1e-3;
+- weight decay 0.01;
+- batch 64;
+- 10 fixed epochs;
+- linear learning-rate decay;
+- gradient clip 1.0;
+- final epoch only;
+- no early stopping;
+- no class weighting;
+- no focal loss;
+- no hard-negative resampling.
+
+Why ordinary CE:
+- NONE is 536/1942 = 27.6%, not an overwhelming majority;
+- C is the smallest target but has 87 real positive candidate rows;
+- no imbalance remedy is justified before testing the clean baseline.
+
+## 13. Nested head training/evaluation
+
+For each outer k:
+
+Meta-train:
+- assemble rows from the four pair-exclusion banks {k,j}, using prediction side j for each j != k;
+- every row is upstream-OOF relative to itself and isolated from outer k.
+
+Outer evaluation:
+- use frozen R44-A rows for fold k.
+
+For both J0 and J1:
+- train only on outer-k meta-train;
+- apply once to outer-k candidate rows;
+- save raw 5-way probabilities for every candidate.
+
+Five outer jobs may run in parallel after all pair banks/context cache are frozen.
+
+## 14. Acceptance rule
+
+The joint head is the decision model.
+
+Do NOT hard-gate on B confidence or Boundary probability.
+Those are model inputs only.
+
+For threshold t in:
+`{0.80, 0.85, 0.90, 0.95}`
+
+For each candidate:
+- let c = argmax softmax over NONE/P/I/C/O;
+- reject if c=NONE;
+- otherwise accept class c only if p(c) >= t.
+
+This explicitly allows type correction when c differs from B proposed type.
+
+No threshold outside the frozen set.
+
+## 15. Scientific gate
+
+On aggregated outer predictions, exact span + exact class:
+
+For every P/I/C/O:
+- precision >= 0.90;
+- recall >= 0.20;
+- accepted >= 10.
+
+Also:
+- macro precision >= 0.90.
+
+## 16. Deterministic selection rule
+
+For each head, evaluate only the four frozen thresholds.
+
+For a head:
+- select the LOWEST threshold that passes all gates;
+- if none passes, that head fails.
+
+Architecture selection:
+1. If J0 passes, nominate J0 at its selected threshold.
+2. Else if J1 passes, nominate J1 at its selected threshold.
+3. Else: no architecture is nominated; STOP for causal diagnosis.
+
+Thus J1 is an escalation only; tiny metric differences cannot displace a passing simpler J0.
+
+## 17. Calibration diagnostics
+
+No temperature or isotonic calibration is fitted in primary B1.
+
+Report raw-softmax:
+- multiclass Brier score;
+- ECE;
+- reliability bins;
+- risk-coverage;
+- per-class PR summaries.
+
+These are diagnostics only and cannot change the frozen threshold set or architecture rule.
+
+A separate calibration version may be authorized later only if needed.
+
+## 18. Boundary-repair decision
+
+Do NOT add boundary repair in B1 primary.
+
+R44-A proved all per-class coordinate recall ceilings are above the 0.20 frozen recall floor.
+
+If the corrected verifier passes precision but coverage/recall remains operationally weak, then prospectively authorize a separate repair branch.
+
+## 19. External methodological rationale
+
+Nested outer/inner isolation is used because ordinary OOF stacking can still give optimistic meta-model selection when evaluation data influences the base models that generated meta-training features.
+
+The protocol is consistent with:
+- Bates, Hastie & Tibshirani, JASA 2024, DOI 10.1080/01621459.2023.2197686;
+- leakage-free nested OOF stacking practice in contemporary ensemble literature.
+
+These sources support the evaluation method, not expected ACAD_PASS performance.
+
+## 20. Stop boundary
+
+Current authorization after this freeze:
+- implement read-only mechanics/preflight;
+- prove the 10-pair reduction and document isolation;
+- verify context-cache mechanics;
+- verify J0/J1 parameter/mechanics and assembly invariants.
+
+NO pair-exclusion scientific training until that preflight passes.
+
+Still forbidden:
+- VERIFY_INTERNAL;
+- old SELECT;
+- historical DEV/tests;
+- protected external tests;
+- threshold/seed shopping.
+
+NEXT_ACTION:
+`RUN_R44B_B1_PREFLIGHT -> IF_PASS AUTHORIZE_10_PAIR_PARALLEL_UPSTREAM_GENERATION`.
