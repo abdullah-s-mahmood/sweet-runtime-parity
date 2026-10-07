@@ -148,9 +148,12 @@ def aggregate_head(rows):
         "per_class_candidate_AP":{c:candidate_ap(rows,c) for c in POS_CLASSES},
     }
 
-def validate_complete(outputs_root,nested_root,manifest):
+def validate_complete(outputs_root,nested_root,manifest,
+                      expected_manifest_sha=EXPECTED_MANIFEST_SHA,
+                      expected_attempt_id=EXPECTED_ATTEMPT_ID,
+                      expected_total_rows=1942):
     got=canonical_manifest_sha(manifest)
-    if manifest.get("manifest_sha256")!=EXPECTED_MANIFEST_SHA or got!=EXPECTED_MANIFEST_SHA:
+    if manifest.get("manifest_sha256")!=expected_manifest_sha or got!=expected_manifest_sha:
         raise RuntimeError("canonical manifest")
     nested=json.loads((nested_root/"R44B_PAIR_AGGREGATE_SUMMARY.json").read_text())
     if nested.get("state")!="R44B_PAIR_AGGREGATE_PASS": raise RuntimeError("nested state")
@@ -167,7 +170,7 @@ def validate_complete(outputs_root,nested_root,manifest):
             s=json.loads(summary_path.read_text())
             if s.get("state")!="R44B_HEAD_FOLD_COMPLETE" or s.get("head")!=head or int(s.get("outer_fold"))!=k:
                 raise RuntimeError(f"summary state {head}/{k}")
-            if s.get("attempt_id")!=EXPECTED_ATTEMPT_ID:
+            if s.get("attempt_id")!=expected_attempt_id:
                 raise RuntimeError(f"attempt identity {head}/{k}: {s.get('attempt_id')}")
             g=s.get("guards",{})
             must_true=["fresh_model_optimizer_scheduler_rng","meta_only_optimizer_updates","evaluation_model_eval","evaluation_no_grad"]
@@ -198,9 +201,10 @@ def validate_complete(outputs_root,nested_root,manifest):
                 probvec(rr)
                 if int(rr["document"]) not in folds[k]: raise RuntimeError("fold document")
             all_rows.extend(rows); head_summ.append(s)
-        if len(all_rows)!=1942: raise RuntimeError(f"{head} total probability rows {len(all_rows)} != 1942")
+        if len(all_rows)!=expected_total_rows:
+            raise RuntimeError(f"{head} total probability rows {len(all_rows)} != {expected_total_rows}")
         keys=ensure_unique_rows(all_rows,f"{head}/aggregate")
-        if len(keys)!=1942: raise RuntimeError(f"{head} aggregate key count")
+        if len(keys)!=expected_total_rows: raise RuntimeError(f"{head} aggregate key count")
         all_heads[head]=all_rows; summaries[head]=head_summ
     if set(row_key(r) for r in all_heads["J0"])!=set(row_key(r) for r in all_heads["J1"]):
         raise RuntimeError("J0/J1 population mismatch")
