@@ -1,1 +1,2 @@
 Freeze R4.4 DESIGN=256, VERIFY_INTERNAL=64 and five document-grouped OOF folds from old R4.3 FIT only, under corrected source semantic contract. No training, no old SELECT labels/results, no dev/test/other folds.
+Retry after deterministic pair-swap improvement of the same frozen balance objective; seed/tolerances/data universe unchanged.
