@@ -10948,3 +10948,53 @@ Execution policy:
 - starting with the next newly frozen stage, use parallel GitHub runners wherever tasks are scientifically independent and the following guards hold: immutable identical inputs, disjoint train/held-out partitions where applicable, no shared mutable state, output namespace isolation, deterministic seeds/config, aggregate barrier after all jobs, SHA/inventory/access verification, and no protected-set exposure.
 - dependent stages remain sequential.
 - safe technical/preflight/audit work may run in parallel with scientific runs if it cannot affect their inputs, outputs or decisions.
+
+
+## 2026-10-07 — R44-A Fold2 completed; three-fold OOF mechanism stable
+
+Official R44-A parent run `37581447046` remains sequential and unchanged.
+
+Fold2:
+- job `112661815283` SUCCESS
+- artifact `11486853863`
+- artifact digest `sha256:3a957b00e1173eda79881435c563febf4c32e1a16f1df22b1e791d850438d8d7`
+- candidate bank SHA `11c5e17b5b669c618fb80b0f1ff4a8eb388b8aa2a66d5d79bfe057477803b9b0`
+- candidates 368; gold 377; exact typed 266
+- native typed precision .7228261; recall .7055703
+- NONE 86
+- same-class wrong-boundary 44
+- spurious/no-overlap 33
+- wrong-type exact-coordinate 16
+- different-class wrong-boundary 9
+- goldless candidates 23
+- other-candidate median B confidence .997322589
+- BIO violation runs 25; one is a valid source continuation, unmatched/invalid 24.
+- all access/protection guards PASS.
+
+Combined folds0+1+2 descriptive evidence:
+- gold 1138
+- candidates 1150
+- exact-coordinate 842
+- exact-typed 805
+- typed precision .700000
+- typed recall ~.70738
+- coordinate precision ~.73217
+- coordinate recall ~.73989
+- NONE 308
+- goldless candidates 68
+- taxonomy: exact typed805 / same-class wrong-boundary161 / spurious132 / wrong-type exact-coordinate37 / different-class wrong-boundary15
+- 293/345 non-exact-typed candidates (~84.9%) are wrong-boundary or spurious.
+- dominant error mechanisms and high-confidence false/non-exact candidates recur independently across all three folds.
+- combined typed recall: P~.7853 / I~.6613 / C~.6377 / O~.7445.
+- combined coordinate ceiling: P~.7853 / I~.7114 / C~.7681 / O~.7518.
+
+Canonical partial freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44A_FOLDS0_2_PARTIAL_EVIDENCE_FREEZE_V1.md`
+commit `1aeed51d646b5229c4e933c33cc251daa5a77f86`.
+
+Current progression at this checkpoint:
+- folds0,1,2 complete
+- fold3 running
+- fold4 queued
+- confirmed fold completion progress = 60%
+- no architecture/threshold selection before fold4 + aggregate.
