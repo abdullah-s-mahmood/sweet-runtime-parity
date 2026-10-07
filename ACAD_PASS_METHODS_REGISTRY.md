@@ -181,3 +181,14 @@ New retained literature:
 **New highest priority**: FIT-only read-only causal replay + protocol audit, THEN prospectively frozen OOF TRAIN-only hard negatives, joint contextual NONE/P/I/C/O, and only later bounded repair/hybrid or stronger model if justified.
 
 DO NOT prematurely train triaffine/BOPN or use SELECT/historical DEV/protected tests to choose architecture.
+
+
+### 2026-10-07 provenance and newer PICO paper addendum
+
+- SOURCE PROVENANCE VERIFIED: EBM-NLPmod is the 500 reannotated RCT abstract, flat P/I/C/O, section-specific dataset from *Bioinformatics* 2023 DOI `10.1093/bioinformatics/btad542` (not JAMIA). Its C is deliberately distinct from I. Source authors' exact entity-level micro-F1 0.712 is not directly comparable to the ACAD_PASS exact macro precision scientific gate.
+- **FinePICO** (JAMIA 2025, DOI `10.1093/jamia/ocae326`): semi-supervised fine-grained PICO extraction from 2,511 abstracts; high-priority candidate if scarcity/partial labels are established as a dominant problem.
+- **Generative versus extractive RCT abstract IE** (2024, https://pmc.ncbi.nlm.nih.gov/articles/PMC11036632/): includes Longformer/Flan-T5 full-document context rather than isolated BERT chunks. Preserve as prospective domain-context comparator only after corpus section-selection provenance is validated.
+- Original section-specific research estimated 96.7% PICO mention coverage for title+methods in a 30-abstract sample. Verify if our current CoNLL already contains only these sections; do not blindly add full abstract text as context.
+- Actual-code synthetic BIO contract audit run `37568400156` passed and confirmed invalid I transitions produce normal-looking proposals. FIT frequency remains unmeasured.
+
+The canonical forensic report was updated at commit `d6f7f6bed04b5234564aeff65b80b7171a4a19f0`.
