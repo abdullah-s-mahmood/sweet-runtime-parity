@@ -10710,3 +10710,14 @@ Do NOT:
 - perform concurrent training.
 
 Maintain strictly sequential scientific execution.
+
+
+## 2026-10-07 — VERIFIED ORIGINAL EBM-NLPmod PROVENANCE ADDENDUM
+
+Authoritative corpus publication is **Bioinformatics (2023)** DOI `10.1093/bioinformatics/btad542`, not JAMIA. Current data `EBM-NLPmod` derives from 500 reannotated RCT abstracts under flat P/I/C/O with Comparator C separate from Intervention I. Original pipeline uses abstract section classification followed by NER primarily over title/methods, and reports original exact entity-level MICRO-F1=0.712; NOT directly comparable to ACAD_PASS macro precision gate.
+
+The canonical R4.3 forensic audit was updated at commit `d6f7f6bed04b5234564aeff65b80b7171a4a19f0`, adding this provenance plus FinePICO 2025 and full-document extractive/Longformer work. The methods registry was refreshed at commit `d7a5c96e90ce10fec25afeb86256b0e07d12e2a0`.
+
+Highest-priority read-only next task is still FIT-only frozen B candidate replay and source-evaluator/ontology/section audit. `r43_fit_b_native_error_causal_audit.py` is prepared but **not executed**. Do not claim real FIT illegal-BIO incidence, goldless error counts, or model fixes yet.
+
+All R4.3 Stage-B thresholds/results frozen; no new training or protected test opened in the forensic review.
