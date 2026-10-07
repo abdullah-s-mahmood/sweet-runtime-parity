@@ -5133,3 +5133,22 @@ After aggregate:
 
 NEXT:
 `COMPLETE_R44A_OOF_BANK -> FREEZE_AND_AUDIT_REAL_OOF_ERROR_DISTRIBUTION -> SELECT/FREEZE_LEAKAGE_SAFE_R44B_PROTOCOL -> ONLY_THEN_CONSIDER_HEAD_TRAINING`.
+
+
+---
+
+## 2026-10-08 — EXECUTION GOVERNANCE SUPERSESSION: SAFE MAXIMAL CONCURRENCY
+
+This supersedes the older blanket sequential-only execution rule.
+
+Permanent execution policy:
+1. Use the maximum safe GitHub Actions concurrency that preserves exact scientific semantics, determinism, auditability, and reproducibility.
+2. Parallel jobs are allowed when they have immutable inputs, disjoint outputs, no shared mutable state, no cross-job dependency, and no possibility of data leakage or decision contamination.
+3. Dependent scientific stages remain ordered: downstream work starts only after prerequisite artifacts are complete, verified, frozen, and authorized.
+4. Serialize any operation that can race on the same branch/ref/file, consume one-shot state, alter another job's inputs/outputs, open protected data, or make scientific attribution ambiguous.
+5. Never trade scientific exactness for speed. If parallelism can produce non-exact, confounded, or irreproducible values, do not use it.
+6. Preserve hashes, artifacts, guards, model/data identities, per-job status, and provenance for every concurrent path.
+
+The current R44-B B1 execution with 10 independent pair-exclusion upstream jobs plus one immutable label-independent context-cache job is compatible with this policy and should continue rather than be cancelled solely for being parallel.
+
+Higher-model consultation remains selective: request it when evidence is ambiguous, architecture/protocol choice is consequential, failure is difficult, or a high-value alternative warrants independent review. Consultation packets should request deep research, adversarial critique, genuine brainstorming, alternative hypotheses, failure analysis, and best-possible next design.
