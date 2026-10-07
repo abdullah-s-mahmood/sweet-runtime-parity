@@ -1,0 +1,1 @@
+Compare current TRAIN span inventory with pinned official evaluate.py semantics only. No dev/test/other folds, no model training.
