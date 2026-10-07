@@ -1,1 +1,2 @@
 Authorized source-free synthetic executor closure only. No real nested-meta optimizer updates, no scientific J0/J1 attempt, no VERIFY_INTERNAL.
+Final closure rerun after checkpoint-physical-SHA and fixed attempt-ID hardening. Still source-free; no scientific data/training.
