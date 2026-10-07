@@ -11140,3 +11140,28 @@ Protected boundaries remain unchanged:
 - historical DEV/test/protected sets closed;
 - FactPICO frozen/consumed;
 - 60-RCT holdout consumed.
+
+
+---
+
+## 2026-10-08 01:09 Asia/Baghdad — R44-B B1 partial live progress
+
+Run `37683637815` remains active.
+
+Completed successfully:
+- pair `1-2`, artifact `11512599487`, digest `sha256:d0db8ec0b12048993e721967999cc1b59385984ee45a3decda70e1f3a21e811d`;
+- pair `1-4`, artifact `11514343182`, digest `sha256:2649a8cfa94b3068a0a9ff322586af2ff1b285a7d1a8b144075fd608e1d3abeb`;
+- context cache SUCCESS, artifact `11510422862`, digest `sha256:4fdceb511c2067cf81a1ad6c64c039febf99e3c11b9d8baa32b2d73569faa91c`.
+
+Still active:
+- 8/10 pair jobs in `Train pair-exclusion ancestors and infer both excluded sides`;
+- 0 failed;
+- 0 queued;
+- aggregate waits for all pairs.
+
+Observed runtime:
+- pair 1-2: B+Boundary train runtime ~61.46 min, wall ~64.7 min;
+- pair 1-4: B+Boundary train runtime ~84.71 min, wall ~87.0 min.
+
+No scientific interpretation from partial pair bank yet.
+Do not start J0/J1 until all pair banks + aggregate + context-cache verification are complete and frozen.
