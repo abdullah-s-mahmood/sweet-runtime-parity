@@ -1,0 +1,52 @@
+name: R44-A full OOF bank audit
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r44a_full_oof_audit_trigger.txt'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+
+      - name: Download frozen R44-A aggregate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44a-oof-candidate-bank
+          path: ${{ runner.temp }}/r44a/aggregate
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37581447046
+
+      - name: Download frozen R44 manifest
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44-oof-readonly-preflight
+          path: ${{ runner.temp }}/r44a/preflight
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37572165532
+
+      - name: Audit real OOF bank
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_6/r44a_full_oof_audit.py             --bank "$RUNNER_TEMP/r44a/aggregate/R44A_OOF_CANDIDATE_BANK.jsonl"             --summary "$RUNNER_TEMP/r44a/aggregate/R44A_OOF_BANK_SUMMARY.json"             --manifest "$RUNNER_TEMP/r44a/preflight/R44_OOF_MANIFEST_V1.json"             --out "$RUNNER_TEMP/r44a/audit"
+          sha256sum "$RUNNER_TEMP/r44a/audit/"* > "$RUNNER_TEMP/r44a/audit/SHA256SUMS.txt"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r44a-full-oof-audit
+          path: ${{ runner.temp }}/r44a/audit
+          if-no-files-found: error
+          retention-days: 90
