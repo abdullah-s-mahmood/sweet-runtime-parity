@@ -10934,3 +10934,17 @@ Current live state at last check:
 - folds3,4 queued
 - confirmed fold completion progress = 40%
 - no architecture/threshold selection before folds2-4 + aggregate.
+
+
+## 2026-10-07 — Arabic display + safe parallelism preference
+
+User-facing Arabic updates must be RTL-friendly and visually robust:
+- keep Arabic prose dominant;
+- place English identifiers, hashes, workflow names, code terms and mixed numeric expressions inside backticks or isolated lines when that improves bidi readability;
+- avoid dense Arabic/English mixing in one sentence.
+
+Execution policy:
+- do NOT alter the currently running official R44-A sequential workflow mid-run.
+- starting with the next newly frozen stage, use parallel GitHub runners wherever tasks are scientifically independent and the following guards hold: immutable identical inputs, disjoint train/held-out partitions where applicable, no shared mutable state, output namespace isolation, deterministic seeds/config, aggregate barrier after all jobs, SHA/inventory/access verification, and no protected-set exposure.
+- dependent stages remain sequential.
+- safe technical/preflight/audit work may run in parallel with scientific runs if it cannot affect their inputs, outputs or decisions.
