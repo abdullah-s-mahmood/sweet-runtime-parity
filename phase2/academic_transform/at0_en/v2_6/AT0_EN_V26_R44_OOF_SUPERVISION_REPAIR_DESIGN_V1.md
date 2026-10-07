@@ -88,12 +88,19 @@ Default frozen ancestors:
 - seed = 44 + fold index only for deterministic initialization/shuffling; no seed shopping.
 
 For held-out fold only:
+- decode B with a NEW source-compatible constrained decoder:
+  - only predicted `B-X` may start a candidate;
+  - only following `I-X` of the same type may extend it;
+  - `I-X` after O, at sequence start without explicit document carry, or after another type is recorded as a BIO violation and DOES NOT manufacture a candidate;
+  - optional DOCUMENT_CONTINUITY carry is tracked separately and never changes SOURCE_COMPATIBLE benchmark entity count.
 - infer B candidate spans + B predicted type + B confidence;
 - infer boundary START/BOTH and END/BOTH probabilities;
 - generate no labels with the ancestor itself;
 - never use a model to create features for a document that participated in that model's supervised training.
 
 Freeze per-fold:
+- decoder-unit-test evidence for B-start, valid I extension, initial-I, O->I and cross-type-I;
+- count of raw BIO violations by fold;
 - train/held-out doc IDs;
 - model hashes;
 - inference roster;
