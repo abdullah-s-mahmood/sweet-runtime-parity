@@ -86,6 +86,10 @@ def main():
                           "BOUNDARY_loss":s["models"]["C_BOUNDARY"]["train_loss"]})
         fold_table.append({"fold":f,"heldout_documents":len(expected[f]),
                            "candidate_metrics":met,"models":model_ids[-1]})
+    if len(all_rows)!=total_candidates:
+        raise RuntimeError(f"aggregate candidate row count {len(all_rows)} != summary total {total_candidates}")
+    if sum(targets.values())!=len(all_rows):
+        raise RuntimeError(f"aggregate target count {sum(targets.values())} != candidate rows {len(all_rows)}")
     if seen_docs!=set(m["design_documents"]):raise RuntimeError("aggregate DESIGN coverage mismatch")
     if len(seen_docs)!=EXPECTED_DESIGN_DOCS:
         raise RuntimeError(f"aggregate DESIGN document count {len(seen_docs)} != {EXPECTED_DESIGN_DOCS}")
