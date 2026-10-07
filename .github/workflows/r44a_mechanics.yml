@@ -38,12 +38,18 @@ jobs:
           assert m.source_boundary_tags(["B-P","I-P","O"])==["START","END","OUT"]
 
           q,v=m.decode_constrained(["I-P","I-P","O"],[.9,.9,.9])
-          assert q==[] and len(v)==2 and v[0]["word_index"]==0
+          assert q==[] and len(v)==1
+          assert v[0]=={"start":0,"end":2,"predicted_type":"P","kind":"INITIAL_I_RUN","previous_predicted":"SEQUENCE_START"}
+
+          q,v=m.decode_constrained(["O","I-P","I-P"],[.9,.9,.9])
+          assert q==[] and len(v)==1 and v[0]["kind"]=="O_TO_I_RUN" and v[0]["start"]==1 and v[0]["end"]==3
+
           q,v=m.decode_constrained(["B-P","I-P","O"],[.9,.8,.9])
           assert [(x["type"],x["start"],x["end"]) for x in q]==[("P",0,2)] and not v
-          q,v=m.decode_constrained(["B-P","I-I","O"],[.9,.8,.9])
+
+          q,v=m.decode_constrained(["B-P","I-I","I-I"],[.9,.8,.8])
           assert [(x["type"],x["start"],x["end"]) for x in q]==[("P",0,1)]
-          assert len(v)==1 and v[0]["word_index"]==1
+          assert len(v)==1 and v[0]["kind"]=="CROSS_TYPE_I_RUN" and v[0]["start"]==1 and v[0]["end"]==3
 
           docs={
             0:[(["alpha","beta"],["B-P","I-P"])],
