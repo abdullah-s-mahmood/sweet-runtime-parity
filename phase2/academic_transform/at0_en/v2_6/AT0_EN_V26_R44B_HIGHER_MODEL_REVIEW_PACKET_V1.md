@@ -200,3 +200,36 @@ Return a decisive review addressing:
    - BLOCK_AND_REDESIGN
 
 If recommending change, specify the smallest evidence-supported change and explain whether it would invalidate/reconsume any current evidence.
+
+
+---
+
+## 2026-10-08 superseding provenance clarification
+
+This packet is preserved as the exact question presented for higher-model review. The following statements supersede earlier shorthand:
+
+1. The 10 pair-exclusion jobs are **computationally separable but statistically dependent** because their training sets overlap and two prediction sides from one pair share fitted ancestors. The 10-fit reduction is fixed-seed fitting equivalence, not independent replication.
+
+2. The context-cache source package physically contains tags. The verified claim is **no label-dependent context computation**: contextual vectors are computed from tokens only by the immutable base encoder with no adaptation/fitted normalization/calibration.
+
+3. `VERIFY_INTERNAL` is not historically untouched. Its 64 documents participated in earlier parent R4.3 FIT training/audits, and R44 split construction used aggregate label counts. No R44 candidate-specific verification/tuning has occurred on it. Any later access is a separate phase-internal prospective checkpoint, not an external unbiased benchmark.
+
+4. Mechanics run `37702502662` formed a small mixed development sample, computed CE loss and called `backward()` for gradient-finiteness only. It saved no trained state and performed no optimizer/scheduler update. Scientific J0/J1 must initialize fresh and MUST NOT reuse mechanics objects, gradients, RNG continuation or tensors as learned initialization.
+
+The higher-model verdict returned against this packet was:
+`PROCEED_WITH_NONSCIENTIFIC_IMPLEMENTATION_FIXES_ONLY`.
+
+Scientific design remains frozen:
+- J0 then J1 escalation;
+- ordinary 5-way CE;
+- seed 44;
+- 10 fixed epochs;
+- thresholds {0.80,0.85,0.90,0.95};
+- no calibration fitting;
+- no boundary repair;
+- no protected evaluation.
+
+Required before first real scientific fit:
+- complete/freeze trainer + evaluator + workflow;
+- pass source-free/synthetic end-to-end executor checks;
+- freeze attempt/output identity and fail-closed completeness guards.
