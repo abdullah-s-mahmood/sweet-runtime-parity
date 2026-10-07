@@ -315,3 +315,34 @@ For any next authorized model experiment:
 8. If OOF ancestor replication is computationally infeasible, use a simpler one-stage direct span classifier trained/evaluated with group-disjoint document splits as a transparent baseline instead of falsely asserting an unbiased learned cascade.
 
 **Priority update:** `OOF_ALL_LABEL_SUPERVISED_UPSTREAM_FEATURES_AND_NEGATIVE_BANK` takes precedence over OOF B negatives alone. A triaffine/GlobalPointer model trained atop leaked upstream features would not fix this.
+
+
+---
+
+## J. FOLLOW-UP CAUSAL TEST: In-sample B is PERFECT, not merely short of realistic errors
+
+**Status: MEASURED and frozen on 2026-10-07. This supersedes any earlier discussion of unknown FIT B-error incidence.**
+
+Read-only Stage-A B replay `37568769890`: SUCCESS. Evidence artifact `11460495207` digest `sha256:e76de599341742c69c3202cfd299c9677d4f07c914c255d1c9b3b32ae175e9c0`. Canonical separate freeze `AT0_EN_V26_R43_FIT_B_NATIVE_ERROR_CAUSAL_RESULT_FREEZE_V1.md`.
+
+Exact findings on 320 FIT documents:
+- **2371/2371 exact gold B proposals** and ZERO false native B proposals in 1292 sentences;
+- 993 sentences contain >=1 annotated entity, 299 sentences contain NO annotated entity; model emitted zero proposals on all 299 gold-empty sentences;
+- raw in-FIT precision and recall of B were exactly 1.0;
+- by contrast, pre-frozen SELECT native B population contains 447 TP + 250 FP out of 697 predictions on 640 golds (raw native precision ~0.6413, recall ~0.6984).
+
+**Revised causal verdict:**
+- `native_slots=0` is now *explained empirically*: B memorized its own FIT so well that there were simply no native in-sample errors to mine. **Do not blame code for suppressing 0 existing FIT errors.**
+- Miner goldless exclusion is still a latent design blind spot, but NOT an observed cause of this particular zero-negative outcome (there were no goldless FIT model FP either).
+- Generalization gap is directly measured; the terms `overfitting/memorization` remain scientific interpretations, requiring out-of-fold replication to distinguish capacity and sampling/annotation effects.
+- Earlier severe stacking concern is elevated: boundary and C-type upstream features also use in-sample trained models on FIT. The next scientific protocol should derive **all label-trained ancestor features and native error candidates from document-disjoint OOF predictions**, not just change the NER head.
+- Increasing model capacity or arbitrarily tuning thresholds before solving this supervision mismatch is not defensible.
+
+Raw BIO predictive transitions on FIT:
+- 7 noncanonical I transitions, ALL at first token of a blank-delimited sequence (0 internal transitions);
+- EBM-NLPmod source has 11 legitimate example-initial `I-X` continuation segments. These 7 may match that source convention. **Do not assert that 7 real decode errors were found.** Synthetic AST decoder test still proves unsafe normalization is structurally possible, so add prospective source-aware grammar validation before any major candidate-generation modification.
+
+Final order:
+`SOURCE_CONVENTION_PARITY -> CROSS_FIT_B_AND_C_FEATURES -> REAL_OOF_TYPED_NEGATIVES_INCLUDING_GOLDLESS -> CALIBRATED_CONTEXTUAL_VERIFIER -> ONLY_THEN_REPAIR_OR_ADVANCED_ARCHITECTURES`.
+
+No new training, exposed SELECT refitting or protected test access occurred in this causal replay.
