@@ -8,6 +8,7 @@ POS_CLASSES=["P","I","C","O"]
 THRESHOLDS=[0.80,0.85,0.90,0.95]
 GOLD_DENOMS={"P":271,"I":829,"C":115,"O":677}
 EXPECTED_MANIFEST_SHA="799844f1bdd15792740333b2ad57c8aad7bb8f265566fece06f4a2ff61574720"
+EXPECTED_ATTEMPT_ID="R44B_B1_DEV_J0J1_ATTEMPT_1"
 
 def sha256_path(p):
     h=hashlib.sha256()
@@ -166,6 +167,8 @@ def validate_complete(outputs_root,nested_root,manifest):
             s=json.loads(summary_path.read_text())
             if s.get("state")!="R44B_HEAD_FOLD_COMPLETE" or s.get("head")!=head or int(s.get("outer_fold"))!=k:
                 raise RuntimeError(f"summary state {head}/{k}")
+            if s.get("attempt_id")!=EXPECTED_ATTEMPT_ID:
+                raise RuntimeError(f"attempt identity {head}/{k}: {s.get('attempt_id')}")
             g=s.get("guards",{})
             must_true=["fresh_model_optimizer_scheduler_rng","meta_only_optimizer_updates","evaluation_model_eval","evaluation_no_grad"]
             if not all(g.get(x) is True for x in must_true): raise RuntimeError(f"guard true {head}/{k}")
@@ -232,6 +235,7 @@ def main():
     decision=decide(reports)
     report={
         "state":"R44B_HEAD_DEVELOPMENT_AGGREGATE_COMPLETE",
+        "attempt_id":EXPECTED_ATTEMPT_ID,
         "interpretation":"DEVELOPMENT_MODEL_SELECTION_EVIDENCE_ONLY",
         "manifest_canonical_sha256":msha,
         "population_rows_per_head":1942,
