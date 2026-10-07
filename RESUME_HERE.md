@@ -10664,3 +10664,49 @@ CURRENT STATUS:
 
 NEXT_ACTION:
 `WATCH_RUN_37566553994 -> ON_TERMINAL_VERIFY_ARTIFACT_AND_FREEZE_H0_VS_H1_RESULT -> APPLY_FROZEN_DECISION_RULES`.
+
+
+---
+
+## 2026-10-07 — R4.3 forensic causal review (supersedes tentative architecture escalation)
+
+**CANONICAL REPORT:**
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_CAUSAL_FORENSIC_AUDIT_AND_RESEARCH_V1.md`
+Commit `b72b013c17411e94dc0f61772684e3754c3c4853`.
+
+**R4.3 STAGE B completed:** run `37566553994`, technical SUCCESS, scientific verdict `DIAGNOSTIC_NO_ARCHITECTURE_READY`. No additional scientific training or protected tests were run in this audit.
+
+- Candidate ceiling: 697 proposals = 447 exact+type TP available / 250 FP; all P/I/C/O reachability floors possible.
+- At t=.90, C-style pre-head 371 TP / 100 FP / macro P .8334036915.
+- H0 348 TP / 85 FP / macro P .841786177.
+- H1 362 TP / 87 FP / macro P .843930214.
+- H1 FP taxonomy: 46 spurious/no-gold overlap; 34 same-type wrong-boundary overlap; 5 exact-boundary wrong-type; 2 overlap wrong-type.
+- To pass every class precision >=.90 at fixed H1 t=.90 TPs, P must lose >=3 FP, I >=26 FP, O >=20 FP: >=49 P/I/O FPs total without TP loss.
+
+**NEW ROOT FINDINGS:**
+1. `native_slots=0` and 1982 fallback slots: no actual FIT B model errors were in head negative training. In-sample B mining plus code that seeds candidates only from gold-containing sentences creates a real training-distribution mismatch; exact relative contribution remains to be measured.
+2. Cropped C-type head was trained on exact positive gold spans only, not invalid/NONE spans, but is used as a validity veto.
+3. Actual-code synthetic unit test `37568400156` SUCCESS proves invalid predicted I-P after O becomes a candidate span without transition check; occurrence on real FIT remains unmeasured.
+4. Current H0/H1 heads can only accept/reject frozen B coordinate/type; no boundary/type repair, no missing entity recovery.
+5. A common t across unrelated sigmoid/softmax probabilities is not scientifically calibrated.
+6. Full context here means one sentence, not an entire RCT abstract or section.
+7. Some gold-absent spans may be annotation-incomplete, not necessarily clinically incorrect; EBM-NLP annotation noise/granularity is literature documented.
+8. The current FP taxonomy is operational, not proof of one dominant pathology; R4.3 46 spurious FP differ from older R4.2C distributions.
+9. Duplicate-count hazard is future only; current B spans unique. Overlap boundary label overwrite is future nested-entity hazard only.
+10. SELECT now exposed; do not treat a further adaptive run on it as a fresh independent test.
+
+**LITERATURE REVIEWED:** PICOX 2024, section-specific PICO 2023, NoiseBench 2024, CMiNER 2025, BEAN 2025, BGNER 2025, OpenBioNER-v2 2026, Multi-head Tri-Affine 2026, Trialstreamer operational workflow, Elicit and independent Elicit evaluation, GLiNER-biomed, BOPN and Locate-and-Label. Exact PICO gate outcomes are not directly comparable to vendor narrative extraction accuracy.
+
+**IMPLEMENTED:** report freeze, methods registry update, `r43_semantic_contract_audit.py` tested SUCCESS, `r43_fit_b_native_error_causal_audit.py` prepared but NOT EXECUTED. A workflow creation attempt for the FIT-only replay was blocked, so no real-world B FIT error counts have been claimed.
+
+**NEW NEXT_ACTION:**
+`COMPLETE_FIT_ONLY_CAUSAL_REPLAY_AND_PROTOCOL_AUDIT -> FREEZE_RESULT -> ADVERSARIAL_HIGHER_MODEL_REVIEW -> DESIGN_OOF_NEGATIVE_MINING_WITH_GOLDLESS_COVERAGE -> PROSPECTIVE_TRAIN_ONLY_MODEL_COMPARISON`
+
+Do NOT:
+- reinterpret R4.3 as a scientific PASS;
+- tune R4.3 thresholds on exposed SELECT;
+- train BOPN, triaffine, MRC, GlobalPointer or larger encoder now;
+- open historical DEV, protected tests, FactPICO, 60-RCT consumed holdout;
+- perform concurrent training.
+
+Maintain strictly sequential scientific execution.
