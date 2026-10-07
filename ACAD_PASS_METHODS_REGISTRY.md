@@ -150,3 +150,34 @@ H0/H1 implementation is mechanics-ready but MUST remain unlaunched until Stage A
 ### Additional retained alternative
 
 Diffusion-style boundary denoising / DiffusionNER is retained as a later alternative for exact-boundary recovery. It is lower priority than the already source-audited BOPN / Locate-and-Label repair family unless later evidence shows iterative denoising is specifically warranted.
+
+
+## 2026-10-07 causal forensic verdict — IMPORTANT
+
+Canonical audit:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R43_CAUSAL_FORENSIC_AUDIT_AND_RESEARCH_V1.md`
+
+R4.3 Stage B run `37566553994` technical SUCCESS, frozen scientific gate FAILED for both heads.
+At t=.90: baseline C-style macro precision .833404; H0 .841786 (348TP/85FP); H1 .843930 (362TP/87FP).
+H1 still has 46 spurious no-overlap FP and 34 same-class wrong-boundary overlap FP.
+Candidate ceiling recall: P .815, I .648, C .730, O .710, so a candidate repair step is not essential for the current >=.20 recall gate.
+
+**Confirmed major supervision gap:** native model error negative slots = ZERO; 1982 background fallback, 6157 static local/composite negatives. Mining source in `r43_stage_b_h0_h1_diagnostic.py` loops only through FIT gold positives, excluding goldless sentence FP candidates by construction. In-sample B inference can also hide errors. READ-ONLY FIT causal replay script prepared but not yet executed.
+
+**Confirmed positive-only C Type**: cropped type head trained only exact gold spans, not NONE/hard negatives.
+**Actual-code synthetic BIO bug proof**: run `37568400156` SUCCESS; an I-P after O is silently treated as new P entity. Real FIT incidence NOT YET MEASURED.
+**Other risks:** duplicated accepted predictions could bias future candidate-union evaluation; whole-sentence context not full RCT abstract; original EBM-NLP annotation disagreements; exposed SELECT cannot serve as fresh model-selection benchmark.
+
+New retained literature:
+- NoiseBench EMNLP 2024 real annotation noise
+- CMiNER 2025 missing/noisy labels
+- BEAN 2025 triaffine type/boundary
+- BGNER 2025 boundary-aware GlobalPointer
+- Multi-head Tri-Affine Attention 2026
+- GLiNER-biomed 2025 preprint
+- OpenBioNER-v2 2026
+- source-specific PICO section learning and corrected EBM-PICO labels.
+
+**New highest priority**: FIT-only read-only causal replay + protocol audit, THEN prospectively frozen OOF TRAIN-only hard negatives, joint contextual NONE/P/I/C/O, and only later bounded repair/hybrid or stronger model if justified.
+
+DO NOT prematurely train triaffine/BOPN or use SELECT/historical DEV/protected tests to choose architecture.
