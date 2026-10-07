@@ -4,7 +4,12 @@ on:
   push:
     branches: [at0-en-v2.6-dev]
     paths:
-      - 'phase2/academic_transform/at0_en/v2_6/**'
+      - 'phase2/academic_transform/at0_en/v2_6/gate_a/**'
+      - 'phase2/academic_transform/at0_en/v2_6/gate_b1/**'
+      - 'phase2/academic_transform/at0_en/v2_6/gate_b2/**'
+      - 'phase2/academic_transform/at0_en/v2_6/run_v2_6_batch.py'
+      - 'phase2/academic_transform/at0_en/v2_6/tests/check_v2_6_representation_dev.py'
+      - 'phase2/academic_transform/at0_en/v2_6/tests/check_v2_6_r4_surface_dev.py'
       - '.github/workflows/at0_en_v2_6_dev_representation.yml'
 
 permissions:
