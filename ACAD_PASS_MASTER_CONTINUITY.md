@@ -5035,3 +5035,101 @@ Do NOT:
 - perform concurrent training.
 
 Maintain strictly sequential scientific execution.
+
+
+---
+
+## 2026-10-07 — R4.4-A LAUNCHED AFTER FORENSIC/SOURCE-PARITY REVIEW
+
+### Correct source protocol confirmation
+
+Newest corrected source-parity run:
+- run `37580279584` SUCCESS
+- artifact `11464027321`
+- digest `sha256:86ca5a0efa626df59261884e70b95eea7cee8ee0f196f05b35d222c9bd1bfabe`
+- freeze: `AT0_EN_V26_R43_SOURCE_PROTOCOL_PARITY_V2_FREEZE.md`
+
+It executes the original `update_data_to_max_len(256)` plus the actual combined-file `evaluate.py -lf` path.
+Official/manually independent strict-B source inventory matches exactly:
+- P426 / I1326 / C181 / O1067 = 3000 total.
+Legacy local-continuation parser = P434 / I1328 / C181 / O1068 = 3011.
+All +11 are example-initial continuation fragments (+8P/+2I/+1O).
+17 raw tokenizer-empty rows are removed by source preprocessing; no additional max-length split is created.
+Run `37570558785` remains superseded tooling error and must not be cited scientifically.
+
+### R44 design state
+
+Canonical files:
+- `AT0_EN_V26_R44_OOF_SUPERVISION_REPAIR_DESIGN_V1.md`
+- `AT0_EN_V26_R44_ADVERSARIAL_PROTOCOL_REVIEW_V1.md`
+- `AT0_EN_V26_R44_PREFLIGHT_FREEZE_V1.md`
+- `AT0_EN_V26_R44A_OOF_BANK_AUTHORIZATION_V1.md`
+- `AT0_EN_V26_R44A_PRELAUNCH_FORENSIC_AUDIT_V1.md`
+
+Read-only preflight:
+- run `37572165532` SUCCESS
+- R44 manifest SHA `799844f1bdd15792740333b2ad57c8aad7bb8f265566fece06f4a2ff61574720`
+- parent = prior R4.3 FIT only; old R4.3 SELECT excluded.
+- DESIGN = 256 docs / 1034 examples / 26,595 tokens / P271 I829 C115 O677.
+- VERIFY_INTERNAL = 64 docs / P68 I207 C29 O169. It is INTERNAL only, not a pristine external benchmark, and remains unopened by R44-A.
+- 5 OOF folds = 52/51/51/51/51 docs with balanced classes and C>=23 each.
+
+DESIGN source-only package:
+- run `37572893091` SUCCESS
+- artifact `11461097651`
+- design_source SHA `f8b49420cb17a5cb3f67f3120f9362b5e6b15fbb148176eab20105790bab1e18`
+- contains neither VERIFY_INTERNAL nor old SELECT.
+
+### Adversarial correction
+
+Ordinary head CV over one OOF bank is blocked due to second-order stacking leakage.
+R44 is split:
+- R44-A = OOF B + Boundary candidate/evidence bank ONLY.
+- STOP.
+- R44-B must later use leakage-safe nested outer/inner CV or a fully disjoint stack-development selection protocol.
+No J0/J1/head selection is authorized during R44-A.
+
+### Neutral code hardening before launch
+
+- `r44a_oof_fold_train.py`: BIO diagnostics changed from token-level orphan-I overcount to contiguous run-level `INITIAL_I_RUN/O_TO_I_RUN/CROSS_TYPE_I_RUN`; initial-I additionally flags source-gold valid document continuation. Candidate generation semantics unchanged.
+- `r44a_aggregate_bank.py`: exact DESIGN document/gold guards P271/I829/C115/O677, plus candidate-row and target-count consistency checks.
+- final mechanics/invariants run `37581258498` SUCCESS at current prelaunch code lineage.
+
+### R44-A live execution
+
+Workflow:
+`.github/workflows/r44a_oof_bank.yml`
+
+Run:
+`37581447046`
+
+Head:
+`67c91c0c0f0155ca443bdfef80133cd0700dec14`
+
+State at launch checkpoint:
+- fold 0 = IN_PROGRESS
+- folds 1/2/3/4 = QUEUED
+- max-parallel=1 confirmed operationally; no concurrent scientific fold.
+- aggregate waits until all five fold jobs succeed.
+
+Each fold:
+- B_CANDIDATE fixed 10 epochs
+- C_BOUNDARY fixed 3 epochs
+- train = DESIGN minus that fold
+- infer = held-out fold only
+- gold labels assigned only AFTER inference to candidate targets/taxonomy
+- no C_TYPE, no downstream head, no threshold selection
+- temporary model weights are not uploaded
+- frozen candidate bank / summary / model hashes / guards only.
+
+Automation:
+`6ac4142f5a1c8191aa1d615ea7e5bf81`
+now watches run `37581447046` hourly for meaningful progress/terminal state and MUST NOT start follow-on work.
+
+### Mandatory stop
+
+After aggregate:
+`STOP_BEFORE_R44B_HEAD_TRAINING_OR_VERIFY_INTERNAL_ACCESS`
+
+NEXT:
+`COMPLETE_R44A_OOF_BANK -> FREEZE_AND_AUDIT_REAL_OOF_ERROR_DISTRIBUTION -> SELECT/FREEZE_LEAKAGE_SAFE_R44B_PROTOCOL -> ONLY_THEN_CONSIDER_HEAD_TRAINING`.
