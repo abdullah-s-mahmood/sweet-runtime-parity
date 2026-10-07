@@ -10998,3 +10998,50 @@ Current progression at this checkpoint:
 - fold4 queued
 - confirmed fold completion progress = 60%
 - no architecture/threshold selection before fold4 + aggregate.
+
+
+## 2026-10-07 — R44-A Fold3 completed; four-fold OOF mechanism stable
+
+Official parent run `37581447046` remains unchanged and sequential.
+
+Fold3:
+- job `112661815321` SUCCESS
+- artifact `11497847716`
+- artifact digest `sha256:4b034d73422602f5f34b741fc8a3b0c5c7902ae4da09ba8013a588c10a1d4fcc`
+- candidate bank SHA `6b1b3b0f5a2da8057c1fe140361e9df953899af254aca2cd2d3cd24d65397c58`
+- gold377 / candidates410 / exact-coordinate283 / exact-typed277
+- native typed precision .6756098 / recall .7347480
+- NONE127
+- same-class wrong-boundary50
+- spurious64
+- wrong-type exact-coordinate6
+- different-class wrong-boundary13
+- goldless candidates26
+- other-candidate median B confidence .9912028313
+- BIO unmatched/invalid34
+- all guards PASS.
+
+Combined folds0-3 descriptive evidence:
+- gold1515
+- candidates1560
+- exact-coordinate1125
+- exact-typed1082
+- NONE435
+- goldless94
+- typed precision .6935897
+- typed recall .7141914
+- coordinate precision .7211538
+- coordinate recall .7425743
+- taxonomy: exact1082 / same-boundary211 / spurious196 / wrong-type exact43 / different-class wrong-boundary28
+- 407/478 non-exact-typed candidates = 85.15% are same-class wrong-boundary or spurious.
+- same mechanism + high-confidence errors repeats across all four completed folds.
+
+Canonical partial freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44A_FOLDS0_3_PARTIAL_EVIDENCE_FREEZE_V1.md`
+commit `724ce4ca26c0ac7766eb1e40feb73f615718317c`.
+
+Current live state:
+- folds0-3 complete
+- fold4 in progress
+- confirmed fold completion progress = 80%
+- next after fold4 is aggregate, then full OOF audit and adversarial/higher-model review before any R44-B training.
