@@ -11045,3 +11045,51 @@ Current live state:
 - fold4 in progress
 - confirmed fold completion progress = 80%
 - next after fold4 is aggregate, then full OOF audit and adversarial/higher-model review before any R44-B training.
+
+
+## 2026-10-07 — R44-A COMPLETE; R44-B B1 nested parallel phase launched
+
+R44-A official run `37581447046` completed SUCCESS including all five folds and aggregate.
+Final aggregate:
+- state `R44A_OOF_BANK_COMPLETE`
+- aggregate artifact `11506754163`
+- artifact digest `sha256:166f9ad326efbb52a9945171e15bc7f39011fe469f50cb80e3bd0435e0e7b669`
+- candidate bank SHA `6f20f12e8bcb814067f689f5acc27918b98de93e6e88dd1ebb53d7689bc1d946`
+- DESIGN docs256; gold1892; candidates1942
+- exact-coordinate1406; exact-typed1355; NONE536; goldless candidates112
+- native typed P=.6977343 / R=.7161734 / F1=.7068336
+- coordinate P=.7239959 / R=.7431290
+- target counts NONE536/P213/I591/C87/O515
+- taxonomy exact1355 / wrong-type exact51 / same-class wrong-boundary264 / different-class wrong-boundary30 / spurious242
+- all 536 NONE rows are boundary/spurious; 51 wrong-type exact-coordinate rows are positive type-correction cases.
+- per-class coordinate recall ceilings P=.785978 / I=.712907 / C=.756522 / O=.760709, all far above frozen .20 recall floor.
+- boundary repair is NOT prerequisite before corrected verifier.
+
+R44-A full artifact audit:
+- run `37682327706` SUCCESS
+- state `R44A_FULL_OOF_AUDIT_PASS`
+- artifact `11509711022`
+- digest `sha256:1fad91a76bd3a64cd972f535eb61625cd2b8618119396f30c010694976edbb63`
+- recommended `B1_NESTED_OUTER_INNER_DOCUMENT_CV`
+- C target support87; fold C coordinate-ceiling range .652174-.826087.
+Canonical final freeze:
+`AT0_EN_V26_R44A_FINAL_OOF_RESULT_FREEZE_V1.md`, commit `b0e96dbff8640fdb8e292448199ef0f510057822`.
+
+R44-B:
+- protocol frozen as `AT0_EN_V26_R44B_B1_NESTED_PROTOCOL_FREEZE_V1.md`, commit `d70f36bd65877ecc903cab485c8123c0e6887092`.
+- key reduction: 20 logical outer/inner upstream fits -> 10 unique unordered pair-exclusion trainings.
+- preflight run `37682982987` SUCCESS, state `R44B_B1_PREFLIGHT_PASS`.
+- preflight artifact `11510186523`, digest `sha256:82e26882fbfef480c478fa51f30ec9444255ace9f763c749e1f8f31e1c19bca9`.
+- J0 params584631; J1 params667836.
+- pair upstream authorization `AT0_EN_V26_R44B_B1_PAIR_UPSTREAM_AUTHORIZATION_V1.md`, commit `cbb0052d0c5d61597b0a70e5d51654883e9a32c1`.
+
+ACTIVE run:
+- `37683637815` — `R44-B B1 parallel pair-exclusion upstream`.
+- after frozen precheck PASS, all 10 pair jobs are simultaneously IN_PROGRESS.
+- label-independent context-cache job is also IN_PROGRESS.
+- total active parallel jobs observed = 11.
+- max-parallel for scientific pair jobs =10.
+- each pair has immutable inputs, pair-specific outputs, no shared mutable state; aggregate waits for all pair jobs.
+- no J0/J1 training authorized yet.
+- next: pair jobs -> pair aggregate nested-bank audit + context cache verify -> separate head-training authorization.
+- VERIFY_INTERNAL, old SELECT, DEV/test/protected sets remain closed.
