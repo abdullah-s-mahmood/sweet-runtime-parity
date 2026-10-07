@@ -4,6 +4,8 @@ import argparse, collections, hashlib, json, pathlib
 
 CLASSES=["P","I","C","O"]
 EXPECTED_MANIFEST_SHA="799844f1bdd15792740333b2ad57c8aad7bb8f265566fece06f4a2ff61574720"
+EXPECTED_DESIGN_GOLD={"P":271,"I":829,"C":115,"O":677}
+EXPECTED_DESIGN_DOCS=256
 
 def sha_file(p):
     h=hashlib.sha256()
@@ -85,6 +87,11 @@ def main():
         fold_table.append({"fold":f,"heldout_documents":len(expected[f]),
                            "candidate_metrics":met,"models":model_ids[-1]})
     if seen_docs!=set(m["design_documents"]):raise RuntimeError("aggregate DESIGN coverage mismatch")
+    if len(seen_docs)!=EXPECTED_DESIGN_DOCS:
+        raise RuntimeError(f"aggregate DESIGN document count {len(seen_docs)} != {EXPECTED_DESIGN_DOCS}")
+    observed_gold={c:int(total_gold[c]) for c in CLASSES}
+    if observed_gold!=EXPECTED_DESIGN_GOLD:
+        raise RuntimeError(f"aggregate DESIGN gold mismatch {observed_gold} != {EXPECTED_DESIGN_GOLD}")
 
     all_rows.sort(key=lambda r:(r["fold"],r["document"],r["sentence"],r["start"],r["end"],r["b_type"]))
     bankout=a.out/"R44A_OOF_CANDIDATE_BANK.jsonl"
