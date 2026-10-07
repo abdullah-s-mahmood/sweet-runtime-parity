@@ -172,6 +172,18 @@ def validate_complete(outputs_root,nested_root,manifest):
             must_false=["mechanics_state_reused","verify_internal_used","old_select_used","protected_data_used","threshold_evaluation_performed","calibration_fitted","early_stopping_used","checkpoint_shopping"]
             if any(g.get(x) for x in must_false): raise RuntimeError(f"guard false {head}/{k}")
             if sha256_path(prob_path)!=s.get("probabilities_sha256"): raise RuntimeError(f"prob SHA {head}/{k}")
+            ckpt=summary_path.parent/f"R44B_{head}_FINAL_MODEL.safetensors"
+            if not ckpt.exists() or sha256_path(ckpt)!=s.get("checkpoint_sha256"):
+                raise RuntimeError(f"checkpoint physical SHA {head}/{k}")
+            if int(s.get("seed",-1))!=44 or int(s.get("parameter_count",-1)) not in {584631,667836}:
+                raise RuntimeError(f"head identity {head}/{k}")
+            sch=s.get("schedule",{})
+            expected_schedule={"epochs":10,"batch_size":64,"optimizer":"AdamW","lr":0.001,
+                               "weight_decay":0.01,"gradient_clip":1.0,
+                               "scheduler":"linear_decay_no_warmup","early_stopping":False,
+                               "checkpoint_selection":"FINAL_FIXED_EPOCH_ONLY","loss":"ordinary_5way_cross_entropy"}
+            if any(sch.get(key)!=val for key,val in expected_schedule.items()):
+                raise RuntimeError(f"schedule mutation {head}/{k}: {sch}")
             rows=read_jsonl(prob_path)
             evalp=nested_root/f"R44B_OUTER_{k}_EVAL.jsonl"; ev=read_jsonl(evalp)
             if len(rows)!=len(ev) or len(rows)!=int(s["eval_rows"]): raise RuntimeError(f"row count {head}/{k}")
