@@ -283,3 +283,35 @@ The authors:
 5. Only if necessary, section-conditioned contextual model; then bounded repair or advanced pair scoring.
 
 No scientific model run or protected dataset access was added by this provenance verification.
+
+
+---
+
+## I. Additional critical discovery: stacked in-sample feature leakage (2026-10-07)
+
+**Status: CONFIRMED TRAINING-DESIGN EXPOSURE; magnitude not yet estimated.**
+
+The initial recommendation to do OOF only for B hard-negative mining is **INCOMPLETE**.
+
+Inspect the actual Stage-A and Stage-B source:
+- `r43_fit_ancestors_train.py:236-241`: the C_BOUNDARY token model is fitted on *all FIT gold boundary tags*. The C_TYPE model is fitted on *all FIT exact gold spans*.
+- `r43_stage_b_h0_h1_diagnostic.py:143-161`: `infer_boundary_and_context` produces both boundary softmax support and hidden contextual vectors from the fitted C_BOUNDARY encoder.
+- `r43_stage_b_h0_h1_diagnostic.py:501-556`: those C_BOUNDARY vectors are computed for FIT and SELECT together, then the **FIT in-sample contextual vectors** train the downstream H0/H1. The observed last batch training losses (~0.0008) are near zero, while accepted SELECT FP remains high.
+
+This is a form of **stacking / representation in-sample exposure**: downstream H0/H1 learn features that their own ancestor model learned with those same gold boundary labels. This is not SELECT-label leakage, but it creates a different easy in-sample joint distribution from deployment on unseen documents. It also affects the upstream positive-only C_TYPE head used in the consensus.
+
+**Do not claim this is quantitatively proven as the dominant failure cause yet.** An ablation is needed to compare FIT in-sample versus group-disjoint OOF upstream features and candidate predictions.
+
+### Required corrected experimental design
+
+For any next authorized model experiment:
+1. Freeze deterministic group-disjoint 3-fold partitions **entirely inside FIT**.
+2. For each held-out FIT fold, train ancestor B **AND C_BOUNDARY** (and C_TYPE if continuing to use it) on the other folds only. NEVER expose held-out fold gold to its feature-producing ancestor.
+3. Infer native B candidate proposals, boundary supports and contextual vectors on that held-out FIT fold. Include **goldless sentences**, wrong-boundary, wrong-type and high-confidence spurious candidates.
+4. Construct gold/NONE typed training outcomes with gold precedence and ambiguity/annotation safeguards; freeze an OOF feature/negative manifest and hashes.
+5. Train corrected contextual 5-way candidate existence head on the OOF features; compare H0/H1 on identical OOF data. Carefully specify how a final ancestor fitted on all FIT produces SELECT/test features; assess the resulting cross-fitting-vs-refit distribution shift via FIT-internal validation, without selecting using exposed SELECT.
+6. Use separate group-disjoint inner calibration folds to control precision/recall and selective review coverage. Avoid using a single outer held-out fold simultaneously as hard-negative source, feature fitting and calibration.
+7. Verify that OOF head training avoids the severe in-sample loss near-zero without sufficient discriminative generalization.
+8. If OOF ancestor replication is computationally infeasible, use a simpler one-stage direct span classifier trained/evaluated with group-disjoint document splits as a transparent baseline instead of falsely asserting an unbiased learned cascade.
+
+**Priority update:** `OOF_ALL_LABEL_SUPERVISED_UPSTREAM_FEATURES_AND_NEGATIVE_BANK` takes precedence over OOF B negatives alone. A triaffine/GlobalPointer model trained atop leaked upstream features would not fix this.
