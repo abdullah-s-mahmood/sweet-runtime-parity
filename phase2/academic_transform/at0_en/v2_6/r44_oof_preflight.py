@@ -97,6 +97,48 @@ def flat_target(rows,fraction):
     for c in CLASSES:t["gold_"+c]=fraction*s["gold_counts"][c]
     return t
 
+def subset_objective(rows,target):
+    s=sum_stats(rows)
+    vals={
+      "documents":s["documents"],"tokens":s["tokens"],"goldless_sentences":s["goldless_sentences"],
+      "TITLE":s["section_counts"]["TITLE"],"METHODS":s["section_counts"]["METHODS"]}
+    for c in CLASSES: vals["gold_"+c]=s["gold_counts"][c]
+    score=0.0
+    score+=2.0*((vals["documents"]-target["documents"])/max(1.0,target["documents"]))**2
+    score+=0.5*((vals["tokens"]-target["tokens"])/max(1.0,target["tokens"]))**2
+    score+=0.5*((vals["goldless_sentences"]-target["goldless_sentences"])/max(1.0,target["goldless_sentences"]))**2
+    for c in CLASSES:
+        score+=2.0*((vals["gold_"+c]-target["gold_"+c])/max(1.0,target["gold_"+c]))**2
+    score+=0.25*((vals["TITLE"]-target["TITLE"])/max(1.0,target["TITLE"]))**2
+    score+=0.25*((vals["METHODS"]-target["METHODS"])/max(1.0,target["METHODS"]))**2
+    return score
+
+def optimize_pair_swaps(chosen,remain,target,seed_tag,max_swaps=1000):
+    """Deterministic local optimization of the predeclared balance objective.
+    It does not alter seed, target size, target statistics, tolerance or data universe.
+    """
+    chosen=list(chosen); remain=list(remain)
+    current=subset_objective(chosen,target); swaps=[]
+    for step in range(max_swaps):
+        best=None
+        # Exhaustive single pair exchange; deterministic tie-break only.
+        for ci,a in enumerate(chosen):
+            for ri,b in enumerate(remain):
+                candidate=chosen.copy(); candidate[ci]=b
+                score=subset_objective(candidate,target)
+                if score >= current-1e-15: continue
+                tie=sha_text(f"{SEED}|{seed_tag}|SWAP|{a['document']}|{b['document']}")
+                rec=(score,tie,ci,ri,a,b)
+                if best is None or rec[:2] < best[:2]: best=rec
+        if best is None: break
+        score,tie,ci,ri,a,b=best
+        chosen[ci],remain[ri]=b,a
+        swaps.append({"step":step+1,"out_document":a["document"],"in_document":b["document"],
+                      "objective_before":current,"objective_after":score,"tie_sha256":tie})
+        current=score
+    return chosen,remain,{"initial_objective":None,"final_objective":current,
+                           "swap_count":len(swaps),"swaps":swaps}
+
 def greedy_subset(rows,n,seed_tag):
     target=flat_target(rows,n/len(rows))
     remain=list(rows); chosen=[]; cur=collections.Counter()
@@ -111,7 +153,10 @@ def greedy_subset(rows,n,seed_tag):
         cur["documents"]+=1; cur["tokens"]+=r["tokens"]; cur["goldless_sentences"]+=r["goldless_sentences"]
         cur["TITLE"]+=r["section_counts"]["TITLE"]; cur["METHODS"]+=r["section_counts"]["METHODS"]
         for c in CLASSES:cur["gold_"+c]+=r["gold_counts"][c]
-    return chosen,remain,target
+    initial=subset_objective(chosen,target)
+    chosen,remain,opt=optimize_pair_swaps(chosen,remain,target,seed_tag)
+    opt["initial_objective"]=initial
+    return chosen,remain,target,opt
 
 def assign_folds(rows,k=5):
     totals=sum_stats(rows)
@@ -170,7 +215,7 @@ def main():
     dups={h:v for h,v in bytok.items() if len(v)>1}
     if dups: raise RuntimeError(f"parent FIT has duplicate token groups unexpectedly: {dups}")
 
-    verify,design,target=greedy_subset(rows,64,"VERIFY")
+    verify,design,target,verify_optimization=greedy_subset(rows,64,"VERIFY")
     if len(verify)!=64 or len(design)!=256: raise RuntimeError("DESIGN/VERIFY size")
     folds,sizes,fold_targets=assign_folds(design,5)
 
@@ -223,6 +268,7 @@ def main():
       "manifest_sha256":manifest_sha,
       "parent_fit_stats":pstats,"design_stats":dstats,"verify_internal_stats":vstats,
       "verify_deviation_from_target":vdev,
+      "verify_pair_swap_optimization":verify_optimization,
       "oof_fold_stats":fold_rows,
       "section_feature_enabled":section_ok,
       "section_unknown_rate":unknown/max(1,total_examples),
