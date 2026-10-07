@@ -1,0 +1,151 @@
+name: R44-A FAST candidate parallel OOF bank
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r44a_fast_candidate_trigger.txt'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: r44a-fast-candidate-parallel-oof
+  cancel-in-progress: false
+
+jobs:
+  fold:
+    name: R44-A FAST fold ${{ matrix.fold }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: true
+      max-parallel: 5
+      matrix:
+        fold: [0, 1, 2, 3, 4]
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: requirements/r44a_fold_fast.txt
+
+      - name: Install lightweight frozen fold runtime
+        run: python -m pip install --disable-pip-version-check --quiet -r requirements/r44a_fold_fast.txt
+
+      - name: Download frozen R44 preflight manifest
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44-oof-readonly-preflight
+          path: ${{ runner.temp }}/r44/preflight
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37572165532
+
+      - name: Download frozen DESIGN-only source package
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44-design-source-only
+          path: ${{ runner.temp }}/r44/design
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37572893091
+
+      - name: Download immutable converted BiomedBERT base
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44-immutable-converted-biomedbert-base
+          path: ${{ runner.temp }}/r44/converted
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37596247997
+
+      - name: Verify immutable fast inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,os,pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"r44"
+          m=json.loads((root/"preflight/R44_OOF_MANIFEST_V1.json").read_text())
+          if m.get("manifest_sha256")!="799844f1bdd15792740333b2ad57c8aad7bb8f265566fece06f4a2ff61574720":
+              raise SystemExit("manifest identity mismatch")
+          s=json.loads((root/"design/R44_DESIGN_SOURCE_SUMMARY.json").read_text())
+          if s.get("design_source_sha256")!="f8b49420cb17a5cb3f67f3120f9362b5e6b15fbb148176eab20105790bab1e18":
+              raise SystemExit("design source identity mismatch")
+          p=root/"converted/model.safetensors"
+          got=hashlib.sha256(p.read_bytes()).hexdigest()
+          want="3a6d0b156c45ccd8093af83a9ad3d388808eba5a9e15f0032fc0fe068bb92b68"
+          if got!=want: raise SystemExit(f"converted base mismatch {got}")
+          if (root/"converted/pytorch_model.bin").exists(): raise SystemExit("unexpected pickle weight")
+          print("R44A_FAST_INPUT_IDENTITY_PASS")
+          PY
+
+      - name: Train exact fold science using immutable preconverted base
+        shell: bash
+        env:
+          TOKENIZERS_PARALLELISM: "false"
+          PYTHONHASHSEED: "44"
+          HF_HUB_OFFLINE: "1"
+          TRANSFORMERS_OFFLINE: "1"
+        run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/r44/out"
+          python phase2/academic_transform/at0_en/v2_6/r44a_oof_fold_train.py             --preconverted-base "$RUNNER_TEMP/r44/converted"             --design-source "$RUNNER_TEMP/r44/design/R44_DESIGN_SOURCE.json"             --design-summary "$RUNNER_TEMP/r44/design/R44_DESIGN_SOURCE_SUMMARY.json"             --manifest "$RUNNER_TEMP/r44/preflight/R44_OOF_MANIFEST_V1.json"             --fold "${{ matrix.fold }}"             --out "$RUNNER_TEMP/r44/out"
+
+      - name: Upload fold evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r44a-fast-fold-${{ matrix.fold }}
+          path: |
+            ${{ runner.temp }}/r44/out/R44A_FOLD_${{ matrix.fold }}_SUMMARY.json
+            ${{ runner.temp }}/r44/out/R44A_FOLD_${{ matrix.fold }}_CANDIDATES.jsonl
+            ${{ runner.temp }}/r44/out/PROCESS_STATUS.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  aggregate:
+    name: R44-A FAST aggregate
+    runs-on: ubuntu-latest
+    needs: fold
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+
+      - name: Download frozen manifest
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44-oof-readonly-preflight
+          path: ${{ runner.temp }}/r44/preflight
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37572165532
+
+      - name: Download all current fast fold artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: r44a-fast-fold-*
+          path: ${{ runner.temp }}/r44/folds
+          merge-multiple: false
+
+      - name: Aggregate with unchanged scientific guards
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_6/r44a_aggregate_bank.py             --artifacts-root "$RUNNER_TEMP/r44/folds"             --manifest "$RUNNER_TEMP/r44/preflight/R44_OOF_MANIFEST_V1.json"             --out "$RUNNER_TEMP/r44/aggregate"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r44a-fast-oof-candidate-bank
+          path: ${{ runner.temp }}/r44/aggregate
+          if-no-files-found: error
+          retention-days: 90
