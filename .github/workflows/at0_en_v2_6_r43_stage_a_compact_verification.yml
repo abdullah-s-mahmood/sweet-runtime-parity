@@ -1,0 +1,99 @@
+name: AT0 EN V2.6 R4.3 Stage-A compact identity verification
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r43_stage_a_extract_trigger_v1.txt'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: at0-en-v2.6-dev
+          fetch-depth: 1
+      - name: Download completed Stage-A artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: at0-en-v2-6-r43-fit-ancestors
+          path: ${{ runner.temp }}/r43/stage_a
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37535183682
+      - name: Validate summary and physical weights
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r43/compact"
+          python - <<'PY'
+          import hashlib,json,os,pathlib,datetime
+          base=pathlib.Path(os.environ["RUNNER_TEMP"])/"r43/stage_a"
+          out=pathlib.Path(os.environ["RUNNER_TEMP"])/"r43/compact"
+          ss=list(base.rglob("R43_FIT_ANCESTORS_SUMMARY.json"))
+          ps=list(base.rglob("PROCESS_STATUS.json"))
+          if len(ss)!=1 or len(ps)!=1: raise SystemExit(f"summary/status count mismatch {ss} {ps}")
+          summary=json.loads(ss[0].read_text())
+          status=json.loads(ps[0].read_text())
+          assert summary["state"]=="R43_FIT_ANCESTORS_COMPLETE",summary.get("state")
+          assert status["state"]=="COMPLETED" and status["progress_percent"]==100,status
+          assert summary["split_manifest_sha256"]=="fbed5472eee4d0158626f438f5169f8767cb44dd65d8d89c74b8a3a573321226"
+          assert summary["train_sha256"]=="6491a57e5c8639e5bfc3c0326b8501869fccab655a1ed571b75a772dc1c70a5e"
+          assert summary["converted_base_sha256"]=="3a6d0b156c45ccd8093af83a9ad3d388808eba5a9e15f0032fc0fe068bb92b68"
+          assert summary["fit"]["documents"]==320 and summary["fit"]["sentences"]==1292
+          assert summary["fit"]["gold_total"]==2371
+          assert summary["fit"]["gold_counts"]=={"P":342,"I":1038,"C":144,"O":847}
+          guards={"fit_only_training":True,"select_used_for_training":False,"historical_dev_read":False,
+                  "test_read":False,"other_folds_read":False,"factpico_used":False,
+                  "consumed_60_rct_holdout_used":False,"checkpoint_selection":"FINAL_FIXED_EPOCH_ONLY"}
+          for k,v in guards.items(): assert summary["guards"].get(k)==v,(k,summary["guards"].get(k))
+          models={}
+          for key,name,ep in [("B_CANDIDATE","b_candidate",10),("C_BOUNDARY","c_boundary",3),("C_TYPE","c_type",3)]:
+              matches=list(base.rglob(name))
+              matches=[p for p in matches if (p/"model.safetensors").exists()]
+              if len(matches)!=1: raise SystemExit(f"model dir count for {name}: {len(matches)}")
+              p=matches[0]/"model.safetensors"
+              if (matches[0]/"pytorch_model.bin").exists(): raise SystemExit(f"pickle model found {name}")
+              h=hashlib.sha256()
+              with p.open("rb") as f:
+                  for chunk in iter(lambda:f.read(1<<20),b""): h.update(chunk)
+              actual=h.hexdigest()
+              expected=summary["models"][key]["model_sha256"]
+              if actual!=expected: raise SystemExit(f"{name} hash mismatch")
+              assert int(summary["models"][key]["epochs"])==ep,summary["models"][key]
+              models[key]={**summary["models"][key],"bytes":p.stat().st_size}
+          payload={
+            "state":"R43_STAGE_A_COMPACT_IDENTITY_PASS",
+            "source_run":37535183682,
+            "source_artifact":11455753005,
+            "source_artifact_digest":"sha256:f2a0352cc4668faf180c4486f496d5bf6ccfd0e39d57fe8144b1b55808d3c2b6",
+            "run_head":"ad058bc856c280914158e005b07ffe6a0834aa13",
+            "original_summary_sha256":hashlib.sha256(ss[0].read_bytes()).hexdigest(),
+            "original_status_sha256":hashlib.sha256(ps[0].read_bytes()).hexdigest(),
+            "split_manifest_sha256":summary["split_manifest_sha256"],
+            "train_sha256":summary["train_sha256"],
+            "converted_base_sha256":summary["converted_base_sha256"],
+            "models":models,"fit":summary["fit"],"guards":summary["guards"],
+            "process_status":status,"observed_at_utc":datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "scientific_stage_b_started":False,
+            "next_action":"FREEZE_STAGE_A_AND_AUTHORIZE_ONE_FROZEN_STAGE_B_H0_H1_RUN"
+          }
+          (out/"R43_STAGE_A_COMPACT_VERIFICATION.json").write_text(json.dumps(payload,indent=2,sort_keys=True)+"\n")
+          print(json.dumps(payload,indent=2,sort_keys=True))
+          PY
+      - name: Hash and publish compact evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum "$RUNNER_TEMP/r43/compact/R43_STAGE_A_COMPACT_VERIFICATION.json" > "$RUNNER_TEMP/r43/compact/SHA256SUMS.txt"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: at0-en-v2-6-r43-stage-a-compact-verification
+          path: ${{ runner.temp }}/r43/compact
+          retention-days: 90
+          if-no-files-found: error
