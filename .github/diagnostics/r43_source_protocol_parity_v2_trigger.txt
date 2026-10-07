@@ -1,0 +1,1 @@
+Run pinned source preprocessing + official combined-file evaluator parity on fold1 TRAIN only. No DEV/TEST/other folds, no training.
