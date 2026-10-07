@@ -8,7 +8,7 @@
 
 **`STOP_ARCHITECTURE_ESCALATION; FIX_NEGATIVE_GENERATION_AND_EVALUATION_CONTRACT_FIRST`.**
 
-The current evidence does **not** establish that the next best move is BOPN, triaffine, MRC or a larger encoder. R4.3 Stage B completed technically, but neither H0 contextual MLP nor H1 contextual+b iaffine passed the frozen scientific gate. Two stronger, identifiable causal problems precede architecture selection:
+The current evidence does **not** establish that the next best move is BOPN, triaffine, MRC or a larger encoder. R4.3 Stage B completed technically, but neither H0 contextual MLP nor H1 contextual+biaffine passed the frozen scientific gate. Two stronger, identifiable causal problems precede architecture selection:
 
 1. The planned native/model-error negative training component was **entirely absent**: Stage B recorded `native_slots=0`, despite SELECT containing 250 false native B proposals. The current mining algorithm uses predictions from a B model trained on the same FIT examples and never seeds error mining from gold-empty sentences. The in-sample issue and goldless-sentence blind spot must be distinguished in a FIT-only audit.
 2. The legacy cropped C-type head receives **only gold positive spans** in training, no invalid or NONE examples, yet its multi-label sigmoid outputs and exclusive threshold gates are treated as if they reject invalid boundaries and spurious candidates.
@@ -40,7 +40,7 @@ Stage B:
 |---|---:|---:|---:|---:|
 | Frozen pre-pair C-style consensus | 371 | 100 | 0.833404 | see frozen summary |
 | H0 contextual MLP | 348 | 85 | 0.841786 | 0.536197 |
-| H1 contextual+b iaffine | 362 | 87 | 0.843930 | 0.550659 |
+| H1 contextual+biaffine | 362 | 87 | 0.843930 | 0.550659 |
 
 The H1 head removed 13/100 baseline false positives but also 9/371 true positives. H0 removed 15/100 FPs but 23/371 TPs. At t=.90, H1 outperformed H0 in macro precision by only 0.002144 absolute (0.214 percentage point).
 
@@ -140,7 +140,7 @@ Context-signal FIT-only probe was positive (+0.07797 macro-F1 versus cropped con
 
 ### C1. Direct PICO evidence
 - **PICOX**, Zhang et al., *JAMIA* (2024), DOI `10.1093/jamia/ocae065`, https://pmc.ncbi.nlm.nih.gov/articles/PMC11031223/. Joint boundary generation, span typing, composite negative augmentation. Strongest directly domain-matched precedent. Its reported entity F1 is NOT comparable to our per-class precision gate without aligning protocol.
-- **Section-specific PICO extraction**, *JAMIA* (2023), https://pmc.ncbi.nlm.nih.gov/articles/PMC10500081/. Highlights difficulty of PICO spans and dependence on abstract discourse/section, plus label complexity.
+- **Section-specific PICO extraction**, *Bioinformatics* (2023), DOI `10.1093/bioinformatics/btad542`, https://pmc.ncbi.nlm.nih.gov/articles/PMC10500081/. This is THE PAPER THAT RELEASED THE CURRENT EBM-NLPmod SOURCE: 500 reannotated RCT abstracts with simplified one-level P/I/C/O, C deliberately separate from I; first classify abstract sections, then extract entities chiefly from title/methods. Reports EBM-NLPmod entity-level micro F1 0.712 (not comparable directly to our fixed high-precision four-class gate or different evaluation split). The paper estimated title+methods contain 96.7% of the PICO elements in a 30-abstract sample, not a universal guarantee.
 - **BLINK-LSTM / BioLinkBERT**, Ghosh et al. (2024), DOI `10.1145/3632410.3632442`. Stronger biomedical encoder plus recurrent/ensemble context pathway; potential baseline, not proof of better exact-gate precision in this exact split.
 - **AlpaPICO** (2024), DOI `10.1016/j.ymeth.2024.04.005`. LLM/ICL PICO extraction as independent structured-extraction baseline, not a replacement for span-offset safety.
 
@@ -234,3 +234,52 @@ Do not run an unconstrained model zoo on exposed SELECT. Freeze comparisons insi
 **NEXT_ACTION = COMPLETE_FIT_ONLY_CAUSAL_REPLAY_AND_PROTOCOL_AUDIT; THEN SEEK_ONE_ADVERSARIAL_HIGHER_MODEL_REVIEW; ONLY THEN FREEZE_ANY_NEW_TRAINING.**
 
 Remember: a stronger model on mislabeled/easy negatives is unlikely to provide scientifically defensible progress. Repair the supervision and truth-conditions first.
+
+
+---
+
+## H. Additional domain-source verification (same-date addendum)
+
+After the first forensic freeze, direct inspection of the **original dataset authors' paper and repository** produced material clarifications.
+
+### H1. Correct provenance and ontology
+
+The pinned dataset `BIDS-Xu-Lab/section_specific_annotation_of_PICO:data/EBM-NLPmod` is explicitly described in:
+
+**Towards precise PICO extraction from abstracts of randomized controlled trials using a section-specific learning approach**, *Bioinformatics* (2023), DOI `10.1093/bioinformatics/btad542`, https://pmc.ncbi.nlm.nih.gov/articles/PMC10500081/.
+
+The authors:
+- selected and reannotated **500** RCT abstracts from EBM-NLP under a simplified, flat, **four-class P/I/C/O** scheme;
+- explicitly separated comparator C from intervention I, unlike some older EBM-NLP annotations;
+- classified sentences into background/methods/results/conclusions first and applied the PICO NER stage primarily to title/methods;
+- estimated title+methods account for **96.7%** of PICO mentions in their 30-abstract preliminary sample;
+- reported EBM-NLPmod **exact entity-level micro-F1 0.712**, token-level micro-F1 0.833, and performed five-fold cross-validation.
+
+**Consequences for ACAD_PASS:**
+1. The current independent C class is not an arbitrary modeling invention; it follows the modified corpus schema. Any future transfer of PICOX or old EBM-NLP models that **merge C into I** needs explicit ontology reconciliation.
+2. The existing CoNLL TRAIN may already be section-selected. Consequently, suggesting arbitrary full-abstract context could be counterproductive: **first verify whether the original title/methods filter has been retained**, then separately test any additional discourse context, with gold/provenance continuity.
+3. Source author's `evaluate.py` is a historical baseline; its exact spans and class accounting must be reconciled with the frozen ACAD_PASS per-class precision metrics and `I-X` continuation segmentation. It is not valid to equate token-level F1=.833 with our exact macro precision~.844.
+4. Original authors explicitly discuss boundary ambiguity, annotator disagreement, PICO role ambiguity, and RCT arm interpretation. This strengthens the case for annotation/section-aware causal audit before a more complex encoder.
+
+### H2. Recent truly PICO-specific alternatives overlooked in the first list
+
+**FinePICO**, *Journal of the American Medical Informatics Association* (2025), DOI `10.1093/jamia/ocae326`, https://pmc.ncbi.nlm.nih.gov/articles/PMC11833487/:
+- semi-supervised, fine-grained PICO recognition;
+- 2,511 abstracts assembled from four public datasets;
+- explicitly exploits limited labeled data and larger unlabeled data.
+- This may be more relevant to the current source-size/annotation bottleneck than an unrestricted triaffine switch. Results and granularity must be aligned before direct comparison.
+
+**Comparing generative and extractive approaches to information extraction from abstracts describing randomized clinical trials** (2024), https://pmc.ncbi.nlm.nih.gov/articles/PMC11036632/:
+- compares extractive and generative information extraction from RCT abstracts;
+- its extractive pipeline incorporates document-level contextualization using Longformer / Flan-T5 to avoid the loss of context caused by isolated BERT chunks.
+- This offers a possible **full-document-context** ablation if original data can be reconstructed without contamination; not an immediate substitute for fixing native negatives.
+
+### H3. Correct ordering updated
+
+1. Original EBM-NLPmod paper/code protocol and split/ontology/section audit.
+2. FIT-only frozen B native error audit including goldless sentences and BIO transitions.
+3. TRAIN-only grouped OOF hard negatives and annotation-risk labeling.
+4. Simple, prospectively frozen contextual typed-existence comparator.
+5. Only if necessary, section-conditioned contextual model; then bounded repair or advanced pair scoring.
+
+No scientific model run or protected dataset access was added by this provenance verification.
