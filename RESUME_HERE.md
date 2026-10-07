@@ -11165,3 +11165,43 @@ Observed runtime:
 
 No scientific interpretation from partial pair bank yet.
 Do not start J0/J1 until all pair banks + aggregate + context-cache verification are complete and frozen.
+
+
+---
+
+## 2026-10-08 — R44-B B1 upstream complete; pre-head review/mechanics
+
+Official run `37683637815` completed SUCCESS.
+- 10/10 pair-exclusion jobs SUCCESS.
+- aggregate state `R44B_PAIR_AGGREGATE_PASS`.
+- nested-bank artifact `11515434193`, digest `sha256:98383b4bec040f19d6e4076fea1a70dcb406366dfd4bd724d1ad2fac6d2018fb`.
+- outer meta rows: 1567 / 1519 / 1499 / 1535 / 1551.
+- outer meta C support: 68 / 66 / 71 / 69 / 71.
+- context state `R44B_BASE_CONTEXT_CACHE_PASS`.
+- context artifact `11510422862`, digest `sha256:4fdceb511c2067cf81a1ad6c64c039febf99e3c11b9d8baa32b2d73569faa91c`.
+- context shape 26,595 x 768 float32.
+- labels/protected/VERIFY_INTERNAL/old SELECT all false.
+
+Freeze:
+`AT0_EN_V26_R44B_B1_UPSTREAM_BANK_FREEZE_V1.md`
+commit `705bfa17b472fc3de096423908ed5414a2b41cfc`.
+
+Pre-head adversarial audit:
+`AT0_EN_V26_R44B_PREHEAD_ADVERSARIAL_REVIEW_V1.md`
+commit `2f3a2dca8400f4cc11e360c1918cd8e9a3dc2608`.
+Verdict: no disqualifying leakage defect; R44-B result is development model-selection evidence only, not final generalization.
+
+Higher-model review packet:
+`AT0_EN_V26_R44B_HIGHER_MODEL_REVIEW_PACKET_V1.md`
+commit `c7e72cc34af1033e0db55f04528c97e83a605267`.
+
+Actual nested-bank/context technical mechanics:
+- script `r44b_head_actual_mechanics.py`;
+- workflow `r44b_head_actual_mechanics.yml`;
+- run `37702502662` currently IN_PROGRESS;
+- scientific_head_training_performed=false by design;
+- threshold_evaluation_performed=false by design;
+- no protected data.
+
+CURRENT:
+`R44B_B1_UPSTREAM_COMPLETE_AND_FROZEN -> ACTUAL_HEAD_MECHANICS_AUDIT -> HIGHER_MODEL_REVIEW -> IF_CLEAR FIRST J0_J1 NESTED SCIENTIFIC RUN`.
