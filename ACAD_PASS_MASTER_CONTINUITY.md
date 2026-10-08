@@ -5533,3 +5533,51 @@ FORBIDDEN:
 
 NEXT:
 `COMPLETE_HUMAN_CUSTODY_RESOURCE_AND_PROVENANCE_READINESS -> INDEPENDENT_READINESS_REVIEW -> EXPLICIT_ACQUISITION_AUTHORIZATION_ONLY_THEN_RETRIEVE`.
+
+
+---
+
+## 2026-10-08 — Public human-gold federation strategy prepared
+
+User constraints clarified:
+- no local expert annotators available;
+- objective is best achievable system, ideally better than existing systems, otherwise at least matching strongest comparable system;
+- user asked whether previous methods can be rebuilt from scratch while "forgetting" prior data.
+
+Scientific answer frozen in:
+`AT0_EN_V26_DATA_RESET_AND_EVIDENCE_POLICY_V1.md`
+commit `abdc6b49602057eefe6e3a60af49bbf06cac07bc`.
+
+Core rule:
+- computational reset can erase weights/checkpoints/optimizer/calibrators/predictions;
+- scientific exposure cannot be erased;
+- previously exposed data can become TRAIN/DEVELOPMENT but cannot become genuinely untouched prospective evidence merely by retraining from scratch;
+- valid final evidence requires prespecified external/public benchmark test sets not used for score-driven tuning.
+
+New strategy packet:
+`AT0_EN_V26_PUBLIC_HUMAN_GOLD_FEDERATION_REVIEW_PACKET_V1.md`
+commit `0bf7d2831addaafd6475b1d482fc9690612cabba`.
+
+Evidence assembled:
+- Hu et al. section-specific public P/I/C/O corpora: 800 abstracts, 6821 P/I/C/O entities, explicit C;
+- PICO-Corpus: 1011 human P/I/C/O abstracts, but project-exposed -> train/dev only;
+- original EBM-NLP: 4993 abstracts; medical-professional test labels, but original schema not native separate-C;
+- DISTANT-CTO: >300k trials / ~1m sentences / >977k weak I/C annotations;
+- TrialSieve: 1609 abstracts, 52638 final spans, 20 categories, >=3 annotators per abstract, CC0 repository;
+- C-TrO: 211 human-annotated randomized phase 3/4 trial abstracts with arm/intervention/outcome relations;
+- EvidenceOutcomes: 640 RCT abstracts, three annotators, outcome-focused;
+- FinePICO: semi-supervised 2511-abstract federation;
+- PICOX: boundary/span architecture directly relevant to ACAD_PASS residual boundary/invalid-span errors;
+- AlpaPICO / GPT-4o extraction: LLM comparators/teacher candidates; semantic metrics must not be equated to strict exact-span metrics.
+
+Proposed new evidence hierarchy:
+- exposed prior corpora -> TRAIN/DEV only;
+- native explicit P/I/C/O human corpora -> core human-gold federation;
+- TrialSieve/C-TrO/EvidenceOutcomes -> auxiliary human-gold tasks via frozen adapters;
+- DISTANT-CTO/LLM outputs -> weak/silver only;
+- official untouched public test splits / leave-one-corpus-out -> benchmark/generalization evidence;
+- future truly prospective corpus remains strongest validation but is not required to continue development now.
+
+No successor model training authorized yet.
+Next checkpoint:
+`INDEPENDENT_HIGHER_MODEL_REVIEW_OF_PUBLIC_HUMAN_GOLD_FEDERATION_PACKET`.
