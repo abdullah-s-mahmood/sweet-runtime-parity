@@ -25,7 +25,7 @@ Governing independent review:
 | Access control | EVAL text/IDs/labels/scope/embeddings/discussions inaccessible to developers before final freeze | NOT_ESTABLISHED |
 | Annotation manual pin | Exact source manual revision + local immutable copy/hash | NOT_YET_FROZEN |
 | Prospective annotation addendum | Decisions 17–21 converted into immutable operational manual | NOT_YET_FROZEN |
-| Statistical implementation | Clopper-Pearson/HMAC audit code validated on synthetic data only | NOT_YET_IMPLEMENTED |
+| Statistical implementation | Clopper-Pearson/HMAC audit code validated on synthetic data only | SYNTHETIC_PREFLIGHT_PASS — run 37828307955 / artifact 11572557395 |
 | Retrieval archive tooling | Must archive exact query, timestamps, QueryTranslation, warnings, full PMIDs/XML/pagination/hashes without sampling | NOT_YET_IMPLEMENTED |
 | Trial-family provenance tooling | Deterministic exact/fuzzy triggers + registry alias ledger; no learned model required | NOT_YET_IMPLEMENTED |
 | Seed commitment procedure | Independent custodian procedure documented; actual secret NOT generated yet | PROCEDURE_PENDING |
@@ -56,3 +56,23 @@ It must contain zero:
 - real allocation seed;
 - annotations;
 - model outputs.
+
+
+## 2026-10-08 statistical readiness update
+
+Synthetic statistical preflight:
+`PASS`
+
+Run:
+`37828307955`
+
+Artifact digest:
+`sha256:f9f8f5cd80b0936f8183aacfe008525949428a1f5b310f401c6b233838668926`
+
+Frozen evidence:
+`AT0_EN_V26_FRESH_RCT_STATS_SYNTHETIC_PREFLIGHT_FREEZE_V1.md`
+
+This closes only the statistical synthetic-mechanics row.
+
+Overall state remains:
+`READINESS_INCOMPLETE_ACQUISITION_BLOCKED`.
