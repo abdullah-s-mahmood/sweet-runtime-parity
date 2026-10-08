@@ -11270,3 +11270,57 @@ The two failures do NOT invalidate scientific evidence and do NOT consume J0/J1 
 
 Current next:
 `37705640579 PASS -> freeze executor identities/artifacts -> pin one-shot scientific workflow -> run 5 folds x 2 heads safely in parallel -> aggregate complete 1942 rows/head -> freeze nomination/no-pass -> STOP before VERIFY_INTERNAL/final refit`.
+
+
+---
+
+## 2026-10-08 — R44-B one-shot consumed: NO_ARCHITECTURE_NOMINATED
+
+Official DEVELOPMENT scientific run:
+- `37706558889`
+- attempt `R44B_B1_DEV_J0J1_ATTEMPT_1`
+- precheck SUCCESS
+- 10/10 J0/J1 outer-fold jobs SUCCESS
+- aggregate SUCCESS
+- reruns 0
+
+Aggregate:
+- artifact `11520076582`
+- digest `sha256:f2375a772cc045b2aad6e207747cfec9724b6e84549b3987855ae78e3565e761`
+
+Frozen result:
+`AT0_EN_V26_R44B_B1_DEVELOPMENT_RESULT_FREEZE_V1.md`
+commit `ce12eb09cec41b4d4eb7e22fa5584f8d5d590d89`.
+
+Decision:
+`NO_ARCHITECTURE_NOMINATED`.
+
+Best frozen J0 is t=.95 with macro precision `0.845308610324185`; best frozen J1 t=.95 macro precision `0.8258277690482774`. Recall is not the blocking metric; precision is.
+
+The one-shot J0/J1 attempt is CONSUMED and MUST NOT be repeated.
+
+Read-only causal diagnosis:
+`AT0_EN_V26_R44B_B1_FAILURE_CAUSAL_DIAGNOSIS_V1.md`
+commit `f7893debaea87a2763963d57e8c9a4276d3d9170`.
+
+Key causal findings:
+- J0 t=.95: 171/189 accepted FPs (90.48%) are SAME_CLASS_WRONG_BOUNDARY or SPURIOUS_NO_OVERLAP.
+- J0 validity AUROC ~.73284; J1 ~.72637.
+- P/I/C/O-only accuracy on valid coordinates is ~.95092 J0 / ~.95164 J1, far above five-way accuracy.
+- oracle-validity + existing J1 type-only predictions would pass all frozen class precision gates (diagnostic only).
+- original B type + oracle validity still fails C precision, so type correction remains necessary.
+- J1 final training CE ~.00067-.00102 yet DEVELOPMENT precision is worse than J0, strong evidence against adding unfocused capacity.
+
+Current causal hypothesis:
+`FACTORIZE_CANDIDATE_VALIDITY_FROM_PICO_TYPE_BEFORE_BOUNDARY_REPAIR_OR_CALIBRATION`.
+
+No factorized model has been trained.
+
+Higher-model review packet prepared:
+`AT0_EN_V26_POST_R44B_FACTORIZED_REVIEW_PACKET_V1.md`
+commit `aa5d4e85d25ce371c48b5839b6cf6b97fab9802e`.
+
+NEXT:
+`OBTAIN_HIGHER_MODEL_ADVERSARIAL_REVIEW_OF_ONE_PRIMARY_NEXT_PROTOCOL -> RECONCILE -> ONLY_THEN_CONSIDER_NEW_PROSPECTIVE_DEVELOPMENT_FIT`.
+
+VERIFY_INTERNAL, final refit, calibration fitting, boundary repair, factorized training and all alternate training remain CLOSED.
