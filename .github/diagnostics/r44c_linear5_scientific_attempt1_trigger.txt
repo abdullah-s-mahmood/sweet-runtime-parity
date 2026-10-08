@@ -1,0 +1,6 @@
+ONE-SHOT SCIENTIFIC AUTHORIZATION
+attempt_id=R44C_LINEAR5_L2_DEV_ATTEMPT_1
+protocol=AT0_EN_V26_R44C_LINEAR5_L2_PROTOCOL_FREEZE_V1.md
+execution_freeze=AT0_EN_V26_R44C_LINEAR5_EXECUTION_FREEZE_V1.md
+authorization=AT0_EN_V26_R44C_LINEAR5_SCIENTIFIC_AUTHORIZATION_V1.md
+No rerun, no VERIFY_INTERNAL, no calibration, no boundary repair, no factorization, no alternate model.
