@@ -9,6 +9,8 @@ THRESHOLDS=[0.80,0.85,0.90,0.95]
 GOLD={"P":271,"I":829,"C":115,"O":677}
 ATTEMPT_ID="R44C_LINEAR5_L2_DEV_ATTEMPT_1"
 EXPECTED_MANIFEST_SHA="799844f1bdd15792740333b2ad57c8aad7bb8f265566fece06f4a2ff61574720"
+EXPECTED_CONTEXT_SHA="6bb548884cafb2a14e19b7d691b393dcf0ab9b5cc6add14e6ab0a873be33361b"
+EXPECTED_INDEX_SHA="db9a6bae51a4db38d244e9e0a98f44b5dbfb246f694db5397c6e204cd58881dd"
 
 def sha256_path(p):
     h=hashlib.sha256()
@@ -43,6 +45,19 @@ def probs(r):
     p=[float(r["p_"+c]) for c in CLASSES]
     if any(not math.isfinite(x) or x<0.0 or x>1.0 for x in p): raise RuntimeError("invalid probability")
     if abs(sum(p)-1.0)>1e-10: raise RuntimeError(f"prob sum {sum(p)}")
+    return p
+
+def validate_numeric_record(r):
+    z=[float(r["logit_"+c]) for c in CLASSES]
+    lp=[float(r["logp_"+c]) for c in CLASSES]
+    p=probs(r)
+    if any(not math.isfinite(x) for x in z+lp): raise RuntimeError("nonfinite logit/logp")
+    m=max(z)
+    ex=[math.exp(x-m) for x in z]; den=sum(ex)
+    sp=[x/den for x in ex]
+    slp=[math.log(x) for x in sp]
+    if max(abs(a-b) for a,b in zip(sp,p))>1e-10: raise RuntimeError("logit/probability mismatch")
+    if max(abs(a-b) for a,b in zip(slp,lp))>1e-10: raise RuntimeError("logit/logp mismatch")
     return p
 
 def argmax_label(r,subset=CLASSES):
@@ -193,9 +208,22 @@ def validate(outputs_root,nested_root,manifest,
         if s.get("state")!="R44C_LINEAR5_FOLD_COMPLETE" or s.get("attempt_id")!=expected_attempt_id or int(s.get("outer_fold"))!=k:
             raise RuntimeError(f"summary identity {k}")
         if int(s.get("feature_dim",-1))!=3918 or int(s.get("parameter_count",-1))!=19595: raise RuntimeError("dimension")
-        if float(s.get("l2_coefficient",-1))!=0.01: raise RuntimeError("l2")
-        if s.get("optimizer")!="LBFGS" or float(s.get("final_grad_inf",1))>1e-6: raise RuntimeError("convergence")
+        exact_schedule={
+            "l2_coefficient":0.01,"optimizer":"LBFGS","lr":1.0,"history_size":100,
+            "line_search_fn":"strong_wolfe","max_iter_per_step":1,"max_eval":25,
+            "tolerance_grad":1e-7,"tolerance_change":1e-12,
+            "convergence_grad_inf":1e-6,"max_optimizer_steps":1000
+        }
+        for name,val in exact_schedule.items():
+            if s.get(name)!=val: raise RuntimeError(f"schedule mutation {name}: {s.get(name)} != {val}")
+        if float(s.get("final_grad_inf",1))>1e-6: raise RuntimeError("convergence")
         if int(s.get("optimizer_steps",0))<1 or int(s.get("optimizer_steps",0))>1000: raise RuntimeError("steps")
+        if s.get("manifest_canonical_sha256")!=expected_manifest_sha: raise RuntimeError("fold manifest identity")
+        if s.get("context_npy_sha256")!=EXPECTED_CONTEXT_SHA or s.get("context_index_sha256")!=EXPECTED_INDEX_SHA:
+            raise RuntimeError("fold context identity")
+        osum=nested["outer"][str(k)]
+        if s.get("meta_sha256")!=osum["meta_sha256"] or s.get("eval_sha256")!=osum["eval_sha256"]:
+            raise RuntimeError("fold bank identity")
         g=s.get("guards",{})
         if not all(g.get(x) is True for x in ["train_scaler_meta_only","eval_inference_fields_stripped"]): raise RuntimeError("positive guard")
         if any(g.get(x) for x in ["eval_loss_computed","eval_gradient_computed","verify_internal_used","old_select_used","protected_data_used","calibration_fitted","boundary_repair_used","hard_negative_weighting","class_weighting","retry_or_restart"]):
@@ -215,7 +243,7 @@ def validate(outputs_root,nested_root,manifest,
             if int(rr["document"]) not in folds[k]: raise RuntimeError("fold docs")
             for forbidden in ["target","taxonomy","goldless_example"]:
                 if forbidden in rr: raise RuntimeError(f"leaked eval metadata {forbidden}")
-            probs(rr)
+            validate_numeric_record(rr)
             rr["target"]=str(er["target"])
             rr["taxonomy"]=str(er.get("taxonomy",""))
             rr["goldless_example"]=bool(er.get("goldless_example",False))
