@@ -1,0 +1,5 @@
+ONE-SHOT AUTHORIZATION
+attempt_id=R44B_B1_DEV_J0J1_ATTEMPT_1
+execution_freeze=AT0_EN_V26_R44B_HEAD_EXECUTION_FREEZE_V1.md
+higher_model_verdict=PROCEED_WITH_NONSCIENTIFIC_IMPLEMENTATION_FIXES_ONLY
+No rerun, no VERIFY_INTERNAL, no calibration fitting, no boundary repair.
