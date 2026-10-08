@@ -117,3 +117,28 @@ Current checkpoint remains:
 The late archive is supporting provenance evidence only.
 
 No new scientific fit is authorized by this audit.
+
+
+---
+
+## 8. Provenance correction — same higher-model review deliverables
+
+User clarification on 2026-10-08:
+
+The standalone Markdown report and ZIP were not a separate later external review by another reviewer. They were companion deliverables produced with the **same higher-model review response** whose textual verdict had already been supplied earlier.
+
+Therefore supersede any wording that could imply these files constitute a second independent reviewer or a separate scientific adjudication.
+
+Correct interpretation:
+- textual verdict + Markdown report + ZIP are one higher-model review package;
+- the package itself is not independent corroboration beyond that single review;
+- our later local re-execution of the archive's verifier and SHA checks is an independent **artifact/provenance verification step**, not an independent scientific review;
+- no additional scientific weight should be assigned merely because the same review was delivered in both text and files.
+
+This provenance correction does not change:
+- the higher-model verdict;
+- I1/I2 closure;
+- run 37706558889;
+- the frozen R44-B no-pass result;
+- the read-only causal diagnosis;
+- the current requirement for a new post-R44-B higher-model review before any new scientific fit.
