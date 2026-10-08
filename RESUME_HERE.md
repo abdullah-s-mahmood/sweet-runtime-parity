@@ -11458,3 +11458,95 @@ VERIFY_INTERNAL remains CLOSED.
 
 NEXT:
 `DESIGN_FRESH_DATA_ACQUISITION_PROTOCOL_ONLY -> INDEPENDENT_REVIEW/FREEZE -> THEN ACQUIRE NEW DATA`.
+
+
+---
+
+## 2026-10-08 — Fresh RCT acquisition review integrated / protocol frozen / acquisition still BLOCKED
+
+Independent review archived:
+`phase2/academic_transform/at0_en/v2_6/FRESH_RCT_INDEPENDENT_ACQUISITION_REVIEW_V1.md`
+commit `a39e42faeafc44dcb5c78bc01fc4d008a60fa60b`.
+
+Verdict:
+`PROCEED_WITH_ACQUISITION_PROTOCOL_CHANGES`.
+
+Frozen reviewed protocol:
+`AT0_EN_V26_FRESH_RCT_ACQUISITION_PROTOCOL_FREEZE_V1.md`
+commit `5a98ad9e7723b457144bda4e3c47bc0332b45861`.
+
+Core frozen design:
+- exact PubMed candidate-frame query from review;
+- earliest-public-results window 2026-01-01 through 2026-09-30;
+- simple random family sampling without replacement;
+- 80 QUALIFICATION + 400 FRESH_DEV + 5000 SEALED_FRESH_EVAL;
+- no C-enriched stratum;
+- Title+Methods supplied scope;
+- no Outcome labels in titles;
+- two independent qualified annotators + third adjudicator;
+- semantic AI suggestions excluded from gold;
+- EVAL text/IDs/labels/scope/derived representations sealed from developers;
+- pooled precision/recall point gates retained;
+- added separate trial-balanced one-sided CP lower-bound gate using alpha=.0125/class and >=200 contributing families/class.
+
+Readiness ledger:
+`AT0_EN_V26_FRESH_RCT_ACQUISITION_READINESS_LEDGER_V1.md`
+latest commit `35f4dc1783c92368f0535ced9acb627fd998f7e5`.
+
+Prior-exposure inventory started:
+`AT0_EN_V26_FRESH_RCT_PRIOR_EXPOSURE_INVENTORY_V1.md`
+commit `0b4641100462bd646731a465acc445a7b0bd61da`.
+State remains INCOMPLETE.
+
+Annotation addendum:
+`AT0_EN_V26_FRESH_RCT_ANNOTATION_ADDENDUM_V1.md`
+commit `26cd1573a1fc410f1209d1a5f5c38dec5ac54ce4`.
+
+Pinned source manual:
+- BIDS-Xu-Lab commit `bc4b878773192f38b2600ec830ca4208b82f7dc0`;
+- PDF Git blob `f67df5da9507c562cbeab7ad497e816bde58a02a`;
+- size 204547 bytes.
+
+Synthetic statistical preflight:
+- run `37828307955` SUCCESS;
+- artifact `11572557395`;
+- digest `sha256:f9f8f5cd80b0936f8183aacfe008525949428a1f5b310f401c6b233838668926`;
+- no EVAL/new RCT/model;
+- CP fixtures exactly reproduced;
+- HMAC selection verified label/confidence blind.
+
+Synthetic retrieval/provenance tooling preflight:
+- run `37828800778` SUCCESS;
+- artifact `11572806239`;
+- digest `sha256:c5bf089d064987692fa4b8780252c7e6283531a47b0dc47a71f19b0a8be36dbc`;
+- no PubMed contact/new RCT/protected-data opening;
+- frozen-query, pagination, partition reconciliation, DOI/PMID/title/5-gram/registry triggers tested.
+
+Readiness package:
+`AT0_EN_V26_FRESH_RCT_ACQUISITION_READINESS_PACKAGE_V1.md`
+commit `6f52306585bfc4f636ef941a892eaf715faa4253`.
+
+HARD BLOCKERS still open:
+- qualified human annotator A;
+- qualified human annotator B;
+- senior adjudicator;
+- independent custodian;
+- funding/resource feasibility for 5480 dual-annotated documents;
+- complete prior-exposure inventory;
+- protected-corpus fingerprint custody;
+- access-control implementation;
+- local immutable PDF copy/hash.
+
+Therefore:
+`READINESS_INCOMPLETE_ACQUISITION_BLOCKED`.
+
+FORBIDDEN:
+- live PubMed retrieval;
+- real allocation seed;
+- split membership generation;
+- real annotation;
+- model adaptation;
+- VERIFY_INTERNAL.
+
+NEXT:
+`COMPLETE_HUMAN_CUSTODY_RESOURCE_AND_PROVENANCE_READINESS -> INDEPENDENT_READINESS_REVIEW -> EXPLICIT_ACQUISITION_AUTHORIZATION_ONLY_THEN_RETRIEVE`.
