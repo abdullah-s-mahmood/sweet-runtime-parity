@@ -11348,3 +11348,58 @@ commit `e2aae5192100929393de7cd65b709fa16d28874b`.
 The post-R44-B higher-model packet was updated to require reading this reconciliation before deciding the next experiment.
 
 No scientific result was reopened and no new fit was authorized.
+
+
+---
+
+## 2026-10-08 — R44C LINEAR5 selected, preflight PASS, one-shot run active
+
+Post-R44B higher-model verdict:
+`PROCEED_OTHER_SINGLE_INTERVENTION`.
+
+Factorization is NOT the next experiment.
+Accepted next hypothesis:
+`R44C_LINEAR5_L2_V1` — one 19,595-parameter regularized five-way linear estimator using the same frozen inputs/candidates and joint probability semantics.
+
+Key reconciliation:
+- five-way CE already contains validity + conditional type supervision;
+- copy frozen B type on 1,406 valid coordinates = 96.37%, above J0/J1 type-only ~95.1%;
+- near-zero nonlinear-head train losses plus worse J1 outer NLL/generalization justify a bounded capacity/regularization test.
+
+Frozen protocol:
+`AT0_EN_V26_R44C_LINEAR5_L2_PROTOCOL_FREEZE_V1.md`.
+
+Authoritative non-scientific preflight:
+- run `37725529491` SUCCESS;
+- synthetic artifact `11527033325`, digest `sha256:0797f900bfc01f769098b945d3bf9968d26a19d78b696b6f0a163679a158480d`;
+- frozen-input artifact `11527950745`, digest `sha256:4b7cc1eadac2989784af900c08502ca1f433b1084c8a8af33e3b37302cc990dd`;
+- closure artifact `11527138040`, digest `sha256:b3286ec5308d413dbc8c1c6a1705688c09464a958b3793022d8a76e32499521d`;
+- scientific attempt consumed=false;
+- real META scaler/model/optimizer not created;
+- VERIFY_INTERNAL=false.
+
+Execution freeze:
+`AT0_EN_V26_R44C_LINEAR5_EXECUTION_FREEZE_V1.md`.
+
+One-shot authorization:
+`AT0_EN_V26_R44C_LINEAR5_SCIENTIFIC_AUTHORIZATION_V1.md`.
+
+Active scientific run:
+`37726111765`
+attempt `R44C_LINEAR5_L2_DEV_ATTEMPT_1`
+trigger head `57790d0fedcc0f42707584ca44118bcbe2fba531`
+run_number=1, run_attempt=1.
+
+Immutable precheck SUCCESS.
+Five outer-fold jobs dispatched with max safe parallelism=5.
+No R44C aggregate result recorded at this checkpoint.
+
+No automatic rerun/replacement is allowed after a real optimizer update.
+
+NEXT:
+`MONITOR_37726111765 -> ONE_AGGREGATE_IF_ALL_5_SUCCESS -> FREEZE_RESULT -> STOP`.
+
+If R44C scientific gate fails, sole predeclared fallback:
+`STOP_ADAPTING_DESIGN_AND_ACQUIRE_GENUINELY_FRESH_INDEPENDENTLY_ANNOTATED_DATA`.
+
+VERIFY_INTERNAL remains CLOSED.
