@@ -1,0 +1,54 @@
+name: Fresh RCT acquisition tooling synthetic preflight
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/fresh_rct_acquisition_tooling_preflight_trigger.txt'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fresh-rct-acquisition-tooling-synthetic-preflight
+  cancel-in-progress: false
+
+jobs:
+  synthetic:
+    name: Retrieval and provenance tooling synthetic closure
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11.16'
+      - name: Compile
+        run: python -m py_compile phase2/academic_transform/at0_en/v2_6/fresh_rct_acquisition_tooling.py
+      - name: Run synthetic-only acquisition tooling closure
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/fresh_rct_tooling"
+          python phase2/academic_transform/at0_en/v2_6/fresh_rct_acquisition_tooling.py             --synthetic-preflight             --out "$RUNNER_TEMP/fresh_rct_tooling/FRESH_RCT_ACQUISITION_TOOLING_SYNTHETIC_PREFLIGHT.json"
+          python - <<'PY'
+          import json, os, pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"fresh_rct_tooling/FRESH_RCT_ACQUISITION_TOOLING_SYNTHETIC_PREFLIGHT.json"
+          d=json.loads(p.read_text())
+          assert d["state"]=="FRESH_RCT_ACQUISITION_TOOLING_SYNTHETIC_PREFLIGHT_PASS"
+          assert d["new_rct_data_used"] is False
+          assert d["pubmed_contacted"] is False
+          assert d["protected_data_opened"] is False
+          assert d["retrieval_snapshot"]["state"]=="RETRIEVAL_SNAPSHOT_STRUCTURAL_PASS"
+          assert d["partition_reconciliation"]["state"]=="PARTITION_RECONCILIATION_PASS"
+          assert d["unrelated_fixture"]["requires_documentary_review"] is False
+          print(json.dumps(d,indent=2,sort_keys=True))
+          PY
+          sha256sum             phase2/academic_transform/at0_en/v2_6/fresh_rct_acquisition_tooling.py             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FRESH_RCT_ACQUISITION_PROTOCOL_FREEZE_V1.md             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FRESH_RCT_PRIOR_EXPOSURE_INVENTORY_V1.md             > "$RUNNER_TEMP/fresh_rct_tooling/SOURCE_SHA256.txt"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fresh-rct-acquisition-tooling-synthetic-preflight
+          path: ${{ runner.temp }}/fresh_rct_tooling
+          if-no-files-found: error
+          retention-days: 90
