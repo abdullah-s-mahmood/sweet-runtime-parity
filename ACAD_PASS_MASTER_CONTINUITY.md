@@ -5386,3 +5386,58 @@ If R44C scientific gate fails, sole predeclared fallback:
 `STOP_ADAPTING_DESIGN_AND_ACQUIRE_GENUINELY_FRESH_INDEPENDENTLY_ANNOTATED_DATA`.
 
 VERIFY_INTERNAL remains CLOSED.
+
+
+---
+
+## 2026-10-08 — R44C one-shot frozen FAIL; stop adapting DESIGN
+
+Official run `37726111765`:
+- attempt `R44C_LINEAR5_L2_DEV_ATTEMPT_1`;
+- immutable precheck SUCCESS;
+- 5/5 folds SUCCESS;
+- aggregate SUCCESS;
+- reruns 0.
+
+Aggregate artifact:
+`11528185923`
+digest `sha256:e2d1c4fec6106dd56c26e4f781428919dbef2e4e000565bb2563ec5800eee426`.
+
+Frozen result:
+`AT0_EN_V26_R44C_LINEAR5_DEVELOPMENT_RESULT_FREEZE_V1.md`
+commit `ae5f3ea563fda14e6beb71212d0d2c10562de044`.
+
+Decision:
+`NO_ARCHITECTURE_NOMINATED`.
+Scientific verdict:
+`R44C_LINEAR5_L2_SCIENTIFIC_FAIL`.
+
+Best t=.95:
+- macro precision .8767348592080204;
+- P .8918918918918919;
+- I .8171091445427728;
+- C .9318181818181818;
+- O .8661202185792349;
+- all recalls > .33;
+- 897 accepted, 767 TP, 130 FP.
+
+Versus frozen J0 t=.95:
+- macro precision +3.1426 percentage points;
+- FP 189 -> 130 (-31.22%);
+- outer NLL 1.210236485360117 -> .9456049077876719;
+- ECE .20785530979613684 -> .17694525120735866;
+- validity AUROC only .7328427209613384 -> .7357526910256682.
+
+The bounded low-capacity hypothesis improved generalization metrics but did NOT satisfy the frozen operational gate.
+
+Attempt is consumed; no rerun.
+
+Sole predeclared fallback now active:
+`STOP_FURTHER_MODEL_THRESHOLD_LOSS_ADAPTATION_ON_DESIGN_AND_ACQUIRE_GENUINELY_FRESH_INDEPENDENTLY_ANNOTATED_DATA_UNDER_A_SEPARATELY_FROZEN_PLAN`.
+
+No factorization/calibration/boundary repair/hard-negative/alternate model/lambda/seed/threshold work on DESIGN is authorized.
+
+VERIFY_INTERNAL remains CLOSED.
+
+NEXT:
+`DESIGN_FRESH_DATA_ACQUISITION_PROTOCOL_ONLY -> INDEPENDENT_REVIEW/FREEZE -> THEN ACQUIRE NEW DATA`.
