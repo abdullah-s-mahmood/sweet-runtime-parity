@@ -7,7 +7,7 @@ import torch
 from safetensors.torch import save_file, load_file
 
 from r44c_linear5_train import (
-    CLASSES, POS if False else CLASSES, FEATURE_DIM, SCALED_COLS, L2,
+    CLASSES, FEATURE_DIM, SCALED_COLS, L2,
     Linear5, parameter_count, raw_feature_matrix, fit_scaler, apply_scaler,
     penalized_objective, fit_core, predict, save_scaler, inference_view,
     OptimizationNotConverged
