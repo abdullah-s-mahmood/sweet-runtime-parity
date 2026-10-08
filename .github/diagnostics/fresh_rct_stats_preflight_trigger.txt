@@ -1,0 +1,2 @@
+Synthetic-only readiness preflight for trial-balanced precision audit.
+No RCT retrieval, no EVAL access, no annotation, no model execution.
