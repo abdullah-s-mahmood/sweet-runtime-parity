@@ -258,3 +258,25 @@ Return one verdict:
 Do not recommend a broad architecture sweep.
 Do not open VERIFY_INTERNAL.
 Do not propose post-hoc threshold shopping on R44-B outputs.
+
+
+---
+
+## 9. Late-supplied independent-review archive reconciliation
+
+Before answering this packet, also read:
+
+`AT0_EN_V26_R44B_LATE_INDEPENDENT_REVIEW_ARCHIVE_AUDIT_V1.md`
+
+The user supplied the original external review Markdown and complete independent-review ZIP only after the R44-B one-shot result had already been frozen.
+
+The late archive was independently rechecked:
+- the standalone report and ZIP-embedded report are byte-identical;
+- report SHA-256 = `ec18268fc33ee18d4546bdf5a0c3b4480e4578ab411c7ba401ab70d4f30c3f1e`;
+- the archive's own `verify_frozen_artifacts.py` was re-executed and reproduced `INDEPENDENT_ARTIFACT_IDENTITY_AND_NESTED_ROW_AUDIT_PASS`;
+- all four retained evidence ZIP hashes recomputed correctly;
+- no contradiction with the implemented I1/I2 closure or one-shot R44-B execution was found.
+
+Treat this archive as additional provenance support. It does NOT reopen J0/J1, thresholds, calibration, VERIFY_INTERNAL, boundary repair, or any consumed experiment.
+
+The current post-R44-B scientific question remains unchanged: identify the single narrowest prospectively defensible next intervention after the frozen no-pass outcome.
