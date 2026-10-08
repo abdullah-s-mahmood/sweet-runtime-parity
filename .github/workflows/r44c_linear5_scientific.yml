@@ -1,0 +1,279 @@
+name: R44C LINEAR5 L2 DEVELOPMENT attempt 1
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r44c_linear5_scientific_attempt1_trigger.txt'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: r44c-linear5-l2-development-attempt1
+  cancel-in-progress: false
+
+env:
+  ATTEMPT_ID: R44C_LINEAR5_L2_DEV_ATTEMPT_1
+
+jobs:
+  precheck:
+    name: R44C attempt-1 immutable precheck
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+
+      - name: Enforce one-shot workflow identity
+        run: |
+          set -euo pipefail
+          test "${{ github.run_number }}" = "1"
+          test "${{ github.run_attempt }}" = "1"
+          test "$ATTEMPT_ID" = "R44C_LINEAR5_L2_DEV_ATTEMPT_1"
+          grep -q 'R44C_LINEAR5_EXECUTION_FROZEN_AND_AUTHORIZED'             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44C_LINEAR5_EXECUTION_FREEZE_V1.md
+          grep -q 'R44C_LINEAR5_L2_SCIENTIFIC_ATTEMPT_1_AUTHORIZED'             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44C_LINEAR5_SCIENTIFIC_AUTHORIZATION_V1.md
+
+      - name: Verify immutable artifact metadata
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request
+          repo=os.environ["GITHUB_REPOSITORY"]
+          token=os.environ["GH_TOKEN"]
+          expected=[
+            (37725529491,"r44c-linear5-synthetic-preflight",11527033325,
+             "sha256:0797f900bfc01f769098b945d3bf9968d26a19d78b696b6f0a163679a158480d"),
+            (37725529491,"r44c-linear5-frozen-input-preflight",11527950745,
+             "sha256:4b7cc1eadac2989784af900c08502ca1f433b1084c8a8af33e3b37302cc990dd"),
+            (37725529491,"r44c-linear5-implementation-preflight",11527138040,
+             "sha256:b3286ec5308d413dbc8c1c6a1705688c09464a958b3793022d8a76e32499521d"),
+            (37683637815,"r44b-b1-nested-banks",11515434193,
+             "sha256:98383b4bec040f19d6e4076fea1a70dcb406366dfd4bd724d1ad2fac6d2018fb"),
+            (37683637815,"r44b-base-context-cache",11510422862,
+             "sha256:4fdceb511c2067cf81a1ad6c64c039febf99e3c11b9d8baa32b2d73569faa91c"),
+            (37572165532,"r44-oof-readonly-preflight",11461461773,
+             "sha256:62f92359aeae66363af756a997dc684eb876784ccb6b2104111662fb3c43ff08"),
+          ]
+          for run,name,aid,digest in expected:
+              req=urllib.request.Request(
+                  f"https://api.github.com/repos/{repo}/actions/runs/{run}/artifacts?per_page=100",
+                  headers={"Authorization":f"Bearer {token}","Accept":"application/vnd.github+json"}
+              )
+              with urllib.request.urlopen(req) as resp:
+                  arts=json.load(resp)["artifacts"]
+              hit=[a for a in arts if a["name"]==name]
+              assert len(hit)==1,(run,name,len(hit))
+              a=hit[0]
+              assert a["id"]==aid,(name,a["id"],aid)
+              assert a.get("digest")==digest,(name,a.get("digest"),digest)
+              assert not a.get("expired"),name
+          print("R44C_ATTEMPT1_ARTIFACT_METADATA_PASS")
+          PY
+
+      - name: Download authoritative synthetic preflight
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44c-linear5-synthetic-preflight
+          path: ${{ runner.temp }}/r44c/synthetic
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37725529491
+
+      - name: Download implementation closure
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44c-linear5-implementation-preflight
+          path: ${{ runner.temp }}/r44c/closure
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37725529491
+
+      - name: Verify executor closure and exact source identities
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,os,pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"r44c"
+          s=json.loads((root/"synthetic/R44C_LINEAR5_SYNTHETIC_PREFLIGHT.json").read_text())
+          c=json.loads((root/"closure/R44C_LINEAR5_IMPLEMENTATION_PREFLIGHT.json").read_text())
+          assert s["state"]=="R44C_LINEAR5_SYNTHETIC_PREFLIGHT_PASS"
+          assert s["scientific_data_used"] is False
+          assert s["scientific_attempt_consumed"] is False
+          assert s["feature_contract"]["feature_dim"]==3918
+          assert s["optimizer_serialization"]["parameter_count"]==19595
+          assert s["optimizer_serialization"]["nonconvergence"]=="FAIL_CLOSED"
+          assert s["aggregate_contract"]["logit_probability_consistency"]=="PASS"
+          assert s["aggregate_contract"]["physical_tamper"]=="FAIL_CLOSED"
+          assert c["state"]=="R44C_LINEAR5_IMPLEMENTATION_PREFLIGHT_PASS"
+          assert c["scientific_attempt_consumed"] is False
+          assert c["real_meta_scaler_computed"] is False
+          assert c["real_meta_optimizer_created"] is False
+          assert c["verify_internal_used"] is False
+          print("R44C_ATTEMPT1_PREFLIGHT_CLOSURE_PASS")
+          PY
+          sha256sum -c "$RUNNER_TEMP/r44c/synthetic/SOURCE_SHA256.txt"
+
+      - name: Download frozen input audit
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44c-linear5-frozen-input-preflight
+          path: ${{ runner.temp }}/r44c/input
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37725529491
+
+      - name: Verify frozen input audit remained non-scientific
+        run: |
+          python - <<'PY'
+          import json,os,pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"r44c/input/R44C_LINEAR5_FROZEN_INPUT_PREFLIGHT.json"
+          d=json.loads(p.read_text())
+          assert d["state"]=="R44C_LINEAR5_FROZEN_INPUT_PREFLIGHT_PASS"
+          assert d["feature_dim"]==3918
+          assert d["eval_total"]==1942
+          assert d["scaler_statistics_computed"] is False
+          assert d["optimizer_created"] is False
+          assert d["model_created"] is False
+          assert d["scientific_attempt_consumed"] is False
+          assert d["verify_internal_used"] is False
+          assert d["protected_data_used"] is False
+          print("R44C_ATTEMPT1_FROZEN_INPUT_AUDIT_PASS")
+          PY
+
+  fold:
+    name: R44C LINEAR5 outer-${{ matrix.outer }}
+    needs: precheck
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        outer: [0,1,2,3,4]
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11.16'
+          cache: 'pip'
+          cache-dependency-path: requirements/r44c_linear5.txt
+
+      - name: Install frozen R44C runtime
+        run: python -m pip install --disable-pip-version-check --quiet -r requirements/r44c_linear5.txt
+
+      - name: Enforce one-shot attempt inside fold
+        run: |
+          set -euo pipefail
+          test "${{ github.run_number }}" = "1"
+          test "${{ github.run_attempt }}" = "1"
+          test "$ATTEMPT_ID" = "R44C_LINEAR5_L2_DEV_ATTEMPT_1"
+
+      - name: Download frozen nested banks
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44b-b1-nested-banks
+          path: ${{ runner.temp }}/r44c/nested
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37683637815
+
+      - name: Download frozen context cache
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44b-base-context-cache
+          path: ${{ runner.temp }}/r44c/context
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37683637815
+
+      - name: Download frozen R44 manifest
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44-oof-readonly-preflight
+          path: ${{ runner.temp }}/r44c/preflight
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37572165532
+
+      - name: Execute frozen R44C scientific fit
+        env:
+          PYTHONHASHSEED: "44"
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_6/r44c_linear5_train.py             --attempt-id "$ATTEMPT_ID"             --nested-root "$RUNNER_TEMP/r44c/nested"             --context-root "$RUNNER_TEMP/r44c/context"             --manifest "$RUNNER_TEMP/r44c/preflight/R44_OOF_MANIFEST_V1.json"             --outer-fold "${{ matrix.outer }}"             --out "$RUNNER_TEMP/r44c/out"
+
+      - name: Freeze source and output identities
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r44c/evidence"
+          sha256sum             phase2/academic_transform/at0_en/v2_6/r44c_linear5_train.py             phase2/academic_transform/at0_en/v2_6/r44c_linear5_aggregate.py             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44C_LINEAR5_L2_PROTOCOL_FREEZE_V1.md             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44C_LINEAR5_EXECUTION_FREEZE_V1.md             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44C_LINEAR5_SCIENTIFIC_AUTHORIZATION_V1.md             .github/workflows/r44c_linear5_scientific.yml             requirements/r44c_linear5.txt             > "$RUNNER_TEMP/r44c/evidence/SOURCE_SHA256.txt"
+          if [ -d "$RUNNER_TEMP/r44c/out" ]; then
+            find "$RUNNER_TEMP/r44c/out" -maxdepth 1 -type f -print0 | sort -z | xargs -0 sha256sum               > "$RUNNER_TEMP/r44c/evidence/OUTPUT_SHA256.txt" || true
+          fi
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: r44c-linear5-outer-${{ matrix.outer }}-attempt1
+          path: |
+            ${{ runner.temp }}/r44c/out
+            ${{ runner.temp }}/r44c/evidence
+          if-no-files-found: warn
+          retention-days: 90
+
+  aggregate:
+    name: R44C attempt-1 DEVELOPMENT aggregate
+    needs: fold
+    if: ${{ always() && needs.fold.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+
+      - name: Enforce one-shot aggregate identity
+        run: |
+          set -euo pipefail
+          test "${{ github.run_number }}" = "1"
+          test "${{ github.run_attempt }}" = "1"
+          test "$ATTEMPT_ID" = "R44C_LINEAR5_L2_DEV_ATTEMPT_1"
+
+      - name: Download all R44C fold outputs
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: r44c-linear5-outer-*-attempt1
+          path: ${{ runner.temp }}/r44c/folds
+
+      - name: Download frozen nested banks
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44b-b1-nested-banks
+          path: ${{ runner.temp }}/r44c/nested
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37683637815
+
+      - name: Download frozen R44 manifest
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44-oof-readonly-preflight
+          path: ${{ runner.temp }}/r44c/preflight
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37572165532
+
+      - name: Aggregate complete frozen DEVELOPMENT evidence
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_6/r44c_linear5_aggregate.py             --outputs-root "$RUNNER_TEMP/r44c/folds"             --nested-root "$RUNNER_TEMP/r44c/nested"             --manifest "$RUNNER_TEMP/r44c/preflight/R44_OOF_MANIFEST_V1.json"             --out "$RUNNER_TEMP/r44c/aggregate"
+          sha256sum "$RUNNER_TEMP/r44c/aggregate/"* > "$RUNNER_TEMP/r44c/aggregate/OUTPUT_SHA256.txt"
+          sha256sum             phase2/academic_transform/at0_en/v2_6/r44c_linear5_aggregate.py             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44C_LINEAR5_L2_PROTOCOL_FREEZE_V1.md             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44C_LINEAR5_EXECUTION_FREEZE_V1.md             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44C_LINEAR5_SCIENTIFIC_AUTHORIZATION_V1.md             .github/workflows/r44c_linear5_scientific.yml             > "$RUNNER_TEMP/r44c/aggregate/SOURCE_SHA256.txt"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r44c-linear5-development-aggregate-attempt1
+          path: ${{ runner.temp }}/r44c/aggregate
+          if-no-files-found: error
+          retention-days: 90
