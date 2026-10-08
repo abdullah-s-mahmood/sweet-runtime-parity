@@ -150,7 +150,7 @@ def test_fail_closed_helpers():
 def _write_jsonl(p,rows):
     with pathlib.Path(p).open("w",encoding="utf-8") as f:
         for r in rows:
-            f.write(json.dumps(r,sort_keys=True,separators=(",",":"))+"\\n")
+            f.write(json.dumps(r,sort_keys=True,separators=(",",":"))+"\n")
 
 def test_full_completeness_validator(root):
     outputs=root/"full_outputs"; nested=root/"nested"
@@ -162,7 +162,7 @@ def test_full_completeness_validator(root):
         "oof_folds":[{"fold":k,"documents":[k]} for k in range(5)],
     }
     msha=canonical_manifest_sha(manifest); manifest["manifest_sha256"]=msha
-    (nested/"R44B_PAIR_AGGREGATE_SUMMARY.json").write_text(json.dumps({"state":"R44B_PAIR_AGGREGATE_PASS"})+"\\n")
+    (nested/"R44B_PAIR_AGGREGATE_SUMMARY.json").write_text(json.dumps({"state":"R44B_PAIR_AGGREGATE_PASS"})+"\n")
     for k in range(5):
         ev=[{
             "fold":k,"document":k,"sentence":0,"start":0,"end":1,"width":1,
@@ -191,7 +191,7 @@ def test_full_completeness_validator(root):
                           "threshold_evaluation_performed":False,"calibration_fitted":False,
                           "early_stopping_used":False,"checkpoint_shopping":False},
             }
-            (d/f"R44B_OUTER_{k}_{head}_SUMMARY.json").write_text(json.dumps(summary)+"\\n")
+            (d/f"R44B_OUTER_{k}_{head}_SUMMARY.json").write_text(json.dumps(summary)+"\n")
     heads,_,got=validate_complete(outputs,nested,manifest,
                                   expected_manifest_sha=msha,
                                   expected_attempt_id="SYNTH_ATTEMPT",
