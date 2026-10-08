@@ -1,0 +1,3 @@
+Authorized NON-SCIENTIFIC R44C_LINEAR5_L2_V1 preflight only.
+Run source-free synthetic closure and read-only frozen-input structural audit in parallel.
+No real META_TRAIN scaler, optimizer, model fit, EVAL score, VERIFY_INTERNAL, calibration, boundary repair, or scientific attempt.
