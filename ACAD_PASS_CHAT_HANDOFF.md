@@ -1689,3 +1689,81 @@ NEXT:
 `MONITOR_37726111765 -> IF_5_FOLDS_SUCCESS RUN_ONE_AGGREGATE -> FREEZE_PASS_OR_FAIL -> STOP`.
 
 VERIFY_INTERNAL and all other protected/consumed evidence remain CLOSED.
+
+
+---
+
+## 2026-10-08 — R44C LINEAR5 one-shot COMPLETE / SCIENTIFIC FAIL / DESIGN ADAPTATION STOP
+
+Official R44C scientific run:
+- `37726111765`
+- attempt `R44C_LINEAR5_L2_DEV_ATTEMPT_1`
+- run_number=1 / run_attempt=1
+- immutable precheck SUCCESS
+- 5/5 outer folds SUCCESS
+- aggregate SUCCESS
+- reruns=0
+- replacement folds=0
+
+Aggregate:
+- artifact `11528185923`
+- digest `sha256:e2d1c4fec6106dd56c26e4f781428919dbef2e4e000565bb2563ec5800eee426`
+
+Frozen result:
+`AT0_EN_V26_R44C_LINEAR5_DEVELOPMENT_RESULT_FREEZE_V1.md`
+commit `ae5f3ea563fda14e6beb71212d0d2c10562de044`.
+
+Decision:
+`NO_ARCHITECTURE_NOMINATED`.
+
+Scientific verdict:
+`R44C_LINEAR5_L2_SCIENTIFIC_FAIL`.
+
+Best frozen operating point t=.95:
+- macro precision = 0.8767348592080204
+- P precision = 0.8918918918918919
+- I precision = 0.8171091445427728
+- C precision = 0.9318181818181818 PASS
+- O precision = 0.8661202185792349
+- P recall = 0.4870848708487085
+- I recall = 0.3341375150784077
+- C recall = 0.3565217391304348
+- O recall = 0.46824224519940916
+- accepted=897, TP=767, FP=130
+
+Compared with frozen J0 t=.95:
+- macro precision +0.0314262488838354
+- FP reduced 189 -> 130 (-31.2169%)
+- outer NLL improved 1.210236485360117 -> 0.9456049077876719
+- validity AUROC improved only 0.7328427209613384 -> 0.7357526910256682
+- ECE improved 0.20785530979613684 -> 0.17694525120735866
+- C now passes precision .90, but P/I/O and macro still fail.
+
+R44C t=.95 FP taxonomy:
+- SAME_CLASS_WRONG_BOUNDARY 72
+- SPURIOUS_NO_OVERLAP 49
+- WRONG_TYPE_EXACT_COORD 6
+- DIFFERENT_CLASS_WRONG_BOUNDARY 2
+- EXACT_TYPED changed wrong 1
+- target-NONE boundary/spurious = 123/130 = 94.6154%.
+
+All five deterministic fits converged under the frozen gradient criterion in 145-150 LBFGS steps.
+
+R44C attempt is consumed and MUST NOT be rerun.
+
+Per the prospectively reviewed sole fallback, current policy is now:
+`STOP_FURTHER_MODEL_THRESHOLD_LOSS_ADAPTATION_ON_DESIGN_AND_ACQUIRE_GENUINELY_FRESH_INDEPENDENTLY_ANNOTATED_DATA_UNDER_A_SEPARATELY_FROZEN_PLAN`.
+
+NOT AUTHORIZED on current DESIGN:
+- factorization;
+- calibration;
+- boundary repair;
+- hard-negative/IoU loss;
+- alternate lambda/model/seed;
+- threshold expansion;
+- any successor fit.
+
+VERIFY_INTERNAL remains CLOSED.
+
+CURRENT:
+`R44C_ONE_SHOT_FAIL_FROZEN -> DESIGN_ADAPTATION_STOPPED -> PREPARE_FRESH_INDEPENDENT_DATA_ACQUISITION_PROTOCOL_ONLY`.
