@@ -3,3 +3,4 @@ Final closure rerun after checkpoint-physical-SHA and fixed attempt-ID hardening
 REFERENCE FINAL closure: includes full synthetic 10-output validate_complete path and checkpoint tamper failure. No scientific data/training.
 AUTHORITATIVE closure candidate: includes full validator, fixed attempt identity, checkpoint physical hash, and live progress logging. No scientific data/training.
 AUTHORITATIVE closure after synthetic newline-fixture repair; all executor code unchanged scientifically.
+AUTHORITATIVE closure after synthetic J1 provenance fixture repair; scientific executor unchanged.
