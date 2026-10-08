@@ -5307,3 +5307,27 @@ NEXT:
 `OBTAIN_HIGHER_MODEL_ADVERSARIAL_REVIEW_OF_ONE_PRIMARY_NEXT_PROTOCOL -> RECONCILE -> ONLY_THEN_CONSIDER_NEW_PROSPECTIVE_DEVELOPMENT_FIT`.
 
 VERIFY_INTERNAL, final refit, calibration fitting, boundary repair, factorized training and all alternate training remain CLOSED.
+
+
+---
+
+## 2026-10-08 — Late original R44-B independent-review archive reconciled
+
+The user supplied the original external-review deliverables after the R44-B one-shot result was already frozen:
+- standalone review Markdown;
+- complete independent-review ZIP.
+
+Verification:
+- standalone and ZIP-embedded review are byte-identical;
+- review SHA-256 `ec18268fc33ee18d4546bdf5a0c3b4480e4578ab411c7ba401ab70d4f30c3f1e`;
+- included `verify_frozen_artifacts.py` was re-executed and reproduced `INDEPENDENT_ARTIFACT_IDENTITY_AND_NESTED_ROW_AUDIT_PASS`;
+- all four retained evidence ZIP hashes matched;
+- no contradiction with I1/I2 implementation, scientific run `37706558889`, frozen no-pass result, or causal diagnosis was found.
+
+Durable audit:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44B_LATE_INDEPENDENT_REVIEW_ARCHIVE_AUDIT_V1.md`
+commit `e2aae5192100929393de7cd65b709fa16d28874b`.
+
+The post-R44-B higher-model packet was updated to require reading this reconciliation before deciding the next experiment.
+
+No scientific result was reopened and no new fit was authorized.
