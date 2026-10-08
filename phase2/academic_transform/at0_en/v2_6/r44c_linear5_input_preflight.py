@@ -15,7 +15,10 @@ def main():
     ap.add_argument("--context-root",type=pathlib.Path,required=True)
     ap.add_argument("--manifest",type=pathlib.Path,required=True)
     ap.add_argument("--out",type=pathlib.Path,required=True)
-    a=ap.parse_args(); a.out.mkdir(parents=True,exist_ok=False)
+    a=ap.parse_args()
+    if a.out.exists() and any(a.out.iterdir()):
+        raise RuntimeError(f"pre-existing nonempty output directory: {a.out}")
+    a.out.mkdir(parents=True,exist_ok=True)
 
     m=json.loads(a.manifest.read_text())
     got=canonical_manifest_sha(m)
