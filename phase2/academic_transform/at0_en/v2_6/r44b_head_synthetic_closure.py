@@ -174,6 +174,7 @@ def test_full_completeness_validator(root):
         for head,params in [("J0",584631),("J1",667836)]:
             d=outputs/f"{head}_{k}"; d.mkdir()
             pr=mkprob("P","P",.9,outer=k,doc=k,b_type="P")
+            pr["head"]=head
             pp=d/f"R44B_OUTER_{k}_{head}_PROBS.jsonl"; _write_jsonl(pp,[pr])
             ck=d/f"R44B_{head}_FINAL_MODEL.safetensors"; ck.write_bytes(f"synthetic-{head}-{k}".encode())
             summary={
