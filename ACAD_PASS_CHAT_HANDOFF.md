@@ -1567,3 +1567,125 @@ commit `e2aae5192100929393de7cd65b709fa16d28874b`.
 The post-R44-B higher-model packet was updated to require reading this reconciliation before deciding the next experiment.
 
 No scientific result was reopened and no new fit was authorized.
+
+
+---
+
+## 2026-10-08 — POST-R44B REVIEW RECONCILED / R44C LINEAR5 ONE-SHOT DISPATCHED
+
+### Higher-model post-R44B review
+Verdict:
+`PROCEED_OTHER_SINGLE_INTERVENTION`.
+
+The review rejected factorization as the next isolated intervention and selected exactly one regularized five-way linear verifier.
+
+Key new counterevidence:
+- five-way CE already contains validity supervision algebraically;
+- on the same 1,406 exact-coordinate valid candidates, copy frozen upstream B type is correct 1,355/1,406 = 96.37268847795164%;
+- J0 type-only = 1,337/1,406 = 95.09246088193457%;
+- J1 type-only = 1,338/1,406 = 95.16358463726885%;
+- J0 fixes 10 B-type errors but breaks 28 previously correct types;
+- J1 fixes 12 but breaks 29;
+- frozen outer NLL J0=1.210236485360117, J1=1.3734881421278318;
+- tiny meta-training CE + worse J1 DEVELOPMENT generalization supports a bounded capacity/regularization test, not proof that factorization is required.
+
+Independent reconciliation accepted the narrower intervention:
+`R44C_LINEAR5_L2_V1`.
+
+### R44C frozen design
+- same nested META_TRAIN/EVAL banks;
+- same five-way NONE/P/I/C/O target;
+- exactly 3,918 fixed input dimensions;
+- one linear W(5,3918)+b(5) model = 19,595 parameters;
+- fold-local META-only scaling of 3,840 contextual + 5 scalar coordinates;
+- mean 5-way CE + (0.01/2)||W||^2, bias unpenalized;
+- deterministic float64 full-batch persistent L-BFGS;
+- zero initialization;
+- thresholds only {.80,.85,.90,.95};
+- same per-class precision/recall/count + macro precision gates;
+- no calibration, factorization, boundary repair, hard-negative weighting, alternate seed/model/lambda.
+
+Reconciliation:
+`AT0_EN_V26_R44C_LINEAR5_RECONCILIATION_V1.md`.
+
+Protocol:
+`AT0_EN_V26_R44C_LINEAR5_L2_PROTOCOL_FREEZE_V1.md`.
+
+### Non-scientific implementation preflight
+Historical implementation-only run `37725085094`:
+- synthetic failed because test fixture lacked target;
+- input audit failed because of output-directory ownership;
+- no real scaler/model/optimizer; no attempt consumed.
+
+Historical run `37725269768`:
+- synthetic PASS;
+- input audit failed on same output-directory lineage;
+- no scientific attempt consumed.
+
+Authoritative run:
+`37725529491`
+head `da82e68a796139fa67bec2f858d99dc604754473`.
+
+All authoritative jobs SUCCESS:
+- source-free synthetic closure;
+- frozen-input structural audit;
+- implementation closure.
+
+Authoritative preflight artifacts:
+- synthetic `11527033325`, digest `sha256:0797f900bfc01f769098b945d3bf9968d26a19d78b696b6f0a163679a158480d`;
+- frozen input `11527950745`, digest `sha256:4b7cc1eadac2989784af900c08502ca1f433b1084c8a8af33e3b37302cc990dd`;
+- implementation closure `11527138040`, digest `sha256:b3286ec5308d413dbc8c1c6a1705688c09464a958b3793022d8a76e32499521d`.
+
+Synthetic verified:
+- 3918 features;
+- 19595 parameters;
+- 3845 scaled coordinates;
+- L2 excludes bias;
+- analytic/autograd gradient agreement ~1e-16;
+- L-BFGS convergence and nonconvergence fail-closed;
+- logits/logp/probability consistency;
+- complete synthetic aggregate;
+- checkpoint tamper fail-closed;
+- >= threshold and NONE-first ties.
+
+Frozen-input audit:
+- 9,613 rows structurally audited;
+- EVAL total 1,942;
+- max width 45;
+- real META scaler computed=false;
+- optimizer/model created=false;
+- VERIFY_INTERNAL=false;
+- scientific attempt consumed=false.
+
+Execution freeze:
+`AT0_EN_V26_R44C_LINEAR5_EXECUTION_FREEZE_V1.md`.
+
+Authorization:
+`AT0_EN_V26_R44C_LINEAR5_SCIENTIFIC_AUTHORIZATION_V1.md`.
+
+### CURRENT SCIENTIFIC RUN
+Run:
+`37726111765`
+
+Attempt:
+`R44C_LINEAR5_L2_DEV_ATTEMPT_1`
+
+Trigger head:
+`57790d0fedcc0f42707584ca44118bcbe2fba531`
+
+Workflow run_number=1 / run_attempt=1.
+
+Immutable precheck:
+SUCCESS.
+
+Five fold jobs:
+currently dispatched in parallel; no aggregate result yet at this handoff checkpoint.
+
+Attempt consumption:
+- pre-dispatch preflight consumed 0/1;
+- once any fold performs its first real optimizer update, attempt is consumed and must never be automatically rerun.
+
+NEXT:
+`MONITOR_37726111765 -> IF_5_FOLDS_SUCCESS RUN_ONE_AGGREGATE -> FREEZE_PASS_OR_FAIL -> STOP`.
+
+VERIFY_INTERNAL and all other protected/consumed evidence remain CLOSED.
