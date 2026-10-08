@@ -26,8 +26,8 @@ Governing independent review:
 | Annotation manual pin | Exact source manual revision + local immutable copy/hash | UPSTREAM_PIN_FROZEN — commit bc4b878773192f38b2600ec830ca4208b82f7dc0 / blob f67df5da9507c562cbeab7ad497e816bde58a02a; local binary copy still pending |
 | Prospective annotation addendum | Decisions 17–21 converted into immutable operational manual | FROZEN — AT0_EN_V26_FRESH_RCT_ANNOTATION_ADDENDUM_V1.md / commit 26cd1573a1fc410f1209d1a5f5c38dec5ac54ce4 |
 | Statistical implementation | Clopper-Pearson/HMAC audit code validated on synthetic data only | SYNTHETIC_PREFLIGHT_PASS — run 37828307955 / artifact 11572557395 |
-| Retrieval archive tooling | Must archive exact query, timestamps, QueryTranslation, warnings, full PMIDs/XML/pagination/hashes without sampling | NOT_YET_IMPLEMENTED |
-| Trial-family provenance tooling | Deterministic exact/fuzzy triggers + registry alias ledger; no learned model required | NOT_YET_IMPLEMENTED |
+| Retrieval archive tooling | Must archive exact query, timestamps, QueryTranslation, warnings, full PMIDs/XML/pagination/hashes without sampling | SYNTHETIC_MECHANICS_PASS — run 37828800778; live PubMed execution still blocked |
+| Trial-family provenance tooling | Deterministic exact/fuzzy triggers + registry alias ledger; no learned model required | SYNTHETIC_TRIGGER_PASS — run 37828800778; real documentary/family adjudication still blocked |
 | Seed commitment procedure | Independent custodian procedure documented; actual secret NOT generated yet | PROCEDURE_FROZEN — actual secret generation remains forbidden until custodian readiness/sign-off |
 | Acquisition sign-off | Readiness evidence independently reviewed and explicitly authorized | NOT_AUTHORIZED |
 
@@ -92,3 +92,30 @@ Frozen prospective addendum:
 Actual qualification/main-corpus annotation remains forbidden.
 
 Seed-commitment logic is frozen, but no real 256-bit secret may be generated before an independent custodian exists and acquisition is explicitly authorized.
+
+
+## 2026-10-08 acquisition-tooling readiness update
+
+Synthetic acquisition-tooling preflight:
+`PASS`
+
+Run:
+`37828800778`
+
+Artifact:
+`11572806239`
+
+Artifact digest:
+`sha256:c5bf089d064987692fa4b8780252c7e6283531a47b0dc47a71f19b0a8be36dbc`
+
+Frozen evidence:
+`AT0_EN_V26_FRESH_RCT_ACQUISITION_TOOLING_SYNTHETIC_PREFLIGHT_FREEZE_V1.md`
+
+No PubMed request was issued.
+No RCT record was retrieved.
+No protected corpus was opened.
+
+These tooling rows are mechanically closed only at the synthetic level.
+
+Overall state remains:
+`READINESS_INCOMPLETE_ACQUISITION_BLOCKED`.
