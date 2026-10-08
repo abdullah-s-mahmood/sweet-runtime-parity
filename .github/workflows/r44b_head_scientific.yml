@@ -1,0 +1,299 @@
+name: R44-B frozen J0-J1 DEVELOPMENT attempt 1
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/r44b_head_scientific_attempt1_trigger.txt'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: r44b-b1-dev-j0j1-attempt1
+  cancel-in-progress: false
+
+env:
+  ATTEMPT_ID: R44B_B1_DEV_J0J1_ATTEMPT_1
+
+jobs:
+  precheck:
+    name: R44-B attempt-1 immutable precheck
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+
+      - name: Enforce one-shot workflow identity
+        run: |
+          set -euo pipefail
+          test "${{ github.run_number }}" = "1"
+          test "${{ github.run_attempt }}" = "1"
+          test "$ATTEMPT_ID" = "R44B_B1_DEV_J0J1_ATTEMPT_1"
+          grep -q 'R44B_HEAD_EXECUTION_FROZEN_AND_AUTHORIZED'             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44B_HEAD_EXECUTION_FREEZE_V1.md
+
+      - name: Verify immutable artifact metadata
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request
+          repo=os.environ["GITHUB_REPOSITORY"]
+          token=os.environ["GH_TOKEN"]
+          expected=[
+            (37706030660,"r44b-head-executor-synthetic-closure",11520031556,
+             "sha256:eabfc44138280cc1909f5f7e686a240953ff9cd3f260633e4ba9e488931eb924"),
+            (37683637815,"r44b-b1-nested-banks",11515434193,
+             "sha256:98383b4bec040f19d6e4076fea1a70dcb406366dfd4bd724d1ad2fac6d2018fb"),
+            (37683637815,"r44b-base-context-cache",11510422862,
+             "sha256:4fdceb511c2067cf81a1ad6c64c039febf99e3c11b9d8baa32b2d73569faa91c"),
+            (37572165532,"r44-oof-readonly-preflight",11461461773,
+             "sha256:62f92359aeae66363af756a997dc684eb876784ccb6b2104111662fb3c43ff08"),
+          ]
+          for run,name,aid,digest in expected:
+              req=urllib.request.Request(
+                  f"https://api.github.com/repos/{repo}/actions/runs/{run}/artifacts?per_page=100",
+                  headers={"Authorization":f"Bearer {token}","Accept":"application/vnd.github+json"}
+              )
+              with urllib.request.urlopen(req) as resp:
+                  arts=json.load(resp)["artifacts"]
+              hit=[a for a in arts if a["name"]==name]
+              assert len(hit)==1,(run,name,len(hit))
+              a=hit[0]
+              assert a["id"]==aid,(name,a["id"],aid)
+              assert a.get("digest")==digest,(name,a.get("digest"),digest)
+              assert not a.get("expired"),name
+          print("R44B_ATTEMPT1_ARTIFACT_METADATA_PASS")
+          PY
+
+      - name: Download frozen synthetic closure
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44b-head-executor-synthetic-closure
+          path: ${{ runner.temp }}/r44b/closure
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37706030660
+
+      - name: Verify executor closure and source identities
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,os,pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"r44b/closure"
+          d=json.loads((root/"R44B_HEAD_EXECUTOR_SYNTHETIC_CLOSURE.json").read_text())
+          assert d["state"]=="R44B_HEAD_EXECUTOR_SYNTHETIC_CLOSURE_PASS"
+          assert d["scientific_data_used"] is False
+          assert d["scientific_head_attempt_consumed"] is False
+          assert d["full_completeness_validator"]["full_population_validation"]=="PASS"
+          assert d["full_completeness_validator"]["physical_checkpoint_tamper"]=="FAIL_CLOSED"
+          print("R44B_ATTEMPT1_EXECUTOR_CLOSURE_PASS")
+          PY
+          sha256sum -c "$RUNNER_TEMP/r44b/closure/SOURCE_SHA256.txt"
+
+      - name: Download frozen nested banks
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44b-b1-nested-banks
+          path: ${{ runner.temp }}/r44b/nested
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37683637815
+
+      - name: Download frozen context cache
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44b-base-context-cache
+          path: ${{ runner.temp }}/r44b/context
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37683637815
+
+      - name: Download frozen R44 manifest
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44-oof-readonly-preflight
+          path: ${{ runner.temp }}/r44b/preflight
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37572165532
+
+      - name: Verify scientific input identities without fitting
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"r44b"
+          def sha(p):
+              h=hashlib.sha256()
+              with p.open("rb") as f:
+                  for b in iter(lambda:f.read(1<<20),b""): h.update(b)
+              return h.hexdigest()
+          m=json.loads((root/"preflight/R44_OOF_MANIFEST_V1.json").read_text())
+          q=dict(m); q.pop("manifest_sha256",None)
+          got=hashlib.sha256(json.dumps(q,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+          assert got==m["manifest_sha256"]=="799844f1bdd15792740333b2ad57c8aad7bb8f265566fece06f4a2ff61574720"
+          c=json.loads((root/"context/R44B_BASE_CONTEXT_SUMMARY.json").read_text())
+          assert c["state"]=="R44B_BASE_CONTEXT_CACHE_PASS"
+          assert sha(root/"context/R44B_BASE_CONTEXT_FLOAT32.npy")=="6bb548884cafb2a14e19b7d691b393dcf0ab9b5cc6add14e6ab0a873be33361b"
+          assert sha(root/"context/R44B_BASE_CONTEXT_INDEX.json")=="db9a6bae51a4db38d244e9e0a98f44b5dbfb246f694db5397c6e204cd58881dd"
+          assert not any(c.get(k) for k in ["labels_used","verify_internal_used","old_select_used","protected_data_used"])
+          a=json.loads((root/"nested/R44B_PAIR_AGGREGATE_SUMMARY.json").read_text())
+          assert a["state"]=="R44B_PAIR_AGGREGATE_PASS" and a["pair_count"]==10
+          assert not any(a.get(k) for k in ["verify_internal_used","old_select_used","protected_data_used","head_training"])
+          total=0
+          for k in range(5):
+              s=a["outer"][str(k)]
+              mp=root/f"nested/R44B_OUTER_{k}_META_TRAIN.jsonl"
+              ep=root/f"nested/R44B_OUTER_{k}_EVAL.jsonl"
+              assert sha(mp)==s["meta_sha256"]
+              assert sha(ep)==s["eval_sha256"]
+              total+=int(s["eval_candidate_rows"])
+          assert total==1942,total
+          print("R44B_ATTEMPT1_IMMUTABLE_INPUT_PRECHECK_PASS")
+          PY
+
+  head:
+    name: R44-B ${{ matrix.head }} outer-${{ matrix.outer }}
+    needs: precheck
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        include:
+          - {outer: 0, head: J0}
+          - {outer: 0, head: J1}
+          - {outer: 1, head: J0}
+          - {outer: 1, head: J1}
+          - {outer: 2, head: J0}
+          - {outer: 2, head: J1}
+          - {outer: 3, head: J0}
+          - {outer: 3, head: J1}
+          - {outer: 4, head: J0}
+          - {outer: 4, head: J1}
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11.16'
+          cache: 'pip'
+          cache-dependency-path: requirements/r44b_head.txt
+
+      - name: Install frozen head runtime
+        run: python -m pip install --disable-pip-version-check --quiet -r requirements/r44b_head.txt
+
+      - name: Enforce one-shot attempt inside training job
+        run: |
+          set -euo pipefail
+          test "${{ github.run_number }}" = "1"
+          test "${{ github.run_attempt }}" = "1"
+          test "$ATTEMPT_ID" = "R44B_B1_DEV_J0J1_ATTEMPT_1"
+
+      - name: Download frozen nested banks
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44b-b1-nested-banks
+          path: ${{ runner.temp }}/r44b/nested
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37683637815
+
+      - name: Download frozen context cache
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44b-base-context-cache
+          path: ${{ runner.temp }}/r44b/context
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37683637815
+
+      - name: Download frozen R44 manifest
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44-oof-readonly-preflight
+          path: ${{ runner.temp }}/r44b/preflight
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37572165532
+
+      - name: Execute frozen scientific head fit
+        env:
+          PYTHONHASHSEED: "44"
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_6/r44b_head_train.py             --attempt-id "$ATTEMPT_ID"             --nested-root "$RUNNER_TEMP/r44b/nested"             --context-root "$RUNNER_TEMP/r44b/context"             --manifest "$RUNNER_TEMP/r44b/preflight/R44_OOF_MANIFEST_V1.json"             --outer-fold "${{ matrix.outer }}"             --head "${{ matrix.head }}"             --out "$RUNNER_TEMP/r44b/out"
+
+      - name: Freeze source identities
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r44b/evidence"
+          sha256sum             phase2/academic_transform/at0_en/v2_6/r44b_head_train.py             phase2/academic_transform/at0_en/v2_6/r44b_head_aggregate.py             phase2/academic_transform/at0_en/v2_6/r44b_b1_preflight.py             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44B_HEAD_EXECUTION_FREEZE_V1.md             .github/workflows/r44b_head_scientific.yml             requirements/r44b_head.txt             > "$RUNNER_TEMP/r44b/evidence/SOURCE_SHA256.txt"
+          if [ -d "$RUNNER_TEMP/r44b/out" ]; then
+            find "$RUNNER_TEMP/r44b/out" -maxdepth 1 -type f -print0 | sort -z | xargs -0 sha256sum               > "$RUNNER_TEMP/r44b/evidence/OUTPUT_SHA256.txt" || true
+          fi
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: r44b-head-${{ matrix.head }}-outer-${{ matrix.outer }}-attempt1
+          path: |
+            ${{ runner.temp }}/r44b/out
+            ${{ runner.temp }}/r44b/evidence
+          if-no-files-found: warn
+          retention-days: 90
+
+  aggregate:
+    name: R44-B attempt-1 DEVELOPMENT aggregate
+    needs: head
+    if: ${{ always() && needs.head.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+
+      - name: Enforce one-shot aggregate identity
+        run: |
+          set -euo pipefail
+          test "${{ github.run_number }}" = "1"
+          test "${{ github.run_attempt }}" = "1"
+          test "$ATTEMPT_ID" = "R44B_B1_DEV_J0J1_ATTEMPT_1"
+
+      - name: Download all frozen head outputs
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: r44b-head-*-outer-*-attempt1
+          path: ${{ runner.temp }}/r44b/heads
+
+      - name: Download frozen nested banks
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44b-b1-nested-banks
+          path: ${{ runner.temp }}/r44b/nested
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37683637815
+
+      - name: Download frozen R44 manifest
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44-oof-readonly-preflight
+          path: ${{ runner.temp }}/r44b/preflight
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37572165532
+
+      - name: Aggregate complete DEVELOPMENT evidence
+        run: |
+          set -euo pipefail
+          python phase2/academic_transform/at0_en/v2_6/r44b_head_aggregate.py             --outputs-root "$RUNNER_TEMP/r44b/heads"             --nested-root "$RUNNER_TEMP/r44b/nested"             --manifest "$RUNNER_TEMP/r44b/preflight/R44_OOF_MANIFEST_V1.json"             --out "$RUNNER_TEMP/r44b/aggregate"
+          sha256sum "$RUNNER_TEMP/r44b/aggregate/"* > "$RUNNER_TEMP/r44b/aggregate/SHA256SUMS.txt"
+          sha256sum             phase2/academic_transform/at0_en/v2_6/r44b_head_aggregate.py             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44B_HEAD_EXECUTION_FREEZE_V1.md             .github/workflows/r44b_head_scientific.yml             > "$RUNNER_TEMP/r44b/aggregate/SOURCE_SHA256.txt"
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r44b-head-development-aggregate-attempt1
+          path: ${{ runner.temp }}/r44b/aggregate
+          if-no-files-found: error
+          retention-days: 90
