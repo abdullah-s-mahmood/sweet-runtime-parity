@@ -1419,3 +1419,127 @@ Scientific J0/J1 attempts consumed:
 
 NEXT:
 `IF_37705640579_PASS -> FREEZE_EXECUTOR + CREATE/PIN SCIENTIFIC WORKFLOW -> ONE-SHOT 10-JOB DEVELOPMENT J0/J1 -> AGGREGATE -> FREEZE -> STOP BEFORE VERIFY_INTERNAL`.
+
+
+---
+
+## 2026-10-08 — R44-B B1 ONE-SHOT COMPLETE / NO ARCHITECTURE NOMINATED / CAUSAL DIAGNOSIS COMPLETE
+
+### One-shot scientific result
+Official scientific run:
+- `37706558889`
+- attempt ID: `R44B_B1_DEV_J0J1_ATTEMPT_1`
+- workflow run_number=1
+- run_attempt=1
+- immutable precheck SUCCESS
+- 10/10 fold/head jobs SUCCESS
+- aggregate SUCCESS
+- reruns=0
+- replacement attempts=0
+
+Scientific attempt is consumed and MUST NOT be repeated.
+
+Aggregate artifact:
+- `11520076582`
+- digest `sha256:f2375a772cc045b2aad6e207747cfec9724b6e84549b3987855ae78e3565e761`
+
+Frozen result:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44B_B1_DEVELOPMENT_RESULT_FREEZE_V1.md`
+commit `ce12eb09cec41b4d4eb7e22fa5584f8d5d590d89`.
+
+Decision:
+`NO_ARCHITECTURE_NOMINATED`
+because neither J0 nor J1 passed the frozen gates.
+
+Best J0:
+- t=.95
+- macro precision 0.845308610324185
+- P precision 0.8729281767955801
+- I precision 0.8
+- C precision 0.88
+- O precision 0.8283062645011601
+- recalls all > .38.
+
+Best J1:
+- t=.95
+- macro precision 0.8258277690482774.
+
+No VERIFY_INTERNAL / old SELECT / protected data / fitted calibration / boundary repair / new thresholds / score-driven retry.
+
+### Read-only causal diagnosis
+Frozen diagnosis:
+`AT0_EN_V26_R44B_B1_FAILURE_CAUSAL_DIAGNOSIS_V1.md`
+commit `f7893debaea87a2763963d57e8c9a4276d3d9170`.
+
+Dominant failure:
+- J0 t=.95 FP=189;
+- SAME_CLASS_WRONG_BOUNDARY=93;
+- SPURIOUS_NO_OVERLAP=78;
+- WRONG_TYPE_EXACT_COORD=14;
+- EXACT_TYPED changed wrong=2;
+- DIFFERENT_CLASS_WRONG_BOUNDARY=2;
+- 90.48% of accepted J0 FPs are SAME_CLASS_WRONG_BOUNDARY or SPURIOUS_NO_OVERLAP.
+
+Validity-separation diagnostic:
+- J0 validity AUROC ~0.73284; AP ~0.85958.
+- J1 validity AUROC ~0.72637; AP ~0.85865.
+
+Type-only on the 1,406 valid exact-coordinate candidates:
+- J0 P/I/C/O-only accuracy ~0.95092 vs five-way ~0.81366.
+- J1 P/I/C/O-only accuracy ~0.95164 vs five-way ~0.81721.
+
+Oracle-validity + existing J1 type-only argmax would satisfy all frozen class precision gates:
+- P .98591549
+- I .94444444
+- C .92307692
+- O .94943820
+- macro .95071877.
+This is DIAGNOSTIC ONLY, not an achieved model.
+
+Existing B type + oracle validity still fails C precision (.87951807), so a pure validity veto keeping B type is insufficient.
+
+Capacity/overfit evidence:
+- J0 final per-fold train CE roughly .0060-.0157;
+- J1 final per-fold train CE roughly .00067-.00102;
+- J1 nearly memorized training but generalizes worse than J0 at every frozen threshold.
+
+Causal verdict:
+`VALIDITY_IDENTIFICATION_IS_THE_PRIMARY_NEXT_HYPOTHESIS`
+and
+`FACTORIZE_CANDIDATE_VALIDITY_FROM_PICO_TYPE_BEFORE_BOUNDARY_REPAIR_OR_CALIBRATION`.
+
+This is a recommendation for review only. No new scientific fit is authorized.
+
+### Literature triangulation
+Read-only literature review considered:
+- PICOX, JAMIA 2024, DOI 10.1093/jamia/ocae065 — invalid/composite span supervision and FP reduction;
+- Liu et al., Neurocomputing 2022, DOI 10.1016/j.neucom.2022.07.012 — entity identification vs entity classification + hard negatives (mechanistic precedent);
+- TSBECL, Expert Systems with Applications 2025, DOI 10.1016/j.eswa.2025.126707 — two-stage boundary-enhanced span classification;
+- BGNER 2025, DOI 10.1007/s44443-025-00059-6 — boundary-aware span validation;
+- OpenBioNER-v2 2026, DOI 10.1016/j.eswa.2026.131725 — boundary difficulty and rare-entity calibration risk.
+
+### Next higher-model consultation packet
+Prepared:
+`AT0_EN_V26_POST_R44B_FACTORIZED_REVIEW_PACKET_V1.md`
+commit `aa5d4e85d25ce371c48b5839b6cf6b97fab9802e`.
+
+The packet asks the higher model to choose exactly one primary next intervention, explicitly comparing:
+- low-capacity factorized VALID/INVALID + P/I/C/O type;
+- factorized existing representation;
+- boundary-first;
+- hard-negative loss;
+- calibration;
+- simpler non-factorized head;
+- fresh-data stop.
+
+CURRENT EXACT CHECKPOINT:
+`R44B_B1_ONE_SHOT_COMPLETE_NO_ARCHITECTURE_NOMINATED -> READ_ONLY_CAUSAL_DIAGNOSIS_COMPLETE -> HIGHER_MODEL_REVIEW_OF_FACTORIZED_NEXT_PROTOCOL_REQUIRED_BEFORE_ANY_NEW_SCIENTIFIC_FIT`.
+
+Still CLOSED:
+- VERIFY_INTERNAL;
+- final refit;
+- calibration fitting;
+- boundary repair training;
+- factorized-head training;
+- alternate model training;
+- all consumed FactPICO / 60-RCT evidence.
