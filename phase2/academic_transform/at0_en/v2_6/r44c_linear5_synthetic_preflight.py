@@ -206,10 +206,16 @@ def test_aggregate_contract(root):
     fixture=[]; doc=1000
     for c,n in {"P":60,"I":180,"C":30,"O":150}.items():
         for _ in range(n):
-            fixture.append(make_prob(c,c,.85,0,doc,c)); doc+=1
+            r=make_prob(c,c,.85,0,doc,c)
+            r["target"]=c
+            r["taxonomy"]="EXACT_TYPED"
+            fixture.append(r); doc+=1
     for c in ["P","I","C","O"]:
         for _ in range(20):
-            r=make_prob("NONE",c,.82,0,doc,c); r["taxonomy"]="SPURIOUS_NO_OVERLAP"; fixture.append(r); doc+=1
+            r=make_prob("NONE",c,.82,0,doc,c)
+            r["target"]="NONE"
+            r["taxonomy"]="SPURIOUS_NO_OVERLAP"
+            fixture.append(r); doc+=1
     m80=threshold_metrics(fixture,.80); m85=threshold_metrics(fixture,.85)
     if m80["passed"] or not m85["passed"] or m85["per_class"]["P"]["accepted"]!=60:
         raise RuntimeError("gate/threshold fixture")
