@@ -280,3 +280,27 @@ The late archive was independently rechecked:
 Treat this archive as additional provenance support. It does NOT reopen J0/J1, thresholds, calibration, VERIFY_INTERNAL, boundary repair, or any consumed experiment.
 
 The current post-R44-B scientific question remains unchanged: identify the single narrowest prospectively defensible next intervention after the frozen no-pass outcome.
+
+
+---
+
+## 10. Provenance correction for prior higher-model review files
+
+The prior Markdown report and ZIP are **companion deliverables from the same higher-model review response** that issued `PROCEED_WITH_NONSCIENTIFIC_IMPLEMENTATION_FIXES_ONLY`.
+
+They are NOT:
+- a second independent reviewer;
+- a separate adjudication;
+- additional independent scientific evidence merely because they exist as files.
+
+They ARE useful as:
+- the durable full-form record of that same prior review;
+- the source of the reviewer's own artifact-audit script and retained evidence package.
+
+A later local re-execution of the included verifier and SHA checks independently confirmed artifact/provenance identities, but this is an artifact-verification step rather than a second scientific review.
+
+When performing the new post-R44-B review, use the prior package as historical context only. The new review must focus on the evidence generated **after** that prior review:
+- one-shot run `37706558889`;
+- frozen no-pass result;
+- read-only causal diagnosis;
+- the proposed factorized next hypothesis.
