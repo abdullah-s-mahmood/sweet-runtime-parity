@@ -23,12 +23,12 @@ Governing independent review:
 | Prior-exposure inventory | Complete versioned inventory across all prior ACAD_PASS corpora/artifacts/prompts/attachments/translations/manual examples | INCOMPLETE |
 | Protected-corpus fingerprint custody | Ability to deduplicate against protected sources without developer opening VERIFY_INTERNAL | NOT_ESTABLISHED |
 | Access control | EVAL text/IDs/labels/scope/embeddings/discussions inaccessible to developers before final freeze | NOT_ESTABLISHED |
-| Annotation manual pin | Exact source manual revision + local immutable copy/hash | NOT_YET_FROZEN |
-| Prospective annotation addendum | Decisions 17–21 converted into immutable operational manual | NOT_YET_FROZEN |
+| Annotation manual pin | Exact source manual revision + local immutable copy/hash | UPSTREAM_PIN_FROZEN — commit bc4b878773192f38b2600ec830ca4208b82f7dc0 / blob f67df5da9507c562cbeab7ad497e816bde58a02a; local binary copy still pending |
+| Prospective annotation addendum | Decisions 17–21 converted into immutable operational manual | FROZEN — AT0_EN_V26_FRESH_RCT_ANNOTATION_ADDENDUM_V1.md / commit 26cd1573a1fc410f1209d1a5f5c38dec5ac54ce4 |
 | Statistical implementation | Clopper-Pearson/HMAC audit code validated on synthetic data only | SYNTHETIC_PREFLIGHT_PASS — run 37828307955 / artifact 11572557395 |
 | Retrieval archive tooling | Must archive exact query, timestamps, QueryTranslation, warnings, full PMIDs/XML/pagination/hashes without sampling | NOT_YET_IMPLEMENTED |
 | Trial-family provenance tooling | Deterministic exact/fuzzy triggers + registry alias ledger; no learned model required | NOT_YET_IMPLEMENTED |
-| Seed commitment procedure | Independent custodian procedure documented; actual secret NOT generated yet | PROCEDURE_PENDING |
+| Seed commitment procedure | Independent custodian procedure documented; actual secret NOT generated yet | PROCEDURE_FROZEN — actual secret generation remains forbidden until custodian readiness/sign-off |
 | Acquisition sign-off | Readiness evidence independently reviewed and explicitly authorized | NOT_AUTHORIZED |
 
 ## Hard rule
@@ -76,3 +76,19 @@ This closes only the statistical synthetic-mechanics row.
 
 Overall state remains:
 `READINESS_INCOMPLETE_ACQUISITION_BLOCKED`.
+
+
+## 2026-10-08 annotation/readiness update
+
+Pinned manual identity:
+- repository `BIDS-Xu-Lab/section_specific_annotation_of_PICO`;
+- commit `bc4b878773192f38b2600ec830ca4208b82f7dc0`;
+- manual Git blob `f67df5da9507c562cbeab7ad497e816bde58a02a`;
+- blob size 204547 bytes.
+
+Frozen prospective addendum:
+`AT0_EN_V26_FRESH_RCT_ANNOTATION_ADDENDUM_V1.md`
+
+Actual qualification/main-corpus annotation remains forbidden.
+
+Seed-commitment logic is frozen, but no real 256-bit secret may be generated before an independent custodian exists and acquisition is explicitly authorized.
