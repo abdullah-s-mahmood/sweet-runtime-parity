@@ -1,0 +1,2 @@
+Synthetic-only readiness preflight for retrieval completeness and duplicate/trial-family screening triggers.
+No PubMed contact, no real RCT records, no protected-corpus opening, no annotation, no model.
