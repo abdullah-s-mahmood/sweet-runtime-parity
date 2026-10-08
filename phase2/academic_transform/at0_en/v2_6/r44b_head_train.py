@@ -200,13 +200,15 @@ def fit_head(train_features,head,out_dir:pathlib.Path,epochs=EPOCHS,batch_size=B
         trace.append({"epoch":ep,"mean_loss":epoch_loss,"global_step":global_step,"lr":float(opt.param_groups[0]["lr"])})
         if status_path is not None:
             meta=dict(status_meta or {})
-            write_json(status_path,{
+            payload={
                 **meta,
                 "state":"RUNNING","current_stage":"TRAINING","current_epoch":ep,
                 "epochs_total":epochs,"global_step":global_step,"total_steps":total_steps,
                 "latest_loss":epoch_loss,"progress_percent":round(90.0*ep/epochs,6),
                 "last_progress_at":now(),"failure_or_stall_reason":None,
-            })
+            }
+            write_json(status_path,payload)
+            print("PROCESS_STATUS "+json.dumps(payload,sort_keys=True),flush=True)
     if global_step!=total_steps: raise RuntimeError("optimizer step accounting")
     ckpt=out_dir/f"R44B_{head}_FINAL_MODEL.safetensors"
     save_file({k:v.detach().cpu().contiguous() for k,v in model.state_dict().items()},str(ckpt))
