@@ -1333,3 +1333,89 @@ CURRENT EXACT CHECKPOINT:
 `R44B_UPSTREAM_COMPLETE + ACTUAL_HEAD_MECHANICS_PASS -> HIGHER_MODEL_ADVERSARIAL_REVIEW -> RECONCILE -> IF CLEAR AUTHORIZE FIRST FROZEN J0/J1 NESTED SCIENTIFIC RUN`.
 
 No J0/J1 scientific run has been consumed yet.
+
+
+---
+
+## 2026-10-08 — HIGHER-MODEL VERDICT ACCEPTED / I1-I2 CLOSURE IN PROGRESS
+
+Higher-model independent verdict:
+`PROCEED_WITH_NONSCIENTIFIC_IMPLEMENTATION_FIXES_ONLY`.
+
+Durable adjudication:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R44B_HIGHER_MODEL_ADJUDICATION_V1.md`.
+
+Scientific design remains frozen and unchanged:
+- pair-exclusion B1;
+- J0-first / J1-only-if-J0-fails;
+- ordinary 5-way CE;
+- seed 44;
+- 10 fixed epochs;
+- thresholds {0.80,0.85,0.90,0.95};
+- no fitted calibration;
+- no boundary repair;
+- no VERIFY_INTERNAL.
+
+### I2 documentation closure
+Superseding clarifications were appended to:
+- `AT0_EN_V26_R44B_B1_NESTED_PROTOCOL_FREEZE_V1.md`;
+- `AT0_EN_V26_R44B_HIGHER_MODEL_REVIEW_PACKET_V1.md`;
+- `AT0_EN_V26_R44B_PREHEAD_ADVERSARIAL_REVIEW_V1.md`.
+
+Permanent corrected interpretation:
+- pair jobs are computationally separable, statistically dependent;
+- 10 physical pair fits are fixed-seed fitting equivalence to 20 logical directions, not independent replication;
+- context computation is label-independent although source JSON physically contains tags;
+- VERIFY_INTERNAL is historically exposed through parent R4.3 FIT/audits and split-statistic use; no R44 candidate-specific verification/tuning has occurred;
+- mechanics run 37702502662 computed gradients on a tiny mixed development sample but made no optimizer/scheduler update and retained no learned state;
+- mechanics objects/gradients/RNG continuation are forbidden from scientific initialization.
+
+### I1 implementation created
+- `r44b_head_train.py`
+- `r44b_head_aggregate.py`
+- `r44b_head_synthetic_closure.py`
+- `.github/workflows/r44b_head_executor_closure.yml`
+
+Executor invariants now include:
+- canonical manifest-hash recomputation;
+- fixed scientific attempt ID `R44B_B1_DEV_J0J1_ATTEMPT_1`;
+- fresh model/optimizer/scheduler/RNG per fold/head;
+- meta-only optimizer updates;
+- eval + no_grad outer inference;
+- final fixed epoch only;
+- safetensors checkpoint;
+- raw 5-way probability serialization;
+- live epoch/step/loss/progress PROCESS_STATUS logs;
+- physical checkpoint SHA verification;
+- fail closed on missing/duplicate/nonfinite/unnormalized outputs;
+- exactly 1942 aggregate probability rows per head;
+- recall denominators P=271 I=829 C=115 O=677;
+- deterministic >= thresholds, all-class gate, lowest passing threshold, J0-first rule;
+- frozen Brier/ECE/reliability/risk-coverage diagnostic definitions;
+- no score-driven retries/checkpoint shopping.
+
+### Synthetic closure evidence
+Earlier simpler closures:
+- run `37704956922`: SUCCESS, superseded;
+- run `37705160972`: SUCCESS, superseded.
+
+Full-validator closure attempts:
+- run `37705311699`: FAILURE;
+- run `37705508807`: FAILURE.
+
+Both failures are NONSCIENTIFIC fixture failures caused by writing literal `\\n` after synthetic JSON instead of a real newline, producing `JSONDecodeError: Extra data`. No real DESIGN nested head training occurred and no scientific attempt was consumed. The fixture encoding was repaired only; scientific trainer/evaluator semantics were not changed because of scores.
+
+Current authoritative closure candidate:
+- run `37705640579`;
+- head `a20da0098d035a80219171b469033179830392a5`;
+- state at this checkpoint: IN_PROGRESS;
+- source-free/synthetic only.
+
+CURRENT EXACT CHECKPOINT:
+`R44B_UPSTREAM_FROZEN + HIGHER_MODEL_REVIEW_COMPLETE + I2_CLOSED + I1_EXECUTOR_IMPLEMENTED -> AUTHORITATIVE_SYNTHETIC_CLOSURE_37705640579_IN_PROGRESS`.
+
+Scientific J0/J1 attempts consumed:
+`0 / 1`.
+
+NEXT:
+`IF_37705640579_PASS -> FREEZE_EXECUTOR + CREATE/PIN SCIENTIFIC WORKFLOW -> ONE-SHOT 10-JOB DEVELOPMENT J0/J1 -> AGGREGATE -> FREEZE -> STOP BEFORE VERIFY_INTERNAL`.
