@@ -4,3 +4,4 @@ REFERENCE FINAL closure: includes full synthetic 10-output validate_complete pat
 AUTHORITATIVE closure candidate: includes full validator, fixed attempt identity, checkpoint physical hash, and live progress logging. No scientific data/training.
 AUTHORITATIVE closure after synthetic newline-fixture repair; all executor code unchanged scientifically.
 AUTHORITATIVE closure after synthetic J1 provenance fixture repair; scientific executor unchanged.
+FINAL runtime-pinned closure: ubuntu-24.04 + Python 3.11.16 + minimal requirements/r44b_head.txt. No scientific data/training.
