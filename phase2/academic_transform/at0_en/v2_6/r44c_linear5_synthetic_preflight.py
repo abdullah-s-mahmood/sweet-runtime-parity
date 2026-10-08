@@ -13,7 +13,8 @@ from r44c_linear5_train import (
     OptimizationNotConverged
 )
 from r44c_linear5_aggregate import (
-    threshold_metrics, argmax_label, validate, sha256_path, canonical_manifest_sha
+    threshold_metrics, argmax_label, validate, sha256_path, canonical_manifest_sha,
+    EXPECTED_CONTEXT_SHA, EXPECTED_INDEX_SHA
 )
 
 def expect_fail(fn,label):
@@ -158,9 +159,10 @@ def test_optimizer_and_serialization(root):
 def make_prob(target,pred,conf,k,doc,btype="P"):
     rest=(1.0-conf)/4.0
     d={c:rest for c in CLASSES}; d[pred]=conf
+    logs={c:float(np.log(max(d[c],1e-300))) for c in CLASSES}
     return {"outer_fold":k,"document":doc,"sentence":0,"start":0,"end":1,"b_type":btype,
-            **{f"logit_{c}":0.0 for c in CLASSES},
-            **{f"logp_{c}":float(np.log(max(d[c],1e-300))) for c in CLASSES},
+            **{f"logit_{c}":logs[c] for c in CLASSES},
+            **{f"logp_{c}":logs[c] for c in CLASSES},
             **{f"p_{c}":d[c] for c in CLASSES}}
 
 def _write_jsonl(p,rows):
@@ -173,36 +175,50 @@ def test_aggregate_contract(root):
               "excluded_old_select_documents":[200],
               "oof_folds":[{"fold":k,"documents":[k]} for k in range(5)]}
     msha=canonical_manifest_sha(manifest); manifest["manifest_sha256"]=msha
-    (nested/"R44B_PAIR_AGGREGATE_SUMMARY.json").write_text(json.dumps({"state":"R44B_PAIR_AGGREGATE_PASS"})+"\n")
+    outer_summary={}
     for k in range(5):
         ev=[{"document":k,"sentence":0,"start":0,"end":1,"width":1,"b_type":"P",
              "target":"P","taxonomy":"EXACT_TYPED","goldless_example":False}]
-        _write_jsonl(nested/f"R44B_OUTER_{k}_EVAL.jsonl",ev)
+        ep=nested/f"R44B_OUTER_{k}_EVAL.jsonl"; _write_jsonl(ep,ev)
+        mp=nested/f"R44B_OUTER_{k}_META_TRAIN.jsonl"; _write_jsonl(mp,[{"synthetic_meta":k}])
+        outer_summary[str(k)]={"meta_sha256":sha256_path(mp),"eval_sha256":sha256_path(ep)}
         d=out/f"fold{k}"; d.mkdir()
         pr=make_prob("P","P",.9,k,k,"P")
         pp=d/f"R44C_OUTER_{k}_PROBS.jsonl"; _write_jsonl(pp,[pr])
         ck=d/f"R44C_OUTER_{k}_LINEAR5_MODEL.safetensors"; ck.write_bytes(f"model{k}".encode())
         sc=d/f"R44C_OUTER_{k}_SCALER.safetensors"; sc.write_bytes(f"scaler{k}".encode())
-        summary={"state":"R44C_LINEAR5_FOLD_COMPLETE","attempt_id":"SYNTH_R44C","outer_fold":k,
-                 "feature_dim":3918,"parameter_count":19595,"l2_coefficient":.01,
-                 "optimizer":"LBFGS","optimizer_steps":5,"final_grad_inf":1e-8,"eval_rows":1,
-                 "checkpoint_sha256":sha256_path(ck),"scaler_sha256":sha256_path(sc),
-                 "probabilities_sha256":sha256_path(pp),
-                 "guards":{"train_scaler_meta_only":True,"eval_inference_fields_stripped":True,
-                           "eval_loss_computed":False,"eval_gradient_computed":False,
-                           "verify_internal_used":False,"old_select_used":False,"protected_data_used":False,
-                           "calibration_fitted":False,"boundary_repair_used":False,
-                           "hard_negative_weighting":False,"class_weighting":False,"retry_or_restart":False}}
+        summary={
+            "state":"R44C_LINEAR5_FOLD_COMPLETE","attempt_id":"SYNTH_R44C","outer_fold":k,
+            "feature_dim":3918,"parameter_count":19595,
+            "l2_coefficient":0.01,"optimizer":"LBFGS","lr":1.0,"history_size":100,
+            "line_search_fn":"strong_wolfe","max_iter_per_step":1,"max_eval":25,
+            "tolerance_grad":1e-7,"tolerance_change":1e-12,
+            "convergence_grad_inf":1e-6,"max_optimizer_steps":1000,
+            "optimizer_steps":5,"final_grad_inf":1e-8,"eval_rows":1,
+            "manifest_canonical_sha256":msha,
+            "context_npy_sha256":EXPECTED_CONTEXT_SHA,
+            "context_index_sha256":EXPECTED_INDEX_SHA,
+            "meta_sha256":outer_summary[str(k)]["meta_sha256"],
+            "eval_sha256":outer_summary[str(k)]["eval_sha256"],
+            "checkpoint_sha256":sha256_path(ck),"scaler_sha256":sha256_path(sc),
+            "probabilities_sha256":sha256_path(pp),
+            "guards":{"train_scaler_meta_only":True,"eval_inference_fields_stripped":True,
+                      "eval_loss_computed":False,"eval_gradient_computed":False,
+                      "verify_internal_used":False,"old_select_used":False,"protected_data_used":False,
+                      "calibration_fitted":False,"boundary_repair_used":False,
+                      "hard_negative_weighting":False,"class_weighting":False,"retry_or_restart":False}
+        }
         (d/f"R44C_OUTER_{k}_SUMMARY.json").write_text(json.dumps(summary)+"\n")
+    (nested/"R44B_PAIR_AGGREGATE_SUMMARY.json").write_text(
+        json.dumps({"state":"R44B_PAIR_AGGREGATE_PASS","outer":outer_summary})+"\n"
+    )
     rows,_,got=validate(out,nested,manifest,expected_manifest_sha=msha,
                         expected_attempt_id="SYNTH_R44C",expected_rows=5)
     if len(rows)!=5 or got!=msha: raise RuntimeError("full aggregate validation")
     if any("target" not in r for r in rows): raise RuntimeError("target join")
-    # Tie in class order must resolve to NONE and reject.
     tie=make_prob("P","P",.2,0,99,"P")
     pred,_=argmax_label(tie)
     if pred!="NONE": raise RuntimeError(f"tie order {pred}")
-    # >= behavior and gates.
     fixture=[]; doc=1000
     for c,n in {"P":60,"I":180,"C":30,"O":150}.items():
         for _ in range(n):
@@ -219,12 +235,12 @@ def test_aggregate_contract(root):
     m80=threshold_metrics(fixture,.80); m85=threshold_metrics(fixture,.85)
     if m80["passed"] or not m85["passed"] or m85["per_class"]["P"]["accepted"]!=60:
         raise RuntimeError("gate/threshold fixture")
-    # Tamper checkpoint must fail closed.
     (out/"fold0/R44C_OUTER_0_LINEAR5_MODEL.safetensors").write_bytes(b"tampered")
     expect_fail(lambda:validate(out,nested,manifest,expected_manifest_sha=msha,
                                 expected_attempt_id="SYNTH_R44C",expected_rows=5),"checkpoint tamper")
     return {"full_population_validator":"PASS","tie_order":"NONE_FIRST",
-            "threshold_ge":"PASS","physical_tamper":"FAIL_CLOSED"}
+            "threshold_ge":"PASS","physical_tamper":"FAIL_CLOSED",
+            "logit_probability_consistency":"PASS"}
 
 def main():
     with tempfile.TemporaryDirectory(prefix="r44c_synth_") as td:
