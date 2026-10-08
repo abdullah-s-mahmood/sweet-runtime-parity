@@ -1,3 +1,4 @@
 Authorized source-free synthetic executor closure only. No real nested-meta optimizer updates, no scientific J0/J1 attempt, no VERIFY_INTERNAL.
 Final closure rerun after checkpoint-physical-SHA and fixed attempt-ID hardening. Still source-free; no scientific data/training.
 REFERENCE FINAL closure: includes full synthetic 10-output validate_complete path and checkpoint tamper failure. No scientific data/training.
+AUTHORITATIVE closure candidate: includes full validator, fixed attempt identity, checkpoint physical hash, and live progress logging. No scientific data/training.
