@@ -3,7 +3,7 @@
 Date: 2026-10-09
 
 State:
-`PICOX_ADAPTED_COMPARATOR_RECIPE_FROZEN_PENDING_RUNTIME_AND_ADAPTER_PREFLIGHT`
+`PICOX_ADAPTED_COMPARATOR_RECIPE_AND_MECHANICS_FROZEN / GPU_AND_PER_FIT_BINDING_PENDING`
 
 Scientific fitting:
 `NOT_AUTHORIZED`
@@ -97,7 +97,7 @@ Training:
 - no early stopping;
 - no best-checkpoint selection;
 - same seed as corresponding comparison fit;
-- batch size = upstream TrainingArguments default unless runtime closure proves an explicit upstream value; if unresolved before first fit, comparator is BLOCKED rather than guessed.
+- per-device train/eval batch size = `8`, prospectively frozen as the explicit adaptation of the upstream TrainingArguments default because the upstream boundary notebook does not set a batch size.
 
 ## 4. Boundary threshold
 
@@ -233,3 +233,25 @@ Block PICOX comparator before fitting if any remains unresolved:
 - DEVELOPMENT threshold selection implementation.
 
 Blocked PICOX does not authorize substitution by an easier comparator after seeing ACAD_PASS results.
+
+
+## 12. 2026-10-09 executable mechanics closure
+
+Run:
+`37897788557`
+
+Artifact:
+`11601460910`
+
+Digest:
+`sha256:633707b4da39d90d2bcd6bee83db65343eefe09f34381c95c3d5909d2b7f6e6c`
+
+State:
+`FEDERATION_PICOX_EXECUTABLE_MECHANICS_PREFLIGHT_PASS`
+
+Candidate generation, boundary-grid logic, fixed .50 span threshold, cross-class overlap preservation, and same-class NMS were reproduced on synthetic fixtures without benchmark TEST data.
+
+Remaining:
+- per-fit matched data manifests;
+- GPU training runtime;
+- final runtime/data hash binding.
