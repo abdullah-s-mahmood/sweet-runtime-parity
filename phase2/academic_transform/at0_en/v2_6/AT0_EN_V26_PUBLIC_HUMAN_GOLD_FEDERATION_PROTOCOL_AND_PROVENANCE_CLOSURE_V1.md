@@ -17,8 +17,8 @@ Canonical independent review:
 |---|---|---|
 | F01 exposure lineage | DOCUMENTARY_CORRECTION_COMPLETE / RECORD_ALIAS_CUSTODY_PENDING | Inventory corrected: R43/R44 = EBM-NLP_mod fold1/train; must still materialize exposed/protected aliases without opening VERIFY_INTERNAL |
 | F02 DISTANT-CTO / role semantics | CORRECTED | Packet now restricts DISTANT-CTO to role-agnostic semantic-type weak ablation; TrialSieve/C-TrO not mapped to C |
-| F03 gold-independent preprocessing | SOURCE_DEFECT_VERIFIED / NEW_PREPROCESSOR_IMPLEMENTATION_PENDING | Hu code verified gold-aware chunk-boundary choice and application to train/dev/test; implement text-only windowing and synthetic proof |
-| F04 benchmark eligibility | OPEN | AD/COVID split membership, test repetition, trial-family overlap, prior exposure and per-fit exclusions not yet frozen |
+| F03 gold-independent preprocessing | SYNTHETIC_WINDOWING_PASS / TOKENIZER_INTEGRATION_PENDING | Text-only planner synthetic closure PASS in run 37879437844; no gold consumed; pinned-tokenizer/end-to-end offset integration still required |
+| F04 benchmark eligibility | TEXT_FINGERPRINT_PARTIAL_PASS / FAMILY_CUSTODY_PENDING | Aggregate-only audit: each corpus has 150 unique docs; every fold 120/15/15 with zero within-fold text overlap; 75/75 unique test docs across five folds; AD-vs-COVID exact text overlap 0; overlap with exposed EBM_mod fold1 TRAIN 0. Trial-family/prior-exposure custody audit still required |
 | F05 incompatible headline comparisons | DOCUMENTARY_CLOSED | AlpaPICO string-set scorer verified; FinePICO/PICOX/GPT-4o results remain task-qualified, not direct strict-span ranks |
 | F06 finite study | PROTOCOL_FROZEN / EXECUTION_BLOCKED | Six development arms, finite seeds/folds/weights/budget now frozen; no fit yet |
 
@@ -76,7 +76,7 @@ Do not certify before:
 
 ### Preprocessing
 Text-only, gold-independent source-compatible processor:
-`NOT_YET_IMPLEMENTED`
+`SYNTHETIC_WINDOW_PLANNER_PASS / PINNED_TOKENIZER_AND_OFFSET_INTEGRATION_PENDING`
 
 ### Adapters
 Need synthetic-tested immutable adapters for:
@@ -161,3 +161,32 @@ with:
 
 Until then:
 `NO_SUCCESSOR_TRAINING`
+
+
+## 2026-10-09 windowing and split-audit update
+
+Run:
+`37879437844`
+
+Windowing artifact:
+`11594086484`
+digest `sha256:22f09221c98e374bc20d035c6e4cce5ecf0328d7381ef86c394ea2652efbff0a`.
+
+Public split aggregate artifact:
+`11594006897`
+digest `sha256:a7cc367fdb669d9a01c4575133dbf8dcfcf2d2b0eff22c614bfbd68278120510`.
+
+Freeze:
+`AT0_EN_V26_FEDERATION_PREFIT_WINDOWING_SPLIT_AUDIT_FREEZE_V1.md`.
+
+Important positive findings:
+- AD: 150 unique documents; five disjoint 15-document TEST subsets = 75 unique TEST docs;
+- COVID: same structure;
+- all within-fold train/dev/test exact-text overlaps = 0;
+- AD/COVID full-corpus exact-text overlap = 0;
+- AD and COVID exact-text overlap with exposed EBM-NLP_mod fold1 TRAIN = 0.
+
+This materially improves F04 confidence but does NOT certify trial-family independence.
+
+Overall state remains:
+`CLOSURE_IN_PROGRESS / FIRST_FIT_NOT_AUTHORIZED`.
