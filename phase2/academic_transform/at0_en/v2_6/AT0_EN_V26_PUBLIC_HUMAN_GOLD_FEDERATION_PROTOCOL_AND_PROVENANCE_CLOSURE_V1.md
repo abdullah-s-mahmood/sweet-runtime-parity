@@ -568,3 +568,34 @@ Boundary/candidate/NMS mechanics PASS without benchmark TEST use.
 
 Overall:
 `CPU/HARDWARE-INDEPENDENT PREFIT CLOSURE NEAR-COMPLETE / GPU RUNTIME STILL BLOCKS FIRST FIT`.
+
+
+## 2026-10-09 canonical runtime + exact-resume closure
+
+Canonical scientific software runtime:
+`AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json`
+
+Canonical runtime preflight:
+- run `37898560516`
+- artifact `11601622017`
+- digest `sha256:854bef337e95e56fdaaccebc77ffb93bdf98a9dd489fe5c4122b0b259a8f6368`
+
+PICOX canonical encoder revision:
+`f18ff5ec008285849e7c467b2618262b0def6238`
+
+The prior `6611fb0...` scientific pin is RETIRED.
+
+Runtime distinction:
+- Transformers 4.57.3 = identity-audit-only environment;
+- Transformers 4.48.0 = canonical scientific execution software runtime.
+
+Training-loop exact resume:
+- run `37899033856`
+- artifact `11601174540`
+- digest `sha256:69338da5e92c2eb9ea4d2ef6694763b7802a4a3a7826969579aa4efc64a37f89`
+- state `FEDERATION_TRAINING_LOOP_CHECKPOINT_RESUME_SYNTHETIC_PASS`.
+
+Remaining runtime blocker is now specifically:
+`REAL_GPU_BACKEND + GPU_SPECIFIC_RUNTIME/MEMORY BINDING`.
+
+No scientific attempt has started.
