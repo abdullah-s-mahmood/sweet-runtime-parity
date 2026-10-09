@@ -1,249 +1,158 @@
 #!/usr/bin/env python3
 from __future__ import annotations
+import argparse, json
+from pathlib import Path
 
-import argparse,csv,glob,json,pathlib,re,tarfile,collections
+NATIVE_CLASSES=("P","I","C","O")
+TRIALSIEVE_TYPES=(
+"Disease/Condition of Interest","Dosage","Drug Intervention","Follow-up period",
+"Group Characteristic","Group Name","Intervention Administration","Intervention Duration",
+"Intervention Frequency","Non-Pharmaceutical Intervention","Non-Study Drug",
+"Outcome (Study Endpoint)","Quantitative Measurement","Sample Size","Side Effects",
+"Statistical Significance","Study Duration","Study Years","Type of Quant. Measure","Units"
+)
+EVIDENCE_LABELS=("B-Outcome","I-Outcome","O")
+PICO_TYPES=(
+"age","condition","control","control-participants","cv-bin-abs","cv-bin-percent",
+"cv-cont-mean","cv-cont-median","cv-cont-q1","cv-cont-q3","cv-cont-sd","eligibility",
+"ethinicity","intervention","intervention-participants","iv-bin-abs","iv-bin-percent",
+"iv-cont-mean","iv-cont-median","iv-cont-q1","iv-cont-q3","iv-cont-sd","location",
+"outcome","outcome-Measure","total-participants"
+)
+WEAK_TYPES=("Behavioural","Biological","Combination Product","Device","Diagnostic Test","Dietary Supplement","Drug","Genetic","Procedure","Radiation","Other")
+class AdapterError(Exception): pass
 
-PICO=("P","I","C","O")
+def adapt_native_picoc(spans):
+    out=[]
+    for x in spans:
+        c=x["class"]
+        if c not in NATIVE_CLASSES: raise AdapterError("native four-class adapter rejects non P/I/C/O class")
+        out.append(dict(x,task="native_picoc",target=c))
+    return out
 
-def runs_from_bio(labels):
-    spans=[]
-    open_type=None; start=None
-    invalid_i=0
-    for i,label in enumerate(labels+["O"]):
-        if label=="O":
-            if open_type is not None:
-                spans.append((start,i,open_type))
-                open_type=None; start=None
-            continue
-        if "-" not in label:
-            raise ValueError(f"invalid BIO label {label}")
-        pref,typ=label.split("-",1)
-        if typ not in PICO:
-            raise ValueError(f"unexpected PICO type {typ}")
-        if pref=="B":
-            if open_type is not None:
-                spans.append((start,i,open_type))
-            open_type=typ; start=i
-        elif pref=="I":
-            if open_type==typ:
-                continue
-            # Source-compatible rule: invalid I does NOT create a new entity.
-            invalid_i+=1
-            if open_type is not None:
-                spans.append((start,i,open_type))
-                open_type=None; start=None
-        else:
-            raise ValueError(f"unexpected prefix {pref}")
-    return spans,invalid_i
+def adapt_ebm_aux(spans):
+    out=[]
+    for x in spans:
+        c=x["class"]
+        if c not in ("P","I","O"): raise AdapterError("original EBM auxiliary adapter allows only P/I/O")
+        out.append(dict(x,task="aux_ebm_pio",target=c))
+    return out
 
-def audit_bids_native(path):
-    docs=[]; toks=[]; labs=[]; invalid_total=0; counts=collections.Counter()
-    started=False
-    def flush():
-        nonlocal toks,labs,invalid_total
-        if not started: return
-        if not toks:
-            return
-        spans,inv=runs_from_bio(labs)
-        invalid_total+=inv
-        for _,_,c in spans: counts[c]+=1
-        docs.append({"tokens":len(toks),"spans":len(spans)})
-        toks=[]; labs=[]
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if line.startswith("-DOCSTART-"):
-            flush(); started=True; continue
-        if not started or not line.strip(): continue
-        if line.strip().startswith("###") and line.strip().endswith("$$$"): continue
-        parts=line.split("\t")
-        if len(parts)!=2: raise ValueError("BIDS train line not 2-column")
-        toks.append(parts[0]); labs.append(parts[1])
-    flush()
-    if len(docs)!=400: raise RuntimeError(f"expected 400 EBM_mod train docs got {len(docs)}")
+def adapt_trialsieve(spans):
+    out=[]
+    for x in spans:
+        t=x["type"]
+        if t not in TRIALSIEVE_TYPES: raise AdapterError("unknown TrialSieve type")
+        out.append(dict(x,task="aux_trialsieve20",target=t))
+    return out
+
+def adapt_evidence(tokens):
+    out=[]
+    for x in tokens:
+        lab=x["label"]
+        if lab not in EVIDENCE_LABELS: raise AdapterError("unknown EvidenceOutcomes label")
+        out.append(dict(x,task="aux_evidence_outcome",target=lab))
+    return out
+
+def adapt_pico_corpus(spans):
+    out=[]
+    for x in spans:
+        t=x["type"]
+        if t not in PICO_TYPES: raise AdapterError("unknown PICO-Corpus native type")
+        out.append(dict(x,task="aux_pico_corpus26",target=t))
+    return out
+
+def adapt_weak_mentions(mentions):
+    out=[]
+    for x in mentions:
+        t=x["semantic_type"]
+        if t not in WEAK_TYPES: raise AdapterError("unknown weak intervention semantic type")
+        if x.get("role") in ("I","C"): raise AdapterError("DISTANT-CTO role promotion to native I/C is forbidden")
+        out.append(dict(x,task="weak_intervention_semantic11",target=t))
+    return out
+
+def synthetic_preflight():
+    native=adapt_native_picoc([
+      {"document_id":"n1","start":0,"end":1,"class":"P"},
+      {"document_id":"n1","start":2,"end":3,"class":"I"},
+      {"document_id":"n1","start":4,"end":5,"class":"C"},
+      {"document_id":"n1","start":6,"end":7,"class":"O"}])
+    assert [x["target"] for x in native]==list(NATIVE_CLASSES)
+
+    ebm=adapt_ebm_aux([
+      {"document_id":"e1","start":0,"end":1,"class":"P"},
+      {"document_id":"e1","start":2,"end":3,"class":"I"},
+      {"document_id":"e1","start":4,"end":5,"class":"O"}])
+    try:
+        adapt_ebm_aux([{"document_id":"e2","start":0,"end":1,"class":"C"}]); raise RuntimeError("EBM C accepted")
+    except AdapterError: pass
+
+    ts=adapt_trialsieve([
+      {"document_id":"t1","start":0,"end":1,"type":"Drug Intervention"},
+      {"document_id":"t1","start":2,"end":3,"type":"Non-Study Drug"},
+      {"document_id":"t1","start":4,"end":5,"type":"Outcome (Study Endpoint)"}])
+    assert all(x["task"]=="aux_trialsieve20" for x in ts)
+    assert not any(x.get("native_target") for x in ts)
+
+    ev=adapt_evidence([{"token":"mortality","label":"B-Outcome"},{"token":"rate","label":"I-Outcome"},{"token":"was","label":"O"}])
+    assert all(x["task"]=="aux_evidence_outcome" for x in ev)
+
+    pc=adapt_pico_corpus([
+      {"document_id":"p1","start":0,"end":1,"type":"control"},
+      {"document_id":"p1","start":2,"end":3,"type":"intervention"},
+      {"document_id":"p1","start":4,"end":5,"type":"outcome"}])
+    assert all(x["task"]=="aux_pico_corpus26" for x in pc)
+    assert not any(x.get("native_target") for x in pc)
+
+    weak=adapt_weak_mentions([
+      {"document_id":"w1","start":0,"end":1,"semantic_type":"Drug"},
+      {"document_id":"w1","start":2,"end":3,"semantic_type":"Procedure"}])
+    assert all(x["task"]=="weak_intervention_semantic11" for x in weak)
+    try:
+        adapt_weak_mentions([{"document_id":"w2","start":0,"end":1,"semantic_type":"Drug","role":"C"}]); raise RuntimeError("weak C role accepted")
+    except AdapterError: pass
+
+    failures=0
+    tests=[
+      (adapt_native_picoc,[{"document_id":"x","start":0,"end":1,"class":"X"}]),
+      (adapt_trialsieve,[{"document_id":"x","start":0,"end":1,"type":"Comparator"}]),
+      (adapt_evidence,[{"token":"x","label":"B-P"}]),
+      (adapt_pico_corpus,[{"document_id":"x","start":0,"end":1,"type":"P"}]),
+      (adapt_weak_mentions,[{"document_id":"x","start":0,"end":1,"semantic_type":"Comparator"}])]
+    for fn,arg in tests:
+        try: fn(arg)
+        except AdapterError: failures+=1
+    if failures!=5: raise RuntimeError("unknown-schema fail-closed mismatch")
+
     return {
-      "documents":len(docs),
-      "span_counts":dict(sorted(counts.items())),
-      "invalid_initial_or_type_mismatched_I_fragments":invalid_total,
-      "total_spans":sum(counts.values())
+      "state":"FEDERATION_ADAPTER_SYNTHETIC_PREFLIGHT_PASS",
+      "scientific_data_used":False,
+      "benchmark_gold_used":False,
+      "native_classes":list(NATIVE_CLASSES),
+      "original_ebm_aux_classes":["P","I","O"],
+      "trialsieve_type_count":len(TRIALSIEVE_TYPES),
+      "evidenceoutcomes_labels":list(EVIDENCE_LABELS),
+      "pico_corpus_type_count":len(PICO_TYPES),
+      "weak_semantic_type_count":len(WEAK_TYPES),
+      "forbidden_mapping_checks":{
+        "original_ebm_C_rejected":True,
+        "trialsieve_nonstudy_drug_to_C_forbidden":True,
+        "pico_corpus_26_to_native_forbidden":True,
+        "weak_role_to_native_I_C_forbidden":True,
+        "unknown_schema_fail_closed":True
+      }
     }
-
-def audit_evidence(root):
-    result={}
-    for fn in ("500RCT-CoNLL.tsv","140EBMNLP-CoNLL.tsv"):
-        docs=collections.defaultdict(list)
-        with open(root/fn,encoding="utf-8",newline="") as f:
-            for row in csv.reader(f,delimiter="\t"):
-                if not row: continue
-                if len(row)!=5: raise ValueError(f"{fn}: malformed row")
-                token,pmid,start,end,label=row
-                if label not in {"B-Outcome","I-Outcome","O"}:
-                    raise ValueError(f"{fn}: unexpected label {label}")
-                docs[pmid].append((token,int(start),int(end),label))
-        spans=0; invalid_i=0
-        for pmid,rows in docs.items():
-            labels=[{"B-Outcome":"B-O","I-Outcome":"I-O","O":"O"}[x[3]] for x in rows]
-            ss,inv=runs_from_bio(labels)
-            invalid_i+=inv; spans+=len(ss)
-            # Validate monotonic released offsets; do not reconstruct text.
-            last=-1
-            for _,s,e,_ in rows:
-                if s<0 or e<=s or s<last: raise ValueError(f"{fn}: bad offsets")
-                last=s
-        result[fn]={
-          "documents":len(docs),
-          "outcome_spans":spans,
-          "invalid_I_fragments":invalid_i,
-          "training_role":"AUXILIARY_O_ONLY"
-        }
-    return result
-
-def audit_trialsieve(root):
-    p=root/"data/processed_for_modeling.json"
-    data=json.loads(p.read_text(encoding="utf-8"))
-    split=collections.Counter(); tags=collections.Counter(); train_docs=0; heldout_test=0; bad=0
-    for d in data:
-        sp=str(d.get("split",""))
-        split[sp]+=1
-        if sp=="test":
-            heldout_test+=1
-            continue
-        if sp not in {"train","validation"}:
-            raise ValueError(f"unexpected TrialSieve split {sp}")
-        train_docs+=1
-        text=d.get("text","")
-        for s in d.get("spans",[]):
-            st=int(s["start"]); en=int(s["end"]); tag=str(s["tag"])
-            if st<0 or en<=st or en>len(text): bad+=1
-            tags[tag]+=1
-    if bad: raise RuntimeError(f"TrialSieve invalid spans={bad}")
-    if len(tags)!=20: raise RuntimeError(f"TrialSieve train/val tag count={len(tags)}")
-    if train_docs!=1371 or heldout_test!=238:
-        raise RuntimeError(f"TrialSieve split mismatch trainval={train_docs} test={heldout_test}")
-    return {
-      "canonical_documents":len(data),
-      "train_validation_documents_admitted":train_docs,
-      "test_documents_excluded":heldout_test,
-      "split_counts":dict(sorted(split.items())),
-      "admitted_span_tag_count":len(tags),
-      "admitted_span_counts":dict(sorted(tags.items())),
-      "nonstudydrug_maps_to_C":False,
-      "training_role":"AUXILIARY_NATIVE_20_TYPE"
-    }
-
-def audit_pico(root):
-    d=root/"pico_corpus_brat_annotated_files"
-    types=collections.Counter(); spans=0; docs=0; bad=0
-    for txt in sorted(d.glob("*.txt")):
-        ann=txt.with_suffix(".ann")
-        if not ann.exists(): raise RuntimeError("PICO text missing ann")
-        text=txt.read_text(encoding="utf-8",errors="replace")
-        docs+=1
-        for line in ann.read_text(encoding="utf-8",errors="replace").splitlines():
-            if not line.startswith("T"): continue
-            parts=line.split("\t")
-            if len(parts)<2: bad+=1; continue
-            meta=parts[1].split()
-            if len(meta)<3: bad+=1; continue
-            typ=meta[0]
-            # BRAT can technically support discontinuous spans with ';'.
-            if ";" in parts[1]:
-                # Keep native provenance but first-campaign contiguous head cannot train this row.
-                continue
-            try: st=int(meta[1]); en=int(meta[2])
-            except: bad+=1; continue
-            if st<0 or en<=st or en>len(text): bad+=1; continue
-            types[typ]+=1; spans+=1
-    if docs!=1011: raise RuntimeError(f"PICO corpus docs {docs}")
-    if bad: raise RuntimeError(f"PICO malformed/invalid spans {bad}")
-    if len(types)!=26: raise RuntimeError(f"PICO type count {len(types)}")
-    return {
-      "documents":docs,
-      "contiguous_spans_admitted":spans,
-      "native_type_count":len(types),
-      "native_type_counts":dict(sorted(types.items())),
-      "collapsed_to_four_class":False,
-      "training_role":"AUXILIARY_NATIVE_26_TYPE"
-    }
-
-def condense_binary(labels):
-    spans=[]; start=None
-    for i,x in enumerate(labels+["0"]):
-        active=str(x)!="0"
-        if active and start is None: start=i
-        if not active and start is not None:
-            spans.append((start,i)); start=None
-    return spans
-
-def audit_original_ebm(archive,work):
-    work.mkdir(parents=True,exist_ok=True)
-    with tarfile.open(archive,"r:gz") as tf: tf.extractall(work,filter="data")
-    tops=[p for p in work.rglob("annotations") if p.is_dir()]
-    if not tops: raise RuntimeError("EBM annotations root not found")
-    # Select extraction root that contains aggregated/starting_spans.
-    top=None
-    for p in tops:
-        if (p/"aggregated"/"starting_spans").exists():
-            top=p.parent; break
-    if top is None: raise RuntimeError("EBM starting_spans root not found")
-    docs_dir=top/"documents"
-    out={}
-    test_files_touched=0
-    for pio in ("participants","interventions","outcomes"):
-        train_dir=top/"annotations"/"aggregated"/"starting_spans"/pio/"train"
-        test_dir=top/"annotations"/"aggregated"/"starting_spans"/pio/"test"/"gold"
-        if not train_dir.exists() or not test_dir.exists():
-            raise RuntimeError(f"missing EBM dirs for {pio}")
-        files=sorted(train_dir.glob("*.ann"))
-        spans=0; invalid_len=0; pmids=set()
-        for ann in files:
-            pmid=ann.stem.split("_")[0]
-            tok=docs_dir/f"{pmid}.tokens"
-            if not tok.exists(): raise RuntimeError(f"missing tokens {pmid}")
-            labels=ann.read_text().split()
-            tokens=tok.read_text(encoding="utf-8",errors="replace").split()
-            if len(labels)!=len(tokens):
-                invalid_len+=1; continue
-            spans+=len(condense_binary(labels)); pmids.add(pmid)
-        if invalid_len: raise RuntimeError(f"EBM {pio} train length mismatches={invalid_len}")
-        # Never read test/gold contents; count directory entries only.
-        test_count=sum(1 for _ in test_dir.glob("*.ann"))
-        out[pio]={
-          "train_documents":len(pmids),
-          "train_annotation_files":len(files),
-          "train_spans":spans,
-          "expert_test_files_reserved_not_read":test_count
-        }
-    return {"elements":out,"training_role":"AUXILIARY_NATIVE_P_I_O","expert_test_content_read":False}
-
-def synthetic_contract():
-    spans,inv=runs_from_bio(["B-P","I-P","O","I-I","O","B-C","I-C"])
-    if spans!=[(0,2,"P"),(5,7,"C")] or inv!=1:
-        raise RuntimeError("source-compatible BIO fixture failed")
-    return {"source_compatible_B_start_fixture":True,"invalid_I_does_not_create_entity":True}
 
 def main():
     ap=argparse.ArgumentParser()
-    ap.add_argument("--bids",type=pathlib.Path,required=True)
-    ap.add_argument("--evidence",type=pathlib.Path,required=True)
-    ap.add_argument("--trialsieve",type=pathlib.Path,required=True)
-    ap.add_argument("--pico",type=pathlib.Path,required=True)
-    ap.add_argument("--ebm",type=pathlib.Path,required=True)
-    ap.add_argument("--work",type=pathlib.Path,required=True)
-    ap.add_argument("--out",type=pathlib.Path,required=True)
+    ap.add_argument("--synthetic-preflight",action="store_true")
+    ap.add_argument("--out",type=Path)
     a=ap.parse_args()
-    result={
-      "state":"FEDERATION_ADAPTER_EXECUTABLE_PREFLIGHT_PASS",
-      "synthetic_contract":synthetic_contract(),
-      "native_EBM_NLP_mod":audit_bids_native(a.bids/"data/EBM-NLPmod/fold1/train.txt"),
-      "EvidenceOutcomes":audit_evidence(a.evidence),
-      "TrialSieve":audit_trialsieve(a.trialsieve),
-      "PICO_Corpus":audit_pico(a.pico),
-      "Original_EBM_NLP":audit_original_ebm(a.ebm/"ebm_nlp_2_00.tar.gz",a.work/"ebm"),
-      "benchmark_test_metrics_computed":False,
-      "AD_COVID_test_labels_read":False,
-      "EBM_expert_test_contents_read":False,
-      "raw_examples_emitted":False
-    }
-    a.out.parent.mkdir(parents=True,exist_ok=True)
-    a.out.write_text(json.dumps(result,indent=2,sort_keys=True)+"\n",encoding="utf-8")
-    print(json.dumps(result,indent=2,sort_keys=True))
+    if not a.synthetic_preflight: raise SystemExit("Only synthetic preflight is authorized")
+    d=synthetic_preflight()
+    s=json.dumps(d,indent=2,sort_keys=True)+"\n"
+    if a.out:
+        a.out.parent.mkdir(parents=True,exist_ok=True)
+        a.out.write_text(s,encoding="utf-8")
+    print(s,end="")
 if __name__=="__main__": main()
