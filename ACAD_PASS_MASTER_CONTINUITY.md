@@ -5777,3 +5777,50 @@ Current checkpoint:
 - current GO/NO-GO: `NO-GO FOR SCIENTIFIC FIT`
 
 The same live file must be updated after every meaningful checkpoint and is the first source to read for current percentages, direction, blockers, optimism and execution status.
+
+
+---
+
+## 2026-10-09 — V4 / SURUS auxiliary candidate evidence frozen
+
+Authoritative progress snapshot:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V4.md`
+commit `978353e5d42d05b551aea82997e8fc6ffcef9ddd`.
+
+SURUS evidence freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_AUXILIARY_ADMISSION_EVIDENCE_FREEZE_V1.md`
+commit `be5a2ee8cf66cec5d86d878aa9b5a558f78552cc`.
+
+Read-only public-source evidence:
+- schema audit run `37900075427` SUCCESS; artifact `11602016518`; digest `sha256:0549f36abf6d1cac39d87dec2206514c7a5a59a8ba2ca083d89c54d53ff26772`;
+- overlap custody run `37900288357` SUCCESS; artifact `11602601668`; digest `sha256:915be5e4fd758b90b959eae4700c774b441dda19f358310165ccfcd6a6517a5e`.
+
+SURUS pinned source:
+`surus-ai/dataset@3a61790d5c304dea95fb278f76cc3b1a0ca07564`
+
+Observed:
+- 523 articles / 523 unique PMIDs;
+- 48,833 annotation rows;
+- 25 labels / 7 classes;
+- 400 in-domain + 123 OOD;
+- license `CC-BY-NC-4.0`;
+- zero mapped PMID collisions with DESIGN / VERIFY_INTERNAL / OLD_SELECT;
+- zero with resolved AD/COVID records;
+- overlaps requiring deterministic decontamination: EvidenceOutcomes 7, PICO-Corpus 2, TrialSieve train/validation 1.
+
+Scientific interpretation:
+SURUS is a credible candidate fine-grained auxiliary human-gold source, but it is not in the currently frozen D0-D4 auxiliary-source matrix. Admission would materially change the protocol. Therefore it remains candidate-only pending independent admission review.
+
+Current process state:
+- F01-F06 closure = **94.5%**;
+- first-fit readiness = **89.7%**;
+- successor scientific training = NOT STARTED;
+- latest actual model result = frozen R44C;
+- VERIFY_INTERNAL = CLOSED;
+- D5 = CANCELED WITHOUT REPLACEMENT.
+
+Exact next operation:
+`INDEPENDENT_SURUS_ADMISSION_REVIEW`
+
+After the frozen KEEP/REJECT decision:
+`QUALIFY_REAL_GPU -> BIND_GPU_RUNTIME_HASH_TO_45_SLOTS -> FINAL_INDEPENDENT_PREFIT_REVIEW -> FIRST_D0-D4 SCIENTIFIC FIT`.
