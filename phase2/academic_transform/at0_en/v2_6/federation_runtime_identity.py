@@ -40,7 +40,10 @@ def main():
       "huggingface_hub":"0.28.1","safetensors":"0.5.2","accelerate":"1.3.0","numpy":"1.26.4"
     }
     for k,v in expected.items():
-        if versions[k] != v: raise RuntimeError(f"version mismatch {k}: {versions[k]} != {v}")
+        actual=versions[k]
+        comparable=actual.split("+",1)[0] if k=="torch" else actual
+        if comparable != v:
+            raise RuntimeError(f"version mismatch {k}: {actual} != base {v}")
 
     models=[]
     for m in MODELS:
@@ -75,6 +78,7 @@ def main():
       "cuda_available":torch.cuda.is_available(),
       "platform":platform.platform(),
       "versions":versions,
+      "torch_build_suffix":(versions["torch"].split("+",1)[1] if "+" in versions["torch"] else None),
       "models":models,
       "determinism_policy":{
         "torch_use_deterministic_algorithms":True,
