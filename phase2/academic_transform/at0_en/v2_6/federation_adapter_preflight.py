@@ -53,21 +53,46 @@ def trialsieve(root):
     p=root/"data/processed_for_modeling.json"
     d=json.loads(p.read_text(encoding="utf-8"))
     if len(d)!=1609: raise RuntimeError(f"TrialSieve docs {len(d)} !=1609")
-    tags=collections.Counter(); spans=0; bad=0; pmids=set()
+    all_tags=collections.Counter(); all_spans=0; bad=0; pmids=set()
+    admitted_tags=collections.Counter(); admitted_spans=0; admitted_pmids=set()
+    split_counts=collections.Counter()
     for doc in d:
         pmid=str(doc.get("pmid","")).strip()
         if not pmid: raise RuntimeError("TrialSieve missing pmid")
         pmids.add(pmid)
+        split=str(doc.get("split",""))
+        split_counts[split]+=1
+        if split not in {"train","validation","test"}:
+            raise RuntimeError(f"unexpected TrialSieve split {split}")
+        admitted=split in {"train","validation"}
+        if admitted: admitted_pmids.add(pmid)
         for sp in doc.get("spans",[]):
-            spans+=1
+            all_spans+=1
             tag=str(sp.get("tag",""))
-            tags[tag]+=1
+            all_tags[tag]+=1
             s=int(sp["start"]); e=int(sp["end"])
             if s<0 or e<=s: bad+=1
-    if set(tags)!=TRIALSIEVE_TAGS: raise RuntimeError("TrialSieve tag inventory changed")
-    if spans!=52638: raise RuntimeError(f"TrialSieve spans {spans} !=52638")
+            if admitted:
+                admitted_spans+=1
+                admitted_tags[tag]+=1
+    if set(all_tags)!=TRIALSIEVE_TAGS: raise RuntimeError("TrialSieve tag inventory changed")
+    if all_spans!=52638: raise RuntimeError(f"TrialSieve spans {all_spans} !=52638")
+    if split_counts!={"train":1148,"validation":223,"test":238}:
+        raise RuntimeError(f"TrialSieve split counts changed: {split_counts}")
+    if len(admitted_pmids)!=1371:
+        raise RuntimeError(f"TrialSieve admitted docs {len(admitted_pmids)} !=1371")
+    if set(admitted_tags)!=TRIALSIEVE_TAGS:
+        raise RuntimeError("TrialSieve admitted train+validation missing native tag(s)")
     if bad: raise RuntimeError(f"TrialSieve bad offsets {bad}")
-    return {"docs":len(d),"pmids":len(pmids),"spans":spans,"tags":dict(sorted(tags.items()))}
+    return {
+      "canonical_docs":len(d),"canonical_pmids":len(pmids),"canonical_spans":all_spans,
+      "canonical_tags":dict(sorted(all_tags.items())),
+      "split_counts":dict(sorted(split_counts.items())),
+      "admitted_train_validation_docs":len(admitted_pmids),
+      "admitted_train_validation_spans":admitted_spans,
+      "admitted_tags":dict(sorted(admitted_tags.items())),
+      "reserved_test_docs":238
+    }
 
 def pico(root):
     d=root/"pico_corpus_brat_annotated_files"
