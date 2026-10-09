@@ -1,0 +1,191 @@
+{
+  "review_date": "2026-10-09",
+  "repository": "abdullah-s-mahmood/sweet-runtime-parity",
+  "branch": "at0-en-v2.6-dev",
+  "reviewed_commit": "2ee3bf67d22187d4b4ecba8e624367032fd64d97",
+  "surus_commit": "3a61790d5c304dea95fb278f76cc3b1a0ca07564",
+  "verdict": "PROCEED_WITH_CHANGES",
+  "training_authorized": false,
+  "files": [
+    {
+      "path": "evidence/ACAD_PASS_CHAT_HANDOFF.md",
+      "bytes": 84560,
+      "sha256": "cc5f42ccd665b690b6dcc0104cf5031f13edfff4e2bf3e0f78cb162a5fc29cc2"
+    },
+    {
+      "path": "evidence/ACAD_PASS_LATEST_STATE.md",
+      "bytes": 2501,
+      "sha256": "9cc7a57df23b5b15ec70a9a8be9708c75554f339661016df420c2226142dffac"
+    },
+    {
+      "path": "evidence/AT0_EN_V26_FEDERATION_DEVELOPMENT_ATTEMPT_MANIFEST_V1.json",
+      "bytes": 35744,
+      "sha256": "f3670781611d3d4d90e3980e53eb0445c6ab8350cf00b3f5c1a47d53b93f374a"
+    },
+    {
+      "path": "evidence/AT0_EN_V26_FEDERATION_PER_FOLD_DATA_MANIFEST_CUSTODY_FREEZE_V1.md",
+      "bytes": 2375,
+      "sha256": "a373b080ed0f58ddc25b58bde32dfe114c843913ffd6218c1bbb757447c5ade0"
+    },
+    {
+      "path": "evidence/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V4.md",
+      "bytes": 3905,
+      "sha256": "5107f1440b06d21f747ed78f3a2363a877a71791033b0c82a91d767b7d6e5cf2"
+    },
+    {
+      "path": "evidence/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "bytes": 3962,
+      "sha256": "299d0ce1f33289600e1556c66c2a34f4101322b934ce0c0171c9282843d11564"
+    },
+    {
+      "path": "evidence/AT0_EN_V26_PUBLIC_HUMAN_GOLD_FEDERATION_PROTOCOL_V1.md",
+      "bytes": 21369,
+      "sha256": "294e0c9a46d8545538009d95d084af534d74e9cb83f24234557bc8476b9bdeab"
+    },
+    {
+      "path": "evidence/AT0_EN_V26_SURUS_ADMISSION_HIGHER_MODEL_REVIEW_PACKET_V1.md",
+      "bytes": 16218,
+      "sha256": "9fe38489c293af3d85092a2a8ed9dbdb4c3830815948e5352f72978ba4bb3ded"
+    },
+    {
+      "path": "evidence/AT0_EN_V26_SURUS_AUXILIARY_ADMISSION_EVIDENCE_FREEZE_V1.md",
+      "bytes": 6200,
+      "sha256": "daec849d55af43d0e8478cbdfc9ee4b09ffcbcc5547fb14dc3f870308db6c957"
+    },
+    {
+      "path": "evidence/federation_adapters.py",
+      "bytes": 6760,
+      "sha256": "3dcb09fedfcbf6879f90a25f9373fc2c2b1aeb0b0378b9ee80614e310728e6d0"
+    },
+    {
+      "path": "evidence/federation_architecture_preflight.py",
+      "bytes": 8497,
+      "sha256": "2315c76dc1ed9d4e50e8c114cd7b726cf89e130a5fe3146880c86b307756853c"
+    },
+    {
+      "path": "evidence/federation_per_fold_data_manifest_custody.py",
+      "bytes": 12292,
+      "sha256": "ae6f321b88e0b066a973b362164a01483455e22b0441f74974a07684eaf2a7ec"
+    },
+    {
+      "path": "evidence/federation_surus_overlap_custody.py",
+      "bytes": 5925,
+      "sha256": "282823a4bd269e112c994f248114552166fd652808738526b9116de602f77f48"
+    },
+    {
+      "path": "evidence/federation_surus_schema_audit.py",
+      "bytes": 4565,
+      "sha256": "8aa7d669ea984299fdaa54087d8a42750ac29d1561d93eb38d3767f274f7f9b9"
+    },
+    {
+      "path": "evidence/federation_training_loop_resume.py",
+      "bytes": 10372,
+      "sha256": "262ad5d0f180b91762505dc2aed6e2c8326ae6d4dce847a097729def5f02f289"
+    },
+    {
+      "path": "evidence/github-actions-artifact-11602016518.zip",
+      "bytes": 1672,
+      "sha256": "0549f36abf6d1cac39d87dec2206514c7a5a59a8ba2ca083d89c54d53ff26772"
+    },
+    {
+      "path": "evidence/github-actions-artifact-11602601668.zip",
+      "bytes": 1058,
+      "sha256": "915be5e4fd758b90b959eae4700c774b441dda19f358310165ccfcd6a6517a5e"
+    },
+    {
+      "path": "evidence/manual_page_1.png",
+      "bytes": 181854,
+      "sha256": "ba81bc2317b6fda41ecbac35263c3905d678eb8819f7c065308ee23af747468b"
+    },
+    {
+      "path": "evidence/manual_page_4.png",
+      "bytes": 181591,
+      "sha256": "89f213fc556a7a41c6f32cee66755ee7efdacf094a0a52cf78f163120dd6b608"
+    },
+    {
+      "path": "evidence/manual_page_5.png",
+      "bytes": 186694,
+      "sha256": "c18f44ea039e0f24015bb32f62d45432e29f7fd5a9999e1966b8d6476d2cfc92"
+    },
+    {
+      "path": "evidence/manual_page_6.png",
+      "bytes": 187669,
+      "sha256": "0cc140c0b7a7b2f90e44b657a7c97796946f9228b9f57615fff85077fbaae0b2"
+    },
+    {
+      "path": "evidence/official_run_37900075427.json",
+      "bytes": 14305,
+      "sha256": "6be554df15f42cc64d982e2f7fe769cee11d92b3d32728fb018fbe8cf0453dfb"
+    },
+    {
+      "path": "evidence/official_run_37900075427_artifacts.json",
+      "bytes": 784,
+      "sha256": "560dba20946ad720f3412788f5fee3643a3c6e653152acd80907a85a6e2f5039"
+    },
+    {
+      "path": "evidence/official_run_37900288357.json",
+      "bytes": 14328,
+      "sha256": "60ff2af68bbcb65fd1b3d06afc7d4e2f78260c7cd9f7ba1d211eae369b496c7c"
+    },
+    {
+      "path": "evidence/official_run_37900288357_artifacts.json",
+      "bytes": 786,
+      "sha256": "a7a5c7ee48b10bdc4fe09689918d65663b4d15be71d24deefa6ad9e302bf17e6"
+    },
+    {
+      "path": "evidence/SURUS_Annotation_Manual.pdf",
+      "bytes": 340782,
+      "sha256": "4fea3c57666a42db4aef86896cb38e531642e83b00cc5b27f8860d1ec53e86e0"
+    },
+    {
+      "path": "evidence/SURUS_Annotation_Manual.txt",
+      "bytes": 24936,
+      "sha256": "5ccc2c425b26b1502116201b5223d02f75324f2b3653adebd433291be85f666e"
+    },
+    {
+      "path": "evidence/SURUS_OVERLAP_CUSTODY.json",
+      "bytes": 2069,
+      "sha256": "305ca871ad2a5e5a6d87d1d8b780ac5bc7f3e2a928cac2da05174a2cb6901bf2"
+    },
+    {
+      "path": "evidence/SURUS_SCHEMA_AUDIT.json",
+      "bytes": 3795,
+      "sha256": "ee5515a4ed19078ac71ab6875062acf6fc9d855614920eb40303cb3af07e9893"
+    },
+    {
+      "path": "evidence/SURUS_SOURCE_label.csv",
+      "bytes": 412,
+      "sha256": "9a43dbec9a70b2bae6a3f21f7d91fad4cf737579d5b14b9bc5725561564133e1"
+    },
+    {
+      "path": "evidence/SURUS_SOURCE_label_class.csv",
+      "bytes": 75,
+      "sha256": "22f672136e79a9810da5e91574d5885a2a31376ea043af3516045e2fba4d4c8b"
+    },
+    {
+      "path": "evidence/SURUS_SOURCE_LICENSE",
+      "bytes": 824,
+      "sha256": "3ab9e1f86b891d57fbe6f9aa0065fae23431eba3bdb4032a54df5f8355412c4b"
+    },
+    {
+      "path": "evidence/SURUS_SOURCE_README.md",
+      "bytes": 1424,
+      "sha256": "cc004cabf96db66e0b9a5f6ac892c204de41aa534c7712a6f0d819432551c055"
+    },
+    {
+      "path": "FINAL_SURUS_ADMISSION_REVIEW_V1.md",
+      "bytes": 24737,
+      "sha256": "a9d0b42bb54bcb8ff74afee03bc695bcf32f4e4a0dd672f8c855085033b4af23"
+    },
+    {
+      "path": "RESEARCH_AND_EVIDENCE_LOG.md",
+      "bytes": 6626,
+      "sha256": "bc6a9b7196878e45d2f4bf4cceb0a82eef0d1e3e86d851817a57babb094c3299"
+    },
+    {
+      "path": "RESUME_HERE.md",
+      "bytes": 4292,
+      "sha256": "5824c84d5f313d5f7b6ba61cb207675d228292f95295626cd7fc03b82512e1ff"
+    }
+  ]
+}
