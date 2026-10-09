@@ -1,9 +1,9 @@
-# ACAD_PASS — Public AD/COVID PMID Custody Audit Freeze V1
+# ACAD_PASS — Public Target PMID Custody Audit Freeze V1
 
 Date: 2026-10-09
 
 State:
-`FEDERATION_PUBLIC_TARGET_PMID_CUSTODY_AUDIT_PARTIAL_PASS`
+`FEDERATION_PUBLIC_TARGET_PMID_CUSTODY_AUDIT_PASS_WITH_PARTIAL_RESOLUTION`
 
 Run:
 `37881398971`
@@ -14,101 +14,38 @@ Artifact:
 Digest:
 `sha256:5968ab204711dbe54f10e593339a8408c7fc2d1a160ee2148ec4103e7da7b639`
 
-Custody guarantees:
-- no PMID emitted;
-- no title emitted;
-- no raw text emitted;
-- no gold label emitted;
-- only aggregate resolution and overlap counts exported.
-
-Resolution rule:
-- PubMed ESearch restricted to Title;
-- ESummary verification;
-- only a unique exact normalized-title match is accepted;
-- no fuzzy PMID acceptance.
+No PMIDs, titles, raw text or gold labels were emitted.
 
 ## AD
-
-Canonical documents:
-150
-
-Resolved exact-title PMIDs:
-118 / 150 = 78.6666666667%
-
-Official TEST-union documents:
-75
-
-Resolved TEST-union PMIDs:
-64 / 75 = 85.3333333333%
-
-Duplicate resolved PMID assignments:
-0
-
-Within resolved identities, PMID overlap counts were 0 against:
-- DESIGN;
-- VERIFY_INTERNAL;
-- OLD_SELECT;
-- PICO-Corpus;
-- EvidenceOutcomes 500RCT;
-- EvidenceOutcomes 140EBMNLP.
-
-Resolution failures:
-- MULTIPLE_EXACT_TITLE: 4
-- NO_CANDIDATE: 14
-- NO_EXACT_TITLE: 14
+- canonical documents: 150
+- exact normalized PubMed-title PMID resolutions: 118/150 = 78.6666666667%
+- official TEST union: 75
+- resolved TEST PMIDs: 64/75 = 85.3333333333%
+- duplicate resolved PMID assignments: 0
+- shared PMID count against DESIGN / VERIFY_INTERNAL / OLD_SELECT / PICO-Corpus / EvidenceOutcomes 140 / EvidenceOutcomes 500: all 0
 
 ## COVID-19
+- canonical documents: 150
+- exact normalized PubMed-title PMID resolutions: 116/150 = 77.3333333333%
+- official TEST union: 75
+- resolved TEST PMIDs: 61/75 = 81.3333333333%
+- duplicate resolved PMID assignments: 0
+- shared PMID count against DESIGN / VERIFY_INTERNAL / OLD_SELECT / PICO-Corpus / EvidenceOutcomes 140 / EvidenceOutcomes 500: all 0
 
-Canonical documents:
-150
-
-Resolved exact-title PMIDs:
-116 / 150 = 77.3333333333%
-
-Official TEST-union documents:
-75
-
-Resolved TEST-union PMIDs:
-61 / 75 = 81.3333333333%
-
-Duplicate resolved PMID assignments:
-0
-
-Within resolved identities, PMID overlap counts were 0 against:
-- DESIGN;
-- VERIFY_INTERNAL;
-- OLD_SELECT;
-- PICO-Corpus;
-- EvidenceOutcomes 500RCT;
-- EvidenceOutcomes 140EBMNLP.
-
-Resolution failures:
-- MULTIPLE_EXACT_TITLE: 3
-- NO_CANDIDATE: 14
-- NO_EXACT_TITLE: 17
-
-## AD vs COVID
-
-Shared resolved PMID count:
-0
+## Cross-target
+Resolved AD vs COVID shared PMID count: 0
 
 ## Interpretation
+Among records whose PubMed identity was resolved conservatively by exact normalized title, no same-PMID contamination was observed against the checked exposed/protected resources.
 
-Evidence now agrees across three independent identity layers:
+Unresolved titles remain unresolved.
+Same PMID is weaker than same trial-family.
+Protected historical PMID mapping remains partial.
 
-1. exact normalized source-text overlap: 0 against exposed EBM-NLP_mod fold1 TRAIN;
-2. visible registry-ID overlap: 0 against DESIGN/VERIFY_INTERNAL/OLD_SELECT;
-3. resolved exact-title PMID overlap: 0 in the resolvable portion against DESIGN/VERIFY_INTERNAL/OLD_SELECT/PICO-Corpus/EvidenceOutcomes.
+Therefore:
+`SAME_PMID_CONTAMINATION_NOT_OBSERVED_ON_RESOLVED_SUBSET`
 
-This materially strengthens benchmark provenance.
+but not:
+`TRIAL_FAMILY_INDEPENDENCE_FULLY_PROVEN`.
 
-It does NOT establish:
-- PMID identity for unresolved target records;
-- PMID identity for every protected EBM-derived record;
-- absence of distinct-publication same-trial-family overlap;
-- absence of prior prompt/attachment exposure.
-
-Therefore AD/COVID remain:
-`BENCHMARK_PROVENANCE_STRONGLY_SUPPORTED_BUT_FAMILY_CLOSURE_INCOMPLETE`
-
-No benchmark metric may be released yet.
+No scientific fit is authorized by this audit.
