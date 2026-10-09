@@ -1,0 +1,83 @@
+name: Federation pre-fit closure preflights
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/federation_prefit_preflight_trigger.txt'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: federation-prefit-closure
+  cancel-in-progress: false
+
+jobs:
+  windowing:
+    name: Gold-independent windowing synthetic closure
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11.16'
+      - run: python -m py_compile phase2/academic_transform/at0_en/v2_6/federation_text_windowing.py
+      - name: Synthetic text-only windowing preflight
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/windowing"
+          python phase2/academic_transform/at0_en/v2_6/federation_text_windowing.py             --synthetic-preflight             --out "$RUNNER_TEMP/windowing/WINDOWING_SYNTHETIC_PREFLIGHT.json"
+          sha256sum phase2/academic_transform/at0_en/v2_6/federation_text_windowing.py             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_PUBLIC_HUMAN_GOLD_FEDERATION_PROTOCOL_V1.md             > "$RUNNER_TEMP/windowing/SOURCE_SHA256.txt"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: federation-windowing-synthetic-preflight
+          path: ${{ runner.temp }}/windowing
+          if-no-files-found: error
+          retention-days: 90
+
+  split_audit:
+    name: Isolated public split text-fingerprint audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+          path: project
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: BIDS-Xu-Lab/section_specific_annotation_of_PICO
+          ref: bc4b878773192f38b2600ec830ca4208b82f7dc0
+          path: source
+          fetch-depth: 1
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11.16'
+      - name: Verify pinned source commit
+        run: |
+          set -euo pipefail
+          test "$(git -C source rev-parse HEAD)" = "bc4b878773192f38b2600ec830ca4208b82f7dc0"
+      - name: Run isolated aggregate-only split audit
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/split_audit"
+          python project/phase2/academic_transform/at0_en/v2_6/federation_public_split_audit.py             --source source             --out "$RUNNER_TEMP/split_audit/FEDERATION_PUBLIC_SPLIT_AUDIT.json"
+          python - <<'PY'
+          import json, os, pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"split_audit/FEDERATION_PUBLIC_SPLIT_AUDIT.json"
+          d=json.loads(p.read_text())
+          assert d["state"]=="FEDERATION_PUBLIC_SPLIT_TEXT_FINGERPRINT_AUDIT_PASS"
+          assert d["output_contains_raw_text"] is False
+          assert d["output_contains_gold_labels"] is False
+          PY
+          sha256sum project/phase2/academic_transform/at0_en/v2_6/federation_public_split_audit.py             > "$RUNNER_TEMP/split_audit/SOURCE_SHA256.txt"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: federation-public-split-aggregate-audit
+          path: ${{ runner.temp }}/split_audit
+          if-no-files-found: error
+          retention-days: 90
