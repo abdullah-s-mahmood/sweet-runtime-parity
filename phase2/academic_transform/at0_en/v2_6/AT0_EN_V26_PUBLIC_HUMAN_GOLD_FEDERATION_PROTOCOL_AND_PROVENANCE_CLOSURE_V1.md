@@ -473,3 +473,26 @@ Unresolved target records remain a claim limitation, not silently declared indep
 
 Overall:
 `CLOSURE_IN_PROGRESS / SCIENTIFIC_FIRST_FIT_STILL_BLOCKED_BY_EXECUTION_RUNTIME_AND_FINAL_MANIFEST_BINDING`.
+
+
+## 2026-10-09 PMID/schema closure update
+
+Public target PMID custody:
+- run `37881398971`;
+- artifact `11594971856`;
+- freeze `AT0_EN_V26_PUBLIC_TARGET_PMID_CUSTODY_AUDIT_FREEZE_V1.md`.
+
+Public source schema:
+- run `37884140956`;
+- artifact `11595364822`;
+- freeze `AT0_EN_V26_PUBLIC_SOURCE_SCHEMA_AUDIT_FREEZE_V1.md`.
+
+Key provenance:
+- no resolved AD/COVID PMID overlaps with checked exposed/protected sources;
+- no AD/COVID exact-text overlap with exposed EBM-NLP_mod fold1 TRAIN;
+- no visible registry-ID overlaps with DESIGN/VERIFY_INTERNAL/OLD_SELECT.
+
+Key limitation:
+publication identity remains partially unresolved and same-PMID checks do not fully prove distinct trial families.
+
+Schema admission is frozen; adapter mechanics remain to be tested.
