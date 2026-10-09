@@ -164,7 +164,7 @@ def ebm_train_pmids_from_archive(archive_path):
             fn=parts[-1]
             if not fn.endswith(".ann"): continue
             stem=pathlib.PurePosixPath(fn).stem
-            pmid=stem.split("_")[0]
+            pmid=stem.split(".")[0]
             if pmid.isdigit():
                 out.add(pmid)
                 seen_by_pio[pio]+=1
