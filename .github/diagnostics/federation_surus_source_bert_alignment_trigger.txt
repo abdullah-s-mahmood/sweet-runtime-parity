@@ -1,0 +1,1 @@
+SURUS source bert-base-uncased token alignment diagnostic V5. Aggregate-only; no raw text/IDs/model fit/protected scoring. 2026-10-09 Asia/Baghdad.\n
