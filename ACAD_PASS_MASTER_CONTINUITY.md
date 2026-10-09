@@ -5873,3 +5873,60 @@ Current exact next operation:
 Scientific fit remains NO-GO.
 VERIFY_INTERNAL, AD/COVID external scoring and SURUS OOD scoring remain CLOSED.
 45 D0-D4 scientific attempts remain NOT_STARTED / UNCONSUMED.
+
+
+---
+
+## 2026-10-09 — LATEST: SURUS P1 V4 complete / limited source-contract re-review required
+
+Permanent bootstrap:
+`ACAD_PASS_BOOTSTRAP_CONTRACT.md`
+
+Authoritative progress:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V6.md`
+commit `d897973c26cd657b21d1cc93451c7fd407c0544d`.
+
+Current process readiness:
+- F01-F06 = **87.83%**
+- first-fit = **73.2%**
+- no scientific-performance change.
+
+Pinned tokenizer diagnostic V4:
+- run `37915950311` SUCCESS
+- artifact `11608843740`
+- digest `sha256:bdd936769d8eaa4abe87d699925a950e4aa2d9aeff2cc1f327a869a57be8a081`
+- frozen tokenizer `microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract@d673b8835373c6fa116d6d8006b33d48734e305d`
+- signature `088f1bdf2509aee48015c38209b07bebec8d4d266232e04c5d9bd82704b76e81`
+- released Start/End aligned to frozen token boundaries = 48,640/48,833 = 99.6048%
+- released TokenStart/TokenEnd do NOT globally map to the frozen tokenizer;
+- best fixed tested convention reproduces char bounds for only 2,209/48,833.
+
+Source-contract aggregate:
+- 44,643/48,833 raw exact Text round-trip;
+- 4,190 raw mismatches;
+- 3,060/4,190 explained by fixed punctuation/token-spacing;
+- 1,130 Text mismatches remain unexplained.
+
+Official reproducibility gap:
+SURUS publication links `surus-ai/dataset` as the code/data/manual repository, but complete accessible repo history contains dataset/manual/images/license only and no training/tokenization/export/offset implementation.
+
+Latest freeze:
+`AT0_EN_V26_SURUS_PINNED_TOKEN_ALIGNMENT_DIAGNOSTIC_FREEZE_V4.md`
+commit `ec3bb1bb7e6cd2558884fe8fbd03720ddb90e7d8`.
+
+Limited higher-model packet:
+`AT0_EN_V26_SURUS_SOURCE_CONTRACT_REREVIEW_PACKET_V1.md`
+commit `41a8fe976f41f237dd9aa7989e01a2467d2f854e`.
+
+Current exact checkpoint:
+`P1_NOT_CLOSED -> INDEPENDENT_HIGHER_MODEL_LIMITED_SURUS_SOURCE_CONTRACT_REREVIEW`.
+
+Only allowed high-level verdicts:
+- KEEP_SURUS_WITH_CHAR_COORDINATE_CONTRACT
+- KEEP_SURUS_WITH_OTHER_CHANGES
+- REJECT_OR_PAUSE_SURUS
+
+No P2 adapter work and no scientific fit before verdict freeze.
+
+45 D0-D4 attempts remain NOT_STARTED / UNCONSUMED.
+VERIFY_INTERNAL, AD/COVID external scoring and SURUS OOD scoring remain CLOSED.
