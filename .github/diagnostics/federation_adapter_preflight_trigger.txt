@@ -1,3 +1,5 @@
 Federation adapter source preflight. No scientific model training or benchmark scoring.
 
 Rerun: enforce TrialSieve train+validation only; reserve test=238.
+
+Rerun adapter synthetic closure after schema freeze.
