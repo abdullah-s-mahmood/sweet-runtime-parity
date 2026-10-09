@@ -817,3 +817,65 @@ Forbidden:
 
 Next mandatory checkpoint:
 `PUBLIC_HUMAN_GOLD_FEDERATION_PROTOCOL_AND_PROVENANCE_CLOSURE_BEFORE_FIRST_FIT`
+
+
+---
+
+## 2026-10-09 — Superseding D5 cancellation after official-source audit
+
+The prospectively frozen D5 availability condition has been evaluated against the official Zenodo release.
+
+Evidence:
+- run `37885235969` SUCCESS;
+- artifact `11596332070`;
+- artifact digest `sha256:5373e7ee64977b2dcd157d2a181ca35024e5c07f5ccb77e63b98d2da5d09373e`;
+- official file MD5 matched published `e95e3984a9b46e340b90aeed262e12cc`;
+- computed SHA256 `256150be8ac46bcf88ae016a37c3d5013e443b79bddc4f96eb6c960a5f59e764`;
+- 106,889 valid JSON records;
+- zero `intervention_type` labels in the official confidence>=0.9 file.
+
+Therefore the predeclared condition:
+`IF_RELEASED_TYPE_COUNT_DOES_NOT_RESOLVE_TO_11 -> CANCEL_D5_WITHOUT_REPLACEMENT`
+has been triggered.
+
+### Active first-campaign development arms
+
+- D0
+- D1
+- D2
+- D3
+- D4
+
+D5:
+`CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS`
+
+Maximum development fits:
+`5 arms * 3 folds * 3 seeds = 45`
+
+The nine canceled D5 slots:
+- were never started;
+- are not consumed;
+- cannot be repurposed.
+
+The former weak-loss term `+0.05 * L_weak` and all D5-specific sampling rules are now INACTIVE for the first campaign.
+
+DISTANT-CTO remains contextual weak-supervision literature evidence only in this campaign.
+
+### TrialSieve superseding training admission
+
+Canonical TrialSieve corpus remains 1,609 documents.
+
+First-campaign auxiliary training admits only:
+- stored train = 1,148;
+- stored validation = 223;
+- total = 1,371.
+
+Stored test = 238 is reserved and excluded from:
+- training;
+- representation learning;
+- model selection;
+- threshold selection.
+
+This supersedes any earlier wording that could be interpreted as admitting all 1,609 TrialSieve documents into training.
+
+All other protocol terms remain unchanged unless explicitly superseded later.
