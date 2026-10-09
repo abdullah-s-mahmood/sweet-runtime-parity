@@ -147,13 +147,18 @@ def efetch(pmids):
             if not pm:continue
             dois=set()
             regs=set()
-            for el in art.findall(".//ArticleId"):
+            # Publication DOI only; cited-reference ArticleId values are excluded.
+            for el in art.findall("./PubmedData/ArticleIdList/ArticleId"):
                 if (el.attrib.get("IdType") or "").casefold()=="doi" and el.text:
                     dois.add(el.text.strip().casefold())
-            for el in art.findall(".//ELocationID"):
+            for el in art.findall("./MedlineCitation/Article/ELocationID"):
                 if (el.attrib.get("EIdType") or "").casefold()=="doi" and el.text:
                     dois.add(el.text.strip().casefold())
-            full=" ".join(x.strip() for x in art.itertext() if x and x.strip())
+
+            # Search trial-registry IDs only in the record's own Article node
+            # (title/abstract/databanks/etc.), not PubmedData/ReferenceList.
+            article_node=art.find("./MedlineCitation/Article")
+            full=" ".join(x.strip() for x in article_node.itertext() if x and x.strip()) if article_node is not None else ""
             for pref,rx in REGEXES:
                 for m in rx.finditer(full):
                     regs.add(pref+":"+re.sub(r"[\s:]","",m.group(1)).upper())
