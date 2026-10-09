@@ -7,7 +7,7 @@ from transformers import AutoConfig, AutoTokenizer
 
 MODELS=[
  {"role":"reference_base","id":"microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract","revision":"d673b8835373c6fa116d6d8006b33d48734e305d","expected_model_type":"bert"},
- {"role":"picox_large","id":"microsoft/BiomedNLP-BiomedBERT-large-uncased-abstract","revision":"6611fb0be85c82ae6089ab63a0d81edfcd956dae","expected_model_type":"bert"},
+ {"role":"picox_large","id":"microsoft/BiomedNLP-BiomedBERT-large-uncased-abstract","revision":"f18ff5ec008285849e7c467b2618262b0def6238","expected_model_type":"bert"},
  {"role":"modern_challenger","id":"thomas-sounack/BioClinical-ModernBERT-base","revision":"c3648aa87af95837c809e6f0c5f85d08160db437","expected_model_type":"modernbert"},
 ]
 
