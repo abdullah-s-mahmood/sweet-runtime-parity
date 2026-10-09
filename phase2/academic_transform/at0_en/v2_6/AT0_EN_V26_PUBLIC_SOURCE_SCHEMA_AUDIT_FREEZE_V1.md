@@ -14,110 +14,75 @@ Artifact:
 Digest:
 `sha256:8e3a33499bfdff8b76d8c8a4e4e2272a40ed951985f81403acd39ea4529b1164`
 
-No benchmark metrics were computed.
-No raw examples were exported.
+No benchmark metric was computed and no raw examples were emitted.
 
 ## EvidenceOutcomes
+Released CoNLL files are headerless: token, PMID, start, end, label.
 
 500RCT:
-- 500 unique PMIDs
-- 205,455 token rows
-- labels exactly B-Outcome / I-Outcome / O
-- malformed rows = 0
-- SHA256 `ef1fc6157842c021b24c90b596924a114f97f7ea9ec111d2e4d91884318afc98`
+- rows 205455
+- unique PMIDs 500
+- labels B-Outcome / I-Outcome / O
+- malformed rows 0
+- SHA256 ef1fc6157842c021b24c90b596924a114f97f7ea9ec111d2e4d91884318afc98
 
 140EBMNLP:
-- 140 unique PMIDs
-- 50,289 token rows
-- labels exactly B-Outcome / I-Outcome / O
-- malformed rows = 0
-- SHA256 `3693a69ba5ae80ddeaa28cb587dc0d207287635bd56b5fb8c504403a4302df76`
+- rows 50289
+- unique PMIDs 140
+- labels B-Outcome / I-Outcome / O
+- malformed rows 0
+- SHA256 3693a69ba5ae80ddeaa28cb587dc0d207287635bd56b5fb8c504403a4302df76
 
-Adapter role:
-`OUTCOME_AUXILIARY_ONLY`
-
-Absent labels MUST NOT create negative P/I/C supervision.
+Role:
+`OUTCOME_AUXILIARY_HUMAN_GOLD_ONLY`
 
 ## PICO-Corpus
+- 1011 annotation files
+- 1011 text files
+- 1011 paired PMIDs
+- 17739 text-bound spans
+- 26 native entity types
+- malformed text-bound rows 0
 
-Paired text/annotation documents:
-1,011
+Role:
+`NATIVE_ONTOLOGY_AUXILIARY_HEAD / TRAIN_DEVELOPMENT_ONLY`
 
-Native BRAT entity types:
-26
-
-Total textbound spans:
-17,739
-
-Malformed textbound rows:
-0
-
-Adapter role:
-`NATIVE_26_TYPE_AUXILIARY_HEAD`
-
-Do NOT flatten into four-class P/I/C/O gold in the first federation campaign.
+No forced 26->P/I/C/O collapse.
 
 ## TrialSieve
-
 Raw annotation table:
-- 175,964 rows
-- 1,826 unique PMIDs
-- 20 released annotation types
+- 175964 rows
+- 1826 unique PMIDs
+- 20 released tags
 
-Canonical modeling subset:
-`data/processed_for_modeling.json`
+Canonical processed modeling set:
+- 1609 documents / unique PMIDs
+- train 1148
+- validation 223
+- test 238
+- zero-span documents 0
+- all 20 tags represented
 
-Canonical subset:
-- 1,609 documents
-- 20 span types
-- zero zero-span documents
-- splits:
-  - train 1,148
-  - validation 223
-  - test 238
+Authorized first-campaign source:
+`processed_for_modeling.json` 1609-document set only.
 
-Canonical file SHA256:
-`376854be993257dacde3abc5c3d53a1d08462b5d954fcbbc568d17905b5d9de5`
+Role:
+`20_TYPE_AUXILIARY_HUMAN_GOLD_HEAD`
 
-All canonical PMIDs are subsets of:
-- the raw annotation table;
-- the repository text metadata.
-
-Adapter role:
-`NATIVE_20_TYPE_AUXILIARY_HEAD`
-
-NonStudyDrug is NOT C.
-
-The 1,826-PMID raw table and 3,167-PMID metadata universe MUST NOT be substituted for the canonical 1,609-document human modeling subset.
+No automatic native P/I/C/O mapping.
 
 ## Original EBM-NLP
+Role:
+`P/I/O_AUXILIARY_HEAD_ON_AUTHORIZED_TRAINING_PARTITION_ONLY`
 
-Pinned archive:
-`ebm_nlp_2_00.tar.gz`
+No automatic separate-C mapping.
 
-The source includes:
-- numeric PMID identities;
-- token files;
-- starting-span annotations;
-- hierarchical annotations.
+## Adapter implications
+- EBM-NLPmod/AD/COVID -> native P/I/C/O
+- EBM-NLP -> auxiliary P/I/O
+- TrialSieve -> auxiliary 20 types
+- EvidenceOutcomes -> auxiliary Outcome only
+- PICO-Corpus -> auxiliary native 26-type ontology
+- DISTANT-CTO -> weak semantic intervention-type only
 
-Adapter role:
-`NATIVE_P_I_O_AUXILIARY_HEAD`
-
-Do NOT manufacture separate C from original EBM labels.
-
-## Scientific consequence
-
-The audit validates the federation design and blocks invalid label collapses:
-- EvidenceOutcomes -> O only;
-- TrialSieve -> 20 native types;
-- PICO-Corpus -> 26 native types;
-- original EBM-NLP -> native P/I/O.
-
-Remaining before source admission:
-- explicit license/usage status per source;
-- executable adapter synthetic closure;
-- cross-source record/family exclusion manifests;
-- DISTANT-CTO official weak-data file pin/hash and 11-type audit.
-
-No successor training is authorized.
+No scientific fit is authorized until adapter synthetic closure passes.
