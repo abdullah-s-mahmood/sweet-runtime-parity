@@ -1,0 +1,3 @@
+Federation pre-fit closure trigger.
+Synthetic windowing + aggregate-only public split text-fingerprint audit.
+No scientific model training. No VERIFY_INTERNAL access. No benchmark scores.
