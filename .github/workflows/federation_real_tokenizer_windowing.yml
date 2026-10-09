@@ -30,7 +30,7 @@ jobs:
         with:
           python-version: '3.11.16'
           cache: pip
-          cache-dependency-path: requirements/federation_tokenizer_windowing.txt
+          cache-dependency-path: project/requirements/federation_tokenizer_windowing.txt
       - run: python -m pip install --disable-pip-version-check --quiet -r project/requirements/federation_tokenizer_windowing.txt
       - name: Run real tokenizer text-only preflight
         run: |
