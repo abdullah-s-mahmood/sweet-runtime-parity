@@ -1,0 +1,2 @@
+Protected registry custody audit trigger.
+Aggregate counts only. No protected IDs, raw text, labels, or benchmark metrics may be emitted.
