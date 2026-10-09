@@ -1,0 +1,53 @@
+{
+  "schema": "ACAD_PASS_FEDERATION_MODEL_TOKENIZER_RUNTIME_IDENTITY_V1",
+  "date": "2026-10-09",
+  "state": "MODEL_REVISIONS_AND_WEIGHT_IDENTITIES_FROZEN_TOKENIZER_PREFLIGHT_PENDING",
+  "python": "3.11.16",
+  "models": [
+    {
+      "role": "D0_D1_D2_D3_REFERENCE_ENCODER",
+      "repo": "microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract",
+      "revision": "d673b8835373c6fa116d6d8006b33d48734e305d",
+      "license": "MIT",
+      "weight_file": "pytorch_model.bin",
+      "weight_sha256": "d513412d396cecec5f67936ac871b4aaf1178dfb5193776e790fd2b28bba240c",
+      "weight_size_note": "440 MB",
+      "max_content_wordpieces": 510,
+      "stride_wordpieces": 256
+    },
+    {
+      "role": "D4_MODERN_CHALLENGER",
+      "repo": "thomas-sounack/BioClinical-ModernBERT-base",
+      "revision": "c3648aa87af95837c809e6f0c5f85d08160db437",
+      "license": "MIT",
+      "weight_file": "model.safetensors",
+      "weight_sha256": "ea7388682b12cb833491ca8a697e84e3e67122c65c9c658f4ad3355fdd891546",
+      "weight_size_note": "599 MB",
+      "max_content_wordpieces": 8190,
+      "stride_wordpieces": 4096
+    },
+    {
+      "role": "PICOX_ADAPTED_COMPARATOR_ENCODER",
+      "repo": "microsoft/BiomedNLP-BiomedBERT-large-uncased-abstract",
+      "revision": "f18ff5ec008285849e7c467b2618262b0def6238",
+      "license": "MIT",
+      "weight_file": "pytorch_model.bin",
+      "weight_sha256": "2d7a3e00619bab3b5c9a9d04dc173c6197becd5a53a253999ded7ed742ba2419",
+      "weight_size_note": "1.34 GB",
+      "provenance_note": "Revision f18ff5ec is a README-only update; weight file history traces to older upload and current pinned tree resolves this weight identity. CI metadata preflight must verify pinned-revision file identity before any PICOX fit."
+    }
+  ],
+  "library_candidate": {
+    "transformers": "4.57.3",
+    "huggingface_hub": "0.36.0",
+    "tokenizers": "0.22.1",
+    "status": "CANDIDATE_TO_BE_VALIDATED_BY_TOKENIZER_PREFLIGHT"
+  },
+  "rules": [
+    "Scientific workflows must use revision=FULL_SHA for every from_pretrained call.",
+    "No main/master floating model revision.",
+    "Tokenizer files are part of scientific identity and must be hashed/fingerprinted by preflight.",
+    "No model weight download is required for tokenizer preflight.",
+    "Training torch/CUDA versions remain unpinned until GPU backend closure; they cannot be selected after result visibility."
+  ]
+}
