@@ -1,0 +1,76 @@
+{
+  "schema": "ACAD_PASS_FEDERATION_SOURCE_ADMISSION_V1",
+  "date": "2026-10-09",
+  "state": "PARTIAL_PASS_PENDING_DISTANT_CTO_AND_LICENSE_CAUTIONS",
+  "entries": [
+    {
+      "source": "BIDS-Xu-Lab/section_specific_annotation_of_PICO",
+      "revision": "bc4b878773192f38b2600ec830ca4208b82f7dc0",
+      "role": "native_four_class_source",
+      "license_status": "NO_REPOSITORY_LICENSE_FILE_OBSERVED_IN_CURRENT_AUDIT",
+      "scientific_status": "ADMITTED_FOR_RESEARCH_AUDIT_AND_EXISTING_PROJECT_REUSE_SUBJECT_TO_SOURCE_TERMS",
+      "notes": "Native EBM-NLP_mod/AD/COVID source. Publication/citation required. Redistribution status not inferred."
+    },
+    {
+      "source": "bepnye/EBM-NLP",
+      "revision": "43a4a1ea3f0a21cfb8820c040b843dfaf66192d0",
+      "role": "auxiliary_pio",
+      "license_status": "NO_REPOSITORY_LICENSE_FILE_OBSERVED_IN_CURRENT_AUDIT",
+      "scientific_status": "ADMITTED_FOR_RESEARCH_AUDIT; TRAINING_ADMISSION_REQUIRES_TERMS_ACKNOWLEDGEMENT",
+      "notes": "Public corpus repository; do not infer redistribution rights from public availability."
+    },
+    {
+      "source": "sociocom/PICO-Corpus",
+      "revision": "482b7d8f135fe6ea424961c2812e8d214c3f4a5f",
+      "role": "auxiliary_native_26_type",
+      "license_status": "NO_REPOSITORY_LICENSE_FILE_OBSERVED_IN_CURRENT_AUDIT",
+      "scientific_status": "ADMITTED_FOR_RESEARCH_AUDIT; TRAINING_ADMISSION_REQUIRES_TERMS_ACKNOWLEDGEMENT",
+      "notes": "Public BRAT corpus. No silent conversion to four-class native gold."
+    },
+    {
+      "source": "pathology-dynamics/trialsieve_final",
+      "revision": "62dd931124e36a8c1d9dc4a2469893553d90d2e4",
+      "role": "auxiliary_native_20_type",
+      "license_status": "CC0-1.0",
+      "license_git_blob": "0e259d42c996742e9e3cba14c677129b2c1b6311",
+      "scientific_status": "ADMITTED_CANONICAL_1609_DOCUMENT_MODELING_SUBSET",
+      "notes": "Use data/processed_for_modeling.json only for first campaign."
+    },
+    {
+      "source": "ebmlab/EvidenceOutcomes",
+      "revision": "bafa355449b6b6feb64f3ca46c1d3268dead13d4",
+      "role": "auxiliary_outcome_only",
+      "license_status": "MIT_REPOSITORY_LICENSE",
+      "license_git_blob": "5d7db46bbbcd393c2db7e745d2de4df61262b2ae",
+      "scientific_status": "ADMITTED_OUTCOME_ONLY_SUBJECT_TO_PARENT_CORPUS_DECONTAMINATION",
+      "notes": "MIT file covers repository software/documentation; underlying PubMed text/source rights are not expanded by this entry."
+    },
+    {
+      "source": "anjani-dhrangadhariya/distant-cto",
+      "revision": "3f4d90f26fc3938322266093a480157993c7ca9b",
+      "role": "weak_semantic_intervention_type_only",
+      "license_status": "ZENODO_RECORD_OPEN; LICENSE_VALUE_NOT_SURFACED_IN_CURRENT_RECORD_VIEW",
+      "scientific_status": "PENDING_OFFICIAL_ZENODO_FILE_AUDIT",
+      "doi": "10.5281/zenodo.6497284",
+      "official_file": "extraction1_pos_posnegtrail_conf09.txt",
+      "official_md5": "e95e3984a9b46e340b90aeed262e12cc",
+      "notes": "Do not call human gold; do not use as direct I/C role supervision."
+    },
+    {
+      "source": "WengLab-InformaticsResearch/PICOX",
+      "revision": "f3351c4786bf197efacfcefc1c1e66c36c245842",
+      "role": "comparator_code",
+      "license_status": "MIT",
+      "license_git_blob": "01b05244c82793364f778d9c95d5f39f55dd25c0",
+      "scientific_status": "ADMITTED_AS_ADAPTED_COMPARATOR_CODE_AFTER_RUNTIME_CLOSURE",
+      "notes": "Published P/I/O metrics are not primary four-class exact comparator scores."
+    }
+  ],
+  "rules": [
+    "Public accessibility is not silently converted into a license claim.",
+    "No source without an explicit repository/data license may be redistributed by ACAD_PASS solely because it is public.",
+    "Scientific use must retain attribution/citation and comply with source terms.",
+    "PubMed abstract text rights remain source/publication-specific; ACAD_PASS releases should prefer identifiers/manifests/derived nonreconstructive artifacts unless redistribution is explicitly allowed.",
+    "Training admission and redistribution admission are separate decisions."
+  ]
+}
