@@ -11660,3 +11660,49 @@ R44C remains consumed/frozen.
 
 Current checkpoint:
 `PUBLIC_HUMAN_GOLD_FEDERATION_PROTOCOL_FROZEN_PENDING_PROVENANCE_CLOSURE -> IMPLEMENT_ISOLATED_SPLIT_PROVENANCE_AND_GOLD_INDEPENDENT_PREPROCESSING_PREFLIGHT -> NO_FIRST_FIT_YET`.
+
+
+---
+
+## 2026-10-09 — Federation pre-fit closure advanced; quantified readiness
+
+New successful preflights:
+- run `37879437844`: gold-independent windowing synthetic PASS + isolated AD/COVID aggregate split text-fingerprint audit PASS.
+  - window artifact `11594086484`, digest `sha256:22f09221c98e374bc20d035c6e4cce5ecf0328d7381ef86c394ea2652efbff0a`
+  - split artifact `11594006897`, digest `sha256:a7cc367fdb669d9a01c4575133dbf8dcfcf2d2b0eff22c614bfbd68278120510`
+- run `37879727833`: strict exact scorer synthetic PASS.
+  - artifact `11594166539`, digest `sha256:1ca17f8f0403d405195d776d93d6e97a6e893b48de4ab48953d712c1096fa32d`
+
+AD/COVID aggregate audit:
+- 150 unique docs each;
+- each fold 120 train / 15 dev / 15 test;
+- zero exact-text train/dev/test overlap within every fold;
+- five test subsets are pairwise disjoint: 75/75 unique TEST docs each corpus;
+- AD-vs-COVID exact-text overlap = 0;
+- exact-text overlap with exposed EBM-NLP_mod fold1 TRAIN = 0 for both whole corpora and test unions.
+- This does NOT certify trial-family independence.
+
+Frozen:
+- `AT0_EN_V26_FEDERATION_PREFIT_WINDOWING_SPLIT_AUDIT_FREEZE_V1.md`
+- `AT0_EN_V26_FEDERATION_STRICT_SCORER_SYNTHETIC_PREFLIGHT_FREEZE_V1.md`
+- `AT0_EN_V26_FEDERATION_SOURCE_PIN_MANIFEST_V1.json`
+- `AT0_EN_V26_FEDERATION_DEVELOPMENT_ATTEMPT_MANIFEST_V1.json`
+- `AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V1.md`
+
+Source revisions pinned for audit:
+BIDS native source, EBM-NLP, PICO-Corpus, TrialSieve, EvidenceOutcomes, DISTANT-CTO, PICOX; plus BiomedBERT and BioClinical ModernBERT model revisions.
+
+Conservative process percentages:
+- mandatory independent-review F01-F06 closure: **80.83%**
+- first scientific federation-fit readiness: **44.0%**
+
+These percentages measure protocol/mechanical readiness only, NOT model accuracy.
+
+No successor scientific fit yet.
+Current scientific performance remains the frozen R44C result.
+
+Highest-impact remaining work:
+trial-family/protected-alias custody; adapters; pinned-tokenizer offset integration; PICOX exact recipe; runtime/hardware manifest; full source file/license/ontology hashes; final benchmark eligibility/per-fit manifests.
+
+NEXT:
+`CONTINUE_PREFIT_CLOSURE -> NO_TRAINING_YET`.
