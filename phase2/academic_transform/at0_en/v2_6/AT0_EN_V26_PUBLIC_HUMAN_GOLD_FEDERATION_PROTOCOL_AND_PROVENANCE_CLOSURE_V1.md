@@ -510,3 +510,15 @@ Freeze:
 `AT0_EN_V26_FEDERATION_ADAPTER_SYNTHETIC_PREFLIGHT_FREEZE_V1.md`
 
 All prohibited cross-schema role promotions fail closed.
+
+
+## 2026-10-09 runtime identity update
+
+Run `37895636271` produced artifact `11600067736`, digest
+`sha256:3c87cd79c5693137172c50305f4f452ccf2d861e78159e5d51479b9c24e4da73`.
+
+Freeze:
+`AT0_EN_V26_FEDERATION_RUNTIME_MODEL_IDENTITY_PREFLIGHT_FREEZE_V1.md`.
+
+Software/model identity is reproducibly pinned.
+GPU/weight/memory qualification remains.
