@@ -147,26 +147,32 @@ def pmids_from_trialsieve(path):
 def pico_pmids(root):
     return {p.stem for p in (root/"pico_corpus_brat_annotated_files").glob("*.txt") if p.stem.isdigit()}
 
-def ebm_train_pmids(root):
-    # Mirror the already-passed authoritative adapter preflight archive layout.
-    ann_roots=[p for p in root.rglob("annotations") if p.is_dir()]
-    top=None
-    for p in ann_roots:
-        if (p/"aggregated"/"starting_spans").exists():
-            top=p.parent
-            break
-    if top is None:
-        raise RuntimeError("EBM starting_spans root not found")
+def ebm_train_pmids_from_archive(archive_path):
+    # Derive the training PMID union directly from the frozen official tarball
+    # member names; this avoids any extracted-layout ambiguity.
     out=set()
-    for pio in ("participants","interventions","outcomes"):
-        train_dir=top/"annotations"/"aggregated"/"starting_spans"/pio/"train"
-        if not train_dir.exists():
-            raise RuntimeError(f"missing EBM train dir for {pio}")
-        for p in train_dir.glob("*.ann"):
-            pmid=p.stem.split("_")[0]
-            if pmid.isdigit(): out.add(pmid)
+    seen_by_pio={k:0 for k in ("participants","interventions","outcomes")}
+    with tarfile.open(archive_path,"r:gz") as tf:
+        for member in tf.getmembers():
+            if not member.isfile(): continue
+            parts=pathlib.PurePosixPath(member.name).parts
+            # locate .../annotations/aggregated/starting_spans/<pio>/train/<file>.ann
+            for j in range(len(parts)-6):
+                if parts[j:j+3]==("annotations","aggregated","starting_spans"):
+                    pio=parts[j+3]
+                    role=parts[j+4]
+                    fn=parts[j+5]
+                    if pio in seen_by_pio and role=="train" and fn.endswith(".ann"):
+                        stem=pathlib.PurePosixPath(fn).stem
+                        pmid=stem.split("_")[0]
+                        if pmid.isdigit():
+                            out.add(pmid)
+                            seen_by_pio[pio]+=1
+                    break
+    if any(v==0 for v in seen_by_pio.values()):
+        raise RuntimeError(f"missing EBM training members by PIO: {seen_by_pio}")
     if len(out)<4000:
-        raise RuntimeError(f"unexpectedly small EBM training PMID union: {len(out)}")
+        raise RuntimeError(f"unexpectedly small EBM training PMID union: {len(out)}; files={seen_by_pio}")
     return out
 
 def family_alias_set(pmids,meta):
@@ -206,7 +212,7 @@ def main():
     folds,keys=build_folds(design,mapped,meta)
 
     sources={
-      "EBM_ORIGINAL_PIO":ebm_train_pmids(a.work/"ebm"),
+      "EBM_ORIGINAL_PIO":ebm_train_pmids_from_archive(a.ebm_archive),
       "PICO_CORPUS_26":pico_pmids(a.pico),
       "EVIDENCE_OUTCOME_500":pmids_from_evidence(a.evidence/"500RCT-CoNLL.tsv"),
     }
