@@ -1,1 +1,3 @@
 Official Zenodo DISTANT-CTO admission audit. Verify MD5/SHA256, JSON integrity, and exact 11 intervention types. No scientific training.
+
+Rerun: classify official-file semantic-type availability; cancel D5 if absent.
