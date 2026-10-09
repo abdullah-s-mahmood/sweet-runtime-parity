@@ -1,2 +1,4 @@
 Protected registry custody audit trigger.
 Aggregate counts only. No protected IDs, raw text, labels, or benchmark metrics may be emitted.
+
+Rerun: canonicalization aligned to NFC+whitespace text fingerprint.
