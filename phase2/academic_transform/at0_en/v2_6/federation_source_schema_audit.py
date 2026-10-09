@@ -52,7 +52,7 @@ def trialsieve(root):
         for row in r:
             meta_rows+=1
             if row.get("pmid"): meta_pmids.add(row["pmid"].strip())
-    pre=root/"data/preprocessed_for_modeling.json"
+    pre=root/"data/processed_for_modeling.json"
     pre_d=json.loads(pre.read_text(encoding="utf-8"))
     pre_pmids={str(x.get("pmid","")).strip() for x in pre_d if str(x.get("pmid","")).strip()}
     pre_splits=collections.Counter(str(x.get("split","")) for x in pre_d)
