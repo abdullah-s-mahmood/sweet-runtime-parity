@@ -25,7 +25,10 @@ Canonical independent review:
 ## Required before first fit
 
 ### Source identity
-Need immutable:
+Repository/model revisions are now pinned in `AT0_EN_V26_FEDERATION_SOURCE_PIN_MANIFEST_V1.json`.
+No floating scientific source is permitted.
+
+Still need immutable:
 - release URL;
 - commit/tag;
 - file SHA256;
@@ -91,16 +94,23 @@ Status:
 `NOT_YET_CLOSED`
 
 ### Scorer
-Need fail-closed strict occurrence-level exact typed scorer plus:
-- continuation/source mode;
-- duplicate/missing/nonfinite guards;
-- every-document status;
-- fold/seed aggregation;
-- cluster bootstrap;
-- selective-mode contract.
+Synthetic mechanics PASS in run `37879727833`, artifact `11594166539`, digest `sha256:1ca17f8f0403d405195d776d93d6e97a6e893b48de4ab48953d712c1096fa32d`.
+
+Closed synthetically:
+- strict occurrence-level typed exact matching;
+- duplicate/nonfinite/coordinate/document guards;
+- both-empty zero-TP policy;
+- wrong-type/boundary accounting;
+- selective threshold grid/selection/no-pass path;
+- deterministic paired family-cluster bootstrap mechanics.
+
+Still required before real scoring:
+- source-compatible continuation integration;
+- expected-document manifests per fit;
+- exact fold/seed aggregation wiring against frozen manifests.
 
 Status:
-`NOT_YET_CLOSED`
+`SYNTHETIC_MECHANICS_PASS / REAL_MANIFEST_INTEGRATION_PENDING`
 
 ### Comparators
 Need frozen recipes/hashes for:
@@ -129,10 +139,13 @@ Status:
 `PENDING`
 
 ### Attempt manifest
-Need immutable 54-fit development ledger before first scientific job.
+Immutable 54-slot D0-D5 x 3 folds x seeds 44/45/46 ledger created:
+`AT0_EN_V26_FEDERATION_DEVELOPMENT_ATTEMPT_MANIFEST_V1.json`.
+
+Slots are NOT_STARTED and scientific_training_authorized=false; data/runtime hashes remain pending closure.
 
 Status:
-`PENDING`
+`SLOT_LEDGER_FROZEN / DATA_RUNTIME_BINDING_PENDING`
 
 ## Closed evidence
 
@@ -189,4 +202,37 @@ Important positive findings:
 This materially improves F04 confidence but does NOT certify trial-family independence.
 
 Overall state remains:
+`CLOSURE_IN_PROGRESS / FIRST_FIT_NOT_AUTHORIZED`.
+
+
+## 2026-10-09 scorer/source-pin update
+
+Strict scorer synthetic preflight:
+PASS.
+
+Run:
+`37879727833`
+
+Artifact:
+`11594166539`
+
+Source/model revision pin manifest:
+`AT0_EN_V26_FEDERATION_SOURCE_PIN_MANIFEST_V1.json`
+
+Pinned public repositories now include:
+- BIDS section-specific PICO source;
+- original EBM-NLP;
+- PICO-Corpus;
+- TrialSieve;
+- EvidenceOutcomes;
+- DISTANT-CTO;
+- PICOX.
+
+Pinned model revisions:
+- BiomedBERT reference;
+- BioClinical ModernBERT challenger.
+
+Revision pinning does not equal full source admission; licenses/file hashes/ontologies/dedup remain pending.
+
+Overall:
 `CLOSURE_IN_PROGRESS / FIRST_FIT_NOT_AUTHORIZED`.
