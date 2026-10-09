@@ -1,1 +1,1 @@
-SURUS aggregate schema/license audit trigger. No raw abstracts/PMID values/benchmark metrics emitted.\n
+SURUS corrected schema/ontology/coordinate roundtrip audit trigger V2. No raw abstracts/PMID values/benchmark metrics emitted. Triggered 2026-10-09 Asia/Baghdad.\n
