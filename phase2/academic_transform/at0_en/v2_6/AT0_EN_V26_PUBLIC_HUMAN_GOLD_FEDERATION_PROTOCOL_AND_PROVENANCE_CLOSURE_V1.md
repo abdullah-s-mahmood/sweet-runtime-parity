@@ -18,7 +18,7 @@ Canonical independent review:
 | F01 exposure lineage | DOCUMENTARY_CORRECTION_COMPLETE / PMID_CUSTODY_PARTIAL_PASS | Inventory corrected. Protected mapping recovered original PMID identity for 250/256 DESIGN, 49/64 VERIFY_INTERNAL and 60/80 OLD_SELECT records with zero duplicate assignments; unresolved records remain conservatively unresolved |
 | F02 DISTANT-CTO / role semantics | CORRECTED | Packet now restricts DISTANT-CTO to role-agnostic semantic-type weak ablation; TrialSieve/C-TrO not mapped to C |
 | F03 gold-independent preprocessing | SYNTHETIC_WINDOWING_PASS / TOKENIZER_INTEGRATION_PENDING | Text-only planner synthetic closure PASS in run 37879437844; no gold consumed; pinned-tokenizer/end-to-end offset integration still required |
-| F04 benchmark eligibility | TEXT_FINGERPRINT_PARTIAL_PASS / FAMILY_CUSTODY_PENDING | Aggregate-only audit: each corpus has 150 unique docs; every fold 120/15/15 with zero within-fold text overlap; 75/75 unique test docs across five folds; AD-vs-COVID exact text overlap 0; overlap with exposed EBM_mod fold1 TRAIN 0. Trial-family/prior-exposure custody audit still required |
+| F04 benchmark eligibility | MULTILAYER_PROVENANCE_PARTIAL_PASS / FAMILY_CLOSURE_PENDING | Exact-text split audit PASS; registry custody overlap 0; exact-title PMID resolution AD 118/150 (test 64/75), COVID 116/150 (test 61/75), with 0 resolved PMID overlap against DESIGN/VERIFY_INTERNAL/OLD_SELECT/PICO-Corpus/EvidenceOutcomes. Unresolved identities and same-trial distinct-publication linkage remain open |
 | F05 incompatible headline comparisons | DOCUMENTARY_CLOSED | AlpaPICO string-set scorer verified; FinePICO/PICOX/GPT-4o results remain task-qualified, not direct strict-span ranks |
 | F06 finite study | PROTOCOL_FROZEN / EXECUTION_BLOCKED | Six development arms, finite seeds/folds/weights/budget now frozen; no fit yet |
 
@@ -91,16 +91,21 @@ Text-only, gold-independent source-compatible processor:
 `SYNTHETIC_WINDOW_PLANNER_PASS / PINNED_TOKENIZER_AND_OFFSET_INTEGRATION_PENDING`
 
 ### Adapters
-Need synthetic-tested immutable adapters for:
+A1-A5 native/human auxiliary source preflight PASS in run `37881966232`, artifact `11594457041`, digest `sha256:156a8ccd6471a410bdc7dd230d98575f3f5fc6fca015d1041fb52adbdc2b804f`.
+
+Closed structurally:
 - EBM-NLP_mod native P/I/C/O;
-- original EBM P/I/O;
-- TrialSieve 20-type;
-- EvidenceOutcomes O;
-- PICO-Corpus native BRAT ontology;
-- DISTANT-CTO 11-type weak semantic mentions.
+- original EBM training P/I/O auxiliary;
+- TrialSieve 20-type auxiliary;
+- EvidenceOutcomes 500RCT O auxiliary;
+- PICO-Corpus 26-type native auxiliary ontology.
+
+Still pending:
+- D5 DISTANT-CTO official weak-file hash/schema/admission preflight;
+- per-fit family-decontamination manifests.
 
 Status:
-`NOT_YET_CLOSED`
+`A1_A5_PASS / D5_WEAK_AND_PER_FIT_DECONTAMINATION_PENDING`
 
 ### Scorer
 Synthetic mechanics PASS in run `37879727833`, artifact `11594166539`, digest `sha256:1ca17f8f0403d405195d776d93d6e97a6e893b48de4ab48953d712c1096fa32d`.
@@ -272,3 +277,23 @@ Freeze:
 `AT0_EN_V26_EBM_MOD_PMID_MAPPING_CUSTODY_FREEZE_V1.md`
 
 This strengthens F01/protected identity substantially but leaves 41/400 derived records unresolved and does not yet map AD/COVID identities.
+
+
+## 2026-10-09 public target PMID + adapter update
+
+Public target PMID custody:
+- AD 118/150 resolved; TEST 64/75;
+- COVID 116/150 resolved; TEST 61/75;
+- zero resolved PMID overlap against protected/exposed historical roles or PICO-Corpus/EvidenceOutcomes;
+- no PMIDs/titles/raw text/gold emitted.
+
+Freeze:
+`AT0_EN_V26_PUBLIC_TARGET_PMID_CUSTODY_AUDIT_FREEZE_V1.md`.
+
+Adapter source preflight:
+PASS for A1-A5.
+
+Freeze:
+`AT0_EN_V26_FEDERATION_ADAPTER_SOURCE_PREFLIGHT_FREEZE_V1.md`.
+
+Benchmark family closure and D5 remain pending.
