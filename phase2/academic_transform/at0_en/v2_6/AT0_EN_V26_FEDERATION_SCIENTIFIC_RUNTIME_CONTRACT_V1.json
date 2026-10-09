@@ -1,0 +1,94 @@
+{
+  "schema": "ACAD_PASS_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1",
+  "date": "2026-10-09",
+  "state": "SCIENTIFIC_SOFTWARE_RUNTIME_FROZEN_GPU_SPECIFIC_BINDING_PENDING",
+  "scientific_training_authorized": false,
+  "identity_audit_runtime": {
+    "purpose": "FILE_WEIGHT_TOKENIZER_IDENTITY_AUDIT_ONLY",
+    "python": "3.11.16",
+    "transformers": "4.57.3",
+    "huggingface_hub": "0.36.0",
+    "tokenizers": "0.22.1",
+    "scientific_execution_allowed": false,
+    "evidence_run_id": 37882354519,
+    "artifact_id": 11594613594,
+    "artifact_digest": "sha256:48cdb8bc6b82567f2e1ec38fe5a3fb13c449c32419053ef5d8ac6dfb07a40e50"
+  },
+  "scientific_execution_runtime": {
+    "python": "3.11.16",
+    "numpy": "1.26.4",
+    "torch_base": "2.5.1",
+    "transformers": "4.48.0",
+    "tokenizers": "0.21.0",
+    "huggingface_hub": "0.28.1",
+    "safetensors": "0.5.2",
+    "accelerate": "1.3.0",
+    "cpu_preflight_observed_torch_build": "2.5.1+cu124",
+    "gpu_specific_fields_pending": [
+      "exact torch build suffix",
+      "CUDA runtime/toolkit",
+      "cuDNN",
+      "GPU model and VRAM",
+      "mixed precision mode",
+      "gradient accumulation realization",
+      "worker count",
+      "TF32 policy",
+      "CUBLAS_WORKSPACE_CONFIG",
+      "checkpoint filesystem"
+    ],
+    "evidence_run_id": 37898560516,
+    "artifact_id": 11601622017,
+    "artifact_digest": "sha256:854bef337e95e56fdaaccebc77ffb93bdf98a9dd489fe5c4122b0b259a8f6368"
+  },
+  "models": [
+    {
+      "role": "D0_D1_D2_D3_REFERENCE_ENCODER",
+      "repo": "microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract",
+      "revision": "d673b8835373c6fa116d6d8006b33d48734e305d",
+      "weight_file": "pytorch_model.bin",
+      "weight_sha256": "d513412d396cecec5f67936ac871b4aaf1178dfb5193776e790fd2b28bba240c",
+      "tokenizer_signature_sha256": "088f1bdf2509aee48015c38209b07bebec8d4d266232e04c5d9bd82704b76e81"
+    },
+    {
+      "role": "D4_MODERN_CHALLENGER",
+      "repo": "thomas-sounack/BioClinical-ModernBERT-base",
+      "revision": "c3648aa87af95837c809e6f0c5f85d08160db437",
+      "weight_file": "model.safetensors",
+      "weight_sha256": "ea7388682b12cb833491ca8a697e84e3e67122c65c9c658f4ad3355fdd891546",
+      "tokenizer_signature_sha256": "c4bcc77a64bb3a2f71fdde8766f620d2513f9ac96d28ecf11240c2329f1decf3"
+    },
+    {
+      "role": "PICOX_ADAPTED_COMPARATOR_ENCODER",
+      "repo": "microsoft/BiomedNLP-BiomedBERT-large-uncased-abstract",
+      "revision": "f18ff5ec008285849e7c467b2618262b0def6238",
+      "weight_file": "pytorch_model.bin",
+      "weight_sha256": "2d7a3e00619bab3b5c9a9d04dc173c6197becd5a53a253999ded7ed742ba2419",
+      "tokenizer_signature_sha256": "088f1bdf2509aee48015c38209b07bebec8d4d266232e04c5d9bd82704b76e81",
+      "revision_rationale": "This exact revision already had the audited pytorch_model.bin identity. The later 6611fb0 revision adds a safetensors conversion; ACAD_PASS freezes the previously audited PyTorch weight representation rather than changing representation before scientific fitting."
+    }
+  ],
+  "determinism": {
+    "seeds": [
+      44,
+      45,
+      46
+    ],
+    "python_seed": true,
+    "numpy_seed": true,
+    "torch_seed": true,
+    "torch_cuda_seed": true,
+    "torch_use_deterministic_algorithms": true,
+    "cudnn_benchmark": false,
+    "final_checkpoint_only": true,
+    "no_best_epoch_selection": true,
+    "gpu_specific_determinism_must_be_bound_before_first_fit": true
+  },
+  "rules": [
+    "The identity-audit runtime is not a scientific execution runtime.",
+    "Every scientific from_pretrained call must use the exact full revision in this contract.",
+    "Every downloaded scientific model weight must match the frozen SHA256 before training starts.",
+    "The GPU-specific runtime fields must be frozen and hashed before the first scientific fit.",
+    "No runtime/library/model revision may be changed after scientific result visibility within the campaign.",
+    "VERIFY_INTERNAL remains closed."
+  ]
+}
