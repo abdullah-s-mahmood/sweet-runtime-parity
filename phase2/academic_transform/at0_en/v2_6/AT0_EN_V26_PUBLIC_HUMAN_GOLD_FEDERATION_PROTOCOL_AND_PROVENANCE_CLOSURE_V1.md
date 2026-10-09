@@ -123,8 +123,10 @@ D5 status:
 - semantic 11-type labels absent;
 - D5 canceled without replacement before any fit.
 
-Still pending:
-- per-fit family-decontamination manifests.
+Per-fold family-decontaminated development manifests are now PASS and bound to every active D0-D4 attempt.
+
+Remaining:
+- external benchmark per-fit manifests after benchmark eligibility freeze.
 
 Status:
 `A1_A5_PASS / D5_CANCELED / PER_FIT_DECONTAMINATION_PENDING`
@@ -161,7 +163,7 @@ Still pending:
 - per-fit matched data manifests.
 
 Status:
-`RECIPES_FROZEN / EXECUTABLE_RUNTIME_AND_PER_FIT_MANIFEST_PENDING`
+`RECIPE_AND_MECHANICS_PASS / GPU_AND_EXTERNAL_PER_FIT_BINDING_PENDING`
 
 ### Runtime
 Closed model/tokenizer identity:
@@ -190,7 +192,7 @@ Original 54-slot ledger has been prospectively reduced after D5 cancellation. Ac
 Active slots = 45 for D0-D4. Nine D5 slots are permanently `CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS`, consumed=false, and cannot be repurposed. Active D0-D4 slots remain NOT_STARTED and scientific_training_authorized=false; data/runtime hashes remain pending closure.
 
 Status:
-`45_ACTIVE_SLOT_LEDGER_FROZEN / DATA_RUNTIME_BINDING_PENDING`
+`45_ACTIVE_SLOT_LEDGER_DATA_BOUND / RUNTIME_BINDING_PENDING`
 
 ## Closed evidence
 
@@ -522,3 +524,47 @@ Freeze:
 
 Software/model identity is reproducibly pinned.
 GPU/weight/memory qualification remains.
+
+
+## 2026-10-09 per-fold data binding and PICOX mechanics closure
+
+### Per-fold data manifests
+
+Run:
+`37897592120`
+
+Artifact:
+`11601066403`
+
+Digest:
+`sha256:525f7a524d08ee26f17b69cfb36ece6e9a17bd1a4d016ef451f1b7120fb05e42`
+
+Fold hashes:
+- F0 `7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0`
+- F1 `1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02`
+- F2 `eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939`
+
+Every active D0-D4 attempt now carries its immutable fold data-manifest SHA.
+No active attempt remains with `data_manifest_sha256=PENDING_CLOSURE`.
+
+Freeze:
+`AT0_EN_V26_FEDERATION_PER_FOLD_DATA_MANIFEST_CUSTODY_FREEZE_V1.md`.
+
+### PICOX executable mechanics
+
+Run:
+`37897788557`
+
+Artifact:
+`11601460910`
+
+Digest:
+`sha256:633707b4da39d90d2bcd6bee83db65343eefe09f34381c95c3d5909d2b7f6e6c`
+
+Freeze:
+`AT0_EN_V26_PICOX_EXECUTABLE_MECHANICS_PREFLIGHT_FREEZE_V1.md`.
+
+Boundary/candidate/NMS mechanics PASS without benchmark TEST use.
+
+Overall:
+`CPU/HARDWARE-INDEPENDENT PREFIT CLOSURE NEAR-COMPLETE / GPU RUNTIME STILL BLOCKS FIRST FIT`.
