@@ -15,7 +15,7 @@ Canonical independent review:
 
 | Finding | Current status | Evidence / remaining action |
 |---|---|---|
-| F01 exposure lineage | DOCUMENTARY_CORRECTION_COMPLETE / RECORD_ALIAS_CUSTODY_PENDING | Inventory corrected: R43/R44 = EBM-NLP_mod fold1/train; must still materialize exposed/protected aliases without opening VERIFY_INTERNAL |
+| F01 exposure lineage | DOCUMENTARY_CORRECTION_COMPLETE / PMID_CUSTODY_PARTIAL_PASS | Inventory corrected. Protected mapping recovered original PMID identity for 250/256 DESIGN, 49/64 VERIFY_INTERNAL and 60/80 OLD_SELECT records with zero duplicate assignments; unresolved records remain conservatively unresolved |
 | F02 DISTANT-CTO / role semantics | CORRECTED | Packet now restricts DISTANT-CTO to role-agnostic semantic-type weak ablation; TrialSieve/C-TrO not mapped to C |
 | F03 gold-independent preprocessing | SYNTHETIC_WINDOWING_PASS / TOKENIZER_INTEGRATION_PENDING | Text-only planner synthetic closure PASS in run 37879437844; no gold consumed; pinned-tokenizer/end-to-end offset integration still required |
 | F04 benchmark eligibility | TEXT_FINGERPRINT_PARTIAL_PASS / FAMILY_CUSTODY_PENDING | Aggregate-only audit: each corpus has 150 unique docs; every fold 120/15/15 with zero within-fold text overlap; 75/75 unique test docs across five folds; AD-vs-COVID exact text overlap 0; overlap with exposed EBM_mod fold1 TRAIN 0. Trial-family/prior-exposure custody audit still required |
@@ -42,7 +42,14 @@ Status:
 `INCOMPLETE`
 
 ### Global alias / family graph
-Need:
+EBM-NLP_mod -> original EBM PMID mapping is now partial PASS:
+- all 400: 359/400 (89.75%);
+- DESIGN: 250/256 (97.65625%);
+- VERIFY_INTERNAL: 49/64 (76.5625%);
+- OLD_SELECT: 60/80 (75%).
+No PMID values were emitted outside custody.
+
+Still need:
 - PMID;
 - DOI;
 - registry IDs;
@@ -251,3 +258,17 @@ Registry collision:
 0 across all protected/exposed historical partitions versus AD/COVID whole/test-union targets.
 
 This is supportive but not sufficient for trial-family independence.
+
+
+## 2026-10-09 EBM PMID mapping custody update
+
+Run `37881123349`:
+`FEDERATION_EBM_MOD_TO_ORIGINAL_PMID_MAPPING_FEASIBILITY_PASS`
+
+Artifact:
+`11594720967`
+
+Freeze:
+`AT0_EN_V26_EBM_MOD_PMID_MAPPING_CUSTODY_FREEZE_V1.md`
+
+This strengthens F01/protected identity substantially but leaves 41/400 derived records unresolved and does not yet map AD/COVID identities.
