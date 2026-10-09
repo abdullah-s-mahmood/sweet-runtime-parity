@@ -1,0 +1,41 @@
+{
+  "schema": "ACAD_PASS_FINAL_SURUS_SOURCE_CONTRACT_REREVIEW_V2_EVIDENCE_VERIFICATION_V1",
+  "date": "2026-10-10",
+  "timezone": "Asia/Baghdad",
+  "repository": "abdullah-s-mahmood/sweet-runtime-parity",
+  "branch": "at0-en-v2.6-dev",
+  "reviewed_head": "f746136ccbe52d960206efeb68b5be8118f1c2d9",
+  "final_review": {
+    "local_uploaded_sha256": "3bc60c5c0ef42a13982fd65a346c674c57471c25252f7df4320ac79d3b29ffd5",
+    "github_path": "phase2/academic_transform/at0_en/v2_6/FINAL_SURUS_SOURCE_CONTRACT_REREVIEW_V2.md",
+    "github_freeze_commit": "d63e73ad4df001c4e4c1afb9a6c9dd4eefa09f87"
+  },
+  "evidence_zip": {
+    "local_uploaded_sha256": "c6f9fe664ab1ad65d7fc6b80d29ccbc4fcd3a61011be16f746e28158677f7e45",
+    "internal_manifest_entries": 41,
+    "internal_manifest_hash_mismatches": 0,
+    "verification": "VERIFIED_ALL_MANIFEST_HASHES",
+    "internal_review_sha256": "3bc60c5c0ef42a13982fd65a346c674c57471c25252f7df4320ac79d3b29ffd5",
+    "research_log_sha256": "61b36d24f4eb9bc4b1c1a7b4ed22ca99bb0dab8e1edcf4d4dc63d35ce9bff728",
+    "resume_sha256": "349db8aa95cfcaf9145045b41edb351ae926bbec9a040c28cca3196169d460ba"
+  },
+  "v5": {
+    "run_id": 37919107413,
+    "artifact_id": 11611123584,
+    "artifact_sha256": "2d43434d6ecbd33e270a423d4e29300cd75d970353bc5e782f32bdeeaf6da51f"
+  },
+  "v6": {
+    "run_id": 37919404071,
+    "artifact_id": 11610764435,
+    "artifact_sha256": "0ec7e0dc73a1096b51d9702f9ffba69613b5d9ab47b91a2ea206e5c2e65fdb2e"
+  },
+  "v7": {
+    "run_id": 37919734516,
+    "artifact_id": 11611114778,
+    "artifact_sha256": "fbedf6dbdb16c0d8bffca3a859a2f1db11fd4ae9834eeeb8e8c0c4212aef5970"
+  },
+  "verdict": "REJECT_OR_PAUSE_SURUS",
+  "exact_next_operation": "FREEZE_SURUS_PAUSE_AND_REBIND_ORIGINAL_FOUR_SOURCE_PREFIT_MANIFESTS",
+  "scientific_training_authorized": false,
+  "protected_access_authorized": false
+}
