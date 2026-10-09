@@ -1,0 +1,53 @@
+{
+  "schema": "ACAD_PASS_FEDERATION_LICENSE_AND_SOURCE_STATUS_V1",
+  "date": "2026-10-09",
+  "state": "PARTIAL_LICENSE_CLOSURE",
+  "sources": [
+    {
+      "source": "BIDS-Xu-Lab/section_specific_annotation_of_PICO",
+      "revision": "bc4b878773192f38b2600ec830ca4208b82f7dc0",
+      "license_status": "NO_TOP_LEVEL_LICENSE_FOUND_AT_PINNED_REVISION",
+      "scientific_status": "LICENSE_CLARIFICATION_PENDING"
+    },
+    {
+      "source": "bepnye/EBM-NLP",
+      "revision": "43a4a1ea3f0a21cfb8820c040b843dfaf66192d0",
+      "license_status": "NO_DATASET_TOP_LEVEL_LICENSE_FOUND; nested model LICENSE is not dataset license",
+      "scientific_status": "LICENSE_CLARIFICATION_PENDING"
+    },
+    {
+      "source": "sociocom/PICO-Corpus",
+      "revision": "482b7d8f135fe6ea424961c2812e8d214c3f4a5f",
+      "license_status": "NO_TOP_LEVEL_LICENSE_FOUND_AT_PINNED_REVISION",
+      "scientific_status": "LICENSE_CLARIFICATION_PENDING"
+    },
+    {
+      "source": "pathology-dynamics/trialsieve_final",
+      "revision": "62dd931124e36a8c1d9dc4a2469893553d90d2e4",
+      "license_status": "CC0-1.0",
+      "license_blob_sha1": "0e259d42c996742e9e3cba14c677129b2c1b6311",
+      "scientific_status": "LICENSE_PASS"
+    },
+    {
+      "source": "ebmlab/EvidenceOutcomes",
+      "revision": "bafa355449b6b6feb64f3ca46c1d3268dead13d4",
+      "license_status": "MIT",
+      "license_blob_sha1": "5d7db46bbbcd393c2db7e745d2de4df61262b2ae",
+      "scientific_status": "LICENSE_PASS_FOR_REPOSITORY_CONTENTS_SUBJECT_TO_UNDERLYING_ABSTRACT_RIGHTS"
+    },
+    {
+      "source": "anjani-dhrangadhariya/distant-cto",
+      "revision": "3f4d90f26fc3938322266093a480157993c7ca9b",
+      "license_status": "NO_TOP_LEVEL_LICENSE_FOUND_AT_PINNED_GITHUB_REVISION",
+      "scientific_status": "ZENODO_AND_PAPER_LICENSE_CLARIFICATION_PENDING"
+    },
+    {
+      "source": "WengLab-InformaticsResearch/PICOX",
+      "revision": "f3351c4786bf197efacfcefc1c1e66c36c245842",
+      "license_status": "MIT",
+      "license_blob_sha1": "01b05244c82793364f778d9c95d5f39f55dd25c0",
+      "scientific_status": "CODE_LICENSE_PASS"
+    }
+  ],
+  "rule": "Public availability is not treated as license permission. Sources with unresolved dataset-license status remain blocked from a final scientific training manifest until clarified or excluded."
+}
