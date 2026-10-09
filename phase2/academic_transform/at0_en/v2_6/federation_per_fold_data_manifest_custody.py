@@ -148,14 +148,25 @@ def pico_pmids(root):
     return {p.stem for p in (root/"pico_corpus_brat_annotated_files").glob("*.txt") if p.stem.isdigit()}
 
 def ebm_train_pmids(root):
-    # starting_spans training files for all three P/I/O; union
+    # Mirror the already-passed authoritative adapter preflight archive layout.
+    ann_roots=[p for p in root.rglob("annotations") if p.is_dir()]
+    top=None
+    for p in ann_roots:
+        if (p/"aggregated"/"starting_spans").exists():
+            top=p.parent
+            break
+    if top is None:
+        raise RuntimeError("EBM starting_spans root not found")
     out=set()
-    for p in root.rglob("annotations/aggregated/starting_spans/*/train/*.ann"):
-        if p.stem.isdigit():out.add(p.stem)
-    if not out:
-        # repository archive uses extension-less PMIDs in some release layouts
-        for p in root.rglob("annotations/aggregated/starting_spans/*/train/*"):
-            if p.is_file() and p.name.isdigit():out.add(p.name)
+    for pio in ("participants","interventions","outcomes"):
+        train_dir=top/"annotations"/"aggregated"/"starting_spans"/pio/"train"
+        if not train_dir.exists():
+            raise RuntimeError(f"missing EBM train dir for {pio}")
+        for p in train_dir.glob("*.ann"):
+            pmid=p.stem.split("_")[0]
+            if pmid.isdigit(): out.add(pmid)
+    if len(out)<4000:
+        raise RuntimeError(f"unexpectedly small EBM training PMID union: {len(out)}")
     return out
 
 def family_alias_set(pmids,meta):
