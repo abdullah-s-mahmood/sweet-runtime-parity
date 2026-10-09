@@ -1,1 +1,3 @@
 Aggregate-only PubMed DOI/registry custody audit. No IDs/text/gold emitted. No scientific training.
+
+Rerun: publication DOI only; registry extraction excludes cited ReferenceList.
