@@ -9,3 +9,5 @@ Final rerun after off-by-one fix in frozen EBM tarball member scan.
 Dispatch nudge after off-by-one correction; no protocol change.
 
 Rerun with depth-independent EBM tarball training-member scan.
+
+Rerun after correcting EBM annotation filename parsing from underscore to dot delimiter.
