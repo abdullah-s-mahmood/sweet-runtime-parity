@@ -136,21 +136,24 @@ Status:
 `PICOX_RECIPE_PENDING`
 
 ### Runtime
-Need:
-- Python;
-- PyTorch;
-- Transformers;
-- tokenizer;
-- CUDA;
+Closed model/tokenizer identity:
+- Python 3.11.16 identity preflight;
+- Transformers 4.57.3 / HF Hub 0.36.0 / tokenizers 0.22.1 validated for config/tokenizer identity;
+- BiomedBERT-base, BioClinical ModernBERT-base and PICOX PubMedBERT-large full revisions/weight SHA256/tokenizer fingerprints frozen.
+
+Still need GPU training runtime:
+- PyTorch CUDA build;
+- actual CUDA/cuDNN/GPU;
 - deterministic settings;
-- hardware qualification;
 - mixed precision;
-- gradient accumulation;
+- gradient accumulation realization;
 - artifact/checkpoint serialization;
 - resume contract.
 
+Current GitHub repo is user-owned; GitHub-hosted GPU larger-runner availability is not established. See `AT0_EN_V26_FEDERATION_COMPUTE_BACKEND_READINESS_V1.md`.
+
 Status:
-`PENDING`
+`MODEL_TOKENIZER_IDENTITY_PASS / GPU_RUNTIME_BACKEND_PENDING`
 
 ### Attempt manifest
 Immutable 54-slot D0-D5 x 3 folds x seeds 44/45/46 ledger created:
@@ -297,3 +300,15 @@ Freeze:
 `AT0_EN_V26_FEDERATION_ADAPTER_SOURCE_PREFLIGHT_FREEZE_V1.md`.
 
 Benchmark family closure and D5 remain pending.
+
+
+## 2026-10-09 model/tokenizer identity update
+
+Run `37882354519` PASS.
+Artifact `11594613594`.
+Digest `sha256:48cdb8bc6b82567f2e1ec38fe5a3fb13c449c32419053ef5d8ac6dfb07a40e50`.
+
+Freeze:
+`AT0_EN_V26_FEDERATION_MODEL_TOKENIZER_IDENTITY_PREFLIGHT_FREEZE_V1.md`.
+
+All three encoder revisions and weight SHA256 identities matched Hugging Face metadata; fast-tokenizer fixtures are frozen.
