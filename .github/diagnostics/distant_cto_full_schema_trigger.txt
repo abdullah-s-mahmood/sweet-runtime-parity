@@ -1,0 +1,1 @@
+Full official DISTANT-CTO weak-file schema audit. No training, no benchmark scoring, aggregate metadata only.
