@@ -149,26 +149,25 @@ def pico_pmids(root):
 
 def ebm_train_pmids_from_archive(archive_path):
     # Derive the training PMID union directly from the frozen official tarball
-    # member names; this avoids any extracted-layout ambiguity.
+    # member names without assuming archive depth.
     out=set()
     seen_by_pio={k:0 for k in ("participants","interventions","outcomes")}
     with tarfile.open(archive_path,"r:gz") as tf:
         for member in tf.getmembers():
             if not member.isfile(): continue
             parts=pathlib.PurePosixPath(member.name).parts
-            # locate .../annotations/aggregated/starting_spans/<pio>/train/<file>.ann
-            for j in range(max(0,len(parts)-5)):
-                if parts[j:j+3]==("annotations","aggregated","starting_spans"):
-                    pio=parts[j+3]
-                    role=parts[j+4]
-                    fn=parts[j+5]
-                    if pio in seen_by_pio and role=="train" and fn.endswith(".ann"):
-                        stem=pathlib.PurePosixPath(fn).stem
-                        pmid=stem.split("_")[0]
-                        if pmid.isdigit():
-                            out.add(pmid)
-                            seen_by_pio[pio]+=1
-                    break
+            pset=set(parts)
+            if not {"annotations","aggregated","starting_spans","train"}.issubset(pset):
+                continue
+            pio=next((k for k in seen_by_pio if k in pset),None)
+            if pio is None: continue
+            fn=parts[-1]
+            if not fn.endswith(".ann"): continue
+            stem=pathlib.PurePosixPath(fn).stem
+            pmid=stem.split("_")[0]
+            if pmid.isdigit():
+                out.add(pmid)
+                seen_by_pio[pio]+=1
     if any(v==0 for v in seen_by_pio.values()):
         raise RuntimeError(f"missing EBM training members by PIO: {seen_by_pio}")
     if len(out)<4000:
