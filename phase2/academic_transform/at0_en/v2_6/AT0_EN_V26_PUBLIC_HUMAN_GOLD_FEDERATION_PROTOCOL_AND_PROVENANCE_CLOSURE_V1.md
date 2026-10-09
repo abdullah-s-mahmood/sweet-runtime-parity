@@ -496,3 +496,17 @@ Key limitation:
 publication identity remains partially unresolved and same-PMID checks do not fully prove distinct trial families.
 
 Schema admission is frozen; adapter mechanics remain to be tested.
+
+
+## 2026-10-09 adapter update
+
+Run `37894969781`:
+`FEDERATION_ADAPTER_SYNTHETIC_PREFLIGHT_PASS`
+
+Artifact:
+`11599538260`
+
+Freeze:
+`AT0_EN_V26_FEDERATION_ADAPTER_SYNTHETIC_PREFLIGHT_FREEZE_V1.md`
+
+All prohibited cross-schema role promotions fail closed.
