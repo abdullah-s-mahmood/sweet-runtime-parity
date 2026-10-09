@@ -1,26 +1,43 @@
 # ACAD_PASS — LATEST STATE POINTER
 
-Timestamp: 2026-10-09 13:15:49 Asia/Baghdad (UTC+3)
+Timestamp: 2026-10-09 13:51:19 Asia/Baghdad (UTC+3)
 
 Current active branch:
 `at0-en-v2.6-dev`
 
 Branch HEAD immediately before this pointer update:
-`00ef0c61012ca89fc92c171330a585440bf4b25d`
+`c10746398a590294716d9e3a65f00064873babaa`
 
 Permanent cross-chat bootstrap contract:
 `ACAD_PASS_BOOTSTRAP_CONTRACT.md`
 
 ## Latest authoritative checkpoint
 
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V6.md`
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V7.md`
 
 Checkpoint commit:
-`d897973c26cd657b21d1cc93451c7fd407c0544d`
+`87b3d33f2c3264ea91cea0596db12fb32e356fe0`
 
-## Governing review/amendment
+## Current scientific state
 
-Final SURUS admission review:
+`SURUS_AMENDMENT_V2_FROZEN / HIGHER_MODEL_REREVIEW_INTERRUPTED_BEFORE_VERDICT / P1_SOURCE_CONTRACT_OPEN / V5_V6_V7_FROZEN / NO_SUCCESSOR_SCIENTIFIC_FIT`
+
+Process readiness:
+- mandatory F01-F06 closure: **87.83%**
+- first-fit readiness: **73.2%**
+
+Readiness change versus V6:
+`0.0 percentage points`
+
+Reason:
+V5-V7 reduced source-semantics uncertainty but did not close P1.
+
+Scientific performance:
+unchanged; latest actual result remains frozen R44C.
+
+## Governing review / amendment
+
+Original final SURUS admission review:
 `phase2/academic_transform/at0_en/v2_6/FINAL_SURUS_ADMISSION_REVIEW_V1.md`
 
 Verdict:
@@ -29,84 +46,150 @@ Verdict:
 Frozen amendment:
 `phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_ADMISSION_PROTOCOL_AMENDMENT_V2.md`
 
-Amendment state:
-`GO_FOR_BOUNDED_AMENDMENT / NO_SCIENTIFIC_FIT`
+Still:
+`GO_FOR_BOUNDED_AMENDMENT / NO_GO_FOR_SCIENTIFIC_EXECUTION`
 
-## Current scientific state
+## Interrupted higher-model rereview
 
-`SURUS_AMENDMENT_V2_FROZEN / P1_NOT_CLOSED / LIMITED_SOURCE_CONTRACT_REREVIEW_REQUIRED / NO_SUCCESSOR_SCIENTIFIC_FIT`
+Freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_INTERRUPTED_SOURCE_CONTRACT_REVIEW_EVIDENCE_V1.md`
 
-Current process readiness:
-- mandatory F01-F06 closure: **87.83%**
-- first-fit readiness: **73.2%**
+Status:
+`INTERRUPTED_BEFORE_VERDICT`
 
-Current scientific performance:
-unchanged; latest real model evidence remains frozen R44C.
+No final governance verdict was produced.
 
-## P1 authoritative lineage
+Recovered concern:
+WordPiece-boundary coherence does not itself prove compatibility with the frozen ACAD_PASS source-word segment unit.
 
-Corrected schema/coordinate audit:
-- run `37914385700`
-- conclusion `FAIL`
-- classification `MECHANICAL_PREFLIGHT_FAIL / NO_SCIENTIFIC_ATTEMPT`
-- 25 LabelIDs / 7 ClassIDs correctly preserved
-- 44,643 / 48,833 exact raw Abstract half-open rows
-- 4,190 initial mismatch rows
+## Frozen implementation clarification
 
-Diagnostic V1:
-- run `37914600126` SUCCESS
-- artifact `11609690713`
-- digest `sha256:02c42a9e2439f555636c611875c4c7b5a055bdb8f6e93b4d2052d9dc95c1873b`
+ACAD_PASS preserves:
+- original words/characters;
+- source offsets;
+- original-to-model offset map;
+- complete source-word window boundaries;
+- source-word representations formed from subword means.
 
-Diagnostic V2:
-- run `37914932110` SUCCESS
-- artifact `11608697424`
-- digest `sha256:69c688f51996eda49cbb09175f5adcede785efcf99ef0d1fca50f97b46f76d83`
-- 437 / 523 articles partially affected
-- 0 fully mismatched
+Therefore:
+`WORDPIECE_ALIGNMENT != FULL_SOURCE_UNIT_CERTIFICATION`
 
-Diagnostic V3:
-- run `37915291868` SUCCESS
-- artifact `11609721783`
-- digest `sha256:901c7691556e57f521c589d123312f1a8f078928aa20bfaa37106a67b9872b80`
-- 3,060 / 4,190 mismatch rows explained by fixed punctuation/token-spacing mechanics
-- 1,130 remain unexplained
+## P1 evidence V1-V4
 
-Pinned tokenizer diagnostic V4:
-- run `37915950311` SUCCESS
+Raw release:
+- annotations = 48,833
+- raw Text == Abstract[Start:End] = 44,643 = 91.4197%
+- mismatch = 4,190 = 8.5803%
+- fixed punctuation/token-spacing explanation = 3,060 / 4,190
+- residual Text mismatch = 1,130
+
+V4 frozen ACAD_PASS BiomedBERT:
+- run `37915950311`
 - artifact `11608843740`
 - digest `sha256:bdd936769d8eaa4abe87d699925a950e4aa2d9aeff2cc1f327a869a57be8a081`
-- tokenizer `microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract@d673b8835373c6fa116d6d8006b33d48734e305d`
-- tokenizer signature `088f1bdf2509aee48015c38209b07bebec8d4d266232e04c5d9bd82704b76e81`
-- 48,640 / 48,833 Start/End spans align exactly to frozen tokenizer boundaries = 99.6048%
-- released TokenStart/TokenEnd do NOT globally match this tokenizer under any fixed tested index convention
-- best fixed char agreement = 2,209 / 48,833
+- Start/End on WordPiece boundaries = 48,640 / 48,833 = 99.6048%
+- released TokenStart/TokenEnd not recoverable as BiomedBERT indices.
 
-Latest P1 freeze:
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_PINNED_TOKEN_ALIGNMENT_DIAGNOSTIC_FREEZE_V4.md`
+## V5 — source-paper BERT WordPieces
+
+Freeze:
+`AT0_EN_V26_SURUS_SOURCE_BERT_ALIGNMENT_DIAGNOSTIC_FREEZE_V5.md`
+
+Run:
+`37919107413`
+
+Artifact:
+`11611123584`
+
+Digest:
+`sha256:2d43434d6ecbd33e270a423d4e29300cd75d970353bc5e782f32bdeeaf6da51f`
+
+Pinned reconstruction tokenizer:
+`google-bert/bert-base-uncased@86b5e0934494bd15c9632b12f734a8a67f723594`
+
+Findings:
+- Start/End align to WordPiece boundaries = 48,719 / 48,833 = 99.7666%
+- best direct TokenStart/TokenEnd recovery = 279 / 48,833
+
+Decision:
+`DIRECT_BERT_WORDPIECE_INDEX_SEMANTICS_REJECTED`
+
+## V6 — source-unit reconstruction
+
+Freeze:
+`AT0_EN_V26_SURUS_SOURCE_UNIT_DIAGNOSTIC_FREEZE_V6.md`
+
+Run:
+`37919404071`
+
+Artifact:
+`11610764435`
+
+Digest:
+`sha256:0ec7e0dc73a1096b51d9702f9ffba69613b5d9ab47b91a2ea206e5c2e65fdb2e`
+
+Start/End alignment:
+- BERT pre-tokenizer = 48,336 / 48,833 = 98.9822%
+- deterministic word+punctuation = 48,483 / 48,833 = 99.2833%
+- whitespace = 27,595 / 48,833 = 56.5089%
+
+Best absolute released token-pair recovery:
+- word+punctuation = 12,585 / 48,833 = 25.7715%
+- BERT pre-tokenizer = 12,155 / 48,833 = 24.8910%
+
+Decision:
+`TOKENSTART_TOKENEND_NOT_GLOBAL_INDICES_OF_TESTED_SOURCE_UNITS`
+
+## V7 — token width / local shift
+
+Freeze:
+`AT0_EN_V26_SURUS_TOKEN_WIDTH_SHIFT_DIAGNOSTIC_FREEZE_V7.md`
+
+Run:
+`37919734516`
+
+Artifact:
+`11611114778`
+
+Digest:
+`sha256:fbedf6dbdb16c0d8bffca3a859a2f1db11fd4ae9834eeeb8e8c0c4212aef5970`
+
+Inclusive released token-span width matches:
+- word+punctuation = 42,419 / 48,833 = 86.8654%
+- BERT pre-tokenizer = 42,242 / 48,833 = 86.5030%
+
+Exclusive width matches only ~2.3-2.5%.
+
+Absolute shifts vary inside:
+- 501 / 523 articles for word+punctuation
+- 502 / 523 articles for BERT pre-tokenizer
+
+Decision:
+`INCLUSIVE_WIDTH_STRUCTURE_SUPPORTED / SIMPLE_GLOBAL_OR_PER_ARTICLE_SHIFT_REJECTED`
 
 ## Official reproducibility gap
 
-The SURUS paper links `https://github.com/surus-ai/dataset` as the location of full code/dataset/manual.
+The SURUS publication/preprint says model code would be public and links:
+`https://github.com/surus-ai/dataset`
 
-Accessible repository history contains dataset/manual/images/license but no training/tokenization/export/offset implementation.
+Accessible official history contains dataset/manual/images/license but no training/tokenization/export/offset implementation.
 
-Therefore exact original TokenStart/TokenEnd and Annotation.Text export semantics are not reproducible from the linked official code release.
+Therefore:
+`ORIGINAL_TOKEN_INDEX_EXPORT_IMPLEMENTATION_NOT_PUBLICLY_REPRODUCIBLE`
 
-## Prepared limited re-review
+## Updated limited re-review packet
 
-Packet:
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_SOURCE_CONTRACT_REREVIEW_PACKET_V1.md`
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_SOURCE_CONTRACT_REREVIEW_PACKET_V2.md`
 
 Packet commit:
-`41a8fe976f41f237dd9aa7989e01a2467d2f854e`
+`c10746398a590294716d9e3a65f00064873babaa`
 
-Only decision requested:
+Supersedes V1.
+
+Allowed final verdicts remain:
 1. `KEEP_SURUS_WITH_CHAR_COORDINATE_CONTRACT`
 2. `KEEP_SURUS_WITH_OTHER_CHANGES`
 3. `REJECT_OR_PAUSE_SURUS`
-
-No general protocol reopening.
 
 ## Attempt / protected state
 
@@ -123,18 +206,20 @@ AD/COVID external scoring:
 `CLOSED`
 
 SURUS OOD scoring:
-`NOT AUTHORIZED`
+`NOT_AUTHORIZED`
 
 R44C:
 `FROZEN / CONSUMED / NOT_RERUN`
 
 ## Exact next authorized operation
 
-`INDEPENDENT_HIGHER_MODEL_LIMITED_SURUS_SOURCE_CONTRACT_REREVIEW`
+`INDEPENDENT_HIGHER_MODEL_LIMITED_SURUS_SOURCE_CONTRACT_REREVIEW_V2`
 
-No P2 adapter work begins before this verdict is frozen.
+No P2 adapter implementation before verdict freeze.
 
 No scientific fit is authorized.
+
+If higher-model access is temporarily unavailable, only non-decision technical work that cannot predetermine or weaken the source-contract verdict is allowed.
 
 ## Authority rule
 
