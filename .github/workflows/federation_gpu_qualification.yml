@@ -1,0 +1,50 @@
+name: Federation GPU qualification
+
+on:
+  workflow_dispatch:
+    inputs:
+      gradient_checkpointing:
+        description: "Frozen qualification mode; try off first, on only if off OOMs before scientific fitting"
+        required: true
+        type: choice
+        default: off
+        options: [off, on]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: federation-gpu-qualification
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: [self-hosted, linux, x64, gpu, acad-pass-federation]
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {fetch-depth: 1}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11.16'
+          cache: pip
+          cache-dependency-path: requirements/federation_runtime.txt
+      - run: |
+          python -m pip install --disable-pip-version-check --quiet -r requirements/federation_runtime.txt
+          python -m pip check
+      - name: Qualify exact GPU/runtime/models
+        env:
+          HF_HUB_DISABLE_TELEMETRY: "1"
+          TOKENIZERS_PARALLELISM: "false"
+          CUBLAS_WORKSPACE_CONFIG: ":4096:8"
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/gpu"
+          python phase2/academic_transform/at0_en/v2_6/federation_gpu_qualification.py             --gradient-checkpointing "${{ inputs.gradient_checkpointing }}"             --out "$RUNNER_TEMP/gpu/FEDERATION_GPU_QUALIFICATION.json"
+          sha256sum requirements/federation_runtime.txt             phase2/academic_transform/at0_en/v2_6/federation_gpu_qualification.py             phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json             > "$RUNNER_TEMP/gpu/SOURCE_SHA256.txt"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: federation-gpu-qualification
+          path: ${{ runner.temp }}/gpu
+          if-no-files-found: error
+          retention-days: 90
