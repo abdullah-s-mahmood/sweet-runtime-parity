@@ -312,3 +312,28 @@ Freeze:
 `AT0_EN_V26_FEDERATION_MODEL_TOKENIZER_IDENTITY_PREFLIGHT_FREEZE_V1.md`.
 
 All three encoder revisions and weight SHA256 identities matched Hugging Face metadata; fast-tokenizer fixtures are frozen.
+
+
+## 2026-10-09 source-schema and target-PMID closure update
+
+Public target PMID custody:
+- run `37881398971` PASS;
+- artifact `11594971856`;
+- AD resolved 118/150 overall and 64/75 official TEST-union PMIDs;
+- COVID resolved 116/150 overall and 61/75 official TEST-union PMIDs;
+- zero resolved-PMID collisions with DESIGN, VERIFY_INTERNAL, OLD_SELECT, PICO-Corpus or EvidenceOutcomes;
+- AD/COVID cross-resolved-PMID overlap = 0.
+
+Public source schema:
+- run `37884140956` PASS;
+- artifact `11595364822`;
+- EvidenceOutcomes = outcome-only auxiliary;
+- PICO-Corpus = native 26-type auxiliary;
+- TrialSieve canonical modeling subset = 1,609 docs / 20 tags / 1,148 train + 223 validation + 238 test;
+- original EBM-NLP = native P/I/O auxiliary.
+
+Freeze files:
+- `AT0_EN_V26_PUBLIC_TARGET_PMID_CUSTODY_AUDIT_FREEZE_V1.md`;
+- `AT0_EN_V26_PUBLIC_SOURCE_SCHEMA_AUDIT_FREEZE_V1.md`.
+
+These strengthen F01/F04 and adapter-role closure but do not yet prove complete same-trial-family independence for unresolved records.
