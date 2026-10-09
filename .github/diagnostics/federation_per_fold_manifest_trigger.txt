@@ -7,3 +7,5 @@ Rerun after switching EBM training PMID discovery to direct frozen-tarball membe
 Final rerun after off-by-one fix in frozen EBM tarball member scan.
 
 Dispatch nudge after off-by-one correction; no protocol change.
+
+Rerun with depth-independent EBM tarball training-member scan.
