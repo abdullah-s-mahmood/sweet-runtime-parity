@@ -1,1 +1,1 @@
-SURUS aggregate coordinate mismatch mechanism diagnostic trigger V1. No raw text, PMIDs, protected IDs, or model metrics emitted. 2026-10-09 Asia/Baghdad.\n
+SURUS aggregate coordinate mismatch article/field diagnostic trigger V2. No raw text, PMIDs, article IDs, protected IDs, or model metrics emitted. 2026-10-09 Asia/Baghdad.\n
