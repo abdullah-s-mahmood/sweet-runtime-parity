@@ -1,0 +1,2 @@
+Protected registry custody audit rerun after canonicalization alignment.
+Aggregate counts only; no protected identifiers/text/gold emitted.
