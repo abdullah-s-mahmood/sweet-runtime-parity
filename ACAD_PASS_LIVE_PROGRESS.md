@@ -6,127 +6,126 @@ Branch: `at0-en-v2.6-dev`
 
 ## CURRENT STATE
 
-`SURUS_AMENDMENT_V2_FROZEN / P1_SOURCE_COORDINATE_CONTRACT_OPEN / NO_SUCCESSOR_SCIENTIFIC_FIT`
+`SURUS_AMENDMENT_V2_FROZEN / P1_NOT_CLOSED / LIMITED_SOURCE_CONTRACT_REREVIEW_REQUIRED / NO_SUCCESSOR_SCIENTIFIC_FIT`
 
 Execution:
-`ACTIVE — SEQUENTIAL PREFIT MECHANICAL CLOSURE`
+`PAUSED AT SCIENTIFIC GOVERNANCE BOUNDARY — AWAITING LIMITED HIGHER-MODEL REREVIEW`
 
 Scientific training:
 `NOT_STARTED`
 
-Current GO/NO-GO:
+GO/NO-GO:
 `NO-GO FOR SCIENTIFIC FIT`
 
-## 1. CURRENT PROCESS READINESS
+## 1. CURRENT READINESS
 
 Mandatory F01-F06 closure:
 `87.83%`
 
-Previous V4:
-`94.5%`
-
-Change:
-`-6.67 percentage points`
-
-First scientific-fit readiness:
+First-fit readiness:
 `73.2%`
 
-Previous V4:
-`89.7%`
+Previous V4 four-source state:
+`94.5% / 89.7%`
 
-Change:
-`-16.5 percentage points`
+Controlled amendment-related change:
+- F01-F06: -6.67 percentage points
+- first-fit: -16.5 percentage points
 
-Reason:
-independent SURUS review authorized a protocol amendment and identified mandatory changed-path recertification. Old preflights remain historical evidence but no longer certify all five-source mechanics.
-
-This is NOT model-performance deterioration.
+This is process readiness, NOT model accuracy.
 
 ## 2. SCIENTIFIC PERFORMANCE
 
-No successor model has been fit.
-
-Latest actual result remains R44C at t=.95:
+Latest real model evidence remains frozen R44C at t=.95:
 - macro precision 87.6735%
 - P 89.1892%
 - I 81.7109%
 - C 93.1818%
 - O 86.6120%
 
-Scientific-performance change:
-`NONE / NOT COMPARABLE`
+No successor fit.
+No performance change.
 
-## 3. HIGHER-MODEL REVIEW
+## 3. HIGHER-MODEL REVIEW / AMENDMENT
 
-Final verdict:
+Review:
+`FINAL_SURUS_ADMISSION_REVIEW_V1.md`
+
+Verdict:
 `PROCEED_SURUS_ADMISSION_WITH_CHANGES`
 
-Boundary:
-`GO FOR BOUNDED PROTOCOL AMENDMENT / NO-GO FOR SCIENTIFIC EXECUTION`
-
-Final review:
-`phase2/academic_transform/at0_en/v2_6/FINAL_SURUS_ADMISSION_REVIEW_V1.md`
-
 Frozen amendment:
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_ADMISSION_PROTOCOL_AMENDMENT_V2.md`
+`AT0_EN_V26_SURUS_ADMISSION_PROTOCOL_AMENDMENT_V2.md`
 
-Core prospective rules:
-- 400 in-domain SURUS candidates before exclusion;
+Still fixed:
+- 400 in-domain SURUS candidates before exclusions;
 - 123 OOD reserved;
-- 25-channel LabelID-safe auxiliary head;
-- no SURUS-to-native P/I/C/O mapping;
-- five equal auxiliary source losses;
-- total auxiliary coefficient 0.25 = 0.05/source;
-- eight auxiliary documents total/update with rotating 2/2/2/1/1 allocation;
-- global family/decontamination graph;
-- 45 fits remain fixed;
+- 25-ID auxiliary ontology;
+- no native P/I/C/O promotion;
+- five equal source losses inside total auxiliary coefficient 0.25;
+- rotating 2/2/2/1/1 auxiliary-document schedule;
+- 45 D0-D4 fits only;
 - no seventh arm.
 
-## 4. CURRENT P1 FINDINGS
+## 4. P1 SOURCE-CONTRACT RESULT
 
-Corrected audit run `37914385700`:
-`FAIL — MECHANICAL PREFLIGHT`
-
-It repaired the old ontology corruption and then failed closed on source-coordinate exactness.
-
-Released rows:
+Released annotations:
 `48,833`
 
-Exact raw Abstract half-open rows:
-`44,643`
+Raw exact Text == Abstract[Start:End]:
+`44,643 = 91.4197%`
 
-Initial mismatches:
-`4,190`
+Raw mismatch:
+`4,190 = 8.5803%`
 
-Diagnostic V1:
-- run `37914600126` SUCCESS
-- artifact `11609690713`
-- digest `sha256:02c42a9e2439f555636c611875c4c7b5a055bdb8f6e93b4d2052d9dc95c1873b`
+Fixed punctuation/token-spacing explanation:
+`3,060 / 4,190 = 73.0310%`
 
-Diagnostic V2:
-- run `37914932110` SUCCESS
-- artifact `11608697424`
-- digest `sha256:69c688f51996eda49cbb09175f5adcede785efcf99ef0d1fca50f97b46f76d83`
-- 437 affected articles
-- 0 fully mismatched articles
+Residual Text mismatch:
+`1,130 = 2.3136% of full release`
 
-Diagnostic V3:
-- run `37915291868` SUCCESS
-- artifact `11609721783`
-- digest `sha256:901c7691556e57f521c589d123312f1a8f078928aa20bfaa37106a67b9872b80`
+Pinned BiomedBERT token-boundary alignment:
+`48,640 / 48,833 = 99.6048%`
 
-V3:
-- 3,060 / 4,190 mismatch rows explained by fixed punctuation/token-spacing mechanics;
-- 1,130 remain unresolved.
+Not token-boundary aligned:
+`193 = 0.3952%`
 
-Current mechanism:
-`LARGE_MAJORITY_PUNCTUATION_TOKEN_RECONSTRUCTION / RESIDUAL_SOURCE_CONTRACT_UNRESOLVED`
+Released TokenStart/TokenEnd:
+`NOT CERTIFIED AS INDICES OF THE FROZEN BIOMEDBERT TOKENIZER`
 
-No repair or row dropping is authorized.
+Best fixed tested char-coordinate convention:
+`ZERO_BASED_INCLUSIVE = 2,209 / 48,833`
 
-## 5. ATTEMPT / SEALED STATE
+## 5. OFFICIAL SOURCE REPRODUCIBILITY GAP
 
-45 D0-D4 attempts:
+The SURUS publication says code/dataset/manual are available at the linked Git repository.
+
+The linked repository is:
+`surus-ai/dataset`.
+
+Its complete accessible history contains dataset/manual/images/license but no training/tokenization/export/offset code.
+
+Therefore exact original Text/TokenStart/TokenEnd serialization semantics are not recoverable from the official linked code release.
+
+## 6. CURRENT DECISION BOUNDARY
+
+The existing independent review required exact text/offset round-trip and representable positives.
+
+Changing the interpretation so Start/End becomes authoritative gold while Annotation.Text is only a provenance field is a material source-contract change.
+
+It is NOT authorized locally.
+
+Limited re-review packet:
+`AT0_EN_V26_SURUS_SOURCE_CONTRACT_REREVIEW_PACKET_V1.md`
+
+Allowed verdicts:
+- KEEP_SURUS_WITH_CHAR_COORDINATE_CONTRACT
+- KEEP_SURUS_WITH_OTHER_CHANGES
+- REJECT_OR_PAUSE_SURUS
+
+## 7. PROTECTED / ATTEMPT STATE
+
+45 D0-D4:
 `NOT_STARTED / UNCONSUMED`
 
 D5:
@@ -142,29 +141,22 @@ SURUS OOD scoring:
 `NOT AUTHORIZED`
 
 R44C:
-`FROZEN / CONSUMED / NOT_RERUN`
+`FROZEN / CONSUMED`
 
-## 6. NEXT OPERATION
+## 8. EXACT NEXT OPERATION
 
-`SURUS_PINNED_BIOMEDBERT_TOKEN_ALIGNMENT_DIAGNOSTIC_V4`
+`INDEPENDENT_HIGHER_MODEL_LIMITED_SURUS_SOURCE_CONTRACT_REREVIEW`
 
-Objective:
-test one already-frozen ACAD_PASS biomedical tokenizer/revision against released TokenStart/TokenEnd and source spans, aggregate-only.
+No P2 adapter implementation or scientific fit before that verdict.
 
-If it closes a deterministic contract:
-freeze P1 and continue P2.
+## 9. CROSS-CHAT CONTINUITY
 
-If it does not:
-SURUS admission stays blocked and re-review may be necessary.
-
-## 7. PERMANENT CROSS-CHAT RULE
-
-Canonical contract:
+Permanent contract:
 `ACAD_PASS_BOOTSTRAP_CONTRACT.md`
 
-The user's reusable bootstrap prompt remains stable.
+The user's reusable bootstrap prompt does NOT need routine edits.
 
-All moving state belongs in GitHub, not in the prompt.
+Moving state is maintained in GitHub.
 
 New chats must:
 `DISCOVER -> VERIFY -> LATEST_STATE -> SEARCH NEWER EVIDENCE -> CONTINUE`.
