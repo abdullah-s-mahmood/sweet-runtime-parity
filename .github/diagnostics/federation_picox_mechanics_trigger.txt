@@ -1,0 +1,1 @@
+Adapted PICOX synthetic mechanics trigger. No scientific training or benchmark test use.\n
