@@ -17,8 +17,8 @@ Canonical independent review:
 |---|---|---|
 | F01 exposure lineage | DOCUMENTARY_CORRECTION_COMPLETE / PMID_CUSTODY_PARTIAL_PASS | Inventory corrected. Protected mapping recovered original PMID identity for 250/256 DESIGN, 49/64 VERIFY_INTERNAL and 60/80 OLD_SELECT records with zero duplicate assignments; unresolved records remain conservatively unresolved |
 | F02 DISTANT-CTO / role semantics | CLOSED / D5_CANCELED | Official Zenodo file audited: 106,889 records, no semantic intervention_type labels. D5 canceled prospectively without replacement; DISTANT-CTO not used in first-campaign training |
-| F03 gold-independent preprocessing | SYNTHETIC_WINDOWING_PASS / TOKENIZER_INTEGRATION_PENDING | Text-only planner synthetic closure PASS in run 37879437844; no gold consumed; pinned-tokenizer/end-to-end offset integration still required |
-| F04 benchmark eligibility | MULTILAYER_PROVENANCE_PARTIAL_PASS / FAMILY_CLOSURE_PENDING | Exact-text split audit PASS; registry custody overlap 0; exact-title PMID resolution AD 118/150 (test 64/75), COVID 116/150 (test 61/75), with 0 resolved PMID overlap against DESIGN/VERIFY_INTERNAL/OLD_SELECT/PICO-Corpus/EvidenceOutcomes. Unresolved identities and same-trial distinct-publication linkage remain open |
+| F03 gold-independent preprocessing | REAL_TOKENIZER_WINDOWING_PASS | Synthetic planner PASS plus real pinned-tokenizer execution PASS on all 400 exposed EBM-NLP_mod fold1/train documents in run 37890868248. No gold/test consumed; all source words retained; deterministic coverage proven |
+| F04 benchmark eligibility | MULTILAYER_PROVENANCE_STRONG_PARTIAL_PASS / UNRESOLVED_FAMILY_LIMIT_RETAINED | Exact-text audit PASS; target PMID audit PASS; PubMed DOI/registry custody PASS with zero resolved collisions against DESIGN/VERIFY_INTERNAL/OLD_SELECT. AD/COVID unresolved records and same-trial distinct-publication risk remain explicit limitations |
 | F05 incompatible headline comparisons | DOCUMENTARY_CLOSED | AlpaPICO string-set scorer verified; FinePICO/PICOX/GPT-4o results remain task-qualified, not direct strict-span ranks |
 | F06 finite study | CLOSED_AT_45_FITS / EXECUTION_BLOCKED_PENDING_OTHER_CLOSURE | D5 canceled by its predeclared source-availability rule. Active D0-D4 x 3 folds x 3 seeds = exactly 45 development fits; canceled slots cannot be reused |
 
@@ -42,7 +42,14 @@ Status:
 `INCOMPLETE`
 
 ### Global alias / family graph
-EBM-NLP_mod -> original EBM PMID mapping is now partial PASS:
+Development family-aware custody is now also PASS:
+- run `37890941364`;
+- artifact `11597963894`;
+- 256 DESIGN documents -> 251 known/conservative family components;
+- 6 unresolved DESIGN documents forced into one conservative component;
+- every frozen development fold passes all-class support and C>=20.
+
+EBM-NLP_mod -> original EBM PMID mapping is partial PASS:
 - all 400: 359/400 (89.75%);
 - DESIGN: 250/256 (97.65625%);
 - VERIFY_INTERNAL: 49/64 (76.5625%);
@@ -64,7 +71,14 @@ Status:
 `INCOMPLETE`
 
 ### Protected custody
-Aggregate-only protected registry custody is now operational and PASS at the registry-ID layer.
+Aggregate-only protected registry custody is operational and PASS at the registry-ID layer.
+
+A second PubMed DOI/registry custody layer is also PASS:
+- run `37886862460`;
+- artifact `11596787832`;
+- zero shared DOI or registry-ID collisions for resolved AD/COVID records against mapped DESIGN/VERIFY_INTERNAL/OLD_SELECT.
+
+No protected IDs/text/gold were emitted.
 Canonical run `37880937020`, artifact `11594715629`, digest `sha256:3759163014b2214ff5bc8d4792835d0e0583b8102a3654e51d7c825f776f074f`.
 
 No shared visible registry IDs were found between DESIGN/VERIFY_INTERNAL/OLD_SELECT and AD/COVID. No protected IDs/text/gold were emitted.
@@ -88,7 +102,11 @@ Do not certify before:
 
 ### Preprocessing
 Text-only, gold-independent source-compatible processor:
-`SYNTHETIC_WINDOW_PLANNER_PASS / PINNED_TOKENIZER_AND_OFFSET_INTEGRATION_PENDING`
+`REAL_PINNED_TOKENIZER_WINDOWING_PASS`
+
+Run `37890868248`, artifact `11597948931`, digest `sha256:55e3bef05c3246660c187e9c190807d075203f77cef21543500073ad5c1a6397`.
+
+All 400 exposed EBM-NLP_mod fold1/train documents fit in one source-compatible window for BASE, MODERN and PICOX tokenizers. 17 tokenizer-empty source words are retained with explicit UNK rather than dropped. No gold columns are consumed.
 
 ### Adapters
 Authoritative A1-A5 source preflight with TrialSieve-test exclusion PASS in run `37885471201`, artifact `11596272506`, digest `sha256:a45ad59b89ffcc5e4e3223df5838ddb99191a1733c65a8d91bd90f32c51d8e4a`.
@@ -390,3 +408,68 @@ Freeze files:
 - `AT0_EN_V26_FEDERATION_ADAPTER_SOURCE_PREFLIGHT_FREEZE_V2.md`.
 
 No scientific fit has started.
+
+
+## 2026-10-09 real tokenizer / family-fold / DOI-registry closure update
+
+### Real tokenizer/windowing
+Run:
+`37890868248`
+
+Artifact:
+`11597948931`
+
+Digest:
+`sha256:55e3bef05c3246660c187e9c190807d075203f77cef21543500073ad5c1a6397`
+
+Freeze:
+`AT0_EN_V26_FEDERATION_REAL_TOKENIZER_WINDOWING_PREFLIGHT_FREEZE_V1.md`
+
+Result:
+- BASE/Modern/PICOX pinned tokenizers all deterministic;
+- 400/400 documents covered;
+- zero benchmark test usage;
+- zero gold-column consumption;
+- 17 tokenizer-empty source words retained through UNK;
+- no source word dropped;
+- no oversized-word failure.
+
+### Development family folds
+Run:
+`37890941364`
+
+Artifact:
+`11597963894`
+
+Digest:
+`sha256:eabe356bb9c8488080d75dc10d12708c4b5ba1325fe9f98cd2ef7723b51224ef`
+
+Freeze:
+`AT0_EN_V26_FEDERATION_DEVELOPMENT_FAMILY_FOLD_CUSTODY_FREEZE_V1.md`
+
+Fold support:
+- fold0: P82 / I267 / C33 / O247;
+- fold1: P93 / I320 / C43 / O214;
+- fold2: P96 / I242 / C39 / O216.
+
+All predeclared fold gates PASS.
+
+### Public benchmark DOI/registry custody
+Run:
+`37886862460`
+
+Artifact:
+`11596787832`
+
+Digest:
+`sha256:1242a4b5794fdfb4298de85b4f8517e239fd2e1db989ffbee103a65d306ec7ff`
+
+Freeze:
+`AT0_EN_V26_PUBLIC_BENCHMARK_DOI_REGISTRY_CUSTODY_FREEZE_V1.md`
+
+No resolved DOI or registry-ID collision observed against mapped DESIGN/VERIFY_INTERNAL/OLD_SELECT.
+
+Unresolved target records remain a claim limitation, not silently declared independent.
+
+Overall:
+`CLOSURE_IN_PROGRESS / SCIENTIFIC_FIRST_FIT_STILL_BLOCKED_BY_EXECUTION_RUNTIME_AND_FINAL_MANIFEST_BINDING`.
