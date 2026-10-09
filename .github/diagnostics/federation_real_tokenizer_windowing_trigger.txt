@@ -1,1 +1,3 @@
 Real tokenizer text-only windowing preflight on exposed EBM-NLP_mod training source. No gold consumption, no benchmark test scoring, no scientific model training.
+
+Rerun after cache-dependency path correction.
