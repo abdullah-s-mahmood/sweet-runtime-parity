@@ -1,0 +1,92 @@
+{
+  "schema": "ACAD_PASS_FEDERATION_FOUR_SOURCE_SAMPLER_CONTRACT_V1",
+  "date": "2026-10-10",
+  "timezone": "Asia/Baghdad",
+  "state": "FROZEN_BEFORE_ANY_SUCCESSOR_SCIENTIFIC_FIT",
+  "authority": {
+    "final_review": "FINAL_SURUS_SOURCE_CONTRACT_REREVIEW_V2.md",
+    "verdict": "REJECT_OR_PAUSE_SURUS",
+    "operation": "FREEZE_SURUS_PAUSE_AND_REBIND_ORIGINAL_FOUR_SOURCE_PREFIT_MANIFESTS"
+  },
+  "auxiliary_sources": [
+    {
+      "order": 1,
+      "key": "EBM",
+      "head": "original_ebm_pio",
+      "documents_per_aux_update": 2,
+      "total_loss_coefficient": 0.0625
+    },
+    {
+      "order": 2,
+      "key": "TrialSieve",
+      "head": "trialsieve_20",
+      "documents_per_aux_update": 2,
+      "total_loss_coefficient": 0.0625
+    },
+    {
+      "order": 3,
+      "key": "EvidenceOutcomes",
+      "head": "evidence_outcome",
+      "documents_per_aux_update": 2,
+      "total_loss_coefficient": 0.0625
+    },
+    {
+      "order": 4,
+      "key": "PICO",
+      "head": "pico_corpus_26",
+      "documents_per_aux_update": 2,
+      "total_loss_coefficient": 0.0625
+    }
+  ],
+  "auxiliary_documents_per_optimizer_update": 8,
+  "allocation_rule": "Exactly 2 canonical auxiliary documents from each of the four admitted auxiliary sources per auxiliary optimizer update. This is the unique equal allocation implied by eight total documents across four equal sources.",
+  "loss": {
+    "source_loss_definition": "For each source, compute the document mean of the existing stable positive/negative log-sum-exp auxiliary span loss over applicable fully annotated classes.",
+    "auxiliary_loss": "L_aux = (L_EBM + L_TrialSieve + L_EvidenceOutcomes + L_PICO) / 4",
+    "total_loss": "L = L_native + 0.25 * L_aux",
+    "effective_coefficient_per_source": 0.0625,
+    "coefficient_sweep": false,
+    "dynamic_weighting": false
+  },
+  "ordering": {
+    "label_independent": true,
+    "protocol_id": "ACAD_PASS_FED_V1_FOUR_SOURCE_REBOUND_20261010",
+    "permutation_key_components": [
+      "protocol_id",
+      "fold",
+      "existing_scientific_seed",
+      "source",
+      "cycle",
+      "canonical_record_id"
+    ],
+    "digest": "SHA256",
+    "consumption": "WITHOUT_REPLACEMENT_WITHIN_SOURCE_CYCLE",
+    "cycle_restart": "After source exhaustion, increment that source cycle and recompute the deterministic permutation using the same frozen key components."
+  },
+  "parity": {
+    "matched_arms": [
+      "D2",
+      "D3",
+      "D4"
+    ],
+    "requirement": "Matched fold/seed instances use identical admitted auxiliary memberships and identical per-source document schedules. D0/D1 remain native-only.",
+    "rng_rule": "Auxiliary scheduling must not shift paired native initialization through source-dependent RNG call-order changes."
+  },
+  "checkpoint_resume_must_preserve": [
+    "source_cursors",
+    "source_cycle_counters",
+    "source_permutations",
+    "RNG_states",
+    "optimizer_state",
+    "model_state",
+    "scheduler_state",
+    "native_ordering"
+  ],
+  "exclusions": {
+    "SURUS": "PAUSED_NOT_ADMITTED_CURRENT_CAMPAIGN",
+    "D5": "CANCELED_WITHOUT_REPLACEMENT",
+    "representation_driven_positive_dropping": "FORBIDDEN",
+    "protected_or_reserved_alias_re_admission": "FORBIDDEN"
+  },
+  "scientific_training_authorized": false
+}
