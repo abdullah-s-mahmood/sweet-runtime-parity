@@ -1,0 +1,2 @@
+Synthetic-only strict scorer/selection/bootstrap preflight.
+No scientific model training. No AD/COVID gold scoring. No VERIFY_INTERNAL.
