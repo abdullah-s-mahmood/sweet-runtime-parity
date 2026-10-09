@@ -11706,3 +11706,72 @@ trial-family/protected-alias custody; adapters; pinned-tokenizer offset integrat
 
 NEXT:
 `CONTINUE_PREFIT_CLOSURE -> NO_TRAINING_YET`.
+
+
+---
+
+## 2026-10-09 — Federation pre-fit closure advanced to 90% finding closure / 73.5% first-fit readiness
+
+New frozen evidence:
+- Public target PMID custody PASS:
+  - run `37881398971`
+  - artifact `11594971856`
+  - AD resolved 118/150 whole, 64/75 TEST
+  - COVID resolved 116/150 whole, 61/75 TEST
+  - zero shared resolved PMID with DESIGN/VERIFY_INTERNAL/OLD_SELECT/PICO-Corpus/EvidenceOutcomes
+  - unresolved titles remain unresolved; no full trial-family certification yet.
+- Public source schema audit PASS:
+  - run `37884140956`
+  - artifact `11595364822`
+  - EvidenceOutcomes 500 + 140 PMIDs parsed correctly;
+  - PICO-Corpus = 1011 docs / 26 native types / 17739 spans;
+  - TrialSieve authorized first-campaign processed set = 1609 docs / 20 types;
+  - original EBM remains P/I/O auxiliary only.
+- Federation adapter synthetic PASS:
+  - run `37894969781`
+  - artifact `11599538260`
+  - digest `sha256:85d11c503d7cebbe6e245822ff2822a81cffd66ead2dbad9d10f43096fdf8d55`
+  - forbidden cross-schema mappings fail closed.
+- PICOX adapted four-class comparator recipe frozen:
+  `AT0_EN_V26_PICOX_FOUR_CLASS_ADAPTED_COMPARATOR_FREEZE_V1.md`
+  - no test-time threshold sweep;
+  - P/I/C/O adaptation;
+  - final-epoch-only checkpoints;
+  - strict exact occurrence scoring.
+- Runtime/model identity preflight PASS artifact:
+  - run `37895636271`
+  - artifact `11600067736`
+  - digest `sha256:3c87cd79c5693137172c50305f4f452ccf2d861e78159e5d51479b9c24e4da73`
+  - Python 3.11.16
+  - torch 2.5.1+cu124
+  - transformers 4.48.0
+  - tokenizers 0.21.0
+  - huggingface_hub 0.28.1
+  - safetensors 0.5.2
+  - accelerate 1.3.0
+  - numpy 1.26.4
+  - model/tokenizer revisions pinned for BiomedBERT base, BiomedBERT large, BioClinical ModernBERT.
+- Source research-use vs redistribution status separated; raw third-party corpus redistribution remains prohibited unless explicitly licensed.
+
+Current quantified readiness:
+- mandatory independent-review F01–F06 closure: **90.0%**
+- first scientific federation-fit process readiness: **73.5%**
+
+These percentages are process-readiness only, NOT model accuracy.
+
+No successor scientific fit yet.
+R44C remains the latest scientific performance result and remains frozen/consumed.
+VERIFY_INTERNAL remains CLOSED.
+
+Highest-impact blockers:
+1. unresolved PMID/title/trial-family aliases;
+2. real source offset/window integration;
+3. per-source admitted-record manifests;
+4. DISTANT-CTO weak-file SHA256/license/type manifest;
+5. GPU/VRAM/weight/batch qualification;
+6. PICOX real candidate-generation preflight;
+7. final per-fit data/runtime hash binding in 54-slot manifest;
+8. final independent pre-fit review.
+
+Checkpoint:
+`PREFIT_CLOSURE_ADVANCED -> CONTINUE_REAL_DATA_MECHANICS_AND_GPU_QUALIFICATION -> NO_FIRST_FIT_YET`.
