@@ -1,0 +1,2 @@
+Protected EBM-NLP_mod -> original EBM-NLP PMID mapping feasibility audit.
+Aggregate outputs only; no protected PMIDs/text/gold emitted.
