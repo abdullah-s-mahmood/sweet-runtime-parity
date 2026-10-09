@@ -1,14 +1,15 @@
 # ACAD_PASS — LIVE PROGRESS
 
 Last updated: 2026-10-09
+Timezone: Asia/Baghdad (UTC+3)
 Branch: `at0-en-v2.6-dev`
 
 ## CURRENT STATE
 
-`PREFIT_CLOSURE_ADVANCED / NO_SUCCESSOR_SCIENTIFIC_FIT_YET`
+`PREFIT_CLOSURE_NEAR_COMPLETE / SURUS_CANDIDATE_FROZEN_PENDING_INDEPENDENT_ADMISSION_REVIEW / NO_SUCCESSOR_SCIENTIFIC_FIT_YET`
 
 Execution status:
-`ACTIVE — CONTINUING PREFIT CLOSURE`
+`ACTIVE — PREFIT SCIENTIFIC GOVERNANCE`
 
 Scientific-training status:
 `NOT_STARTED`
@@ -19,231 +20,163 @@ VERIFY_INTERNAL:
 R44C:
 `FROZEN / CONSUMED / NOT_RERUN`
 
+D5:
+`CANCELED_WITHOUT_REPLACEMENT`
+
 ## 1. MAIN READINESS PERCENTAGE
 
 Current first-fit readiness:
+`89.7%`
+
+Previous live-dashboard checkpoint:
 `73.5%`
 
-Previous checkpoint:
+Absolute improvement:
+`+16.2 percentage points`
+
+Earlier baseline:
 `44.0%`
 
-Absolute improvement:
-`+29.5 percentage points`
-
-Relative improvement from the previous checkpoint:
-`+67.05%`
+Total improvement versus 44.0%:
+`+45.7 percentage points`
 
 Official target before first successor scientific fit:
-`100% PREFIT CLOSURE`
+`100% OF BLOCKING PREFIT CHECKS PASS`
 
-Operational threshold for final independent pre-fit review:
-`95–100% with no unresolved hard blocker`
+Important:
+this is PROCESS READINESS, not model accuracy.
 
-Remaining distance to 100%:
-`26.5 percentage points`
-
-## 2. INDEPENDENT-REVIEW FINDINGS F01–F06
+## 2. INDEPENDENT-REVIEW FINDINGS F01-F06
 
 Current closure:
+`94.5%`
+
+Previous live-dashboard checkpoint:
 `90.0%`
 
-Previous closure:
-`80.83%`
-
 Absolute improvement:
-`+9.17 percentage points`
+`+4.5 percentage points`
 
-Relative improvement:
-`+11.34%`
+Breakdown from authoritative V3:
+- F01 exposure lineage + protected identity/family custody: 90%
+- F02 weak-role semantics: 100%
+- F03 gold-independent preprocessing: 95%
+- F04 benchmark eligibility/provenance: 82%
+- F05 incompatible-comparator handling: 100%
+- F06 finite first campaign: 100%
 
-Breakdown:
-- F01 exposure lineage + protected identity custody: 80%
-- F02 DISTANT-CTO / I-C semantics: 100%
-- F03 gold-independent preprocessing: 85%
-- F04 benchmark eligibility: 75%
-- F05 incompatible-comparison handling: 100%
-- F06 finite first-campaign protocol: 100%
+## 3. LATEST DURABLE CHECKPOINT
 
-Target:
-`100%`
+Authoritative progress snapshot:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V4.md`
 
-## 3. WHAT IMPROVED
+SURUS evidence freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_AUXILIARY_ADMISSION_EVIDENCE_FREEZE_V1.md`
 
-Since the earlier 44% readiness checkpoint:
+SURUS schema audit:
+- run `37900075427` SUCCESS
+- artifact `11602016518`
+- digest `sha256:0549f36abf6d1cac39d87dec2206514c7a5a59a8ba2ca083d89c54d53ff26772`
+- 523 public records
+- 48,833 annotations
+- 25 labels / 7 classes
+- source commit `3a61790d5c304dea95fb278f76cc3b1a0ca07564`
+- license `CC-BY-NC-4.0`
 
-- R43/R44 lineage corrected to EBM-NLP_mod.
-- Exact-text AD/COVID split audit PASS.
-- Protected registry custody audit PASS at the visible-registry layer.
-- EBM-NLP_mod -> original EBM PMID mapping recovered:
-  - 359/400 = 89.75% overall;
-  - 250/256 = 97.65625% DESIGN;
-  - 49/64 = 76.5625% VERIFY_INTERNAL;
-  - 60/80 = 75.0% OLD_SELECT.
-- AD PMID resolution:
-  - 118/150 = 78.67% whole corpus;
-  - 64/75 = 85.33% official TEST union.
-- COVID PMID resolution:
-  - 116/150 = 77.33% whole corpus;
-  - 61/75 = 81.33% official TEST union.
-- Shared resolved PMID with checked DESIGN / VERIFY_INTERNAL / OLD_SELECT / PICO-Corpus / EvidenceOutcomes:
-  `0`.
-- Gold-independent text-windowing synthetic preflight PASS.
-- Strict occurrence-level exact scorer synthetic preflight PASS.
-- Source-schema audit PASS.
-- Adapter semantic/fail-closed synthetic preflight PASS.
-- PICOX four-class adapted comparator protocol frozen.
-- Software/runtime/model/tokenizer identity preflight PASS.
-- 54 development-attempt slots frozen before any scientific fit.
-- Public-human-gold federation protocol frozen.
+SURUS overlap custody:
+- run `37900288357` SUCCESS
+- artifact `11602601668`
+- digest `sha256:915be5e4fd758b90b959eae4700c774b441dda19f358310165ccfcd6a6517a5e`
+- mapped DESIGN overlap: 0
+- mapped VERIFY_INTERNAL overlap: 0
+- mapped OLD_SELECT overlap: 0
+- resolved AD/COVID overlap: 0
+- public auxiliary overlaps requiring decontamination: EvidenceOutcomes 7, PICO-Corpus 2, TrialSieve train/validation 1.
 
-## 4. WHAT WORSENED / NEW RISKS
+SURUS is NOT yet admitted to the frozen federation protocol.
 
-No scientific model-performance deterioration has occurred because no successor model has been trained yet.
+## 4. WHAT IMPROVED
 
-Newly clarified risks:
+- first-fit readiness moved from 73.5% to 89.7% on durable V3 closure evidence;
+- F01-F06 closure moved from 90.0% to 94.5%;
+- real-source windowing, per-fold data binding, PICOX mechanics, canonical runtime contract, and exact checkpoint/resume mechanics are closed;
+- 45 active D0-D4 attempts remain prospectively bounded;
+- SURUS now has reproducible schema/provenance/overlap evidence suitable for an admission review.
 
-1. Some AD/COVID records remain unresolved at PMID level.
-2. Same-PMID non-overlap is not the same as complete same-trial-family independence.
-3. Protected identity mapping is partial, especially VERIFY_INTERNAL.
-4. Real-source offset/window integration still needs end-to-end closure.
-5. D5 DISTANT-CTO weak stream needs final file SHA/license/type manifest.
-6. GPU/VRAM/weight/mixed-precision feasibility is not yet qualified.
-7. PICOX real candidate/negative construction still needs preflight.
-8. Third-party raw-data redistribution rights are not assumed when licenses are not explicit.
+## 5. WHAT WORSENED / NEW RISKS
 
-These are controlled blockers, not evidence that the scientific hypothesis has worsened.
+No scientific model-performance deterioration has occurred because no successor model has been trained.
 
-## 5. CURRENT SCIENTIFIC PERFORMANCE
+New controlled risk:
+SURUS is a scientifically credible auxiliary human-gold candidate, but adding it to D2-D4 would materially change the frozen source matrix and potentially comparison fairness.
 
-No federation successor fit has been run yet.
+Therefore:
+`NO_AUTOMATIC_SURUS_ADMISSION`
 
-Therefore the latest real model-performance evidence remains frozen R44C:
+Residual blockers:
+1. SURUS admission decision;
+2. real qualified GPU backend;
+3. GPU qualification artifact and exact runtime hash;
+4. binding the GPU runtime hash to all 45 active attempt slots;
+5. final independent pre-fit review;
+6. residual unresolved trial-family identity remains an explicit external-benchmark limitation.
 
-At t=.95:
+## 6. CURRENT SCIENTIFIC PERFORMANCE
+
+No federation successor fit has been run.
+
+Latest real model-performance evidence remains frozen R44C at t=.95:
 - macro precision = 87.6735%
 - P precision = 89.1892%
 - I precision = 81.7109%
 - C precision = 93.1818%
 - O precision = 86.6120%
 
-Important:
-the current 73.5% readiness work has NOT yet changed these accuracy numbers.
+The readiness improvement has NOT changed these model-performance numbers.
 
-## 6. PERFORMANCE TARGET
+## 7. PERFORMANCE TARGET
 
-Primary target:
+Primary:
 `MATCH OR EXCEED THE STRONGEST REPRODUCIBLE COMPARABLE SYSTEM UNDER THE SAME DATASET / SCHEMA / SPLIT / METRIC`
 
-Preferred stronger target:
-`BEST REPRODUCIBLE STRICT EXACT-SPAN P/I/C/O SYSTEM ON COMPARABLE PUBLIC HUMAN-GOLD BENCHMARKS`
+Selective high-precision target:
+- precision >= 90% per P/I/C/O class;
+- recall >= 33% per class;
+- accepted >= 30/class;
+- >=20 trial families/class;
+- one frozen global threshold.
 
-High-precision operating target:
-- precision >= 90% for P;
-- precision >= 90% for I;
-- precision >= 90% for C;
-- precision >= 90% for O;
-- useful recall retained;
-- no class suppression used merely to pass precision.
+No unsupported SOTA claim.
 
-Cross-corpus target:
-robust performance on both AD and COVID and leave-one-corpus-out transfer, not one benchmark only.
+## 8. FORECAST / OPTIMISM
 
-## 7. ENGINEERING / RESEARCH OPTIMISM
+These are engineering/scientific forecasts, not statistical probabilities.
 
-These are informed forecasts, NOT statistical probabilities.
+- build a very strong practical PICO system: 92–95%
+- reach strongest genuinely comparable reproducible level: 88–92%
+- beat strongest comparable system on at least one strict benchmark: 80–85%
+- beat strongest comparators consistently across multiple primary benchmarks: 65–75%
+- pass strict high-precision P/I/C/O gate with useful recall: 70–78%
 
-- Build a very strong practical PICO system:
-  `92–95% optimism`
+Direction:
+`IMPROVING, BUT FIRST FIT REMAINS BLOCKED`
 
-- Reach the level of the strongest genuinely comparable reproducible system:
-  `88–92% optimism`
+## 9. EXACT NEXT OPERATION
 
-- Beat the strongest comparable system on at least one strict benchmark:
-  `80–85% optimism`
+`INDEPENDENT_SURUS_ADMISSION_REVIEW`
 
-- Beat strongest comparators consistently across multiple primary benchmarks:
-  `65–75% optimism`
-
-- Pass the strict high-precision P/I/C/O operating gate with useful recall:
-  `70–78% optimism`
-
-Current direction of confidence:
-`IMPROVING`
-
-Reason:
-the remaining failure mechanisms are concentrated and increasingly measurable:
-boundary validity, I/C role distinction, provenance, cross-corpus robustness and execution reproducibility.
-
-## 8. FIRST-FIT READINESS BREAKDOWN
-
-1. Source identity/file/license/ontology/split closure: 70%
-2. Global alias/trial-family graph: 60%
-3. Protected custody: 60%
-4. AD/COVID benchmark eligibility: 75%
-5. Gold-independent preprocessing: 85%
-6. Dataset adapter semantics/mechanics: 80%
-7. Strict scorer: 90%
-8. Comparator recipes: 70%
-9. Runtime/software/model determinism: 60%
-10. Attempt manifest: 85%
-
-Arithmetic mean:
-`73.5%`
-
-## 9. NEXT BLOCKERS — PRIORITY ORDER
-
-1. Complete remaining provenance/trial-family closure.
-2. Complete real-source offset/window integration.
-3. Freeze admitted-record manifests per source.
-4. Freeze D5 official DISTANT-CTO file identity / SHA / semantic-type manifest.
-5. Qualify GPU / VRAM / model-weight identity / mixed precision / batch feasibility.
-6. Complete real PICOX candidate-generation preflight.
-7. Bind final data/runtime hashes to every one of the 54 development attempt slots.
-8. Run final independent pre-fit review.
-9. Only after PASS: begin D0–D5 scientific fitting.
+After a frozen KEEP/REJECT decision:
+`QUALIFY_REAL_GPU -> BIND_GPU_RUNTIME_HASH_TO_45_SLOTS -> FINAL_INDEPENDENT_PREFIT_REVIEW -> FIRST_D0-D4 SCIENTIFIC FIT`
 
 ## 10. STOP / GO RULE
 
 Current:
 `NO-GO FOR SCIENTIFIC FIT`
 
-Reason:
-pre-fit readiness = 73.5%, with unresolved hard blockers.
-
-GO requires:
-- closure state explicitly changed to PASS;
-- no unresolved hard blocker;
-- final independent pre-fit review completed;
-- immutable attempt/data/runtime manifests bound before first training job.
-
-## 11. EXPECTED NEXT DIRECTION
-
-Expected next percentage:
-`~80–85% first-fit readiness`
-after real-source adapters/offset integration + D5 source closure + GPU/runtime qualification.
-
-Expected subsequent percentage:
-`~90–95%`
-after per-fit manifests + PICOX execution closure + residual provenance closure.
-
-Final:
-`100%`
-only after final independent pre-fit review signs off.
-
-## 12. UPDATE RULE
-
-Update THIS SAME FILE after every meaningful checkpoint.
-
-Every update must state:
-1. current percentage;
-2. previous percentage;
-3. absolute improvement or deterioration;
-4. new evidence;
-5. new risks;
-6. active/stopped execution state;
-7. next blocker;
-8. scientific-performance change, if any;
-9. optimism change, if justified.
-
-Do not increase percentages merely because time passed.
-Percentages change only when evidence closes or reopens a requirement.
+Do not:
+- train a successor model;
+- open VERIFY_INTERNAL;
+- score AD/COVID external benchmarks;
+- rerun R44C;
+- add a seventh adaptive arm;
+- admit SURUS into D2-D4 without a prospectively frozen review decision.
