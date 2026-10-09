@@ -57,13 +57,15 @@ Status:
 `INCOMPLETE`
 
 ### Protected custody
-Need ability to detect aliases to:
-- VERIFY_INTERNAL;
-- protected historical sets
-without developer access to their text/gold.
+Aggregate-only protected registry custody is now operational and PASS at the registry-ID layer.
+Canonical run `37880937020`, artifact `11594715629`, digest `sha256:3759163014b2214ff5bc8d4792835d0e0583b8102a3654e51d7c825f776f074f`.
+
+No shared visible registry IDs were found between DESIGN/VERIFY_INTERNAL/OLD_SELECT and AD/COVID. No protected IDs/text/gold were emitted.
+
+Coverage is sparse, so PMID/DOI/title/trial-family custody remains required.
 
 Status:
-`PENDING`
+`REGISTRY_CUSTODY_PASS / PMID_DOI_TITLE_FAMILY_CUSTODY_PENDING`
 
 ### Benchmark eligibility
 AD/COVID:
@@ -236,3 +238,16 @@ Revision pinning does not equal full source admission; licenses/file hashes/onto
 
 Overall:
 `CLOSURE_IN_PROGRESS / FIRST_FIT_NOT_AUTHORIZED`.
+
+
+## 2026-10-09 protected registry custody update
+
+Canonicalized rerun resolved the earlier COVID 153-vs-150 representation discrepancy.
+
+Freeze:
+`AT0_EN_V26_PROTECTED_REGISTRY_CUSTODY_AUDIT_FREEZE_V1.md`.
+
+Registry collision:
+0 across all protected/exposed historical partitions versus AD/COVID whole/test-union targets.
+
+This is supportive but not sufficient for trial-family independence.
