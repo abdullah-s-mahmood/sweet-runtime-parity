@@ -9,26 +9,30 @@ def sha256_file(p):
     return h.hexdigest()
 
 def evidence_outcomes(root):
+    # Released CoNLL files have NO header. Fixed columns are:
+    # token, PMID, start, end, label.
     out={}
     for fn in ["500RCT-CoNLL.tsv","140EBMNLP-CoNLL.tsv"]:
         p=root/fn
+        rows=0; pmids=set(); labels=set(); malformed=0
         with open(p,encoding="utf-8",newline="") as f:
-            r=csv.DictReader(f,delimiter="\t")
-            rows=0; pmids=set(); labels=set()
-            fields=r.fieldnames
+            r=csv.reader(f,delimiter="\t")
             for row in r:
+                if not row: continue
+                if len(row)!=5:
+                    malformed+=1
+                    continue
+                token,pmid,start,end,label=row
                 rows+=1
-                # tolerate exact released column case
-                pmid=row.get("PMID") or row.get("pmid")
-                label=row.get("label") or row.get("Label")
-                if pmid: pmids.add(str(pmid).strip())
-                if label: labels.add(str(label).strip())
+                if pmid.strip().isdigit(): pmids.add(pmid.strip())
+                labels.add(label.strip())
         out[fn]={
             "sha256":sha256_file(p),
             "rows":rows,
             "unique_pmids":len(pmids),
             "labels":sorted(labels),
-            "columns":fields,
+            "columns":["token","PMID","start","end","label"],
+            "malformed_rows":malformed,
         }
     return out
 
@@ -48,6 +52,17 @@ def trialsieve(root):
         for row in r:
             meta_rows+=1
             if row.get("pmid"): meta_pmids.add(row["pmid"].strip())
+    pre=root/"data/preprocessed_for_modeling.json"
+    pre_d=json.loads(pre.read_text(encoding="utf-8"))
+    pre_pmids={str(x.get("pmid","")).strip() for x in pre_d if str(x.get("pmid","")).strip()}
+    pre_splits=collections.Counter(str(x.get("split","")) for x in pre_d)
+    pre_tags=collections.Counter()
+    zero_span=0
+    for x in pre_d:
+        spans=x.get("spans",[])
+        if not spans: zero_span+=1
+        for sp in spans:
+            pre_tags[str(sp.get("tag",""))]+=1
     return {
       "annotations":{
         "sha256":sha256_file(p),"rows":rows,"unique_pmids":len(pmids),
@@ -57,7 +72,18 @@ def trialsieve(root):
       "text_metadata":{
         "sha256":sha256_file(a),"rows":meta_rows,"unique_pmids":len(meta_pmids),"columns":meta_cols
       },
-      "pmid_set_equal":pmids==meta_pmids
+      "pmid_set_equal":pmids==meta_pmids,
+      "preprocessed_for_modeling":{
+        "sha256":sha256_file(pre),
+        "documents":len(pre_d),
+        "unique_pmids":len(pre_pmids),
+        "split_counts":dict(sorted(pre_splits.items())),
+        "zero_span_documents":zero_span,
+        "span_tag_counts":dict(sorted(pre_tags.items())),
+        "span_tag_count":len(pre_tags),
+        "pmids_subset_of_annotation_table":pre_pmids.issubset(pmids),
+        "pmids_subset_of_text_metadata":pre_pmids.issubset(meta_pmids)
+      }
     }
 
 def pico_corpus(root):
