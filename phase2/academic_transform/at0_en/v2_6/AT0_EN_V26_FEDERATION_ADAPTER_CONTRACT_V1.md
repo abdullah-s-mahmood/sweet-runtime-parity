@@ -3,7 +3,7 @@
 Date: 2026-10-09
 
 State:
-`FEDERATION_ADAPTER_CONTRACT_FROZEN_PENDING_SYNTHETIC_AND_SOURCE_PREFLIGHT`
+`FEDERATION_ADAPTER_CONTRACT_FROZEN_SUPERSEDING_TRIALSIEVE_TEST_EXCLUSION`
 
 No scientific fit is authorized by this contract.
 
@@ -79,9 +79,17 @@ Expected:
 - exactly 20 native tags;
 - no zero-span docs.
 
-Ignore stored `split` value for ACAD_PASS.
+The frozen stored split is respected.
 
-All 1,609 enter the candidate auxiliary pool before ACAD_PASS family exclusions.
+Admitted first-campaign auxiliary pool:
+- train = 1,148;
+- validation = 223;
+- total admitted = 1,371.
+
+Reserved/not admitted to first-campaign training:
+- test = 238.
+
+The canonical 1,609-document file is still audited in full for schema identity, but TrialSieve test records MUST NOT enter training, representation learning, threshold selection or model selection.
 
 For each span:
 - preserve source start/end;
