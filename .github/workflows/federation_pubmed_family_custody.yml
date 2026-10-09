@@ -1,0 +1,64 @@
+name: Federation PubMed DOI-registry custody audit
+
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/federation_pubmed_family_custody_trigger.txt'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: federation-pubmed-family-custody
+  cancel-in-progress: false
+
+jobs:
+  custody:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {fetch-depth: 1, path: project}
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: BIDS-Xu-Lab/section_specific_annotation_of_PICO
+          ref: bc4b878773192f38b2600ec830ca4208b82f7dc0
+          path: bids
+          fetch-depth: 1
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: bepnye/EBM-NLP
+          ref: 43a4a1ea3f0a21cfb8820c040b843dfaf66192d0
+          path: ebm
+          fetch-depth: 1
+      - name: Download frozen R44 manifest
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: r44-oof-readonly-preflight
+          path: ${{ runner.temp }}/r44
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37572165532
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.11.16'}
+      - name: Aggregate-only PubMed DOI and registry-family custody audit
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/family" "$RUNNER_TEMP/family_work"
+          python project/phase2/academic_transform/at0_en/v2_6/federation_pubmed_family_custody.py             --bids bids             --ebm-archive ebm/ebm_nlp_2_00.tar.gz             --r44-manifest "$RUNNER_TEMP/r44/R44_OOF_MANIFEST_V1.json"             --work "$RUNNER_TEMP/family_work"             --out "$RUNNER_TEMP/family/FEDERATION_PUBMED_FAMILY_CUSTODY_AUDIT.json"
+          python - <<'PY'
+          import json,os,pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"family/FEDERATION_PUBMED_FAMILY_CUSTODY_AUDIT.json"
+          d=json.loads(p.read_text())
+          assert d["state"]=="FEDERATION_PUBMED_DOI_REGISTRY_CUSTODY_AUDIT_PASS"
+          for k in ("output_contains_pmids","output_contains_dois","output_contains_registry_ids","output_contains_titles","output_contains_raw_text","output_contains_gold_labels"):
+              assert d[k] is False
+          PY
+          sha256sum project/phase2/academic_transform/at0_en/v2_6/federation_pubmed_family_custody.py             > "$RUNNER_TEMP/family/SOURCE_SHA256.txt"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: federation-pubmed-family-custody-audit
+          path: ${{ runner.temp }}/family
+          if-no-files-found: error
+          retention-days: 90
