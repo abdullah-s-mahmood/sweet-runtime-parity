@@ -82,6 +82,7 @@ def main():
       "intervention_types":types,
       "intervention_type_counts":dict(sorted(intervention_types.items())),
       "expected_11_type_set_exact_match":set(types)==expected,
+      "semantic_type_supervision_available":bool(types),
       "aggregate_annotation_target_keys":dict(sorted(aggregate_targets.items())),
       "aggregate_annotated_token_total":annotated_token_total,
       "aggregate_positive_token_total":annotated_token_positive,
@@ -93,8 +94,11 @@ def main():
         raise RuntimeError("Zenodo MD5 mismatch")
     if malformed:
         raise RuntimeError(f"malformed JSON lines: {malformed}")
-    if not out["expected_11_type_set_exact_match"]:
-        raise RuntimeError(f"unexpected intervention type set: {types}")
+    if types and not out["expected_11_type_set_exact_match"]:
+        raise RuntimeError(f"unexpected nonempty intervention type set: {types}")
+    if not types:
+        out["state"]="DISTANT_CTO_ZENODO_FILE_AUDIT_PASS_NO_SEMANTIC_TYPES_AVAILABLE"
+        out["protocol_consequence"]="D5_11_WAY_WEAK_SEMANTIC_HEAD_MUST_BE_CANCELED_WITHOUT_REPLACEMENT"
     a.out.parent.mkdir(parents=True,exist_ok=True)
     a.out.write_text(json.dumps(out,indent=2,sort_keys=True)+"\n",encoding="utf-8")
     print(json.dumps(out,indent=2,sort_keys=True))
