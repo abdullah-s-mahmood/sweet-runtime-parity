@@ -1,0 +1,1 @@
+SURUS pinned BiomedBERT tokenizer alignment diagnostic V4. Aggregate-only, fixed frozen tokenizer/revision, no raw text/IDs/metrics/training. 2026-10-09 Asia/Baghdad.\n
