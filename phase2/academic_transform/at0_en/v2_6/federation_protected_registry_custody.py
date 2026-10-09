@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json, pathlib, re, hashlib
+import argparse, json, pathlib, re, hashlib, unicodedata
 
 PATTERNS=[
  ("NCT", re.compile(r"\bNCT\s*[-:]?\s*(\d{8})\b",re.I)),
@@ -27,8 +27,13 @@ def parse_docs(path:pathlib.Path):
     if started: docs.append(cur)
     return docs
 
-def ids(tokens):
+def canonical_text(tokens):
     s=" ".join(tokens)
+    s=unicodedata.normalize("NFC",s)
+    return " ".join(s.split())
+
+def ids(tokens):
+    s=canonical_text(tokens)
     out=set()
     for prefix,pat in PATTERNS:
         for m in pat.finditer(s):
@@ -100,7 +105,7 @@ def main():
                 p=a.public_root/f"data/{corpus}/fold{fold}/{role}.txt"
                 docs=parse_docs(p)
                 for d in docs:
-                    key=hashlib.sha256((" ".join(d)).encode()).hexdigest()
+                    key=hashlib.sha256(canonical_text(d).encode()).hexdigest()
                     whole_seen.setdefault(key,ids(d))
                     if role=="test":
                         test_seen.setdefault(key,ids(d))
