@@ -11794,3 +11794,54 @@ Current checkpoint:
 - current GO/NO-GO: `NO-GO FOR SCIENTIFIC FIT`
 
 The same live file must be updated after every meaningful checkpoint and is the first source to read for current percentages, direction, blockers, optimism and execution status.
+
+
+---
+
+## 2026-10-09 — TRUE LATEST CHECKPOINT: V4 / SURUS candidate evidence frozen
+
+Branch:
+`at0-en-v2.6-dev`
+
+Authoritative progress:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V4.md`
+commit `978353e5d42d05b551aea82997e8fc6ffcef9ddd`.
+
+SURUS evidence:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_AUXILIARY_ADMISSION_EVIDENCE_FREEZE_V1.md`
+commit `be5a2ee8cf66cec5d86d878aa9b5a558f78552cc`.
+
+Runs:
+- `37900075427` schema audit SUCCESS; artifact `11602016518`; digest `sha256:0549f36abf6d1cac39d87dec2206514c7a5a59a8ba2ca083d89c54d53ff26772`.
+- `37900288357` overlap custody SUCCESS; artifact `11602601668`; digest `sha256:915be5e4fd758b90b959eae4700c774b441dda19f358310165ccfcd6a6517a5e`.
+
+SURUS:
+- source `surus-ai/dataset@3a61790d5c304dea95fb278f76cc3b1a0ca07564`;
+- 523 articles / 48,833 annotations / 25 labels / 7 classes;
+- 400 in-domain + 123 OOD;
+- license `CC-BY-NC-4.0`;
+- no mapped PMID collision with DESIGN / VERIFY_INTERNAL / OLD_SELECT or resolved AD/COVID;
+- public auxiliary overlap: EvidenceOutcomes 7, PICO-Corpus 2, TrialSieve train/validation 1;
+- family-level independence is not fully proven by PMID equality alone.
+
+Decision:
+`SURUS_CANDIDATE_AUXILIARY_HUMAN_GOLD_ONLY / NOT_ADMITTED`
+
+Reason:
+admission into D2-D4 would materially change the frozen federation protocol.
+
+Current process metrics:
+- F01-F06 closure **94.5%**;
+- first-fit readiness **89.7%**;
+- no new scientific model result;
+- R44C remains latest frozen/consumed performance evidence;
+- VERIFY_INTERNAL remains CLOSED;
+- successor training has NOT started.
+
+Next authorized operation:
+`INDEPENDENT_SURUS_ADMISSION_REVIEW`
+
+After KEEP/REJECT is frozen:
+`QUALIFY_REAL_GPU -> BIND_GPU_RUNTIME_HASH_TO_45_SLOTS -> FINAL_INDEPENDENT_PREFIT_REVIEW -> FIRST_D0-D4 SCIENTIFIC FIT`.
+
+Do not train before these gates are closed.
