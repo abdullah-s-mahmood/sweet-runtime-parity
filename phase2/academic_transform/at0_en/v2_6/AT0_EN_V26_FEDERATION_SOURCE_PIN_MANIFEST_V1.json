@@ -56,6 +56,11 @@
       "role": "modern_challenger",
       "model": "thomas-sounack/BioClinical-ModernBERT-base",
       "revision": "c3648aa87af95837c809e6f0c5f85d08160db437"
+    },
+    {
+      "role": "picox_large",
+      "model": "microsoft/BiomedNLP-BiomedBERT-large-uncased-abstract",
+      "revision": "6611fb0be85c82ae6089ab63a0d81edfcd956dae"
     }
   ],
   "rules": [
@@ -72,5 +77,10 @@
     "adapter closure",
     "cross-source alias/trial-family graph",
     "PICOX exact comparator recipe"
-  ]
+  ],
+  "runtime_identity_artifact": {
+    "run_id": 37895636271,
+    "artifact_id": 11600067736,
+    "digest": "sha256:3c87cd79c5693137172c50305f4f452ccf2d861e78159e5d51479b9c24e4da73"
+  }
 }
