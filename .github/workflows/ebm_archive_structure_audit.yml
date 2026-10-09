@@ -1,0 +1,32 @@
+name: EBM archive structure audit
+on:
+  push:
+    branches: [at0-en-v2.6-dev]
+    paths:
+      - '.github/diagnostics/ebm_archive_structure_trigger.txt'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with: {fetch-depth: 1, path: project}
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: bepnye/EBM-NLP
+          ref: 43a4a1ea3f0a21cfb8820c040b843dfaf66192d0
+          path: ebm
+          fetch-depth: 1
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.11.16'}
+      - run: |
+          mkdir -p "$RUNNER_TEMP/out"
+          python project/phase2/academic_transform/at0_en/v2_6/ebm_archive_structure_audit.py --archive ebm/ebm_nlp_2_00.tar.gz --out "$RUNNER_TEMP/out/EBM_ARCHIVE_STRUCTURE.json"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ebm-archive-structure-audit
+          path: ${{ runner.temp }}/out
+          if-no-files-found: error
+          retention-days: 30
