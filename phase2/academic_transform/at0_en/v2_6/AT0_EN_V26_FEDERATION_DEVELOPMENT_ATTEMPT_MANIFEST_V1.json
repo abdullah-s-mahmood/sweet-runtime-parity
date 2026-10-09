@@ -1,7 +1,7 @@
 {
   "schema": "ACAD_PASS_FEDERATION_DEVELOPMENT_ATTEMPT_MANIFEST_V1",
   "date": "2026-10-09",
-  "state": "FROZEN_SLOT_LEDGER_PENDING_DATA_RUNTIME_CLOSURE",
+  "state": "FROZEN_45_ACTIVE_SLOTS_D5_CANCELED_PENDING_DATA_RUNTIME_CLOSURE",
   "total_slots": 54,
   "seeds": [
     44,
@@ -21,7 +21,7 @@
     "D4",
     "D5"
   ],
-  "rule": "A slot is consumed when its first scientific training job starts. Canceled/failed slots are never repurposed. If D5 provenance closure fails before any D5 fit, all nine D5 slots are CANCELED_WITHOUT_REPLACEMENT and maximum study development fits become 45.",
+  "rule": "Active campaign contains exactly D0-D4 x folds 0-2 x seeds 44-46 = 45 fits. The nine D5 slots are canceled without replacement. A slot is consumed when its first scientific training job starts. No canceled slot can be repurposed.",
   "attempts": [
     {
       "attempt_id": "FED_V1_D0_F0_S44",
@@ -523,10 +523,10 @@
       "arm": "D5",
       "fold": 0,
       "seed": 44,
-      "state": "NOT_STARTED",
+      "state": "CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
+      "runtime_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
       "scientific_training_authorized": false
     },
     {
@@ -534,10 +534,10 @@
       "arm": "D5",
       "fold": 0,
       "seed": 45,
-      "state": "NOT_STARTED",
+      "state": "CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
+      "runtime_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
       "scientific_training_authorized": false
     },
     {
@@ -545,10 +545,10 @@
       "arm": "D5",
       "fold": 0,
       "seed": 46,
-      "state": "NOT_STARTED",
+      "state": "CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
+      "runtime_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
       "scientific_training_authorized": false
     },
     {
@@ -556,10 +556,10 @@
       "arm": "D5",
       "fold": 1,
       "seed": 44,
-      "state": "NOT_STARTED",
+      "state": "CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
+      "runtime_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
       "scientific_training_authorized": false
     },
     {
@@ -567,10 +567,10 @@
       "arm": "D5",
       "fold": 1,
       "seed": 45,
-      "state": "NOT_STARTED",
+      "state": "CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
+      "runtime_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
       "scientific_training_authorized": false
     },
     {
@@ -578,10 +578,10 @@
       "arm": "D5",
       "fold": 1,
       "seed": 46,
-      "state": "NOT_STARTED",
+      "state": "CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
+      "runtime_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
       "scientific_training_authorized": false
     },
     {
@@ -589,10 +589,10 @@
       "arm": "D5",
       "fold": 2,
       "seed": 44,
-      "state": "NOT_STARTED",
+      "state": "CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
+      "runtime_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
       "scientific_training_authorized": false
     },
     {
@@ -600,10 +600,10 @@
       "arm": "D5",
       "fold": 2,
       "seed": 45,
-      "state": "NOT_STARTED",
+      "state": "CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
+      "runtime_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
       "scientific_training_authorized": false
     },
     {
@@ -611,11 +611,31 @@
       "arm": "D5",
       "fold": 2,
       "seed": 46,
-      "state": "NOT_STARTED",
+      "state": "CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
+      "runtime_manifest_sha256": "NOT_APPLICABLE_D5_CANCELED",
       "scientific_training_authorized": false
     }
-  ]
+  ],
+  "original_total_slots": 54,
+  "active_slots": 45,
+  "canceled_slots": 9,
+  "active_arms": [
+    "D0",
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+  ],
+  "canceled_arms": [
+    "D5"
+  ],
+  "d5_cancellation_evidence": {
+    "run_id": 37885235969,
+    "artifact_id": 11596332070,
+    "artifact_digest": "sha256:5373e7ee64977b2dcd157d2a181ca35024e5c07f5ccb77e63b98d2da5d09373e",
+    "official_file_sha256": "256150be8ac46bcf88ae016a37c3d5013e443b79bddc4f96eb6c960a5f59e764",
+    "reason": "Official Zenodo confidence>=0.9 file contains no semantic intervention_type labels; frozen 11-way D5 weak head is not reproducible from the official release."
+  }
 }
