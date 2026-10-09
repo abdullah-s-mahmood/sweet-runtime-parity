@@ -1,0 +1,1 @@
+SURUS source-unit diagnostic V6: BERT pretokenizer vs regex word/punctuation vs whitespace. Aggregate-only; no raw text/IDs/training/protected scoring. 2026-10-09 Asia/Baghdad.\n
