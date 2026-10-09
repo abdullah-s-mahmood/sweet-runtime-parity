@@ -3,7 +3,7 @@
 Date: 2026-10-08
 
 State:
-`POLICY_DRAFT_FOR_INDEPENDENT_REVIEW`
+`POLICY_REVIEWED_WITH_SUPERSEDING_FEDERATION_CONDITIONS`
 
 Purpose:
 define exactly what may and may not be "reset" when rebuilding ACAD_PASS from the best methods discovered so far.
@@ -204,3 +204,27 @@ create and independently review:
 `PUBLIC_HUMAN_GOLD_FEDERATION_PROTOCOL`.
 
 No training is authorized by this policy draft.
+
+
+## 11. 2026-10-09 federation-review clarification
+
+The public-human-gold federation review confirmed the reset principle and added stricter per-fit evidence rules.
+
+Previously exposed records may be reused for TRAIN/DEVELOPMENT only where the task/schema use is explicitly authorized.
+
+A public benchmark test is eligible for an independent campaign claim only after:
+- exact official split membership is frozen;
+- record/trial-family aliases are audited;
+- no held-out family appears in native, auxiliary, weak, prompt-example, calibration or cached-learned-feature streams for that fit;
+- test text/labels do not feed score-driven model selection;
+- preprocessing and scoring are frozen and gold-independent.
+
+Official test membership must be preserved.
+If training-side aliases are removed for decontamination, the result is labeled a `DECONTAMINATED_MATCHED_PROTOCOL`, not a literal reproduction of the original training condition.
+
+If a test record itself was previously exposed to ACAD_PASS, the corresponding official benchmark score is descriptive for this project, not a new independent claim.
+
+Historical aggregate paper scores are method knowledge.
+Identifiable labeled examples are record-level exposure.
+
+This policy therefore authorizes from-scratch retraining on exposed development evidence but never erases scientific exposure.
