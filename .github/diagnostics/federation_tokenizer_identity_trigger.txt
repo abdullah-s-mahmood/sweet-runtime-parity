@@ -1,0 +1,1 @@
+Model/tokenizer identity preflight only. No scientific training, no benchmark data.
