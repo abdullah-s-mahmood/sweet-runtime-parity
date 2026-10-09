@@ -1,0 +1,1 @@
+Per-fold decontaminated data-manifest custody trigger. Aggregate hashes/counts only. No scientific training.
