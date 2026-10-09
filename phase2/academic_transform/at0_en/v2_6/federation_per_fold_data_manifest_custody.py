@@ -157,7 +157,7 @@ def ebm_train_pmids_from_archive(archive_path):
             if not member.isfile(): continue
             parts=pathlib.PurePosixPath(member.name).parts
             # locate .../annotations/aggregated/starting_spans/<pio>/train/<file>.ann
-            for j in range(len(parts)-6):
+            for j in range(max(0,len(parts)-5)):
                 if parts[j:j+3]==("annotations","aggregated","starting_spans"):
                     pio=parts[j+3]
                     role=parts[j+4]
