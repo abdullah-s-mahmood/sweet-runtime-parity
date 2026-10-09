@@ -1,0 +1,1 @@
+SURUS token width/local-shift diagnostic V7. Aggregate-only; no raw text/IDs/training/protected scoring. 2026-10-09 Asia/Baghdad.\n
