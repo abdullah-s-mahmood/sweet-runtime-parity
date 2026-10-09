@@ -46,8 +46,14 @@ Latest relevant runs:
 - SURUS schema audit `37900075427` SUCCESS; artifact `11602016518`; digest `sha256:0549f36abf6d1cac39d87dec2206514c7a5a59a8ba2ca083d89c54d53ff26772`
 - SURUS overlap custody `37900288357` SUCCESS; artifact `11602601668`; digest `sha256:915be5e4fd758b90b959eae4700c774b441dda19f358310165ccfcd6a6517a5e`
 
+Prepared independent-review packet:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_ADMISSION_HIGHER_MODEL_REVIEW_PACKET_V1.md`
+
+Packet commit:
+`87b8d8cfd9dcf97d3bcf601cf9ece8e947e73051`
+
 Current authorized next operation:
-`INDEPENDENT_SURUS_ADMISSION_REVIEW`
+`INDEPENDENT_HIGHER_MODEL_SURUS_ADMISSION_REVIEW`
 
 After frozen KEEP/REJECT:
 `QUALIFY_REAL_GPU -> BIND_GPU_RUNTIME_HASH_TO_45_SLOTS -> FINAL_INDEPENDENT_PREFIT_REVIEW -> FIRST_D0-D4 SCIENTIFIC FIT`
