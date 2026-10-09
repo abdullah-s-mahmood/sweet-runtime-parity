@@ -1,0 +1,1 @@
+Synthetic training-loop checkpoint/resume exact-equivalence trigger. No scientific data/model/training.\n
