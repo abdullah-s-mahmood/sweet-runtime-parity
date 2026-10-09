@@ -105,11 +105,11 @@ Published result:
 - >5% improvement when distant + manual labels were combined.
 
 Scientific role candidate:
-`WEAK_I_C_SUPERVISION`
+`WEAK_INTERVENTION_SEMANTIC_TYPE_SUPERVISION_ONLY`
 
-This directly targets ACAD_PASS's weakest precision class/role problem.
+DISTANT-CTO merges Intervention and Comparator roles into one Intervention entity category and then distinguishes semantic intervention types. It therefore does NOT provide direct experimental-versus-control I/C role supervision. Any benefit to downstream I/C role discrimination is an unproven transfer hypothesis.
 
-It is NOT human gold.
+It is NOT human gold and must never be relabeled into native I/C role gold.
 
 ### E. TrialSieve — 2025
 
@@ -351,14 +351,16 @@ modern biomedical encoder + span scorer / global span model.
 
 Do not decide exact architecture until independent review.
 
-### Stage D — role-aware I/C module
+### Stage D — native I/C role learning only
 Use:
-- native separate-C human gold;
-- DISTANT-CTO weak comparator supervision;
-- C-TrO/TrialSieve group/arm evidence where construct-compatible.
+- native separate-C human gold for actual I/C role supervision.
+
+DISTANT-CTO may only contribute a separate semantic intervention-type weak head in one bounded ablation; it cannot emit native I/C role loss.
+
+C-TrO arm membership and TrialSieve NonStudyDrug/group labels are not mechanically mapped to C in the first campaign.
 
 Purpose:
-attack ACAD_PASS's historically weakest I precision / role distinction.
+separate native role learning from treatment-representation transfer so that any I/C gain is interpretable.
 
 ### Stage E — selective high-precision verifier
 Retain evidence-backed lessons from R44C:
@@ -530,3 +532,22 @@ Not allowed yet:
 
 Checkpoint:
 `PUBLIC_HUMAN_GOLD_FEDERATION_REVIEW_REQUIRED_BEFORE_TRAINING`.
+
+
+## 2026-10-09 superseding independent-review corrections
+
+The canonical independent review returned:
+`PROCEED_FEDERATION_WITH_CHANGES`.
+
+The following earlier packet language is superseded:
+
+1. R43/R44 source lineage is EBM-NLP_mod, not PICO-Corpus.
+2. DISTANT-CTO is NOT direct I/C role supervision.
+3. TrialSieve NonStudyDrug and C-TrO arm membership are NOT automatic C labels.
+4. FinePICO/AlpaPICO/PICOX headline metrics are not directly rank-compatible with strict occurrence-level exact P/I/C/O.
+5. New preprocessing must be gold-independent; the Hu historical gold-aware chunking path is not reused as a new benchmark preprocessor.
+6. The broad multi-component architecture proposal is superseded by the finite six-arm study specified in the canonical independent review.
+
+This packet remains a historical review request.
+The governing next document must be:
+`PUBLIC_HUMAN_GOLD_FEDERATION_PROTOCOL`.
