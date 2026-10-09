@@ -7,19 +7,25 @@
       "source": "BIDS-Xu-Lab/section_specific_annotation_of_PICO",
       "revision": "bc4b878773192f38b2600ec830ca4208b82f7dc0",
       "license_status": "NO_TOP_LEVEL_LICENSE_FOUND_AT_PINNED_REVISION",
-      "scientific_status": "LICENSE_CLARIFICATION_PENDING"
+      "scientific_status": "RESEARCH_USE_ACCEPTABLE_WITH_CITATION / DO_NOT_REDISTRIBUTE_CORPUS_IN_ACAD_PASS_RELEASE",
+      "research_use_status": "PUBLICLY_RELEASED_BY_PAPER_AND_REPOSITORY_FOR_RESEARCH_USE",
+      "redistribution_status": "NO_EXPLICIT_TOP_LEVEL_DATA_LICENSE_FOUND_AT_PIN"
     },
     {
       "source": "bepnye/EBM-NLP",
       "revision": "43a4a1ea3f0a21cfb8820c040b843dfaf66192d0",
       "license_status": "NO_DATASET_TOP_LEVEL_LICENSE_FOUND; nested model LICENSE is not dataset license",
-      "scientific_status": "LICENSE_CLARIFICATION_PENDING"
+      "scientific_status": "RESEARCH_USE_ACCEPTABLE_WITH_CITATION / DO_NOT_REPACKAGE_RAW_CORPUS",
+      "research_use_status": "PUBLIC_RESEARCH_CORPUS_RELEASE; PAPER/README DEFINE BENCHMARK USE",
+      "redistribution_status": "DATASET_LICENSE_UNSPECIFIED_AT_PIN"
     },
     {
       "source": "sociocom/PICO-Corpus",
       "revision": "482b7d8f135fe6ea424961c2812e8d214c3f4a5f",
       "license_status": "NO_TOP_LEVEL_LICENSE_FOUND_AT_PINNED_REVISION",
-      "scientific_status": "LICENSE_CLARIFICATION_PENDING"
+      "scientific_status": "RESEARCH_USE_ACCEPTABLE_WITH_CITATION / DO_NOT_REPACKAGE RAW CORPUS",
+      "research_use_status": "PAPER_EXPLICITLY_DESCRIBES PUBLICLY_AVAILABLE CORPUS FOR SYSTEM DEVELOPMENT",
+      "redistribution_status": "NO_EXPLICIT_TOP_LEVEL_LICENSE FOUND"
     },
     {
       "source": "pathology-dynamics/trialsieve_final",
@@ -39,7 +45,12 @@
       "source": "anjani-dhrangadhariya/distant-cto",
       "revision": "3f4d90f26fc3938322266093a480157993c7ca9b",
       "license_status": "NO_TOP_LEVEL_LICENSE_FOUND_AT_PINNED_GITHUB_REVISION",
-      "scientific_status": "ZENODO_AND_PAPER_LICENSE_CLARIFICATION_PENDING"
+      "scientific_status": "RESEARCH_USE_SOURCE_IDENTIFIED / FILE_SHA256_AND_LICENSE_METADATA_PENDING_BEFORE_D5",
+      "research_use_status": "OFFICIAL_ZENODO DATASET RELEASE DOI 10.5281/zenodo.6497284; OPEN ACCESS",
+      "official_release_file": "extraction1_pos_posnegtrail_conf09.txt",
+      "official_release_size": "360.2 MB",
+      "official_release_md5": "e95e3984a9b46e340b90aeed262e12cc",
+      "redistribution_status": "VERIFY_RECORD-SPECIFIC ZENODO LICENSE BEFORE REDISTRIBUTION"
     },
     {
       "source": "WengLab-InformaticsResearch/PICOX",
@@ -49,5 +60,5 @@
       "scientific_status": "CODE_LICENSE_PASS"
     }
   ],
-  "rule": "Public availability is not treated as license permission. Sources with unresolved dataset-license status remain blocked from a final scientific training manifest until clarified or excluded."
+  "rule": "Research use, redistribution, and code-license status are tracked separately. Public research corpora may be used for internally reproducible academic experiments when the authors explicitly release them for that purpose, while raw-data redistribution remains prohibited unless license terms are explicit. Every final release will contain manifests/code, not repackaged third-party raw corpora unless permitted."
 }
