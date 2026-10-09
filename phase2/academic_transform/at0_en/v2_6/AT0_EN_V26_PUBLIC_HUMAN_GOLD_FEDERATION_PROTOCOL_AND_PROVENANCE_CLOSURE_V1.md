@@ -337,3 +337,16 @@ Freeze files:
 - `AT0_EN_V26_PUBLIC_SOURCE_SCHEMA_AUDIT_FREEZE_V1.md`.
 
 These strengthen F01/F04 and adapter-role closure but do not yet prove complete same-trial-family independence for unresolved records.
+
+
+## 2026-10-09 model/tokenizer identity closure update
+
+Freeze:
+`AT0_EN_V26_FEDERATION_MODEL_TOKENIZER_IDENTITY_PREFLIGHT_FREEZE_V1.md`
+
+The three primary encoder/tokenizer identities are reproducibly pinned:
+- D0-D3 BiomedBERT-base;
+- D4 BioClinical-ModernBERT-base;
+- adapted PICOX BiomedBERT-large.
+
+No floating model revision remains in the frozen first-campaign design.
