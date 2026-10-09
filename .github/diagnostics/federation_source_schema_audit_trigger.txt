@@ -1,1 +1,3 @@
 Aggregate-only public source schema audit. No benchmark metrics, no protected data, no scientific training.
+
+Rerun after EvidenceOutcomes no-header parser fix and TrialSieve final-modeling audit.
