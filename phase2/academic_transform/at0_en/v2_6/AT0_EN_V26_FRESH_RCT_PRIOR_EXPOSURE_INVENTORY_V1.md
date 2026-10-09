@@ -13,55 +13,32 @@ build the prior-exposure ledger required by the frozen fresh-RCT acquisition pro
 
 This file records only exposures/provenance that are currently evidenced from repository history and frozen manifests. Missing entries remain blockers; absence from this file MUST NOT be interpreted as proof of non-exposure.
 
-## 1. PICO-Corpus — definite prior project exposure
+## 1. EBM-NLP_mod — definite prior R43/R44 project exposure
 
 Source repository:
-`sociocom/PICO-Corpus`
+`BIDS-Xu-Lab/section_specific_annotation_of_PICO`
 
-Frozen source commit evidenced by the R4 internal-holdout manifest:
-`482b7d8f135fe6ea424961c2812e8d214c3f4a5f`
+Pinned source commit:
+`bc4b878773192f38b2600ec830ca4208b82f7dc0`
 
-Evidence file:
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R4_INTERNAL_HOLDOUT_MANIFEST_V1.json`
+Pinned source file:
+`data/EBM-NLPmod/fold1/train.txt`
 
-Manifest Git blob:
-`2959279b075a8f24c9eea31402896af74f9a2377`
+Pinned TRAIN SHA256:
+`6491a57e5c8639e5bfc3c0326b8501869fccab655a1ed571b75a772dc1c70a5e`
 
-### Known exposed subsets
+Authoritative repository evidence:
+- `AT0_EN_V26_R43_GOLD_SOURCE_SEMANTIC_CONTRACT_FREEZE_V1.md`
+- `AT0_EN_V26_R44_PREFLIGHT_FREEZE_V1.md`
 
-#### First 30-document R4 diagnostic set
-The 60-RCT holdout manifest states that its documents are sorted positions 31–90, explicitly excluding the first 30-document R4 diagnostic set.
+This corrects the superseded inventory wording that incorrectly placed the R4.3/R44 320-document lineage under PICO-Corpus.
 
-Therefore:
-- first 30 PICO-Corpus documents in that frozen ordering = prior diagnostic exposure;
-- they MUST be excluded by PMID/trial-family/text provenance from any new acquisition.
+### R43/R44 lineage
 
-Exact PMID list:
-`NOT_YET_MATERIALIZED_IN_THIS_INVENTORY`
+Pinned EBM-NLP_mod fold1 TRAIN contains:
+- 400 documents before the R43/R44 FIT/SELECT lineage.
 
-Status:
-`KNOWN_EXPOSED / IDENTIFIER_LIST_PENDING`
-
-#### 60-document R4 internal holdout
-Role in manifest:
-`INTERNAL_DEVELOPMENT_HOLDOUT_NOT_EXTERNAL_VALIDATION`
-
-Selection:
-lexicographically sorted PICO-Corpus text files positions 31–90 after the first 30-document diagnostic set.
-
-Document count:
-60
-
-Known exact PMIDs and Git blob identities are frozen in:
-`AT0_EN_V26_R4_INTERNAL_HOLDOUT_MANIFEST_V1.json`
-
-This holdout has since been consumed in project development and is NOT fresh evidence.
-
-Status:
-`KNOWN_EXPOSED_AND_CONSUMED`
-
-#### R4.3/R44 source-compatible inventory
-Frozen corrected inventory:
+Later frozen source-compatible FIT inventory:
 - 320 documents;
 - 1,292 examples;
 - 33,244 tokens;
@@ -81,28 +58,54 @@ VERIFY_INTERNAL:
 - 6,649 tokens;
 - P/I/C/O = 68/207/29/169.
 
-Evidence:
-`AT0_EN_V26_R44_PREFLIGHT_FREEZE_V1.md`
-
 R44 manifest SHA256:
 `799844f1bdd15792740333b2ad57c8aad7bb8f265566fece06f4a2ff61574720`
 
-Important:
-VERIFY_INTERNAL remains CLOSED to developers, but its identities/fingerprints must be available to the independent custodian for duplicate/trial-family exclusion.
-
 Status:
+- R43/R44 EBM-NLP_mod lineage: `DEFINITE_PROJECT_EXPOSURE`
 - DESIGN: `KNOWN_EXPOSED_AND_CONSUMED_FOR_ADAPTIVE_DEVELOPMENT`
 - VERIFY_INTERNAL: `PROTECTED_HISTORICAL / MUST_DEDUP_INSIDE_CUSTODY / DO_NOT_OPEN`
 
-### PICO-Corpus family rule for fresh acquisition
+Important:
+A public copy of a protected VERIFY_INTERNAL record is NOT permission to read, train on, score, or otherwise expose that record in the developer process. Alias/trial-family deduplication must occur through protected custody.
 
-Any new 2026 candidate that:
-- has the same PMID;
-- shares a DOI/title/text fingerprint;
-- is a preprint/translation/correction/follow-up;
-- shares a confirmed trial registration/family;
-- reuses overlapping randomized participants
-with any known PICO-Corpus project record MUST be excluded before split allocation.
+### Source-compatible semantic contract
+
+Source exact-evaluation entity starts use raw `B-X` starts.
+Example-initial `I-X` fragments with a valid same-type predecessor are continuation fragments, not new independent entities.
+Future source-compatible scoring/preprocessing must preserve this contract.
+
+### EBM-NLP_mod benchmark role
+
+Because the R43/R44 lineage is definitively exposed:
+- exposed unprotected EBM-NLP_mod records may be TRAIN/DEVELOPMENT;
+- protected VERIFY_INTERNAL remains CLOSED;
+- no whole-corpus or five-fold EBM-NLP_mod claim may be described as new independent evidence in the first federation campaign.
+
+Exact record/family aliases across original EBM-NLP and derived EBM-NLP_mod must be materialized before first successor fit.
+
+## 1B. PICO-Corpus — definite but separate prior project exposure
+
+Source repository:
+`sociocom/PICO-Corpus`
+
+Frozen source commit evidenced by the R4 internal-holdout manifest:
+`482b7d8f135fe6ea424961c2812e8d214c3f4a5f`
+
+Evidence file:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_R4_INTERNAL_HOLDOUT_MANIFEST_V1.json`
+
+Manifest Git blob:
+`2959279b075a8f24c9eea31402896af74f9a2377`
+
+Known project exposure to PICO-Corpus remains real and must be inventoried separately from the EBM-NLP_mod R43/R44 lineage.
+
+The prior inventory's statement assigning the R43/R44 320-document source-compatible inventory to PICO-Corpus is RETIRED.
+
+Current role:
+`TRAIN_DEVELOPMENT_ONLY_AFTER_RECORD_LEVEL_PROVENANCE_AUDIT`
+
+No PICO-Corpus record or alias may be used as new independent benchmark evidence merely because the R43/R44 lineage has now been corrected to EBM-NLP_mod.
 
 ## 2. FactPICO — definite prior project exposure
 
@@ -201,10 +204,10 @@ Current status in this inventory:
 
 | Resource | Current project-exposure status | Required before acquisition |
 |---|---|---|
-| PICO-Corpus | DEFINITE_EXPOSURE | complete PMID/title/text/trial-family ledger |
+| PICO-Corpus | DEFINITE_EXPOSURE_SEPARATE_FROM_R43_R44 | complete PMID/title/text/trial-family ledger |
 | FactPICO | DEFINITE_EXPOSURE | connect 115 hashes to all available identifiers/families |
 | EBM-NLP | UNRESOLVED_INVENTORY | determine whether raw text/examples were used/viewed |
-| EBM-NLP_mod | UNRESOLVED_INVENTORY | provenance + overlap linkage |
+| EBM-NLP_mod | DEFINITE_R43_R44_EXPOSURE | materialize exposed/protected IDs through custody; propagate aliases into original EBM-NLP and derived corpora |
 | AD 150-RCT | UNRESOLVED_INVENTORY | prove use/non-use and freeze identifiers |
 | COVID-19 150-RCT | UNRESOLVED_INVENTORY | prove use/non-use and freeze identifiers |
 | FinePICO/PICO-Corpus-related material | LITERATURE/METHOD EXPOSURE KNOWN; DATA EXPOSURE UNRESOLVED | distinguish paper/examples from corpus rows |
@@ -316,3 +319,22 @@ Without opening VERIFY_INTERNAL to developers, allowed next work is:
 8. independently review completeness.
 
 No new PubMed retrieval is authorized by this inventory.
+
+
+## 2026-10-09 lineage correction
+
+Independent federation review identified a material source-attribution error in the previous inventory.
+
+Corrected:
+`R43/R44_SOURCE = EBM-NLP_mod fold1/train.txt @ bc4b878773192f38b2600ec830ca4208b82f7dc0`
+
+The earlier attribution of the 320-document R43/R44 lineage to PICO-Corpus is superseded.
+
+PICO-Corpus remains separately exposed for other project experiments and remains TRAIN/DEVELOPMENT only unless a record-specific provenance audit establishes a different role.
+
+This correction changes provenance attribution only.
+It does NOT:
+- open VERIFY_INTERNAL;
+- change R44C results;
+- restore any previously exposed record to unseen status;
+- certify AD/COVID as independent benchmarks.
