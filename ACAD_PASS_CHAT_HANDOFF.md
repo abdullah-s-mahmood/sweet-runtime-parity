@@ -1907,3 +1907,65 @@ Proposed new evidence hierarchy:
 No successor model training authorized yet.
 Next checkpoint:
 `INDEPENDENT_HIGHER_MODEL_REVIEW_OF_PUBLIC_HUMAN_GOLD_FEDERATION_PACKET`.
+
+
+---
+
+## 2026-10-09 — Final public human-gold federation review integrated
+
+Canonical independent review:
+`FINAL_PUBLIC_HUMAN_GOLD_FEDERATION_REVIEW_V1.md`
+archived commit `593702253c9cbcd8f62396b2471db51203769e03`.
+
+Review resume:
+`FINAL_PUBLIC_HUMAN_GOLD_FEDERATION_REVIEW_RESUME_V1.md`
+archived commit `cfb5dfe33683ece80d06ee9d3aa5c5a18f7c62ce`.
+
+Verdict:
+`PROCEED_FEDERATION_WITH_CHANGES`.
+
+Critical corrections implemented:
+1. R43/R44 source lineage corrected to EBM-NLP_mod fold1/train at BIDS-Xu-Lab commit `bc4b878773192f38b2600ec830ca4208b82f7dc0`, not PICO-Corpus.
+2. DISTANT-CTO removed as direct I/C role supervision; allowed only as role-agnostic semantic intervention-type weak ablation.
+3. TrialSieve NonStudyDrug and C-TrO arm membership are not mechanically mapped to C.
+4. New preprocessing must be text-only/gold-independent.
+5. AlpaPICO/FinePICO/PICOX/GPT-4o incompatible metrics cannot be headline-ranked directly against strict exact P/I/C/O.
+6. Broad architecture proposal replaced by finite six-arm first campaign.
+
+Corrected files:
+- `AT0_EN_V26_FRESH_RCT_PRIOR_EXPOSURE_INVENTORY_V1.md` commit `0173150950e87376aaa84090b0ac03ba52d9de22`.
+- `AT0_EN_V26_PUBLIC_HUMAN_GOLD_FEDERATION_REVIEW_PACKET_V1.md` commit `8fd7b1f68d54ff90aceec3cd44b086f9a05a103c`.
+- `AT0_EN_V26_DATA_RESET_AND_EVIDENCE_POLICY_V1.md` commit `c51cd3437fa5469412e47831a39ed7d803624be4`.
+
+New governing protocol:
+`AT0_EN_V26_PUBLIC_HUMAN_GOLD_FEDERATION_PROTOCOL_V1.md`
+commit `210c1b9f9849a50264945e82e7e3e3d692e90e02`.
+
+Closure ledger:
+`AT0_EN_V26_PUBLIC_HUMAN_GOLD_FEDERATION_PROTOCOL_AND_PROVENANCE_CLOSURE_V1.md`
+commit `1bcdcac6a32b1c2dedb44181d7b4cd47260d5d1f`.
+
+Current closure:
+- F01 documentary lineage correction complete; protected/exposed alias custody still pending.
+- F02 conceptual correction complete.
+- F03 source defect verified; gold-independent preprocessor implementation/preflight pending.
+- F04 benchmark eligibility OPEN.
+- F05 incompatible-comparison finding verified.
+- F06 finite six-arm protocol frozen; execution blocked.
+
+Direct source-code verification completed:
+- Hu `utils_ner.py::update_data_to_max_len` uses gold O/non-O state to select inserted chunk boundaries.
+- Hu `PICO_ner.py` applies that preprocessing to train/dev/test.
+- AlpaPICO `metric.py` uses mention-string sets and gives TP for both-empty sets.
+- AlpaPICO `prediction.py` evaluates OUT/INT/PAR.
+
+Public source Git metadata frozen without reading AD/COVID text/labels:
+BIDS-Xu-Lab source tree `aa10ba9a8a973129bd797f9a5946b35cb44efea5` contains 5-fold AD/COVID train/dev/test files with immutable blob IDs. Full membership/trial-family audit remains isolated pre-fit work.
+
+No successor training has occurred.
+No AD/COVID metric has been released.
+VERIFY_INTERNAL remains CLOSED.
+R44C remains consumed/frozen.
+
+Current checkpoint:
+`PUBLIC_HUMAN_GOLD_FEDERATION_PROTOCOL_FROZEN_PENDING_PROVENANCE_CLOSURE -> IMPLEMENT_ISOLATED_SPLIT_PROVENANCE_AND_GOLD_INDEPENDENT_PREPROCESSING_PREFLIGHT -> NO_FIRST_FIT_YET`.
