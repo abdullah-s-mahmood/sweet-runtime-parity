@@ -1,72 +1,152 @@
 # ACAD_PASS — LATEST STATE POINTER
 
-Timestamp: 2026-10-09 11:18:51 Asia/Baghdad (UTC+3)
+Timestamp: 2026-10-09 13:07:34 Asia/Baghdad (UTC+3)
 
 Current active branch:
 `at0-en-v2.6-dev`
 
-Branch HEAD immediately before this pointer creation:
-`83c485a3a413930a640f4ae2d0bddbc2a8b8af2c`
+Branch HEAD immediately before this pointer update:
+`91f718add40f6f02c65f496854d15efea03216b0`
 
-Latest authoritative checkpoint file:
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V4.md`
+Permanent cross-chat bootstrap contract:
+`ACAD_PASS_BOOTSTRAP_CONTRACT.md`
 
-Latest checkpoint commit:
-`978353e5d42d05b551aea82997e8fc6ffcef9ddd`
+## Latest authoritative checkpoint
 
-Latest candidate-source evidence freeze:
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_AUXILIARY_ADMISSION_EVIDENCE_FREEZE_V1.md`
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V5.md`
 
-SURUS evidence commit:
-`be5a2ee8cf66cec5d86d878aa9b5a558f78552cc`
+Checkpoint commit:
+`91f718add40f6f02c65f496854d15efea03216b0`
 
-Latest live progress:
-`ACAD_PASS_LIVE_PROGRESS.md`
+## Governing SURUS review and amendment
 
-Latest closure ledger:
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_PUBLIC_HUMAN_GOLD_FEDERATION_PROTOCOL_AND_PROVENANCE_CLOSURE_V1.md`
+Final independent review:
+`phase2/academic_transform/at0_en/v2_6/FINAL_SURUS_ADMISSION_REVIEW_V1.md`
 
-Current scientific state:
-`PREFIT_CLOSURE_NEAR_COMPLETE / SURUS_CANDIDATE_ONLY / NO_SUCCESSOR_SCIENTIFIC_FIT`
+Review verdict:
+`PROCEED_WITH_CHANGES / GO_FOR_BOUNDED_AMENDMENT / NO_GO_FOR_SCIENTIFIC_EXECUTION`
+
+Frozen amendment:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_ADMISSION_PROTOCOL_AMENDMENT_V2.md`
+
+Amendment commit:
+`8a29b84e45c0708a2d6a331a86330cf8cbf878d0`
+
+## Current scientific state
+
+`SURUS_AMENDMENT_V2_FROZEN / P1_SOURCE_COORDINATE_CONTRACT_OPEN / NO_SUCCESSOR_SCIENTIFIC_FIT`
 
 Current process readiness:
-- mandatory F01-F06 closure: **94.5%**
-- first-fit readiness: **89.7%**
+- mandatory F01-F06 closure: **87.83%**
+- first scientific fit readiness: **73.2%**
 
-Latest actual scientific model result:
+Previous V4 values:
+- F01-F06 = 94.5%
+- first-fit = 89.7%
+
+Controlled amended-protocol readiness change:
+- F01-F06: **-6.67 percentage points**
+- first-fit: **-16.5 percentage points**
+
+This is a process-readiness regression caused by reopening changed paths after a scientifically authorized protocol amendment. It is NOT model-performance deterioration.
+
+## Latest actual scientific result
+
 `R44C_LINEAR5_L2_SCIENTIFIC_FAIL / FROZEN / CONSUMED`
 
-Current protected state:
-- `VERIFY_INTERNAL = CLOSED`
-- AD/COVID external benchmark scoring = CLOSED
-- R44C rerun = FORBIDDEN
-- successor fit = NOT YET AUTHORIZED
+At t=.95:
+- macro precision = 0.8767348592080204
+- P = 0.8918918918918919
+- I = 0.8171091445427728
+- C = 0.9318181818181818
+- O = 0.8661202185792349
 
-Latest relevant runs:
-- SURUS schema audit `37900075427` SUCCESS; artifact `11602016518`; digest `sha256:0549f36abf6d1cac39d87dec2206514c7a5a59a8ba2ca083d89c54d53ff26772`
-- SURUS overlap custody `37900288357` SUCCESS; artifact `11602601668`; digest `sha256:915be5e4fd758b90b959eae4700c774b441dda19f358310165ccfcd6a6517a5e`
+No successor fit has occurred.
 
-Prepared independent-review packet:
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_ADMISSION_HIGHER_MODEL_REVIEW_PACKET_V1.md`
+## P1 schema/coordinate lineage
 
-Packet commit:
-`87b8d8cfd9dcf97d3bcf601cf9ece8e947e73051`
+Corrected schema/coordinate audit:
+- run `37914385700`
+- conclusion `FAIL`
+- classification `MECHANICAL_PREFLIGHT_FAIL / NO_SCIENTIFIC_ATTEMPT_CONSUMED`
+- 25 LabelIDs and 7 ClassIDs correctly preserved;
+- 44,643 / 48,833 rows exact at released Abstract half-open coordinates;
+- 4,190 initially unresolved.
 
-Current authorized next operation:
-`INDEPENDENT_HIGHER_MODEL_SURUS_ADMISSION_REVIEW`
+Freeze:
+`AT0_EN_V26_SURUS_SCHEMA_COORDINATE_AUDIT_ATTEMPT1_FREEZE_V1.md`
 
-After frozen KEEP/REJECT:
-`QUALIFY_REAL_GPU -> BIND_GPU_RUNTIME_HASH_TO_45_SLOTS -> FINAL_INDEPENDENT_PREFIT_REVIEW -> FIRST_D0-D4 SCIENTIFIC FIT`
+Mismatch diagnostic V1:
+- run `37914600126` SUCCESS
+- artifact `11609690713`
+- digest `sha256:02c42a9e2439f555636c611875c4c7b5a055bdb8f6e93b4d2052d9dc95c1873b`
 
-Current forbidden operations:
-- automatic SURUS admission;
-- native P/I/C/O remapping of SURUS without prospective authorization;
-- successor scientific training;
-- seventh adaptive arm;
-- threshold/seed shopping;
-- reopening VERIFY_INTERNAL;
-- AD/COVID external benchmark scoring;
-- R44C rerun.
+Article/field diagnostic V2:
+- run `37914932110` SUCCESS
+- artifact `11608697424`
+- digest `sha256:69c688f51996eda49cbb09175f5adcede785efcf99ef0d1fca50f97b46f76d83`
+- affected articles 437 / 523
+- fully mismatched articles 0
 
-Authority rule:
-immutable scientific result/freeze artifacts and completed GitHub Actions evidence override this pointer if any conflict is discovered.
+Token/punctuation diagnostic V3:
+- run `37915291868` SUCCESS
+- artifact `11609721783`
+- digest `sha256:901c7691556e57f521c589d123312f1a8f078928aa20bfaa37106a67b9872b80`
+- 3,060 / 4,190 mismatches explained by fixed punctuation/token-spacing mechanics
+- 1,130 remain unexplained
+
+Latest P1 freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_TOKEN_RECONSTRUCTION_DIAGNOSTIC_FREEZE_V3.md`
+
+## Attempt / protected state
+
+Scientific fit budget:
+`45 = D0-D4 * 3 folds * seeds {44,45,46}`
+
+Current scientific attempts:
+`45 NOT_STARTED / UNCONSUMED`
+
+D5:
+`CANCELED_WITHOUT_REPLACEMENT`
+
+VERIFY_INTERNAL:
+`CLOSED`
+
+AD/COVID external scoring:
+`CLOSED`
+
+SURUS OOD scoring:
+`NOT AUTHORIZED`
+
+R44C rerun:
+`FORBIDDEN`
+
+## Exact next authorized operation
+
+`SURUS_PINNED_BIOMEDBERT_TOKEN_ALIGNMENT_DIAGNOSTIC_V4`
+
+Purpose:
+use one already-frozen ACAD_PASS biomedical tokenizer/revision to test released TokenStart/TokenEnd conventions on the residual source-coordinate problem.
+
+Restrictions:
+- aggregate only;
+- no raw text/IDs;
+- no repair;
+- no row dropping;
+- no model fit;
+- no protected scoring.
+
+If V4 cannot close a deterministic source-compatible contract, SURUS admission remains blocked and explicit re-review may be required.
+
+## Authority rule
+
+This pointer is navigation only.
+
+If conflict exists, authority order remains:
+1. immutable scientific result/freeze artifacts;
+2. completed GitHub Actions artifacts;
+3. later protocol/closure records;
+4. latest progress snapshot;
+5. continuity files.
+
+Search for newer durable branch evidence before any mutation or retry.
