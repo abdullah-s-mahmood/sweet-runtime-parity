@@ -1,1 +1,3 @@
 Runtime/model identity preflight trigger. Config/tokenizer only; no scientific model training.
+
+Rerun after normalizing PyTorch base version and recording build suffix.
