@@ -150,9 +150,6 @@ def main():
         "native_loss+.25*torch.stack(aux_losses).mean()",
         "native3+.25*torch.stack(al).mean()",
     ]
-    for sig in required_arch:
-        if sig not in arch.replace(" ", "") if False else False:
-            pass
     normalized = re.sub(r"\s+", "", arch)
     for sig in [re.sub(r"\s+", "", s) for s in required_arch]:
         if sig not in normalized:
