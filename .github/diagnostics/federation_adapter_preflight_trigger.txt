@@ -1,0 +1,1 @@
+Federation adapter source preflight. No scientific model training or benchmark scoring.
