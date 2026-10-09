@@ -1,7 +1,7 @@
 {
   "schema": "ACAD_PASS_FEDERATION_DEVELOPMENT_ATTEMPT_MANIFEST_V1",
   "date": "2026-10-09",
-  "state": "FROZEN_45_ACTIVE_SLOTS_DATA_BOUND_RUNTIME_CLOSURE_PENDING",
+  "state": "FROZEN_45_ACTIVE_SLOTS_DATA_AND_SOFTWARE_RUNTIME_CONTRACT_BOUND_GPU_RUNTIME_HASH_PENDING",
   "total_slots": 54,
   "seeds": [
     44,
@@ -31,10 +31,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D0_F0_S45",
@@ -44,10 +46,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D0_F0_S46",
@@ -57,10 +61,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D0_F1_S44",
@@ -70,10 +76,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D0_F1_S45",
@@ -83,10 +91,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D0_F1_S46",
@@ -96,10 +106,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D0_F2_S44",
@@ -109,10 +121,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D0_F2_S45",
@@ -122,10 +136,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D0_F2_S46",
@@ -135,10 +151,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D1_F0_S44",
@@ -148,10 +166,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D1_F0_S45",
@@ -161,10 +181,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D1_F0_S46",
@@ -174,10 +196,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D1_F1_S44",
@@ -187,10 +211,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D1_F1_S45",
@@ -200,10 +226,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D1_F1_S46",
@@ -213,10 +241,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D1_F2_S44",
@@ -226,10 +256,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D1_F2_S45",
@@ -239,10 +271,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D1_F2_S46",
@@ -252,10 +286,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D2_F0_S44",
@@ -265,10 +301,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D2_F0_S45",
@@ -278,10 +316,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D2_F0_S46",
@@ -291,10 +331,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D2_F1_S44",
@@ -304,10 +346,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D2_F1_S45",
@@ -317,10 +361,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D2_F1_S46",
@@ -330,10 +376,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D2_F2_S44",
@@ -343,10 +391,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D2_F2_S45",
@@ -356,10 +406,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D2_F2_S46",
@@ -369,10 +421,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D3_F0_S44",
@@ -382,10 +436,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D3_F0_S45",
@@ -395,10 +451,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D3_F0_S46",
@@ -408,10 +466,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D3_F1_S44",
@@ -421,10 +481,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D3_F1_S45",
@@ -434,10 +496,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D3_F1_S46",
@@ -447,10 +511,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D3_F2_S44",
@@ -460,10 +526,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D3_F2_S45",
@@ -473,10 +541,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D3_F2_S46",
@@ -486,10 +556,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D4_F0_S44",
@@ -499,10 +571,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D4_F0_S45",
@@ -512,10 +586,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D4_F0_S46",
@@ -525,10 +601,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D4_F1_S44",
@@ -538,10 +616,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D4_F1_S45",
@@ -551,10 +631,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D4_F1_S46",
@@ -564,10 +646,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D4_F2_S44",
@@ -577,10 +661,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D4_F2_S45",
@@ -590,10 +676,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D4_F2_S46",
@@ -603,10 +691,12 @@
       "state": "NOT_STARTED",
       "consumed": false,
       "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
-      "runtime_manifest_sha256": "PENDING_CLOSURE",
+      "runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION",
       "scientific_training_authorized": false,
       "data_manifest_run_id": 37897592120,
-      "data_manifest_artifact_id": 11601066403
+      "data_manifest_artifact_id": 11601066403,
+      "runtime_contract_path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+      "runtime_contract_git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63"
     },
     {
       "attempt_id": "FED_V1_D5_F0_S44",
@@ -737,5 +827,13 @@
       "1": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "2": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939"
     }
+  },
+  "runtime_contract_binding": {
+    "path": "phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json",
+    "git_blob_sha": "05eb70c7b72d846a2817d690bd33a12d4eb52d63",
+    "canonical_runtime_preflight_run_id": 37898560516,
+    "canonical_runtime_preflight_artifact_id": 11601622017,
+    "canonical_runtime_preflight_digest": "sha256:854bef337e95e56fdaaccebc77ffb93bdf98a9dd489fe5c4122b0b259a8f6368",
+    "gpu_runtime_manifest_sha256": "PENDING_GPU_QUALIFICATION"
   }
 }
