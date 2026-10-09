@@ -5,3 +5,5 @@ Rerun after fixing original EBM auxiliary PMID discovery using authoritative arc
 Rerun after switching EBM training PMID discovery to direct frozen-tarball member parsing.
 
 Final rerun after off-by-one fix in frozen EBM tarball member scan.
+
+Dispatch nudge after off-by-one correction; no protocol change.
