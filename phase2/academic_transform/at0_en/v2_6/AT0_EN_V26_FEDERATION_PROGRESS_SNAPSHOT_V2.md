@@ -66,3 +66,22 @@ Current accuracy numbers remain historical R44C only.
 
 NEXT:
 `CLOSE_REMAINING_PROVENANCE_AND_REAL_DATA_MECHANICS -> GPU_RUNTIME_QUALIFICATION -> FINAL_PREFIT_REVIEW -> FIRST_FIT_ONLY_AFTER_EXPLICIT_PASS`
+
+
+---
+
+## Live progress reference
+
+Canonical live progress dashboard:
+`ACAD_PASS_LIVE_PROGRESS.md`
+
+Current checkpoint:
+- first-fit readiness: **73.5%**
+- previous readiness: **44.0%**
+- absolute improvement: **+29.5 percentage points**
+- F01–F06 closure: **90.0%**
+- execution state: `ACTIVE — CONTINUING PREFIT CLOSURE`
+- scientific training: `NOT_STARTED`
+- current GO/NO-GO: `NO-GO FOR SCIENTIFIC FIT`
+
+The same live file must be updated after every meaningful checkpoint and is the first source to read for current percentages, direction, blockers, optimism and execution status.
