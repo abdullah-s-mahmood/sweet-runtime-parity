@@ -3,3 +3,5 @@ Per-fold decontaminated data-manifest custody trigger. Aggregate hashes/counts o
 Rerun after fixing original EBM auxiliary PMID discovery using authoritative archive layout.
 
 Rerun after switching EBM training PMID discovery to direct frozen-tarball member parsing.
+
+Final rerun after off-by-one fix in frozen EBM tarball member scan.
