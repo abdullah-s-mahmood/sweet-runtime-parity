@@ -5930,3 +5930,76 @@ No P2 adapter work and no scientific fit before verdict freeze.
 
 45 D0-D4 attempts remain NOT_STARTED / UNCONSUMED.
 VERIFY_INTERNAL, AD/COVID external scoring and SURUS OOD scoring remain CLOSED.
+
+
+---
+
+## 2026-10-09 — TRUE LATEST: interrupted higher-model rereview + SURUS V5-V7 mechanics complete
+
+Permanent bootstrap:
+`ACAD_PASS_BOOTSTRAP_CONTRACT.md`
+
+Authoritative progress:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V7.md`
+commit `87b3d33f2c3264ea91cea0596db12fb32e356fe0`.
+
+Current process readiness:
+- F01-F06 = **87.83%**
+- first-fit = **73.2%**
+- no scientific-performance change.
+
+Higher-model limited source-contract rereview:
+`INTERRUPTED_BEFORE_VERDICT`
+
+No final KEEP/REJECT verdict was issued.
+No durable higher-model GitHub mutation was left.
+
+Interrupted-review evidence:
+`AT0_EN_V26_SURUS_INTERRUPTED_SOURCE_CONTRACT_REVIEW_EVIDENCE_V1.md`.
+
+Recovered concern:
+WordPiece-boundary coherence alone does not establish compatibility with the frozen ACAD_PASS source-word representation.
+
+V5:
+- run `37919107413` SUCCESS
+- artifact `11611123584`
+- digest `sha256:2d43434d6ecbd33e270a423d4e29300cd75d970353bc5e782f32bdeeaf6da51f`
+- source-paper bert-base-uncased WordPiece alignment = 48,719/48,833 = 99.7666%
+- best direct TokenStart/TokenEnd recovery = 279/48,833
+- direct WordPiece-index semantics rejected.
+
+V6:
+- run `37919404071` SUCCESS
+- artifact `11610764435`
+- digest `sha256:0ec7e0dc73a1096b51d9702f9ffba69613b5d9ab47b91a2ea206e5c2e65fdb2e`
+- Start/End alignment: BERT pretoken 98.9822%, regex word+punct 99.2833%, whitespace 56.5089%
+- best absolute TokenStart/TokenEnd recovery: 25.7715% regex, 24.8910% BERT pretoken
+- global source-unit index semantics rejected.
+
+V7:
+- run `37919734516` SUCCESS
+- artifact `11611114778`
+- digest `sha256:fbedf6dbdb16c0d8bffca3a859a2f1db11fd4ae9834eeeb8e8c0c4212aef5970`
+- inclusive token-span width matches 86.8654% regex / 86.5030% BERT pretoken
+- exclusive width only ~2.3-2.5%
+- absolute shifts vary within 501/523 and 502/523 articles respectively
+- simple global/per-document offset rejected.
+
+Combined interpretation:
+- Start/End are structurally strong;
+- TokenStart/TokenEnd absolute semantics are not publicly reproducible;
+- TokenStart/TokenEnd must not relocate/repair Start/End;
+- frozen ACAD_PASS uses source-word representations, so final source-contract decision remains material.
+
+Updated rereview packet:
+`AT0_EN_V26_SURUS_SOURCE_CONTRACT_REREVIEW_PACKET_V2.md`
+commit `c10746398a590294716d9e3a65f00064873babaa`.
+
+Exact next operation:
+`INDEPENDENT_HIGHER_MODEL_LIMITED_SURUS_SOURCE_CONTRACT_REREVIEW_V2`.
+
+Do NOT repeat V1-V7.
+No P2 adapter implementation.
+No scientific fit.
+45 D0-D4 attempts remain NOT_STARTED / UNCONSUMED.
+VERIFY_INTERNAL, AD/COVID external scoring and SURUS OOD scoring remain CLOSED.
