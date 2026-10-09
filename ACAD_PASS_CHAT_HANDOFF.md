@@ -2171,3 +2171,41 @@ Then, after a frozen KEEP/REJECT decision:
 
 Canonical live percentage/status:
 `ACAD_PASS_LIVE_PROGRESS.md`
+
+
+---
+
+## 2026-10-09 — SURUS higher-model admission review packet prepared
+
+Independent review is now scientifically required because SURUS admission would materially change:
+- the frozen auxiliary-source matrix;
+- the composition of `L_aux`;
+- the interpretation of D2/D3/D4 versus native-only D0/D1.
+
+Review packet:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_ADMISSION_HIGHER_MODEL_REVIEW_PACKET_V1.md`
+
+Commit:
+`87b8d8cfd9dcf97d3bcf601cf9ece8e947e73051`
+
+Important implementation finding:
+current D2/D3 implementation uses
+`L = L_native + 0.25 * mean(source_auxiliary_losses)`.
+With four existing auxiliary sources, each source contributes one quarter of the auxiliary-source mean. Adding SURUS naively as a fifth source would reduce each existing source's share to one fifth and therefore changes more than dataset volume.
+
+The packet requires the independent reviewer to decide a single prospective fixed rule; no weighting sweep is allowed.
+
+The packet also requires review of:
+- 400 in-domain SURUS as train-candidate;
+- preserving 123 OOD records as possible sealed auxiliary generalization evidence;
+- per-fold family decontamination;
+- collision-free 25-label ontology identity;
+- 45-fit budget consequences;
+- required manifest/preflight rebinding;
+- alternative stronger public human-gold corpora through 2026;
+- explicit falsification and claim boundaries.
+
+Current exact checkpoint:
+`WAITING_FOR_INDEPENDENT_HIGHER_MODEL_SURUS_ADMISSION_REVIEW`
+
+No scientific fit is authorized while this decision is unresolved.
