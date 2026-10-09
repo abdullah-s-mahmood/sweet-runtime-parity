@@ -2103,3 +2103,71 @@ Current checkpoint:
 - current GO/NO-GO: `NO-GO FOR SCIENTIFIC FIT`
 
 The same live file must be updated after every meaningful checkpoint and is the first source to read for current percentages, direction, blockers, optimism and execution status.
+
+
+---
+
+# LATEST VERIFIED UPDATE — 2026-10-09 — V4 / SURUS CANDIDATE EVIDENCE FROZEN
+
+Active branch:
+`at0-en-v2.6-dev`
+
+Authoritative current progress snapshot:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V4.md`
+commit `978353e5d42d05b551aea82997e8fc6ffcef9ddd`.
+
+SURUS evidence freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_AUXILIARY_ADMISSION_EVIDENCE_FREEZE_V1.md`
+commit `be5a2ee8cf66cec5d86d878aa9b5a558f78552cc`.
+
+Latest SURUS runs:
+- schema audit run `37900075427` SUCCESS; artifact `11602016518`; digest `sha256:0549f36abf6d1cac39d87dec2206514c7a5a59a8ba2ca083d89c54d53ff26772`.
+- overlap custody run `37900288357` SUCCESS; artifact `11602601668`; digest `sha256:915be5e4fd758b90b959eae4700c774b441dda19f358310165ccfcd6a6517a5e`.
+
+SURUS source facts:
+- `surus-ai/dataset@3a61790d5c304dea95fb278f76cc3b1a0ca07564`;
+- license `CC-BY-NC-4.0`;
+- 523 articles / 523 unique PMIDs;
+- 48,833 annotation rows;
+- 25 labels / 7 label classes;
+- 400 in-domain + 123 OOD;
+- exact PMID overlap with mapped DESIGN / VERIFY_INTERNAL / OLD_SELECT = 0 / 0 / 0;
+- resolved AD/COVID overlap = 0;
+- public auxiliary overlaps requiring decontamination: EvidenceOutcomes 7, PICO-Corpus 2, TrialSieve train/validation 1.
+
+Scientific status:
+- SURUS is `CANDIDATE AUXILIARY HUMAN-GOLD ONLY`;
+- it is NOT yet admitted to D2-D4;
+- no native P/I/C/O mapping is authorized;
+- adding SURUS would be a material protocol change and requires independent admission review.
+
+Current readiness:
+- mandatory F01-F06 closure = **94.5%**;
+- first scientific federation-fit process readiness = **89.7%**;
+- previous live-dashboard readiness = 73.5%;
+- readiness change = **+16.2 percentage points**;
+- scientific model-performance delta = **NONE / NO NEW SUCCESSOR FIT**.
+
+Latest actual model performance remains frozen R44C:
+- macro precision at t=.95 = 0.8767348592080204;
+- P = 0.8918918918918919;
+- I = 0.8171091445427728;
+- C = 0.9318181818181818;
+- O = 0.8661202185792349.
+
+Still forbidden:
+- successor scientific fit before final authorization;
+- VERIFY_INTERNAL access;
+- AD/COVID external benchmark scoring;
+- R44C rerun;
+- seventh adaptive arm;
+- automatic SURUS admission.
+
+Exact next sequential operation:
+`INDEPENDENT_SURUS_ADMISSION_REVIEW`
+
+Then, after a frozen KEEP/REJECT decision:
+`QUALIFY_REAL_GPU -> BIND_GPU_RUNTIME_HASH_TO_45_SLOTS -> FINAL_INDEPENDENT_PREFIT_REVIEW -> FIRST_D0-D4 SCIENTIFIC FIT`
+
+Canonical live percentage/status:
+`ACAD_PASS_LIVE_PROGRESS.md`
