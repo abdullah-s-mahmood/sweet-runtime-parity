@@ -1,7 +1,7 @@
 {
   "schema": "ACAD_PASS_FEDERATION_DEVELOPMENT_ATTEMPT_MANIFEST_V1",
   "date": "2026-10-09",
-  "state": "FROZEN_45_ACTIVE_SLOTS_D5_CANCELED_PENDING_DATA_RUNTIME_CLOSURE",
+  "state": "FROZEN_45_ACTIVE_SLOTS_DATA_BOUND_RUNTIME_CLOSURE_PENDING",
   "total_slots": 54,
   "seeds": [
     44,
@@ -30,9 +30,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D0_F0_S45",
@@ -41,9 +43,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D0_F0_S46",
@@ -52,9 +56,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D0_F1_S44",
@@ -63,9 +69,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D0_F1_S45",
@@ -74,9 +82,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D0_F1_S46",
@@ -85,9 +95,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D0_F2_S44",
@@ -96,9 +108,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D0_F2_S45",
@@ -107,9 +121,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D0_F2_S46",
@@ -118,9 +134,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D1_F0_S44",
@@ -129,9 +147,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D1_F0_S45",
@@ -140,9 +160,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D1_F0_S46",
@@ -151,9 +173,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D1_F1_S44",
@@ -162,9 +186,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D1_F1_S45",
@@ -173,9 +199,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D1_F1_S46",
@@ -184,9 +212,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D1_F2_S44",
@@ -195,9 +225,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D1_F2_S45",
@@ -206,9 +238,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D1_F2_S46",
@@ -217,9 +251,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D2_F0_S44",
@@ -228,9 +264,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D2_F0_S45",
@@ -239,9 +277,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D2_F0_S46",
@@ -250,9 +290,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D2_F1_S44",
@@ -261,9 +303,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D2_F1_S45",
@@ -272,9 +316,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D2_F1_S46",
@@ -283,9 +329,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D2_F2_S44",
@@ -294,9 +342,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D2_F2_S45",
@@ -305,9 +355,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D2_F2_S46",
@@ -316,9 +368,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D3_F0_S44",
@@ -327,9 +381,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D3_F0_S45",
@@ -338,9 +394,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D3_F0_S46",
@@ -349,9 +407,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D3_F1_S44",
@@ -360,9 +420,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D3_F1_S45",
@@ -371,9 +433,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D3_F1_S46",
@@ -382,9 +446,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D3_F2_S44",
@@ -393,9 +459,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D3_F2_S45",
@@ -404,9 +472,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D3_F2_S46",
@@ -415,9 +485,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D4_F0_S44",
@@ -426,9 +498,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D4_F0_S45",
@@ -437,9 +511,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D4_F0_S46",
@@ -448,9 +524,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D4_F1_S44",
@@ -459,9 +537,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D4_F1_S45",
@@ -470,9 +550,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D4_F1_S46",
@@ -481,9 +563,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D4_F2_S44",
@@ -492,9 +576,11 @@
       "seed": 44,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D4_F2_S45",
@@ -503,9 +589,11 @@
       "seed": 45,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D4_F2_S46",
@@ -514,9 +602,11 @@
       "seed": 46,
       "state": "NOT_STARTED",
       "consumed": false,
-      "data_manifest_sha256": "PENDING_CLOSURE",
+      "data_manifest_sha256": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939",
       "runtime_manifest_sha256": "PENDING_CLOSURE",
-      "scientific_training_authorized": false
+      "scientific_training_authorized": false,
+      "data_manifest_run_id": 37897592120,
+      "data_manifest_artifact_id": 11601066403
     },
     {
       "attempt_id": "FED_V1_D5_F0_S44",
@@ -637,5 +727,15 @@
     "artifact_digest": "sha256:5373e7ee64977b2dcd157d2a181ca35024e5c07f5ccb77e63b98d2da5d09373e",
     "official_file_sha256": "256150be8ac46bcf88ae016a37c3d5013e443b79bddc4f96eb6c960a5f59e764",
     "reason": "Official Zenodo confidence>=0.9 file contains no semantic intervention_type labels; frozen 11-way D5 weak head is not reproducible from the official release."
+  },
+  "data_manifest_binding": {
+    "run_id": 37897592120,
+    "artifact_id": 11601066403,
+    "artifact_digest": "sha256:525f7a524d08ee26f17b69cfb36ece6e9a17bd1a4d016ef451f1b7120fb05e42",
+    "fold_manifest_sha256": {
+      "0": "7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0",
+      "1": "1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02",
+      "2": "eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939"
+    }
   }
 }
