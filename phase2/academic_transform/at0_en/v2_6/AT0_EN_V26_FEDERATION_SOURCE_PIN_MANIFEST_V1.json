@@ -60,7 +60,9 @@
     {
       "role": "picox_large",
       "model": "microsoft/BiomedNLP-BiomedBERT-large-uncased-abstract",
-      "revision": "6611fb0be85c82ae6089ab63a0d81edfcd956dae"
+      "revision": "f18ff5ec008285849e7c467b2618262b0def6238",
+      "weight_file": "pytorch_model.bin",
+      "weight_sha256": "2d7a3e00619bab3b5c9a9d04dc173c6197becd5a53a253999ded7ed742ba2419"
     }
   ],
   "rules": [
@@ -79,8 +81,9 @@
     "PICOX exact comparator recipe"
   ],
   "runtime_identity_artifact": {
-    "run_id": 37895636271,
-    "artifact_id": 11600067736,
-    "digest": "sha256:3c87cd79c5693137172c50305f4f452ccf2d861e78159e5d51479b9c24e4da73"
-  }
+    "run_id": 37898560516,
+    "artifact_id": 11601622017,
+    "digest": "sha256:854bef337e95e56fdaaccebc77ffb93bdf98a9dd489fe5c4122b0b259a8f6368"
+  },
+  "canonical_scientific_runtime_contract": "AT0_EN_V26_FEDERATION_SCIENTIFIC_RUNTIME_CONTRACT_V1.json"
 }
