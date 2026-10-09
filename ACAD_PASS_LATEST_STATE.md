@@ -1,203 +1,157 @@
 # ACAD_PASS — LATEST STATE POINTER
 
-Timestamp: 2026-10-09 13:54:30 Asia/Baghdad (UTC+3)
+Timestamp: 2026-10-10 00:58 Asia/Baghdad (UTC+3)
 
 Current active branch:
 `at0-en-v2.6-dev`
-
-Branch HEAD immediately before this pointer update:
-`4bdaf01ea8d6222151794383d84e46fe2fbad2eb`
 
 Permanent cross-chat bootstrap contract:
 `ACAD_PASS_BOOTSTRAP_CONTRACT.md`
 
 ## Latest authoritative checkpoint
 
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V7.md`
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V8.md`
 
-Checkpoint commit:
-`87b3d33f2c3264ea91cea0596db12fb32e356fe0`
+Snapshot commit:
+`f69dba5be61cdff068973cabba4a910da8556ccd`
 
 ## Current scientific state
 
-`SURUS_AMENDMENT_V2_FROZEN / HIGHER_MODEL_REREVIEW_INTERRUPTED_BEFORE_VERDICT / P1_SOURCE_CONTRACT_OPEN / V5_V6_V7_FROZEN / NO_SUCCESSOR_SCIENTIFIC_FIT`
+`SURUS_PAUSED_CURRENT_CAMPAIGN / FOUR_SOURCE_PREFIT_REBIND_PASS / GPU_BACKEND_AND_FINAL_PREFIT_REVIEW_PENDING / NO_SUCCESSOR_SCIENTIFIC_FIT`
 
 Process readiness:
-- mandatory F01-F06 closure: **87.83%**
-- first-fit readiness: **73.2%**
+- mandatory F01-F06 closure: **94.5%**
+- first-fit readiness: **89.7%**
 
-Readiness change versus V6:
-`0.0 percentage points`
-
-Reason:
-V5-V7 reduced source-semantics uncertainty but did not close P1.
+These are process-readiness values, not model-performance values.
 
 Scientific performance:
-unchanged; latest actual result remains frozen R44C.
+unchanged; latest actual model evidence remains frozen R44C.
 
-## Governing review / amendment
+## Final SURUS source-contract decision
 
-Original final SURUS admission review:
-`phase2/academic_transform/at0_en/v2_6/FINAL_SURUS_ADMISSION_REVIEW_V1.md`
+Canonical review:
+`phase2/academic_transform/at0_en/v2_6/FINAL_SURUS_SOURCE_CONTRACT_REREVIEW_V2.md`
 
 Verdict:
-`PROCEED_WITH_CHANGES`
+`REJECT_OR_PAUSE_SURUS`
 
-Frozen amendment:
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_ADMISSION_PROTOCOL_AMENDMENT_V2.md`
+Current-campaign consequence:
+`PAUSE_SURUS / USE_ORIGINAL_FOUR_SOURCE_FALLBACK`
 
-Still:
-`GO_FOR_BOUNDED_AMENDMENT / NO_GO_FOR_SCIENTIFIC_EXECUTION`
+SURUS V1-V7 evidence remains frozen and preserved.
 
-## Interrupted higher-model rereview
+The five-source SURUS Amendment V2 remains historical evidence but is:
+`NON_EXECUTING_FOR_CURRENT_CAMPAIGN`
 
-Freeze:
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_INTERRUPTED_SOURCE_CONTRACT_REVIEW_EVIDENCE_V1.md`
+No replacement auxiliary source is authorized.
 
-Status:
-`INTERRUPTED_BEFORE_VERDICT`
+## Review evidence integrity
 
-No final governance verdict was produced.
+Uploaded final-review SHA256:
+`3bc60c5c0ef42a13982fd65a346c674c57471c25252f7df4320ac79d3b29ffd5`
 
-Recovered concern:
-WordPiece-boundary coherence does not itself prove compatibility with the frozen ACAD_PASS source-word segment unit.
+Uploaded evidence ZIP SHA256:
+`c6f9fe664ab1ad65d7fc6b80d29ccbc4fcd3a61011be16f746e28158677f7e45`
 
-## Frozen implementation clarification
+Evidence ZIP internal manifest:
+`41 / 41 verified / 0 mismatches`
 
-ACAD_PASS preserves:
-- original words/characters;
-- source offsets;
-- original-to-model offset map;
-- complete source-word window boundaries;
-- source-word representations formed from subword means.
+Verification file:
+`phase2/academic_transform/at0_en/v2_6/FINAL_SURUS_SOURCE_CONTRACT_REREVIEW_V2_EVIDENCE_VERIFICATION_V1.json`
 
-Therefore:
-`WORDPIECE_ALIGNMENT != FULL_SOURCE_UNIT_CERTIFICATION`
+## Four-source reversion and rebind
 
-## P1 evidence V1-V4
+Reversion freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_PAUSE_FOUR_SOURCE_REVERSION_FREEZE_V1.md`
 
-Raw release:
-- annotations = 48,833
-- raw Text == Abstract[Start:End] = 44,643 = 91.4197%
-- mismatch = 4,190 = 8.5803%
-- fixed punctuation/token-spacing explanation = 3,060 / 4,190
-- residual Text mismatch = 1,130
+Sampler contract:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_FOUR_SOURCE_SAMPLER_CONTRACT_V1.json`
 
-V4 frozen ACAD_PASS BiomedBERT:
-- run `37915950311`
-- artifact `11608843740`
-- digest `sha256:bdd936769d8eaa4abe87d699925a950e4aa2d9aeff2cc1f327a869a57be8a081`
-- Start/End on WordPiece boundaries = 48,640 / 48,833 = 99.6048%
-- released TokenStart/TokenEnd not recoverable as BiomedBERT indices.
+Rebind preflight:
+- run `37996135012`
+- conclusion `SUCCESS`
+- artifact `11646239459`
+- digest `sha256:d21a392d61be7de48c4591b450d8ade8b18c598f50b885d92cd8f4be3d58ee64`
+- state `PASS_FOUR_SOURCE_PREFIT_REBIND`
 
-## V5 — source-paper BERT WordPieces
+Rebind freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_FOUR_SOURCE_PREFIT_REBIND_FREEZE_V1.md`
 
-Freeze:
-`AT0_EN_V26_SURUS_SOURCE_BERT_ALIGNMENT_DIAGNOSTIC_FREEZE_V5.md`
+Comprehensive binding manifest:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_FOUR_SOURCE_PREFIT_BINDING_MANIFEST_V2.json`
 
-Run:
-`37919107413`
+## Active four-source mechanics
 
-Artifact:
-`11611123584`
+Auxiliary sources:
+1. EBM
+2. TrialSieve
+3. EvidenceOutcomes
+4. PICO
 
-Digest:
-`sha256:2d43434d6ecbd33e270a423d4e29300cd75d970353bc5e782f32bdeeaf6da51f`
+Auxiliary documents/update:
+`8 = 2/2/2/2`
 
-Pinned reconstruction tokenizer:
-`google-bert/bert-base-uncased@86b5e0934494bd15c9632b12f734a8a67f723594`
+Loss:
+`L_aux = (L_EBM + L_TrialSieve + L_EvidenceOutcomes + L_PICO) / 4`
 
-Findings:
-- Start/End align to WordPiece boundaries = 48,719 / 48,833 = 99.7666%
-- best direct TokenStart/TokenEnd recovery = 279 / 48,833
+`L = L_native + 0.25 * L_aux`
 
-Decision:
-`DIRECT_BERT_WORDPIECE_INDEX_SEMANTICS_REJECTED`
+Effective total-loss coefficient/source:
+`0.0625`
 
-## V6 — source-unit reconstruction
+## Attempts
 
-Freeze:
-`AT0_EN_V26_SURUS_SOURCE_UNIT_DIAGNOSTIC_FREEZE_V6.md`
+Active D0-D4:
+`45`
 
-Run:
-`37919404071`
+Attempt-ID digest:
+`sha256:79128f31a9d712a782be7173b8419be5503d56d13be34e20d595ecf32e6c6673`
 
-Artifact:
-`11610764435`
-
-Digest:
-`sha256:0ec7e0dc73a1096b51d9702f9ffba69613b5d9ab47b91a2ea206e5c2e65fdb2e`
-
-Start/End alignment:
-- BERT pre-tokenizer = 48,336 / 48,833 = 98.9822%
-- deterministic word+punctuation = 48,483 / 48,833 = 99.2833%
-- whitespace = 27,595 / 48,833 = 56.5089%
-
-Best absolute released token-pair recovery:
-- word+punctuation = 12,585 / 48,833 = 25.7715%
-- BERT pre-tokenizer = 12,155 / 48,833 = 24.8910%
-
-Decision:
-`TOKENSTART_TOKENEND_NOT_GLOBAL_INDICES_OF_TESTED_SOURCE_UNITS`
-
-## V7 — token width / local shift
-
-Freeze:
-`AT0_EN_V26_SURUS_TOKEN_WIDTH_SHIFT_DIAGNOSTIC_FREEZE_V7.md`
-
-Run:
-`37919734516`
-
-Artifact:
-`11611114778`
-
-Digest:
-`sha256:fbedf6dbdb16c0d8bffca3a859a2f1db11fd4ae9834eeeb8e8c0c4212aef5970`
-
-Inclusive released token-span width matches:
-- word+punctuation = 42,419 / 48,833 = 86.8654%
-- BERT pre-tokenizer = 42,242 / 48,833 = 86.5030%
-
-Exclusive width matches only ~2.3-2.5%.
-
-Absolute shifts vary inside:
-- 501 / 523 articles for word+punctuation
-- 502 / 523 articles for BERT pre-tokenizer
-
-Decision:
-`INCLUSIVE_WIDTH_STRUCTURE_SUPPORTED / SIMPLE_GLOBAL_OR_PER_ARTICLE_SHIFT_REJECTED`
-
-## Official reproducibility gap
-
-The SURUS publication/preprint says model code would be public and links:
-`https://github.com/surus-ai/dataset`
-
-Accessible official history contains dataset/manual/images/license but no training/tokenization/export/offset implementation.
-
-Therefore:
-`ORIGINAL_TOKEN_INDEX_EXPORT_IMPLEMENTATION_NOT_PUBLICLY_REPRODUCIBLE`
-
-## Updated limited re-review packet
-
-`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_SURUS_SOURCE_CONTRACT_REREVIEW_PACKET_V2.md`
-
-Packet commit:
-`c10746398a590294716d9e3a65f00064873babaa`
-
-Supersedes V1.
-
-Allowed final verdicts remain:
-1. `KEEP_SURUS_WITH_CHAR_COORDINATE_CONTRACT`
-2. `KEEP_SURUS_WITH_OTHER_CHANGES`
-3. `REJECT_OR_PAUSE_SURUS`
-
-## Attempt / protected state
-
-45 D0-D4 fits:
-`NOT_STARTED / UNCONSUMED`
+All active attempts:
+`NOT_STARTED / UNCONSUMED / scientific_training_authorized=false`
 
 D5:
-`CANCELED_WITHOUT_REPLACEMENT`
+`9 CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS / 0 CONSUMED / NO REPLACEMENT`
+
+## Data binding
+
+Fold 0:
+`7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0`
+
+Fold 1:
+`1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02`
+
+Fold 2:
+`eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939`
+
+Custody evidence:
+- run `37897592120`
+- artifact `11601066403`
+
+No data regeneration was performed for the SURUS pause.
+
+## GPU/runtime blocker
+
+Blocker freeze:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_GPU_BACKEND_BLOCKER_AFTER_FOUR_SOURCE_REBIND_V1.md`
+
+Qualification workflow:
+`.github/workflows/federation_gpu_qualification.yml`
+
+Required self-hosted runner labels:
+`self-hosted, linux, x64, gpu, acad-pass-federation`
+
+Observed durable GPU qualification runs:
+`0`
+
+Safe status:
+`NO_QUALIFIED_GPU_BACKEND_IS_DURABLY_ESTABLISHED`
+
+GPU-specific runtime binding:
+`PENDING_GPU_QUALIFICATION`
+
+## Protected / historical state
 
 VERIFY_INTERNAL:
 `CLOSED`
@@ -213,18 +167,25 @@ R44C:
 
 ## Exact next authorized operation
 
-`INDEPENDENT_HIGHER_MODEL_LIMITED_SURUS_SOURCE_CONTRACT_REREVIEW_V2`
+`CONNECT_OR_IDENTIFY_REAL_SELF_HOSTED_GPU_RUNNER -> RUN_GPU_QUALIFICATION_OFF -> FREEZE_PASS_OR_OOM_RESULT`
 
-No P2 adapter implementation before verdict freeze.
+If OFF passes:
+`BIND_GPU_RUNTIME_HASH_TO_SAME_45_ATTEMPTS -> FINAL_INDEPENDENT_PREFIT_REVIEW`
 
-No scientific fit is authorized.
+If OFF OOMs:
+one ON qualification may be attempted before any scientific fit, then freeze the first passing mode.
 
-If higher-model access is temporarily unavailable, only non-decision technical work that cannot predetermine or weaken the source-contract verdict is allowed.
+No CPU bypass.
+
+No scientific fit before:
+`FINAL_INDEPENDENT_PREFIT_REVIEW = PASS`
 
 ## Authority rule
 
 This file is navigation only.
 
-Immutable scientific freezes and completed GitHub Actions evidence override it if conflict exists.
+Immutable scientific freezes and completed Actions artifacts override it if conflict exists.
 
-Every new chat must search for newer durable branch evidence before mutation/retry.
+Every new chat must:
+`DISCOVER -> VERIFY -> LATEST_STATE -> SEARCH NEWER EVIDENCE -> CONTINUE`
+before mutation or retry.
