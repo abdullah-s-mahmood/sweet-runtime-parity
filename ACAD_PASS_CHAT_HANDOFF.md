@@ -2209,3 +2209,83 @@ Current exact checkpoint:
 `WAITING_FOR_INDEPENDENT_HIGHER_MODEL_SURUS_ADMISSION_REVIEW`
 
 No scientific fit is authorized while this decision is unresolved.
+
+
+---
+
+## 2026-10-09 — TRUE LATEST UPDATE — SURUS Amendment V2 / P1 source-coordinate closure active
+
+Permanent cross-chat rule:
+`ACAD_PASS_BOOTSTRAP_CONTRACT.md`
+
+The user's reusable ACAD_PASS bootstrap prompt is intentionally stable. Do not require prompt edits for branch, percentages, run IDs or checkpoint names. Moving state lives in GitHub.
+
+Final independent SURUS review:
+`phase2/academic_transform/at0_en/v2_6/FINAL_SURUS_ADMISSION_REVIEW_V1.md`
+
+Verdict:
+`PROCEED_SURUS_ADMISSION_WITH_CHANGES`
+
+Boundary:
+`GO_FOR_BOUNDED_PROTOCOL_AMENDMENT / NO_GO_FOR_SCIENTIFIC_EXECUTION`
+
+Frozen amendment:
+`AT0_EN_V26_SURUS_ADMISSION_PROTOCOL_AMENDMENT_V2.md`
+commit `8a29b84e45c0708a2d6a331a86330cf8cbf878d0`.
+
+Current amended-protocol readiness:
+- F01-F06 closure = **87.83%**
+- first-fit readiness = **73.2%**
+- previous V4 readiness = 89.7%
+- controlled change = **-16.5 percentage points**
+- this is process readiness only, not model performance.
+
+Latest actual model result remains frozen R44C; no successor fit has occurred.
+
+P1 lineage:
+- corrected schema/coordinate run `37914385700`: FAIL mechanical preflight, no attempt consumed;
+- ontology corruption repaired: 25 LabelIDs / 7 ClassIDs preserved;
+- exact raw Abstract half-open = 44,643 / 48,833;
+- initial mismatch rows = 4,190.
+
+Diagnostic V1:
+- run `37914600126` SUCCESS
+- artifact `11609690713`
+- digest `sha256:02c42a9e2439f555636c611875c4c7b5a055bdb8f6e93b4d2052d9dc95c1873b`.
+
+Diagnostic V2:
+- run `37914932110` SUCCESS
+- artifact `11608697424`
+- digest `sha256:69c688f51996eda49cbb09175f5adcede785efcf99ef0d1fca50f97b46f76d83`
+- 437/523 articles partially affected; 0 fully mismatched.
+
+Diagnostic V3:
+- run `37915291868` SUCCESS
+- artifact `11609721783`
+- digest `sha256:901c7691556e57f521c589d123312f1a8f078928aa20bfaa37106a67b9872b80`
+- 3,060 / 4,190 mismatches explained by fixed punctuation/token-spacing mechanics;
+- 1,130 remain unresolved.
+
+Current source-mechanics interpretation:
+`LARGE_MAJORITY_PUNCTUATION_TOKEN_RECONSTRUCTION / RESIDUAL_SOURCE_CONTRACT_UNRESOLVED`.
+
+Still forbidden:
+- scientific training;
+- row dropping/snapping/label-driven repair;
+- VERIFY_INTERNAL;
+- AD/COVID external scoring;
+- SURUS OOD scoring;
+- R44C rerun;
+- seventh arm;
+- weighting/threshold/seed search.
+
+45 D0-D4 slots remain NOT_STARTED / UNCONSUMED.
+
+Exact next sequential operation:
+`SURUS_PINNED_BIOMEDBERT_TOKEN_ALIGNMENT_DIAGNOSTIC_V4`.
+
+Authoritative progress:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V5.md`.
+
+Navigation pointer:
+`ACAD_PASS_LATEST_STATE.md`.
