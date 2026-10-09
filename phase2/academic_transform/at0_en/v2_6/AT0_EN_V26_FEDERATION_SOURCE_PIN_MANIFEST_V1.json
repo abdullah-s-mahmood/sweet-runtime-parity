@@ -1,0 +1,76 @@
+{
+  "schema": "ACAD_PASS_FEDERATION_SOURCE_PIN_MANIFEST_V1",
+  "date": "2026-10-09",
+  "state": "REVISIONS_PINNED_LICENSE_ONTOLOGY_FILE_HASH_CLOSURE_IN_PROGRESS",
+  "repositories": [
+    {
+      "role": "native_four_class_source",
+      "repo": "BIDS-Xu-Lab/section_specific_annotation_of_PICO",
+      "revision": "bc4b878773192f38b2600ec830ca4208b82f7dc0",
+      "status": "PINNED"
+    },
+    {
+      "role": "auxiliary_original_ebm",
+      "repo": "bepnye/EBM-NLP",
+      "revision": "43a4a1ea3f0a21cfb8820c040b843dfaf66192d0",
+      "status": "PINNED_CURRENT_REVIEW_CANDIDATE"
+    },
+    {
+      "role": "auxiliary_pico_corpus",
+      "repo": "sociocom/PICO-Corpus",
+      "revision": "482b7d8f135fe6ea424961c2812e8d214c3f4a5f",
+      "status": "PINNED"
+    },
+    {
+      "role": "auxiliary_trialsieve",
+      "repo": "pathology-dynamics/trialsieve_final",
+      "revision": "62dd931124e36a8c1d9dc4a2469893553d90d2e4",
+      "status": "PINNED"
+    },
+    {
+      "role": "auxiliary_evidence_outcomes",
+      "repo": "ebmlab/EvidenceOutcomes",
+      "revision": "bafa355449b6b6feb64f3ca46c1d3268dead13d4",
+      "status": "PINNED_CURRENT_REVIEW_CANDIDATE"
+    },
+    {
+      "role": "weak_distant_cto",
+      "repo": "anjani-dhrangadhariya/distant-cto",
+      "revision": "3f4d90f26fc3938322266093a480157993c7ca9b",
+      "status": "PINNED_CURRENT_REVIEW_CANDIDATE"
+    },
+    {
+      "role": "comparator_picox",
+      "repo": "WengLab-InformaticsResearch/PICOX",
+      "revision": "f3351c4786bf197efacfcefc1c1e66c36c245842",
+      "status": "PINNED_CURRENT_REVIEW_CANDIDATE"
+    }
+  ],
+  "models": [
+    {
+      "role": "reference_encoder",
+      "model": "microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract",
+      "revision": "d673b8835373c6fa116d6d8006b33d48734e305d"
+    },
+    {
+      "role": "modern_challenger",
+      "model": "thomas-sounack/BioClinical-ModernBERT-base",
+      "revision": "c3648aa87af95837c809e6f0c5f85d08160db437"
+    }
+  ],
+  "rules": [
+    "No floating main/master reference is allowed in scientific execution.",
+    "PINNED_CURRENT_REVIEW_CANDIDATE means the revision is frozen for audit now but is not scientifically admitted until file hashes/license/ontology/split provenance close.",
+    "Changing a revision after result visibility is not authorized."
+  ],
+  "pending": [
+    "license and usage terms per source",
+    "authorized input file SHA256",
+    "native ontology/version",
+    "record counts after deduplication/exclusions",
+    "official split membership digests",
+    "adapter closure",
+    "cross-source alias/trial-family graph",
+    "PICOX exact comparator recipe"
+  ]
+}
