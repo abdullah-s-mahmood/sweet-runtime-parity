@@ -6,10 +6,10 @@ Branch: `at0-en-v2.6-dev`
 
 ## CURRENT STATE
 
-`SURUS_AMENDMENT_V2_FROZEN / P1_NOT_CLOSED / LIMITED_SOURCE_CONTRACT_REREVIEW_REQUIRED / NO_SUCCESSOR_SCIENTIFIC_FIT`
+`SURUS_AMENDMENT_V2_FROZEN / LIMITED_HIGHER_MODEL_REREVIEW_INTERRUPTED_BEFORE_VERDICT / V5_V6_V7_COMPLETE / P1_SOURCE_CONTRACT_OPEN / NO_SUCCESSOR_SCIENTIFIC_FIT`
 
 Execution:
-`PAUSED AT SCIENTIFIC GOVERNANCE BOUNDARY — AWAITING LIMITED HIGHER-MODEL REREVIEW`
+`PAUSED AT GOVERNANCE BOUNDARY AFTER MAXIMAL NON-SCIENTIFIC SOURCE-SEMANTICS CLOSURE`
 
 Scientific training:
 `NOT_STARTED`
@@ -17,7 +17,7 @@ Scientific training:
 GO/NO-GO:
 `NO-GO FOR SCIENTIFIC FIT`
 
-## 1. CURRENT READINESS
+## 1. PROCESS READINESS
 
 Mandatory F01-F06 closure:
 `87.83%`
@@ -25,58 +25,54 @@ Mandatory F01-F06 closure:
 First-fit readiness:
 `73.2%`
 
-Previous V4 four-source state:
-`94.5% / 89.7%`
+Change vs prior checkpoint:
+`0.0 percentage points`
 
-Controlled amendment-related change:
-- F01-F06: -6.67 percentage points
-- first-fit: -16.5 percentage points
+Reason:
+V5-V7 materially reduced uncertainty but P1 is still not scientifically closed.
 
-This is process readiness, NOT model accuracy.
+These are process-readiness percentages, not model-performance metrics.
 
 ## 2. SCIENTIFIC PERFORMANCE
 
-Latest real model evidence remains frozen R44C at t=.95:
+No successor model has been fit.
+
+Latest actual model evidence remains R44C at t=.95:
 - macro precision 87.6735%
 - P 89.1892%
 - I 81.7109%
 - C 93.1818%
 - O 86.6120%
 
-No successor fit.
-No performance change.
+Scientific-performance change:
+`NONE`
 
-## 3. HIGHER-MODEL REVIEW / AMENDMENT
+## 3. HIGHER-MODEL STATUS
 
-Review:
-`FINAL_SURUS_ADMISSION_REVIEW_V1.md`
+The limited SURUS source-contract rereview started and was interrupted by account usage limits BEFORE verdict.
 
-Verdict:
-`PROCEED_SURUS_ADMISSION_WITH_CHANGES`
+Recovered concern:
+WordPiece-boundary coherence alone does not prove compatibility with the frozen implementation's actual source-word segment unit.
 
-Frozen amendment:
-`AT0_EN_V26_SURUS_ADMISSION_PROTOCOL_AMENDMENT_V2.md`
+No final verdict:
+`NONE`
 
-Still fixed:
-- 400 in-domain SURUS candidates before exclusions;
-- 123 OOD reserved;
-- 25-ID auxiliary ontology;
-- no native P/I/C/O promotion;
-- five equal source losses inside total auxiliary coefficient 0.25;
-- rotating 2/2/2/1/1 auxiliary-document schedule;
-- 45 D0-D4 fits only;
-- no seventh arm.
+No durable higher-model repo mutation:
+`NONE`
 
-## 4. P1 SOURCE-CONTRACT RESULT
+Freeze:
+`AT0_EN_V26_SURUS_INTERRUPTED_SOURCE_CONTRACT_REVIEW_EVIDENCE_V1.md`
+
+## 4. SOURCE-CONTRACT EVIDENCE
 
 Released annotations:
 `48,833`
 
-Raw exact Text == Abstract[Start:End]:
+Raw Text round-trip:
 `44,643 = 91.4197%`
 
 Raw mismatch:
-`4,190 = 8.5803%`
+`4,190`
 
 Fixed punctuation/token-spacing explanation:
 `3,060 / 4,190 = 73.0310%`
@@ -84,46 +80,86 @@ Fixed punctuation/token-spacing explanation:
 Residual Text mismatch:
 `1,130 = 2.3136% of full release`
 
-Pinned BiomedBERT token-boundary alignment:
-`48,640 / 48,833 = 99.6048%`
+### V4 — frozen ACAD_PASS BiomedBERT
+- run `37915950311`
+- Start/End WordPiece-boundary alignment = 99.6048%
+- TokenStart/TokenEnd not recoverable as BiomedBERT indices.
 
-Not token-boundary aligned:
-`193 = 0.3952%`
+### V5 — source-paper bert-base-uncased
+- run `37919107413`
+- artifact `11611123584`
+- digest `sha256:2d43434d6ecbd33e270a423d4e29300cd75d970353bc5e782f32bdeeaf6da51f`
+- Start/End WordPiece-boundary alignment = 99.7666%
+- best direct TokenStart/TokenEnd recovery = 279 / 48,833
 
-Released TokenStart/TokenEnd:
-`NOT CERTIFIED AS INDICES OF THE FROZEN BIOMEDBERT TOKENIZER`
+Decision:
+`DIRECT_BERT_WORDPIECE_INDEX_SEMANTICS_REJECTED`
 
-Best fixed tested char-coordinate convention:
-`ZERO_BASED_INCLUSIVE = 2,209 / 48,833`
+### V6 — source units
+- run `37919404071`
+- artifact `11610764435`
+- digest `sha256:0ec7e0dc73a1096b51d9702f9ffba69613b5d9ab47b91a2ea206e5c2e65fdb2e`
 
-## 5. OFFICIAL SOURCE REPRODUCIBILITY GAP
+Start/End alignment:
+- BERT pre-tokenizer = 98.9822%
+- deterministic word+punctuation = 99.2833%
+- whitespace = 56.5089%
 
-The SURUS publication says code/dataset/manual are available at the linked Git repository.
+Best absolute token-pair recovery:
+- word+punctuation = 25.7715%
+- BERT pre-tokenizer = 24.8910%
 
-The linked repository is:
-`surus-ai/dataset`.
+Decision:
+`TOKENSTART_TOKENEND_NOT_GLOBAL_INDICES_OF_TESTED_SOURCE_UNITS`
 
-Its complete accessible history contains dataset/manual/images/license but no training/tokenization/export/offset code.
+### V7 — width / local shift
+- run `37919734516`
+- artifact `11611114778`
+- digest `sha256:fbedf6dbdb16c0d8bffca3a859a2f1db11fd4ae9834eeeb8e8c0c4212aef5970`
 
-Therefore exact original Text/TokenStart/TokenEnd serialization semantics are not recoverable from the official linked code release.
+Inclusive token-span width:
+- word+punctuation = 86.8654%
+- BERT pre-tokenizer = 86.5030%
 
-## 6. CURRENT DECISION BOUNDARY
+Exclusive width:
+~2.3-2.5%
 
-The existing independent review required exact text/offset round-trip and representable positives.
+Multiple absolute shifts within article:
+- word+punctuation = 501 / 523 articles
+- BERT pre-tokenizer = 502 / 523 articles
 
-Changing the interpretation so Start/End becomes authoritative gold while Annotation.Text is only a provenance field is a material source-contract change.
+Decision:
+`INCLUSIVE_WIDTH_STRUCTURE_SUPPORTED / SIMPLE_GLOBAL_OR_PER_ARTICLE_OFFSET_REJECTED`
 
-It is NOT authorized locally.
+## 5. IMPLEMENTATION IMPLICATION
 
-Limited re-review packet:
-`AT0_EN_V26_SURUS_SOURCE_CONTRACT_REREVIEW_PACKET_V1.md`
+Frozen ACAD_PASS mechanics operate on source-word representations built from subwords and preserve original-to-model offsets.
+
+Therefore high WordPiece-boundary alignment is strong structural evidence but not sufficient to certify the required source-word representation for SURUS.
+
+The public release does not provide reproducibly documented absolute token-index semantics.
+
+TokenStart/TokenEnd MUST NOT be used to relocate or repair Start/End.
+
+## 6. OFFICIAL REPRODUCIBILITY GAP
+
+SURUS publication/preprint states model code would be public and links `surus-ai/dataset`.
+
+Accessible official repository history contains dataset/manual/images/license but no training/tokenization/export/offset implementation.
+
+## 7. UPDATED REREVIEW
+
+Packet:
+`AT0_EN_V26_SURUS_SOURCE_CONTRACT_REREVIEW_PACKET_V2.md`
 
 Allowed verdicts:
 - KEEP_SURUS_WITH_CHAR_COORDINATE_CONTRACT
 - KEEP_SURUS_WITH_OTHER_CHANGES
 - REJECT_OR_PAUSE_SURUS
 
-## 7. PROTECTED / ATTEMPT STATE
+No broad admission review restart is required.
+
+## 8. PROTECTED / ATTEMPT STATE
 
 45 D0-D4:
 `NOT_STARTED / UNCONSUMED`
@@ -138,25 +174,27 @@ AD/COVID external scoring:
 `CLOSED`
 
 SURUS OOD scoring:
-`NOT AUTHORIZED`
+`NOT_AUTHORIZED`
 
 R44C:
 `FROZEN / CONSUMED`
 
-## 8. EXACT NEXT OPERATION
+## 9. EXACT NEXT OPERATION
 
-`INDEPENDENT_HIGHER_MODEL_LIMITED_SURUS_SOURCE_CONTRACT_REREVIEW`
+`INDEPENDENT_HIGHER_MODEL_LIMITED_SURUS_SOURCE_CONTRACT_REREVIEW_V2`
 
-No P2 adapter implementation or scientific fit before that verdict.
+Until higher-model access returns:
+only non-decision technical work that cannot predetermine or weaken this verdict is permitted.
 
-## 9. CROSS-CHAT CONTINUITY
+No P2 adapter implementation.
+No scientific fit.
+
+## 10. CROSS-CHAT CONTINUITY
 
 Permanent contract:
 `ACAD_PASS_BOOTSTRAP_CONTRACT.md`
 
-The user's reusable bootstrap prompt does NOT need routine edits.
+The reusable user bootstrap prompt remains unchanged.
 
-Moving state is maintained in GitHub.
-
-New chats must:
+New chats:
 `DISCOVER -> VERIFY -> LATEST_STATE -> SEARCH NEWER EVIDENCE -> CONTINUE`.
