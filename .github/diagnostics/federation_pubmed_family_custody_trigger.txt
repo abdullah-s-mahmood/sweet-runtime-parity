@@ -1,0 +1,1 @@
+Aggregate-only PubMed DOI/registry custody audit. No IDs/text/gold emitted. No scientific training.
