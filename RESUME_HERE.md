@@ -12024,3 +12024,95 @@ No P2 adapter implementation.
 No scientific fit.
 45 D0-D4 attempts remain NOT_STARTED / UNCONSUMED.
 VERIFY_INTERNAL, AD/COVID external scoring and SURUS OOD scoring remain CLOSED.
+
+
+---
+
+## 2026-10-10 — TRUE LATEST: FINAL SURUS PAUSE / FOUR-SOURCE REBIND PASS / GPU BLOCKER
+
+Permanent bootstrap:
+`ACAD_PASS_BOOTSTRAP_CONTRACT.md`
+
+Authoritative snapshot:
+`phase2/academic_transform/at0_en/v2_6/AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V8.md`
+
+Final SURUS review:
+`phase2/academic_transform/at0_en/v2_6/FINAL_SURUS_SOURCE_CONTRACT_REREVIEW_V2.md`
+
+Verdict:
+`REJECT_OR_PAUSE_SURUS`
+
+Current-campaign action:
+`PAUSE_SURUS_AND_USE_ORIGINAL_FOUR_SOURCE_FALLBACK`
+
+Review evidence integrity:
+- uploaded review SHA256 `3bc60c5c0ef42a13982fd65a346c674c57471c25252f7df4320ac79d3b29ffd5`
+- uploaded evidence ZIP SHA256 `c6f9fe664ab1ad65d7fc6b80d29ccbc4fcd3a61011be16f746e28158677f7e45`
+- internal evidence manifest `41/41 VERIFIED / 0 mismatches`.
+
+SURUS V1-V7 remain frozen.
+Five-source Amendment V2 remains historical/non-executing.
+No replacement source is authorized.
+
+Four-source rebind:
+- run `37996135012` SUCCESS
+- artifact `11646239459`
+- digest `sha256:d21a392d61be7de48c4591b450d8ade8b18c598f50b885d92cd8f4be3d58ee64`
+- state `PASS_FOUR_SOURCE_PREFIT_REBIND`.
+
+Active auxiliary sources:
+- EBM
+- TrialSieve
+- EvidenceOutcomes
+- PICO
+
+Sampler:
+`8 total = 2/2/2/2`.
+
+Loss:
+`L_aux = mean(4 source losses)`;
+`L = L_native + 0.25*L_aux`;
+effective source coefficient = `0.0625`.
+
+Binding manifest:
+`AT0_EN_V26_FEDERATION_FOUR_SOURCE_PREFIT_BINDING_MANIFEST_V2.json`.
+
+Attempts:
+- D0-D4 active = 45
+- 45/45 NOT_STARTED
+- 0 consumed
+- scientific_training_authorized=false
+- attempt-ID digest `sha256:79128f31a9d712a782be7173b8419be5503d56d13be34e20d595ecf32e6c6673`.
+- D5 = 9 canceled / 0 consumed / no replacement.
+
+Data hashes retained:
+- F0 `7c79f752c38f30a7b4f220c5ab3ff7db3ec559baa1c80797f13b65833203e0b0`
+- F1 `1955fa751bb90960af10fcdae40fabe3ae36c06602b4aa00ad74aec9c6466e02`
+- F2 `eb28ffdc603f6e0df7a42e216909aa0540b52772008a843fca31cb0f815cb939`.
+
+Current process readiness:
+- F01-F06 = **94.5%**
+- first-fit readiness = **89.7%**
+- scientific performance unchanged.
+
+GPU blocker:
+`AT0_EN_V26_FEDERATION_GPU_BACKEND_BLOCKER_AFTER_FOUR_SOURCE_REBIND_V1.md`
+
+Required runner labels:
+`self-hosted, linux, x64, gpu, acad-pass-federation`.
+
+Observed durable GPU qualification runs:
+`0`.
+
+Safe state:
+`NO_QUALIFIED_GPU_BACKEND_IS_DURABLY_ESTABLISHED`.
+
+Exact next operation:
+`CONNECT_OR_IDENTIFY_REAL_SELF_HOSTED_GPU_RUNNER -> RUN_GPU_QUALIFICATION_OFF -> FREEZE_PASS_OR_OOM_RESULT`.
+
+Then only after GPU PASS:
+`BIND_GPU_RUNTIME_HASH_TO_SAME_45_ATTEMPTS -> FINAL_INDEPENDENT_PREFIT_REVIEW`.
+
+STOP before any scientific job until final independent pre-fit PASS.
+
+VERIFY_INTERNAL and AD/COVID scoring remain CLOSED.
