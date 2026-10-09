@@ -100,3 +100,30 @@ with the exact:
 
 Until then:
 `NO_FIRST_FIT`.
+
+
+## 2026-10-09 qualification gate prepared
+
+A fail-closed GPU qualification package now exists:
+- `federation_gpu_qualification.py`
+- `.github/workflows/federation_gpu_qualification.yml`
+- `AT0_EN_V26_FEDERATION_GPU_QUALIFICATION_GATE_V1.md`
+
+It is intentionally NOT auto-triggered.
+
+Required runner labels:
+`self-hosted, linux, x64, gpu, acad-pass-federation`.
+
+A real GPU backend is still NOT established.
+
+The gate verifies:
+- canonical software versions;
+- CUDA/cuDNN/GPU/VRAM;
+- exact model revisions and weight SHA256;
+- synthetic full-length forward/backward;
+- peak memory;
+- deterministic settings;
+- microbatch 1;
+- effective-batch-preserving accumulation.
+
+No CPU fallback is authorized for scientific fitting.
