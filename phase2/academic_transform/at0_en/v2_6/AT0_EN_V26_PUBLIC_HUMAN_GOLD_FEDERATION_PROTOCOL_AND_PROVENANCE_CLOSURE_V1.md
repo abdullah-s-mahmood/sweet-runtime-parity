@@ -16,11 +16,11 @@ Canonical independent review:
 | Finding | Current status | Evidence / remaining action |
 |---|---|---|
 | F01 exposure lineage | DOCUMENTARY_CORRECTION_COMPLETE / PMID_CUSTODY_PARTIAL_PASS | Inventory corrected. Protected mapping recovered original PMID identity for 250/256 DESIGN, 49/64 VERIFY_INTERNAL and 60/80 OLD_SELECT records with zero duplicate assignments; unresolved records remain conservatively unresolved |
-| F02 DISTANT-CTO / role semantics | CORRECTED | Packet now restricts DISTANT-CTO to role-agnostic semantic-type weak ablation; TrialSieve/C-TrO not mapped to C |
+| F02 DISTANT-CTO / role semantics | CLOSED / D5_CANCELED | Official Zenodo file audited: 106,889 records, no semantic intervention_type labels. D5 canceled prospectively without replacement; DISTANT-CTO not used in first-campaign training |
 | F03 gold-independent preprocessing | SYNTHETIC_WINDOWING_PASS / TOKENIZER_INTEGRATION_PENDING | Text-only planner synthetic closure PASS in run 37879437844; no gold consumed; pinned-tokenizer/end-to-end offset integration still required |
 | F04 benchmark eligibility | MULTILAYER_PROVENANCE_PARTIAL_PASS / FAMILY_CLOSURE_PENDING | Exact-text split audit PASS; registry custody overlap 0; exact-title PMID resolution AD 118/150 (test 64/75), COVID 116/150 (test 61/75), with 0 resolved PMID overlap against DESIGN/VERIFY_INTERNAL/OLD_SELECT/PICO-Corpus/EvidenceOutcomes. Unresolved identities and same-trial distinct-publication linkage remain open |
 | F05 incompatible headline comparisons | DOCUMENTARY_CLOSED | AlpaPICO string-set scorer verified; FinePICO/PICOX/GPT-4o results remain task-qualified, not direct strict-span ranks |
-| F06 finite study | PROTOCOL_FROZEN / EXECUTION_BLOCKED | Six development arms, finite seeds/folds/weights/budget now frozen; no fit yet |
+| F06 finite study | CLOSED_AT_45_FITS / EXECUTION_BLOCKED_PENDING_OTHER_CLOSURE | D5 canceled by its predeclared source-availability rule. Active D0-D4 x 3 folds x 3 seeds = exactly 45 development fits; canceled slots cannot be reused |
 
 ## Required before first fit
 
@@ -91,21 +91,25 @@ Text-only, gold-independent source-compatible processor:
 `SYNTHETIC_WINDOW_PLANNER_PASS / PINNED_TOKENIZER_AND_OFFSET_INTEGRATION_PENDING`
 
 ### Adapters
-A1-A5 native/human auxiliary source preflight PASS in run `37881966232`, artifact `11594457041`, digest `sha256:156a8ccd6471a410bdc7dd230d98575f3f5fc6fca015d1041fb52adbdc2b804f`.
+Authoritative A1-A5 source preflight with TrialSieve-test exclusion PASS in run `37885471201`, artifact `11596272506`, digest `sha256:a45ad59b89ffcc5e4e3223df5838ddb99191a1733c65a8d91bd90f32c51d8e4a`.
 
 Closed structurally:
 - EBM-NLP_mod native P/I/C/O;
 - original EBM training P/I/O auxiliary;
-- TrialSieve 20-type auxiliary;
+- TrialSieve 20-type auxiliary using stored train+validation only (1,371 docs / 44,940 spans); stored test 238 reserved;
 - EvidenceOutcomes 500RCT O auxiliary;
 - PICO-Corpus 26-type native auxiliary ontology.
 
+D5 status:
+- official Zenodo weak-file audit PASS;
+- semantic 11-type labels absent;
+- D5 canceled without replacement before any fit.
+
 Still pending:
-- D5 DISTANT-CTO official weak-file hash/schema/admission preflight;
 - per-fit family-decontamination manifests.
 
 Status:
-`A1_A5_PASS / D5_WEAK_AND_PER_FIT_DECONTAMINATION_PENDING`
+`A1_A5_PASS / D5_CANCELED / PER_FIT_DECONTAMINATION_PENDING`
 
 ### Scorer
 Synthetic mechanics PASS in run `37879727833`, artifact `11594166539`, digest `sha256:1ca17f8f0403d405195d776d93d6e97a6e893b48de4ab48953d712c1096fa32d`.
@@ -127,13 +131,19 @@ Status:
 `SYNTHETIC_MECHANICS_PASS / REAL_MANIFEST_INTEGRATION_PENDING`
 
 ### Comparators
-Need frozen recipes/hashes for:
-- D0 native BIO reference;
-- data-matched BIO;
-- PICOX four-class adapted comparator.
+Frozen:
+- D0 native BIO reference is an active development arm;
+- data-matched BIO comparison is defined by the selected-procedure external matrix;
+- PICOX four-class adapted comparator recipe frozen in `AT0_EN_V26_PICOX_FOUR_CLASS_ADAPTED_COMPARATOR_FREEZE_V1.md`.
+
+PICOX model/tokenizer revision identity is also closed.
+
+Still pending:
+- executable PICOX runtime integration/preflight;
+- per-fit matched data manifests.
 
 Status:
-`PICOX_RECIPE_PENDING`
+`RECIPES_FROZEN / EXECUTABLE_RUNTIME_AND_PER_FIT_MANIFEST_PENDING`
 
 ### Runtime
 Closed model/tokenizer identity:
@@ -156,13 +166,13 @@ Status:
 `MODEL_TOKENIZER_IDENTITY_PASS / GPU_RUNTIME_BACKEND_PENDING`
 
 ### Attempt manifest
-Immutable 54-slot D0-D5 x 3 folds x seeds 44/45/46 ledger created:
+Original 54-slot ledger has been prospectively reduced after D5 cancellation. Active immutable ledger is:
 `AT0_EN_V26_FEDERATION_DEVELOPMENT_ATTEMPT_MANIFEST_V1.json`.
 
-Slots are NOT_STARTED and scientific_training_authorized=false; data/runtime hashes remain pending closure.
+Active slots = 45 for D0-D4. Nine D5 slots are permanently `CANCELED_NO_OFFICIAL_SEMANTIC_TYPE_LABELS`, consumed=false, and cannot be repurposed. Active D0-D4 slots remain NOT_STARTED and scientific_training_authorized=false; data/runtime hashes remain pending closure.
 
 Status:
-`SLOT_LEDGER_FROZEN / DATA_RUNTIME_BINDING_PENDING`
+`45_ACTIVE_SLOT_LEDGER_FROZEN / DATA_RUNTIME_BINDING_PENDING`
 
 ## Closed evidence
 
@@ -350,3 +360,33 @@ The three primary encoder/tokenizer identities are reproducibly pinned:
 - adapted PICOX BiomedBERT-large.
 
 No floating model revision remains in the frozen first-campaign design.
+
+
+## 2026-10-09 D5 and authoritative adapter closure update
+
+DISTANT-CTO official release:
+- run `37885235969` PASS;
+- artifact `11596332070`;
+- official file SHA256 `256150be8ac46bcf88ae016a37c3d5013e443b79bddc4f96eb6c960a5f59e764`;
+- 106,889 records;
+- 864,683 weak-positive tokens;
+- semantic intervention types available = FALSE.
+
+Protocol consequence:
+`D5_CANCELED_WITHOUT_REPLACEMENT`.
+
+Active development attempt budget:
+`45`.
+
+Authoritative adapter preflight:
+- run `37885471201` PASS;
+- artifact `11596272506`;
+- TrialSieve admitted train+validation only = 1,371 docs / 44,940 spans;
+- TrialSieve test = 238 reserved;
+- no auxiliary source emits native P/I/C/O automatically.
+
+Freeze files:
+- `AT0_EN_V26_DISTANT_CTO_D5_CANCELLATION_FREEZE_V1.md`;
+- `AT0_EN_V26_FEDERATION_ADAPTER_SOURCE_PREFLIGHT_FREEZE_V2.md`.
+
+No scientific fit has started.
