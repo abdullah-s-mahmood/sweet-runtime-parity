@@ -11845,3 +11845,52 @@ After KEEP/REJECT is frozen:
 `QUALIFY_REAL_GPU -> BIND_GPU_RUNTIME_HASH_TO_45_SLOTS -> FINAL_INDEPENDENT_PREFIT_REVIEW -> FIRST_D0-D4 SCIENTIFIC FIT`.
 
 Do not train before these gates are closed.
+
+
+---
+
+## 2026-10-09 — SURUS Amendment V2 / P1 source-coordinate closure checkpoint
+
+Permanent bootstrap:
+`ACAD_PASS_BOOTSTRAP_CONTRACT.md`
+
+Final independent SURUS review:
+`FINAL_SURUS_ADMISSION_REVIEW_V1.md`
+verdict `PROCEED_WITH_CHANGES`, authorizing a bounded protocol amendment but NO scientific fit.
+
+Frozen amendment:
+`AT0_EN_V26_SURUS_ADMISSION_PROTOCOL_AMENDMENT_V2.md`
+commit `8a29b84e45c0708a2d6a331a86330cf8cbf878d0`.
+
+Current authoritative progress:
+`AT0_EN_V26_FEDERATION_PROGRESS_SNAPSHOT_V5.md`
+commit `91f718add40f6f02c65f496854d15efea03216b0`.
+
+Current process readiness:
+- F01-F06 = 87.83%
+- first-fit = 73.2%
+- readiness decreased prospectively because the five-source amendment reopened changed-path certifications;
+- no scientific model-performance change.
+
+P1 corrected schema/coordinate run:
+`37914385700` FAIL mechanical preflight, no scientific attempt consumed.
+
+Diagnostics:
+- V1 run `37914600126`, artifact `11609690713`, digest `sha256:02c42a9e2439f555636c611875c4c7b5a055bdb8f6e93b4d2052d9dc95c1873b`;
+- V2 run `37914932110`, artifact `11608697424`, digest `sha256:69c688f51996eda49cbb09175f5adcede785efcf99ef0d1fca50f97b46f76d83`;
+- V3 run `37915291868`, artifact `11609721783`, digest `sha256:901c7691556e57f521c589d123312f1a8f078928aa20bfaa37106a67b9872b80`.
+
+Current P1 evidence:
+- release annotations 48,833;
+- 44,643 exact raw Abstract half-open;
+- 4,190 mismatch rows;
+- 3,060/4,190 explained by fixed punctuation/token-spacing mechanics;
+- 1,130 remain unexplained;
+- no repair/drop authorized.
+
+Current exact next operation:
+`SURUS_PINNED_BIOMEDBERT_TOKEN_ALIGNMENT_DIAGNOSTIC_V4`.
+
+Scientific fit remains NO-GO.
+VERIFY_INTERNAL, AD/COVID external scoring and SURUS OOD scoring remain CLOSED.
+45 D0-D4 scientific attempts remain NOT_STARTED / UNCONSUMED.
